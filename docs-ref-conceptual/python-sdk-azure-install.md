@@ -6,28 +6,28 @@ Installation with pip
 
 You can install each Azure service's library individually:
 
-```console
+```bash
 pip install azure-batch          # Install the latest Batch runtime library
 pip install azure-mgmt-scheduler # Install the latest Storage management library
 ```
 
 Preview packages can be installed using the `--pre` flag:
 
-```console
+```bash
 pip install --pre azure-mgmt-compute # will install only the latest Compute Management library
 ```
 
 You can also install a set of Azure libraries in a single line using the
 `azure` meta-package.
 
-```console
+```bash
 pip install azure
 ```
 
 We publish a preview version of this package, which you can access using
 the --pre flag:
 
-```console
+```bash
 pip install --pre azure
 ```
 
