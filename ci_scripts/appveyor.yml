@@ -1,0 +1,64 @@
+version: 1.0.{build}
+skip_tags: true
+
+environment:
+  # Use Python 3.5
+  PYTHON: "C:/Python35"
+  SPHINXBUILD: "%PYTHON%/scripts/sphinx-build.exe"
+
+  github_access_token:
+    secure: 8GKkrghj8KAhgmIxGneHfLGuY5V1o+Q3eptS91w4wlMh99IZi7jUefeW/IdIPKGX
+
+init:
+    - "%PYTHON%/python.exe -m pip install --upgrade pip"
+
+    # Install pywin32-ctypes 0.0.1 due to https://github.com/enthought/pywin32-ctypes/issues/60
+    - "%PYTHON%/python.exe -m pip install pywin32-ctypes==0.0.1"
+
+    # Install cryptography (1.8.1) to avoid 'openssl' error
+    - "%PYTHON%/python.exe -m pip install cryptography==1.8.1"
+    
+    # Install requests (2.14.1) since msrest requires requests~=2.14.1
+    - "%PYTHON%/python.exe -m pip install requests==2.14.1"
+
+    # Install sphinx (1.5.5) and its extensions
+    - "%PYTHON%/python.exe -m pip install sphinx==1.5.5"
+    - "%PYTHON%/python.exe -m pip install sphinx-docfx-yaml"
+    - "%PYTHON%/python.exe -m pip install sphinx_rtd_theme"
+    - "%PYTHON%/python.exe -m pip show sphinx"
+
+clone_script:
+    - git config --global core.autocrlf true
+    - git config core.autocrlf
+    - cd c:/projects
+    - git clone -q --branch=master https://github.com/Azure/azure-sdk-for-python.git
+    - git clone -q --branch=master https://github.com/MicrosoftDocs/azure-docs-sdk-python.git
+
+install:
+    - cd c:/projects/azure-sdk-for-python
+
+    # Ignore STDOUT
+    - "%PYTHON%/python.exe setup.py install > null"
+
+build: off
+
+on_success:
+    - cd c:/projects/azure-sdk-for-python/doc
+
+    # Generate yml and copy to c:/projects/azure-docs-sdk-python/docs-ref-autogen
+    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/conf.py -Destination c:/projects/azure-sdk-for-python/doc/conf.py
+    - call make.bat html
+    - ps: Remove-Item c:/projects/azure-docs-sdk-python/docs-ref-autogen/* -Recurse
+    - ps: Copy-Item -Path c:/projects/azure-sdk-for-python/doc/_build/html/docfx_yaml/* -Destination c:/projects/azure-docs-sdk-python/docs-ref-autogen -Recurse
+
+    - cd c:/projects/azure-docs-sdk-python
+    - git config --global credential.helper store
+    - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:github_access_token):x-oauth-basic@github.com`n"
+    - git status
+    - git config --global user.name "swatDong"
+    - git config --global user.email "09122swat@gmail.com"
+    - git add . > null
+    - git commit -a -m "appveyor ci - update yml files" > null
+
+    # To master branch
+    - git push -u origin master:master -f
