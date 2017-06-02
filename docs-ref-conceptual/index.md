@@ -1,31 +1,50 @@
-Azure libraries for Python
-==========================
+---
+title: Azure libraries for Python
+description: Overview of the Azure management and service libraries for Python
+keywords: Azure, Python, SDK, API
+author: lisawong19
+ms.author: liwong
+manager: douge
+ms.date: 06/01/2017
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: multiple
+ms.assetid: 
+---
 
-The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. The libraries are available in [PyPI](python-sdk-azure-install.md) for use in your python projects.
+# Azure libraries for Python
 
-Manage Azure resources
-----------------------
+The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. The libraries are available in [PyPI](python-sdk-azure-install.md) for use in your Python projects.
 
-Create and manage Azure resources from Python applications using the Azure SDK for Python.
+## Manage Azure resources
 
-For example, create a resource group on Azure:
+Create and manage Azure resources from Python applications using the Azure libraries for Python.
+
+For example, to create a SQL Server instance:
 
 ```python
-    from azure.mgmt.resource import ResourceManagementClient
+sql_client = SqlManagementClient(
+    credentials,
+    subscription_id
+)
 
-    resource_client = ResourceManagementClient(credentials, subscription_id)
-    resource_client.resource_groups.create_or_update(
-        'my_resource_group',
-        {
-            'location':'westus'
-        }
-    )
+server = sql_client.servers.create_or_update(
+    GROUP_NAME,
+    SERVER_NAME,
+    {
+        'location': REGION,
+        'version': '12.0', # Required for create
+        'administrator_login': 'mysecretname', # Required for create
+        'administrator_login_password': 'HusH_Sec4et' # Required for create
+    }
+)
 ```
 
-Read the [get started article](python-sdk-azure-get-started) to set up your authentication and run sample code against your own Azure subscription.
+Review the [install instructions](python-sdk-azure-install.md) for a full list of the libraries and how to import them into your projects and then read the the [get started article](python-sdk-azure-get-started.md) to set up your authentication and run sample code against your own Azure subscription.
 
-Connect to Azure services
--------------------------
+## Connect to Azure services
 
 In addition to using Python libraries to create and manage resources within Azure, you can also use Python libraries to connect and use those resources in your apps. For example, you might update a table SQL Database or store files in Azure Storage. Select the library you need for a particular service from the complete list of libraries and visit the Python developer center for tutorials and sample code for help using them in your apps.
 
@@ -49,6 +68,14 @@ blob_service.create_blob_from_bytes(
 
 print(blob_service.make_blob_url('mycontainername', 'myblobname'))
 ```
+
+## Sample code and reference
+The following smaples cover common automation tasks with the Azure management libraries for Python and have code ready to use in your own apps:
+- [Virtual Machines]()
+- [Web apps](python-sdk-azure-web-apps-samples.md)
+- [SQL Database](python-sdk-azure-sql-database-samples.md)
+
+A [reference]() is available for all packages in both the service an management libraries. New features, breaking changes, and migration instructions from previous versions are available in the [release notes](python-sdk-azure-release-notes.md). 
 
 Get help and give feedback
 --------------------------
