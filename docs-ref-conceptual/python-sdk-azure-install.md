@@ -40,4 +40,3 @@ If you want to install `azure` from source:
     cd azure-sdk-for-python
     python setup.py install
 
-The `dev` branch contains the work in progress.
