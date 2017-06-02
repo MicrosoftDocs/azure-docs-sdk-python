@@ -22,7 +22,7 @@ The Azure libraries for Python let you use Azure services and manage Azure resou
 
 Create and manage Azure resources from Python applications using the Azure libraries for Python.
 
-For example, to create a SQL Server instance:
+For example, to create a SQL Server instance, you can use the following code:
 
 ```python
 sql_client = SqlManagementClient(
@@ -31,10 +31,10 @@ sql_client = SqlManagementClient(
 )
 
 server = sql_client.servers.create_or_update(
-    GROUP_NAME,
-    SERVER_NAME,
+    'myresourcegroup',
+    'myservername',
     {
-        'location': REGION,
+        'location': 'eastus',
         'version': '12.0', # Required for create
         'administrator_login': 'mysecretname', # Required for create
         'administrator_login_password': 'HusH_Sec4et' # Required for create
@@ -77,7 +77,6 @@ The following smaples cover common automation tasks with the Azure management li
 
 A [reference]() is available for all packages in both the service an management libraries. New features, breaking changes, and migration instructions from previous versions are available in the [release notes](python-sdk-azure-release-notes.md). 
 
-Get help and give feedback
---------------------------
+## Get help and give feedback
 
 Post questions to the community on [Stack Overflow](http://stackoverflow.com/questions/tagged/azure-sdk-python) and open issues against the SDK on the [project GitHub](https://github.com/Azure/azure-sdk-for-python).
