@@ -1,7 +1,7 @@
 Azure libraries for Python
 ==========================
 
-The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. The libraries are available in [PyPI](python-sdk-azure-install.md) for use in your Python projects.
+The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. The libraries are available in [PyPI](python-sdk-azure-install.md) for use in your python projects.
 
 Manage Azure resources
 ----------------------
