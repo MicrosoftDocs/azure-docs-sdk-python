@@ -5,7 +5,7 @@ keywords: Azure, Java, SDK, API, web apps, app service
 author: lisawong19  
 ms.author: liwong
 manager: douge
-ms.date: 06/02/2017
+ms.date: 06/05/2017
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
