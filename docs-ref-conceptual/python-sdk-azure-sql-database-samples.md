@@ -15,7 +15,7 @@ ms.assetid:
 ---
 
 
-# Azure management libraries for Java samples for SQL Database
+# Azure management libraries for Python samples for SQL Database
 
 | **Create databases** ||
 |---|---|

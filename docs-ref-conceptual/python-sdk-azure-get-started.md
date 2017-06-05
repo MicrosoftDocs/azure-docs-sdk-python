@@ -1,4 +1,20 @@
-# Get started with the Azure libraries for .NET
+---
+title: Get started with the Azure libraries for Python
+description: Getting started with Aure libraries for Python
+keywords: Azure, Python, SDK, API
+author: lisawong19
+ms.author: liwong
+manager: douge
+ms.date: 06/05/2017
+ms.topic: get-started
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: multiple
+ms.assetid: 
+---
+
+# Get started with the Azure libraries for Python
 
 This tutorial demonstrates the usage of several Azure libraries for Python.  You will set up authentication, create and use an Azure Storage account, create and use an Azure SQL Database, deploy some virtual machines, and deploy an Azure App Service Web App from GitHub.
 
