@@ -16,21 +16,14 @@ ms.assetid:
 
 # Azure management libraries for Python samples for web apps
 
-| **Create an app** ||
+| **Manage an app** ||
 |---|---|
-| [Create a web app and deploy from FTP or GitHub][1] | Deploy web apps from local Git, FTP, and continuous integration from GitHub. |
-| [Create a web app and manage deployment slots][2] | Create a web app and deploy to staging slots, and then swap deployments between slots. |
-| **Configure app** ||
-| [Create a web app and configure a custom domain][3] | Create a web app with a custom domain and self-signed SSL certificate. |
-| **Scale apps** ||
-| [Scale a web app with high availability across multiple regions][4] | Scale a web app in three different geographical regions and make them available through a single endpoint using Azure Traffic Manager. | 
-| **Connect app to resources** ||
-| [Connect a web app to a storage account][5] | Create an Azure storage account and add the storage account connection string to the app settings. |
-| [Connect a web app to a SQL database][6] | Create a web app and SQL database, and then add the SQL database connection string to the app settings. |
+| [Manage Azure websites with python][1] | Create, delete and list details of a web app. |
+| [Create a web app and deploy from local Git][1] | Deploy web apps from local Git. |
+| [Create a logic app workflow][3] | Create a logic app workflow. |
 
-[1]: java-sdk-configure-webapp-sources.md
-[2]: https://azure.microsoft.com/resources/samples/app-service-java-manage-staging-and-production-slots-for-web-apps/
-[3]: https://azure.microsoft.com/resources/samples/app-service-java-manage-web-apps-with-custom-domains/
-[4]: https://azure.microsoft.com/resources/samples/app-service-java-scale-web-apps-on-linux/
-[5]: https://azure.microsoft.com/resources/samples/app-service-java-manage-storage-connections-for-web-apps/
-[6]: https://azure.microsoft.com/resources/samples/app-service-java-manage-data-connections-for-web-apps/
+[1]: https://github.com/Azure-Samples/app-service-web-python-manage
+[2]: https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-get-started-python
+[3]: python-sdk-azure-samples-logic-app-workflow.md
+
+
