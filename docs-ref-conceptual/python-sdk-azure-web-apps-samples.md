@@ -19,11 +19,11 @@ ms.assetid:
 | **Manage an app** ||
 |---|---|
 | [Manage Azure websites with python][1] | Create, delete and list details of a web app. |
-| [Create a web app and deploy from local Git][1] | Deploy web apps from local Git. |
+| [Create a web app and deploy from local Git][2] | Deploy web apps from local Git. |
 | [Create a logic app workflow][3] | Create a logic app workflow. |
 
 [1]: https://github.com/Azure-Samples/app-service-web-python-manage
-[2]: https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-get-started-python
+[2]: https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python
 [3]: python-sdk-azure-samples-logic-app-workflow.md
 
 
