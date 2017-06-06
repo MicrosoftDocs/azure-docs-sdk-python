@@ -21,9 +21,9 @@ The following table links to Python source you can use to create and configure A
 | **Working with virtual machines** || 
 |---|---|
 | [Manage virtual machines][1] | Create, modify, start, stop, and delete virtual machines. |
-| [Manage a load blanacer ][2] | Manage a load balancer using the Azure Resource Manager APIs for python |
+| [Manage a load balancer ][2] | Manage a load balancer using the Azure Resource Manager APIs for python. |
 | **Managed disks with virtual machines** || 
-| [Managed disks][3] | Create, resizing, updating a managed disk|
+| [Managed disks][3] | Create, resizing, updating a managed disk.|
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
 [2]: https://github.com/Azure-Samples/network-python-manage-loadbalancer
