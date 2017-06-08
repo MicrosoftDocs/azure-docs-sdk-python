@@ -85,6 +85,91 @@ cd mytestenv
 
 
 ## Deploy a web app from a GitHub repo
+This code deploys a Flask web application from the `master` branch in a GitHub repo in to a new [Azure App Service Web App](https://docs.microsoft.com/azure/app-service-web/app-service-web-overview) running in the free tier. 
+
+Before you begin: [Fork](https://help.github.com/articles/fork-a-repo/) https://github.com/Azure-Samples/python-docs-hello-world
+
+```python
+from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.web import WebSiteManagementClient
+from azure.mgmt.web.models import AppServicePlan, SkuDescription, Site, SiteSourceControl, SiteConfig
+from azure.common.client_factory import get_client_from_cli_profile
+
+RESOURCE_GROUP_NAME = 'lisaresource'
+SERVICE_PLAN_NAME = 'lisafreeplan123'
+WEB_APP_NAME = 'sampleflaskapp0909'
+
+#log in
+resource_client = get_client_from_cli_profile(ResourceManagementClient)
+web_client = get_client_from_cli_profile(WebSiteManagementClient)
+
+# create resource group
+resource_group = resource_client.resource_groups.create_or_update(
+    RESOURCE_GROUP_NAME,
+    {
+        'location':'eastus'
+    }
+)
+print('Created resource group: ' + resource_group.name)
+
+# create a free app service plan
+service_plan_async_operation = web_client.app_service_plans.create_or_update(
+    RESOURCE_GROUP_NAME,
+    SERVICE_PLAN_NAME,
+    AppServicePlan(
+        location='eastus',
+        sku=SkuDescription(
+            name='F1',
+            tier='Free',
+        )
+    )
+)
+
+service_plan = service_plan_async_operation.result()
+print('created app service plan: ' + service_plan.name)
+#
+# create a web app
+siteConfiguration = SiteConfig(
+    python_version='3.4',
+)
+site_async_operation = web_client.web_apps.create_or_update(
+    RESOURCE_GROUP_NAME,
+    WEB_APP_NAME,
+    Site(
+        location='eastus',
+        server_farm_id=service_plan.id,
+        site_config=siteConfiguration
+    ),
+)
+
+
+site = site_async_operation.result()
+print('created webapp: ' + site.default_host_name)
+
+# continuous deployment with GitHub
+source_control_async_operation = web_client.web_apps.create_or_update_source_control(
+    RESOURCE_GROUP_NAME,
+    WEB_APP_NAME,
+    SiteSourceControl(
+        location='GitHub',
+        repo_url='https://github.com/lisawong19/python-docs-hello-world',
+        branch='master'
+    )
+)
+
+source_control = source_control_async_operation.result()
+print("added source control to: " + source_control.name + "azurewebsites.net")
+```
+
+Open a browser pointed to the application using the CLI:
+```azcli
+az appservice web browse --resource-group sampleWebResourceGroup --name YOUR_APP_NAME
+```
+
+Remove the web app and plan from your subscription once you've verified the deployment. 
+```azcli
+az group delete --name sampleWebResourceGroup
+```
 
 
 ## Connect to a SQL database
@@ -108,18 +193,17 @@ from azure.common.client_factory import get_client_from_cli_profile
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.storage import StorageManagementClient
 
-
 # log in
 resource_client = get_client_from_cli_profile(ResourceManagementClient)
 storage_client = get_client_from_cli_profile(StorageManagementClient)
 
 # You MIGHT need to add Storage as a valid provider for these credentials
 # If so, this operation has to be done only once for each credentials
-# resource_client.providers.register('Microsoft.Storage')
-#
+ resource_client.providers.register('Microsoft.Storage')
+
 # create a new resource group
 resource_client.resource_groups.create_or_update(
-    'lisaresource',
+    'sampleStorageResourceGroup',
     {
         'location':'eastus'
     }
@@ -127,8 +211,8 @@ resource_client.resource_groups.create_or_update(
 
 # create a new storage account
 async_create = storage_client.storage_accounts.create(
-    'lisaresource',
-    'lisastorage123',
+    'sampleStorageResourceGroup',
+    'sampleStorageAccountName',
     StorageAccountCreateParameters(
         sku=Sku(SkuName.standard_ragrs),
         kind=Kind.storage,
@@ -138,25 +222,30 @@ async_create = storage_client.storage_accounts.create(
 async_create.wait()
 
 # create a public storage container to hold the file
-storage_keys = storage_client.storage_accounts.list_keys('lisaresource', 'lisastorage123')
+storage_keys = storage_client.storage_accounts.list_keys('sampleStorageResourceGroup', 'sampleStorageAccountName')
 storage_keys = {v.key_name: v.value for v in storage_keys.keys}
 
-storage_client = CloudStorageAccount('lisastorage123', storage_keys['key1'])
+storage_client = CloudStorageAccount('sampleStorageAccountName', storage_keys['key1'])
 blob_service = storage_client.create_block_blob_service()
 
-blob_service.create_container('lisacontainer',public_access=PublicAccess.Container)
+blob_service.create_container('sampleContainerName',public_access=PublicAccess.Container)
 
 
 blob_service.create_blob_from_bytes(
-    'lisacontainer',
+    'sampleContainerName',
     'helloworld.html',
     b'<center><h1>Hello World!</h1></center>',
     content_settings=ContentSettings('text/html')
 )
 
-print(blob_service.make_blob_url('lisacontainer', 'helloworld.html'))
+print(blob_service.make_blob_url('sampleContainerName', 'helloworld.html'))
 ```
-To verify content successfully uploaded, naviage to the url printed. 
+To verify content successfully uploaded, navigate to the url printed. 
+
+Clean up the storage account using the CLI:
+```azcli
+az group delete --name sampleStorageResourceGroup
+```
 
 ## Explore more samples
 
