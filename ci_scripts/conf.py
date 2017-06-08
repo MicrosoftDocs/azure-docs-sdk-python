@@ -31,5 +31,11 @@ napoleon_use_admonition_for_examples = True
 
 exclude_patterns = [
   '_build',
-  '*.tests.rst'
+  '*.tests.rst',
+  'azure-batch*.rst',
+  'azure-graphrbac*.rst',
+  'azure-keyvault*.rst',
+  'azure-monitor*.rst',
+  'azure-servicebus*.rst',
+  'azure-servicefabric*.rst'
 ]
