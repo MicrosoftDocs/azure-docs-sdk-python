@@ -24,16 +24,7 @@ The management libraries provide an interface to create, manage, and scale Azure
 ## Import the libraries
 
 ### ODBC driver 
-[Instructions](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries) for downloading the Microsoft ODBC driver for different operating systems. 
-
-```bash
-# Mac OS
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew tap microsoft/msodbcsql https://github.com/Microsoft/homebrew-msodbcsql-preview
-brew update
-brew install msodbcsql
-sudo pip install pyodbc
-```   
+[Instructions](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries) for downloading the Microsoft ODBC driver.
 
 ### Management
 
