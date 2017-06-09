@@ -18,13 +18,16 @@ ms.assetid:
 
 The following table links to Python source you can use to create and configure Azure virtual machines.
 
-| **Working with virtual machines** || 
+| || 
 |---|---|
 | [Manage virtual machines][1] | Create, modify, start, stop, and delete virtual machines. |
-| [Manage a load balancer ][2] | Manage a load balancer using the Azure Resource Manager APIs for python. |
-| **Managed disks with virtual machines** || 
-| [Managed disks][3] | Create, resizing, updating a managed disk.|
+| [Manage a load balancer][2] | Manage a load balancer using the Azure Resource Manager APIs for python. |
+| [Create and configure managed disks][3] | Create, resizing, updating a managed disk.|
+| [List images][4] | Print all of the available images to use for creating virtual machines.| 
+| [Monitor virtual machines][5] |Get metrics of a virtual machine's usage | 
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
 [2]: https://github.com/Azure-Samples/network-python-manage-loadbalancer
 [3]: python-sdk-azure-samples-managed-disks.md
+[4]: python-sdk-azure-samples-list-images.md
+[5]: python-sdk-azure-samples-monitor-vms.md

@@ -22,26 +22,7 @@ This tutorial demonstrates the usage of several Azure libraries for Python.  You
 
 - An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/)
 - [Azure CLI 2.0](https://docs.microsoft.com/cli/azure/install-az-cli2)
-- [Python](https://www.python.org)
-
-## Which Python and which version to use
-There are several Python interpreters available - examples include:
-
-* CPython - the standard and most commonly used Python interpreter
-* PyPy - fast, compliant alternative implementation to CPython
-* IronPython - Python interpreter that runs on .Net/CLR
-* Jython - Python interpreter that runs on the Java Virtual Machine
-
-**CPython** v2.7 or v3.3+ and PyPy 5.4.0 are tested and supported for the Azure SDK for Python.
-
-## Where to get Python?
-There are several ways to get CPython:
-
-* Directly from [python.org](https://www.python.org)
-* From a reputable distributor such as [Continuum](https://www.continuum.io), [Enthought](https://www.enthought.com) or [ActiveState](https://www.activestate.com)
-* Build from source
-
-Unless you have a specific need, we recommend the first two options.
+- [Python](https://www.python.org/downloads/)
 
 ## Set up authentication
 
