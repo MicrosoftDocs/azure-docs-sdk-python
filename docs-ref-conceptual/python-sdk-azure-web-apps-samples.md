@@ -21,7 +21,7 @@ ms.assetid:
 | [Manage Azure websites with python][1] | Create, delete and list details of a web app. |
 | [Create a Logic App workflow][2] | Create a Logic App workflow. |
 
-[1]: https://github.com/Azure-Samples/app-service-web-python-manage
+[1]: https://azure.microsoft.com/resources/samples/app-service-web-python-manage
 [2]: python-sdk-azure-samples-logic-app-workflow.md
 
 

@@ -22,5 +22,5 @@ ms.assetid:
 | [Create and manage SQL databases][1] | Create SQL databases, list database usages, and configure firewalls.  | 
 | [Use Python to connect and query data][2] | Use Transact-SQL statements to query, insert, update, and delete data in the database. | 
 
-[1]: https://github.com/Azure-Samples/sql-database-python-manage
+[1]: https://azure.microsoft.com/resources/samples/sql-database-python-manage/
 [2]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
