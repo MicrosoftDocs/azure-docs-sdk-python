@@ -199,12 +199,12 @@ Before you begin: Fork https://github.com/Azure-Samples/python-docs-hello-world
 az login
 ```
 ### Create a resource group
-```cli-interactive
+```azurecli-interactive
 az group create -l eastus -n sampleWebResourceGroup
 ```
 
 ### Create a free app service plan
-```cli-interactive
+```azurecli-interactive
 az appservice plan create -g sampleWebResourceGroup -n sampleFreePlan  --sku Free
 ```
 
@@ -259,12 +259,12 @@ print("added source control to: " + source_control.name + "azurewebsites.net")
 ```
 
 Open a browser pointed to the application using the CLI:
-```azcli
+```azurecli-interactive
 az appservice web browse --resource-group sampleWebResourceGroup --name YOUR_APP_NAME
 ```
 
 Remove the web app and plan from your subscription once you've verified the deployment. 
-```azcli
+```azurecli-interactive
 az group delete --name sampleWebResourceGroup
 ```
 
@@ -277,22 +277,22 @@ This code creates a new SQL database with a firewall rule allowing remote access
 az login
 ```
 ### Create a resource group
-```cli-interactive
+```azurecli-interactive
 az group create -l eastus -n azure-sample-group
 ```
 
 ### Create a SQL server
-```cli-interactive
+```azurecli-interactive
 az sql server create --admin-password HusH_Sec4et --admin-user mysecretname -l eastus -n samplesqlserver123 -g azure-sample-group
 ```
 
 ### Add firewall rule
-```cli-interactive
+```azurecli-interactive
 az sql server firewall-rule create --end-ip-address 167.220.0.235 --name firewall_rule_name_123.123.123.123 --resource-group azure-sample-group --server samplesqlserver123 --start-ip-address 123.123.123.123
 ```
 
 ### Create a SQL database
-```cli-interactive
+```azurecli-interactive
 az sql db create --name sample-db --resource-group azure-sample-group --server samplesqlserver123
 ```
 
@@ -368,12 +368,12 @@ az group delete --name azure-sample-group
 az login
 ```
 ### Create a resource group
-```cli-interactive
+```azurecli-interactive
 az group create -l eastus -n sampleStorageResourceGroup
 ```
 
 ### Create a storage account
-```cli-interactive
+```azurecli-interactive
 az storage account create -n samplestorageaccountname -g sampleStorageResourceGroup -l eastus --sku Standard_RAGRS
 ```
 
@@ -413,7 +413,7 @@ print(blob_service.make_blob_url(CONTAINER_NAME, 'helloworld.html'))
 To verify content successfully uploaded, navigate to the url printed. 
 
 Clean up the storage account using the CLI:
-```azcli
+```azurecli-interactive
 az group delete --name sampleStorageResourceGroup
 ```
 
