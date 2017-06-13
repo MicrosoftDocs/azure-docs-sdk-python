@@ -29,9 +29,14 @@ pip install azure-mgmt-rdbms
 Connect to a Azure Database for MySQL and select all records in the sales table. You can get the ODBC connection string for the database from the Azure Portal.
 
 ```python
-connection_string = 'DRIVER={MySQL ODBC 5.3 UNICODE Driver}; Server="samplemysqldb.mysql.database.azure.com"; Port=3306; Database={your_database}; Uid="sampleuser@samplemysqldb"; Pwd={your_password};'
+server = SERVER_NAME+'.mysql.database.azure.com'
+database = DATABASE_NAME
+username = USER_NAME
+password = PASSWORD
+driver = '{MySQL ODBC 5.3 UNICODE Driver}'
 
-cnxn = pyodbc.connect(connection_string)
+cnxn = pyodbc.connect(
+    'DRIVER=' + driver + ';PORT=3306;SERVER=' + server + ';PORT=3306;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
 cursor = cnxn.cursor()
 selectsql = "SELECT * FROM SALES"
 cursor.execute(selectsql)
