@@ -69,21 +69,21 @@ This code creates a new Linux VM with name `testLinuxVM` in a resource group `sa
 az login
 ```
 ### Create a resource group
-```cli-interactive
+```azurecli-interactive
 az group create -l eastus --n sampleVmResourceGroup
 ```
 
 ### Create a virtual network and subnet
-```cli-interactive
+```azurecli-interactive
 az network vnet create -g sampleVmResourceGroup -n azure-sample-vnet --address-prefix 10.0.0.0/16 --subnet-name azure-sample-subnet --subnet-prefix 10.0.0.0/24
 ```
 
 ### Create a public IP address
-```cli-interactive
+```azurecli-interactive
 az network public-ip create -g sampleVmResourceGroup -n azure-sample-ip --allocation-method Dynamic --version IPv6
 ```
 ### Create a network interface client
-```cli-interactive
+```azurecli-interactive
 az network nic create -g sampleVmResourceGroup --vnet-name azure-sample-vnet --subnet azure-sample-subnet -n azure-sample-nic --public-ip-address azure-sample-ip
 ```
 
