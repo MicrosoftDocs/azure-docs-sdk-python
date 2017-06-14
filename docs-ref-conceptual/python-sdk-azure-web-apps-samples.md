@@ -16,14 +16,12 @@ ms.assetid:
 
 # Azure management libraries for Python samples for web apps
 
-| **Manage an app** ||
+|||
 |---|---|
 | [Manage Azure websites with python][1] | Create, delete and list details of a web app. |
-| [Create a web app and deploy from local Git][2] | Deploy web apps from local Git. |
-| [Create a logic app workflow][3] | Create a logic app workflow. |
+| [Create a Logic App workflow][2] | Create a Logic App workflow. |
 
-[1]: https://github.com/Azure-Samples/app-service-web-python-manage
-[2]: https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python
-[3]: python-sdk-azure-samples-logic-app-workflow.md
+[1]: https://azure.microsoft.com/resources/samples/app-service-web-python-manage
+[2]: python-sdk-azure-samples-logic-app-workflow.md
 
 

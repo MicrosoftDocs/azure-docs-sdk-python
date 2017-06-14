@@ -17,13 +17,10 @@ ms.assetid:
 
 # Azure management libraries for Python samples for SQL Database
 
-| **Manage databases** ||
+| ||
 |---|---|
 | [Create and manage SQL databases][1] | Create SQL databases, list database usages, and configure firewalls.  | 
-| [List images][2] | Print all of the available images to use for creating virtual machines.| 
-| **Connect to a database** ||
-| [Use Python to connect and query data][3] | Use Transact-SQL statements to query, insert, update, and delete data in the database. | 
+| [Use Python to connect and query data][2] | Use Transact-SQL statements to query, insert, update, and delete data in the database. | 
 
-[1]: https://github.com/Azure-Samples/sql-database-python-manage
-[2]: python-sdk-azure-samples-list-images.md
-[3]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
+[1]: https://azure.microsoft.com/resources/samples/sql-database-python-manage/
+[2]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python

@@ -54,50 +54,50 @@ If you want to install `azure` from source:
     python setup.py install
 
 ## Stable packages
-| Package name | Version |
-|--------------|---------|
-| azure-batch  |   3.0.0 |
-|azure-mgmt-batch|	4.0.0|
-|azure-mgmt-cognitiveservices|	1.0.0|
-|azure-mgmt-devtestlabs|	2.0.0|
-|azure-mgmt-dns	|1.0.1|
-|azure-mgmt-logic|	2.1.0|
-|azure-mgmt-redis|	4.1.0|
-|azure-mgmt-scheduler|	1.1.2|
-|azure-mgmt-servermanager|	1.0.0|
-|azure-servicebus|	0.21.1|
-|azure-servicefabric|	5.6.130|
-|azure-servicemanagement-legacy|	0.20.6|
-|azure-storage|	0.33.0|
+| Package name |
+|--------------|
+|[azure-batch](https://pypi.org/project/azure-batch/)  |   
+|[azure-mgmt-batch](https://pypi.org/project/azure-mgmt-batch/)|
+|[azure-mgmt-cognitiveservices](https://pypi.org/project/azure-mgmt-cognitiveservices/)|	
+|[azure-mgmt-devtestlabs](https://pypi.org/project/azure-mgmt-devtestlabs/)|	
+|[azure-mgmt-dns](https://pypi.org/project/azure-mgmt-dns/)	|
+|[azure-mgmt-logic](https://pypi.org/project/azure-mgmt-logic/)|
+|[azure-mgmt-redis](https://pypi.org/project/azure-mgmt-redis/)|
+|[azure-mgmt-scheduler](https://pypi.org/project/azure-mgmt-scheduler/)|	
+|[azure-mgmt-servermanager](https://pypi.org/project/azure-mgmt-servermanager/)|	
+|[azure-servicebus](https://pypi.org/project/azure-mgmt-servicebus/)|	
+|[azure-servicefabric](https://pypi.org/project/azure-servicefabric/)|	
+|[azure-servicemanagement-legacy](https://pypi.org/project/azure-servicemanagement-legacy/)|	
+|[azure-storage](https://pypi.org/project/azure-storage/)|	
 
 ## Preview packages
-| Package name | Version |
-|--------------|---------|
-|azure-keyvault|	0.3.4|
-|azure-monitor|	0.3.0|
-|azure-mgmt-resource|	1.1.0|
-|azure-mgmt-compute|	1.0.0|
-|azure-mgmt-network|	1.0.0|
-|azure-mgmt-storage|	1.0.0|
-|azure-mgmt-keyvault|	0.31.0|
-|azure-graphrbac|	0.30.0|
-|azure-mgmt-authorization|	0.30.0|
-|azure-mgmt-billing|	0.1.0|
-|azure-mgmt-cdn|	0.30.3|
-|azure-mgmt-containerregistry|	0.2.1|
-|azure-mgmt-commerce|	0.30.0rc6|
-|azure-mgmt-consumption|	0.1.0|
-|azure-mgmt-datalake-analytics|	0.1.4|
-|azure-mgmt-datalake-store|	0.1.3|
-|azure-mgmt-documentdb|	0.1.3|
-|azure-mgmt-eventhub|	0.2.0|
-|azure-mgmt-iothub|	0.2.2|
-|azure-mgmt-media|	0.1.1|
-|azure-mgmt-monitor|	0.2.1|
-|azure-mgmt-notificationhubs|	0.30.0|
-|azure-mgmt-powerbiembedded|	0.30.0rc6|
-|azure-mgmt-search|	0.1.0|
-|azure-mgmt-servicebus|	0.1.0|
-|azure-mgmt-sql|	0.5.1|
-|azure-mgmt-trafficmanager|	0.30.0|
-|azure-mgmt-web|	0.32.0|
+| Package name | 
+|--------------|
+|[azure-keyvault](https://pypi.org/project/azure-keyvault/)|	
+|[azure-monitor](https://pypi.org/project/azure-monitor)|	
+|[azure-mgmt-resource](https://pypi.org/project/azure-mgmt-resource)|	
+|[azure-mgmt-compute](https://pypi.org/project/azure-mgmt-compute)|	
+|[azure-mgmt-network](https://pypi.org/project/azure-mgmt-network)|	
+|[azure-mgmt-storage](https://pypi.org/project/azure-mgmt-storage)|	
+|[azure-mgmt-keyvault](https://pypi.org/project/azure-mgmt-keyvault)|	
+|[azure-graphrbac](https://pypi.org/project/azure-graphrbac)|	
+|[azure-mgmt-authorization](https://pypi.org/project/azure-mgmt-authorization)|	
+|[azure-mgmt-billing](https://pypi.org/project/azure-mgmt-billing)|	
+|[azure-mgmt-cdn](https://pypi.org/project/azure-mgmt-cdn)|	
+|[azure-mgmt-containerregistry](https://pypi.org/project/azure-mgmt-containerregistry)|	
+|[azure-mgmt-commerce](https://pypi.org/project/azure-mgmt-commerce)|	
+|[azure-mgmt-consumption](https://pypi.org/project/azure-mgmt-consumption)|	
+|[azure-mgmt-datalake-analytics](https://pypi.org/project/azure-mgmt-datalake-analytics)|	
+|[azure-mgmt-datalake-store](https://pypi.org/project/azure-mgmt-datalake-store)|	
+|[azure-mgmt-documentdb](https://pypi.org/project/azure-mgmt-documentdb)|	
+|[azure-mgmt-eventhub](https://pypi.org/project/azure-mgmt-eventhub)|	
+|[azure-mgmt-iothub](https://pypi.org/project/azure-mgmt-iothub)|
+|[azure-mgmt-media](https://pypi.org/project/azure-mgmt-media)|	
+|[azure-mgmt-monitor](https://pypi.org/project/azure-mgmt-monitor)|	
+|[azure-mgmt-notificationhubs](https://pypi.org/project/azure-mgmt-notificationhubs)|	
+|[azure-mgmt-powerbiembedded](https://pypi.org/project/azure-mgmt-powerbiembedded)|	
+|[azure-mgmt-search](https://pypi.org/project/azure-mgmt-search)|
+|[azure-mgmt-servicebus](https://pypi.org/project/azure-mgmt-servicebus)|	
+|[azure-mgmt-sql](https://pypi.org/project/azure-mgmt-sql)|	
+|[azure-mgmt-trafficmanager](https://pypi.org/project/azure-mgmt-trafficmanager)|	
+|[azure-mgmt-web](https://pypi.org/project/azure-mgmt-web)|
