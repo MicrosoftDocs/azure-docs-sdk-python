@@ -209,7 +209,6 @@ az appservice plan create -g sampleWebResourceGroup -n sampleFreePlan  --sku Fre
 ```
 
 ```python
-from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.web import WebSiteManagementClient
 from azure.mgmt.web.models import Site, SiteSourceControl, SiteConfig
 from azure.common.client_factory import get_client_from_cli_profile
@@ -220,7 +219,6 @@ WEB_APP_NAME = 'sampleflaskapp123'
 REPO_URL = 'GitHub_Repository_URL'
 
 #log in
-resource_client = get_client_from_cli_profile(ResourceManagementClient)
 web_client = get_client_from_cli_profile(WebSiteManagementClient)
 
 # get service plan id
@@ -298,7 +296,6 @@ az sql db create --name sample-db --resource-group azure-sample-group --server s
 
 
 ```python
-from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.sql import SqlManagementClient
 from azure.common.client_factory import get_client_from_cli_profile
 import pyodbc
@@ -311,7 +308,6 @@ USER_NAME ='mysecretname'
 PASSWORD='HusH_Sec4et'
 
 # authenticate
-resource_client = get_client_from_cli_profile(ResourceManagementClient)
 sql_client = get_client_from_cli_profile(SqlManagementClient)
 
 
