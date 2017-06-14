@@ -1,28 +1,67 @@
 ---
-title: Azure libraries for Python
-description: Overview of the Azure management and service libraries for Python
+title: Azure for Python developers - Tutorials, API Reference | Microsoft Docs
+description: Tools, SDKs, tutorials, and samples to help you create and deploy Python apps to Azure.
 keywords: Azure, Python, SDK, API
-author: lisawong19
+author: lisawong19  
 ms.author: liwong
 manager: douge
-ms.date: 06/01/2017
+layout: LandingPage
+ms.date: 06/14/2017
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: multiple
-ms.assetid: 
 ---
 
-# Azure libraries for Python
+# Azure for Python developers
 
-The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. The libraries are available in [PyPI](python-sdk-azure-install.md) for use in your Python projects.
+Get started building great Python apps on Azure.
 
-## Manage Azure resources
+<ul class="panelContent">
+    <li>
+        <div class="cardSize">
+            <div class="cardPadding">
+                <div class="card">
+                    <div class="cardText">
+                        <h2>Tools</h2>
+                        <a href="python-azure-tools.md">Download Azure tools and plugins.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li><li>
+        <div class="cardSize">
+            <div class="cardPadding">
+                <div class="card">
+                    <div class="cardImageOuter">
+                    </div>
+                    <div class="cardText">
+                        <h2>Libraries</h2>
+                        <a href="python-sdk-azure-install.md">Use services and manage Azure resources.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li><li>
+        <div class="cardSize">
+            <div class="cardPadding">
+                <div class="card">
+                    <div class="cardImageOuter">
+                    </div>
+                    <div class="cardText">
+                        <h2>Jenkins CI/CD</h2>
+                        <a href="">Use Jenkins to deploy to Azure.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
 
-Create and manage Azure resources from Python applications using the Azure libraries for Python.
+## Management APIs
 
-For example, to create a SQL Server instance, you can use the following code:
+Import the [Azure management libraries for Python](python-sdk-azure-get-started.md) to manage your Azure resources with an easy to use fluent API. 
 
 ```python
 sql_client = SqlManagementClient(
@@ -42,41 +81,21 @@ server = sql_client.servers.create_or_update(
 )
 ```
 
-Review the [install instructions](python-sdk-azure-install.md) for a full list of the libraries and how to import them into your projects and then read the the [get started article](python-sdk-azure-get-started.md) to set up your authentication and run sample code against your own Azure subscription.
+[Get started with the Azure management libraries for Python](python-sdk-azure-get-started.md)
 
-## Connect to Azure services
+## Five-minute quickstarts
+Create and deploy an app using your favorite tools in five minutes.
+<ul>
+   <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python">Flask</a></li>
+</ul>
 
-In addition to using Python libraries to create and manage resources within Azure, you can also use Python libraries to connect and use those resources in your apps. For example, you might update a table SQL Database or store files in Azure Storage. Select the library you need for a particular service from the complete list of libraries and visit the Python developer center for tutorials and sample code for help using them in your apps.
+## Tutorials and samples
 
-For example, to upload a simple HTML page on a blob and get the Url:
+Complete walkthroughs for app creation and deployment.
 
-```python
-storage_client = CloudStorageAccount(storage_account_name, storage_key)
-blob_service = storage_client.create_block_blob_service()
-
-blob_service.create_container(
-    'mycontainername',
-    public_access=PublicAccess.Blob
-)
-
-blob_service.create_blob_from_bytes(
-    'mycontainername',
-    'myblobname',
-    b'<center><h1>Hello World!</h1></center>',
-    content_settings=ContentSettings('text/html')
-)
-
-print(blob_service.make_blob_url('mycontainername', 'myblobname'))
-```
-
-## Sample code and reference
-The following smaples cover common automation tasks with the Azure management libraries for Python and have code ready to use in your own apps:
-- [Virtual Machines]()
-- [Web apps](python-sdk-azure-web-apps-samples.md)
-- [SQL Database](python-sdk-azure-sql-database-samples.md)
-
-A [reference]() is available for all packages in both the service an management libraries. New features, breaking changes, and migration instructions from previous versions are available in the [release notes](python-sdk-azure-release-notes.md). 
-
-## Get help and give feedback
-
-Post questions to the community on [Stack Overflow](http://stackoverflow.com/questions/tagged/azure-sdk-python) and open issues against the SDK on the [project GitHub](https://github.com/Azure/azure-sdk-for-python).
+<ul>
+    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app">PostgreSQL</a></li>
+    <li><a href="https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python">SQL Database</a></li>
+    <li><a href="https://docs.microsoft.com/azure/cosmos-db/documentdb-python-application">CosmosDB</a></li>
+    <li><a href="https://docs.microsoft.com/azure/storage/storage-python-how-to-use-blob-storage">Azure Storage</a></li>
+</ul>
