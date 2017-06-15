@@ -27,7 +27,7 @@ The following table links to Python source you can use to create and configure A
 | [Monitor virtual machines][5] |Get metrics of a virtual machine's usage | 
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
-[2]: hthttps://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
+[2]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
 [3]: python-sdk-azure-samples-managed-disks.md
 [4]: python-sdk-azure-samples-list-images.md
 [5]: python-sdk-azure-samples-monitor-vms.md
