@@ -37,5 +37,6 @@ exclude_patterns = [
   'ref/azure.keyvault*.rst',
   'ref/azure.monitor*.rst',
   'ref/azure.servicebus*.rst',
-  'ref/azure.servicefabric*.rst'
+  'ref/azure.servicefabric*.rst',
+  'ref/azure.servicemanagement*.rst'
 ]
