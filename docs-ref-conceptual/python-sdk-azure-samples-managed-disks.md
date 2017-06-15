@@ -1,3 +1,17 @@
+---
+title: Managed Disks
+description: Create, resizing, and updating a managed disk.
+author: lisawong19
+manager: douge
+ms.assetid: 
+ms.devlang: python
+ms.topic: article
+ms.service: Azure
+ms.technology: Azure
+ms.date: 6/15/2017
+ms.author: liwong
+---
+
 # Managed Disks
 
 Azure Managed Disks and 1000 VMs in a Scale Set are now [generally
@@ -30,7 +44,7 @@ async_creation = compute_client.disks.create_or_update(
     'my_resource_group',
     'my_disk_name',
     {
-        'location': 'westus',
+        'location': 'eastus',
         'disk_size_gb': 20,
         'creation_data': {
             'create_option': DiskCreateOption.empty
@@ -48,7 +62,7 @@ async_creation = compute_client.disks.create_or_update(
     'my_resource_group',
     'my_disk_name',
     {
-        'location': 'westus',
+        'location': 'eastus',
         'creation_data': {
             'create_option': DiskCreateOption.import_enum,
             'source_uri': 'https://bg09.blob.core.windows.net/vm-images/non-existent.vhd'
@@ -68,7 +82,7 @@ async_creation = compute_client.disks.create_or_update(
     'my_resource_group',
     'my_disk_name',
     {
-        'location': 'westus',
+        'location': 'eastus',
         'creation_data': {
             'create_option': DiskCreateOption.copy,
             'source_resource_id': managed_disk.id

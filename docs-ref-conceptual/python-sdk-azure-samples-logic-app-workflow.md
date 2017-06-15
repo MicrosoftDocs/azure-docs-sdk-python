@@ -1,3 +1,16 @@
+---
+title: Create a Logic App Workflow
+description: Create a Logic App workflow
+author: lisawong19
+manager: douge
+ms.assetid: 
+ms.devlang: python
+ms.topic: article
+ms.service: Azure
+ms.technology: Azure
+ms.date: 6/15/2017
+ms.author: liwong
+---
 
 # Create a Logic App Workflow
 
@@ -12,7 +25,7 @@ logic_client.workflows.create_or_update(
     group_name,
     workflow_name,
     Workflow(
-        location = 'West US',
+        location = 'East US',
         definition={
             "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
             "contentVersion": "1.0.0.0",

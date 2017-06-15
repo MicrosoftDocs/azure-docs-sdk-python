@@ -1,9 +1,23 @@
+---
+title: List images
+description: Print all of the available images to use for creating virtual machines.
+author: lisawong19
+manager: douge
+ms.assetid: 
+ms.devlang: python
+ms.topic: article
+ms.service: Azure
+ms.technology: Azure
+ms.date: 6/15/2017
+ms.author: liwong
+---
+
 # List images
 
 Use the following code to print all of the available images to use for creating virtual machines, including all skus and versions.
 
 ```python
-region = 'eastus2'
+region = 'eastus'
 
 result_list_pub = compute_client.virtual_machine_images.list_publishers(
     region,

@@ -4,7 +4,7 @@ description: IDE integrations and command-line interfaces for Python developers 
 author: lisawong19
 manager: douge
 ms.assetid: 
-ms.devlang: java
+ms.devlang: python
 ms.topic: article
 ms.service: Azure
 ms.technology: Azure
