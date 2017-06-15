@@ -22,7 +22,7 @@ Several options are available to authenticate your application with Azure when u
 
 ### Authenticate with token credentials
 
-The first method is to build the token credential object in code.  You should store the credentials securely in a configuration file, the registry, or Azure KeyVault. This recommends to use [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python)
+The first method is to build the token credential object in code.  Store the credentials securely in a configuration file, the registry, or Azure KeyVault. It is recommended to use [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python)
 and the SDK ADAL wrapper. Please refer to the ADAL website for all the available scenarios
 list and samples. For instance for service principal authentication:
 
@@ -135,7 +135,7 @@ The SDK is able to create a client using your CLI active subscription.
 > [file-based authentication](#file-based-authentication) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
-To define active credentials, use [az login](https://docs.microsoft.com/cli/azure/authenticate-azure-cli)
+To define active credentials, use [az login](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
 Default subscription ID is either the only one you have, or you can define it using 
 [az account](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli)
 
@@ -162,7 +162,7 @@ This sample shows user/password scenario. This does not support 2FA.
     )
 ```
 
-This sample shows Service Principal authentication
+This sample shows Service Principal authentication.
 
 ```python
     from azure.common.credentials import ServicePrincipalCredentials
