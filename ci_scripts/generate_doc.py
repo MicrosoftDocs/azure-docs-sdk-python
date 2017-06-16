@@ -3,7 +3,7 @@ import logging
 import json
 from pathlib import Path
 
-CONFIG_FILE = '../swagger_to_sdk_config.json'
+CONFIG_FILE = 'swagger_to_sdk_config.json'
 GENERATED_PACKAGES_LIST_FILE = 'autorest_generated_packages.rst'
 
 _LOGGER = logging.getLogger(__name__)
@@ -99,13 +99,7 @@ def generate_doc(config_path, project_pattern=None):
             continue
 
         _LOGGER.info("Working on %s", project)
-        namespace = local_conf['autorest_options']['Namespace']
-
-        # Hack for KV, we don't release the generated code, but a wrapper
-        # We do manually the doc
-        if "azure.keyvault.generated" == namespace:
-            package_list_path.append('./ref/azure.keyvault.rst')
-            continue
+        namespace = local_conf['autorest_options']['namespace']
 
         rst_path = './ref/{}.rst'.format(namespace) 
         with Path(rst_path).open('w') as rst_file:
