@@ -45,7 +45,7 @@ the --pre flag:
 pip install --pre azure
 ```
 
-## Install from Github
+## Install from GitHub
 
 If you want to install `azure` from source:
 
