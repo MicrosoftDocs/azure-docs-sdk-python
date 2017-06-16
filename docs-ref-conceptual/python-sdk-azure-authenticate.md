@@ -46,29 +46,6 @@ list and samples. For instance for service principal authentication:
     )
 ```
 
-or 
-
-```python
-    import adal
-    from msrestazure.azure_active_directory import AdalAuthentication
-
-    login_endpoint = 'https://login.microsoftonline.com/'
-    tenant = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
-    resource = 'https://management.core.windows.net/' #AAD graph resource
-
-    client = 'a2ab11af-01aa-4759-8345-7803287dbd39'
-    key = 'password'
-
-    context = adal.AuthenticationContext(login_endpoint+tenant)
-    credentials = AdalAuthentication(
-        lambda: context.acquire_token_with_client_credentials(
-            resource,
-            client,
-            key
-        )
-    )
-```
-
 All ADAL valid calls can be used with the `AdalAuthentication` class.
 
 The `client`, `tenant` and `key` are the same service principal values used with [file-based authentication](#file-based-authentication).
