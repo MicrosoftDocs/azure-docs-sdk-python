@@ -1,3 +1,4 @@
+import os
 import argparse
 import logging
 import json
@@ -145,6 +146,9 @@ def generate_doc(config_path, project_pattern=None):
         generate_file_list_fd.write(RST_AUTODOC_TOCTREE.format(generated_packages=lines_to_write))
 
 def main():
+    cwd = os.getcwd()  # Get the current working directory (cwd)
+    print("cwd '%s'" % (cwd))
+
     parser = argparse.ArgumentParser(
         description='Generate documentation file.'
     )
@@ -169,6 +173,7 @@ def main():
         main_logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
 
     generate_doc(args.config_path, args.project)
+
 
 if __name__ == "__main__":
     main()
