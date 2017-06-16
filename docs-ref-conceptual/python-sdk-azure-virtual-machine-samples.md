@@ -22,7 +22,7 @@ The following table links to Python source you can use to create and configure A
 |---|---|
 | [Manage virtual machines][1] | Create, modify, start, stop, and delete virtual machines. |
 | [Manage a load balancer][2] | Manage a load balancer using the Azure Resource Manager APIs for python. |
-| [Create and configure managed disks][3] | Create, resizing, updating a managed disk.|
+| [Create and configure managed disks][3] | Create, resizing, and updating a managed disk.|
 | [List images][4] | Print all of the available images to use for creating virtual machines.| 
 | [Monitor virtual machines][5] |Get metrics of a virtual machine's usage | 
 

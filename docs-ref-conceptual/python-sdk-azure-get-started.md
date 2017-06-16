@@ -420,4 +420,4 @@ To learn more about how to use the Azure management libraries for Python to mana
 
 ## Reference
 
-A [reference](http://docs.microsoft.com/python/api) is available for all packages.
+A [reference](/python/api/overview/azure/?view=azure-python) is available for all packages.
