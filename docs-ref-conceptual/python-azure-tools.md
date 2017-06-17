@@ -31,6 +31,6 @@ Visual Studio on Windows provides open-source support for the Python language th
 [Install Python support in Visual Studio](https://docs.microsoft.com/visualstudio/python/installation)
 
 ## Azure Notebooks (Preview)
-Azure Notebooks is a hosted service for Jupyter Notebooks that requires no installation. It enables you to get started quickly on prototyping, data science, academic research, or learning to program Python or R. You can combine code, markdown, images, videos, graphs, all in one format.
+Azure Notebooks is a hosted service for Jupyter Notebooks that requires no installation. It enables you to get started quickly on prototyping, data science, academic research, or learning to program Python, R and F#. You can combine code, markdown, images, videos, graphs, all in one format.
 
 [Get started with Azure Notebooks](https://notebooks.azure.com/)
