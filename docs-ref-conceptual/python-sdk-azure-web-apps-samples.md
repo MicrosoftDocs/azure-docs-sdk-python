@@ -16,6 +16,8 @@ ms.assetid:
 
 # Azure management libraries for Python samples for web apps
 
+The following table links to Python source you can use to create and configure web apps. 
+
 |||
 |---|---|
 | [Manage Azure websites with python][1] | Create, delete and list details of a web app. |
