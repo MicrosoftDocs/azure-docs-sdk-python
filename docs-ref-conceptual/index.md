@@ -61,7 +61,7 @@ Get started building great Python apps on Azure.
 
 ## Management APIs
 
-Import the [Azure management libraries for Python](python-sdk-azure-get-started.md) to manage your Azure resources with an easy to use fluent API. 
+Import the [Azure management libraries for Python](python-sdk-azure-install.md) to manage your Azure resources with an easy to use fluent API. 
 
 ```python
 sql_client = SqlManagementClient(
