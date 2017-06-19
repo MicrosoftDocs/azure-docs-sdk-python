@@ -92,10 +92,9 @@ server = sql_client.servers.create_or_update(
 
 [Get started with the Azure management libraries for Python](python-sdk-azure-get-started.md)
 
-## Tutorials and samples
+## Tutorials
 
-Complete walkthroughs for app creation and deployment.
-
+Learn how to use Azure services in your Python apps.
 <ul>
-    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app">Flask + PostgreSQL</a></li>
+    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app">Create a Flask app with PostgreSQL</a></li>
 </ul>
