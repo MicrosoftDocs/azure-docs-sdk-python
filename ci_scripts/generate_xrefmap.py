@@ -3,7 +3,7 @@ import os
 import urllib.request
 import yaml
 
-from sphinx.util.inventory import InventoryFile
+from sphinx.ext.intersphinx import read_inventory
 
 EXTERNAL_LINKS = ['https://docs.python.org/3.5/',
                   'http://msrestazure.readthedocs.io/en/latest/',
@@ -13,7 +13,7 @@ xref_map = []
 for external_Link in EXTERNAL_LINKS:
     obj_link = os.path.join(external_Link, 'objects.inv')
     stream = urllib.request.urlopen(obj_link)
-    inventory = InventoryFile.load(stream, external_Link, os.path.join)
+    inventory = read_inventory(stream, external_Link, os.path.join)
     for role_key, role_value in inventory.items():
         if role_key.startswith('py:'):
             for ref_name, ref_value in role_value.items():
