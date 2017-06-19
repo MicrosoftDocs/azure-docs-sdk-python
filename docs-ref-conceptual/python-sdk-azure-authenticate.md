@@ -61,48 +61,6 @@ subscription_id = '33333333-3333-3333-3333-333333333333'
 client = ComputeManagementClient(credentials, subscription_id)
 ```
 
-### File-based authentication
-
-File-based authentication allows you to put the service principal credentials in a plain text file and secure it within the file system.
-
-Create a text file named `azureauth.properties` using the service principal credentials:
-
-```plaintext
-# sample management library properties file
-subscription=15dbcfa8-4b93-4c9a-881c-6189d39f04d4
-client=a2ab11af-01aa-4759-8345-7803287dbd39
-key=password
-tenant=43413cc1-5886-4711-9804-8cfea3d1c3ee
-managementURI=https://management.core.windows.net/
-baseURL=https://management.azure.com/
-authURL=https://login.windows.net/
-graphURL=https://graph.windows.net/
-```
-
-Save this file in a secure location on your system where your code can read it. Set an environment variable named `AZURE_AUTH_LOCATION` with the full path to the file, for example:
-
-```bash
-export "AZURE_AUTH_LOCATION"="~/.azure/azureauth.properties"
-```
-
-Read the contents of the file and create a client object to start working with the API:
-
-```python
-from azure.common.client_factory import get_client_from_auth_file
-from azure.mgmt.compute import ComputeManagementClient
-
-client = get_client_from_auth_file(ComputeManagementClient)
-```
-
-You can also specifiy the path to the file if you do not want to use an environment variable.
-
-```python
-from azure.common.client_factory import get_client_from_auth_file
-from azure.mgmt.compute import ComputeManagementClient
-
-client = get_client_from_auth_file(ComputeManagementClient, '/opt/prod/azureauth.properties')
-```
-
 ### CLI-based authentication
 
 The SDK is able to create a client using your CLI active subscription.

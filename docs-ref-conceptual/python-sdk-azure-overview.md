@@ -75,7 +75,7 @@ The following smaples cover common automation tasks with the Azure management li
 - [Web apps](python-sdk-azure-web-apps-samples.md)
 - [SQL Database](python-sdk-azure-sql-database-samples.md)
 
-A [reference](/python/api/overview/azure/?view=azure-python) is available for all packages in both the service an management libraries. New features, breaking changes, and migration instructions from previous versions are available in the [release notes](python-sdk-azure-release-notes.md). 
+A [reference](/python/api/overview/azure) is available for all packages in both the service an management libraries. New features, breaking changes, and migration instructions from previous versions are available in the [release notes](python-sdk-azure-release-notes.md). 
 
 ## Get help and give feedback
 
