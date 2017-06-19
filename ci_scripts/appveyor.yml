@@ -63,10 +63,18 @@ on_success:
     - "%SPHINXBUILD% . _build"
     - "%PYTHON%/python.exe postprocess_toc_yml.py"
 
+    # Generate xrefmap.yml
+    - cd c:/projects/azure-sdk-for-python/doc
+    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/generate_xrefmap.py -Destination c:/projects/azure-sdk-for-python/doc/generate_xrefmap.py
+    - "%PYTHON%/python.exe generate_xrefmap.py"
+
     # Fetch the latest doc then copy generated doc to c:/projects/azure-docs-sdk-python/docs-ref-autogen
     - cd c:/projects/azure-docs-sdk-python
     - git pull
 
+    # Copy xrefmap.yml
+    - ps: Copy-Item c:/projects/azure-sdk-for-python/doc/xrefmap.yml -Destination c:/projects/azure-docs-sdk-python/xrefmap.yml
+    
     # remove old yml fils
     - ps: Remove-Item c:/projects/azure-docs-sdk-python/docs-ref-autogen/* -recurse
 
