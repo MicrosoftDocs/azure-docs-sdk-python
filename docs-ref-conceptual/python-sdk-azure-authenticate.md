@@ -22,7 +22,7 @@ Several options are available to authenticate your application with Azure when u
 
 ### Authenticate with token credentials
 
-The first method is to build the token credential object in code.  Store the credentials securely in a configuration file, the registry, or Azure KeyVault. It is recommended to use [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python)
+Store the credentials securely in a configuration file, the registry, or Azure KeyVault. It is recommended to use [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python)
 and the SDK ADAL wrapper. Please refer to the ADAL website for all the available scenarios
 list and samples. For instance for service principal authentication:
 
