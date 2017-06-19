@@ -18,33 +18,47 @@ ms.service: multiple
 
 Get started building great Python apps on Azure.
 
-<ul class="panelContent">
+<ul class="cardsY panelContent">
     <li>
-        <div class="cardSize">
-            <div class="cardPadding">
-                <div class="card">
-                    <div class="cardText">
-                        <h2>Tools</h2>
-                        <a href="python-azure-tools.md">Download Azure tools and plugins.</a>
+        <a href="python-azure-tools.md">
+            <div class="cardSize">
+                <div class="cardPadding">
+                    <div class="card">
+                        <div class="cardImageOuter">
+                            <div class="cardImage">
+                                <img src="/media/common/i_tools.svg" alt="" />
+                            </div>
+                        </div>
+                        <div class="cardText">
+                            <h2>Tools</h2>
+                            Download Azure tools and plugins.
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </li><li>
-        <div class="cardSize">
-            <div class="cardPadding">
-                <div class="card">
-                    <div class="cardImageOuter">
-                    </div>
-                    <div class="cardText">
-                        <h2>Libraries</h2>
-                        <a href="python-sdk-azure-install.md">Use services and manage Azure resources.</a>
+        </a>
+    </li>
+    <li>
+        <a href="python-sdk-azure-install.md">
+            <div class="cardSize">
+                <div class="cardPadding">
+                    <div class="card">
+                        <div class="cardImageOuter">
+                            <div class="cardImage">
+                                <img src="/media/common/i_reference.svg" alt="" />
+                            </div>
+                        </div>
+                        <div class="cardText">
+                            <h2>Libraries</h2>
+                            Use services and manage Azure resources.
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </li>
 </ul>
+
 
 ## Five-minute quickstarts
 Create and deploy an app using your favorite tools in five minutes.
