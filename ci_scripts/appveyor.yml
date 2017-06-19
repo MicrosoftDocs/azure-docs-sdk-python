@@ -35,7 +35,7 @@ clone_script:
     - git config core.autocrlf
     - cd c:/projects
     - git clone -q --branch=master https://github.com/Azure/azure-sdk-for-python.git
-    - git clone -q --branch=opendev https://github.com/MicrosoftDocs/azure-docs-sdk-python.git
+    - git clone -q --branch=yannan/dev https://github.com/MicrosoftDocs/azure-docs-sdk-python.git
 
 install:
     - cd c:/projects/azure-sdk-for-python
@@ -63,10 +63,18 @@ on_success:
     - "%SPHINXBUILD% . _build"
     - "%PYTHON%/python.exe postprocess_toc_yml.py"
 
+    # Generate xrefmap.yml
+    - cd c:/projects/azure-sdk-for-python/doc
+    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/generate_xrefmap.py -Destination c:/projects/azure-sdk-for-python/doc/generate_xrefmap.py
+    - "%PYTHON%/python.exe generate_xrefmap.py"
+
     # Fetch the latest doc then copy generated doc to c:/projects/azure-docs-sdk-python/docs-ref-autogen
     - cd c:/projects/azure-docs-sdk-python
     - git pull
 
+    # Copy xrefmap.yml
+    - ps: Copy-Item c:/projects/azure-sdk-for-python/doc/xrefmap.yml -Destination c:/projects/azure-docs-sdk-python/xrefmap.yml
+    
     # remove old yml fils
     - ps: Remove-Item c:/projects/azure-docs-sdk-python/docs-ref-autogen/* -recurse
 
@@ -82,4 +90,4 @@ on_success:
     - git commit -a -m "appveyor ci - update yml files" > null | echo commit change(s)
 
     # To opendev branch (TODO: after review, change to master)
-    - git push -u origin opendev:opendev
+    - git push -u origin yannan/dev:yannan/dev
