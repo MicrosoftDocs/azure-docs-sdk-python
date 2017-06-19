@@ -35,7 +35,7 @@ Manage Azure resources in resource groups.
 [6]: /python/api/azure.mgmt.resource.resources
 [7]: /python/api/azure.mgmt.resource.subscriptions
 
-# Example
+## Example
 The following is an example of how to create a resource group. 
 
 ```python

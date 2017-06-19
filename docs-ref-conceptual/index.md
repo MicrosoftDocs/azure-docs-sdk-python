@@ -43,19 +43,6 @@ Get started building great Python apps on Azure.
                 </div>
             </div>
         </div>
-    </li><li>
-        <div class="cardSize">
-            <div class="cardPadding">
-                <div class="card">
-                    <div class="cardImageOuter">
-                    </div>
-                    <div class="cardText">
-                        <h2>Jenkins CI/CD</h2>
-                        <a href="">Use Jenkins to deploy to Azure.</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </li>
 </ul>
 
