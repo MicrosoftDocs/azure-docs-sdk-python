@@ -59,6 +59,14 @@ Get started building great Python apps on Azure.
     </li>
 </ul>
 
+## Five-minute quickstarts
+Create and deploy an app using your favorite tools in five minutes.
+<ul>
+   <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python">Web Apps</a></li>
+    <li><a href="https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python">SQL Database</a></li>
+    <li><a href="https://docs.microsoft.com/azure/cosmos-db/documentdb-python-application">CosmosDB</a></li>
+</ul>
+
 ## Management APIs
 
 Import the [Azure management libraries for Python](python-sdk-azure-install.md) to manage your Azure resources with an easy to use fluent API. 
@@ -83,19 +91,10 @@ server = sql_client.servers.create_or_update(
 
 [Get started with the Azure management libraries for Python](python-sdk-azure-get-started.md)
 
-## Five-minute quickstarts
-Create and deploy an app using your favorite tools in five minutes.
-<ul>
-   <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python">Flask</a></li>
-</ul>
-
 ## Tutorials and samples
 
 Complete walkthroughs for app creation and deployment.
 
 <ul>
-    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app">PostgreSQL</a></li>
-    <li><a href="https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python">SQL Database</a></li>
-    <li><a href="https://docs.microsoft.com/azure/cosmos-db/documentdb-python-application">CosmosDB</a></li>
-    <li><a href="https://docs.microsoft.com/azure/storage/storage-python-how-to-use-blob-storage">Azure Storage</a></li>
+    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app">Flask + PostgreSQL</a></li>
 </ul>

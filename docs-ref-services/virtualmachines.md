@@ -21,7 +21,7 @@ Define, configure, and deploy new Windows and Linux virtual machines and virtual
 
 ## Install the libraries
 ```bash
-pip install --pre azure-mgmt-compute 
+pip install azure-mgmt-compute 
 ```   
 
 ## Example

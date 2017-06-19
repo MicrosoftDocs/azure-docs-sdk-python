@@ -29,7 +29,7 @@ The management libraries provide an interface to create, manage, and scale Azure
 ### Management
 
 ```bash
-pip install --pre azure-mgmt-sql
+pip install azure-mgmt-sql
 ```
 
 ## Example

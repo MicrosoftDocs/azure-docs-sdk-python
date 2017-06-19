@@ -23,7 +23,7 @@ ms.service: storage
 
 ## Install the libraries
 ```bash
-pip install --pre azure-mgmt-storage
+pip install azure-mgmt-storage
 ```
 
 ## Example

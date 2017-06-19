@@ -22,7 +22,7 @@ Deploy, manage, and scale web apps, APIs, and mobile apps running in [Azure App 
 ## Install the libraries
 
 ```bash
-pip install --pre azure-mgmt-web
+pip install azure-mgmt-web
 ```
 
 ## Example
