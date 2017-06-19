@@ -20,7 +20,7 @@ The recommended client library for accessing Azure Database for PostgreSQL is th
 
 Learn more about [Azure Database for PostgreSQL](https://docs.microsoft.com/azure/postgresql/)
 
-## Import the libraries
+## Install the libraries
 ```bash
 pip install azure-mgmt-rdbms
 ```

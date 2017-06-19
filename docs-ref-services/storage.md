@@ -21,7 +21,7 @@ ms.service: storage
 - Read and write large structured data with [Azure Table storage](https://docs.microsoft.com/azure/storage/storage-python-how-to-use-table-storage) 
 - Share storage between apps with [Azure File storage](https://docs.microsoft.com/azure/storage/storage-python-how-to-use-file-storage)
 
-## Import the libraries
+## Install the libraries
 ```bash
 pip install --pre azure-mgmt-storage
 ```

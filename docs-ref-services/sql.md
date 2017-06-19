@@ -21,7 +21,7 @@ Work with data stored in  [Azure SQL Database](https://docs.microsoft.com/azure/
 
 The management libraries provide an interface to create, manage, and scale Azure SQL Database deployments from your Python code. Set up and manage databases in [elastic pools](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-elastic-pool) to share resources and configure databases across multiple regions from your code.
 
-## Import the libraries
+## Install the libraries
 
 ### ODBC driver 
 [Instructions](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries) for downloading the Microsoft ODBC driver.

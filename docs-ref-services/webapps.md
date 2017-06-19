@@ -19,7 +19,7 @@ ms.service: appservice
 
 Deploy, manage, and scale web apps, APIs, and mobile apps running in [Azure App Service](https://docs.microsoft.com/azure/app-service) from your Python code using the management libraries. The management libraries also provide a Python interface for automating app configuration as an alternative to using the Azure Portal or [CLI](https://docs.microsoft.com/cli/azure/install-azure-cli).
 
-## Import the libraries
+## Install the libraries
 
 ```bash
 pip install --pre azure-mgmt-web

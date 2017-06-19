@@ -19,7 +19,7 @@ ms.service: compute
 
 Define, configure, and deploy new Windows and Linux virtual machines and virtual machine scale sets from your code with the Azure management libraries for Python. The libraries also let start and stop existing virtual machines and attach or detach disks to stopped VMs in your subscription.
 
-## Import the libraries
+## Install the libraries
 ```bash
 pip install --pre azure-mgmt-compute 
 ```   

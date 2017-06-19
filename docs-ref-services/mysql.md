@@ -20,7 +20,7 @@ The recommended client library for accessing Azure Database for MySQL is the Mic
 
 Learn more about [Azure Database for MySQL](https://docs.microsoft.com/azure/MySQL/)
 
-## Import the libraries
+## Install the libraries
 ```bash
 pip install azure-mgmt-rdbms
 ```
