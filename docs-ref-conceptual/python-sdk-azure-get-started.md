@@ -25,6 +25,10 @@ This tutorial demonstrates the usage of several Azure libraries for Python.  You
 - [Python](https://www.python.org/downloads/)
 
 ## Set up authentication
+> [!IMPORTANT]
+> This should be used as quick start developer experience. For production purpose use 
+> [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python) or your own credentials system.
+> Any change to your CLI configuration will impact the SDK execution.
 
 The SDK is able to create a client using your CLI active subscription.
 

@@ -48,8 +48,6 @@ list and samples. For instance for service principal authentication:
 
 All ADAL valid calls can be used with the `AdalAuthentication` class.
 
-The `client`, `tenant` and `key` are the same service principal values used with [file-based authentication](#file-based-authentication).
-
 Then create a client object to start working with the API:
 
 ```python
@@ -67,7 +65,7 @@ The SDK is able to create a client using your CLI active subscription.
 
 > [!IMPORTANT]
 > This should be used as quick start developer experience. For production purpose use 
-> [file-based authentication](#file-based-authentication) or your own credentials system.
+> [ADAL](#authenticate-with-token-credentials) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
 To define active credentials, use [az login](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
