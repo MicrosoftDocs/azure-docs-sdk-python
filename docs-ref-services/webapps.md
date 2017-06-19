@@ -65,7 +65,7 @@ source_control_async_operation = web_client.web_apps.create_or_update_source_con
 | [Create a Logic App workflow][2] | Create a Logic App workflow. |
 
 [1]: https://azure.microsoft.com/resources/samples/app-service-web-python-manage
-[2]: python-sdk-azure-samples-logic-app-workflow.md
+[2]: ../docs-ref-conceptual/python-sdk-azure-samples-logic-app-workflow.md
 
 
 Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.

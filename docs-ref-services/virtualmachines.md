@@ -71,9 +71,9 @@ def create_vm()
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
 [2]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[3]: python-sdk-azure-samples-managed-disks.md
-[4]: python-sdk-azure-samples-list-images.md
-[5]: python-sdk-azure-samples-monitor-vms.md
+[3]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
+[4]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
+[5]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
 
 
 Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
