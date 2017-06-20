@@ -16,7 +16,7 @@ ms.service: multiple
 
 # Azure for Python developers
 
-Get started building great Python apps on Azure.
+Build great Python apps on Azure.
 
 <ul class="cardsY panelContent">
     <li>
@@ -61,7 +61,7 @@ Get started building great Python apps on Azure.
 
 
 ## Five-minute quickstarts
-Create and deploy an app using your favorite tools in five minutes.
+Create and deploy a sample app in five minutes.
 <ul>
    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python">Web Apps</a></li>
     <li><a href="https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python">SQL Database</a></li>
@@ -70,7 +70,7 @@ Create and deploy an app using your favorite tools in five minutes.
 
 ## Management APIs
 
-Install the [Azure management libraries for Python](python-sdk-azure-install.md) to manage your Azure resources with an easy to use fluent API. 
+Install [Azure management modules](python-sdk-azure-install.md) to manage Azure resources. 
 
 ```python
 sql_client = SqlManagementClient(
@@ -90,7 +90,7 @@ server = sql_client.servers.create_or_update(
 )
 ```
 
-[Get started with the Azure management libraries for Python](python-sdk-azure-get-started.md)
+[Get started with the Azure management modules for Python](python-sdk-azure-get-started.md)
 
 ## Tutorials
 
