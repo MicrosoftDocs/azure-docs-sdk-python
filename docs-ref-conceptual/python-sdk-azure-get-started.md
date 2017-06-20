@@ -16,7 +16,7 @@ ms.assetid:
 
 # Get started with the Azure libraries for Python
 
-This tutorial demonstrates the usage of several Azure libraries for Python.  You will set up authentication, create and use an Azure Storage account, create and use an Azure SQL Database, deploy some virtual machines, and deploy an Azure App Service Web App from GitHub.
+This guide demonstrates the usage of several Azure libraries for Python.  You will set up authentication, create and use an Azure Storage account, create and use an Azure SQL Database, deploy some virtual machines, and deploy an Azure App Service Web App from GitHub.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ This tutorial demonstrates the usage of several Azure libraries for Python.  You
 
 ## Set up authentication
 > [!IMPORTANT]
-> This should be used as quick start developer experience. For production purpose use 
+> This should be used as quick start developer experience. For production purposes, use 
 > [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
