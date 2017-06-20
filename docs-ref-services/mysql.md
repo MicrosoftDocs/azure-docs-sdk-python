@@ -18,7 +18,7 @@ ms.service: mysql
 
 The recommended client library for accessing Azure Database for MySQL is the Microsoft [ODBC driver](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries). Use the ODBC driver to connect to the database and execute SQL statements directly.
 
-Learn more about [Azure Database for MySQL](https://docs.microsoft.com/azure/MySQL/)
+Learn more about [Azure Database for MySQL](https://docs.microsoft.com/azure/MySQL/).
 
 ## Install the libraries
 ```bash
