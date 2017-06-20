@@ -3,6 +3,15 @@
 import io
 import yaml
 
+skipped_level2_packages = [
+    'azure.mgmt.resource.features',
+    'azure.mgmt.resource.links',
+    'azure.mgmt.resource.locks',
+    'azure.mgmt.resource.managedapplications',
+	'azure.mgmt.resource.policy',
+    'azure.mgmt.resource.resources',
+    'azure.mgmt.resource.subscriptions',
+]
 
 def rewrite_yml(data):
     with io.open('.\\_build\\docfx_yaml\\toc.yml', 'w', encoding='utf8') as outfile:
@@ -13,7 +22,7 @@ with open(".\\_build\\docfx_yaml\\toc.yml", 'r') as stream:
         data_loaded = yaml.load(stream)
         for node in data_loaded:
             if 'name' in node:
-                if node['name'].startswith('azure.'):
+                if node['name'].startswith('azure.') and node['name'] not in skipped_level2_packages:
                     node['name'] = node['name'].replace('.', '-')
                     print('update old name to %s' % node['name'])
 
