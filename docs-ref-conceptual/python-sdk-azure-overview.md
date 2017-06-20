@@ -70,7 +70,7 @@ print(blob_service.make_blob_url('mycontainername', 'myblobname'))
 ```
 
 ## Sample code and reference
-The following smaples cover common automation tasks with the Azure management libraries for Python and have code ready to use in your own apps:
+The following samples cover common automation tasks with the Azure management libraries for Python and have code ready to use in your own apps:
 - [Virtual Machines](python-sdk-azure-virtual-machine-samples.md)
 - [Web apps](python-sdk-azure-web-apps-samples.md)
 - [SQL Database](python-sdk-azure-sql-database-samples.md)

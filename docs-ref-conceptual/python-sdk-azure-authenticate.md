@@ -64,7 +64,7 @@ client = ComputeManagementClient(credentials, subscription_id)
 The SDK is able to create a client using your CLI active subscription.
 
 > [!IMPORTANT]
-> This should be used as quick start developer experience. For production purpose use 
+> This should be used as quick start developer experience. For production purposes, use 
 > [ADAL](#authenticate-with-token-credentials) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
