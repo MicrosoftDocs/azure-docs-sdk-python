@@ -44,9 +44,9 @@ exclude_patterns = [
 
 namespace_package_dict = {
   'azure_batch-([A-Za-z0-9\-\.]*).egg': 'azure-batch',
-  'azure_common-([A-Za-z0-9\-\.]*).egg': 'azure-batch',
-  'azure_graphrbac-([A-Za-z0-9\-\.]*).egg': 'azure-batch',
-  'azure_keyvault-([A-Za-z0-9\-\.]*).egg': 'azure-batch',
+  'azure_common-([A-Za-z0-9\-\.]*).egg': 'azure-common',
+  'azure_graphrbac-([A-Za-z0-9\-\.]*).egg': 'azure-graphrbac',
+  'azure_keyvault-([A-Za-z0-9\-\.]*).egg': 'azure-keyvault',
   'azure_mgmt_authorization-([A-Za-z0-9\-\.]*).egg': 'azure-mgmt-authorization',
   'azure_mgmt_batch-([A-Za-z0-9\-\.]*).egg': 'azure-mgmt-batch',
   'azure_mgmt_billing-([A-Za-z0-9\-\.]*).egg': 'azure-mgmt-billing',
