@@ -32,7 +32,7 @@ The management libraries provide an interface to create, manage, and scale Azure
 pip install azure-mgmt-sql
 ```
 
-## Example
+## ODBC Example
 
 Connect to a Azure SQL database and select all records in the sales table.
 
