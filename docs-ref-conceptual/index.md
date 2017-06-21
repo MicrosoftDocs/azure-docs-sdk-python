@@ -29,7 +29,7 @@ ms.service: multiple
                         </div>
                         <div class="cardText">
                             <h3 style="margin-bottom: 0; font-size: 24px">Tools</h3>
-                            <p style="font-size: 1rem">Download Azure tools and plugins.</p>
+                            <p style="font-size: 1rem">Download Azure tools and plug-ins</p>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ ms.service: multiple
                         </div>
                         <div class="cardText">
                             <h3 style="margin-bottom: 0; font-size: 24px">Libraries</h3>
-                            <p style="font-size: 1rem">Use services and manage Azure resources.</p>
+                            <p style="font-size: 1rem">Use services and manage Azure resources</p>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ ms.service: multiple
 </ul>
 
 
-## Five-minute quickstarts
+## 5-Minute quickstarts
 Learn how to build Python apps with Azure services.
 <ul>
    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python">Deploy a Python webapp</a></li>
@@ -90,7 +90,7 @@ server = sql_client.servers.create_or_update(
 
 [Get started with the Azure management modules for Python](python-sdk-azure-get-started.md)
 
-## Tutorials
+## Step-by-Step Tutorials
 
 Learn how to use Azure services in your Python apps.
 <ul>
