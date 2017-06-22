@@ -13,6 +13,7 @@ environment:
     secure: DpN0M7pZDocpyv+muc15qHDKz9lMJ7Zr34aMC0HtOdeVkbTERuKkxq4WHAd3S33v
 
 init:
+    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - "%PYTHON%/python.exe -m pip install --upgrade pip"
 
     # Install pywin32-ctypes 0.0.1 due to https://github.com/enthought/pywin32-ctypes/issues/60
@@ -94,3 +95,6 @@ on_success:
 
     # To opendev branch (TODO: after review, change to master)
     - git push -u origin opendev:opendev
+
+on_finish:
+    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))    
