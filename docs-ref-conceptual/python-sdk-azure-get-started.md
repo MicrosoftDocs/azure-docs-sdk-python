@@ -22,7 +22,7 @@ This guide demonstrates the usage of several Azure libraries for Python.  You wi
 
 - An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/).
 - [Python](https://www.python.org/downloads/)
-- [Azure Cloud Shell](https://docs.microsoft.coms/azure/cloud-shell/quickstart) or [Azure CLI 2.0](https://docs.microsoft.com/cli/azure/install-az-cli2).
+- [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/quickstart) or [Azure CLI 2.0](https://docs.microsoft.com/cli/azure/install-az-cli2).
 
 [!INCLUDE [azure-cloud-shell](../docs-ref-conceptual/includes/cloud-shell-try-it.md)]
 
