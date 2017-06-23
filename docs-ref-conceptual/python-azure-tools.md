@@ -8,7 +8,7 @@ ms.devlang: python
 ms.topic: article
 ms.service: Azure
 ms.technology: Azure
-ms.date: 6/14/2017
+ms.date: 06/21/2017
 ms.author: liwong
 ---
 
