@@ -7,7 +7,6 @@ ms.author: liwong
 manager: douge
 ms.date: 06/01/2017
 ms.topic: article
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: multiple
