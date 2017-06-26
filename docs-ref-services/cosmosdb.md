@@ -17,7 +17,7 @@ ms.service: cosmosdb
 
 Use CosmosDB in your Python applications to store and query JSON documents in a NoSQL data store.
 
-Learn more about [Azure CosmosDB](https://docs.microsoft.com/azure/cosmos-db/introduction)
+Learn more about [Azure CosmosDB](https://docs.microsoft.com/azure/cosmos-db/introduction).
 
 ## Install the libraries
 ```bash
