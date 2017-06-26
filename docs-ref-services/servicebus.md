@@ -31,6 +31,8 @@ from azure.servicebus import Message
 msg1 = Message('Hello World!')
 msg2 = Message('Hello World again!')
 sbs.send_queue_message_batch('taskqueue', [msg1, msg2])
+# dequeue the message
+msg = sbs.receive_queue_message('taskqueue')
 ```
 
 ## Samples
