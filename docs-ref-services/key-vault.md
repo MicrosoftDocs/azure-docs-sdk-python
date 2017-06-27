@@ -38,8 +38,9 @@ pip install azure-mgmt-keyvault
 Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-key-18) from a Key Vault.
 
 ```python
-client = KeyVaultClient(credentials)
+from azure.keyvault import KeyVaultClient
 
+client = KeyVaultClient(credentials)
 key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
 ```
