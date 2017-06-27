@@ -45,7 +45,7 @@ print(results)
 
 | **Cosmos DB** ||
 |---|---|
-| [Develop a Python app using Azure Cosmos DB's DocumentDB API][1] | Use  Azure Cosmos DB with the DocumentDB API to store and access data from a python application | 
+| [Develop a Python app using Azure Cosmos DB's DocumentDB API][1] | Use  Azure Cosmos DB with the DocumentDB API to store and access data from a python application. | 
 
 
 [1]: https://azure.microsoft.com/resources/samples/azure-cosmos-db-documentdb-python-getting-started/
