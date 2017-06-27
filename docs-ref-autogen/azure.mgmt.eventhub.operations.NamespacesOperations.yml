@@ -2,17 +2,19 @@
 api_name: []
 items:
 - children:
+  - azure.mgmt.eventhub.operations.NamespacesOperations.check_name_availability
   - azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update
   - azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update_authorization_rule
   - azure.mgmt.eventhub.operations.NamespacesOperations.delete
   - azure.mgmt.eventhub.operations.NamespacesOperations.delete_authorization_rule
   - azure.mgmt.eventhub.operations.NamespacesOperations.get
   - azure.mgmt.eventhub.operations.NamespacesOperations.get_authorization_rule
+  - azure.mgmt.eventhub.operations.NamespacesOperations.list
   - azure.mgmt.eventhub.operations.NamespacesOperations.list_authorization_rules
   - azure.mgmt.eventhub.operations.NamespacesOperations.list_by_resource_group
-  - azure.mgmt.eventhub.operations.NamespacesOperations.list_by_subscription
   - azure.mgmt.eventhub.operations.NamespacesOperations.list_keys
   - azure.mgmt.eventhub.operations.NamespacesOperations.regenerate_keys
+  - azure.mgmt.eventhub.operations.NamespacesOperations.update
   class: azure.mgmt.eventhub.operations.NamespacesOperations
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations
   inheritance:
@@ -28,8 +30,10 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 20
+    startLine: 19
   summary: 'NamespacesOperations operations.
+
+
 
 
 
@@ -62,12 +66,70 @@ items:
 
         '
       id: deserializer
+    variables:
+    - description: 'Client API Version. Constant value: "2017-04-01".
+
+        '
+      id: api_version
   type: class
   uid: azure.mgmt.eventhub.operations.NamespacesOperations
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
+  fullName: azure.mgmt.eventhub.operations.NamespacesOperations.check_name_availability
+  langs:
+  - python
+  module: azure.mgmt.eventhub.operations
+  name: check_name_availability
+  source:
+    id: check_name_availability
+    path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 38
+  summary: 'Check the give Namespace name availability.
+
+    '
+  syntax:
+    content: check_name_availability(name, custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'Name to check the namespace name availability
+
+        '
+      id: name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - CheckNameAvailabilityResult
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.eventhub.operations.NamespacesOperations.check_name_availability
+- class: azure.mgmt.eventhub.operations.NamespacesOperations
+  exceptions:
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update
   langs:
   - python
@@ -80,7 +142,7 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 167
+    startLine: 230
   summary: 'Creates or updates a namespace. Once created, this namespace''s resource
 
     manifest is immutable. This operation is idempotent.
@@ -90,13 +152,15 @@ items:
     content: create_or_update(resource_group_name, namespace_name, parameters, custom_headers=None,
       raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group.
+    - description: 'Name of the resource group within the
+
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
@@ -128,7 +192,7 @@ items:
       type:
       - 'AzureOperationPoller
 
-        instance that returns NamespaceResource'
+        instance that returns EHNamespace'
       - 'ClientRawResponse
 
         if raw=true'
@@ -136,8 +200,8 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update_authorization_rule
   langs:
   - python
@@ -150,40 +214,43 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 474
-  summary: 'Creates or updates an authorization rule for a namespace.
+    startLine: 606
+  summary: 'Creates or updates an AuthorizationRule for a Namespace.
 
     '
   syntax:
     content: create_or_update_authorization_rule(resource_group_name, namespace_name,
-      authorization_rule_name, parameters, custom_headers=None, raw=False, **operation_config)
+      authorization_rule_name, rights=None, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
       type:
       - str
-    - description: 'Namespace authorization rule name.
+    - description: 'The authorization rule name.
 
         '
       id: authorization_rule_name
       type:
       - str
-    - description: 'The shared access authorization rule.
+    - defaultValue: None
+      description: 'The rights associated with the rule.
 
         '
-      id: parameters
+      id: rights
       type:
-      - azure.mgmt.eventhub.models
+      - 'list of str or @azure.mgmt.eventhub.models
+
+        '
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -202,7 +269,7 @@ items:
       - bool
     return:
       type:
-      - SharedAccessAuthorizationRuleResource
+      - AuthorizationRule
       - 'ClientRawResponse
 
         if raw=true'
@@ -210,8 +277,8 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update_authorization_rule
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.delete
   langs:
   - python
@@ -224,7 +291,7 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 262
+    startLine: 325
   summary: 'Deletes an existing namespace. This operation also removes all
 
     associated resources under the namespace.
@@ -234,15 +301,15 @@ items:
     content: delete(resource_group_name, namespace_name, custom_headers=None, raw=False,
       **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The name of the namespace to delete.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
@@ -276,8 +343,8 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.delete
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.delete_authorization_rule
   langs:
   - python
@@ -290,29 +357,29 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 548
-  summary: 'Deletes an authorization rule for a namespace.
+    startLine: 680
+  summary: 'Deletes an AuthorizationRule for a Namespace.
 
     '
   syntax:
     content: delete_authorization_rule(resource_group_name, namespace_name, authorization_rule_name,
       custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
       type:
       - str
-    - description: 'Authorization rule name.
+    - description: 'The authorization rule name.
 
         '
       id: authorization_rule_name
@@ -344,8 +411,8 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.delete_authorization_rule
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.get
   langs:
   - python
@@ -358,7 +425,7 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 341
+    startLine: 403
   summary: 'Gets the description of the specified namespace.
 
     '
@@ -366,15 +433,15 @@ items:
     content: get(resource_group_name, namespace_name, custom_headers=None, raw=False,
       **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The name of the specified namespace.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
@@ -398,7 +465,7 @@ items:
       - bool
     return:
       type:
-      - NamespaceResource
+      - EHNamespace
       - 'ClientRawResponse
 
         if raw=true'
@@ -406,8 +473,8 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.get
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.get_authorization_rule
   langs:
   - python
@@ -420,29 +487,29 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 606
-  summary: 'Gets an authorization rule for a namespace by rule name.
+    startLine: 737
+  summary: 'Gets an AuthorizationRule for a Namespace by rule name.
 
     '
   syntax:
     content: get_authorization_rule(resource_group_name, namespace_name, authorization_rule_name,
       custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
       type:
       - str
-    - description: 'Authorization rule name.
+    - description: 'The authorization rule name.
 
         '
       id: authorization_rule_name
@@ -466,7 +533,7 @@ items:
       - bool
     return:
       type:
-      - SharedAccessAuthorizationRuleResource
+      - AuthorizationRule
       - 'ClientRawResponse
 
         if raw=true'
@@ -474,8 +541,54 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.get_authorization_rule
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
+  fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list
+  langs:
+  - python
+  module: azure.mgmt.eventhub.operations
+  name: list
+  source:
+    id: list
+    path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 101
+  summary: 'Lists all the available Namespaces within a subscription, irrespective
+
+    of the resource groups.
+
+    '
+  syntax:
+    content: list(custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - EHNamespacePaged
+  type: method
+  uid: azure.mgmt.eventhub.operations.NamespacesOperations.list
+- class: azure.mgmt.eventhub.operations.NamespacesOperations
+  exceptions:
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_authorization_rules
   langs:
   - python
@@ -488,23 +601,23 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 404
-  summary: 'Gets a list of authorization rules for a namespace.
+    startLine: 537
+  summary: 'Gets a list of authorization rules for a Namespace.
 
     '
   syntax:
     content: list_authorization_rules(resource_group_name, namespace_name, custom_headers=None,
       raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
@@ -528,13 +641,13 @@ items:
       - bool
     return:
       type:
-      - SharedAccessAuthorizationRuleResourcePaged
+      - AuthorizationRulePaged
   type: method
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.list_authorization_rules
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_resource_group
   langs:
   - python
@@ -547,15 +660,17 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 101
-  summary: 'Lists the available namespaces within a resource group.
+    startLine: 164
+  summary: 'Lists the available Namespaces within a resource group.
 
     '
   syntax:
     content: list_by_resource_group(resource_group_name, custom_headers=None, raw=False,
       **operation_config)
     parameters:
-    - description: 'The name of the resource group.
+    - description: 'Name of the resource group within the
+
+        azure subscription.
 
         '
       id: resource_group_name
@@ -579,59 +694,13 @@ items:
       - bool
     return:
       type:
-      - NamespaceResourcePaged
+      - EHNamespacePaged
   type: method
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_resource_group
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_subscription
-  langs:
-  - python
-  module: azure.mgmt.eventhub.operations
-  name: list_by_subscription
-  source:
-    id: list_by_subscription
-    path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
-    remote:
-      branch: master
-      path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 37
-  summary: 'Lists all the available namespaces within a subscription, irrespective
-
-    of the resource groups.
-
-    '
-  syntax:
-    content: list_by_subscription(custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    return:
-      type:
-      - NamespaceResourcePaged
-  type: method
-  uid: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_subscription
-- class: azure.mgmt.eventhub.operations.NamespacesOperations
-  exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_keys
   langs:
   - python
@@ -644,23 +713,23 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 672
-  summary: 'Gets the primary and secondary connection strings for the namespace.
+    startLine: 802
+  summary: 'Gets the primary and secondary connection strings for the Namespace.
 
     '
   syntax:
     content: list_keys(resource_group_name, namespace_name, authorization_rule_name,
       custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
@@ -690,7 +759,7 @@ items:
       - bool
     return:
       type:
-      - ResourceListKeys
+      - AccessKeys
       - 'ClientRawResponse
 
         if raw=true'
@@ -698,8 +767,8 @@ items:
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.list_keys
 - class: azure.mgmt.eventhub.operations.NamespacesOperations
   exceptions:
-  - description: CloudError
-    type: msrestazure.azure_exceptions.CloudError
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
   fullName: azure.mgmt.eventhub.operations.NamespacesOperations.regenerate_keys
   langs:
   - python
@@ -712,25 +781,25 @@ items:
       branch: master
       path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 738
+    startLine: 866
   summary: 'Regenerates the primary or secondary connection strings for the
 
-    specified namespace.
+    specified Namespace.
 
     '
   syntax:
     content: regenerate_keys(resource_group_name, namespace_name, authorization_rule_name,
-      policykey=None, custom_headers=None, raw=False, **operation_config)
+      key_type, key=None, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: 'The name of the resource group in which
+    - description: 'Name of the resource group within the
 
-        the namespace lives.
+        azure subscription.
 
         '
       id: resource_group_name
       type:
       - str
-    - description: 'The namespace name.
+    - description: 'The Namespace name
 
         '
       id: namespace_name
@@ -742,17 +811,25 @@ items:
       id: authorization_rule_name
       type:
       - str
-    - defaultValue: None
-      description: 'Key that needs to be regenerated. Possible values
+    - description: 'The access key to regenerate. Possible values
 
         include: ''PrimaryKey'', ''SecondaryKey''
 
         '
-      id: policykey
+      id: key_type
       type:
       - 'str or @azure.mgmt.eventhub.models
 
         '
+    - defaultValue: None
+      description: 'Optional, if the key value provided, is set for KeyType or
+
+        autogenerated Key value set for keyType
+
+        '
+      id: key
+      type:
+      - str
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -771,13 +848,88 @@ items:
       - bool
     return:
       type:
-      - ResourceListKeys
+      - AccessKeys
       - 'ClientRawResponse
 
         if raw=true'
   type: method
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.regenerate_keys
+- class: azure.mgmt.eventhub.operations.NamespacesOperations
+  exceptions:
+  - description: ErrorResponseException
+    type: azure.mgmt.eventhub.models.ErrorResponseException
+  fullName: azure.mgmt.eventhub.operations.NamespacesOperations.update
+  langs:
+  - python
+  module: azure.mgmt.eventhub.operations
+  name: update
+  source:
+    id: update
+    path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-eventhub\azure\mgmt\eventhub\operations\namespaces_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 466
+  summary: 'Creates or updates a namespace. Once created, this namespace''s resource
+
+    manifest is immutable. This operation is idempotent.
+
+    '
+  syntax:
+    content: update(resource_group_name, namespace_name, parameters, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: 'Name of the resource group within the
+
+        azure subscription.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The Namespace name
+
+        '
+      id: namespace_name
+      type:
+      - str
+    - description: 'Parameters for updating a namespace resource.
+
+        '
+      id: parameters
+      type:
+      - azure.mgmt.eventhub.models
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - EHNamespace
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.eventhub.operations.NamespacesOperations.update
 references:
+- fullName: azure.mgmt.eventhub.operations.NamespacesOperations.check_name_availability
+  isExternal: false
+  name: check_name_availability
+  parent: azure.mgmt.eventhub.operations.NamespacesOperations
+  uid: azure.mgmt.eventhub.operations.NamespacesOperations.check_name_availability
 - fullName: azure.mgmt.eventhub.operations.NamespacesOperations.create_or_update
   isExternal: false
   name: create_or_update
@@ -808,6 +960,11 @@ references:
   name: get_authorization_rule
   parent: azure.mgmt.eventhub.operations.NamespacesOperations
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.get_authorization_rule
+- fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list
+  isExternal: false
+  name: list
+  parent: azure.mgmt.eventhub.operations.NamespacesOperations
+  uid: azure.mgmt.eventhub.operations.NamespacesOperations.list
 - fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_authorization_rules
   isExternal: false
   name: list_authorization_rules
@@ -818,11 +975,6 @@ references:
   name: list_by_resource_group
   parent: azure.mgmt.eventhub.operations.NamespacesOperations
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_resource_group
-- fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_subscription
-  isExternal: false
-  name: list_by_subscription
-  parent: azure.mgmt.eventhub.operations.NamespacesOperations
-  uid: azure.mgmt.eventhub.operations.NamespacesOperations.list_by_subscription
 - fullName: azure.mgmt.eventhub.operations.NamespacesOperations.list_keys
   isExternal: false
   name: list_keys
@@ -833,3 +985,8 @@ references:
   name: regenerate_keys
   parent: azure.mgmt.eventhub.operations.NamespacesOperations
   uid: azure.mgmt.eventhub.operations.NamespacesOperations.regenerate_keys
+- fullName: azure.mgmt.eventhub.operations.NamespacesOperations.update
+  isExternal: false
+  name: update
+  parent: azure.mgmt.eventhub.operations.NamespacesOperations
+  uid: azure.mgmt.eventhub.operations.NamespacesOperations.update
