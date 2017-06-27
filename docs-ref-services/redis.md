@@ -2,8 +2,8 @@
 title: Azure Redis libraries for Python
 description: Reference documentation for the Python client libraries for Redis
 keywords: Azure, Python, Redis, API, SDK, database, NoSQL
-author: sptramer, lisawong19
-ms.author: sttramer, liwong
+author: sptramer
+ms.author: sttramer
 manager: douge
 ms.date: 06/26/2017
 ms.topic: article
