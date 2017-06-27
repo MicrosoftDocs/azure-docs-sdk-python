@@ -1,10 +1,10 @@
 ---
 title: Azure Key Vault libraries for Python
 description: Reference documentation for the Python client libraries for Azure Key Vault
-author: sptramer
+author: lisawong19
 keywords: Azure, Python, SDK, API, Keys, Key Vault, Authentication, Secret, key, security
 manager: douge
-ms.author: sttramer
+ms.author: liwong
 ms.date: 06/26/2017
 ms.topic: article
 ms.devlang: python
@@ -13,49 +13,45 @@ ms.service: keyvault
 
 # Overview
 
-Azure Key Vault provides a way to securely store keys and other secrets used by applications in the cloud, with limited direct access.
+Create, update, and delete keys and secrets in Azure Key Vault with the client libraries.
 
-For full details, see [What is Key Vault?](/azure/key-vault/key-vault-whatis)
+Use the Azure Key Vault management libraries to create key vaults, authorize applications, and manage permissions. 
+
+Learn more about [Azure Key Vault](/azure/key-vault/key-vault-whatis).
 
 ## Install the libraries
+
+### Client library
 
 ```bash
 pip install azure-keyvault
 ```
 
-## Example
+### Management 
 
-The following example creates an instance of a Key Vault client:
-
-> [!IMPORTANT]
-> You must specify resource=”https://vault.azure.net” while authenticating to get a valid token.
-
-```python
-from azure.keyvault import KeyVaultClient
-from azure.common.credentials import UserPassCredentials
-
-# See above for details on creating different types of AAD credentials
-credentials = UserPassCredentials(
-    'user@domain.com',  # Your user
-    'my_password',      # Your password
-    resource='https://vault.azure.net'
-)
-
-client = KeyVaultClient(
-    credentials
-)
+```bash
+pip install azure-mgmt-keyvault
 ```
 
-For more information on creating a `Credentials` instance and using Azure Active Directory, see [Authenticate with the Azure Management Libraries for Python](/python/azure/python-sdk-azure-authenticate).
+## Example
+
+Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-key-18) from a Key Vault.
+
+```python
+client = KeyVaultClient(credentials)
+
+key_bundle = client.get_key(vault_url, key_name, key_version)
+json_key = key_bundle.key
+```
 
 ## Samples
 
 | Key Vault ||
 |--- | --- |
-| [Recovery scenario samples for Azure Key Vault using the Azure Python SDK][1] | Demonstrates how to use the soft delete and backup restore features of Azure Key Vault to backup, restore, recover, and purge deleted vaults, secrets, keys, and certificates using the Azure Python SDK. |
-| [Manage key vaults with Python][2] | Demonstrates how to manage key vaults with the Azure Python SDK.  |
+| [Manage Key Vaults][1] | Create and delete a key vault.  |
+| [Key Vault recovery][2] | Use the soft delete and backup restore features of Azure Key Vault to backup, restore, recover, and purge deleted vaults, secrets, keys, and certificates. |
 
-Explore more [sample Python code](https://azure.microsoft.com/en-us/resources/samples/?platform=python) you can use in your apps.
+[1]: https://azure.microsoft.com/resources/samples/key-vault-python-manage/
+[2]: https://azure.microsoft.com/resources/samples/key-vault-recovery-python/
 
-[1]: https://azure.microsoft.com/en-us/resources/samples/key-vault-recovery-python/
-[2]: https://azure.microsoft.com/en-us/resources/samples/key-vault-python-manage/
+Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
