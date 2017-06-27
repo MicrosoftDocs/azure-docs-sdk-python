@@ -19,7 +19,7 @@ Azure Redis Cache is based on the popular open source Redis project. It gives yo
 
 Redis is an advanced key-value store, where keys can contain data structures such as strings, hashes, lists, sets, and sorted sets. Redis supports a set of atomic operations on these data types.
 
-Learn more about [Azure Redis Cache](https://docs.microsoft.com/en-us/azure/redis-cache/).
+Learn more about [Azure Redis Cache](https://docs.microsoft.com/azure/redis-cache/).
 
 ## Install the libraries
 
