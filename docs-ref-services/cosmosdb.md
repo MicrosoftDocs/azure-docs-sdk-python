@@ -21,7 +21,7 @@ Learn more about [Azure CosmosDB](https://docs.microsoft.com/azure/cosmos-db/int
 
 ## Install the libraries
 ```bash
-pip install azure-mgmt-documentdb
+pip install azure-mgmt-cosmosdb
 ```
 
 ## Example
