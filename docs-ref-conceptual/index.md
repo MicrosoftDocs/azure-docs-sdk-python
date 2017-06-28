@@ -6,7 +6,7 @@ author: lisawong19
 ms.author: liwong
 manager: douge
 layout: LandingPage
-ms.date: 06/14/2017
+ms.date: 06/27/2017
 ms.topic: article
 ms.technology: azure
 ms.devlang: python
@@ -75,7 +75,7 @@ sql_client = SqlManagementClient(
     subscription_id
 )
 
-server = sql_client.servers.create_or_update(
+sql_client.servers.create_or_update(
     'myresourcegroup',
     'myservername',
     {
