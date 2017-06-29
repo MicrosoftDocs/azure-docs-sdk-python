@@ -11,6 +11,8 @@ skipped_level2_packages = [
 	'azure.mgmt.resource.policy',
     'azure.mgmt.resource.resources',
     'azure.mgmt.resource.subscriptions',
+    'azure.mgmt.compute.containerservice',
+    'azure.mgmt.compute.compute'
 ]
 
 def rewrite_yml(data):
