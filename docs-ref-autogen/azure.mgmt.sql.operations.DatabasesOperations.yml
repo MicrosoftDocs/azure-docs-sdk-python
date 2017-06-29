@@ -5,6 +5,10 @@ items:
   - azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
   - azure.mgmt.sql.operations.DatabasesOperations.create_or_update
   - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
+  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_policy
+  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_rule
+  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_geo_backup_policy
+  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_long_term_retention_policy
   - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
   - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_transparent_data_encryption_configuration
   - azure.mgmt.sql.operations.DatabasesOperations.delete
@@ -13,13 +17,18 @@ items:
   - azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link
   - azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link_allow_data_loss
   - azure.mgmt.sql.operations.DatabasesOperations.get
+  - azure.mgmt.sql.operations.DatabasesOperations.get_backup_long_term_retention_policy
   - azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
+  - azure.mgmt.sql.operations.DatabasesOperations.get_data_masking_policy
+  - azure.mgmt.sql.operations.DatabasesOperations.get_geo_backup_policy
   - azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
   - azure.mgmt.sql.operations.DatabasesOperations.get_service_tier_advisor
   - azure.mgmt.sql.operations.DatabasesOperations.get_threat_detection_policy
   - azure.mgmt.sql.operations.DatabasesOperations.get_transparent_data_encryption_configuration
   - azure.mgmt.sql.operations.DatabasesOperations.import_method
   - azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+  - azure.mgmt.sql.operations.DatabasesOperations.list_data_masking_rules
+  - azure.mgmt.sql.operations.DatabasesOperations.list_geo_backup_policies
   - azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
   - azure.mgmt.sql.operations.DatabasesOperations.list_metrics
   - azure.mgmt.sql.operations.DatabasesOperations.list_replication_links
@@ -74,6 +83,15 @@ items:
 
 
 
+
+
+
+
+
+
+
+
+
     '
   syntax:
     content: DatabasesOperations(client, config, serializer, deserializer)
@@ -95,6 +113,28 @@ items:
         '
       id: deserializer
     variables:
+    - description: 'The name of the database for which the data masking rule applies.
+        Constant value: "Default".
+
+        '
+      id: data_masking_policy_name
+    - description: 'The name of the geo backup policy. Constant value: "Default".
+
+        '
+      id: geo_backup_policy_name
+    - description: 'The name of the operation to perform. Constant value: "import".
+
+        '
+      id: extension_name
+    - description: 'The name of the security alert policy. Constant value: "default".
+
+        '
+      id: security_alert_policy_name
+    - description: 'The name of the backup long term retention policy. Constant value:
+        "Default".
+
+        '
+      id: backup_long_term_retention_policy_name
     - description: 'The name of the blob auditing policy. Constant value: "default".
 
         '
@@ -117,7 +157,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 213
+    startLine: 766
   summary: 'Creates an import operation that imports a bacpac into an existing
 
     database. The existing database must be empty.
@@ -156,7 +196,7 @@ items:
         '
       id: parameters
       type:
-      - azure.mgmt.sql.models
+      - azure.mgmt.sql.models.ImportExtensionRequest
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -199,7 +239,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1127
+    startLine: 1681
   summary: 'Creates a new database or updates an existing database. Location is a
 
     required property in the request body, and it must be the same as the
@@ -242,7 +282,7 @@ items:
         '
       id: parameters
       type:
-      - azure.mgmt.sql.models
+      - azure.mgmt.sql.models.Database
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -285,7 +325,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 2123
+    startLine: 2856
   summary: 'Creates or updates a database''s blob auditing policy.
 
     '
@@ -322,7 +362,7 @@ items:
         '
       id: parameters
       type:
-      - azure.mgmt.sql.models
+      - azure.mgmt.sql.models.DatabaseBlobAuditingPolicy
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -351,6 +391,356 @@ items:
   exceptions:
   - description: CloudError
     type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_policy
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: create_or_update_data_masking_policy
+  source:
+    id: create_or_update_data_masking_policy
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 126
+  summary: 'Creates or updates a database data masking policy.
+
+    '
+  syntax:
+    content: create_or_update_data_masking_policy(resource_group_name, server_name,
+      database_name, data_masking_state, exempt_principals=None, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - description: 'The state of the data masking policy.
+
+        Possible values include: ''Disabled'', ''Enabled''
+
+        '
+      id: data_masking_state
+      type:
+      - 'str or @azure.mgmt.sql.models.DataMaskingState
+
+        '
+    - defaultValue: None
+      description: 'The list of the exempt principals. Specifies
+
+        the semicolon-separated list of database users for which the data
+
+        masking policy does not apply. The specified users receive data
+
+        results without masking for all of the database queries.
+
+        '
+      id: exempt_principals
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - DataMaskingPolicy
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_policy
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_rule
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: create_or_update_data_masking_rule
+  source:
+    id: create_or_update_data_masking_rule
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 281
+  summary: 'Creates or updates a database data masking rule.
+
+    '
+  syntax:
+    content: create_or_update_data_masking_rule(resource_group_name, server_name,
+      database_name, data_masking_rule_name, parameters, custom_headers=None, raw=False,
+      **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - description: 'The name of the data masking rule.
+
+        '
+      id: data_masking_rule_name
+      type:
+      - str
+    - description: 'The required parameters for creating or updating a
+
+        data masking rule.
+
+        '
+      id: parameters
+      type:
+      - azure.mgmt.sql.models.DataMaskingRule
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - DataMaskingRule
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_rule
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_geo_backup_policy
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: create_or_update_geo_backup_policy
+  source:
+    id: create_or_update_geo_backup_policy
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 441
+  summary: 'Updates a database geo backup policy.
+
+    '
+  syntax:
+    content: create_or_update_geo_backup_policy(resource_group_name, server_name,
+      database_name, state, custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - description: 'The state of the geo backup policy. Possible values
+
+        include: ''Disabled'', ''Enabled''
+
+        '
+      id: state
+      type:
+      - 'str or @azure.mgmt.sql.models.GeoBackupPolicyState
+
+        '
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - GeoBackupPolicy
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_geo_backup_policy
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_long_term_retention_policy
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: create_or_update_long_term_retention_policy
+  source:
+    id: create_or_update_long_term_retention_policy
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 2601
+  summary: 'Creates or updates a database backup long term retention policy.
+
+    '
+  syntax:
+    content: create_or_update_long_term_retention_policy(resource_group_name, server_name,
+      database_name, state, recovery_services_backup_policy_resource_id, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database
+
+        '
+      id: database_name
+      type:
+      - str
+    - description: 'The status of the backup long term retention policy.
+
+        Possible values include: ''Disabled'', ''Enabled''
+
+        '
+      id: state
+      type:
+      - 'str or @azure.mgmt.sql.models.BackupLongTermRetentionPolicyState
+
+        '
+    - description: 'The azure recovery
+
+        services backup protection policy resource id
+
+        '
+      id: recovery_services_backup_policy_resource_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - 'AzureOperationPoller
+
+        instance that returns BackupLongTermRetentionPolicy'
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_long_term_retention_policy
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
   langs:
   - python
@@ -363,7 +753,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1897
+    startLine: 2452
   summary: 'Creates or updates a database''s threat detection policy.
 
     '
@@ -400,7 +790,7 @@ items:
         '
       id: parameters
       type:
-      - azure.mgmt.sql.models
+      - azure.mgmt.sql.models.DatabaseSecurityAlertPolicy
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -441,7 +831,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1597
+    startLine: 2151
   summary: 'Creates or updates a database''s transparent data encryption
 
     configuration.
@@ -483,7 +873,7 @@ items:
         '
       id: status
       type:
-      - 'str or @azure.mgmt.sql.models
+      - 'str or @azure.mgmt.sql.models.TransparentDataEncryptionStatus
 
         '
     - defaultValue: None
@@ -526,7 +916,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1231
+    startLine: 1785
   summary: 'Deletes a database.
 
     '
@@ -596,7 +986,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 568
+    startLine: 1122
   summary: 'Deletes a database replication link. Cannot be done during failover.
 
     '
@@ -674,7 +1064,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 314
+    startLine: 868
   summary: 'Exports a database to a bacpac.
 
     '
@@ -709,7 +1099,7 @@ items:
         '
       id: parameters
       type:
-      - azure.mgmt.sql.models
+      - azure.mgmt.sql.models.ExportRequest
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -752,7 +1142,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 705
+    startLine: 1259
   summary: 'Sets which replica database is primary by failing over from the current
 
     primary replica database.
@@ -834,7 +1224,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 794
+    startLine: 1348
   summary: 'Sets which replica database is primary by failing over from the current
 
     primary replica database. This operation might result in data loss.
@@ -916,7 +1306,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1292
+    startLine: 1846
   summary: 'Gets a database.
 
     '
@@ -985,6 +1375,76 @@ items:
   exceptions:
   - description: CloudError
     type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_backup_long_term_retention_policy
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: get_backup_long_term_retention_policy
+  source:
+    id: get_backup_long_term_retention_policy
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 2531
+  summary: 'Returns a database backup long term retention policy.
+
+    '
+  syntax:
+    content: get_backup_long_term_retention_policy(resource_group_name, server_name,
+      database_name, custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - BackupLongTermRetentionPolicy
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get_backup_long_term_retention_policy
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
   langs:
   - python
@@ -997,7 +1457,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 2052
+    startLine: 2785
   summary: 'Gets a database''s blob auditing policy.
 
     '
@@ -1057,6 +1517,146 @@ items:
   exceptions:
   - description: CloudError
     type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_data_masking_policy
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: get_data_masking_policy
+  source:
+    id: get_data_masking_policy
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 211
+  summary: 'Gets a database data masking policy.
+
+    '
+  syntax:
+    content: get_data_masking_policy(resource_group_name, server_name, database_name,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - DataMaskingPolicy
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get_data_masking_policy
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_geo_backup_policy
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: get_geo_backup_policy
+  source:
+    id: get_geo_backup_policy
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 523
+  summary: 'Gets a geo backup policy.
+
+    '
+  syntax:
+    content: get_geo_backup_policy(resource_group_name, server_name, database_name,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - GeoBackupPolicy
+      - 'ClientRawResponse
+
+        if raw=true'
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get_geo_backup_policy
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
   langs:
   - python
@@ -1069,7 +1669,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 633
+    startLine: 1187
   summary: 'Gets a database replication link.
 
     '
@@ -1145,7 +1745,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1449
+    startLine: 2003
   summary: 'Gets a service tier advisor.
 
     '
@@ -1221,7 +1821,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1827
+    startLine: 2381
   summary: 'Gets a database''s threat detection policy.
 
     '
@@ -1293,7 +1893,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1680
+    startLine: 2234
   summary: 'Gets a database''s transparent data encryption configuration.
 
     '
@@ -1365,7 +1965,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 116
+    startLine: 669
   summary: 'Imports a bacpac into a new database. .
 
     '
@@ -1396,7 +1996,7 @@ items:
         '
       id: parameters
       type:
-      - azure.mgmt.sql.models
+      - azure.mgmt.sql.models.ImportRequest
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -1439,7 +2039,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1366
+    startLine: 1920
   summary: 'Returns a list of databases in a server.
 
     '
@@ -1508,6 +2108,140 @@ items:
   exceptions:
   - description: CloudError
     type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_data_masking_rules
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_data_masking_rules
+  source:
+    id: list_data_masking_rules
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 364
+  summary: 'Gets a list of database data masking rules.
+
+    '
+  syntax:
+    content: list_data_masking_rules(resource_group_name, server_name, database_name,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - DataMaskingRulePaged
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_data_masking_rules
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_geo_backup_policies
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_geo_backup_policies
+  source:
+    id: list_geo_backup_policies
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 593
+  summary: 'Returns a list of geo backup policies.
+
+    '
+  syntax:
+    content: list_geo_backup_policies(resource_group_name, server_name, database_name,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    return:
+      type:
+      - GeoBackupPolicyPaged
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_geo_backup_policies
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - description: CloudError
+    type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
   langs:
   - python
@@ -1520,7 +2254,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 492
+    startLine: 1046
   summary: 'Returns database metric definitions.
 
     '
@@ -1587,7 +2321,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 413
+    startLine: 967
   summary: 'Returns database metrics.
 
     '
@@ -1662,7 +2396,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 883
+    startLine: 1437
   summary: 'Lists a database''s replication links.
 
     '
@@ -1729,7 +2463,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 39
+    startLine: 49
   summary: 'Returns a list of database restore points.
 
     '
@@ -1798,7 +2532,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1521
+    startLine: 2075
   summary: 'Returns service tier advisors for specified database.
 
     '
@@ -1865,7 +2599,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1750
+    startLine: 2304
   summary: 'Returns a database''s transparent data encryption operation result.
 
     '
@@ -1934,7 +2668,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1976
+    startLine: 2709
   summary: 'Returns database usages.
 
     '
@@ -2001,7 +2735,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 959
+    startLine: 1513
   summary: 'Pauses a data warehouse.
 
     '
@@ -2073,7 +2807,7 @@ items:
       branch: master
       path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1043
+    startLine: 1597
   summary: 'Resumes a data warehouse.
 
     '
@@ -2145,6 +2879,26 @@ references:
   name: create_or_update_blob_auditing_policy
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_policy
+  isExternal: false
+  name: create_or_update_data_masking_policy
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_policy
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_rule
+  isExternal: false
+  name: create_or_update_data_masking_rule
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_data_masking_rule
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_geo_backup_policy
+  isExternal: false
+  name: create_or_update_geo_backup_policy
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_geo_backup_policy
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_long_term_retention_policy
+  isExternal: false
+  name: create_or_update_long_term_retention_policy
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_long_term_retention_policy
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
   isExternal: false
   name: create_or_update_threat_detection_policy
@@ -2185,11 +2939,26 @@ references:
   name: get
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.get
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_backup_long_term_retention_policy
+  isExternal: false
+  name: get_backup_long_term_retention_policy
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get_backup_long_term_retention_policy
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
   isExternal: false
   name: get_blob_auditing_policy
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_data_masking_policy
+  isExternal: false
+  name: get_data_masking_policy
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get_data_masking_policy
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_geo_backup_policy
+  isExternal: false
+  name: get_geo_backup_policy
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get_geo_backup_policy
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
   isExternal: false
   name: get_replication_link
@@ -2220,6 +2989,16 @@ references:
   name: list_by_server
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_data_masking_rules
+  isExternal: false
+  name: list_data_masking_rules
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_data_masking_rules
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_geo_backup_policies
+  isExternal: false
+  name: list_geo_backup_policies
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_geo_backup_policies
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
   isExternal: false
   name: list_metric_definitions
