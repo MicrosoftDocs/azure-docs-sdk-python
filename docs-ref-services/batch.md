@@ -26,13 +26,13 @@ Use the Azure Batch management libraries to create and delete batch accounts, re
 ### Client library
 
 ```bash
-pip install azure-bash
+pip install azure-batch
 ```
 
 ### Management 
 
 ```bash
-pip install azure-mgmt-bash
+pip install azure-mgmt-batch
 ```
 
 ## Example
