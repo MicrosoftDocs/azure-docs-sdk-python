@@ -17,16 +17,15 @@ for external_Link in EXTERNAL_LINKS:
     for role_key, role_value in inventory.items():
         if role_key.startswith('py:'):
             for ref_name, ref_value in role_value.items():
+                title_name = ref_name
+
+                # Only use last element in ref_name for exception
+                if role_key == 'py:exception':
+                    title_name = ref_name.split('.')[-1]
                 xref_map.append({'uid': ref_name,
-                                 'name': ref_name,
+                                 'name': title_name,
                                  'href': ref_value[2],
                                  'fullName': ref_name})
 
 with open('xrefmap.yml', 'w', encoding='utf8') as out_file:
     yaml.dump({'references': xref_map}, out_file, default_flow_style=False, allow_unicode=True)
-
-
-
-
-
-
