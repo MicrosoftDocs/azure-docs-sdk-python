@@ -42,6 +42,8 @@ Create and manage Azure SQL Database resources in your subscription with the man
 ```bash
 pip install azure-mgmt-sql
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.sql)
 
 ### Example
 
@@ -72,7 +74,7 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 
 ## Samples
 
-[Create and manage SQL databases](https://azure.microsoft.com/resources/samples/sql-database-python-manage)
+[Create and manage SQL databases](https://github.com/Azure-Samples/sql-database-python-manage)
 [Use Python to connect and query data](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python)
 
 
