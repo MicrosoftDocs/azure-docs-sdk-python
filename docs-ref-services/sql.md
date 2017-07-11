@@ -74,8 +74,12 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 
 ## Samples
 
-[Create and manage SQL databases](https://github.com/Azure-Samples/sql-database-python-manage)
-[Use Python to connect and query data](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python)
+[Create and manage SQL databases][1]    
+[Use Python to connect and query data][2]   
+
+
+[1]: https://github.com/Azure-Samples/sql-database-python-manage
+[2]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
 
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=SQL) of Azure SQL database samples. 
