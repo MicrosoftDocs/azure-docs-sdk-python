@@ -57,7 +57,7 @@ ms.service: multiple
 </ul>
 
 
-## 5-Minute quickstarts
+## 5-Minute Quickstarts
 Learn how to build Python apps with Azure services.
 <ul>
    <li><a href="https://docs.microsoft.com/azure/app-service-web/app-service-web-get-started-python">Deploy a Python webapp</a></li>
