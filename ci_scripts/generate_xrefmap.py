@@ -17,11 +17,8 @@ for external_Link in EXTERNAL_LINKS:
     for role_key, role_value in inventory.items():
         if role_key.startswith('py:'):
             for ref_name, ref_value in role_value.items():
-                title_name = ref_name
-
-                # Only use last element in ref_name for exception
-                if role_key == 'py:exception':
-                    title_name = ref_name.split('.')[-1]
+                # Only use last element in ref_name
+                title_name = ref_name.split('.')[-1]
                 xref_map.append({'uid': ref_name,
                                  'name': title_name,
                                  'href': ref_value[2],
