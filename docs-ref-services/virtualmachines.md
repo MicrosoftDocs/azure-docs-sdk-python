@@ -25,7 +25,7 @@ To get started with Azure Virtual Machines, see [Create a Linux virtual machine 
 
 Create, configure, manage and scale Windows and Linux virtual machines in Azure from your code with the management API.
 
-Install the libraries via pip.
+Install the library via pip.
 
 ```bash
 pip install azure-mgmt-compute 
