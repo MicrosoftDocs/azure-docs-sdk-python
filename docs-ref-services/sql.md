@@ -20,7 +20,10 @@ ms.service: sql-database
 Work with data stored in  [Azure SQL Database](https://docs.microsoft.com/azure/sql-database/sql-database-technical-overview) from Python with the Microsoft ODBC driver and pyodbc. 
 
 ## Client ODBC driver and pyodbc
-Connect to the Azure SQL Database from your applications using the [Microsoft ODBC driver and pyodbc](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries).
+```bash
+pip install pyodbc
+```
+More details about installing the python and database communication libraries can be found [here](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries).
 
 ### Example
 
