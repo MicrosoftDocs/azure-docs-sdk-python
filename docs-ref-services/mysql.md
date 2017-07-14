@@ -16,16 +16,14 @@ ms.service: mysql
 
 ## Overview
 
-The recommended client library for accessing Azure Database for MySQL is the Microsoft [ODBC driver](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries). Use the ODBC driver to connect to the database and execute SQL statements directly.
+Work with resources and data stored in [Azure MySQL Database](/azure/mysql/overview) from python with the MySQL manager and pyodbc.
 
-Learn more about [Azure Database for MySQL](https://docs.microsoft.com/azure/MySQL/).
+## Client ODBC driver and pyodbc
 
-## Install the libraries
-```bash
-pip install azure-mgmt-rdbms
-```
+The recommended client library for accessing Azure Database for MySQL is the Microsoft [ODBC driver](/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries). Use the ODBC driver to connect to the database and execute SQL statements directly.
 
-## Example
+### Example
+
 Connect to a Azure Database for MySQL and select all records in the sales table. You can get the ODBC connection string for the database from the Azure Portal.
 
 ```python
@@ -42,4 +40,26 @@ selectsql = "SELECT * FROM SALES"
 cursor.execute(selectsql)
 ```
 
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
+## Management API
+
+Create and manage MySQL resources in your subscription with the management API.
+
+```bash
+pip install azure-mgmt-rdbms
+```
+
+### Example
+
+Create a MySQL Database resource and restrict access to a range of IP addresses using a firewall rule.
+
+# EXTREMELY ENORMOUS __TODO__: CDA/DEV PLEASE WRITE THIS SAMPLE.
+
+There's some issue where the required `create_mode` param doesn't seem to actually accept standard MySQL `create_mode` values. Who knows.
+
+### Samples
+
+* [Use Python to connect and query data][1]   
+
+[1]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
+
+View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=SQL) of Azure SQL database samples. 

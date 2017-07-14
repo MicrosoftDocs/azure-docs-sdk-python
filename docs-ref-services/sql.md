@@ -17,9 +17,10 @@ ms.service: sql-database
 
 ## Overview
 
-Work with data stored in  [Azure SQL Database](https://docs.microsoft.com/azure/sql-database/sql-database-technical-overview) from Python with the Microsoft ODBC driver and pyodbc. 
+Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-technical-overview) from Python with the Microsoft ODBC driver and pyodbc. 
 
 ## Client ODBC driver and pyodbc
+
 Connect to the Azure SQL Database from your applications using the [Microsoft ODBC driver and pyodbc](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries).
 
 ### Example
@@ -86,9 +87,7 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 * [Create and manage SQL databases][1]    
 * [Use Python to connect and query data][2]   
 
-
 [1]: https://github.com/Azure-Samples/sql-database-python-manage
 [2]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
-
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=SQL) of Azure SQL database samples. 
