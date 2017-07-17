@@ -1,7 +1,7 @@
 ---
 title: Azure PostgreSQL libraries for Python
 description: 
-keywords: Azure, Python, SDK, API, SQL, database, PostGres, PostgreSQL
+keywords: Azure, Python, SDK, API, SQL, database, Postgres, PostgreSQL
 author: lisawong19
 ms.author: liwong
 manager: douge
@@ -25,33 +25,75 @@ The recommended client library for accessing Azure Database for PostgreSQL is th
 
 ### Example 
 
-Connect to a Azure Database for PostgreSQL and select all records in the sales table. You can get the ODBC connection string for the database from the Azure Portal.
+Connect to a Azure Database for PostgreSQL and select all records in the `SALES` table. You can get the ODBC connection string for the database from the Azure Portal.
 
 ```python
 import pyodbc
 
-server = 'your_server_name.postgres.database.azure.com'
+SERVER = 'your_server_name.postgres.database.azure.com'
 DATABASE = 'your_db_name'
 USERNAME = 'your_username'
 PASSWORD = 'your_password'
 
-driver = '{PostgreSQL ODBC Driver}'
+DRIVER = '{PostgreSQL ODBC Driver}'
 cnxn = pyodbc.connect(
-    'DRIVER=' + driver + ';PORT=5432;SERVER=' + server + ';PORT=5432;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+    'DRIVER=' + DRIVER + ';PORT=5432;SERVER=' + SERVER +
+    ';PORT=5432;DATABASE=' + DATABASE + ';UID=' + USERNAME +
+    ';PWD=' + PASSWORD)
 cursor = cnxn.cursor()
-selectsql = "SELECT * FROM SALES"
+selectsql = "SELECT * FROM SALES" # SALES is an example table name
 cursor.execute(selectsql)
 ```
 
 ## Management API
+### Requirements
+You must install the PostgreSQL management libraries for Python.
 ```bash
-pip install azure-mgmt-rdbms-postgresql
+import time
+
+pip3 install azure-common  # needed for access credentials
+pip3 install azure-mgmt-rdbms
 ```
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure.mgmt.rdbms.postgresql)
+
+You will also need to create an [Active Directory Service Principal](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?toc=%2fazure%2fazure-resource-manager%2ftoc.json) to obtain the necessary credentials for programmatic access to management functionality.
+This can be done via the Azure CLI 2.0 as follows:
+
+```bash
+az ad sp create-for-rbac --name "MY-PRINCIPAL-NAME" --password "STRONG-SECRET-PASSWORD"
+```
 
 ### Example
+In this example we will create a new Postgres database on our existing Postgres server.
 ```python
+import time
+
+from azure.common.credentials import ServicePrincipalCredentials as Credentials
+from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient as PSQLClient
+
+SP_APP_ID = "YOUR-SERVICE-PRINCIPAL-APP-ID"
+SP_PASSWORD = "YOUR-SERVICE_PRINCIPAL-PASSWORD"
+SP_TENANT = "YOUR-SERVICE-PRINCIPAL-TENANT-ID"
+
+SUBSCRIPTION_ID = "YOUR-AZURE-SUBSCRIPTION-ID"
+RESOURCE_GROUP = "YOUR-AZURE-RESOURCE-GROUP-WITH-POSTGRES"
+POSTGRES_SERVER = "YOUR-POSTGRES-SERVER-NAME"
+DB_NAME = "YOUR-DESIRED-DATABASE-NAME"
+
+
+creds = Credentials(client_id=SP_APP_ID, secret=SP_PASSWORD, tenant=SP_TENANT)
+client = PSQLClient(credentials=creds, subscription_id=SUBSCRIPTION_ID)
+
+job = client.databases.create_or_update(resource_group_name=RESOURCE_GROUP,
+    server_name=POSTGRES_SERVER, database_name=DB_NAME)
+
+exponential_backoff_factor = 2
+while (not job.done()):
+  time.sleep(0.1 * exponential_backoff_factor)
+  exponential_backoff_factor**=2
+
+database = job.result()
 ```
 
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.rdbms.postgresql)
 
