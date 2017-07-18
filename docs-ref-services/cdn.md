@@ -48,10 +48,9 @@ profile = cdn_client.profiles.create('my-resource-group',
                                       "sku": {
                                         "name": "sku_tier"} 
                                     })
- new_endpoint = client.endpoints.create('my-resource-group', 
-                                        'cdn-name', 
-                                        'unique-endpoint-name', 
-                                        { 
+new_endpoint = client.endpoints.create('my-resource-group',                                       'cdn-name',
+                                       'unique-endpoint-name', 
+                                       { 
                                             "location": "any_region", 
                                             "origins": [
                                                 {
