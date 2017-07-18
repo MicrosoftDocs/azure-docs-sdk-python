@@ -30,7 +30,7 @@ pip install azure-mgmt-redis
 ```
 
 [!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/azure.mgmt.sql)
+[Explore the Management APIs](/python/api/azure.mgmt.redis)
 
 ### Example
 
