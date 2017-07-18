@@ -26,7 +26,7 @@ To get started with Azure DNS, see [Get started with Azure DNS using the Azure p
 
 Create and manage DNS zones and records with the management API.
 
-Install the management APIs with pip.
+Install the management package with pip.
 
 ```bash
 pip install azure-mgmt-dns

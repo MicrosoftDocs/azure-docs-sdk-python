@@ -26,7 +26,7 @@ To get started with Azure CDN, see [Getting started with Azure CDN](https://docs
 
 Create, query, and manage Azure CDNs with the management API.
 
-Install the management API via pip.
+Install the management package via pip.
 
 ```bash
 pip install azure-mgmt-cdn

@@ -16,11 +16,17 @@ ms.service: multiple
 
 # Azure Network libraries for python
 
-## Install the libraries
+## Overview
 
+## Management APIs
 
-### Management
+Install the management package with pip.
 
 ```bash
 pip install azure-mgmt-network
 ```
+
+### Example
+
+### Samples
+
