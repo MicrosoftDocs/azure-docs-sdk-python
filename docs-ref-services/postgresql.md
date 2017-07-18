@@ -65,10 +65,8 @@ az ad sp create-for-rbac --name "MY-PRINCIPAL-NAME" --password "STRONG-SECRET-PA
 ### Example
 In this example we will create a new Postgres database on our existing Postgres server.
 ```python
-import time
-
-from azure.common.credentials import ServicePrincipalCredentials as Credentials
-from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient as PSQLClient
+from azure.common.credentials import ServicePrincipalCredentials
+from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient
 
 SP_APP_ID = "YOUR-SERVICE-PRINCIPAL-APP-ID"
 SP_PASSWORD = "YOUR-SERVICE_PRINCIPAL-PASSWORD"
@@ -80,18 +78,13 @@ POSTGRES_SERVER = "YOUR-POSTGRES-SERVER-NAME"
 DB_NAME = "YOUR-DESIRED-DATABASE-NAME"
 
 
-creds = Credentials(client_id=SP_APP_ID, secret=SP_PASSWORD, tenant=SP_TENANT)
-client = PSQLClient(credentials=creds, subscription_id=SUBSCRIPTION_ID)
+credentials = ServicePrincipalCredentials(SP_APP_ID, SP_PASSWORD, tenant=SP_TENANT)
+client = PostgreSQLManagementClient(credentials, SUBSCRIPTION_ID)
 
-job = client.databases.create_or_update(resource_group_name=RESOURCE_GROUP,
+job_creation_poller = client.databases.create_or_update(
+    resource_group_name=RESOURCE_GROUP,
     server_name=POSTGRES_SERVER, database_name=DB_NAME)
-
-exponential_backoff_factor = 2
-while (not job.done()):
-  time.sleep(0.1 * exponential_backoff_factor)
-  exponential_backoff_factor**=2
-
-database = job.result()
+job = job_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]
