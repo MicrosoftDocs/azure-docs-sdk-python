@@ -39,8 +39,6 @@ Create a new DNS zone.
 ```python
 from azure.mgmt.dns import DnsManagementClient
 
-# ...
-
 dns_client = DnsManagementClient(credentials, 'your-subscription-id')
 zone = dns_client.zones.create_or_update('resource-group',
                                          'zone_name_no_dot',

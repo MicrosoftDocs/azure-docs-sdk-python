@@ -41,8 +41,6 @@ Create a virtual network and an associated subnet.
 ```python
 from azure.mgmt.network import NetworkManagementClient
 
-# ...
-
 GROUP_NAME = 'resource-group'
 VNET_NAME = 'your-vnet-identifier'
 LOCATION = 'region'
