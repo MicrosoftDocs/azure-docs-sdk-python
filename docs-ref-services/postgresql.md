@@ -55,30 +55,18 @@ pip3 install azure-common  # needed for access credentials
 pip3 install azure-mgmt-rdbms
 ```
 
-You will also need to create an [Active Directory Service Principal](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?toc=%2fazure%2fazure-resource-manager%2ftoc.json) to obtain the necessary credentials for programmatic access to management functionality.
-This can be done via the Azure CLI 2.0 as follows:
-
-```bash
-az ad sp create-for-rbac --name "MY-PRINCIPAL-NAME" --password "STRONG-SECRET-PASSWORD"
-```
+Please see the [Python SDK authentication](https://docs.microsoft.com/python/azure/python-sdk-azure-authenticate) page for details on obtaining credentials to authenticate with the management client.
 
 ### Example
 In this example we will create a new Postgres database on our existing Postgres server.
 ```python
-from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient
-
-SP_APP_ID = "YOUR-SERVICE-PRINCIPAL-APP-ID"
-SP_PASSWORD = "YOUR-SERVICE_PRINCIPAL-PASSWORD"
-SP_TENANT = "YOUR-SERVICE-PRINCIPAL-TENANT-ID"
 
 SUBSCRIPTION_ID = "YOUR-AZURE-SUBSCRIPTION-ID"
 RESOURCE_GROUP = "YOUR-AZURE-RESOURCE-GROUP-WITH-POSTGRES"
 POSTGRES_SERVER = "YOUR-POSTGRES-SERVER-NAME"
 DB_NAME = "YOUR-DESIRED-DATABASE-NAME"
 
-
-credentials = ServicePrincipalCredentials(SP_APP_ID, SP_PASSWORD, tenant=SP_TENANT)
 client = PostgreSQLManagementClient(credentials, SUBSCRIPTION_ID)
 
 job_creation_poller = client.databases.create_or_update(
