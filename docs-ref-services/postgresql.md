@@ -30,10 +30,10 @@ Connect to a Azure Database for PostgreSQL and select all records in the `SALES`
 ```python
 import pyodbc
 
-SERVER = 'your_server_name.postgres.database.azure.com'
-DATABASE = 'your_db_name'
-USERNAME = 'your_username'
-PASSWORD = 'your_password'
+SERVER = 'YOUR_SERVER_NAME.postgres.database.azure.com'
+DATABASE = 'YOUR_DB_NAME'
+USERNAME = 'YOUR_USERNAME'
+PASSWORD = 'YOUR_PASSWORD'
 
 DRIVER = '{PostgreSQL ODBC Driver}'
 cnxn = pyodbc.connect(
@@ -49,9 +49,6 @@ cursor.execute(selectsql)
 ### Requirements
 You must install the PostgreSQL management libraries for Python.
 ```bash
-import time
-
-pip3 install azure-common  # needed for access credentials
 pip3 install azure-mgmt-rdbms
 ```
 
@@ -62,10 +59,10 @@ In this example we will create a new Postgres database on our existing Postgres 
 ```python
 from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient
 
-SUBSCRIPTION_ID = "YOUR-AZURE-SUBSCRIPTION-ID"
-RESOURCE_GROUP = "YOUR-AZURE-RESOURCE-GROUP-WITH-POSTGRES"
-POSTGRES_SERVER = "YOUR-POSTGRES-SERVER-NAME"
-DB_NAME = "YOUR-DESIRED-DATABASE-NAME"
+SUBSCRIPTION_ID = "YOUR_AZURE_SUBSCRIPTION_ID"
+RESOURCE_GROUP = "YOUR_AZURE_RESOURCE_GROUP_WITH_POSTGRES"
+POSTGRES_SERVER = "YOUR_POSTGRES_SERVER_NAME"
+DB_NAME = "YOUR_DESIRED_DATABASE_NAME"
 
 client = PostgreSQLManagementClient(credentials, SUBSCRIPTION_ID)
 
