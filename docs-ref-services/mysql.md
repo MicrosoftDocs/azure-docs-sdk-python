@@ -27,7 +27,7 @@ The recommended client library for accessing Azure Database for MySQL is the Mic
 Connect to a Azure Database for MySQL and select all records in the sales table. You can get the ODBC connection string for the database from the Azure Portal.
 
 ```python
-SERVER = 'YOUR_SEVER_NAME.mysql.database.azure.com'
+SERVER = 'YOUR_SEVER_NAME' + '.mysql.database.azure.com'
 DATABASE = 'YOUR_DATABASE_NAME'
 USERNAME = 'YOUR_MYSQL_USERNAME'
 PASSWORD = 'YOUR_MYSQL_PASSWORD'
@@ -47,7 +47,7 @@ Create and manage MySQL resources in your subscription with the management API.
 ### Requirements
 You must install the MySQL management libraries for Python.
 ```bash
-pip3 install azure-mgmt-rdbms
+pip install azure-mgmt-rdbms
 ```
 
 Please see the [Python SDK authentication](https://docs.microsoft.com/python/azure/python-sdk-azure-authenticate) page for details on obtaining credentials to authenticate with the management client.
@@ -72,7 +72,7 @@ LOCATION = "westus"  # example Azure availability zone, should match resource gr
 client = MySQLManagementClient(credentials=creds,
     subscription_id=SUBSCRIPTION_ID)
 
-job_creation_poller = client.servers.create_or_update(
+server_creation_poller = client.servers.create_or_update(
     resource_group_name=RESOURCE_GROUP,
     server_name=MYSQL_SERVER,
     ServerForCreate(
@@ -85,10 +85,10 @@ job_creation_poller = client.servers.create_or_update(
     )
 )
 
-server = job_creation_poller.result()
+server = server_creation_poller.result()
 
 # Open access to this server for IPs
-job_creation_poller = client.firewall_rules.create_or_update(
+rule_creation_poller = client.firewall_rules.create_or_update(
     RESOURCE_GROUP
     MYSQL_SERVER,
     "some_custom_ip_range_whitelist_rule_name",  # Custom firewall rule name
@@ -96,17 +96,7 @@ job_creation_poller = client.firewall_rules.create_or_update(
     "167.220.0.235"  # End ip range
 )
 
-firewall_rule = job_creation_poller.result()
-```
-
-
-
-client = PostgreSQLManagementClient(credentials, SUBSCRIPTION_ID)
-
-job_creation_poller = client.databases.create_or_update(
-    resource_group_name=RESOURCE_GROUP,
-    server_name=POSTGRES_SERVER, database_name=DB_NAME)
-job = job_creation_poller.result()
+firewall_rule = rule_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]

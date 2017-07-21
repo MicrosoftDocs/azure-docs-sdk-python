@@ -49,7 +49,7 @@ cursor.execute(selectsql)
 ### Requirements
 You must install the PostgreSQL management libraries for Python.
 ```bash
-pip3 install azure-mgmt-rdbms
+pip install azure-mgmt-rdbms
 ```
 
 Please see the [Python SDK authentication](https://docs.microsoft.com/python/azure/python-sdk-azure-authenticate) page for details on obtaining credentials to authenticate with the management client.
@@ -66,10 +66,10 @@ DB_NAME = "YOUR_DESIRED_DATABASE_NAME"
 
 client = PostgreSQLManagementClient(credentials, SUBSCRIPTION_ID)
 
-job_creation_poller = client.databases.create_or_update(
+db_creation_poller = client.databases.create_or_update(
     resource_group_name=RESOURCE_GROUP,
     server_name=POSTGRES_SERVER, database_name=DB_NAME)
-job = job_creation_poller.result()
+db = db_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]
