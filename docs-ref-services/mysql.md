@@ -27,16 +27,16 @@ The recommended client library for accessing Azure Database for MySQL is the Mic
 Connect to a Azure Database for MySQL and select all records in the sales table. You can get the ODBC connection string for the database from the Azure Portal.
 
 ```python
-server = SERVER_NAME+'.mysql.database.azure.com'
-database = DATABASE_NAME
-username = USER_NAME
-password = PASSWORD
-driver = '{MySQL ODBC 5.3 UNICODE Driver}'
+SERVER = 'YOUR_SEVER_NAME' + '.mysql.database.azure.com'
+DATABASE = 'YOUR_DATABASE_NAME'
+USERNAME = 'YOUR_MYSQL_USERNAME'
+PASSWORD = 'YOUR_MYSQL_PASSWORD'
 
+DRIVER = '{MySQL ODBC 5.3 UNICODE Driver}'
 cnxn = pyodbc.connect(
-    'DRIVER=' + driver + ';PORT=3306;SERVER=' + server + ';PORT=3306;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+    'DRIVER=' + DRIVER + ';PORT=3306;SERVER=' + SERVER + ';PORT=3306;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD)
 cursor = cnxn.cursor()
-selectsql = "SELECT * FROM SALES"
+selectsql = "SELECT * FROM SALES"  # SALES is an example table name
 cursor.execute(selectsql)
 ```
 
@@ -44,22 +44,60 @@ cursor.execute(selectsql)
 
 Create and manage MySQL resources in your subscription with the management API.
 
+### Requirements
+You must install the MySQL management libraries for Python.
 ```bash
 pip install azure-mgmt-rdbms
 ```
 
+Please see the [Python SDK authentication](https://docs.microsoft.com/python/azure/python-sdk-azure-authenticate) page for details on obtaining credentials to authenticate with the management client.
+
 ### Example
 
-Create a MySQL Database resource and restrict access to a range of IP addresses using a firewall rule.
+Create a MySQL 5.7 Database resource and restrict access to a range of IP addresses using a firewall rule.
 
-# EXTREMELY ENORMOUS __TODO__: CDA/DEV PLEASE WRITE THIS SAMPLE.
+```python
 
-There's some issue where the required `create_mode` param doesn't seem to actually accept standard MySQL `create_mode` values. Who knows.
+from azure.mgmt.rdbms.mysql import MySQLManagementClient
+from azure.mgmt.rdbms.mysql.models import ServerForCreate, ServerPropertiesForDefaultCreate, ServerVersion
 
-### Samples
+SUBSCRIPTION_ID = "YOUR_AZURE_SUBSCRIPTION_ID"
+RESOURCE_GROUP = "YOUR_AZURE_RESOURCE-GROUP_WITH_POSTGRES"
+MYSQL_SERVER = "YOUR_DESIRED_MYSQL_SERVER_NAME"
+MYSQL_ADMIN_USER = "YOUR_MYSQL_ADMIN_USERNAME"
+MYSQL_ADMIN_PASSWORD = "YOUR_MYSQL_ADMIN_PASSOWRD"
+LOCATION = "westus"  # example Azure availability zone, should match resource group
 
-* [Use Python to connect and query data][1]   
 
-[1]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
+client = MySQLManagementClient(credentials=creds,
+    subscription_id=SUBSCRIPTION_ID)
 
-View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=SQL) of Azure SQL database samples. 
+server_creation_poller = client.servers.create_or_update(
+    resource_group_name=RESOURCE_GROUP,
+    server_name=MYSQL_SERVER,
+    ServerForCreate(
+        ServerPropertiesForDefaultCreate(
+            administrator_login=MYSQL_ADMIN_USER,
+            administrator_login_password=MYSQL_ADMIN_PASSWORD,
+            version=ServerVersion.five_full_stop_seven
+        ),
+        location=LOCATION
+    )
+)
+
+server = server_creation_poller.result()
+
+# Open access to this server for IPs
+rule_creation_poller = client.firewall_rules.create_or_update(
+    RESOURCE_GROUP
+    MYSQL_SERVER,
+    "some_custom_ip_range_whitelist_rule_name",  # Custom firewall rule name
+    "123.123.123.123",  # Start ip range
+    "167.220.0.235"  # End ip range
+)
+
+firewall_rule = rule_creation_poller.result()
+```
+
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.rdbms.mysql)

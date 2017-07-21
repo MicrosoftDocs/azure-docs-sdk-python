@@ -33,15 +33,16 @@ Connect to a SQL database and select all records in a table.
 ```python
 import pyodbc 
 
-SERVER = 'your_server_name.database.windows.net'
-DATABASE = 'your_database_name'
-USERNAME = 'your_username'
-PASSWORD = 'your_password'
+SERVER = 'YOUR_SERVER_NAME.database.windows.net'
+DATABASE = 'YOUR_DATABASE_NAME'
+USERNAME = 'YOUR_DB_USERNAME'
+PASSWORD = 'YOUR_DB_PASSWORD'
 
-driver= '{ODBC Driver 13 for SQL Server}'
-cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+SERVER+';PORT=1443;DATABASE='+DATABASE+';UID='+USERNAME+';PWD='+ PASSWORD)
+DRIVER= '{ODBC Driver 13 for SQL Server}'
+cnxn = pyodbc.connect('DRIVER=' + DRIVER + ';PORT=1433;SERVER=' + SERVER +
+    ';PORT=1443;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD)
 cursor = cnxn.cursor()
-selectsql = "SELECT * FROM SALES"
+selectsql = "SELECT * FROM SALES"  # SALES is an example table name
 cursor.execute(selectsql)
 ```
 
@@ -60,8 +61,9 @@ pip install azure-mgmt-sql
 Create a SQL Database resource and restrict access to a range of IP addresses using a firewall rule.
 
 ```python
-RESOURCE_GROUP = 'your_resource_group_name'
-SQL_DB = 'your_sqldb_name'
+RESOURCE_GROUP = 'YOUR_RESOURCE_GROUP_NAME'
+LOCATION = 'eastus'  # example Azure availability zone, should match resource group
+SQL_DB = 'YOUR_SQLDB_NAME'
 
 # Create a SQL server
 server = sql_client.servers.create_or_update(
@@ -70,7 +72,7 @@ server = sql_client.servers.create_or_update(
     {
         'location': LOCATION,
         'version': '12.0', # Required for create
-        'administrator_login': USER_NAME, # Required for create
+        'administrator_login': USERNAME, # Required for create
         'administrator_login_password': PASSWORD # Required for create
     }
 )

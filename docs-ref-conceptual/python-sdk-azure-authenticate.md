@@ -79,7 +79,7 @@ client = ComputeManagementClient(credentials, subscription_id)
 > When using an Azure soverign cloud you must also specify the appropriate base URL (via the constants in `msrestazure.azure_cloud`) when creating the management client. For example for Azure China Cloud:
 > ```python
 > client = ComputeManagementClient(credentials, subscription_id,
-      base_url=AZURE_CHINA_CLOUD.endpoints.active_directory_resource_id)
+>     base_url=AZURE_CHINA_CLOUD.endpoints.active_directory_resource_id)
 > ```
 
 ### CLI-based authentication
