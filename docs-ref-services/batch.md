@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, Batch, processing, scheduling, long-running
 author: lisawong19
 ms.author: liwong
 manager: douge
-ms.date: 06/28/2017
+ms.date: 07/31/2017
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -17,25 +17,19 @@ ms.service: batch
 
 ## Overview
 
-The Azure Batch client libraries let you configure compute nodes and pools, define tasks and configure them to run in jobs, and set up a job manager to control and monitor job execution. [Learn more](https://docs.microsoft.com/en-us/azure/batch/batch-api-basics) about using these objects to run large-scale parallel compute solutions.
+Run large-scale parallel and high-performance computing applications efficiently in the cloud with [Azure Batch](/azure/batch/batch-technical-overview).   
 
-Use the Azure Batch management libraries to create and delete batch accounts, read and regenerate batch account keys, and manage batch account storage.
+To get started with Azure Batch, see [Create a Batch account with the Azure portal](/azure/batch/batch-account-create-portal).
 
 ## Install the libraries
 
-### Client library
+## Client library
+The Azure Batch client libraries let you configure compute nodes and pools, define tasks and configure them to run in jobs, and set up a job manager to control and monitor job execution. [Learn more](/azure/batch/batch-api-basics) about using these objects to run large-scale parallel compute solutions.
 
 ```bash
 pip install azure-batch
 ```
-
-### Management 
-
-```bash
-pip install azure-mgmt-batch
-```
-
-## Example
+### Example
 
 Set up a pool of Linux compute nodes in a batch account:
 
@@ -59,4 +53,53 @@ new_pool.virtual_machine_configuration = vmc
 client.pool.add(new_pool)
 ```
 
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
+## Management API
+Use the Azure Batch management libraries to create and delete batch accounts, read and regenerate batch account keys, and manage batch account storage.
+
+```bash
+pip install azure-mgmt-batch
+```
+
+### Example
+Create an Azure Batch account and configure a new application and Azure storage account for it.
+
+```python
+from azure.mgmt.batch import BatchManagementClient
+from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.storage import StorageManagementClient
+
+LOCATION = 'eastus'
+GROUP_NAME ='batchresourcegroup'
+
+# Create Resource group
+print('Create Resource Group')
+resource_client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
+
+# Create a storage account
+storage_params = azure.mgmt.storage.models.StorageAccountCreateParameters(
+    location=LOCATION,
+    account_type=azure.mgmt.storage.models.AccountType.standard_lrs
+)
+creating = storage_client.storage_accounts.create(
+    RESOURCE_GROUP,
+    'pythonstorageaccount',
+    storage_params
+)
+creating.wait()
+
+# Create a Batch Account, specifying the storage account we want to link
+storage_resource = '/subscriptions/{}/resourceGroups/{}/providers/Microsoft.Storage/storageAccounts/{}'.format(
+    subscription_id,
+    RESOURCE_GROUP,
+    'pythonstorageaccount'
+)
+batch_account = azure.mgmt.batch.models.BatchAccountCreateParameters(
+    location=LOCATION,
+    auto_storage=azure.mgmt.batch.models.AutoStorageBaseProperties(storage_resource)
+)
+creating = batch_client.account.create('MyBatchAccount', LOCATION, batch_account)
+creating.wait()
+```
+
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.batch)
