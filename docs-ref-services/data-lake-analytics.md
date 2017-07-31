@@ -22,6 +22,8 @@ Run big data analysis jobs that scale to massive data sets with [Azure Data Lake
 ## Install the libraries
 
 ## Management API
+Use the management API to manage Data Lake Analytics accounts, jobs, policies, and catalogs.
+
 ```bash
 pip install azure-mgmt-datalake-analytics
 ```
