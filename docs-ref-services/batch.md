@@ -68,31 +68,28 @@ from azure.mgmt.batch import BatchManagementClient
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.storage import StorageManagementClient
 
-LOCATION = 'eastus'
+LOCATION ='eastus'
 GROUP_NAME ='batchresourcegroup'
+STORAGE_ACCOUNT_NAME ='batchstorageaccount'
 
 # Create Resource group
 print('Create Resource Group')
 resource_client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
 
 # Create a storage account
-storage_params = azure.mgmt.storage.models.StorageAccountCreateParameters(
-    location=LOCATION,
-    account_type=azure.mgmt.storage.models.AccountType.standard_lrs
+storage_async_operation = storage_client.storage_accounts.create(
+    GROUP_NAME,
+    STORAGE_ACCOUNT_NAME,
+    StorageAccountCreateParameters(
+        sku=Sku(SkuName.standard_ragrs),
+        kind=Kind.storage,
+        location=LOCATION
+    )
 )
-creating = storage_client.storage_accounts.create(
-    RESOURCE_GROUP,
-    'pythonstorageaccount',
-    storage_params
-)
-creating.wait()
+storage_account = storage_async_operation.result()
 
 # Create a Batch Account, specifying the storage account we want to link
-storage_resource = '/subscriptions/{}/resourceGroups/{}/providers/Microsoft.Storage/storageAccounts/{}'.format(
-    subscription_id,
-    RESOURCE_GROUP,
-    'pythonstorageaccount'
-)
+storage_resource = storage_account.id
 batch_account = azure.mgmt.batch.models.BatchAccountCreateParameters(
     location=LOCATION,
     auto_storage=azure.mgmt.batch.models.AutoStorageBaseProperties(storage_resource)
