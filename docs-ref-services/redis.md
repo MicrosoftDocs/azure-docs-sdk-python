@@ -21,13 +21,18 @@ Redis is an advanced key-value store, where keys can contain data structures suc
 
 Learn more about [Azure Redis Cache](https://docs.microsoft.com/azure/redis-cache/).
 
-## Install the libraries
+## Management API
+
+Create and manage your Redis resources in your subscription with the Redis management API.
 
 ```bash
 pip install azure-mgmt-redis
 ```
 
-## Example
+[!div class="nextstepaction"]
+[Explore the Management APIs](/python/api/azure.mgmt.redis)
+
+### Example
 
 The following example creates a new Redis cache:
 
@@ -46,5 +51,3 @@ redis_cache = redis_client.redis.create_or_update(
 )
 # redis_cache is a RedisResourceWithAccessKey instance
 ```
-
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.

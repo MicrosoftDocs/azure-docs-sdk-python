@@ -1,11 +1,11 @@
 ---
 title: Azure PostgreSQL libraries for Python
 description: 
-keywords: Azure, Python, SDK, API, SQL, database, PostGres, PostgreSQL
+keywords: Azure, Python, SDK, API, SQL, database, Postgres, PostgreSQL
 author: lisawong19
 ms.author: liwong
 manager: douge
-ms.date: 06/12/2017
+ms.date: 07/11/2017
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -16,30 +16,62 @@ ms.service: postgresql
 #Azure PostgreSQL libraries for Python
 
 ## Overview
-The recommended client library for accessing Azure Database for PostgreSQL is the Microsoft [ODBC driver](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries). Use the ODBC driver to connect to the database and execute SQL statements directly.
+Use the ODBC driver and pyodbc to connect to the database and execute SQL statements directly.
 
 Learn more about [Azure Database for PostgreSQL](https://docs.microsoft.com/azure/postgresql/).
 
-## Install the libraries
-```bash
-pip install azure-mgmt-rdbms
-```
-## Example
-Connect to a Azure Database for PostgreSQL and select all records in the sales table. You can get the ODBC connection string for the database from the Azure Portal.
+## Client ODBC driver and pyodbc
+The recommended client library for accessing Azure Database for PostgreSQL is the Microsoft [ODBC driver and pyodbc](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries)
+
+### Example 
+
+Connect to a Azure Database for PostgreSQL and select all records in the `SALES` table. You can get the ODBC connection string for the database from the Azure Portal.
 
 ```python
-server = SERVER_NAME+'.postgres.database.azure.com'
-database = DATABASE_NAME
-username = USER_NAME
-password = PASSWORD
-driver = '{PostgreSQL ODBC Driver}'
+import pyodbc
 
+SERVER = 'YOUR_SERVER_NAME.postgres.database.azure.com'
+DATABASE = 'YOUR_DB_NAME'
+USERNAME = 'YOUR_USERNAME'
+PASSWORD = 'YOUR_PASSWORD'
+
+DRIVER = '{PostgreSQL ODBC Driver}'
 cnxn = pyodbc.connect(
-    'DRIVER=' + driver + ';PORT=5432;SERVER=' + server + ';PORT=5432;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+    'DRIVER=' + DRIVER + ';PORT=5432;SERVER=' + SERVER +
+    ';PORT=5432;DATABASE=' + DATABASE + ';UID=' + USERNAME +
+    ';PWD=' + PASSWORD)
 cursor = cnxn.cursor()
-selectsql = "SELECT * FROM SALES"
+selectsql = "SELECT * FROM SALES" # SALES is an example table name
 cursor.execute(selectsql)
 ```
 
+## Management API
+### Requirements
+You must install the PostgreSQL management libraries for Python.
+```bash
+pip install azure-mgmt-rdbms
+```
 
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
+Please see the [Python SDK authentication](https://docs.microsoft.com/python/azure/python-sdk-azure-authenticate) page for details on obtaining credentials to authenticate with the management client.
+
+### Example
+In this example we will create a new Postgres database on our existing Postgres server.
+```python
+from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient
+
+SUBSCRIPTION_ID = "YOUR_AZURE_SUBSCRIPTION_ID"
+RESOURCE_GROUP = "YOUR_AZURE_RESOURCE_GROUP_WITH_POSTGRES"
+POSTGRES_SERVER = "YOUR_POSTGRES_SERVER_NAME"
+DB_NAME = "YOUR_DESIRED_DATABASE_NAME"
+
+client = PostgreSQLManagementClient(credentials, SUBSCRIPTION_ID)
+
+db_creation_poller = client.databases.create_or_update(
+    resource_group_name=RESOURCE_GROUP,
+    server_name=POSTGRES_SERVER, database_name=DB_NAME)
+db = db_creation_poller.result()
+```
+
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.rdbms.postgresql)
+
