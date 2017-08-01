@@ -105,7 +105,7 @@ for item in metrics_data:
 pip install azure-mgmt-monitor
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/monitoring)
+> [Explore the Management APIs](/python/api/azure.mgmt.monitor)
 
 ### Example
 This example shows how to automatically set up alerts on your resources when they are created to ensure that all resources are monitored correctly.
