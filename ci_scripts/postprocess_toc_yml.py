@@ -1,34 +1,32 @@
 # -*- coding: utf-8 -*-
 
 import io
-import shutil
 import yaml
 
-# Write YAML file
-    #shutil.move('.\\_build\\docfx_yaml\\toc.yml', '.\\_build\\docfx_yaml\\toc.yml.back')
+skipped_level2_packages = [
+    'azure.mgmt.resource.features',
+    'azure.mgmt.resource.links',
+    'azure.mgmt.resource.locks',
+    'azure.mgmt.resource.managedapplications',
+	'azure.mgmt.resource.policy',
+    'azure.mgmt.resource.resources',
+    'azure.mgmt.resource.subscriptions',
+    'azure.mgmt.compute.containerservice',
+    'azure.mgmt.compute.compute'
+]
+
 def rewrite_yml(data):
     with io.open('.\\_build\\docfx_yaml\\toc.yml', 'w', encoding='utf8') as outfile:
         yaml.dump(data, outfile, default_flow_style=False, allow_unicode=True)
 
-        
 with open(".\\_build\\docfx_yaml\\toc.yml", 'r') as stream:
     try:
         data_loaded = yaml.load(stream)
-
-        # should only have one root node: cntk
-        if len(data_loaded) == 1:
-            cntk_node = data_loaded[0]
-            if 'name' in cntk_node:
-                print(cntk_node['name'])
-                cntk_node['name'] = 'Reference'
-
-            # change leave 2 node's name: remove 'cntk' prefix
-            if 'items' in cntk_node:
-                for item in cntk_node['items']:
-                    if 'name' in item:
-                        if item['name'].startswith('cntk.'):
-                            item['name'] = item['name'][5:]
-                            print('update old name to %s' % item['name'])
+        for node in data_loaded:
+            if 'name' in node:
+                if node['name'].startswith('azure.') and node['name'] not in skipped_level2_packages:
+                    node['name'] = node['name'].replace('.', '-')
+                    print('update old name to %s' % node['name'])
 
         rewrite_yml(data_loaded)
     except yaml.YAMLError as exc:
