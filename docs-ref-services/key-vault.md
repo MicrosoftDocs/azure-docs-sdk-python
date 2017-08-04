@@ -33,7 +33,7 @@ Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-k
 ```python
 from azure.keyvault import KeyVaultClient
 
-client = KeyVaultClient(credentials)
+client = KeyVaultClient(credentials, subscription_id)
 key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
 ```
@@ -55,6 +55,8 @@ GROUP_NAME = 'your_resource_group_name'
 KV_NAME = 'your_key_vault_name'
 #The object ID of the User or Application for access policies. Find this number in the portal
 OBJECT_ID = '00000000-0000-0000-0000-000000000000'
+
+kv_client = KeyVaultManagementClient(credentials, subscription_id)
 
 vault = kv_client.vaults.create_or_update(
     GROUP_NAME,
