@@ -10,7 +10,7 @@ ms.topic: article
 ms.devlang: python
 ms.service: keyvault
 ---
-# Azure Key Valut libraries for Python
+# Azure Key Vault libraries for Python
 
 ## Overview
 
