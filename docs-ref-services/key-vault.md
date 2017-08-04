@@ -42,8 +42,6 @@ json_key = key_bundle.key
 ```bash
 pip install azure-mgmt-keyvault
 ```
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure.mgmt.keyvault)
 
 ### Example
 The following example shows how to create an Azure Key Vault. 
@@ -80,6 +78,8 @@ vault = kv_client.vaults.create_or_update(
     }
 )
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.keyvault)
 
 ## Samples
 * [Manage Key Vaults][1] 
