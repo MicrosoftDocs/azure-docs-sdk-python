@@ -31,9 +31,6 @@ Install the library via pip.
 pip install azure-mgmt-web
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/azure.mgmt.web)
-
 ### Example
 
 Deploy a webapp from a GitHub repository into Azure Web App.
@@ -65,6 +62,8 @@ source_control_async_operation = web_client.web_apps.create_or_update_source_con
     )
 )
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/webapps/managementlibrary)
 
 ## Samples 
 

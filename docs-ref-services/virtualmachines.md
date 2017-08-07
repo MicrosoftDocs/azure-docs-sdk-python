@@ -31,9 +31,6 @@ Install the library via pip.
 pip install azure-mgmt-compute 
 ```   
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/azure.mgmt.compute.compute)
-
 ### Example
 
 Create a new Linux virtual machine in an existing Azure resource group.
@@ -68,6 +65,9 @@ def create_vm()
     compute_client.virtual_machines.create_or_update(
         'RESOURCE_GROUP_NAME', 'VM_NAME', VM_PARAMETERS)
 ```
+
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/virtualmachines/managementlibrary)
 
 ## Samples
 
