@@ -35,6 +35,7 @@ Supported metrics per resource type is available [here](https://docs.microsoft.c
 
 ```python
 import datetime
+from azure.monitor import MonitorClient
 
 # Get the ARM id of your resource. You might chose to do a "get"
 # using the according management or to build the URL directly
@@ -44,6 +45,12 @@ resource_id = (
     "resourceGroups/{}/"
     "providers/Microsoft.Compute/virtualMachines/{}"
 ).format(subscription_id, resource_group_name, vm_name)
+
+# create client
+client = MonitorClient(
+    credentials,
+    subscription_id
+)
 
 # You can get the available metrics of this specific resource
 for metric in client.metric_definitions.list(resource_id):
@@ -99,19 +106,20 @@ for item in metrics_data:
 # 2016-11-16 06:00:00+00:00: 114.9
 # 2016-11-16 07:00:00+00:00: 45.4
 ```
+> [!div class="nextstepaction"]
+> [Explore the Client APIs](/python/api/overview/azure/monitoring/clientlibrary)
 
 ## Mangement API
 ```bash
 pip install azure-mgmt-monitor
 ```
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure.mgmt.monitor)
 
 ### Example
 This example shows how to automatically set up alerts on your resources when they are created to ensure that all resources are monitored correctly.
 
 Create a data source on a VM to alert on CPU usage:
 ```python
+from azure.mgmt.monitor import MonitorMgmtClient
 from azure.mgmt.monitor.models import RuleMetricDataSource
 
 resource_id = (
@@ -119,6 +127,12 @@ resource_id = (
     "resourceGroups/MonitorTestsDoNotDelete/"
     "providers/Microsoft.Compute/virtualMachines/MonitorTest"
 ).format(self.settings.SUBSCRIPTION_ID)
+
+# create client
+monitor_mgmt_client = MonitorMgmtClient(
+    credentials,
+    subscription_id
+)
 
 # I need a subclass of "RuleDataSource"
 data_source = RuleMetricDataSource(
@@ -171,3 +185,5 @@ my_alert = monitor_mgmt_client.alert_rules.create_or_update(
     }
 )
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/monitoring/managementlibrary)
