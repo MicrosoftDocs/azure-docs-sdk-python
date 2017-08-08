@@ -71,8 +71,7 @@ subnet_info = async_subnet_creation.result()
 ```
 
 [!div class="nextstepaction"]
-[Explore the management APIs]
-
+[Explore the Management APIs](/python/api/overview/azure/network/managementlibrary)
 ### Samples
 
 * [Getting started with Azure Resource Manager for load balancers in Python][1]

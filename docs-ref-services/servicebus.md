@@ -34,7 +34,6 @@ sbs.send_queue_message_batch('taskqueue', [msg1, msg2])
 # dequeue the message
 msg = sbs.receive_queue_message('taskqueue')
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/servicebus/managementlibrary)
 
-## Samples
-
-Explore [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.

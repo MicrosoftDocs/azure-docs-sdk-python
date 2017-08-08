@@ -29,9 +29,6 @@ Create and manage your Redis resources in your subscription with the Redis manag
 pip install azure-mgmt-redis
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/azure.mgmt.redis)
-
 ### Example
 
 The following example creates a new Redis cache:
@@ -51,3 +48,5 @@ redis_cache = redis_client.redis.create_or_update(
 )
 # redis_cache is a RedisResourceWithAccessKey instance
 ```
+[!div class="nextstepaction"]
+[Explore the Management APIs](/python/api/overview/azure/redis/managementlibrary)

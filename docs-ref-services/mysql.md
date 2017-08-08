@@ -99,5 +99,5 @@ rule_creation_poller = client.firewall_rules.create_or_update(
 firewall_rule = rule_creation_poller.result()
 ```
 
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure.mgmt.rdbms.mysql)
+[!div class="nextstepaction"]
+[Explore the Management APIs](/python/api/overview/azure/mysql/managementlibrary)

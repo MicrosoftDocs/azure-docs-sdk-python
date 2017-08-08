@@ -53,8 +53,6 @@ Create and manage Azure SQL Database resources in your subscription with the man
 ```bash
 pip install azure-mgmt-sql
 ```
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure.mgmt.sql)
 
 ### Example
 
@@ -86,6 +84,8 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
     "167.220.0.235"  # End ip range
 )
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/sql/managementlibrary)
 
 ## Samples
 
