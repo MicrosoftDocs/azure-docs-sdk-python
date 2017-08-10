@@ -48,28 +48,13 @@ The following example shows how to create an Azure Key Vault.
 
 ```python
 from azure.mgmt.keyvault import KeyVaultManagementClient
-from azure.common.credentials import ServicePrincipalCredentials
 
 GROUP_NAME = 'your_resource_group_name'
 KV_NAME = 'your_key_vault_name'
 #The object ID of the User or Application for access policies. Find this number in the portal
 OBJECT_ID = '00000000-0000-0000-0000-000000000000'
 
-from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
-
-credentials = None
-
-def auth_callack(server, resource, scope):
-    credentials = credentials or ServicePrincipalCredentials(
-        client_id = '', #client id
-        secret = '',
-       tenant = '',
-        resource = resource
-    )
-    token = self.credentials.token
-    return token['token_type'], token['access_token']
-
-kv_client = KeyVaultClient(KeyVaultAuthentication(auth_callack))
+kv_client = KeyVaultManagementClient(credentials, subscription_id)
 
 vault = kv_client.vaults.create_or_update(
     GROUP_NAME,
