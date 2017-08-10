@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, SQL, database, PostGres,CosmosDB, NoSQL
 author: lisawong19
 ms.author: liwong
 manager: douge
-ms.date: 06/26/2017
+ms.date: 08/09/2017
 ms.topic: article
 ms.devlang: python
 ms.service: cosmosdb
@@ -19,7 +19,12 @@ Use CosmosDB in your Python applications to store and query JSON documents in a 
 
 Learn more about [Azure CosmosDB](https://docs.microsoft.com/azure/cosmos-db/introduction).
 
-## Install the libraries
+## Client library
+ ```bash
+pip install pydocumentdb
+ ```
+
+## Management library
 ```bash
 pip install azure-mgmt-cosmosdb
 ```
@@ -40,17 +45,11 @@ results = list(result_iterable)
 
 print(results)
 ```
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/cosmosdb/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/cosmosdb/managementlibrary)
 
 ## Samples
 
-| **Cosmos DB** ||
-|---|---|
-| [Develop a Python app using Azure Cosmos DB's DocumentDB API][1] | Use  Azure Cosmos DB with the DocumentDB API to store and access data from a python application. | 
+[Develop a Python app using Azure Cosmos DB's DocumentDB API](https://azure.microsoft.com/resources/samples/azure-cosmos-db-documentdb-python-getting-started/)
 
-
-[1]: https://azure.microsoft.com/resources/samples/azure-cosmos-db-documentdb-python-getting-started/
-
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
 
