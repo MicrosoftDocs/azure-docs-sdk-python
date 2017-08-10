@@ -79,8 +79,8 @@ vault = kv_client.vaults.create_or_update(
 )
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/keyvault/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/keyvault/managementlibrary)
 
 ## Samples
 * [Manage Key Vaults][1] 
