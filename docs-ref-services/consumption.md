@@ -24,5 +24,5 @@ ms.service: multiple
 ```bash
 pip install azure-mgmt-consumption
 ```
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/consumption/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/consumption/managementlibrary)

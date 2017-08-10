@@ -25,5 +25,5 @@ ms.service: multiple
 pip install azure-mgmt-notificationhubs
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/notificationhubs/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/notificationhubs/managementlibrary)
