@@ -24,5 +24,5 @@ ms.service: multiple
 ```bash
 pip install azure-mgmt-cognitiveservices
 ```
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/cognitiveservices/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/cognitiveservices/managementlibrary)

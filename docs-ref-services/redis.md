@@ -48,5 +48,5 @@ redis_cache = redis_client.redis.create_or_update(
 )
 # redis_cache is a RedisResourceWithAccessKey instance
 ```
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/redis/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/redis/managementlibrary)

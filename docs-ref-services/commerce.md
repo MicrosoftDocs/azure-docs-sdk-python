@@ -24,5 +24,5 @@ ms.service: multiple
 ```bash
 pip install azure-mgmt-commerce
 ```
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/commerce/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/commerce/managementlibrary)

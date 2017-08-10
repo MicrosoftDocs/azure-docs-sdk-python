@@ -72,6 +72,6 @@ db_creation_poller = client.databases.create_or_update(
 db = db_creation_poller.result()
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/postgresql/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/postgresql/managementlibrary)
 
