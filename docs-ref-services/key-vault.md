@@ -40,10 +40,10 @@ def auth_callack(server, resource, scope):
     credentials = credentials or ServicePrincipalCredentials(
         client_id = '', #client id
         secret = '',
-       tenant = '',
+        tenant = '',
         resource = resource
     )
-    token = self.credentials.token
+    token = credentials.token
     return token['token_type'], token['access_token']
 
 client = KeyVaultClient(KeyVaultAuthentication(auth_callack))
