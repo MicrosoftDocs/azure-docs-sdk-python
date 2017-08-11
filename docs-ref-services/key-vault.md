@@ -31,9 +31,23 @@ pip install azure-keyvault
 Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-key-18) from a Key Vault.
 
 ```python
-from azure.keyvault import KeyVaultClient
+from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
+from azure.common.credentials import ServicePrincipalCredentials
 
-client = KeyVaultClient(credentials, subscription_id)
+credentials = None
+
+def auth_callack(server, resource, scope):
+    credentials = credentials or ServicePrincipalCredentials(
+        client_id = '', #client id
+        secret = '',
+       tenant = '',
+        resource = resource
+    )
+    token = self.credentials.token
+    return token['token_type'], token['access_token']
+
+client = KeyVaultClient(KeyVaultAuthentication(auth_callack))
+
 key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
 ```
