@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, SQL, database, PostGres,CosmosDB, NoSQL
 author: lisawong19
 ms.author: liwong
 manager: douge
-ms.date: 08/09/2017
+ms.date: 08/11/2017
 ms.topic: article
 ms.devlang: python
 ms.service: cosmosdb
@@ -29,11 +29,40 @@ pip install pydocumentdb
 pip install azure-mgmt-cosmosdb
 ```
 
-## Example
+### Example
 
 Find matching documents in CosmosDB using a SQL-like query interface:
 
 ```python
+import pydocumentdb
+import pydocumentdb.document_client as document_client
+
+# Initialize the Python DocumentDB client
+client = document_client.DocumentClient(config['ENDPOINT'], {'masterKey': config['MASTERKEY']})
+# Create a database
+db = client.CreateDatabase({ 'id': config['DOCUMENTDB_DATABASE'] })
+
+# Create collection options
+options = {
+    'offerEnableRUPerMinuteThroughput': True,
+    'offerVersion': "V2",
+    'offerThroughput': 400
+}
+
+# Create a collection
+collection = client.CreateCollection(db['_self'], { 'id': config['DOCUMENTDB_COLLECTION'] }, options)
+
+# Create some documents
+document1 = client.CreateDocument(collection['_self'],
+    { 
+        'id': 'server1',
+        'Web Site': 0,
+        'Cloud Service': 0,
+        'Virtual Machine': 0,
+        'name': 'some' 
+    })
+
+# Query them in SQL
 query = { 'query': 'SELECT * FROM server s' }    
 
 options = {} 
