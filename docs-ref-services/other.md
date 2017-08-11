@@ -21,7 +21,7 @@ ms.service: multiple
 
 ```bash
 pip install azure-common
-pip install azure-client
+pip install azure
 ```
 
 ### Management

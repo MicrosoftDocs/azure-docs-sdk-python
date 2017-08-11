@@ -28,3 +28,5 @@ pip install azure-datalake-store
 ```bash
 pip install azure-mgmt-datalake-store
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/datalakestore/managementlibrary)

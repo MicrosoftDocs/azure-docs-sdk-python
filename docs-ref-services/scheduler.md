@@ -24,3 +24,5 @@ ms.service: multiple
 ```bash
 pip install azure-mgmt-scheduler
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/scheduler/managementlibrary)

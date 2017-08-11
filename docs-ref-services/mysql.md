@@ -100,4 +100,4 @@ firewall_rule = rule_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure.mgmt.rdbms.mysql)
+> [Explore the Management APIs](/python/api/overview/azure/mysql/managementlibrary)

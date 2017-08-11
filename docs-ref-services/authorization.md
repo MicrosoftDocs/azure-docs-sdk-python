@@ -24,6 +24,7 @@ Sign-on users and control access to applications and APIs with [Azure Active Dir
 ```bash
 pip install azure-mgmt-authorization
 ```
+
 ### Example
 ```python
 from azure.mgmt.authorization import AuthorizationManagementClient

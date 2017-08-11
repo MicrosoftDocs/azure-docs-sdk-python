@@ -48,5 +48,5 @@ zone = dns_client.zones.create_or_update('resource-group',
 
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/azure.mgmt.dns)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/dns/managementlibrary)
