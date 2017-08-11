@@ -64,5 +64,5 @@ endpoint_poller = client.endpoints.create('my-resource-group',
 endpoint = endpoint_poller.result()
 ```
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/cdn/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/cdn/managementlibrary)

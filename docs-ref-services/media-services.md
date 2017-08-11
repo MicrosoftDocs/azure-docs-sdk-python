@@ -24,5 +24,5 @@ ms.service: multiple
 ```bash
 pip install azure-mgmt-media
 ```
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/mediaservices/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/mediaservices/managementlibrary)

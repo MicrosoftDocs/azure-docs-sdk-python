@@ -10,7 +10,7 @@ ms.topic: article
 ms.devlang: python
 ms.service: keyvault
 ---
-# Azure Key Valut libraries for Python
+# Azure Key Vault libraries for Python
 
 ## Overview
 
@@ -31,9 +31,23 @@ pip install azure-keyvault
 Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-key-18) from a Key Vault.
 
 ```python
-from azure.keyvault import KeyVaultClient
+from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
+from azure.common.credentials import ServicePrincipalCredentials
 
-client = KeyVaultClient(credentials)
+credentials = None
+
+def auth_callack(server, resource, scope):
+    credentials = credentials or ServicePrincipalCredentials(
+        client_id = '', #client id
+        secret = '',
+        tenant = '',
+        resource = resource
+    )
+    token = credentials.token
+    return token['token_type'], token['access_token']
+
+client = KeyVaultClient(KeyVaultAuthentication(auth_callack))
+
 key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
 ```
@@ -55,6 +69,8 @@ GROUP_NAME = 'your_resource_group_name'
 KV_NAME = 'your_key_vault_name'
 #The object ID of the User or Application for access policies. Find this number in the portal
 OBJECT_ID = '00000000-0000-0000-0000-000000000000'
+
+kv_client = KeyVaultManagementClient(credentials, subscription_id)
 
 vault = kv_client.vaults.create_or_update(
     GROUP_NAME,
@@ -78,9 +94,11 @@ vault = kv_client.vaults.create_or_update(
     }
 )
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/azure.mgmt.keyvault)
 
-[!div class="nextstepaction"]
-[Explore the Management APIs](/python/api/overview/azure/keyvault/managementlibrary)
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/keyvault/managementlibrary)
 
 ## Samples
 * [Manage Key Vaults][1] 
