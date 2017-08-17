@@ -33,11 +33,9 @@ items:
     parameters:
     - description: 'A string that uniquely identifies the job within the account.
 
-        The ID can contain any combination of alphanumeric characters including
+        The ID is case-preserving and case-insensitive (that is, you may not have
 
-        hyphens and underscores, and cannot contain more than 64 characters. It is
-
-        common to use a GUID for the id.
+        two IDs within an account that differ only by case).
 
         '
       id: id
@@ -49,9 +47,9 @@ items:
       id: display_name
       type:
       - str
-    - description: 'The flag that determines if this job will
+    - description: 'Whether tasks in the job can define
 
-        use tasks with dependencies.
+        dependencies on each other. The default is false.
 
         '
       id: uses_task_dependencies
@@ -187,7 +185,9 @@ items:
 
         the job (including the Job Manager, Job Preparation and Job Release
 
-        tasks).
+        tasks). Individual tasks can override an environment setting specified
+
+        here by specifying the same setting name with a different value.
 
         '
       id: common_environment_settings
@@ -221,19 +221,23 @@ items:
         '
     - description: 'The action the Batch service should take when any
 
-        task in the job fails. A task is considered to have failed if it completes
+        task in the job fails. A task is considered to have failed if has a
 
-        with a non-zero exit code and has exhausted its retry count, or if it had
+        failureInfo. A failureInfo is set if the task completes with a non-zero
 
-        a scheduling error. noAction - do nothing. performExitOptionsJobAction -
+        exit code after exhausting its retry count, or if there was an error
 
-        take the action associated with the task exit condition in the task''s
+        starting the task, for example due to a resource file download error.
 
-        exitConditions collection. (This may still result in no action being
+        noAction - do nothing. performExitOptionsJobAction - take the action
 
-        taken, if that is what the task specifies.) The default is noAction.
+        associated with the task exit condition in the task''s exitConditions
 
-        Possible values include: ''noAction'', ''performExitOptionsJobAction''
+        collection. (This may still result in no action being taken, if that is
+
+        what the task specifies.) The default is noAction. Possible values
+
+        include: ''noAction'', ''performExitOptionsJobAction''
 
         '
       id: on_task_failure
