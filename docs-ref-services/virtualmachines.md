@@ -72,10 +72,11 @@ def create_vm()
 ## Samples
 
 * [Manage virtual machines][1]
-* [Manage a load balancer][2]
-* [Create and configure managed disks][3]
-* [List images][4] 
-* [Monitor virtual machines][5]
+* [Authenticate with Managed Service Identity][2]
+* [Manage a load balancer][3]
+* [Create and configure managed disks][4]
+* [List images][5] 
+* [Monitor virtual machines][6]
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=virtual-machines) of virtual machine samples.
 
