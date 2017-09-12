@@ -36,10 +36,6 @@ pip install azure-mgmt-compute
 Create a new Linux virtual machine in an existing Azure resource group with Managed Service Identity(MSI) authentication.
 
 ```python
-from msrestazure.azure_active_directory import MSIAuthentication
-from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
-from azure.mgmt.compute import ComputeManagementClient
-
 VM_PARAMETERS={
         'location': 'LOCATION',
         'os_profile': {
@@ -66,13 +62,6 @@ VM_PARAMETERS={
     }
 
 def create_vm()
-    credentials = MSIAuthentication()
-    subscription_client = SubscriptionClient(credentials)
-    subscription = next(subscription_client.subscriptions.list())
-    subscription_id = subscription.subscription_id
-
-    compute_client = ComputeManagementClient(credentials, subscription_id)
-
     compute_client.virtual_machines.create_or_update(
         'RESOURCE_GROUP_NAME', 'VM_NAME', VM_PARAMETERS)
 ```
@@ -91,7 +80,8 @@ def create_vm()
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=virtual-machines) of virtual machine samples.
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
-[2]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[3]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
-[4]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
-[5]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
+[2]: https://github.com/Azure-Samples/resource-manager-python-manage-resources-with-msi
+[3]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
+[4]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
+[5]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
+[6]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
