@@ -48,7 +48,7 @@ The following example uses a [Service Principal](https://docs.microsoft.com/cli/
     )
 ```
 
-> [Note!]
+> [NOTE!]
 > To connect to one of the Azure sovereign clouds, use the `cloud_environment` parameter.
 
 ```python
@@ -115,12 +115,38 @@ subscription_id = '33333333-3333-3333-3333-333333333333'
 client = ComputeManagementClient(credentials, subscription_id)
 ```
 
-> [Note!]
+> [NOTE!]
 > When using an Azure sovereign cloud you must also specify the appropriate base URL (via the constants in `msrestazure.azure_cloud`) when creating the management client. For example for Azure China Cloud:
 > ```python
 > client = ComputeManagementClient(credentials, subscription_id,
 >     base_url=AZURE_CHINA_CLOUD.endpoints.active_directory_resource_id)
 > ```
+
+## <a name="mgmt-auth-msi"></a>Authenticate with Managed Service Identity(MSI) 
+MSI is a simple way for a resource in Azure to use SDK/CLI without the need to create specific credentials.
+
+```python
+from msrestazure.azure_active_directory import MSIAuthentication
+from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
+
+    # Create MSI Authentication
+    credentials = MSIAuthentication()
+
+
+    # Create a Subscription Client
+    subscription_client = SubscriptionClient(credentials)
+    subscription = next(subscription_client.subscriptions.list())
+    subscription_id = subscription.subscription_id
+
+    # Create a Resource Management client
+    resource_client = ResourceManagementClient(credentials, subscription_id)
+
+    
+    # List resource groups as an example. The only limit is what role and policy are assigned to this MSI token.
+    for resource_group in resource_client.resource_groups.list():
+        print(resource_group.name)
+
+```
 
 ## <a name="mgmt-auth-file"></a>File based authentication
 

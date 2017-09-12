@@ -33,9 +33,13 @@ pip install azure-mgmt-compute
 
 ### Example
 
-Create a new Linux virtual machine in an existing Azure resource group.
+Create a new Linux virtual machine in an existing Azure resource group with Managed Service Identity(MSI) authentication.
 
 ```python
+from msrestazure.azure_active_directory import MSIAuthentication
+from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
+from azure.mgmt.compute import ComputeManagementClient
+
 VM_PARAMETERS={
         'location': 'LOCATION',
         'os_profile': {
@@ -62,6 +66,13 @@ VM_PARAMETERS={
     }
 
 def create_vm()
+    credentials = MSIAuthentication()
+    subscription_client = SubscriptionClient(credentials)
+    subscription = next(subscription_client.subscriptions.list())
+    subscription_id = subscription.subscription_id
+
+    compute_client = ComputeManagementClient(credentials, subscription_id)
+
     compute_client.virtual_machines.create_or_update(
         'RESOURCE_GROUP_NAME', 'VM_NAME', VM_PARAMETERS)
 ```
