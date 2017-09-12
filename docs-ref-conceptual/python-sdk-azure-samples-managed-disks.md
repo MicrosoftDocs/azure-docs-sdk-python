@@ -129,7 +129,7 @@ managed_disk = compute_client.disks.get('my_resource_group', 'myDisk')
 vm.storage_profile.data_disks.append({
     'lun': 12, # You choose the value, depending of what is available for you
     'name': managed_disk.name,
-    'create_option': DiskCreateOption.attach,
+    'create_option': DiskCreateOptionTypes.attach,
     'managed_disk': {
         'id': managed_disk.id
     }
