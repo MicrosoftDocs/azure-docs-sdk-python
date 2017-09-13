@@ -33,7 +33,7 @@ pip install azure-mgmt-compute
 
 ### Example
 
-Create a new Linux virtual machine in an existing Azure resource group.
+Create a new Linux virtual machine in an existing Azure resource group with Managed Service Identity(MSI) authentication.
 
 ```python
 VM_PARAMETERS={
@@ -72,15 +72,17 @@ def create_vm()
 ## Samples
 
 * [Manage virtual machines][1]
-* [Manage a load balancer][2]
-* [Create and configure managed disks][3]
-* [List images][4] 
-* [Monitor virtual machines][5]
+* [Authenticate with Managed Service Identity][2]
+* [Manage a load balancer][3]
+* [Create and configure managed disks][4]
+* [List images][5] 
+* [Monitor virtual machines][6]
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=virtual-machines) of virtual machine samples.
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
-[2]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[3]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
-[4]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
-[5]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
+[2]: https://github.com/Azure-Samples/resource-manager-python-manage-resources-with-msi
+[3]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
+[4]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
+[5]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
+[6]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
