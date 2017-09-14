@@ -73,16 +73,18 @@ def create_vm()
 
 * [Manage virtual machines][1]
 * [Authenticate with Managed Service Identity][2]
-* [Manage a load balancer][3]
-* [Create and configure managed disks][4]
-* [List images][5] 
-* [Monitor virtual machines][6]
+* [Create a virtual machine with Managed Service Identity Extension][3]
+* [Manage a load balancer][4]
+* [Create and configure managed disks][5]
+* [List images][6] 
+* [Monitor virtual machines][7]
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=virtual-machines) of virtual machine samples.
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
 [2]: https://github.com/Azure-Samples/resource-manager-python-manage-resources-with-msi
-[3]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[4]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
-[5]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
-[6]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
+[3]: https://github.com/Azure-Samples/compute-python-msi-vm
+[4]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
+[5]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
+[6]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
+[7]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
