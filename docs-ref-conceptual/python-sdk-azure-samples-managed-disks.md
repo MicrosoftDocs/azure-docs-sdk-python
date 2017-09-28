@@ -148,8 +148,7 @@ Before Managed Disks, you needed to create a storage account manually
 for all the VMs you wanted inside your Scale Set, and then use the list
 parameter ``vhd_containers`` to provide all the storage account name to
 the Scale Set RestAPI. The official transition guide is available in
-this
-`article <https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-convert-template-to-md>`__.
+this article `<https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-convert-template-to-md>`__.
 
 Now with Managed Disk, you don't have to manage any storage account at
 all. If you're are used to the VMSS Python SDK, your ``storage_profile``
