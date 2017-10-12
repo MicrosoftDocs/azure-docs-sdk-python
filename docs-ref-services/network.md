@@ -75,8 +75,6 @@ subnet_info = async_subnet_creation.result()
 
 ### Samples
 
-* [Getting started with Azure Resource Manager for load balancers in Python][1]
+* [Getting started with Azure Resource Manager for load balancers in Python](https://azure.microsoft.com/en-us/resources/samples/network-python-manage-loadbalancer/)
 
 View the [complete list](https://azure.microsoft.com/en-us/resources/samples/?platform=python&term=virtual%20network) of Azure Virtual Network samples.
-
-[1]: [https://azure.microsoft.com/en-us/resources/samples/network-python-manage-loadbalancer/]
