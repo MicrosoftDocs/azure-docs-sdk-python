@@ -2,9 +2,10 @@ import os
 import argparse
 import logging
 import json
+import re
 from pathlib import Path
 
-CONFIG_FILE = 'swagger_to_sdk_config.json'
+CONFIG_FILE = '../package_service_mapping.json'
 GENERATED_PACKAGES_LIST_FILE = 'autorest_generated_packages.rst'
 
 _LOGGER = logging.getLogger(__name__)
@@ -68,62 +69,48 @@ Submodules
 
 """
 
-# Update the code to compute this list automatically
-MULTIAPI_VERSION_NAMESPACE = [
-    "azure.mgmt.storage",
-    "azure.mgmt.network",
-    "azure.mgmt.compute.compute",
-    "azure.mgmt.compute.containerservice",
-    "azure.mgmt.resource.resources",
-    "azure.mgmt.resource.features",
-    "azure.mgmt.resource.links",
-    "azure.mgmt.resource.locks",
-    "azure.mgmt.resource.policy",
-    "azure.mgmt.resource.subscriptions",
-]
-
 def generate_doc(config_path, project_pattern=None):
 
     multiapi_found_apiversion = {}
+    multiapi_regex_pattern = re.compile('v\d{4}_\d{2}_\d{2}(_preview)?\Z')
 
     with Path(config_path).open() as config_fd:
         config = json.load(config_fd)
     package_list_path = []
 
-    for project, local_conf in config["projects"].items():
+    for project, local_conf in config.items():
         if project_pattern and not any(project.startswith(p) for p in project_pattern):
             _LOGGER.info("Skip project %s", project)
             continue
 
-        if 'unreleased' in local_conf['output_dir'].lower():
-            _LOGGER.info("Skip unreleased project %s", project)
-            continue
-
         _LOGGER.info("Working on %s", project)
-        namespace = local_conf['autorest_options']['namespace']
+        if 'namespaces' in local_conf:
+            namespaces = local_conf['namespaces']
+      
+            for namespace in namespaces:
+                rst_path = './ref/{}.rst'.format(namespace) 
+                with Path(rst_path).open('w') as rst_file:
+                    rst_file.write(PACKAGE_TEMPLATE.format(
+                        title=make_title(namespace+" package"),
+                        namespace=namespace
+                    ))
 
-        rst_path = './ref/{}.rst'.format(namespace) 
-        with Path(rst_path).open('w') as rst_file:
-            rst_file.write(PACKAGE_TEMPLATE.format(
-                title=make_title(namespace+" package"),
-                namespace=namespace
-            ))
+                for module in ["operations", "models"]:
+                    with Path('./ref/{}.{}.rst'.format(namespace, module)).open('w') as rst_file:
+                        rst_file.write(SUBMODULE_TEMPLATE.format(
+                            title=make_title(namespace+"."+module+" module"),
+                            namespace=namespace,
+                            submodule=module
+                        ))
 
-        for module in ["operations", "models"]:
-            with Path('./ref/{}.{}.rst'.format(namespace, module)).open('w') as rst_file:
-                rst_file.write(SUBMODULE_TEMPLATE.format(
-                    title=make_title(namespace+"."+module+" module"),
-                    namespace=namespace,
-                    submodule=module
-                ))
-
-        for multiapi_namespace in MULTIAPI_VERSION_NAMESPACE:
-            if namespace.startswith(multiapi_namespace):
-                api_package = namespace.split(multiapi_namespace+".")[1]
-                multiapi_found_apiversion.setdefault(multiapi_namespace, []).append(api_package)
-                break
-        else:
-            package_list_path.append(rst_path)
+                match = multiapi_regex_pattern.search(namespace)
+                if match:
+                    start_index = match.start()
+                    multiapi_namespace = namespace[:start_index-1]
+                    api_package = namespace[start_index:]
+                    multiapi_found_apiversion.setdefault(multiapi_namespace, []).append(api_package)
+        
+                package_list_path.append(rst_path)
 
     for multiapi_namespace, apilist in multiapi_found_apiversion.items():
         apilist.sort()

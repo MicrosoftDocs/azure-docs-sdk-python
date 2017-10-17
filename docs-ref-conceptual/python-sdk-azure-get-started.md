@@ -7,7 +7,6 @@ ms.author: liwong
 manager: douge
 ms.date: 06/05/2017
 ms.topic: get-started
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: multiple
@@ -16,17 +15,19 @@ ms.assetid:
 
 # Get started with the Azure libraries for Python
 
-This tutorial demonstrates the usage of several Azure libraries for Python.  You will set up authentication, create and use an Azure Storage account, create and use an Azure SQL Database, deploy some virtual machines, and deploy an Azure App Service Web App from GitHub.
+This guide demonstrates the usage of several Azure libraries for Python.  You will set up authentication, create and use an Azure Storage account, create and use an Azure SQL Database, deploy some virtual machines, and deploy an Azure App Service Web App from GitHub.
 
 ## Prerequisites
 
-- An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/)
-- [Azure CLI 2.0](https://docs.microsoft.com/cli/azure/install-az-cli2)
+- An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/).
 - [Python](https://www.python.org/downloads/)
+- [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/quickstart) or [Azure CLI 2.0](https://docs.microsoft.com/cli/azure/install-az-cli2).
+
+[!INCLUDE [azure-cloud-shell](../docs-ref-conceptual/includes/cloud-shell-try-it.md)]
 
 ## Set up authentication
 > [!IMPORTANT]
-> This should be used as quick start developer experience. For production purpose use 
+> This should be used as quick start developer experience. For production purposes, use 
 > [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
@@ -34,7 +35,7 @@ The SDK is able to create a client using your CLI active subscription.
 
 To define active credentials, use [az login](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
 Default subscription ID is either the only one you have, or you can define it using 
-[az account](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli)
+[az account](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli).
 
 ```python
 from azure.common.client_factory import get_client_from_cli_profile
@@ -47,7 +48,7 @@ client = get_client_from_cli_profile(ComputeManagementClient)
 > [!IMPORTANT]
 > Create a virtual environment is optional, but we strongly suggest you to do it.
 
-Create a virtual environment in Bash (Linux or [Bash for Windows](https://msdn.microsoft.com/commandline/wsl/about))
+Create a virtual environment in Bash (Linux or [Bash for Windows](https://msdn.microsoft.com/commandline/wsl/about)):
 ```bash
 pip install virtualenv
 virtualenv mytestenv
@@ -64,29 +65,30 @@ cd mytestenv
 ```
 
 > [!IMPORTANT]
-> Note that if you use [VSCode](https://code.visualstudio.com/) and the [Python extension](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python),  you can start it using "code ." and get your environment configured.
+> Note that if you use [VSCode](https://code.visualstudio.com/) and the [Python extension](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python),  you can start it using `code .` and get your environment configured.
 
 ## Create a Linux virtual machine
 This code creates a new Linux VM with name `testLinuxVM` in a resource group `sampleVmResourceGroup` running in the US East Azure region.
-### Authenticate 
+
+Authenticate:
 ```azcli
 az login
 ```
-### Create a resource group
+Create a resource group:
 ```azurecli-interactive
 az group create -l eastus --n sampleVmResourceGroup
 ```
 
-### Create a virtual network and subnet
+Create a virtual network and subnet:
 ```azurecli-interactive
 az network vnet create -g sampleVmResourceGroup -n azure-sample-vnet --address-prefix 10.0.0.0/16 --subnet-name azure-sample-subnet --subnet-prefix 10.0.0.0/24
 ```
 
-### Create a public IP address
+Create a public IP address:
 ```azurecli-interactive
 az network public-ip create -g sampleVmResourceGroup -n azure-sample-ip --allocation-method Dynamic --version IPv6
 ```
-### Create a network interface client
+Create a network interface client:
 ```azurecli-interactive
 az network nic create -g sampleVmResourceGroup --vnet-name azure-sample-vnet --subnet azure-sample-subnet -n azure-sample-nic --public-ip-address azure-sample-ip
 ```
@@ -198,16 +200,16 @@ This code deploys a Flask web application from the `master` branch in a GitHub r
 
 Before you begin: Fork https://github.com/Azure-Samples/python-docs-hello-world
 
-### Authenticate 
+Authenticate:
 ```azcli
 az login
 ```
-### Create a resource group
+Create a resource group:
 ```azurecli-interactive
 az group create -l eastus -n sampleWebResourceGroup
 ```
 
-### Create a free app service plan
+Create a free app service plan:
 ```azurecli-interactive
 az appservice plan create -g sampleWebResourceGroup -n sampleFreePlan  --sku Free
 ```
@@ -274,26 +276,26 @@ az group delete --name sampleWebResourceGroup
 ## Connect to a SQL database
 This code creates a new SQL database with a firewall rule allowing remote access, and then connected to it using the Microsoft ODBC driver. Pyodbc uses the Microsoft ODBC Driver on Linux to connect to SQL Databases. 
 
-### Authenticate 
+Authenticate:
 ```azcli
 az login
 ```
-### Create a resource group
+Create a resource group:
 ```azurecli-interactive
 az group create -l eastus -n azure-sample-group
 ```
 
-### Create a SQL server
+Create a SQL server:
 ```azurecli-interactive
 az sql server create --admin-password HusH_Sec4et --admin-user mysecretname -l eastus -n samplesqlserver123 -g azure-sample-group
 ```
 
-### Add firewall rule
+Add firewall rule:
 ```azurecli-interactive
 az sql server firewall-rule create --end-ip-address 167.220.0.235 --name firewall_rule_name_123.123.123.123 --resource-group azure-sample-group --server samplesqlserver123 --start-ip-address 123.123.123.123
 ```
 
-### Create a SQL database
+Create a SQL database:
 ```azurecli-interactive
 az sql db create --name sample-db --resource-group azure-sample-group --server samplesqlserver123
 ```
@@ -363,16 +365,16 @@ az group delete --name azure-sample-group
 
 ## Write a blob into a new storage account
 
-### Authenticate 
+Authenticate:
 ```azcli
 az login
 ```
-### Create a resource group
+Create a resource group:
 ```azurecli-interactive
 az group create -l eastus -n sampleStorageResourceGroup
 ```
 
-### Create a storage account
+Create a storage account:
 ```azurecli-interactive
 az storage account create -n samplestorageaccountname -g sampleStorageResourceGroup -l eastus --sku Standard_RAGRS
 ```

@@ -17,15 +17,21 @@ ms.service: appservice
 
 ## Overview
 
-Deploy, manage, and scale web apps, APIs, and mobile apps running in [Azure App Service](https://docs.microsoft.com/azure/app-service) from your Python code using the management libraries. The management libraries also provide a Python interface for automating app configuration as an alternative to using the Azure Portal or [CLI](https://docs.microsoft.com/cli/azure/install-azure-cli).
+Deploy and scale websites, web applications, services, and REST APIs with [Azure App Service](/azure/app-service).
 
-## Install the libraries
+To get started with Azure App Service, see [Create a Python web app in Azure](/azure/app-service-web/app-service-web-get-started-python).
+
+## Management API
+
+Deploy, manage, and scale elements hosted in the Azure App Service with the management API.
+
+Install the library via pip.
 
 ```bash
 pip install azure-mgmt-web
 ```
 
-## Example
+### Example
 
 Deploy a webapp from a GitHub repository into Azure Web App.
 
@@ -56,16 +62,15 @@ source_control_async_operation = web_client.web_apps.create_or_update_source_con
     )
 )
 ```
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/webapps/managementlibrary)
 
 ## Samples 
 
-|||
-|---|---|
-| [Manage Azure websites with python][1] | Create, delete and list details of a web app. |
-| [Create a Logic App workflow][2] | Create a Logic App workflow. |
+* [Manage Azure websites with python][1]
+* [Create a Logic App workflow][2]
+ 
+View the [complete list](https://azure.microsoft.com/en-us/resources/samples/?platform=python&term=web-app) of web application samples.
 
 [1]: https://azure.microsoft.com/resources/samples/app-service-web-python-manage
 [2]: ../docs-ref-conceptual/python-sdk-azure-samples-logic-app-workflow.md
-
-
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.

@@ -17,16 +17,23 @@ ms.service: compute
 
 ## Overview
 
-Define, configure, and deploy new Windows and Linux virtual machines and virtual machine scale sets from your code with the Azure management libraries for Python. The libraries also let start and stop existing virtual machines and attach or detach disks to stopped VMs in your subscription.
+On-demand, scalable computing resources running Linux or Windows.
 
-## Install the libraries
+To get started with Azure Virtual Machines, see [Create a Linux virtual machine with the Azure portal](/azure/virtual-machines/linux/quick-create-portal).
+
+## Management API
+
+Create, configure, manage and scale Windows and Linux virtual machines in Azure from your code with the management API.
+
+Install the library via pip.
+
 ```bash
 pip install azure-mgmt-compute 
 ```   
 
-## Example
+### Example
 
-Create a new Linux virtual machine in an existing Azure resource group.
+Create a new Linux virtual machine in an existing Azure resource group with Managed Service Identity(MSI) authentication.
 
 ```python
 VM_PARAMETERS={
@@ -59,21 +66,25 @@ def create_vm()
         'RESOURCE_GROUP_NAME', 'VM_NAME', VM_PARAMETERS)
 ```
 
+> [!div class="nextstepaction"]
+> [Explore the Management APIs](/python/api/overview/azure/virtualmachines/managementlibrary)
+
 ## Samples
 
-| || 
-|---|---|
-| [Manage virtual machines][1] | Create, modify, start, stop, and delete virtual machines. |
-| [Manage a load balancer][2] | Manage a load balancer using the Azure Resource Manager APIs for python. |
-| [Create and configure managed disks][3] | Create, resizing, updating a managed disk.|
-| [List images][4] | Print all of the available images to use for creating virtual machines.| 
-| [Monitor virtual machines][5] |Get metrics of a virtual machine's usage | 
+* [Manage virtual machines][1]
+* [Authenticate with Managed Service Identity][2]
+* [Create a virtual machine with Managed Service Identity Extension][3]
+* [Manage a load balancer][4]
+* [Create and configure managed disks][5]
+* [List images][6] 
+* [Monitor virtual machines][7]
+
+View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=virtual-machines) of virtual machine samples.
 
 [1]: https://azure.microsoft.com/resources/samples/virtual-machines-python-manage/
-[2]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[3]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
-[4]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
-[5]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
-
-
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
+[2]: https://github.com/Azure-Samples/resource-manager-python-manage-resources-with-msi
+[3]: https://github.com/Azure-Samples/compute-python-msi-vm
+[4]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
+[5]: ../docs-ref-conceptual/python-sdk-azure-samples-managed-disks.md
+[6]: ../docs-ref-conceptual/python-sdk-azure-samples-list-images.md
+[7]: ../docs-ref-conceptual/python-sdk-azure-samples-monitor-vms.md
