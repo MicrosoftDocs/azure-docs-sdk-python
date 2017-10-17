@@ -24,6 +24,9 @@ init:
     
     # Install requests (2.14.1) since msrest requires requests~=2.14.1
     - "%PYTHON%/python.exe -m pip install requests==2.14.1"
+    
+    # Install vcrpy since azure storage requires
+    - "%PYTHON%/python.exe -m pip install vcrpy"
 
     # Install sphinx (1.5.5) and its extensions
     - "%PYTHON%/python.exe -m pip install sphinx==1.5.5"
@@ -36,6 +39,7 @@ clone_script:
     - git config core.autocrlf
     - cd c:/projects
     - git clone -q --branch=%APPVEYOR_REPO_BRANCH% https://github.com/Azure/azure-sdk-for-python.git
+    - git clone -q --branch=%APPVEYOR_REPO_BRANCH% https://github.com/Azure/azure-storage-python.git
     - git clone -q --branch=%APPVEYOR_REPO_BRANCH% https://github.com/MicrosoftDocs/azure-docs-sdk-python.git
 
 install:
@@ -44,12 +48,26 @@ install:
     # Ignore STDOUT
     - "%PYTHON%/python.exe setup.py install > null"
 
+    # Install azure storage package
+    - cd c:/projects/azure-storage-python/azure-storage-common
+    - "%PYTHON%/python.exe setup.py install"
+    
+    - cd c:/projects/azure-storage-python/azure-storage-blob
+    - "%PYTHON%/python.exe setup.py install"
+    
+    - cd c:/projects/azure-storage-python/azure-storage-file
+    - "%PYTHON%/python.exe setup.py install"
+    
+    - cd c:/projects/azure-storage-python/azure-storage-queue
+    - "%PYTHON%/python.exe setup.py install"
+
 build: off
 
 on_success:
+    # Build yml for azure-sdk-for-python
     # remove old rst fils and copy pre-defined ref/rst
     - ps: Remove-Item c:/projects/azure-sdk-for-python/doc/ref/* -recurse
-    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/ref/*.rst -Destination c:/projects/azure-sdk-for-python/doc/ref -Recurse
+    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/ref/azure-sdk-for-python/*.rst -Destination c:/projects/azure-sdk-for-python/doc/ref -Recurse
 
     # Generate new rst files
     - cd c:/projects/azure-sdk-for-python/doc
@@ -65,6 +83,26 @@ on_success:
     - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/conf.py -Destination c:/projects/azure-sdk-for-python/doc/conf.py
     - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/postprocess_toc_yml.py -Destination c:/projects/azure-sdk-for-python/doc/postprocess_toc_yml.py
     - "%SPHINXBUILD% . _build"
+    
+    # Build yml for azure-storage-python
+    # remove old rst fils and copy pre-defined ref/rst
+    - ps: Remove-Item c:/projects/azure-storage-python/doc/ref/* -recurse
+    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/ref/azure-storage-python/*.rst -Destination c:/projects/azure-storage-python/doc/ref -Recurse
+
+    # Move rst file to doc path
+    - ps: Move-Item c:/projects/azure-storage-python/doc/ref/*.rst -Destination c:/projects/azure-storage-python/doc
+    
+    # Generate yml
+    - cd c:/projects/azure-storage-python/doc
+    - ps: Copy-Item c:/projects/azure-docs-sdk-python/ci_scripts/conf.py -Destination c:/projects/azure-storage-python/doc/conf.py
+    - "%SPHINXBUILD% . _build"
+    
+    #Combine toc yml files and copy azure-storage-python yml files to azure-sdk-for-python
+    - ps: Get-Content c:/projects/azure-sdk-for-python/doc/_build/docfx_yaml/toc.yml | Add-Content c:/projects/azure-storage-python/doc/_build/docfx_yaml/toc.yml
+    - ps: Copy-Item -Path c:/projects/azure-storage-python/doc/_build/docfx_yaml/* -Destination c:/projects/azure-sdk-for-python/doc/_build/docfx_yaml -Recurse
+
+    # Post process toc yml
+    - cd c:/projects/azure-sdk-for-python/doc
     - "%PYTHON%/python.exe postprocess_toc_yml.py"
 
     # Generate xrefmap.yml
