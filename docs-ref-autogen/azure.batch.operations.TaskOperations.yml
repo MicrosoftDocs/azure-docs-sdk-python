@@ -59,10 +59,12 @@ items:
         '
       id: deserializer
     variables:
-    - description: 'Client API Version. Constant value: "2017-05-01.5.0".
+    - description: 'Client API Version. Constant value: "2017-09-01.6.0".
 
         '
       id: api_version
+      type:
+      - null
   type: class
   uid: azure.batch.operations.TaskOperations
 - class: azure.batch.operations.TaskOperations
@@ -82,6 +84,15 @@ items:
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 37
   summary: 'Adds a task to the specified job.
+
+
+    The maximum lifetime of a task from addition to completion is 7 days.
+
+    If a task has not completed within 7 days of being added it will be
+
+    terminated by the Batch service and left in whatever state it was in at
+
+    that time.
 
     '
   syntax:
@@ -130,11 +141,16 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - None
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.add
 - class: azure.batch.operations.TaskOperations
@@ -152,7 +168,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 235
+    startLine: 244
   summary: 'Adds a collection of tasks to the specified job.
 
 
@@ -170,9 +186,23 @@ items:
 
     when re-issuing a request. For example, you should use the same task
 
-    ids during a retry so that if the prior operation succeeded, the retry
+    IDs during a retry so that if the prior operation succeeded, the retry
 
-    will not create extra tasks unexpectedly.
+    will not create extra tasks unexpectedly. If the response contains any
+
+    tasks which failed to add, a client can retry the request. In a retry,
+
+    it is most efficient to resubmit only tasks that failed to add, and to
+
+    omit tasks that were successfully added on the first attempt. The
+
+    maximum lifetime of a task from addition to completion is 7 days. If a
+
+    task has not completed within 7 days of being added it will be
+
+    terminated by the Batch service and left in whatever state it was in at
+
+    that time.
 
     '
   syntax:
@@ -187,7 +217,15 @@ items:
       id: job_id
       type:
       - str
-    - description: 'The collection of tasks to add.
+    - description: 'The collection of tasks to add. The total serialized
+
+        size of this collection must be less than 4MB. If it is greater than
+
+        4MB (for example if each task has 100''s of resource files or
+
+        environment variables), the request will fail with code
+
+        ''RequestBodyTooLarge'' and should be retried again with fewer tasks.
 
         '
       id: value
@@ -227,11 +265,16 @@ items:
         '
       id: operation_config
     return:
+      description: '@azure.batch.models.TaskAddCollectionResult or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - azure.batch.models.TaskAddCollectionResult
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.add_collection
 - class: azure.batch.operations.TaskOperations
@@ -249,7 +292,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 342
+    startLine: 365
   summary: 'Deletes a task from the specified job.
 
 
@@ -310,11 +353,16 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - None
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.delete
 - class: azure.batch.operations.TaskOperations
@@ -332,7 +380,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 448
+    startLine: 473
   summary: 'Gets information about the specified task.
 
 
@@ -389,11 +437,16 @@ items:
         '
       id: operation_config
     return:
+      description: '@azure.batch.models.CloudTask or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - azure.batch.models.CloudTask
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.get
 - class: azure.batch.operations.TaskOperations
@@ -411,7 +464,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 124
+    startLine: 131
   summary: 'Lists all of the tasks that are associated with the specified job.
 
 
@@ -462,6 +515,9 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of @azure.batch.models.CloudTask
+
+        '
       type:
       - azure.batch.models.CloudTaskPaged
   type: method
@@ -481,7 +537,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 686
+    startLine: 717
   summary: 'Lists all of the subtasks that are associated with the specified
 
     multi-instance task.
@@ -540,11 +596,16 @@ items:
         '
       id: operation_config
     return:
+      description: '@azure.batch.models.CloudTaskListSubtasksResult or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - azure.batch.models.CloudTaskListSubtasksResult
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.list_subtasks
 - class: azure.batch.operations.TaskOperations
@@ -562,21 +623,25 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 896
-  summary: 'Reactivates the specified task.
+    startLine: 932
+  summary: 'Reactivates a task, allowing it to run again even if its retry count
+
+    has been exhausted.
 
 
     Reactivation makes a task eligible to be retried again up to its
 
     maximum retry count. The task''s state is changed to active. As the task
 
-    is no longer in the completed state, any previous exit code or
+    is no longer in the completed state, any previous exit code or failure
 
-    scheduling error is no longer available after reactivation. This will
+    information is no longer available after reactivation. Each time a task
 
-    fail for tasks that are not completed or that previously completed
+    is reactivated, its retry count is reset to 0. Reactivation will fail
 
-    successfully (with an exit code of 0). Additionally, this will fail if
+    for tasks that are not completed or that previously completed
+
+    successfully (with an exit code of 0). Additionally, it will fail if
 
     the job has completed (or is terminating or deleting).
 
@@ -629,11 +694,16 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - None
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.reactivate
 - class: azure.batch.operations.TaskOperations
@@ -651,7 +721,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 788
+    startLine: 822
   summary: 'Terminates the specified task.
 
 
@@ -710,11 +780,16 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - None
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.terminate
 - class: azure.batch.operations.TaskOperations
@@ -732,7 +807,7 @@ items:
       branch: doctesting
       path: azure-batch\azure\batch\operations\task_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 574
+    startLine: 601
   summary: 'Updates the properties of the specified task.
 
     '
@@ -762,7 +837,11 @@ items:
     - defaultValue: None
       description: 'Constraints that apply to this task. If omitted,
 
-        the task is given the default constraints.
+        the task is given the default constraints. For multi-instance tasks,
+
+        updating the retention time applies only to the primary task and not
+
+        subtasks.
 
         '
       id: constraints
@@ -791,11 +870,16 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or
+
+        @msrest.pipeline.ClientRawResponse if
+
+        raw=true
+
+        '
       type:
       - None
-      - 'msrest.pipeline.ClientRawResponse
-
-        if raw=true'
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.TaskOperations.update
 references:
