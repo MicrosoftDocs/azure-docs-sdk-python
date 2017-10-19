@@ -1,0 +1,1397 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- children:
+  - azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
+  - azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
+  - azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
+  - azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
+  - azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
+  - azure.storage.blob.blockblobservice.BlockBlobService.put_block
+  - azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
+  - azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
+  - azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
+  - azure.storage.blob.blockblobservice.BlockBlobService.MAX_SINGLE_PUT_SIZE
+  - azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+  class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService
+  inheritance:
+  - inheritance:
+    - inheritance:
+      - type: builtins.object
+      type: azure.storage.common.storageclient.StorageClient
+    type: azure.storage.blob.baseblobservice.BaseBlobService
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: BlockBlobService
+  source:
+    id: BlockBlobService
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 74
+  summary: 'Block blobs let you upload large blobs efficiently. Block blobs are comprised
+
+    of blocks, each of which is identified by a block ID. You create or modify a
+
+    block blob by writing a set of blocks and committing them by their block IDs.
+
+    Each block can be a different size, up to a maximum of 4 MB, and a block blob
+
+    can include up to 50,000 blocks. The maximum size of a block blob is therefore
+
+    slightly more than 195 GB (4 MB X 50,000 blocks). If you are writing a block
+
+    blob that is no more than 64 MB in size, you can upload it in its entirety with
+
+    a single write operation; see create_blob_from_bytes.
+
+
+
+
+
+
+
+
+
+
+
+
+    '
+  syntax:
+    content: BlockBlobService(account_name=None, account_key=None, sas_token=None,
+      is_emulated=False, protocol='https', endpoint_suffix='core.windows.net', custom_domain=None,
+      request_session=None, connection_string=None, socket_timeout=None)
+    variables:
+    - description: 'The largest size upload supported in a single put call. This is
+        used by
+
+        the create_blob_from_* methods if the content length is known and is less
+
+        than this value.
+
+        '
+      id: MAX_SINGLE_PUT_SIZE
+      type:
+      - int
+    - description: 'The size of the blocks put by create_blob_from_* methods if the
+        content
+
+        length is unknown or is larger than MAX_SINGLE_PUT_SIZE. Smaller blocks
+
+        may be put. The maximum block size the service supports is 100MB.
+
+        '
+      id: MAX_BLOCK_SIZE
+      type:
+      - int
+    - description: 'The minimum block size at which the the memory-optimized, block
+        upload
+
+        algorithm is considered. This algorithm is only applicable to the create_blob_from_file
+        and
+
+        create_blob_from_stream methods and will prevent the full buffering of blocks.
+
+        In addition to the block size, ContentMD5 validation and Encryption must be
+        disabled as
+
+        these options require the blocks to be buffered.
+
+        '
+      id: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+      type:
+      - int
+  type: class
+  uid: azure.storage.blob.blockblobservice.BlockBlobService
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: create_blob_from_bytes
+  source:
+    id: create_blob_from_bytes
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 593
+  summary: 'Creates a new blob from an array of bytes, or updates the content
+
+    of an existing blob, with automatic chunking and progress
+
+    notifications.
+
+    '
+  syntax:
+    content: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
+      content_settings=None, metadata=None, validate_content=False, progress_callback=None,
+      max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
+      if_match=None, if_none_match=None, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of blob to create or update.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'Content of blob as an array of bytes.
+
+        '
+      id: blob
+      type:
+      - bytes
+    - defaultValue: '0'
+      description: 'Start index in the array of bytes.
+
+        '
+      id: index
+      type:
+      - int
+    - defaultValue: None
+      description: 'Number of bytes to upload. Set to None or negative value to upload
+
+        all bytes starting from index.
+
+        '
+      id: count
+      type:
+      - int
+    - defaultValue: None
+      description: 'ContentSettings object used to set blob properties.
+
+        '
+      id: content_settings
+      type:
+      - azure.storage.blob.models.ContentSettings
+    - defaultValue: None
+      description: 'Name-value pairs associated with the blob as metadata.
+
+        '
+      id: metadata
+      type:
+      - dict(str, str)
+    - defaultValue: 'False'
+      description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https as https (the default) will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob.
+
+        '
+      id: validate_content
+      type:
+      - bool
+    - defaultValue: None
+      description: 'Callback for progress with signature function(current, total)
+        where
+
+        current is the number of bytes transfered so far, and total is the
+
+        size of the blob, or None if the total size is unknown.
+
+        '
+      id: progress_callback
+      type:
+      - func(current, total)
+    - defaultValue: '2'
+      description: 'Maximum number of parallel connections to use when the blob size
+        exceeds
+
+        64MB.
+
+        '
+      id: max_connections
+      type:
+      - int
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.
+
+        '
+      id: timeout
+      type:
+      - int
+    return:
+      description: 'ETag and last modified properties for the Block Blob
+
+        '
+      type:
+      - azure.storage.blob.models.ResourceProperties
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: create_blob_from_path
+  source:
+    id: create_blob_from_path
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 325
+  summary: 'Creates a new blob from a file path, or updates the content of an
+
+    existing blob, with automatic chunking and progress notifications.
+
+    '
+  syntax:
+    content: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
+      metadata=None, validate_content=False, progress_callback=None, max_connections=2,
+      lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
+      if_none_match=None, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of blob to create or update.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'Path of the file to upload as the blob content.
+
+        '
+      id: file_path
+      type:
+      - str
+    - defaultValue: None
+      description: 'ContentSettings object used to set blob properties.
+
+        '
+      id: content_settings
+      type:
+      - azure.storage.blob.models.ContentSettings
+    - defaultValue: None
+      description: 'Name-value pairs associated with the blob as metadata.
+
+        '
+      id: metadata
+      type:
+      - dict(str, str)
+    - defaultValue: 'False'
+      description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https as https (the default) will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob.
+
+        '
+      id: validate_content
+      type:
+      - bool
+    - defaultValue: None
+      description: 'Callback for progress with signature function(current, total)
+        where
+
+        current is the number of bytes transfered so far, and total is the
+
+        size of the blob, or None if the total size is unknown.
+
+        '
+      id: progress_callback
+      type:
+      - func(current, total)
+    - defaultValue: '2'
+      description: 'Maximum number of parallel connections to use when the blob size
+        exceeds
+
+        64MB.
+
+        '
+      id: max_connections
+      type:
+      - int
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.
+
+        '
+      id: timeout
+      type:
+      - int
+    return:
+      description: 'ETag and last modified properties for the Block Blob
+
+        '
+      type:
+      - azure.storage.blob.models.ResourceProperties
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: create_blob_from_stream
+  source:
+    id: create_blob_from_stream
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 413
+  summary: 'Creates a new blob from a file/stream, or updates the content of
+
+    an existing blob, with automatic chunking and progress
+
+    notifications.
+
+    '
+  syntax:
+    content: create_blob_from_stream(container_name, blob_name, stream, count=None,
+      content_settings=None, metadata=None, validate_content=False, progress_callback=None,
+      max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
+      if_match=None, if_none_match=None, timeout=None, use_byte_buffer=False)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of blob to create or update.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'Opened file/stream to upload as the blob content.
+
+        '
+      id: stream
+      type:
+      - io.IOBase
+    - defaultValue: None
+      description: 'Number of bytes to read from the stream. This is optional, but
+
+        should be supplied for optimal performance.
+
+        '
+      id: count
+      type:
+      - int
+    - defaultValue: None
+      description: 'ContentSettings object used to set blob properties.
+
+        '
+      id: content_settings
+      type:
+      - azure.storage.blob.models.ContentSettings
+    - defaultValue: None
+      description: 'Name-value pairs associated with the blob as metadata.
+
+        '
+      id: metadata
+      type:
+      - dict(str, str)
+    - defaultValue: 'False'
+      description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https as https (the default) will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob.
+
+        '
+      id: validate_content
+      type:
+      - bool
+    - defaultValue: None
+      description: 'Callback for progress with signature function(current, total)
+        where
+
+        current is the number of bytes transfered so far, and total is the
+
+        size of the blob, or None if the total size is unknown.
+
+        '
+      id: progress_callback
+      type:
+      - func(current, total)
+    - defaultValue: '2'
+      description: 'Maximum number of parallel connections to use when the blob size
+        exceeds
+
+        64MB. Note that parallel upload requires the stream to be seekable.
+
+        '
+      id: max_connections
+      type:
+      - int
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.
+
+        '
+      id: timeout
+      type:
+      - int
+    - defaultValue: 'False'
+      description: 'If True, this will force usage of the original full block buffering
+        upload path.
+
+        By default, this value is False and will employ a memory-efficient,
+
+        streaming upload algorithm under the following conditions:
+
+        The provided stream is seekable, ''require_encryption'' is False, and
+
+        MAX_BLOCK_SIZE >= MIN_LARGE_BLOCK_UPLOAD_THRESHOLD.
+
+        One should consider the drawbacks of using this approach. In order to achieve
+
+        memory-efficiency, a IOBase stream or file-like object is segmented into logical
+        blocks
+
+        using a SubStream wrapper. In order to read the correct data, each SubStream
+        must acquire
+
+        a lock so that it can safely seek to the right position on the shared, underlying
+        stream.
+
+        If max_connections > 1, the concurrency will result in a considerable amount
+        of seeking on
+
+        the underlying stream. For the most common inputs such as a file-like stream
+        object, seeking
+
+        is an inexpensive operation and this is not much of a concern. However, for
+        other variants of streams
+
+        this may not be the case. The trade-off for memory-efficiency must be weighed
+        against the cost of seeking
+
+        with your input stream.
+
+        The SubStream class will attempt to buffer up to 4 MB internally to reduce
+        the amount of
+
+        seek and read calls to the underlying stream. This is particularly beneficial
+        when uploading larger blocks.
+
+        '
+      id: use_byte_buffer
+      type:
+      - bool
+    return:
+      description: 'ETag and last modified properties for the Block Blob
+
+        '
+      type:
+      - azure.storage.blob.models.ResourceProperties
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: create_blob_from_text
+  source:
+    id: create_blob_from_text
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 699
+  summary: 'Creates a new blob from str/unicode, or updates the content of an
+
+    existing blob, with automatic chunking and progress notifications.
+
+    '
+  syntax:
+    content: create_blob_from_text(container_name, blob_name, text, encoding='utf-8',
+      content_settings=None, metadata=None, validate_content=False, progress_callback=None,
+      max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
+      if_match=None, if_none_match=None, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of blob to create or update.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'Text to upload to the blob.
+
+        '
+      id: text
+      type:
+      - str
+    - defaultValue: utf-8
+      description: 'Python encoding to use to convert the text to bytes.
+
+        '
+      id: encoding
+      type:
+      - str
+    - defaultValue: None
+      description: 'ContentSettings object used to set blob properties.
+
+        '
+      id: content_settings
+      type:
+      - azure.storage.blob.models.ContentSettings
+    - defaultValue: None
+      description: 'Name-value pairs associated with the blob as metadata.
+
+        '
+      id: metadata
+      type:
+      - dict(str, str)
+    - defaultValue: 'False'
+      description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https as https (the default) will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob.
+
+        '
+      id: validate_content
+      type:
+      - bool
+    - defaultValue: None
+      description: 'Callback for progress with signature function(current, total)
+        where
+
+        current is the number of bytes transfered so far, and total is the
+
+        size of the blob, or None if the total size is unknown.
+
+        '
+      id: progress_callback
+      type:
+      - func(current, total)
+    - defaultValue: '2'
+      description: 'Maximum number of parallel connections to use when the blob size
+        exceeds
+
+        64MB.
+
+        '
+      id: max_connections
+      type:
+      - int
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.
+
+        '
+      id: timeout
+      type:
+      - int
+    return:
+      description: 'ETag and last modified properties for the Block Blob
+
+        '
+      type:
+      - azure.storage.blob.models.ResourceProperties
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: get_block_list
+  source:
+    id: get_block_list
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 276
+  summary: "Retrieves the list of blocks that have been uploaded as part of a\nblock\
+    \ blob. There are two block lists maintained for a blob:\n\n\n   Committed Block\
+    \ List:\n      The list of blocks that have been successfully committed to a\n\
+    \      given blob with Put Block List.\n\n   Uncommitted Block List:\n      The\
+    \ list of blocks that have been uploaded for a blob using\n      Put Block, but\
+    \ that have not yet been committed. These blocks\n      are stored in Azure in\
+    \ association with a blob, but do not yet\n      form part of the blob.\n"
+  syntax:
+    content: get_block_list(container_name, blob_name, snapshot=None, block_list_type=None,
+      lease_id=None, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of existing blob.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'Datetime to determine the time to retrieve the blocks.
+
+        '
+      id: snapshot
+      type:
+      - str
+    - defaultValue: None
+      description: 'Specifies whether to return the list of committed blocks, the
+        list
+
+        of uncommitted blocks, or both lists together. Valid values are:
+
+        committed, uncommitted, or all.
+
+        '
+      id: block_list_type
+      type:
+      - str
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds.
+
+        '
+      id: timeout
+      type:
+      - int
+    return:
+      description: 'list committed and/or uncommitted blocks for Block Blob
+
+        '
+      type:
+      - azure.storage.blob.models.BlobBlockList
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: put_block
+  source:
+    id: put_block
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 152
+  summary: 'Creates a new block to be committed as part of a blob.
+
+    '
+  syntax:
+    content: put_block(container_name, blob_name, block, block_id, validate_content=False,
+      lease_id=None, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of existing blob.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'Content of the block.
+
+        '
+      id: block
+      type:
+      - io.IOBase
+      - 'bytes
+
+        Content of the block.'
+    - description: 'A valid Base64 string value that identifies the block. Prior to
+
+        encoding, the string must be less than or equal to 64 bytes in size.
+
+        For a given blob, the length of the value specified for the blockid
+
+        parameter must be the same size for each block. Note that the Base64
+
+        string must be URL-encoded.
+
+        '
+      id: block_id
+      type:
+      - str
+    - defaultValue: 'False'
+      description: 'If true, calculates an MD5 hash of the block content. The storage
+
+        service checks the hash of the content that has arrived
+
+        with the hash that was sent. This is primarily valuable for detecting
+
+        bitflips on the wire if using http instead of https as https (the default)
+
+        will already validate. Note that this MD5 hash is not stored with the
+
+        blob.
+
+        '
+      id: validate_content
+      type:
+      - bool
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds.
+
+        '
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: put_block_list
+  source:
+    id: put_block_list
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 194
+  summary: 'Writes a blob by specifying the list of block IDs that make up the blob.
+
+    In order to be written as part of a blob, a block must have been
+
+    successfully written to the server in a prior Put Block operation.
+
+
+    You can call Put Block List to update a blob by uploading only those
+
+    blocks that have changed, then committing the new and existing blocks
+
+    together. You can do this by specifying whether to commit a block from
+
+    the committed block list or from the uncommitted block list, or to commit
+
+    the most recently uploaded version of the block, whichever list it may
+
+    belong to.
+
+    '
+  syntax:
+    content: put_block_list(container_name, blob_name, block_list, content_settings=None,
+      metadata=None, validate_content=False, lease_id=None, if_modified_since=None,
+      if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of existing blob.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'A list of @azure.storeage.blob.models.BlobBlock containing the
+        block ids and block state.
+
+        '
+      id: block_list
+      type:
+      - 'list(@azure.storage.blob.models.BlobBlock
+
+        )'
+    - defaultValue: None
+      description: 'ContentSettings object used to set properties on the blob.
+
+        '
+      id: content_settings
+      type:
+      - azure.storage.blob.models.ContentSettings
+    - defaultValue: None
+      description: 'Name-value pairs associated with the blob as metadata.
+
+        '
+      id: metadata
+      type:
+      - dict(str, str)
+    - defaultValue: 'False'
+      description: 'If true, calculates an MD5 hash of the block list content. The
+        storage
+
+        service checks the hash of the block list content that has arrived
+
+        with the hash that was sent. This is primarily valuable for detecting
+
+        bitflips on the wire if using http instead of https as https (the default)
+
+        will already validate. Note that this check is associated with
+
+        the block list content, and not with the content of the blob itself.
+
+        '
+      id: validate_content
+      type:
+      - bool
+    - defaultValue: None
+      description: 'Required if the blob has an active lease.
+
+        '
+      id: lease_id
+      type:
+      - str
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds.
+
+        '
+      id: timeout
+      type:
+      - int
+    return:
+      description: 'ETag and last modified properties for the updated Block Blob
+
+        '
+      type:
+      - azure.storage.blob.models.ResourceProperties
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: set_standard_blob_tier
+  source:
+    id: set_standard_blob_tier
+    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 793
+  summary: 'Sets the block blob tiers on the blob. This API is only supported for
+    block blobs on standard storage accounts.
+
+    '
+  syntax:
+    content: set_standard_blob_tier(container_name, blob_name, standard_blob_tier,
+      timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of blob to update.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.
+
+        '
+      id: standard_blob_tier
+      type:
+      - StandardBlobTier
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.
+
+        '
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: MAX_BLOCK_SIZE
+  syntax:
+    content: MAX_BLOCK_SIZE = 4194304
+  type: attribute
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_SINGLE_PUT_SIZE
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: MAX_SINGLE_PUT_SIZE
+  syntax:
+    content: MAX_SINGLE_PUT_SIZE = 67108864
+  type: attribute
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.MAX_SINGLE_PUT_SIZE
+- class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+  syntax:
+    content: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD = 4194305
+  type: attribute
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+references:
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
+  isExternal: false
+  name: create_blob_from_bytes
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
+  isExternal: false
+  name: create_blob_from_path
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
+  isExternal: false
+  name: create_blob_from_stream
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
+  isExternal: false
+  name: create_blob_from_text
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
+  isExternal: false
+  name: get_block_list
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block
+  isExternal: false
+  name: put_block
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
+  isExternal: false
+  name: put_block_list
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
+  isExternal: false
+  name: set_standard_blob_tier
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
+  isExternal: false
+  name: MAX_BLOCK_SIZE
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_SINGLE_PUT_SIZE
+  isExternal: false
+  name: MAX_SINGLE_PUT_SIZE
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.MAX_SINGLE_PUT_SIZE
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+  isExternal: false
+  name: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
