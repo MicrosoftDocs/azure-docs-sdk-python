@@ -21,13 +21,13 @@ Monitoring provides data to ensure that your application stays up and running in
 
 Learn more about Azure Monitor [here](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-azure-monitor). 
 
-## Client
+## Installation
 ```bash
-pip install azure-monitor
+pip install azure-mgmt-monitor
 ```
 
-### Example
-This sample obtains the metrics of a resource on Azure (VMs, etc.). 
+## Example - Metrics
+This sample obtains the metrics of a resource on Azure (VMs, etc.). This sample requires version 0.4.0 of the Python package at least.
 
 A complete list of available keywords for filters is available [here](https://msdn.microsoft.com/library/azure/mt743622.aspx).
 
@@ -35,7 +35,7 @@ Supported metrics per resource type is available [here](https://docs.microsoft.c
 
 ```python
 import datetime
-from azure.monitor import MonitorClient
+from azure.mgmt.monitor import MonitorManagementClient
 
 # Get the ARM id of your resource. You might chose to do a "get"
 # using the according management or to build the URL directly
@@ -47,7 +47,7 @@ resource_id = (
 ).format(subscription_id, resource_group_name, vm_name)
 
 # create client
-client = MonitorClient(
+client = MonitorManagementClient(
     credentials,
     subscription_id
 )
@@ -75,25 +75,21 @@ for metric in client.metric_definitions.list(resource_id):
 today = datetime.datetime.now().date()
 yesterday = today - datetime.timedelta(days=1)
 
-filter = " and ".join([
-    "name.value eq 'Percentage CPU'",
-    "aggregationType eq 'Total'",
-    "startTime eq {}".format(yesterday),
-    "endTime eq {}".format(today),
-    "timeGrain eq duration'PT1H'"
-])
-
 metrics_data = client.metrics.list(
     resource_id,
-    filter=filter
+    timespan="{}/{}".format(yesterday, today),
+    interval='PT1H',
+    metric='Percentage CPU',
+    aggregation='Total'
 )
 
-for item in metrics_data:
-    # azure.monitor.models.Metric
+for item in metrics_data.value:
+    # azure.mgmt.monitor.models.Metric
     print("{} ({})".format(item.name.localized_value, item.unit.name))
-    for data in item.data:
-        # azure.monitor.models.MetricData
-        print("{}: {}".format(data.time_stamp, data.total))
+    for timeserie in item.timeseries:
+        for data in timeserie.data:
+            # azure.mgmt.monitor.models.MetricData
+            print("{}: {}".format(data.time_stamp, data.total))
 
 # Example of result:
 # Percentage CPU (percent)
@@ -106,15 +102,8 @@ for item in metrics_data:
 # 2016-11-16 06:00:00+00:00: 114.9
 # 2016-11-16 07:00:00+00:00: 45.4
 ```
-> [!div class="nextstepaction"]
-> [Explore the Client APIs](/python/api/overview/azure/monitoring/clientlibrary)
 
-## Mangement API
-```bash
-pip install azure-mgmt-monitor
-```
-
-### Example
+## Example - Alerts
 This example shows how to automatically set up alerts on your resources when they are created to ensure that all resources are monitored correctly.
 
 Create a data source on a VM to alert on CPU usage:
@@ -129,7 +118,7 @@ resource_id = (
 ).format(self.settings.SUBSCRIPTION_ID)
 
 # create client
-monitor_mgmt_client = MonitorMgmtClient(
+client = MonitorMgmtClient(
     credentials,
     subscription_id
 )
@@ -170,7 +159,7 @@ rule_action = RuleEmailAction(
 Create the alert:
 ```python
 rule_name = 'MyPyTestAlertRule'
-my_alert = monitor_mgmt_client.alert_rules.create_or_update(
+my_alert = client.alert_rules.create_or_update(
     group_name,
     rule_name,
     {

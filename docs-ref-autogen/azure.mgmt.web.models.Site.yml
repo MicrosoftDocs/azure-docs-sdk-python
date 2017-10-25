@@ -31,11 +31,11 @@ items:
 
     '
   syntax:
-    content: Site(location, kind=None, tags=None, identity=None, enabled=None, host_name_ssl_states=None,
+    content: Site(location, kind=None, tags=None, enabled=None, host_name_ssl_states=None,
       server_farm_id=None, reserved=False, site_config=None, scm_site_also_stopped=False,
       hosting_environment_profile=None, client_affinity_enabled=None, client_cert_enabled=None,
       host_names_disabled=None, container_size=None, daily_memory_time_quota=None,
-      cloning_info=None, snapshot_info=None, micro_service='WebSites', gateway_site_name=None)
+      cloning_info=None, snapshot_info=None, https_only=None, identity=None)
     parameters:
     - description: 'Kind of resource.
 
@@ -55,12 +55,6 @@ items:
       id: tags
       type:
       - dict[str, str]
-    - description: 'Identity for the resource.
-
-        '
-      id: identity
-      type:
-      - azure.mgmt.web.models.ResourceIdentity
     - description: '<code>true</code> if the app is enabled; otherwise,
 
         <code>false</code>. Setting this value to false disables the app (takes
@@ -185,20 +179,20 @@ items:
       id: snapshot_info
       type:
       - azure.mgmt.web.models.SnapshotRecoveryRequest
-    - description: 'Micro services like apps, logic apps. Default value:
+    - description: 'HttpsOnly: configures a web site to accept only https
 
-        "WebSites" .
+        requests. Issues redirect for
 
-        '
-      id: micro_service
-      type:
-      - str
-    - description: 'Name of gateway app associated with the app.
+        http requests
 
         '
-      id: gateway_site_name
+      id: https_only
       type:
-      - str
+      - bool
+    - description: ''
+      id: identity
+      type:
+      - azure.mgmt.web.models.ManagedServiceIdentity
     variables:
     - description: 'Resource Id.
 
@@ -292,10 +286,22 @@ items:
       - str
     - description: 'List of IP addresses that the app uses for
 
-        outbound connections (e.g. database access). Read-only.
+        outbound connections (e.g. database access). Includes VIPs from tenants
+
+        that site can be hosted with current settings. Read-only.
 
         '
       id: outbound_ip_addresses
+      type:
+      - str
+    - description: 'List of IP addresses that the app
+
+        uses for outbound connections (e.g. database access). Includes VIPs from
+
+        all tenants. Read-only.
+
+        '
+      id: possible_outbound_ip_addresses
       type:
       - str
     - description: 'App suspended till in case memory-time quota is
@@ -342,14 +348,6 @@ items:
       id: slot_swap_status
       type:
       - ~azure.mgmt.web.models.SlotSwapStatus
-    - description: 'Indicates whether app is deployed as a premium
-
-        app.
-
-        '
-      id: premium_app_deployed
-      type:
-      - bool
   type: class
   uid: azure.mgmt.web.models.Site
 references:
