@@ -41,7 +41,7 @@ server = sql_client.servers.create_or_update(
 )
 ```
 
-Review the [install instructions](python-sdk-azure-install.md) for a full list of the libraries and how to import them into your projects and then read the the [get started article](python-sdk-azure-get-started.yml) to set up your authentication and run sample code against your own Azure subscription.
+Review the [install instructions](python-sdk-azure-install.md) for a full list of the libraries and how to import them into your projects and then read the [get started article](python-sdk-azure-get-started.md) to set up your authentication and run sample code against your own Azure subscription.
 
 ## Connect to Azure services
 
