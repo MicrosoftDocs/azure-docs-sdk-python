@@ -3,7 +3,6 @@ title: Azure tools for Python developers | Microsoft Docs
 description: IDE integrations and command-line interfaces for Python developers working on Azure.
 author: lisawong19
 manager: douge
-ms.assetid: 
 ms.devlang: python
 ms.topic: article
 ms.service: Azure
