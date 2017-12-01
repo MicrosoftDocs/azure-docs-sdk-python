@@ -11,7 +11,6 @@ ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: multiple
-ms.assetid: 
 ---
 
 # Installation
