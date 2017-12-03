@@ -34,7 +34,7 @@ from azure.mgmt.resource import ResourceManagementClient
 LOCATION = 'eastus'
 GROUP_NAME ='sample_resource_group'
 
-resource_client = ResourceManagmentClient(credentials, subscription_id)
+resource_client = ResourceManagementClient(credentials, subscription_id)
 resource_client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
 ```
 
