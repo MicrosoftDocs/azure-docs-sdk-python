@@ -10,7 +10,6 @@ ms.topic: article
 ms.technology: azure
 ms.devlang: python
 ms.service: multiple
-ms.assetid: 
 ---
 
 # Authenticate with the Azure Management Libraries for Python
