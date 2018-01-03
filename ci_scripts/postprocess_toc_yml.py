@@ -16,10 +16,10 @@ skipped_level2_packages = [
 ]
 
 def rewrite_yml(data):
-    with io.open('.\\_build\\docfx_yaml\\toc.yml', 'w', encoding='utf8') as outfile:
+    with io.open('toc.yml', 'w', encoding='utf8') as outfile:
         yaml.dump(data, outfile, default_flow_style=False, allow_unicode=True)
 
-with open(".\\_build\\docfx_yaml\\toc.yml", 'r') as stream:
+with open("toc.yml", 'r') as stream:
     try:
         data_loaded = yaml.load(stream)
         for node in data_loaded:
@@ -31,4 +31,3 @@ with open(".\\_build\\docfx_yaml\\toc.yml", 'r') as stream:
         rewrite_yml(data_loaded)
     except yaml.YAMLError as exc:
         print(exc)
-
