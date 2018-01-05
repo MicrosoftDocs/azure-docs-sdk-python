@@ -23,7 +23,7 @@ pip install pyodbc
 ```
 More details about installing the python and database communication libraries can be found [here](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries).
 
-### Connect and execute a SQL query
+### Connect and execute an SQL query
 
 Connect to a SQL database and select all records in a table.
 
