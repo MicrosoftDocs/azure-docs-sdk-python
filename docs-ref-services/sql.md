@@ -1,14 +1,11 @@
 ---
 title: Azure SQL Database libraries for Python
-description: 
-keywords: Azure, Python, SDK, API, SQL, database , pyodbc
+description: Connect to Azure SQL database using the ODBC driver and pyodbc or manage Azure SQL instances with the management API.
 author: lisawong19  
 ms.author: liwong
-manager: douge
-ms.date: 07/11/2017
-ms.topic: article
-ms.prod: azure
-ms.technology: azure
+manager: routlaw
+ms.date: 01/05/2018
+ms.topic: reference
 ms.devlang: python
 ms.service: sql-database
 ---
@@ -17,16 +14,16 @@ ms.service: sql-database
 
 ## Overview
 
-Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-technical-overview) from Python with the Microsoft ODBC driver and pyodbc. 
+Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-technical-overview) from Python with the Microsoft ODBC driver and pyodbc. View our [quickstart](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python) and getting started [sample](https://github.com/Azure-Samples/sql-database-python-manage).
 
-## Client ODBC driver and pyodbc
+## Install ODBC driver and pyodbc
 
 ```bash
 pip install pyodbc
 ```
 More details about installing the python and database communication libraries can be found [here](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries).
 
-### Example
+### Connect and execute a SQL query
 
 Connect to a SQL database and select all records in a table.
 
@@ -52,6 +49,9 @@ Create and manage Azure SQL Database resources in your subscription with the man
 
 ```bash
 pip install azure-mgmt-sql
+pip install azure-common
+pip install azure-mgmt-sql
+pip install azure-mgmt-resource
 ```
 
 ### Example
@@ -62,6 +62,13 @@ Create a SQL Database resource and restrict access to a range of IP addresses us
 RESOURCE_GROUP = 'YOUR_RESOURCE_GROUP_NAME'
 LOCATION = 'eastus'  # example Azure availability zone, should match resource group
 SQL_DB = 'YOUR_SQLDB_NAME'
+
+# create resource client
+resource_client = get_client_from_cli_profile(ResourceManagementClient)
+# create resource group
+resource_client.resource_groups.create_or_update(RESOURCE_GROUP, {'location': LOCATION})
+
+sql_client = get_client_from_cli_profile(SqlManagementClient)
 
 # Create a SQL server
 server = sql_client.servers.create_or_update(
@@ -87,12 +94,3 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/sql/managementlibrary)
 
-## Samples
-
-* [Create and manage SQL databases][1]    
-* [Use Python to connect and query data][2]   
-
-[1]: https://github.com/Azure-Samples/sql-database-python-manage
-[2]: https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python
-
-View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=SQL) of Azure SQL database samples. 
