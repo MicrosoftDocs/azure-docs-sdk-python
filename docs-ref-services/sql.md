@@ -16,12 +16,6 @@ ms.service: sql-database
 
 Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-technical-overview) from Python with the pyodbc [ODBC database driver](https://github.com/mkleehammer/pyodbc/wiki/Drivers-and-Driver-Managers). View our [quickstart](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python) on connecting to an Azure SQL database and using Transact-SQL statements to query data and getting started [sample](https://github.com/mkleehammer/pyodbc/wiki/Getting-started) with pyodbc.
 
-
-## Connecting to ORMs
-
-pyodbc works with other ORMs such as [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/dialects/mssql.html?highlight=pyodbc#module-sqlalchemy.dialects.mssql.pyodbc) and [Django](https://github.com/lionheart/django-pyodbc/). 
-
-
 ## Install ODBC driver and pyodbc
 
 ```bash
@@ -57,7 +51,11 @@ while row:
 ```
 
 > [!div class="nextstepaction"]
-> [pyodbc sample]()
+> [pyodbc sample](https://github.com/mkleehammer/pyodbc/wiki/Getting-started)
+
+## Connecting to ORMs
+
+pyodbc works with other ORMs such as [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/dialects/mssql.html?highlight=pyodbc#module-sqlalchemy.dialects.mssql.pyodbc) and [Django](https://github.com/lionheart/django-pyodbc/). 
 
 ## [Management API](/python/api/overview/azure/sql/managementlibrary)
 
