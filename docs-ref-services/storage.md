@@ -41,7 +41,7 @@ pip install azure-mgmt-storage
 
 ## Example
 ```python
-blob_service = block_blob_service = BlockBlobService(account_name, account_key)
+blob_service = BlockBlobService(account_name, account_key)
 
 blob_service.create_container(
     'mycontainername',
