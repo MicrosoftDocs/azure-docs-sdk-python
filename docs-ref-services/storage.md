@@ -27,8 +27,10 @@ Create, update, and manage Azure Storage accounts and query and regenerate acces
 
 ### Client
 
+Azure Storage Client Libraries consist of 4 packages: Blob, File, Queue and Table. To install the blob package, run:
+
 ```bash
-pip install azure-storage
+pip install azure-storage-blob
 ```
 
 ### Management
@@ -39,8 +41,7 @@ pip install azure-mgmt-storage
 
 ## Example
 ```python
-storage_client = CloudStorageAccount(storage_account_name, storage_key)
-blob_service = storage_client.create_block_blob_service()
+blob_service = BlockBlobService(account_name, account_key)
 
 blob_service.create_container(
     'mycontainername',
@@ -61,8 +62,8 @@ print(blob_service.make_blob_url('mycontainername', 'myblobname'))
 
 | | |
 |--|--|
-| [Get started with Azure Blob Storage in Python](https://azure.microsoft.com/resources/samples/storage-blob-python-getting-started/) | Create, read, update, restrict access, and delete files and objects in Azure Storage. |
-| [Get started with Azure Queue Storage in Python](https://azure.microsoft.com/resources/samples/storage-queue-python-getting-started/) | Insert, peek, retrieve and delete messages from Azure Storage queues. | 
+| [Get started with Azure Blob Storage in Python](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-python-how-to-use-blob-storage) | Create, read, update, restrict access, and delete files and objects in Azure Storage. |
+| [Get started with Azure Queue Storage in Python](https://docs.microsoft.com/en-us/azure/storage/queues/storage-python-how-to-use-queue-storage) | Insert, peek, retrieve and delete messages from Azure Storage queues. | 
 | [Manage Azure Storage accounts](https://azure.microsoft.com/resources/samples/storage-python-manage) | Create, update , and delete storage accounts. Retrieve and regenerate storage account access keys.
 
 Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
