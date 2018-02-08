@@ -42,6 +42,7 @@ items:
   - azure.storage.blob.baseblobservice.BaseBlobService.set_container_acl
   - azure.storage.blob.baseblobservice.BaseBlobService.set_container_metadata
   - azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
+  - azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
   - azure.storage.blob.baseblobservice.BaseBlobService.MAX_CHUNK_GET_SIZE
   - azure.storage.blob.baseblobservice.BaseBlobService.MAX_SINGLE_GET_SIZE
   class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -74,6 +75,7 @@ items:
     way to organize sets of blobs. For more information please see:
 
     [https://msdn.microsoft.com/en-us/library/azure/ee691964.aspx](https://msdn.microsoft.com/en-us/library/azure/ee691964.aspx)
+
 
 
 
@@ -225,7 +227,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 3090
+    startLine: 3104
   summary: 'Aborts a pending copy_blob operation, and leaves a destination blob
 
     with zero length and full metadata.
@@ -283,7 +285,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2500
+    startLine: 2514
   summary: 'Requests a new lease. If the blob does not have an active lease, the Blob
 
     service creates a lease on the blob and returns a new lease ID.
@@ -511,7 +513,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2682
+    startLine: 2696
   summary: 'Breaks the lease, if the blob has an active lease. Once a lease is broken,
 
     it cannot be renewed. Any authorized request can break the lease; the request
@@ -762,7 +764,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2756
+    startLine: 2770
   summary: 'Changes the lease ID of an active lease. A change must include the current
 
     lease ID and a new lease ID.
@@ -963,7 +965,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2880
+    startLine: 2894
   summary: 'Copies a blob asynchronously. This operation returns a copy operation
 
     properties object, including a copy ID you can use to check or abort the
@@ -1328,7 +1330,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 3127
+    startLine: 3141
   summary: 'Marks the specified blob or snapshot for deletion.
 
     The blob is later deleted during garbage collection.
@@ -1339,6 +1341,20 @@ items:
     snapshots. You can delete both at the same time with the Delete
 
     Blob operation.
+
+
+    If a delete retention policy is enabled for the service, then this operation soft
+    deletes the blob or snapshot
+
+    and retains the blob or snapshot for specified number of days.
+
+    After specified number of days, blob''s data is removed from the service during
+    garbage collection.
+
+    Soft deleted blob or snapshot is accessible through List Blobs API specifying
+    include=Include.Deleted option.
+
+    Soft-deleted blob or snapshot can be restored using Undelete API.
 
     '
   syntax:
@@ -1556,7 +1572,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1538
+    startLine: 1552
   summary: 'Returns a boolean indicating whether the container exists (if blob_name
 
     is None), or otherwise a boolean indicating whether the blob exists.
@@ -2082,7 +2098,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2275
+    startLine: 2289
   summary: 'Returns all user-defined metadata for the specified blob or snapshot.
 
     '
@@ -2204,7 +2220,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1409
+    startLine: 1423
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the blob. It does not return the content of the blob.
@@ -2332,7 +2348,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1385
+    startLine: 1401
   summary: 'Gets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics.
@@ -2349,12 +2365,12 @@ items:
       type:
       - int
     return:
-      description: 'The blob service properties.
+      description: 'The blob @azure.storage.common.models.ServiceProperties with an
+        attached
+
+        target_version property.
 
         '
-      type:
-      - azure.storage.common.models.ServiceProperties with an attachedtarget_version
-        property
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_service_properties
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -2370,7 +2386,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1308
+    startLine: 1312
   summary: 'Retrieves statistics related to replication for the Blob service. It is
 
     only available when read-access geo-redundant replication is enabled for
@@ -2434,7 +2450,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2050
+    startLine: 2064
   summary: 'Downloads a blob as an array of bytes, with automatic chunking and
 
     progress notifications. Returns an instance of @azure.storage.blob.models.Blob
@@ -2663,7 +2679,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1683
+    startLine: 1697
   summary: 'Downloads a blob to a file path, with automatic chunking and progress
 
     notifications. Returns an instance of @azure.storage.blob.models.Blob with
@@ -2909,7 +2925,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1807
+    startLine: 1821
   summary: 'Downloads a blob to a stream, with automatic chunking and progress
 
     notifications. Returns an instance of @azure.storage.blob.models.Blob with
@@ -3143,7 +3159,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2163
+    startLine: 2177
   summary: 'Downloads a blob as unicode text, with automatic chunking and progress
 
     notifications. Returns an instance of @azure.storage.blob.models.Blob with
@@ -3856,7 +3872,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2628
+    startLine: 2642
   summary: 'Releases the lease. The lease may be released if the lease ID specified
     on the
 
@@ -4046,7 +4062,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2569
+    startLine: 2583
   summary: 'Renews the lease. The lease can be renewed if the lease ID specified on
 
     the request matches that associated with the blob. Note that the lease may
@@ -4249,7 +4265,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2339
+    startLine: 2353
   summary: 'Sets user-defined metadata for the specified blob as one or more
 
     name-value pairs.
@@ -4375,7 +4391,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1474
+    startLine: 1488
   summary: 'Sets system properties on the blob. If one property is set for the
 
     content_settings, all properties will be overriden.
@@ -4497,7 +4513,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1344
+    startLine: 1348
   summary: 'Sets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics. If an element (ex Logging) is left as None, the
@@ -4507,7 +4523,7 @@ items:
     '
   syntax:
     content: set_blob_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
-      cors=None, target_version=None, timeout=None)
+      cors=None, target_version=None, timeout=None, delete_retention_policy=None)
     parameters:
     - defaultValue: None
       description: 'Groups the Azure Analytics Logging settings.
@@ -4515,7 +4531,7 @@ items:
         '
       id: logging
       type:
-      - Logging
+      - azure.storage.common.models.Logging
     - defaultValue: None
       description: 'The hour metrics settings provide a summary of request
 
@@ -4524,7 +4540,7 @@ items:
         '
       id: hour_metrics
       type:
-      - Metrics
+      - azure.storage.common.models.Metrics
     - defaultValue: None
       description: 'The minute metrics settings provide request statistics
 
@@ -4533,7 +4549,7 @@ items:
         '
       id: minute_metrics
       type:
-      - Metrics
+      - azure.storage.common.models.Metrics
     - defaultValue: None
       description: 'You can include up to five CorsRule elements in the
 
@@ -4553,7 +4569,7 @@ items:
         '
       id: target_version
       type:
-      - string
+      - str
     - defaultValue: None
       description: 'The timeout parameter is expressed in seconds.
 
@@ -4561,6 +4577,16 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'The delete retention policy specifies whether to retain deleted
+        blobs.
+
+        It also specifies the number of days and versions of blob to keep.
+
+        '
+      id: delete_retention_policy
+      type:
+      - azure.storage.common.models.DeleteRetentionPolicy
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_service_properties
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -4765,7 +4791,7 @@ items:
       branch: dev
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2813
+    startLine: 2827
   summary: 'Creates a read-only snapshot of a blob.
 
     '
@@ -4880,6 +4906,51 @@ items:
       - azure.storage.blob.models.Blob
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
+- class: azure.storage.blob.baseblobservice.BaseBlobService
+  fullName: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
+  langs:
+  - python
+  module: azure.storage.blob.baseblobservice
+  name: undelete_blob
+  source:
+    id: undelete_blob
+    path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+    remote:
+      branch: dev
+      path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 3215
+  summary: 'The undelete Blob operation restores the contents and metadata of soft
+    deleted blob or snapshot.
+
+    Attempting to undelete a blob or snapshot that is not soft deleted will succeed
+    without any changes.
+
+    '
+  syntax:
+    content: undelete_blob(container_name, blob_name, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of existing blob.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds.
+
+        '
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
 - class: azure.storage.blob.baseblobservice.BaseBlobService
   fullName: azure.storage.blob.baseblobservice.BaseBlobService.MAX_CHUNK_GET_SIZE
   langs:
@@ -5101,6 +5172,11 @@ references:
   name: snapshot_blob
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
+- fullName: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
+  isExternal: false
+  name: undelete_blob
+  parent: azure.storage.blob.baseblobservice.BaseBlobService
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.MAX_CHUNK_GET_SIZE
   isExternal: false
   name: MAX_CHUNK_GET_SIZE
