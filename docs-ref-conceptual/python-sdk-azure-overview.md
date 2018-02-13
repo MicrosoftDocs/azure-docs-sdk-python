@@ -15,7 +15,7 @@ ms.assetid:
 
 # Azure libraries for Python
 
-The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. The libraries are available in [PyPI](python-sdk-azure-install.md) for use in your Python projects.
+The Azure libraries for Python let you use Azure services and manage Azure resources from your application code. 
 
 ## Manage Azure resources
 
@@ -41,7 +41,7 @@ server = sql_client.servers.create_or_update(
 )
 ```
 
-Review the [install instructions](python-sdk-azure-install.md) for a full list of the libraries and how to import them into your projects and then read the [get started article](python-sdk-azure-get-started.yml) to set up your authentication and run sample code against your own Azure subscription.
+Review the [install instructions](/azure/python-how-to-install) for a full list of the libraries and how to import them into your projects and then read the [get started article](python-sdk-azure-get-started.yml) to set up your authentication and run sample code against your own Azure subscription.
 
 ## Connect to Azure services
 
