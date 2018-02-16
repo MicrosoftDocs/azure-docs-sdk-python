@@ -31,8 +31,7 @@ napoleon_use_admonition_for_examples = True
 
 exclude_patterns = [
   '_build',
-  '*.tests.rst',
-  'azure.servicemanagement*.rst'
+  '*.tests.rst'
 ]
 
 
