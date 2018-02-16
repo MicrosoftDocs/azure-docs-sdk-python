@@ -78,7 +78,7 @@ namespace_package_dict = {
   'azure_monitor-([A-Za-z0-9\-\.]*).egg': 'azure-monitor',
   'azure_servicebus-([A-Za-z0-9\-\.]*).egg': 'azure-servicebus',
   'azure_servicefabric-([A-Za-z0-9\-\.]*).egg': 'azure-servicefabric',
-  'azure_servicemanagement_legacy-([A-Za-z0-9\-\.]*).egg': 'azure-servicemanagement-legacy',
+  'azure_servicemanagement-([A-Za-z0-9\-\.]*).egg': 'azure-servicemanagement-legacy',
   'azure_storage_common-([A-Za-z0-9\-\.]*).egg': 'azure-storage-common',
   'azure_storage_blob-([A-Za-z0-9\-\.]*).egg': 'azure-storage-blob',
   'azure_storage_file-([A-Za-z0-9\-\.]*).egg': 'azure-storage-file',
