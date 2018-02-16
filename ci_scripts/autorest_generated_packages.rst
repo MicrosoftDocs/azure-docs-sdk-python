@@ -55,4 +55,4 @@
   ./ref/azure.monitor.rst
   ./ref/azure.servicefabric.rst
   ./ref/azure.servicebus.rst
-  ./ref/azure.servicemanagement.legacy.rst
+  ./ref/azure.servicemanagement.rst
