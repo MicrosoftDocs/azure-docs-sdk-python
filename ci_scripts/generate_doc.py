@@ -46,10 +46,7 @@ RST_AUTODOC_TOCTREE = """.. toctree::
   :glob:
   :caption: Developer Documentation
 
-  ref/azure.common
 {generated_packages}
-  ref/azure.servicebus
-  ref/azure.servicemanagement  
 """
 
 MULTIAPI_VERSION_PACKAGE_TEMPLATE = """{title}

@@ -3,7 +3,7 @@
   :glob:
   :caption: Developer Documentation
 
-  ref/azure.common
+  ./ref/azure.common.rst
   ./ref/azure.batch.rst
   ./ref/azure.graphrbac.rst
   ./ref/azure.keyvault.rst
@@ -54,5 +54,5 @@
   ./ref/azure.mgmt.web.rst
   ./ref/azure.monitor.rst
   ./ref/azure.servicefabric.rst
-  ref/azure.servicebus
-  ref/azure.servicemanagement  
+  ./ref/azure.servicebus.rst
+  ./ref/azure.servicemanagement.legacy.rst
