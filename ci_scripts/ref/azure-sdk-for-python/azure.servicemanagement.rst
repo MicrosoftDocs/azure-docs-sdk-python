@@ -1,4 +1,4 @@
-azure.servicemanagement.legacy package
+azure.servicemanagement package
 ===============================
 
 Submodules
@@ -19,7 +19,7 @@ Submodules
 Module contents
 ---------------
 
-.. automodule:: azure.servicemanagement.legacy
+.. automodule:: azure.servicemanagement
     :members:
     :undoc-members:
     :show-inheritance:
