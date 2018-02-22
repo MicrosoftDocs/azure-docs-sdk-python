@@ -77,6 +77,6 @@ graphrbac_client.users.delete(user.object_id)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Client APIs](/python/api/overview/azure/activedirectory/clientlibrary?)
+> [Explore the Client APIs](/python/api/overview/azure/activedirectory/client)
 
 Explore more [sample Python code for Azure AD](https://azure.microsoft.com/en-us/resources/samples/?term=active+directory&platform=python) you can use in your apps.

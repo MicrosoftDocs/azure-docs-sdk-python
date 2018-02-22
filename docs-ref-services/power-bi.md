@@ -25,4 +25,4 @@ ms.service: multiple
 pip install azure-mgmt-powerblembedded
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/powerbi/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/powerbi/management)
