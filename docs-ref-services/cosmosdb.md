@@ -75,7 +75,7 @@ results = list(result_iterable)
 print(results)
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/cosmosdb/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/cosmosdb/management)
 
 ## Samples
 

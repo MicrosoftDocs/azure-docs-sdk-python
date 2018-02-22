@@ -25,4 +25,4 @@ ms.service: multiple
 pip install azure-mgmt-recoveryservicesbackup
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/recoveryservicesbackup/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/recoveryservicesbackup/management)

@@ -25,4 +25,4 @@ ms.service: multiple
 pip install azure-mgmt-eventhub
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/eventhub/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/eventhub/management)

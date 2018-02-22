@@ -71,7 +71,7 @@ subnet_info = async_subnet_creation.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/network/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/network/management)
 
 ### Samples
 
