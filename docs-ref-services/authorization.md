@@ -68,3 +68,4 @@ To create or manage resource groups, see [Resource Management](/python/api/overv
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/authorization/management)
+
