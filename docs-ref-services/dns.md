@@ -22,31 +22,74 @@ ms.service: multiple
 
 To get started with Azure DNS, see [Get started with Azure DNS using the Azure portal](/azure/dns/dns-getstarted-portal).
 
-## Management APIs
-
-Create and manage DNS zones and records with the management API.
-
-Install the management package with pip.
+## [Management API](/python/api/overview/azure/dns/management)
 
 ```bash
 pip install azure-mgmt-dns
 ```
 
-### Example
+## Create the management client
 
-Create a new DNS zone.
+The following code creates an instance of the management client.
 
+You will need to provide your ``subscription_id`` which can be retrieved
+from [your subscription list](https://manage.windowsazure.com/#Workspaces/AdminTasks/SubscriptionMapping).
+
+See [Resource Management Authentication](/python/azure/python-sdk-azure-authenticate)
+for details on handling Azure Active Directory authentication with the Python SDK, and creating a ``Credentials`` instance.
+
+```python 
+    from azure.mgmt.dns import DnsManagementClient
+    from azure.common.credentials import UserPassCredentials
+
+    # Replace this with your subscription id
+    subscription_id = '33333333-3333-3333-3333-333333333333'
+    
+    # See above for details on creating different types of AAD credentials
+    credentials = UserPassCredentials(
+        'user@domain.com',  # Your user
+        'my_password',      # Your password
+    )
+
+    dns_client = DnsManagementClient(
+        credentials,
+        subscription_id
+    )
+```
+
+## Create DNS zone
 ```python
-from azure.mgmt.dns import DnsManagementClient
-
-dns_client = DnsManagementClient(credentials, 'your-subscription-id')
-zone = dns_client.zones.create_or_update('resource-group',
-                                         'zone_name_no_dot',
-                                         {
-                                            "location": "global"
-                                         })
-
+	# The only valid value is 'global', otherwise you will get a:
+	# The subscription is not registered for the resource type 'dnszones' in the location 'westus'.
+	zone = dns_client.zones.create_or_update(
+		'MyResourceGroup',
+		'pydns.com',
+		{
+			'location': 'global'
+		}
+	)
+```
+	
+## Create a Record Set
+```python
+	record_set = dns_client.record_sets.create_or_update(
+		'MyResourceGroup',
+		'pydns.com',
+		'MyRecordSet',
+		'A',
+		{
+			 "ttl": 300,
+			 "arecords": [
+				 {
+					"ipv4_address": "1.2.3.4"
+				 },
+				 {
+					"ipv4_address": "1.2.3.5"
+				 }
+			 ]
+		}
+	)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/dns/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/dns/management)
