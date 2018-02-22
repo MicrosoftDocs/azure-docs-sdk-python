@@ -114,7 +114,7 @@ jobResult = adlaJobClient.job.create(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/datalakeanalytics/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/datalakeanalytics/management)
 
 ## Samples
 [Manage Azure Data Lake Anyalytics](https://docs.microsoft.com/azure/data-lake-analytics/data-lake-analytics-manage-use-python-sdk)

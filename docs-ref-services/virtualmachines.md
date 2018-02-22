@@ -67,7 +67,7 @@ def create_vm()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/virtualmachines/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/virtualmachines/management)
 
 ## Samples
 

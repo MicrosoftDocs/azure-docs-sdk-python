@@ -57,7 +57,7 @@ while row:
 
 pyodbc works with other ORMs such as [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/dialects/mssql.html?highlight=pyodbc#module-sqlalchemy.dialects.mssql.pyodbc) and [Django](https://github.com/lionheart/django-pyodbc/). 
 
-## [Management API](/python/api/overview/azure/sql/managementlibrary)
+## [Management API](/python/api/overview/azure/sql/management)
 
 Create and manage Azure SQL Database resources in your subscription with the management API. 
 
@@ -105,5 +105,5 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 )
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/sql/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/sql/management)
 

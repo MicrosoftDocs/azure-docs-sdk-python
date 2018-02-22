@@ -52,7 +52,7 @@ key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
 ```
 [!div class="nextstepaction"]
-[Explore the Client APIs](/python/api/overview/azure/keyvault/clientlibrary)
+[Explore the Client APIs](/python/api/overview/azure/keyvault/client)
 
 ### Management API
 ```bash
@@ -98,7 +98,7 @@ vault = kv_client.vaults.create_or_update(
 > [Explore the Management APIs](/python/api/azure.mgmt.keyvault)
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/keyvault/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/keyvault/management)
 
 ## Samples
 * [Manage Key Vaults][1] 

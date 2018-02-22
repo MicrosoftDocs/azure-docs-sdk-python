@@ -73,5 +73,5 @@ db = db_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/postgresql/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/postgresql/management)
 

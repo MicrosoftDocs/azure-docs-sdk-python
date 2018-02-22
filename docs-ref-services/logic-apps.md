@@ -25,4 +25,4 @@ ms.service: multiple
 pip install azure-mgmt-logic
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/logicapps/managementlibrary)
+> [Explore the Management APIs](/python/api/overview/azure/logicapps/management)
