@@ -55,16 +55,16 @@ redis_client = NotificationHubsManagementClient(
 
 The following code check namespace availability of a notification hub.
 ```python
-    from azure.mgmt.notificationhubs.models import CheckAvailabilityParameters
+from azure.mgmt.notificationhubs.models import CheckAvailabilityParameters
 
-    account_name = 'mynotificationhub'
-    output = notificationhubs_client.namespaces.check_availability(
-        azure.mgmt.notificationhubs.models.CheckAvailabilityParameters(
-            name = account_name
-        )
+account_name = 'mynotificationhub'
+output = notificationhubs_client.namespaces.check_availability(
+    azure.mgmt.notificationhubs.models.CheckAvailabilityParameters(
+        name = account_name
     )
-    # output is a CheckAvailibilityResource instance
-    print(output.is_availiable) # Yes, it's 'availiable', it's a typo in the REST API
+)
+# output is a CheckAvailibilityResource instance
+print(output.is_availiable) # Yes, it's 'availiable', it's a typo in the REST API
 ```
 
 > [!div class="nextstepaction"]
