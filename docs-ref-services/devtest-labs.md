@@ -32,33 +32,33 @@ See [Resource Management Authentication](/python/azure/python-sdk-azure-authenti
 for details on handling Azure Active Directory authentication with the Python SDK, and creating a ``Credentials`` instance.
 
 ```python
-    from azure.mgmt.devtestlabs import DevTestLabsClient
-    from azure.common.credentials import UserPassCredentials
+from azure.mgmt.devtestlabs import DevTestLabsClient
+from azure.common.credentials import UserPassCredentials
 
-    # Replace this with your subscription id
-    subscription_id = '33333333-3333-3333-3333-333333333333'
-    
-    # See above for details on creating different types of AAD credentials
-    credentials = UserPassCredentials(
-        'user@domain.com',  # Your user
-        'my_password',      # Your password
-    )
+# Replace this with your subscription id
+subscription_id = '33333333-3333-3333-3333-333333333333'
 
-    devtestlabs_client = DevTestLabsClient(
-        credentials,
-        subscription_id
-    )
+# See above for details on creating different types of AAD credentials
+credentials = UserPassCredentials(
+    'user@domain.com',  # Your user
+    'my_password',      # Your password
+)
+
+devtestlabs_client = DevTestLabsClient(
+    credentials,
+    subscription_id
+)
 ```
 
 ## Create lab
 
 ```python
-    async_lab = self.client.lab.create_or_update_resource(
-        'MyResourceGroup',
-        'MyLab',
-        {'location': 'westus'}
-    )
-    lab = async_lab.result() # Blocking wait
+async_lab = self.client.lab.create_or_update_resource(
+    'MyResourceGroup',
+    'MyLab',
+    {'location': 'westus'}
+)
+lab = async_lab.result() # Blocking wait
 ``` 
 
 > [!div class="nextstepaction"]
