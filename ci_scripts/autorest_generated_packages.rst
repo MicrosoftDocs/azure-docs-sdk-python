@@ -56,5 +56,5 @@
   ./ref/azure.servicefabric.rst
   ./ref/azure.servicebus.rst
   ./ref/azure.servicemanagement.rst
-  ./ref/azure-cosmosdb-table/azure.cosmosdb.rst
-  ./ref/azure-cosmosdb-table/azure.cosmosdb.table.rst
+  ./ref/azure.cosmosdb.rst
+  ./ref/azure.cosmosdb.table.rst
