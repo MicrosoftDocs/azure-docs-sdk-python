@@ -15,6 +15,25 @@ ms.service: multiple
 
 # Installation
 
+## Which Python and which version to use
+There are several Python interpreters available - examples include:
+
+* CPython - the standard and most commonly used Python interpreter
+* PyPy - fast, compliant alternative implementation to CPython
+* IronPython - Python interpreter that runs on .Net/CLR
+* Jython - Python interpreter that runs on the Java Virtual Machine
+
+**CPython** v2.7 or v3.4+ and PyPy 5.4.0 are tested and supported for the Python Azure SDK.
+
+## Where to get Python?
+There are several ways to get CPython:
+
+* Directly from [Python](https://www.python.org/)
+* From a reputable distro such as [Anaconda](https://www.anaconda.com/), [Enthought](https://www.enthought.com/) or [ActiveState](https://www.activestate.com/)
+* Build from source!
+
+Unless you have a specific need, we recommend the first two options.
+
 ## Installation with pip
 
 You can install each Azure service's library individually:
