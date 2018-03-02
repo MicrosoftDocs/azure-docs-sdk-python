@@ -1,77 +1,76 @@
 msrest package
 ==============
 
+Subpackages
+-----------
+
+.. toctree::
+
+    msrest.polling
+
 Submodules
 ----------
 
-msrest.authentication module
-----------------------------
+msrest\.authentication module
+-----------------------------
 
 .. automodule:: msrest.authentication
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.configuration module
----------------------------
+msrest\.configuration module
+----------------------------
 
 .. automodule:: msrest.configuration
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.exceptions module
-------------------------
+msrest\.exceptions module
+-------------------------
 
 .. automodule:: msrest.exceptions
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.http_logger module
--------------------------
+msrest\.http\_logger module
+---------------------------
 
 .. automodule:: msrest.http_logger
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.paging module
---------------------
+msrest\.paging module
+---------------------
 
 .. automodule:: msrest.paging
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.pipeline module
-----------------------
+msrest\.pipeline module
+-----------------------
 
 .. automodule:: msrest.pipeline
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.serialization module
----------------------------
+msrest\.serialization module
+----------------------------
 
 .. automodule:: msrest.serialization
     :members:
     :undoc-members:
     :show-inheritance:
 
-msrest.service_client module
-----------------------------
+msrest\.service\_client module
+------------------------------
 
 .. automodule:: msrest.service_client
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-msrest.version module
----------------------
-
-.. automodule:: msrest.version
     :members:
     :undoc-members:
     :show-inheritance:
