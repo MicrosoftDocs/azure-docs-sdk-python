@@ -28,12 +28,19 @@ msrest\.configuration module
     :show-inheritance:
 
 msrest\.exceptions module
--------------------------
+------------------------
 
 .. automodule:: msrest.exceptions
-    :members:
-    :undoc-members:
-    :show-inheritance:
+    :members: raise_with_traceback
+
+.. autoclass:: msrest.exceptions.ClientException
+.. autoclass:: msrest.exceptions.SerializationError
+.. autoclass:: msrest.exceptions.DeserializationError
+.. autoclass:: msrest.exceptions.TokenExpiredError
+.. autoclass:: msrest.exceptions.ValidationError
+.. autoclass:: msrest.exceptions.ClientRequestError
+.. autoclass:: msrest.exceptions.AuthenticationError
+.. autoclass:: msrest.exceptions.HttpOperationError
 
 msrest\.http\_logger module
 ---------------------------
