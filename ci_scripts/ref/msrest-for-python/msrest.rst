@@ -27,7 +27,7 @@ msrest\.configuration module
     :undoc-members:
     :show-inheritance:
 
-msrest.exceptions module
+msrest\.exceptions module
 ------------------------
 
 .. automodule:: msrest.exceptions
