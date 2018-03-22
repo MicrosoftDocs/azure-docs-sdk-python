@@ -1,4 +1,4 @@
- ---
+---
 title: Azure Cosmos DB libraries for Python
 description: Reference documentation for the Python client libraries for Azure Cosmos DB
 keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL 
