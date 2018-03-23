@@ -1,23 +1,23 @@
 ---
-title: Azure CosmosDB libraries for Python
-description: Reference documentation for the Python client libraries for CosmosDB
-keywords: Azure, Python, SDK, API, SQL, database, PostGres,CosmosDB, NoSQL 
+title: Azure Cosmos DB libraries for Python
+description: Reference documentation for the Python client libraries for Azure Cosmos DB
+keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL 
 author: lisawong19
 ms.author: liwong
 manager: douge
-ms.date: 08/11/2017
+ms.date: 03/20/2018
 ms.topic: article
 ms.devlang: python
 ms.service: cosmosdb
 ---
 
-# Azure CosmosDB libraries for Python
+# Azure Cosmos DB libraries for Python
 
 ## Overview
 
-Use CosmosDB in your Python applications to store and query JSON documents in a NoSQL data store.
+Use Azure Cosmos DB in your Python applications to store and query JSON documents in a NoSQL data store.
 
-Learn more about [Azure CosmosDB](https://docs.microsoft.com/azure/cosmos-db/introduction).
+Learn more about [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction).
 
 ## Client library
  ```bash
@@ -31,13 +31,13 @@ pip install azure-mgmt-cosmosdb
 
 ### Example
 
-Find matching documents in CosmosDB using a SQL-like query interface:
+Find matching documents in Azure CosmosDB using a SQL-like query interface:
 
 ```python
 import pydocumentdb
 import pydocumentdb.document_client as document_client
 
-# Initialize the Python DocumentDB client
+# Initialize the Python Azure Cosmos DB client
 client = document_client.DocumentClient(config['ENDPOINT'], {'masterKey': config['MASTERKEY']})
 # Create a database
 db = client.CreateDatabase({ 'id': config['DOCUMENTDB_DATABASE'] })
@@ -79,6 +79,6 @@ print(results)
 
 ## Samples
 
-[Develop a Python app using Azure Cosmos DB's DocumentDB API](https://azure.microsoft.com/resources/samples/azure-cosmos-db-documentdb-python-getting-started/)
+[Develop a Python app using Azure Cosmos DB](https://azure.microsoft.com/resources/samples/azure-cosmos-db-documentdb-python-getting-started/)
 
 
