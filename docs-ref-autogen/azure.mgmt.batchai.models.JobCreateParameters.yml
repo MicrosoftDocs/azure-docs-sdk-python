@@ -22,15 +22,14 @@ items:
     startLine: 15
   summary: 'Parameters supplied to the Create operation.
 
+
+    All required parameters must be populated in order to send to Azure.
+
     '
   syntax:
-    content: JobCreateParameters(location, cluster, node_count, std_out_err_path_prefix,
-      tags=None, experiment_name=None, priority=0, container_settings=None, cntk_settings=None,
-      tensor_flow_settings=None, caffe_settings=None, caffe2_settings=None, chainer_settings=None,
-      custom_toolkit_settings=None, job_preparation=None, input_directories=None,
-      output_directories=None, environment_variables=None, constraints=None)
+    content: JobCreateParameters(**kwargs)
     parameters:
-    - description: 'The region in which to create the job.
+    - description: 'Required. The region in which to create the job.
 
         '
       id: location
@@ -41,7 +40,7 @@ items:
         '
       id: tags
       type:
-      - dict
+      - dict[str, str]
     - description: 'Describe the experiment information of the job
 
         '
@@ -60,17 +59,29 @@ items:
       id: priority
       type:
       - int
-    - description: 'Specifies the Id of the cluster on which this job will
+    - description: 'Required. Specifies the Id of the cluster on which this
 
-        run.
+        job will run.
 
         '
       id: cluster
       type:
       - azure.mgmt.batchai.models.ResourceId
-    - description: 'Number of compute nodes to run the job on. The job will
+    - description: 'Information on mount volumes to be used by the job.
 
-        be gang scheduled on that many compute nodes
+        These volumes will be mounted before the job execution and will be
+
+        unmouted after the job completion. The volumes will be mounted at location
+
+        specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+
+        '
+      id: mount_volumes
+      type:
+      - azure.mgmt.batchai.models.MountVolumes
+    - description: 'Required. Number of compute nodes to run the job on.
+
+        The job will be gang scheduled on that many compute nodes
 
         '
       id: node_count
@@ -96,6 +107,12 @@ items:
       id: cntk_settings
       type:
       - azure.mgmt.batchai.models.CNTKsettings
+    - description: 'Specifies the settings for pyTorch job.
+
+        '
+      id: py_torch_settings
+      type:
+      - azure.mgmt.batchai.models.PyTorchSettings
     - description: 'Specifies the settings for Tensor Flow job.
 
         '
@@ -138,9 +155,9 @@ items:
       id: job_preparation
       type:
       - azure.mgmt.batchai.models.JobPreparation
-    - description: 'The path where the Batch AI service will
+    - description: 'Required. The path where the Batch AI
 
-        upload stdout and stderror of the job.
+        service will upload stdout and stderror of the job.
 
         '
       id: std_out_err_path_prefix
@@ -153,31 +170,33 @@ items:
         '
       id: input_directories
       type:
-      - list of azure.mgmt.batchai.models.InputDirectory
-    - description: 'Specifies the list of output directories where
-
-        the models will be created. .
+      - list[azure.mgmt.batchai.models.InputDirectory]
+    - description: 'Specifies the list of output directories.
 
         '
       id: output_directories
       type:
-      - list of azure.mgmt.batchai.models.OutputDirectory
+      - list[azure.mgmt.batchai.models.OutputDirectory]
     - description: 'Additional environment variables to set on
 
-        the job. Batch AI service sets the following environment variables for all
+        the job. Batch AI will setup these additional environment variables for
 
-        jobs: AZ_BATCHAI_INPUT_id, AZ_BATCHAI_OUTPUT_id,
-
-        AZ_BATCHAI_NUM_GPUS_PER_NODE. For distributed TensorFlow jobs, following
-
-        additional environment variables are set by the Batch AI Service:
-
-        AZ_BATCHAI_PS_HOSTS, AZ_BATCHAI_WORKER_HOSTS
+        the job.
 
         '
       id: environment_variables
       type:
-      - list of azure.mgmt.batchai.models.EnvironmentSetting
+      - list[azure.mgmt.batchai.models.EnvironmentVariable]
+    - description: 'Additional environment variables with secret values to set
+
+        on the job. Batch AI will setup these additional environment variables for
+
+        the job. Server will never report values of these variables back.
+
+        '
+      id: secrets
+      type:
+      - list[azure.mgmt.batchai.models.EnvironmentVariableWithSecretValue]
     - description: 'Constraints associated with the Job.
 
         '
@@ -186,4 +205,79 @@ items:
       - azure.mgmt.batchai.models.JobBasePropertiesConstraints
   type: class
   uid: azure.mgmt.batchai.models.JobCreateParameters
-references: []
+references:
+- fullName: dict[str, str]
+  name: dict[str, str]
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: dict[str, str]
+- fullName: list[azure.mgmt.batchai.models.InputDirectory]
+  name: list[InputDirectory]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.batchai.models.InputDirectory
+    name: InputDirectory
+    uid: azure.mgmt.batchai.models.InputDirectory
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.mgmt.batchai.models.InputDirectory]
+- fullName: list[azure.mgmt.batchai.models.OutputDirectory]
+  name: list[OutputDirectory]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.batchai.models.OutputDirectory
+    name: OutputDirectory
+    uid: azure.mgmt.batchai.models.OutputDirectory
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.mgmt.batchai.models.OutputDirectory]
+- fullName: list[azure.mgmt.batchai.models.EnvironmentVariable]
+  name: list[EnvironmentVariable]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.batchai.models.EnvironmentVariable
+    name: EnvironmentVariable
+    uid: azure.mgmt.batchai.models.EnvironmentVariable
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.mgmt.batchai.models.EnvironmentVariable]
+- fullName: list[azure.mgmt.batchai.models.EnvironmentVariableWithSecretValue]
+  name: list[EnvironmentVariableWithSecretValue]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.batchai.models.EnvironmentVariableWithSecretValue
+    name: EnvironmentVariableWithSecretValue
+    uid: azure.mgmt.batchai.models.EnvironmentVariableWithSecretValue
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.mgmt.batchai.models.EnvironmentVariableWithSecretValue]
