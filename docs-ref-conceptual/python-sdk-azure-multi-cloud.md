@@ -83,7 +83,7 @@ from azure.mgmt.resource import ResourceManagementClient
 # Service Principal
 tenant = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
 client_id = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
-password = 'password
+password = 'password'
 
 # Public Azure - default values
 authentication_endpoint = 'https://login.microsoftonline.com/'
@@ -114,7 +114,7 @@ from azure.mgmt.resource import ResourceManagementClient
 # Service Principal
 tenant = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
 client_id = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
-password = 'password
+password = 'password'
 
 # Government
 authentication_endpoint = 'https://login-us.microsoftonline.com/'
@@ -145,7 +145,7 @@ from azure.mgmt.resource import ResourceManagementClient
 # Service Principal
 tenant = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
 client_id = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
-password = 'password
+password = 'password'
 
 # Azure Germany
 authentication_endpoint = 'https://login.microsoftonline.de/'
@@ -176,7 +176,7 @@ from azure.mgmt.resource import ResourceManagementClient
 # Service Principal
 tenant = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
 client_id = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
-password = 'password
+password = 'password'
 
 # Azure China
 authentication_endpoint = 'https://login.chinacloudapi.cn/'
