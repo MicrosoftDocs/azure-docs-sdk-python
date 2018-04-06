@@ -36,7 +36,7 @@ from azure.common.credentials import ServicePrincipalCredentials
 
 credentials = None
 
-def auth_callack(server, resource, scope):
+def auth_callback(server, resource, scope):
     credentials = credentials or ServicePrincipalCredentials(
         client_id = '', #client id
         secret = '',
@@ -46,7 +46,7 @@ def auth_callack(server, resource, scope):
     token = credentials.token
     return token['token_type'], token['access_token']
 
-client = KeyVaultClient(KeyVaultAuthentication(auth_callack))
+client = KeyVaultClient(KeyVaultAuthentication(auth_callback))
 
 key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
