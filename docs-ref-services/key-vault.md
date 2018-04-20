@@ -23,11 +23,13 @@ Learn more about [Azure Key Vault](/azure/key-vault/key-vault-whatis).
 ## Install the libraries
 
 ### Client library
+
 ```bash
 pip install azure-keyvault
 ```
 
-## Example
+## Examples
+
 Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-key-18) from a Key Vault.
 
 ```python
@@ -36,25 +38,52 @@ from azure.common.credentials import ServicePrincipalCredentials
 
 credentials = None
 
-def auth_callack(server, resource, scope):
-    credentials = credentials or ServicePrincipalCredentials(
+def auth_callback(server, resource, scope):
+    credentials = ServicePrincipalCredentials(
         client_id = '', #client id
         secret = '',
         tenant = '',
-        resource = resource
+        resource = "https://vault.azure.net"
     )
     token = credentials.token
     return token['token_type'], token['access_token']
 
-client = KeyVaultClient(KeyVaultAuthentication(auth_callack))
+client = KeyVaultClient(KeyVaultAuthentication(auth_callback))
 
 key_bundle = client.get_key(vault_url, key_name, key_version)
 json_key = key_bundle.key
 ```
+
+Similarly, you can use the following snippet to retrieve a secret from the vault:
+
+```
+from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
+from azure.common.credentials import ServicePrincipalCredentials
+
+credentials = None
+
+def auth_callback(server, resource, scope):
+    credentials = ServicePrincipalCredentials(
+        client_id = '',
+        secret = '',
+        tenant = '',
+        resource = "https://vault.azure.net"
+    )
+    token = credentials.token
+    return token['token_type'], token['access_token']
+
+client = KeyVaultClient(KeyVaultAuthentication(auth_callback))
+
+secret_bundle = client.get_secret("https://VAULT_ID.vault.azure.net/", "SECRET_ID", "SECRET_VERSION")
+
+print(secret_bundle.value)
+```
+
 [!div class="nextstepaction"]
 [Explore the Client APIs](/python/api/overview/azure/keyvault/client)
 
 ### Management API
+
 ```bash
 pip install azure-mgmt-keyvault
 ```

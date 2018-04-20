@@ -13,6 +13,8 @@ items:
   - azure.batch.operations.ComputeNodeOperations.reboot
   - azure.batch.operations.ComputeNodeOperations.reimage
   - azure.batch.operations.ComputeNodeOperations.update_user
+  - azure.batch.operations.ComputeNodeOperations.upload_batch_service_logs
+  - azure.batch.operations.ComputeNodeOperations.models
   class: azure.batch.operations.ComputeNodeOperations
   fullName: azure.batch.operations.ComputeNodeOperations
   inheritance:
@@ -42,6 +44,8 @@ items:
 
 
 
+
+
     '
   syntax:
     content: ComputeNodeOperations(client, config, serializer, deserializer)
@@ -58,12 +62,12 @@ items:
 
         '
       id: serializer
-    - description: 'An objec model deserializer.
+    - description: 'An object model deserializer.
 
         '
       id: deserializer
     variables:
-    - description: 'Client API Version. Constant value: "2017-09-01.6.0".
+    - description: 'Client API Version. Constant value: "2018-03-01.6.1".
 
         '
       id: api_version
@@ -84,7 +88,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 37
+    startLine: 39
   summary: 'Adds a user account to the specified compute node.
 
 
@@ -172,7 +176,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 130
+    startLine: 133
   summary: 'Deletes a user account from the specified compute node.
 
 
@@ -260,7 +264,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 644
+    startLine: 628
   summary: 'Disables task scheduling on the specified compute node.
 
 
@@ -299,29 +303,9 @@ items:
     - defaultValue: None
       description: 'What to do with currently
 
-        running tasks when disabling task scheduling on the compute node.
+        running tasks when disabling task scheduling on the compute node. The
 
-        Values are:
-
-        requeue - Terminate running task processes and requeue the tasks. The
-
-        tasks may run again on other compute nodes, or when task scheduling is
-
-        re-enabled on this node. Enter offline state as soon as tasks have
-
-        been terminated.
-
-        terminate - Terminate running tasks. The tasks will not run again.
-
-        Enter offline state as soon as tasks have been terminated.
-
-        taskcompletion - Allow currently running tasks to complete. Schedule
-
-        no new tasks while waiting. Enter offline state when all tasks have
-
-        completed.
-
-        The default value is requeue. Possible values include: ''requeue'',
+        default value is requeue. Possible values include: ''requeue'',
 
         ''terminate'', ''taskCompletion''
 
@@ -376,7 +360,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 757
+    startLine: 732
   summary: 'Enables task scheduling on the specified compute node.
 
 
@@ -458,7 +442,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 318
+    startLine: 323
   summary: 'Gets information about the specified compute node.
 
     '
@@ -535,7 +519,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 944
+    startLine: 921
   summary: 'Gets the Remote Desktop Protocol file for the specified compute node.
 
 
@@ -634,7 +618,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 844
+    startLine: 820
   summary: 'Gets the settings required for remote login to a compute node.
 
 
@@ -724,7 +708,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1046
+    startLine: 1131
   summary: 'Lists the compute nodes in the specified pool.
 
     '
@@ -792,7 +776,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 416
+    startLine: 422
   summary: 'Restarts the specified compute node.
 
 
@@ -827,35 +811,11 @@ items:
     - defaultValue: None
       description: 'When to reboot the compute node and what to
 
-        do with currently running tasks. Values are:
+        do with currently running tasks. The default value is requeue.
 
-        requeue - Terminate running task processes and requeue the tasks. The
+        Possible values include: ''requeue'', ''terminate'', ''taskCompletion'',
 
-        tasks will run again when a node is available. Restart the node as
-
-        soon as tasks have been terminated.
-
-        terminate - Terminate running tasks. The tasks will not run again.
-
-        Restart the node as soon as tasks have been terminated.
-
-        taskcompletion - Allow currently running tasks to complete. Schedule
-
-        no new tasks while waiting. Restart the node when all tasks have
-
-        completed.
-
-        retaineddata - Allow currently running tasks to complete, then wait
-
-        for all task data retention periods to expire. Schedule no new tasks
-
-        while waiting. Restart the node when all task retention periods have
-
-        expired.
-
-        The default value is requeue. Possible values include: ''requeue'',
-
-        ''terminate'', ''taskCompletion'', ''retainedData''
+        ''retainedData''
 
         '
       id: node_reboot_option
@@ -908,7 +868,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 529
+    startLine: 524
   summary: 'Reinstalls the operating system on the specified compute node.
 
 
@@ -947,35 +907,11 @@ items:
     - defaultValue: None
       description: 'When to reimage the compute node and what
 
-        to do with currently running tasks. Values are:
+        to do with currently running tasks. The default value is requeue.
 
-        requeue - Terminate running task processes and requeue the tasks. The
+        Possible values include: ''requeue'', ''terminate'', ''taskCompletion'',
 
-        tasks will run again when a node is available. Reimage the node as
-
-        soon as tasks have been terminated.
-
-        terminate - Terminate running tasks. The tasks will not run again.
-
-        Reimage the node as soon as tasks have been terminated.
-
-        taskcompletion - Allow currently running tasks to complete. Schedule
-
-        no new tasks while waiting. Reimage the node when all tasks have
-
-        completed.
-
-        retaineddata - Allow currently running tasks to complete, then wait
-
-        for all task data retention periods to expire. Schedule no new tasks
-
-        while waiting. Reimage the node when all task retention periods have
-
-        expired.
-
-        The default value is requeue. Possible values include: ''requeue'',
-
-        ''terminate'', ''taskCompletion'', ''retainedData''
+        ''retainedData''
 
         '
       id: node_reimage_option
@@ -1028,7 +964,7 @@ items:
       branch: master
       path: azure-batch\azure\batch\operations\compute_node_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 217
+    startLine: 221
   summary: 'Updates the password and expiration time of a user account on the
 
     specified compute node.
@@ -1115,6 +1051,115 @@ items:
       - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.batch.operations.ComputeNodeOperations.update_user
+- class: azure.batch.operations.ComputeNodeOperations
+  exceptions:
+  - type: azure.batch.models.BatchErrorException
+  fullName: azure.batch.operations.ComputeNodeOperations.upload_batch_service_logs
+  langs:
+  - python
+  module: azure.batch.operations
+  name: upload_batch_service_logs
+  source:
+    id: upload_batch_service_logs
+    path: azure-batch\azure\batch\operations\compute_node_operations.py
+    remote:
+      branch: master
+      path: azure-batch\azure\batch\operations\compute_node_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 1024
+  summary: 'Upload Azure Batch service log files from the specified compute node to
+
+    Azure Blob Storage.
+
+
+    This is for gathering Azure Batch service log files in an automated
+
+    fashion from nodes if you are experiencing an error and wish to
+
+    escalate to Azure support. The Azure Batch service log files should be
+
+    shared with Azure support to aid in debugging issues with the Batch
+
+    service.
+
+    '
+  syntax:
+    content: upload_batch_service_logs(pool_id, node_id, upload_batch_service_logs_configuration,
+      compute_node_upload_batch_service_logs_options=None, custom_headers=None, raw=False,
+      **operation_config)
+    parameters:
+    - description: 'The ID of the pool that contains the compute node.
+
+        '
+      id: pool_id
+      type:
+      - str
+    - description: 'The ID of the compute node from which you want to
+
+        upload the Azure Batch service log files.
+
+        '
+      id: node_id
+      type:
+      - str
+    - description: 'The Azure Batch
+
+        service log files upload configuration.
+
+        '
+      id: upload_batch_service_logs_configuration
+      type:
+      - azure.batch.models.UploadBatchServiceLogsConfiguration
+    - defaultValue: None
+      description: 'Additional
+
+        parameters for the operation
+
+        '
+      id: compute_node_upload_batch_service_logs_options
+      type:
+      - azure.batch.models.ComputeNodeUploadBatchServiceLogsOptions
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'UploadBatchServiceLogsResult or ClientRawResponse if raw=true
+
+        '
+      type:
+      - azure.batch.models.UploadBatchServiceLogsResult
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.batch.operations.ComputeNodeOperations.upload_batch_service_logs
+- class: azure.batch.operations.ComputeNodeOperations
+  fullName: azure.batch.operations.ComputeNodeOperations.models
+  langs:
+  - python
+  module: azure.batch.operations
+  name: models
+  syntax:
+    content: models = <module 'azure.batch.models' from 'c:\\python3\\lib\\site-packages\\azure_batch-4.1.1-py3.6.egg\\azure\\batch\\models\\__init__.py'>
+  type: attribute
+  uid: azure.batch.operations.ComputeNodeOperations.models
 references:
 - fullName: azure.batch.operations.ComputeNodeOperations.add_user
   isExternal: false
@@ -1171,6 +1216,16 @@ references:
   name: update_user
   parent: azure.batch.operations.ComputeNodeOperations
   uid: azure.batch.operations.ComputeNodeOperations.update_user
+- fullName: azure.batch.operations.ComputeNodeOperations.upload_batch_service_logs
+  isExternal: false
+  name: upload_batch_service_logs
+  parent: azure.batch.operations.ComputeNodeOperations
+  uid: azure.batch.operations.ComputeNodeOperations.upload_batch_service_logs
+- fullName: azure.batch.operations.ComputeNodeOperations.models
+  isExternal: false
+  name: models
+  parent: azure.batch.operations.ComputeNodeOperations
+  uid: azure.batch.operations.ComputeNodeOperations.models
 - fullName: Callable[Bytes, response=None]
   name: Callable[Bytes, response=None]
   spec.python:
