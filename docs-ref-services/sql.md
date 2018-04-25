@@ -72,9 +72,16 @@ pip install azure-mgmt-resource
 Create a SQL Database resource and restrict access to a range of IP addresses using a firewall rule.
 
 ```python
+from azure.common.client_factory import get_client_from_cli_profile
+from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.sql import SqlManagementClient
+
 RESOURCE_GROUP = 'YOUR_RESOURCE_GROUP_NAME'
 LOCATION = 'eastus'  # example Azure availability zone, should match resource group
+SQL_SERVER = 'yourvirtualsqlserver'
 SQL_DB = 'YOUR_SQLDB_NAME'
+USERNAME = 'YOUR_USERNAME'
+PASSWORD = 'YOUR_PASSWORD'
 
 # create resource client
 resource_client = get_client_from_cli_profile(ResourceManagementClient)
@@ -86,7 +93,7 @@ sql_client = get_client_from_cli_profile(SqlManagementClient)
 # Create a SQL server
 server = sql_client.servers.create_or_update(
     RESOURCE_GROUP,
-    SQL_DB,
+    SQL_SERVER,
     {
         'location': LOCATION,
         'version': '12.0', # Required for create
@@ -95,9 +102,22 @@ server = sql_client.servers.create_or_update(
     }
 )
 
+# Create a SQL database in the Basic tier
+database = sql_client.databases.create_or_update(
+    RESOURCE_GROUP,
+    SQL_SERVER,
+    SQL_DB,
+    {
+        'location': LOCATION,
+        'collation': 'SQL_Latin1_General_CP1_CI_AS',
+        'create_mode': 'default',
+        'requested_service_objective_name': 'Basic'
+    }
+)
+
 # Open access to this server for IPs
 firewall_rule = sql_client.firewall_rules.create_or_update(
-    RESOURCE_GROUP
+    RESOURCE_GROUP,
     SQL_DB,
     "firewall_rule_name_123.123.123.123",
     "123.123.123.123", # Start ip range
