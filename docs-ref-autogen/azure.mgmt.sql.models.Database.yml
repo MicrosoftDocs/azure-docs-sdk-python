@@ -18,25 +18,31 @@ items:
   name: Database
   source:
     id: Database
-    path: azure-mgmt-sql\azure\mgmt\sql\models\database.py
+    path: azure-mgmt-sql\azure\mgmt\sql\models\database_py3.py
     remote:
       branch: master
-      path: azure-mgmt-sql\azure\mgmt\sql\models\database.py
+      path: azure-mgmt-sql\azure\mgmt\sql\models\database_py3.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 15
-  summary: 'Represents a database.
+  summary: 'A database resource.
 
 
     Variables are only populated by the server, and will be ignored when
 
     sending a request.
 
+
+    All required parameters must be populated in order to send to Azure.
+
     '
   syntax:
-    content: Database(location, tags=None, collation=None, create_mode=None, source_database_id=None,
-      source_database_deletion_date=None, restore_point_in_time=None, recovery_services_recovery_point_resource_id=None,
-      edition=None, max_size_bytes=None, requested_service_objective_id=None, requested_service_objective_name=None,
-      elastic_pool_name=None, read_scale=None, sample_name=None, zone_redundant=None)
+    content: 'Database(*, location: str, tags=None, sku=None, create_mode=None, collation:
+      str = None, max_size_bytes: int = None, sample_name=None, elastic_pool_id: str
+      = None, source_database_id: str = None, restore_point_in_time=None, source_database_deletion_date=None,
+      recovery_services_recovery_point_id: str = None, long_term_retention_backup_resource_id:
+      str = None, recoverable_database_id: str = None, restorable_dropped_database_id:
+      str = None, catalog_collation=None, zone_redundant: bool = None, license_type=None,
+      read_scale=None, **kwargs) -> None'
     parameters:
     - description: 'Resource tags.
 
@@ -44,20 +50,18 @@ items:
       id: tags
       type:
       - dict[str, str]
-    - description: 'Resource location.
+    - description: 'Required. Resource location.
 
         '
       id: location
       type:
       - str
-    - description: 'The collation of the database. If createMode is not
-
-        Default, this value is ignored.
+    - description: 'The name and tier of the SKU.
 
         '
-      id: collation
+      id: sku
       type:
-      - str
+      - azure.mgmt.sql.models.Sku
     - description: 'Specifies the mode of database creation.
 
         Default: regular database creation.
@@ -68,11 +72,11 @@ items:
 
         database.
 
-        OnlineSecondary/NonReadableSecondary: creates a database as a (readable or
+        Secondary: creates a database as a secondary replica of an existing
 
-        nonreadable) secondary replica of an existing database. sourceDatabaseId
+        database. sourceDatabaseId must be specified as the resource ID of the
 
-        must be specified as the resource ID of the existing primary database.
+        existing primary database.
 
         PointInTimeRestore: Creates a database by restoring a point in time backup
 
@@ -106,226 +110,121 @@ items:
 
         specified as the recovery point resource ID.
 
-        Copy, NonReadableSecondary, OnlineSecondary and
+        Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for
 
-        RestoreLongTermRetentionBackup are not supported for DataWarehouse
+        DataWarehouse edition. Possible values include: ''Default'', ''Copy'',
 
-        edition. Possible values include: ''Copy'', ''Default'',
+        ''Secondary'', ''PointInTimeRestore'', ''Restore'', ''Recovery'',
 
-        ''NonReadableSecondary'', ''OnlineSecondary'', ''PointInTimeRestore'',
+        ''RestoreExternalBackup'', ''RestoreExternalBackupSecondary'',
 
-        ''Recovery'', ''Restore'', ''RestoreLongTermRetentionBackup''
+        ''RestoreLongTermRetentionBackup'', ''OnlineSecondary''
 
         '
       id: create_mode
       type:
       - str
       - azure.mgmt.sql.models.CreateMode
-    - description: 'Conditional. If createMode is Copy,
-
-        NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, or
-
-        Restore, then this value is required. Specifies the resource ID of the
-
-        source database. If createMode is NonReadableSecondary or OnlineSecondary,
-
-        the name of the source database must be the same as the new database being
-
-        created.
+    - description: 'The collation of the database.
 
         '
-      id: source_database_id
+      id: collation
       type:
       - str
-    - description: 'Conditional. If createMode is
-
-        Restore and sourceDatabaseId is the deleted database''s original resource
-
-        id when it existed (as opposed to its current restorable dropped database
-
-        id), then this value is required. Specifies the time that the database was
-
-        deleted.
-
-        '
-      id: source_database_deletion_date
-      type:
-      - datetime
-    - description: 'Conditional. If createMode is
-
-        PointInTimeRestore, this value is required. If createMode is Restore, this
-
-        value is optional. Specifies the point in time (ISO8601 format) of the
-
-        source database that will be restored to create the new database. Must be
-
-        greater than or equal to the source database''s earliestRestoreDate value.
-
-        '
-      id: restore_point_in_time
-      type:
-      - datetime
-    - description: 'Conditional. If
-
-        createMode is RestoreLongTermRetentionBackup, then this value is required.
-
-        Specifies the resource ID of the recovery point to restore from.
-
-        '
-      id: recovery_services_recovery_point_resource_id
-      type:
-      - str
-    - description: 'The edition of the database. The DatabaseEditions
-
-        enumeration contains all the valid editions. If createMode is
-
-        NonReadableSecondary or OnlineSecondary, this value is ignored. To see
-
-        possible values, query the capabilities API
-
-        (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
-
-        referred to by operationId: "Capabilities_ListByLocation." or use the
-
-        Azure CLI command *az sql db list-editions -l westus --query [].name*.
-
-        Possible values include: ''Web'', ''Business'', ''Basic'', ''Standard'',
-
-        ''Premium'', ''PremiumRS'', ''Free'', ''Stretch'', ''DataWarehouse'', ''System'',
-
-        ''System2''
-
-        '
-      id: edition
-      type:
-      - str
-      - azure.mgmt.sql.models.DatabaseEdition
-    - description: 'The max size of the database expressed in bytes. If
-
-        createMode is not Default, this value is ignored. To see possible values,
-
-        query the capabilities API
-
-        (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
-
-        referred to by operationId: "Capabilities_ListByLocation."
+    - description: 'The max size of the database expressed in bytes.
 
         '
       id: max_size_bytes
       type:
-      - str
-    - description: 'The configured service level
+      - long
+    - description: 'The name of the sample schema to apply when creating
 
-        objective ID of the database. This is the service level objective that is
+        this database. Possible values include: ''AdventureWorksLT'',
 
-        in the process of being applied to the database. Once successfully
-
-        updated, it will match the value of currentServiceObjectiveId property. If
-
-        requestedServiceObjectiveId and requestedServiceObjectiveName are both
-
-        updated, the value of requestedServiceObjectiveId overrides the value of
-
-        requestedServiceObjectiveName. To see possible values, query the
-
-        capabilities API
-
-        (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
-
-        referred to by operationId: "Capabilities_ListByLocation." or use the
-
-        Azure CLI command *az sql db list-editions --location <location> --query
-
-        [].supportedServiceLevelObjectives[].name* .
-
-        '
-      id: requested_service_objective_id
-      type:
-      - str
-    - description: 'The name of the configured
-
-        service level objective of the database. This is the service level
-
-        objective that is in the process of being applied to the database. Once
-
-        successfully updated, it will match the value of serviceLevelObjective
-
-        property. To see possible values, query the capabilities API
-
-        (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
-
-        referred to by operationId: "Capabilities_ListByLocation." or use the
-
-        Azure CLI command *az sql db list-editions --location <location> --query
-
-        [].supportedServiceLevelObjectives[].name*. Possible values include:
-
-        ''System'', ''System0'', ''System1'', ''System2'', ''System3'', ''System4'',
-
-        ''System2L'', ''System3L'', ''System4L'', ''Free'', ''Basic'', ''S0'', ''S1'',
-        ''S2'',
-
-        ''S3'', ''S4'', ''S6'', ''S7'', ''S9'', ''S12'', ''P1'', ''P2'', ''P3'', ''P4'',
-        ''P6'', ''P11'',
-
-        ''P15'', ''PRS1'', ''PRS2'', ''PRS4'', ''PRS6'', ''DW100'', ''DW200'', ''DW300'',
-        ''DW400'',
-
-        ''DW500'', ''DW600'', ''DW1000'', ''DW1200'', ''DW1000c'', ''DW1500'', ''DW1500c'',
-
-        ''DW2000'', ''DW2000c'', ''DW3000'', ''DW2500c'', ''DW3000c'', ''DW6000'',
-        ''DW5000c'',
-
-        ''DW6000c'', ''DW7500c'', ''DW10000c'', ''DW15000c'', ''DW30000c'', ''DS100'',
-
-        ''DS200'', ''DS300'', ''DS400'', ''DS500'', ''DS600'', ''DS1000'', ''DS1200'',
-        ''DS1500'',
-
-        ''DS2000'', ''ElasticPool''
-
-        '
-      id: requested_service_objective_name
-      type:
-      - str
-      - azure.mgmt.sql.models.ServiceObjectiveName
-    - description: 'The name of the elastic pool the database is in.
-
-        If elasticPoolName and requestedServiceObjectiveName are both updated, the
-
-        value of requestedServiceObjectiveName is ignored. Not supported for
-
-        DataWarehouse edition.
-
-        '
-      id: elastic_pool_name
-      type:
-      - str
-    - description: 'Conditional. If the database is a geo-secondary,
-
-        readScale indicates whether read-only connections are allowed to this
-
-        database or not. Not supported for DataWarehouse edition. Possible values
-
-        include: ''Enabled'', ''Disabled''
-
-        '
-      id: read_scale
-      type:
-      - str
-      - azure.mgmt.sql.models.ReadScale
-    - description: 'Indicates the name of the sample schema to apply when
-
-        creating this database. If createMode is not Default, this value is
-
-        ignored. Not supported for DataWarehouse edition. Possible values include:
-
-        ''AdventureWorksLT''
+        ''WideWorldImportersStd'', ''WideWorldImportersFull''
 
         '
       id: sample_name
       type:
       - str
       - azure.mgmt.sql.models.SampleName
+    - description: 'The resource identifier of the elastic pool
+
+        containing this database.
+
+        '
+      id: elastic_pool_id
+      type:
+      - str
+    - description: 'The resource identifier of the source database
+
+        associated with create operation of this database.
+
+        '
+      id: source_database_id
+      type:
+      - str
+    - description: 'Specifies the point in time (ISO8601 format)
+
+        of the source database that will be restored to create the new database.
+
+        '
+      id: restore_point_in_time
+      type:
+      - datetime
+    - description: 'Specifies the time that the database
+
+        was deleted.
+
+        '
+      id: source_database_deletion_date
+      type:
+      - datetime
+    - description: 'The resource identifier of the
+
+        recovery point associated with create operation of this database.
+
+        '
+      id: recovery_services_recovery_point_id
+      type:
+      - str
+    - description: 'The resource identifier of
+
+        the long term retention backup associated with create operation of this
+
+        database.
+
+        '
+      id: long_term_retention_backup_resource_id
+      type:
+      - str
+    - description: 'The resource identifier of the recoverable
+
+        database associated with create operation of this database.
+
+        '
+      id: recoverable_database_id
+      type:
+      - str
+    - description: 'The resource identifier of the
+
+        restorable dropped database associated with create operation of this
+
+        database.
+
+        '
+      id: restorable_dropped_database_id
+      type:
+      - str
+    - description: 'Collation of the metadata catalog. Possible
+
+        values include: ''DATABASE_DEFAULT'', ''SQL_Latin1_General_CP1_CI_AS''
+
+        '
+      id: catalog_collation
+      type:
+      - str
+      - azure.mgmt.sql.models.CatalogCollationType
     - description: 'Whether or not this database is zone redundant,
 
         which means the replicas of this database will be spread across multiple
@@ -336,6 +235,28 @@ items:
       id: zone_redundant
       type:
       - bool
+    - description: 'The license type to apply for this database. Possible
+
+        values include: ''LicenseIncluded'', ''BasePrice''
+
+        '
+      id: license_type
+      type:
+      - str
+      - azure.mgmt.sql.models.DatabaseLicenseType
+    - description: 'The state of read-only routing. If enabled, connections
+
+        that have application intent set to readonly in their connection string
+
+        may be routed to a readonly secondary replica in the same region. Possible
+
+        values include: ''Enabled'', ''Disabled''
+
+        '
+      id: read_scale
+      type:
+      - str
+      - azure.mgmt.sql.models.DatabaseReadScale
     variables:
     - description: 'Resource ID.
 
@@ -355,12 +276,39 @@ items:
       id: type
       type:
       - str
-    - description: 'Kind of database.  This is metadata used for the Azure portal
+    - description: 'Kind of database. This is metadata used for the Azure portal
 
         experience.
 
         '
       id: kind
+      type:
+      - str
+    - description: 'Resource that manages the database.
+
+        '
+      id: managed_by
+      type:
+      - str
+    - description: 'The status of the database. Possible values include:
+
+        ''Online'', ''Restoring'', ''RecoveryPending'', ''Recovering'', ''Suspect'',
+
+        ''Offline'', ''Standby'', ''Shutdown'', ''EmergencyMode'', ''AutoClosed'',
+
+        ''Copying'', ''Creating'', ''Inaccessible'', ''OfflineSecondary'', ''Pausing'',
+
+        ''Paused'', ''Resuming'', ''Scaling''
+
+        '
+      id: status
+      type:
+      - str
+      - azure.mgmt.sql.models.DatabaseStatus
+    - description: 'The ID of the database.
+
+        '
+      id: database_id
       type:
       - str
     - description: 'The creation date of the database (ISO8601 format).
@@ -369,70 +317,20 @@ items:
       id: creation_date
       type:
       - datetime
-    - description: 'The containment state of the database.
+    - description: 'The current service level objective
+
+        name of the database.
 
         '
-      id: containment_state
-      type:
-      - long
-    - description: 'The current service level objective ID
-
-        of the database. This is the ID of the service level objective that is
-
-        currently active.
-
-        '
-      id: current_service_objective_id
+      id: current_service_objective_name
       type:
       - str
-    - description: 'The ID of the database.
+    - description: 'The requested service level
+
+        objective name of the database.
 
         '
-      id: database_id
-      type:
-      - str
-    - description: 'This records the earliest start date and time
-
-        that restore is available for this database (ISO8601 format).
-
-        '
-      id: earliest_restore_date
-      type:
-      - datetime
-    - description: 'The current service level objective of the
-
-        database. Possible values include: ''System'', ''System0'', ''System1'',
-
-        ''System2'', ''System3'', ''System4'', ''System2L'', ''System3L'', ''System4L'',
-
-        ''Free'', ''Basic'', ''S0'', ''S1'', ''S2'', ''S3'', ''S4'', ''S6'', ''S7'',
-        ''S9'', ''S12'',
-
-        ''P1'', ''P2'', ''P3'', ''P4'', ''P6'', ''P11'', ''P15'', ''PRS1'', ''PRS2'',
-        ''PRS4'',
-
-        ''PRS6'', ''DW100'', ''DW200'', ''DW300'', ''DW400'', ''DW500'', ''DW600'',
-        ''DW1000'',
-
-        ''DW1200'', ''DW1000c'', ''DW1500'', ''DW1500c'', ''DW2000'', ''DW2000c'',
-        ''DW3000'',
-
-        ''DW2500c'', ''DW3000c'', ''DW6000'', ''DW5000c'', ''DW6000c'', ''DW7500c'',
-
-        ''DW10000c'', ''DW15000c'', ''DW30000c'', ''DS100'', ''DS200'', ''DS300'',
-        ''DS400'',
-
-        ''DS500'', ''DS600'', ''DS1000'', ''DS1200'', ''DS1500'', ''DS2000'', ''ElasticPool''
-
-        '
-      id: service_level_objective
-      type:
-      - str
-      - azure.mgmt.sql.models.ServiceObjectiveName
-    - description: 'The status of the database.
-
-        '
-      id: status
+      id: requested_service_objective_name
       type:
       - str
     - description: 'The default secondary region for this
@@ -443,81 +341,37 @@ items:
       id: default_secondary_location
       type:
       - str
-    - description: 'The list of service tier advisors for this
+    - description: 'Failover Group resource identifier that this
 
-        database. Expanded property
-
-        '
-      id: service_tier_advisors
-      type:
-      - list[azure.mgmt.sql.models.ServiceTierAdvisor]
-    - description: 'The transparent data encryption info
-
-        for this database.
-
-        '
-      id: transparent_data_encryption
-      type:
-      - list[azure.mgmt.sql.models.TransparentDataEncryption]
-    - description: 'The recommended indices for this database.
-
-        '
-      id: recommended_index
-      type:
-      - list[azure.mgmt.sql.models.RecommendedIndex]
-    - description: 'The resource identifier of the failover group
-
-        containing this database.
+        database belongs to.
 
         '
       id: failover_group_id
       type:
       - str
+    - description: 'The max log size for this database.
+
+        '
+      id: max_log_size_bytes
+      type:
+      - long
+    - description: 'This records the earliest start date and time
+
+        that restore is available for this database (ISO8601 format).
+
+        '
+      id: earliest_restore_date
+      type:
+      - datetime
+    - description: 'The name and tier of the SKU.
+
+        '
+      id: current_sku
+      type:
+      - azure.mgmt.sql.models.Sku
   type: class
   uid: azure.mgmt.sql.models.Database
 references:
-- fullName: list[azure.mgmt.sql.models.ServiceTierAdvisor]
-  name: list[ServiceTierAdvisor]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.sql.models.ServiceTierAdvisor
-    name: ServiceTierAdvisor
-    uid: azure.mgmt.sql.models.ServiceTierAdvisor
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.mgmt.sql.models.ServiceTierAdvisor]
-- fullName: list[azure.mgmt.sql.models.TransparentDataEncryption]
-  name: list[TransparentDataEncryption]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.sql.models.TransparentDataEncryption
-    name: TransparentDataEncryption
-    uid: azure.mgmt.sql.models.TransparentDataEncryption
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.mgmt.sql.models.TransparentDataEncryption]
-- fullName: list[azure.mgmt.sql.models.RecommendedIndex]
-  name: list[RecommendedIndex]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.sql.models.RecommendedIndex
-    name: RecommendedIndex
-    uid: azure.mgmt.sql.models.RecommendedIndex
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.mgmt.sql.models.RecommendedIndex]
 - fullName: dict[str, str]
   name: dict[str, str]
   spec.python:
