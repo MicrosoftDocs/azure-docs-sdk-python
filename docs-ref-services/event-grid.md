@@ -69,8 +69,6 @@ def publish_event(self):
 > [!div class="nextstepaction"]
 > [Explore the Client APIs](/python/api/overview/azure/eventgrid/client)
 
-/python/api/overview/azure/eventgrid/client
-
 ## Management SDK
 
 Create, update, or delete Event Grid instances, topics, and subscriptions with the management SDK.
