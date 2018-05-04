@@ -14,10 +14,10 @@ items:
   name: CloudJob
   source:
     id: CloudJob
-    path: azure-batch\azure\batch\models\cloud_job.py
+    path: azure\batch\models\cloud_job.py
     remote:
       branch: master
-      path: azure-batch\azure\batch\models\cloud_job.py
+      path: azure\batch\models\cloud_job.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 15
   summary: 'An Azure Batch job.
@@ -33,9 +33,11 @@ items:
     parameters:
     - description: 'A string that uniquely identifies the job within the account.
 
-        The ID is case-preserving and case-insensitive (that is, you may not have
+        The ID can contain any combination of alphanumeric characters including
 
-        two IDs within an account that differ only by case).
+        hyphens and underscores, and cannot contain more than 64 characters. It is
+
+        common to use a GUID for the id.
 
         '
       id: id
@@ -47,9 +49,9 @@ items:
       id: display_name
       type:
       - str
-    - description: 'Whether tasks in the job can define
+    - description: 'The flag that determines if this job will
 
-        dependencies on each other. The default is false.
+        use tasks with dependencies.
 
         '
       id: uses_task_dependencies
@@ -183,14 +185,12 @@ items:
 
         the job (including the Job Manager, Job Preparation and Job Release
 
-        tasks). Individual tasks can override an environment setting specified
-
-        here by specifying the same setting name with a different value.
+        tasks).
 
         '
       id: common_environment_settings
       type:
-      - list[azure.batch.models.EnvironmentSetting]
+      - list of azure.batch.models.EnvironmentSetting
     - description: 'The pool settings associated with the job.
 
         '
@@ -199,9 +199,15 @@ items:
       - azure.batch.models.PoolInformation
     - description: 'The action the Batch service should take
 
-        when all tasks in the job are in the completed state. The default is
+        when all tasks in the job are in the completed state. noAction - do
 
-        noaction. Possible values include: ''noAction'', ''terminateJob''
+        nothing. The job remains active unless terminated or disabled by some
+
+        other means. terminateJob - terminate the job. The job''s terminateReason
+
+        is set to ''AllTasksComplete''. The default is noAction. Possible values
+
+        include: ''noAction'', ''terminateJob''
 
         '
       id: on_all_tasks_complete
@@ -210,17 +216,19 @@ items:
       - azure.batch.models.OnAllTasksComplete
     - description: 'The action the Batch service should take when any
 
-        task in the job fails. A task is considered to have failed if has a
+        task in the job fails. A task is considered to have failed if it completes
 
-        failureInfo. A failureInfo is set if the task completes with a non-zero
+        with a non-zero exit code and has exhausted its retry count, or if it had
 
-        exit code after exhausting its retry count, or if there was an error
+        a scheduling error. noAction - do nothing. performExitOptionsJobAction -
 
-        starting the task, for example due to a resource file download error. The
+        take the action associated with the task exit condition in the task''s
 
-        default is noaction. Possible values include: ''noAction'',
+        exitConditions collection. (This may still result in no action being
 
-        ''performExitOptionsJobAction''
+        taken, if that is what the task specifies.) The default is noAction.
+
+        Possible values include: ''noAction'', ''performExitOptionsJobAction''
 
         '
       id: on_task_failure
@@ -236,7 +244,7 @@ items:
         '
       id: metadata
       type:
-      - list[azure.batch.models.MetadataItem]
+      - list of azure.batch.models.MetadataItem
     - description: 'The execution information for the job.
 
         '
@@ -245,11 +253,7 @@ items:
       - azure.batch.models.JobExecutionInformation
     - description: 'Resource usage statistics for the entire lifetime of the
 
-        job. The statistics may not be immediately available. The Batch service
-
-        performs periodic roll-up of statistics. The typical delay is about 30
-
-        minutes.
+        job.
 
         '
       id: stats
@@ -257,32 +261,4 @@ items:
       - azure.batch.models.JobStatistics
   type: class
   uid: azure.batch.models.CloudJob
-references:
-- fullName: list[azure.batch.models.EnvironmentSetting]
-  name: list[EnvironmentSetting]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.EnvironmentSetting
-    name: EnvironmentSetting
-    uid: azure.batch.models.EnvironmentSetting
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.EnvironmentSetting]
-- fullName: list[azure.batch.models.MetadataItem]
-  name: list[MetadataItem]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.MetadataItem
-    name: MetadataItem
-    uid: azure.batch.models.MetadataItem
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.MetadataItem]
+references: []

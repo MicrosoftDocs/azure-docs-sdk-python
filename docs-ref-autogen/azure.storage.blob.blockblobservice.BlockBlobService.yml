@@ -9,7 +9,6 @@ items:
   - azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
   - azure.storage.blob.blockblobservice.BlockBlobService.put_block
   - azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
-  - azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
   - azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
   - azure.storage.blob.blockblobservice.BlockBlobService.MAX_SINGLE_PUT_SIZE
   - azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
@@ -19,7 +18,7 @@ items:
   - inheritance:
     - inheritance:
       - type: builtins.object
-      type: azure.storage.common.storageclient.StorageClient
+      type: azure.storage.storageclient.StorageClient
     type: azure.storage.blob.baseblobservice.BaseBlobService
   langs:
   - python
@@ -27,28 +26,27 @@ items:
   name: BlockBlobService
   source:
     id: BlockBlobService
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 65
+    startLine: 74
   summary: 'Block blobs let you upload large blobs efficiently. Block blobs are comprised
 
     of blocks, each of which is identified by a block ID. You create or modify a
 
     block blob by writing a set of blocks and committing them by their block IDs.
 
-    Each block can be a different size, up to a maximum of 100 MB, and a block blob
+    Each block can be a different size, up to a maximum of 4 MB, and a block blob
 
     can include up to 50,000 blocks. The maximum size of a block blob is therefore
 
-    approximately 4.75 TB (100 MB X 50,000 blocks). If you are writing a block
+    slightly more than 195 GB (4 MB X 50,000 blocks). If you are writing a block
 
     blob that is no more than 64 MB in size, you can upload it in its entirety with
 
     a single write operation; see create_blob_from_bytes.
-
 
 
 
@@ -115,12 +113,12 @@ items:
   name: create_blob_from_bytes
   source:
     id: create_blob_from_bytes
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 589
+    startLine: 587
   summary: 'Creates a new blob from an array of bytes, or updates the content
 
     of an existing blob, with automatic chunking and progress
@@ -181,7 +179,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -211,7 +209,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -298,12 +296,6 @@ items:
       id: timeout
       type:
       - int
-    return:
-      description: 'ETag and last modified properties for the Block Blob
-
-        '
-      type:
-      - azure.storage.blob.models.ResourceProperties
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
 - class: azure.storage.blob.blockblobservice.BlockBlobService
@@ -314,12 +306,12 @@ items:
   name: create_blob_from_path
   source:
     id: create_blob_from_path
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 316
+    startLine: 325
   summary: 'Creates a new blob from a file path, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.
@@ -362,7 +354,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -375,11 +367,7 @@ items:
 
         already validate. Note that this MD5 hash is not stored with the
 
-        blob. Also note that if enabled, the memory-efficient upload algorithm
-
-        will not be used, because computing the MD5 hash requires buffering
-
-        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.
+        blob.
 
         '
       id: validate_content
@@ -396,7 +384,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -483,12 +471,6 @@ items:
       id: timeout
       type:
       - int
-    return:
-      description: 'ETag and last modified properties for the Block Blob
-
-        '
-      type:
-      - azure.storage.blob.models.ResourceProperties
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
 - class: azure.storage.blob.blockblobservice.BlockBlobService
@@ -499,12 +481,12 @@ items:
   name: create_blob_from_stream
   source:
     id: create_blob_from_stream
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 406
+    startLine: 411
   summary: 'Creates a new blob from a file/stream, or updates the content of
 
     an existing blob, with automatic chunking and progress
@@ -558,7 +540,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -571,11 +553,7 @@ items:
 
         already validate. Note that this MD5 hash is not stored with the
 
-        blob. Also note that if enabled, the memory-efficient upload algorithm
-
-        will not be used, because computing the MD5 hash requires buffering
-
-        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.
+        blob.
 
         '
       id: validate_content
@@ -592,7 +570,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -726,12 +704,6 @@ items:
       id: use_byte_buffer
       type:
       - bool
-    return:
-      description: 'ETag and last modified properties for the Block Blob
-
-        '
-      type:
-      - azure.storage.blob.models.ResourceProperties
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
 - class: azure.storage.blob.blockblobservice.BlockBlobService
@@ -742,12 +714,12 @@ items:
   name: create_blob_from_text
   source:
     id: create_blob_from_text
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 695
+    startLine: 691
   summary: 'Creates a new blob from str/unicode, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.
@@ -797,7 +769,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -827,7 +799,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -914,12 +886,6 @@ items:
       id: timeout
       type:
       - int
-    return:
-      description: 'ETag and last modified properties for the Block Blob
-
-        '
-      type:
-      - azure.storage.blob.models.ResourceProperties
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
 - class: azure.storage.blob.blockblobservice.BlockBlobService
@@ -930,12 +896,12 @@ items:
   name: get_block_list
   source:
     id: get_block_list
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 267
+    startLine: 276
   summary: "Retrieves the list of blocks that have been uploaded as part of a\nblock\
     \ blob. There are two block lists maintained for a blob:\n\n\n   Committed Block\
     \ List:\n      The list of blocks that have been successfully committed to a\n\
@@ -1008,12 +974,12 @@ items:
   name: put_block
   source:
     id: put_block
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 143
+    startLine: 152
   summary: 'Creates a new block to be committed as part of a blob.
 
     '
@@ -1095,12 +1061,12 @@ items:
   name: put_block_list
   source:
     id: put_block_list
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+    path: azure\storage\blob\blockblobservice.py
     remote:
       branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
+      path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 185
+    startLine: 194
   summary: 'Writes a blob by specifying the list of block IDs that make up the blob.
 
     In order to be written as part of a blob, a block must have been
@@ -1144,7 +1110,7 @@ items:
         '
       id: block_list
       type:
-      - list(azure.storage.blob.models.BlobBlock)
+      - list of azure.storage.blob.models.BlobBlock
     - defaultValue: None
       description: 'ContentSettings object used to set properties on the blob.
 
@@ -1158,7 +1124,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash of the block list content. The
         storage
@@ -1257,63 +1223,6 @@ items:
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
 - class: azure.storage.blob.blockblobservice.BlockBlobService
-  fullName: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
-  langs:
-  - python
-  module: azure.storage.blob.blockblobservice
-  name: set_standard_blob_tier
-  source:
-    id: set_standard_blob_tier
-    path: azure-storage-blob\azure\storage\blob\blockblobservice.py
-    remote:
-      branch: master
-      path: azure-storage-blob\azure\storage\blob\blockblobservice.py
-      repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 789
-  summary: 'Sets the block blob tiers on the blob. This API is only supported for
-    block blobs on standard storage accounts.
-
-    '
-  syntax:
-    content: set_standard_blob_tier(container_name, blob_name, standard_blob_tier,
-      timeout=None)
-    parameters:
-    - description: 'Name of existing container.
-
-        '
-      id: container_name
-      type:
-      - str
-    - description: 'Name of blob to update.
-
-        '
-      id: blob_name
-      type:
-      - str
-    - description: 'A standard blob tier value to set the blob to. For this version
-        of the library,
-
-        this is only applicable to block blobs on standard storage accounts.
-
-        '
-      id: standard_blob_tier
-      type:
-      - StandardBlobTier
-    - defaultValue: None
-      description: 'The timeout parameter is expressed in seconds. This method may
-        make
-
-        multiple calls to the Azure service and the timeout will apply to
-
-        each call individually.
-
-        '
-      id: timeout
-      type:
-      - int
-  type: method
-  uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
-- class: azure.storage.blob.blockblobservice.BlockBlobService
   fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
   langs:
   - python
@@ -1379,11 +1288,6 @@ references:
   name: put_block_list
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
-- fullName: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
-  isExternal: false
-  name: set_standard_blob_tier
-  parent: azure.storage.blob.blockblobservice.BlockBlobService
-  uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
   isExternal: false
   name: MAX_BLOCK_SIZE
@@ -1399,31 +1303,12 @@ references:
   name: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
-- fullName: dict(str, str)
-  name: dict(str, str)
+- fullName: callback function in format of func(current, total)
+  name: callback function in format of func(current, total)
   spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: (
-    name: (
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: )
-    name: )
-  uid: dict(str, str)
-- fullName: func(current, total)
-  name: func(current, total)
-  spec.python:
-  - fullName: func
-    name: func
-    uid: func
+  - fullName: callback function in format of func
+    name: callback function in format of func
+    uid: callback function in format of func
   - fullName: (
     name: (
   - fullName: current
@@ -1436,18 +1321,4 @@ references:
     uid: total
   - fullName: )
     name: )
-  uid: func(current, total)
-- fullName: list(azure.storage.blob.models.BlobBlock)
-  name: list(BlobBlock)
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: (
-    name: (
-  - fullName: azure.storage.blob.models.BlobBlock
-    name: BlobBlock
-    uid: azure.storage.blob.models.BlobBlock
-  - fullName: )
-    name: )
-  uid: list(azure.storage.blob.models.BlobBlock)
+  uid: callback function in format of func(current, total)

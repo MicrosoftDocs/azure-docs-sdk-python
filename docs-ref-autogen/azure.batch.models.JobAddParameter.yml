@@ -14,10 +14,10 @@ items:
   name: JobAddParameter
   source:
     id: JobAddParameter
-    path: azure-batch\azure\batch\models\job_add_parameter.py
+    path: azure\batch\models\job_add_parameter.py
     remote:
       branch: master
-      path: azure-batch\azure\batch\models\job_add_parameter.py
+      path: azure\batch\models\job_add_parameter.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 15
   summary: 'An Azure Batch job to add.
@@ -32,11 +32,9 @@ items:
 
         The ID can contain any combination of alphanumeric characters including
 
-        hyphens and underscores, and cannot contain more than 64 characters. The
+        hyphens and underscores, and cannot contain more than 64 characters. It is
 
-        ID is case-preserving and case-insensitive (that is, you may not have two
-
-        IDs within an account that differ only by case).
+        common to use a GUID for the id.
 
         '
       id: id
@@ -132,14 +130,12 @@ items:
 
         the job (including the Job Manager, Job Preparation and Job Release
 
-        tasks). Individual tasks can override an environment setting specified
-
-        here by specifying the same setting name with a different value.
+        tasks).
 
         '
       id: common_environment_settings
       type:
-      - list[azure.batch.models.EnvironmentSetting]
+      - list of azure.batch.models.EnvironmentSetting
     - description: 'The pool on which the Batch service runs the job''s
 
         tasks.
@@ -158,13 +154,17 @@ items:
 
         automatic job termination without a Job Manager, you should initially set
 
-        onAllTasksComplete to noaction and update the job properties to set
+        onAllTasksComplete to noAction and update the job properties to set
 
-        onAllTasksComplete to terminatejob once you have finished adding tasks.
+        onAllTasksComplete to terminateJob once you have finished adding tasks.
 
-        The default is noaction. Possible values include: ''noAction'',
+        Permitted values are: noAction - do nothing. The job remains active unless
 
-        ''terminateJob''
+        terminated or disabled by some other means. terminateJob - terminate the
+
+        job. The job''s terminateReason is set to ''AllTasksComplete''. The default
+
+        is noAction. Possible values include: ''noAction'', ''terminateJob''
 
         '
       id: on_all_tasks_complete
@@ -173,17 +173,19 @@ items:
       - azure.batch.models.OnAllTasksComplete
     - description: 'The action the Batch service should take when any
 
-        task in the job fails. A task is considered to have failed if has a
+        task in the job fails. A task is considered to have failed if it completes
 
-        failureInfo. A failureInfo is set if the task completes with a non-zero
+        with a non-zero exit code and has exhausted its retry count, or if it had
 
-        exit code after exhausting its retry count, or if there was an error
+        a scheduling error. noAction - do nothing. performExitOptionsJobAction -
 
-        starting the task, for example due to a resource file download error. The
+        take the action associated with the task exit condition in the task''s
 
-        default is noaction. Possible values include: ''noAction'',
+        exitConditions collection. (This may still result in no action being
 
-        ''performExitOptionsJobAction''
+        taken, if that is what the task specifies.) The default is noAction.
+
+        Possible values include: ''noAction'', ''performExitOptionsJobAction''
 
         '
       id: on_task_failure
@@ -199,10 +201,10 @@ items:
         '
       id: metadata
       type:
-      - list[azure.batch.models.MetadataItem]
-    - description: 'Whether tasks in the job can define
+      - list of azure.batch.models.MetadataItem
+    - description: 'The flag that determines if this job will
 
-        dependencies on each other. The default is false.
+        use tasks with dependencies.
 
         '
       id: uses_task_dependencies
@@ -210,32 +212,4 @@ items:
       - bool
   type: class
   uid: azure.batch.models.JobAddParameter
-references:
-- fullName: list[azure.batch.models.EnvironmentSetting]
-  name: list[EnvironmentSetting]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.EnvironmentSetting
-    name: EnvironmentSetting
-    uid: azure.batch.models.EnvironmentSetting
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.EnvironmentSetting]
-- fullName: list[azure.batch.models.MetadataItem]
-  name: list[MetadataItem]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.MetadataItem
-    name: MetadataItem
-    uid: azure.batch.models.MetadataItem
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.MetadataItem]
+references: []
