@@ -4,29 +4,20 @@ items:
 - children:
   - azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
   - azure.mgmt.sql.operations.DatabasesOperations.create_or_update
-  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
-  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
-  - azure.mgmt.sql.operations.DatabasesOperations.create_or_update_transparent_data_encryption_configuration
   - azure.mgmt.sql.operations.DatabasesOperations.delete
-  - azure.mgmt.sql.operations.DatabasesOperations.delete_replication_link
   - azure.mgmt.sql.operations.DatabasesOperations.export
-  - azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link
-  - azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link_allow_data_loss
   - azure.mgmt.sql.operations.DatabasesOperations.get
-  - azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
-  - azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
-  - azure.mgmt.sql.operations.DatabasesOperations.get_service_tier_advisor
-  - azure.mgmt.sql.operations.DatabasesOperations.get_threat_detection_policy
-  - azure.mgmt.sql.operations.DatabasesOperations.get_transparent_data_encryption_configuration
   - azure.mgmt.sql.operations.DatabasesOperations.import_method
+  - azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
   - azure.mgmt.sql.operations.DatabasesOperations.list_by_server
-  - azure.mgmt.sql.operations.DatabasesOperations.list_replication_links
-  - azure.mgmt.sql.operations.DatabasesOperations.list_restore_points
-  - azure.mgmt.sql.operations.DatabasesOperations.list_service_tier_advisors
-  - azure.mgmt.sql.operations.DatabasesOperations.list_transparent_data_encryption_activity
-  - azure.mgmt.sql.operations.DatabasesOperations.list_usages
+  - azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
+  - azure.mgmt.sql.operations.DatabasesOperations.list_metrics
   - azure.mgmt.sql.operations.DatabasesOperations.pause
+  - azure.mgmt.sql.operations.DatabasesOperations.rename
   - azure.mgmt.sql.operations.DatabasesOperations.resume
+  - azure.mgmt.sql.operations.DatabasesOperations.update
+  - azure.mgmt.sql.operations.DatabasesOperations.upgrade_data_warehouse
+  - azure.mgmt.sql.operations.DatabasesOperations.models
   class: azure.mgmt.sql.operations.DatabasesOperations
   fullName: azure.mgmt.sql.operations.DatabasesOperations
   inheritance:
@@ -37,22 +28,13 @@ items:
   name: DatabasesOperations
   source:
     id: DatabasesOperations
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 20
+    startLine: 21
   summary: 'DatabasesOperations operations.
-
-
-
-
-
-
-
-
-
 
 
 
@@ -86,15 +68,15 @@ items:
 
         '
       id: serializer
-    - description: 'An objec model deserializer.
+    - description: 'An object model deserializer.
 
         '
       id: deserializer
     variables:
-    - description: 'The name of the blob auditing policy. Constant value: "default".
+    - description: 'The name of the operation to perform. Constant value: "import".
 
         '
-      id: blob_auditing_policy_name
+      id: extension_name
   type: class
   uid: azure.mgmt.sql.operations.DatabasesOperations
 - class: azure.mgmt.sql.operations.DatabasesOperations
@@ -107,12 +89,12 @@ items:
   name: create_import_operation
   source:
     id: create_import_operation
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 213
+    startLine: 201
   summary: 'Creates an import operation that imports a bacpac into an existing
 
     database. The existing database must be empty.
@@ -120,7 +102,7 @@ items:
     '
   syntax:
     content: create_import_operation(resource_group_name, server_name, database_name,
-      parameters, custom_headers=None, raw=False, **operation_config)
+      parameters, custom_headers=None, raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -160,18 +142,30 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns ImportExportResponse or
+
+        ClientRawResponse<ImportExportResponse> if raw==True
+
+        '
       type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns azure.mgmt.sql.models.ImportExportResponse
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
 - class: azure.mgmt.sql.operations.DatabasesOperations
@@ -184,22 +178,18 @@ items:
   name: create_or_update
   source:
     id: create_or_update
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 972
-  summary: 'Creates a new database or updates an existing database. Location is a
-
-    required property in the request body, and it must be the same as the
-
-    location of the SQL server.
+    startLine: 813
+  summary: 'Creates a new database or updates an existing database.
 
     '
   syntax:
     content: create_or_update(resource_group_name, server_name, database_name, parameters,
-      custom_headers=None, raw=False, **operation_config)
+      custom_headers=None, raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -217,17 +207,13 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the database to be operated on
-
-        (updated or created).
+    - description: 'The name of the database.
 
         '
       id: database_name
       type:
       - str
-    - description: 'The required parameters for creating or updating a
-
-        database.
+    - description: 'The requested database resource state.
 
         '
       id: parameters
@@ -241,269 +227,32 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns Database or
+
+        ClientRawResponse<Database> if raw==True
+
+        '
       type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns azure.mgmt.sql.models.Database
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.Database]]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: create_or_update_blob_auditing_policy
-  source:
-    id: create_or_update_blob_auditing_policy
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1968
-  summary: 'Creates or updates a database''s blob auditing policy.
-
-    '
-  syntax:
-    content: create_or_update_blob_auditing_policy(resource_group_name, server_name,
-      database_name, parameters, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which the blob
-
-        auditing policy will be defined.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The database blob auditing policy.
-
-        '
-      id: parameters
-      type:
-      - azure.mgmt.sql.models.DatabaseBlobAuditingPolicy
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.DatabaseBlobAuditingPolicy
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: create_or_update_threat_detection_policy
-  source:
-    id: create_or_update_threat_detection_policy
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1818
-  summary: 'Creates or updates a database''s threat detection policy.
-
-    '
-  syntax:
-    content: create_or_update_threat_detection_policy(resource_group_name, server_name,
-      database_name, parameters, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which database
-
-        Threat Detection policy is defined.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The database Threat Detection policy.
-
-        '
-      id: parameters
-      type:
-      - azure.mgmt.sql.models.DatabaseSecurityAlertPolicy
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.DatabaseSecurityAlertPolicy
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_transparent_data_encryption_configuration
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: create_or_update_transparent_data_encryption_configuration
-  source:
-    id: create_or_update_transparent_data_encryption_configuration
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1518
-  summary: 'Creates or updates a database''s transparent data encryption
-
-    configuration.
-
-    '
-  syntax:
-    content: create_or_update_transparent_data_encryption_configuration(resource_group_name,
-      server_name, database_name, status=None, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which setting the
-
-        transparent data encryption applies.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'The status of the database transparent data encryption.
-
-        Possible values include: ''Enabled'', ''Disabled''
-
-        '
-      id: status
-      type:
-      - str
-      - azure.mgmt.sql.models.TransparentDataEncryptionStatus
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.TransparentDataEncryption
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_transparent_data_encryption_configuration
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -514,18 +263,18 @@ items:
   name: delete
   source:
     id: delete
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1076
-  summary: 'Deletes a database.
+    startLine: 910
+  summary: 'Deletes the database.
 
     '
   syntax:
     content: delete(resource_group_name, server_name, database_name, custom_headers=None,
-      raw=False, **operation_config)
+      raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -543,7 +292,7 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the database to be deleted.
+    - description: 'The name of the database.
 
         '
       id: database_name
@@ -557,107 +306,32 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
-    - description: '*Operation configuration
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
 
-        overrides*.
+        polling object for personal polling strategy
 
         '
-      id: operation_config
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns None or
+
+        ClientRawResponse<None> if raw==True
+
+        '
       type:
-      - None
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[None]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.delete
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.delete_replication_link
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: delete_replication_link
-  source:
-    id: delete_replication_link
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 413
-  summary: 'Deletes a database replication link. Cannot be done during failover.
-
-    '
-  syntax:
-    content: delete_replication_link(resource_group_name, server_name, database_name,
-      link_id, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database that has the
-
-        replication link to be dropped.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The ID of the replication link to be deleted.
-
-        '
-      id: link_id
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - None
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.delete_replication_link
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -668,18 +342,18 @@ items:
   name: export
   source:
     id: export
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 314
+    startLine: 311
   summary: 'Exports a database to a bacpac.
 
     '
   syntax:
     content: export(resource_group_name, server_name, database_name, parameters, custom_headers=None,
-      raw=False, **operation_config)
+      raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -717,174 +391,32 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns ImportExportResponse or
+
+        ClientRawResponse<ImportExportResponse> if raw==True
+
+        '
       type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns azure.mgmt.sql.models.ImportExportResponse
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.export
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: failover_replication_link
-  source:
-    id: failover_replication_link
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 550
-  summary: 'Sets which replica database is primary by failing over from the current
-
-    primary replica database.
-
-    '
-  syntax:
-    content: failover_replication_link(resource_group_name, server_name, database_name,
-      link_id, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database that has the
-
-        replication link to be failed over.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The ID of the replication link to be failed over.
-
-        '
-      id: link_id
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    return:
-      type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns None
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link_allow_data_loss
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: failover_replication_link_allow_data_loss
-  source:
-    id: failover_replication_link_allow_data_loss
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 639
-  summary: 'Sets which replica database is primary by failing over from the current
-
-    primary replica database. This operation might result in data loss.
-
-    '
-  syntax:
-    content: failover_replication_link_allow_data_loss(resource_group_name, server_name,
-      database_name, link_id, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database that has the
-
-        replication link to be failed over.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The ID of the replication link to be failed over.
-
-        '
-      id: link_id
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    return:
-      type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns None
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link_allow_data_loss
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -895,931 +427,17 @@ items:
   name: get
   source:
     id: get
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1137
+    startLine: 689
   summary: 'Gets a database.
 
     '
   syntax:
-    content: get(resource_group_name, server_name, database_name, expand=None, custom_headers=None,
-      raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database to be retrieved.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'A comma separated list of child objects to expand in
-
-        the response. Possible properties: serviceTierAdvisors,
-
-        transparentDataEncryption.
-
-        '
-      id: expand
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.Database
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: get_blob_auditing_policy
-  source:
-    id: get_blob_auditing_policy
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1897
-  summary: 'Gets a database''s blob auditing policy.
-
-    '
-  syntax:
-    content: get_blob_auditing_policy(resource_group_name, server_name, database_name,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which the blob
-
-        audit policy is defined.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.DatabaseBlobAuditingPolicy
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: get_replication_link
-  source:
-    id: get_replication_link
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 478
-  summary: 'Gets a database replication link.
-
-    '
-  syntax:
-    content: get_replication_link(resource_group_name, server_name, database_name,
-      link_id, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database to get the link for.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The replication link ID to be retrieved.
-
-        '
-      id: link_id
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.ReplicationLink
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_service_tier_advisor
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: get_service_tier_advisor
-  source:
-    id: get_service_tier_advisor
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1370
-  summary: 'Gets a service tier advisor.
-
-    '
-  syntax:
-    content: get_service_tier_advisor(resource_group_name, server_name, database_name,
-      service_tier_advisor_name, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of database.
-
-        '
-      id: database_name
-      type:
-      - str
-    - description: 'The name of service tier advisor.
-
-        '
-      id: service_tier_advisor_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.ServiceTierAdvisor
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_service_tier_advisor
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_threat_detection_policy
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: get_threat_detection_policy
-  source:
-    id: get_threat_detection_policy
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1748
-  summary: 'Gets a database''s threat detection policy.
-
-    '
-  syntax:
-    content: get_threat_detection_policy(resource_group_name, server_name, database_name,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which database
-
-        Threat Detection policy is defined.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.DatabaseSecurityAlertPolicy
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_threat_detection_policy
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.get_transparent_data_encryption_configuration
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: get_transparent_data_encryption_configuration
-  source:
-    id: get_transparent_data_encryption_configuration
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1601
-  summary: 'Gets a database''s transparent data encryption configuration.
-
-    '
-  syntax:
-    content: get_transparent_data_encryption_configuration(resource_group_name, server_name,
-      database_name, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which the
-
-        transparent data encryption applies.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.TransparentDataEncryption
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_transparent_data_encryption_configuration
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.import_method
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: import_method
-  source:
-    id: import_method
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 116
-  summary: 'Imports a bacpac into a new database. .
-
-    '
-  syntax:
-    content: import_method(resource_group_name, server_name, parameters, custom_headers=None,
-      raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The required parameters for importing a Bacpac into
-
-        a database.
-
-        '
-      id: parameters
-      type:
-      - azure.mgmt.sql.models.ImportRequest
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    return:
-      type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns azure.mgmt.sql.models.ImportExportResponse
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.import_method
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_by_server
-  source:
-    id: list_by_server
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1211
-  summary: 'Returns a list of databases in a server.
-
-    '
-  syntax:
-    content: list_by_server(resource_group_name, server_name, expand=None, filter=None,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'A comma separated list of child objects to expand in
-
-        the response. Possible properties: serviceTierAdvisors,
-
-        transparentDataEncryption.
-
-        '
-      id: expand
-      type:
-      - str
-    - defaultValue: None
-      description: 'An OData filter expression that describes a subset of
-
-        databases to return.
-
-        '
-      id: filter
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.DatabasePaged
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_replication_links
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_replication_links
-  source:
-    id: list_replication_links
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 728
-  summary: 'Lists a database''s replication links.
-
-    '
-  syntax:
-    content: list_replication_links(resource_group_name, server_name, database_name,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database to retrieve links for.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.ReplicationLinkPaged
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_replication_links
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_restore_points
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_restore_points
-  source:
-    id: list_restore_points
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 39
-  summary: 'Returns a list of database restore points.
-
-    '
-  syntax:
-    content: list_restore_points(resource_group_name, server_name, database_name,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database from which to retrieve
-
-        available restore points.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.RestorePointPaged
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_restore_points
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_service_tier_advisors
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_service_tier_advisors
-  source:
-    id: list_service_tier_advisors
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1442
-  summary: 'Returns service tier advisors for specified database.
-
-    '
-  syntax:
-    content: list_service_tier_advisors(resource_group_name, server_name, database_name,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of database.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.ServiceTierAdvisorPaged
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_service_tier_advisors
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_transparent_data_encryption_activity
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_transparent_data_encryption_activity
-  source:
-    id: list_transparent_data_encryption_activity
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1671
-  summary: 'Returns a database''s transparent data encryption operation result.
-
-    '
-  syntax:
-    content: list_transparent_data_encryption_activity(resource_group_name, server_name,
-      database_name, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the database for which the
-
-        transparent data encryption applies.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.TransparentDataEncryptionActivityPaged
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_transparent_data_encryption_activity
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_usages
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_usages
-  source:
-    id: list_usages
-    path: azure\mgmt\sql\operations\databases_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 1294
-  summary: 'Returns database usages.
-
-    '
-  syntax:
-    content: list_usages(resource_group_name, server_name, database_name, custom_headers=None,
+    content: get(resource_group_name, server_name, database_name, custom_headers=None,
       raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group that
@@ -1867,10 +485,397 @@ items:
         '
       id: operation_config
     return:
+      description: 'Database or ClientRawResponse if raw=true
+
+        '
       type:
-      - azure.mgmt.sql.models.DatabaseMetricPaged
+      - azure.mgmt.sql.models.Database
+      - msrest.pipeline.ClientRawResponse
   type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_usages
+  uid: azure.mgmt.sql.operations.DatabasesOperations.get
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.import_method
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: import_method
+  source:
+    id: import_method
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 94
+  summary: 'Imports a bacpac into a new database. .
+
+    '
+  syntax:
+    content: import_method(resource_group_name, server_name, parameters, custom_headers=None,
+      raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The required parameters for importing a Bacpac into
+
+        a database.
+
+        '
+      id: parameters
+      type:
+      - azure.mgmt.sql.models.ImportRequest
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns ImportExportResponse or
+
+        ClientRawResponse<ImportExportResponse> if raw==True
+
+        '
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.import_method
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_by_elastic_pool
+  source:
+    id: list_by_elastic_pool
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 1064
+  summary: 'Gets a list of databases in an elastic pool.
+
+    '
+  syntax:
+    content: list_by_elastic_pool(resource_group_name, server_name, elastic_pool_name,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the elastic pool.
+
+        '
+      id: elastic_pool_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'An iterator like instance of Database
+
+        '
+      type:
+      - azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_by_server
+  source:
+    id: list_by_server
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 614
+  summary: 'Gets a list of databases.
+
+    '
+  syntax:
+    content: list_by_server(resource_group_name, server_name, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'An iterator like instance of Database
+
+        '
+      type:
+      - azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_metric_definitions
+  source:
+    id: list_metric_definitions
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 448
+  summary: 'Returns database metric definitions.
+
+    '
+  syntax:
+    content: list_metric_definitions(resource_group_name, server_name, database_name,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'An iterator like instance of MetricDefinition
+
+        '
+      type:
+      - azure.mgmt.sql.models.MetricDefinitionPaged[azure.mgmt.sql.models.MetricDefinition]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metrics
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_metrics
+  source:
+    id: list_metrics
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 366
+  summary: 'Returns database metrics.
+
+    '
+  syntax:
+    content: list_metrics(resource_group_name, server_name, database_name, filter,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - description: 'An OData filter expression that describes a subset of
+
+        metrics to return.
+
+        '
+      id: filter
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'An iterator like instance of Metric
+
+        '
+      type:
+      - azure.mgmt.sql.models.MetricPaged[azure.mgmt.sql.models.Metric]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_metrics
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -1881,17 +886,96 @@ items:
   name: pause
   source:
     id: pause
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 804
-  summary: 'Pauses a data warehouse.
+    startLine: 1191
+  summary: 'Pauses a database.
 
     '
   syntax:
     content: pause(resource_group_name, server_name, database_name, custom_headers=None,
+      raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database to be paused.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns Database or
+
+        ClientRawResponse<Database> if raw==True
+
+        '
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.Database]]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.pause
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.rename
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: rename
+  source:
+    id: rename
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 1344
+  summary: 'Renames a database.
+
+    '
+  syntax:
+    content: rename(resource_group_name, server_name, database_name, id, custom_headers=None,
       raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group that
@@ -1910,10 +994,16 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the data warehouse to pause.
+    - description: 'The name of the database to rename.
 
         '
       id: database_name
+      type:
+      - str
+    - description: 'The target ID for the resource
+
+        '
+      id: id
       type:
       - str
     - defaultValue: None
@@ -1932,12 +1022,21 @@ items:
       id: raw
       type:
       - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
     return:
+      description: 'None or ClientRawResponse if raw=true
+
+        '
       type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns None
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - None
+      - msrest.pipeline.ClientRawResponse
   type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.pause
+  uid: azure.mgmt.sql.operations.DatabasesOperations.rename
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -1948,18 +1047,18 @@ items:
   name: resume
   source:
     id: resume
-    path: azure\mgmt\sql\operations\databases_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\databases_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 888
-  summary: 'Resumes a data warehouse.
+    startLine: 1292
+  summary: 'Resumes a database.
 
     '
   syntax:
     content: resume(resource_group_name, server_name, database_name, custom_headers=None,
-      raw=False, **operation_config)
+      raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -1977,7 +1076,7 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the data warehouse to resume.
+    - description: 'The name of the database to be resumed.
 
         '
       id: database_name
@@ -1991,20 +1090,206 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns Database or
+
+        ClientRawResponse<Database> if raw==True
+
+        '
       type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns None
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.Database]]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.resume
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.update
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: update
+  source:
+    id: update
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 1009
+  summary: 'Updates an existing database.
+
+    '
+  syntax:
+    content: update(resource_group_name, server_name, database_name, parameters, custom_headers=None,
+      raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database.
+
+        '
+      id: database_name
+      type:
+      - str
+    - description: 'The requested database resource state.
+
+        '
+      id: parameters
+      type:
+      - azure.mgmt.sql.models.DatabaseUpdate
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns Database or
+
+        ClientRawResponse<Database> if raw==True
+
+        '
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.Database]]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.update
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.upgrade_data_warehouse
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: upgrade_data_warehouse
+  source:
+    id: upgrade_data_warehouse
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\databases_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 568
+  summary: 'Upgrades a data warehouse.
+
+    '
+  syntax:
+    content: upgrade_data_warehouse(resource_group_name, server_name, database_name,
+      custom_headers=None, raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the database to be upgraded.
+
+        '
+      id: database_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns None or
+
+        ClientRawResponse<None> if raw==True
+
+        '
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[None]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.upgrade_data_warehouse
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.models
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: models
+  syntax:
+    content: models = <module 'azure.mgmt.sql.models' from 'c:\\python3\\lib\\site-packages\\azure_mgmt_sql-0.9.0-py3.6.egg\\azure\\mgmt\\sql\\models\\__init__.py'>
+  type: attribute
+  uid: azure.mgmt.sql.operations.DatabasesOperations.models
 references:
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
   isExternal: false
@@ -2016,118 +1301,220 @@ references:
   name: create_or_update
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
-  isExternal: false
-  name: create_or_update_blob_auditing_policy
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_blob_auditing_policy
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
-  isExternal: false
-  name: create_or_update_threat_detection_policy
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_threat_detection_policy
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_transparent_data_encryption_configuration
-  isExternal: false
-  name: create_or_update_transparent_data_encryption_configuration
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_or_update_transparent_data_encryption_configuration
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.delete
   isExternal: false
   name: delete
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.delete
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.delete_replication_link
-  isExternal: false
-  name: delete_replication_link
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.delete_replication_link
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.export
   isExternal: false
   name: export
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.export
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link
-  isExternal: false
-  name: failover_replication_link
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link_allow_data_loss
-  isExternal: false
-  name: failover_replication_link_allow_data_loss
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.failover_replication_link_allow_data_loss
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.get
   isExternal: false
   name: get
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.get
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
-  isExternal: false
-  name: get_blob_auditing_policy
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_blob_auditing_policy
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
-  isExternal: false
-  name: get_replication_link
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_replication_link
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_service_tier_advisor
-  isExternal: false
-  name: get_service_tier_advisor
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_service_tier_advisor
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_threat_detection_policy
-  isExternal: false
-  name: get_threat_detection_policy
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_threat_detection_policy
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.get_transparent_data_encryption_configuration
-  isExternal: false
-  name: get_transparent_data_encryption_configuration
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.get_transparent_data_encryption_configuration
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.import_method
   isExternal: false
   name: import_method
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.import_method
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
+  isExternal: false
+  name: list_by_elastic_pool
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
   isExternal: false
   name: list_by_server
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_replication_links
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
   isExternal: false
-  name: list_replication_links
+  name: list_metric_definitions
   parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_replication_links
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_restore_points
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metrics
   isExternal: false
-  name: list_restore_points
+  name: list_metrics
   parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_restore_points
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_service_tier_advisors
-  isExternal: false
-  name: list_service_tier_advisors
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_service_tier_advisors
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_transparent_data_encryption_activity
-  isExternal: false
-  name: list_transparent_data_encryption_activity
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_transparent_data_encryption_activity
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_usages
-  isExternal: false
-  name: list_usages
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.list_usages
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_metrics
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.pause
   isExternal: false
   name: pause
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.pause
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.rename
+  isExternal: false
+  name: rename
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.rename
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.resume
   isExternal: false
   name: resume
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.resume
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.update
+  isExternal: false
+  name: update
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.update
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.upgrade_data_warehouse
+  isExternal: false
+  name: upgrade_data_warehouse
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.upgrade_data_warehouse
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.models
+  isExternal: false
+  name: models
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.models
+- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
+  name: AzureOperationPoller[ImportExportResponse]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ImportExportResponse
+    name: ImportExportResponse
+    uid: azure.mgmt.sql.models.ImportExportResponse
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
+  name: AzureOperationPoller[ClientRawResponse[ImportExportResponse]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ImportExportResponse
+    name: ImportExportResponse
+    uid: azure.mgmt.sql.models.ImportExportResponse
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
+  name: AzureOperationPoller[Database]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.Database
+    name: Database
+    uid: azure.mgmt.sql.models.Database
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.Database]]
+  name: AzureOperationPoller[ClientRawResponse[Database]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.Database
+    name: Database
+    uid: azure.mgmt.sql.models.Database
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.Database]]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[None]
+  name: AzureOperationPoller[None]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: None
+    name: None
+    uid: None
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[None]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+  name: AzureOperationPoller[ClientRawResponse[None]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: None
+    name: None
+    uid: None
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+- fullName: azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
+  name: DatabasePaged[Database]
+  spec.python:
+  - fullName: azure.mgmt.sql.models.DatabasePaged
+    name: DatabasePaged
+    uid: azure.mgmt.sql.models.DatabasePaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.Database
+    name: Database
+    uid: azure.mgmt.sql.models.Database
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
+- fullName: azure.mgmt.sql.models.MetricDefinitionPaged[azure.mgmt.sql.models.MetricDefinition]
+  name: MetricDefinitionPaged[MetricDefinition]
+  spec.python:
+  - fullName: azure.mgmt.sql.models.MetricDefinitionPaged
+    name: MetricDefinitionPaged
+    uid: azure.mgmt.sql.models.MetricDefinitionPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.MetricDefinition
+    name: MetricDefinition
+    uid: azure.mgmt.sql.models.MetricDefinition
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.sql.models.MetricDefinitionPaged[azure.mgmt.sql.models.MetricDefinition]
+- fullName: azure.mgmt.sql.models.MetricPaged[azure.mgmt.sql.models.Metric]
+  name: MetricPaged[Metric]
+  spec.python:
+  - fullName: azure.mgmt.sql.models.MetricPaged
+    name: MetricPaged
+    uid: azure.mgmt.sql.models.MetricPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.Metric
+    name: Metric
+    uid: azure.mgmt.sql.models.Metric
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.sql.models.MetricPaged[azure.mgmt.sql.models.Metric]

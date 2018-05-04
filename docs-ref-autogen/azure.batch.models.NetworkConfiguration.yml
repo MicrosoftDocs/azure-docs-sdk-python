@@ -14,17 +14,17 @@ items:
   name: NetworkConfiguration
   source:
     id: NetworkConfiguration
-    path: azure\batch\models\network_configuration.py
+    path: azure-batch\azure\batch\models\network_configuration.py
     remote:
       branch: master
-      path: azure\batch\models\network_configuration.py
+      path: azure-batch\azure\batch\models\network_configuration.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 15
   summary: 'The network configuration for a pool.
 
     '
   syntax:
-    content: NetworkConfiguration(subnet_id=None)
+    content: NetworkConfiguration(subnet_id=None, endpoint_configuration=None)
     parameters:
     - description: 'The ARM resource identifier of the virtual network
 
@@ -56,16 +56,42 @@ items:
 
         denied by an NSG, then the Batch service will set the state of the compute
 
-        nodes to unusable. For pools created via virtualMachineConfiguration the
+        nodes to unusable. For pools created with virtualMachineConfiguration only
 
-        Batch account must have poolAllocationMode userSubscription in order to
+        ARM virtual networks (''Microsoft.Network/virtualNetworks'') are supported,
 
-        use a VNet.
+        but for pools created with cloudServiceConfiguration both ARM and classic
+
+        virtual networks are supported. If the specified VNet has any associated
+
+        Network Security Groups (NSG), then a few reserved system ports must be
+
+        enabled for inbound communication. For pools created with a virtual
+
+        machine configuration, enable ports 29876 and 29877, as well as port 22
+
+        for Linux and port 3389 for Windows. For pools created with a cloud
+
+        service configuration, enable ports 10100, 20100, and 30100. Also enable
+
+        outbound connections to Azure Storage on port 443. For more details see:
+
+        [https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration](https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration)
 
         '
       id: subnet_id
       type:
       - str
+    - description: 'The configuration for endpoints on compute
+
+        nodes in the Batch pool. Pool endpoint configuration is only supported on
+
+        pools with the virtualMachineConfiguration property.
+
+        '
+      id: endpoint_configuration
+      type:
+      - azure.batch.models.PoolEndpointConfiguration
   type: class
   uid: azure.batch.models.NetworkConfiguration
 references: []

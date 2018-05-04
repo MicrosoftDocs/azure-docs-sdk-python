@@ -4,8 +4,11 @@ items:
 - children:
   - azure.mgmt.web.WebSiteManagementClient.check_name_availability
   - azure.mgmt.web.WebSiteManagementClient.get_publishing_user
+  - azure.mgmt.web.WebSiteManagementClient.get_source_control
+  - azure.mgmt.web.WebSiteManagementClient.get_subscription_deployment_locations
   - azure.mgmt.web.WebSiteManagementClient.list_geo_regions
   - azure.mgmt.web.WebSiteManagementClient.list_premier_add_on_offers
+  - azure.mgmt.web.WebSiteManagementClient.list_site_identifiers_assigned_to_host_name
   - azure.mgmt.web.WebSiteManagementClient.list_skus
   - azure.mgmt.web.WebSiteManagementClient.list_source_controls
   - azure.mgmt.web.WebSiteManagementClient.move
@@ -13,6 +16,7 @@ items:
   - azure.mgmt.web.WebSiteManagementClient.update_source_control
   - azure.mgmt.web.WebSiteManagementClient.validate
   - azure.mgmt.web.WebSiteManagementClient.validate_move
+  - azure.mgmt.web.WebSiteManagementClient.verify_hosting_environment_vnet
   class: azure.mgmt.web.WebSiteManagementClient
   fullName: azure.mgmt.web.WebSiteManagementClient
   inheritance:
@@ -23,13 +27,17 @@ items:
   name: WebSiteManagementClient
   source:
     id: WebSiteManagementClient
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 68
-  summary: 'Composite Swagger for WebSite Management Client
+    startLine: 69
+  summary: 'WebSite Management Client
+
+
+
+
 
 
 
@@ -78,61 +86,79 @@ items:
         '
       id: app_service_certificate_orders
       type:
-      - .operations.AppServiceCertificateOrdersOperations
-    - description: 'AppServiceEnvironments operations
+      - azure.mgmt.web.operations.AppServiceCertificateOrdersOperations
+    - description: 'CertificateRegistrationProvider operations
 
         '
-      id: app_service_environments
+      id: certificate_registration_provider
       type:
-      - .operations.AppServiceEnvironmentsOperations
-    - description: 'AppServicePlans operations
-
-        '
-      id: app_service_plans
-      type:
-      - .operations.AppServicePlansOperations
-    - description: 'Certificates operations
-
-        '
-      id: certificates
-      type:
-      - .operations.CertificatesOperations
+      - azure.mgmt.web.operations.CertificateRegistrationProviderOperations
     - description: 'Domains operations
 
         '
       id: domains
       type:
-      - .operations.DomainsOperations
-    - description: 'Recommendations operations
-
-        '
-      id: recommendations
-      type:
-      - .operations.RecommendationsOperations
+      - azure.mgmt.web.operations.DomainsOperations
     - description: 'TopLevelDomains operations
 
         '
       id: top_level_domains
       type:
-      - .operations.TopLevelDomainsOperations
-    - description: 'WebApps operations
+      - azure.mgmt.web.operations.TopLevelDomainsOperations
+    - description: 'DomainRegistrationProvider operations
 
         '
-      id: web_apps
+      id: domain_registration_provider
       type:
-      - .operations.WebAppsOperations
+      - azure.mgmt.web.operations.DomainRegistrationProviderOperations
+    - description: 'Certificates operations
+
+        '
+      id: certificates
+      type:
+      - azure.mgmt.web.operations.CertificatesOperations
     - description: 'DeletedWebApps operations
 
         '
       id: deleted_web_apps
       type:
-      - .operations.DeletedWebAppsOperations
+      - azure.mgmt.web.operations.DeletedWebAppsOperations
+    - description: 'Diagnostics operations
+
+        '
+      id: diagnostics
+      type:
+      - azure.mgmt.web.operations.DiagnosticsOperations
     - description: 'Provider operations
 
         '
       id: provider
       type:
-      - .operations.ProviderOperations
+      - azure.mgmt.web.operations.ProviderOperations
+    - description: 'Recommendations operations
+
+        '
+      id: recommendations
+      type:
+      - azure.mgmt.web.operations.RecommendationsOperations
+    - description: 'WebApps operations
+
+        '
+      id: web_apps
+      type:
+      - azure.mgmt.web.operations.WebAppsOperations
+    - description: 'AppServiceEnvironments operations
+
+        '
+      id: app_service_environments
+      type:
+      - azure.mgmt.web.operations.AppServiceEnvironmentsOperations
+    - description: 'AppServicePlans operations
+
+        '
+      id: app_service_plans
+      type:
+      - azure.mgmt.web.operations.AppServicePlansOperations
   type: class
   uid: azure.mgmt.web.WebSiteManagementClient
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -145,12 +171,12 @@ items:
   name: check_name_availability
   source:
     id: check_name_availability
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 382
+    startLine: 461
   summary: 'Check if a resource name is available.
 
 
@@ -169,7 +195,11 @@ items:
       - str
     - description: 'Resource type used for verification. Possible values
 
-        include: ''Site'', ''Slot'', ''HostingEnvironment''
+        include: ''Site'', ''Slot'', ''HostingEnvironment'', ''PublishingUser'',
+
+        ''Microsoft.Web/sites'', ''Microsoft.Web/sites/slots'',
+
+        ''Microsoft.Web/hostingEnvironments'', ''Microsoft.Web/publishingUsers''
 
         '
       id: type
@@ -206,9 +236,12 @@ items:
         '
       id: operation_config
     return:
+      description: 'ResourceNameAvailability or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.web.models.ResourceNameAvailability
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.check_name_availability
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -221,12 +254,12 @@ items:
   name: get_publishing_user
   source:
     id: get_publishing_user
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 135
+    startLine: 148
   summary: 'Gets publishing user.
 
 
@@ -259,11 +292,134 @@ items:
         '
       id: operation_config
     return:
+      description: 'User or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.web.models.User
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.get_publishing_user
+- class: azure.mgmt.web.WebSiteManagementClient
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.web.WebSiteManagementClient.get_source_control
+  langs:
+  - python
+  module: azure.mgmt.web
+  name: get_source_control
+  source:
+    id: get_source_control
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+    remote:
+      branch: master
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 331
+  summary: 'Gets source control token.
+
+
+    Gets source control token.
+
+    '
+  syntax:
+    content: get_source_control(source_control_type, custom_headers=None, raw=False,
+      **operation_config)
+    parameters:
+    - description: 'Type of source control
+
+        '
+      id: source_control_type
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'SourceControl or ClientRawResponse if raw=true
+
+        '
+      type:
+      - azure.mgmt.web.models.SourceControl
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.web.WebSiteManagementClient.get_source_control
+- class: azure.mgmt.web.WebSiteManagementClient
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.web.WebSiteManagementClient.get_subscription_deployment_locations
+  langs:
+  - python
+  module: azure.mgmt.web
+  name: get_subscription_deployment_locations
+  source:
+    id: get_subscription_deployment_locations
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+    remote:
+      branch: master
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 536
+  summary: 'Gets list of available geo regions plus ministamps.
+
+
+    Gets list of available geo regions plus ministamps.
+
+    '
+  syntax:
+    content: get_subscription_deployment_locations(custom_headers=None, raw=False,
+      **operation_config)
+    parameters:
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'DeploymentLocations or ClientRawResponse if raw=true
+
+        '
+      type:
+      - azure.mgmt.web.models.DeploymentLocations
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.web.WebSiteManagementClient.get_subscription_deployment_locations
 - class: azure.mgmt.web.WebSiteManagementClient
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -274,12 +430,12 @@ items:
   name: list_geo_regions
   source:
     id: list_geo_regions
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 456
+    startLine: 596
   summary: 'Get a list of available geographical regions.
 
 
@@ -293,9 +449,9 @@ items:
     - defaultValue: None
       description: 'Name of SKU used to filter the regions. Possible values
 
-        include: ''Free'', ''Shared'', ''Basic'', ''Standard'', ''Premium'', ''Dynamic'',
+        include: ''Free'', ''Shared'', ''Basic'', ''Standard'', ''Premium'',
 
-        ''Isolated''
+        ''PremiumV2'', ''Dynamic'', ''Isolated''
 
         '
       id: sku
@@ -334,8 +490,11 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of GeoRegion
+
+        '
       type:
-      - azure.mgmt.web.models.GeoRegionPaged
+      - azure.mgmt.web.models.GeoRegionPaged[azure.mgmt.web.models.GeoRegion]
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.list_geo_regions
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -348,12 +507,12 @@ items:
   name: list_premier_add_on_offers
   source:
     id: list_premier_add_on_offers
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 533
+    startLine: 752
   summary: 'List all premier add-on offers.
 
 
@@ -386,10 +545,76 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of PremierAddOnOffer
+
+        '
       type:
-      - azure.mgmt.web.models.PremierAddOnOfferPaged
+      - azure.mgmt.web.models.PremierAddOnOfferPaged[azure.mgmt.web.models.PremierAddOnOffer]
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.list_premier_add_on_offers
+- class: azure.mgmt.web.WebSiteManagementClient
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.web.WebSiteManagementClient.list_site_identifiers_assigned_to_host_name
+  langs:
+  - python
+  module: azure.mgmt.web
+  name: list_site_identifiers_assigned_to_host_name
+  source:
+    id: list_site_identifiers_assigned_to_host_name
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+    remote:
+      branch: master
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 676
+  summary: 'List all apps that are assigned to a hostname.
+
+
+    List all apps that are assigned to a hostname.
+
+    '
+  syntax:
+    content: list_site_identifiers_assigned_to_host_name(name=None, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - defaultValue: None
+      description: 'Name of the object.
+
+        '
+      id: name
+      type:
+      - str
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'An iterator like instance of Identifier
+
+        '
+      type:
+      - azure.mgmt.web.models.IdentifierPaged[azure.mgmt.web.models.Identifier]
+  type: method
+  uid: azure.mgmt.web.WebSiteManagementClient.list_site_identifiers_assigned_to_host_name
 - class: azure.mgmt.web.WebSiteManagementClient
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -400,12 +625,12 @@ items:
   name: list_skus
   source:
     id: list_skus
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 600
+    startLine: 821
   summary: 'List all SKUs.
 
 
@@ -438,9 +663,12 @@ items:
         '
       id: operation_config
     return:
+      description: 'SkuInfos or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.web.models.SkuInfos
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.list_skus
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -453,12 +681,12 @@ items:
   name: list_source_controls
   source:
     id: list_source_controls
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 251
+    startLine: 266
   summary: 'Gets the source controls available for Azure websites.
 
 
@@ -491,8 +719,11 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of SourceControl
+
+        '
       type:
-      - azure.mgmt.web.models.SourceControlPaged
+      - azure.mgmt.web.models.SourceControlPaged[azure.mgmt.web.models.SourceControl]
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.list_source_controls
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -505,12 +736,12 @@ items:
   name: move
   source:
     id: move
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 659
+    startLine: 949
   summary: 'Move resources between resource groups.
 
 
@@ -538,7 +769,7 @@ items:
       description: ''
       id: resources
       type:
-      - list of str
+      - list[str]
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -562,9 +793,12 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or ClientRawResponse if raw=true
+
+        '
       type:
       - None
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.move
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -577,12 +811,12 @@ items:
   name: update_publishing_user
   source:
     id: update_publishing_user
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 190
+    startLine: 204
   summary: 'Updates publishing user.
 
 
@@ -622,9 +856,12 @@ items:
         '
       id: operation_config
     return:
+      description: 'User or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.web.models.User
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.update_publishing_user
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -637,12 +874,12 @@ items:
   name: update_source_control
   source:
     id: update_source_control
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 314
+    startLine: 393
   summary: 'Updates source control token.
 
 
@@ -688,9 +925,12 @@ items:
         '
       id: operation_config
     return:
+      description: 'SourceControl or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.web.models.SourceControl
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.update_source_control
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -703,12 +943,12 @@ items:
   name: validate
   source:
     id: validate
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 725
+    startLine: 1015
   summary: 'Validate if a resource can be created.
 
 
@@ -756,9 +996,12 @@ items:
         '
       id: operation_config
     return:
+      description: 'ValidateResponse or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.web.models.ValidateResponse
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.validate
 - class: azure.mgmt.web.WebSiteManagementClient
@@ -771,12 +1014,12 @@ items:
   name: validate_move
   source:
     id: validate_move
-    path: azure\mgmt\web\web_site_management_client.py
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
     remote:
       branch: master
-      path: azure\mgmt\web\web_site_management_client.py
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 796
+    startLine: 1085
   summary: 'Validate whether a resource can be moved.
 
 
@@ -804,7 +1047,7 @@ items:
       description: ''
       id: resources
       type:
-      - list of str
+      - list[str]
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -828,11 +1071,81 @@ items:
         '
       id: operation_config
     return:
+      description: 'None or ClientRawResponse if raw=true
+
+        '
       type:
       - None
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.web.WebSiteManagementClient.validate_move
+- class: azure.mgmt.web.WebSiteManagementClient
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.web.WebSiteManagementClient.verify_hosting_environment_vnet
+  langs:
+  - python
+  module: azure.mgmt.web
+  name: verify_hosting_environment_vnet
+  source:
+    id: verify_hosting_environment_vnet
+    path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+    remote:
+      branch: master
+      path: azure-mgmt-web\azure\mgmt\web\web_site_management_client.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 881
+  summary: 'Verifies if this VNET is compatible with an App Service Environment by
+
+    analyzing the Network Security Group rules.
+
+
+    Verifies if this VNET is compatible with an App Service Environment by
+
+    analyzing the Network Security Group rules.
+
+    '
+  syntax:
+    content: verify_hosting_environment_vnet(parameters, custom_headers=None, raw=False,
+      **operation_config)
+    parameters:
+    - description: 'VNET information
+
+        '
+      id: parameters
+      type:
+      - azure.mgmt.web.models.VnetParameters
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.
+
+        '
+      id: operation_config
+    return:
+      description: 'VnetValidationFailureDetails or ClientRawResponse if raw=true
+
+        '
+      type:
+      - azure.mgmt.web.models.VnetValidationFailureDetails
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.web.WebSiteManagementClient.verify_hosting_environment_vnet
 references:
 - fullName: azure.mgmt.web.WebSiteManagementClient.check_name_availability
   isExternal: false
@@ -844,6 +1157,16 @@ references:
   name: get_publishing_user
   parent: azure.mgmt.web.WebSiteManagementClient
   uid: azure.mgmt.web.WebSiteManagementClient.get_publishing_user
+- fullName: azure.mgmt.web.WebSiteManagementClient.get_source_control
+  isExternal: false
+  name: get_source_control
+  parent: azure.mgmt.web.WebSiteManagementClient
+  uid: azure.mgmt.web.WebSiteManagementClient.get_source_control
+- fullName: azure.mgmt.web.WebSiteManagementClient.get_subscription_deployment_locations
+  isExternal: false
+  name: get_subscription_deployment_locations
+  parent: azure.mgmt.web.WebSiteManagementClient
+  uid: azure.mgmt.web.WebSiteManagementClient.get_subscription_deployment_locations
 - fullName: azure.mgmt.web.WebSiteManagementClient.list_geo_regions
   isExternal: false
   name: list_geo_regions
@@ -854,6 +1177,11 @@ references:
   name: list_premier_add_on_offers
   parent: azure.mgmt.web.WebSiteManagementClient
   uid: azure.mgmt.web.WebSiteManagementClient.list_premier_add_on_offers
+- fullName: azure.mgmt.web.WebSiteManagementClient.list_site_identifiers_assigned_to_host_name
+  isExternal: false
+  name: list_site_identifiers_assigned_to_host_name
+  parent: azure.mgmt.web.WebSiteManagementClient
+  uid: azure.mgmt.web.WebSiteManagementClient.list_site_identifiers_assigned_to_host_name
 - fullName: azure.mgmt.web.WebSiteManagementClient.list_skus
   isExternal: false
   name: list_skus
@@ -889,3 +1217,78 @@ references:
   name: validate_move
   parent: azure.mgmt.web.WebSiteManagementClient
   uid: azure.mgmt.web.WebSiteManagementClient.validate_move
+- fullName: azure.mgmt.web.WebSiteManagementClient.verify_hosting_environment_vnet
+  isExternal: false
+  name: verify_hosting_environment_vnet
+  parent: azure.mgmt.web.WebSiteManagementClient
+  uid: azure.mgmt.web.WebSiteManagementClient.verify_hosting_environment_vnet
+- fullName: azure.mgmt.web.models.GeoRegionPaged[azure.mgmt.web.models.GeoRegion]
+  name: GeoRegionPaged[GeoRegion]
+  spec.python:
+  - fullName: azure.mgmt.web.models.GeoRegionPaged
+    name: GeoRegionPaged
+    uid: azure.mgmt.web.models.GeoRegionPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.web.models.GeoRegion
+    name: GeoRegion
+    uid: azure.mgmt.web.models.GeoRegion
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.web.models.GeoRegionPaged[azure.mgmt.web.models.GeoRegion]
+- fullName: azure.mgmt.web.models.PremierAddOnOfferPaged[azure.mgmt.web.models.PremierAddOnOffer]
+  name: PremierAddOnOfferPaged[PremierAddOnOffer]
+  spec.python:
+  - fullName: azure.mgmt.web.models.PremierAddOnOfferPaged
+    name: PremierAddOnOfferPaged
+    uid: azure.mgmt.web.models.PremierAddOnOfferPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.web.models.PremierAddOnOffer
+    name: PremierAddOnOffer
+    uid: azure.mgmt.web.models.PremierAddOnOffer
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.web.models.PremierAddOnOfferPaged[azure.mgmt.web.models.PremierAddOnOffer]
+- fullName: azure.mgmt.web.models.IdentifierPaged[azure.mgmt.web.models.Identifier]
+  name: IdentifierPaged[Identifier]
+  spec.python:
+  - fullName: azure.mgmt.web.models.IdentifierPaged
+    name: IdentifierPaged
+    uid: azure.mgmt.web.models.IdentifierPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.web.models.Identifier
+    name: Identifier
+    uid: azure.mgmt.web.models.Identifier
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.web.models.IdentifierPaged[azure.mgmt.web.models.Identifier]
+- fullName: azure.mgmt.web.models.SourceControlPaged[azure.mgmt.web.models.SourceControl]
+  name: SourceControlPaged[SourceControl]
+  spec.python:
+  - fullName: azure.mgmt.web.models.SourceControlPaged
+    name: SourceControlPaged
+    uid: azure.mgmt.web.models.SourceControlPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.web.models.SourceControl
+    name: SourceControl
+    uid: azure.mgmt.web.models.SourceControl
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.web.models.SourceControlPaged[azure.mgmt.web.models.SourceControl]
+- fullName: list[str]
+  name: list[str]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: list[str]

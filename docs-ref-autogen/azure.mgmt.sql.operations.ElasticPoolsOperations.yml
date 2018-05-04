@@ -5,11 +5,11 @@ items:
   - azure.mgmt.sql.operations.ElasticPoolsOperations.create_or_update
   - azure.mgmt.sql.operations.ElasticPoolsOperations.delete
   - azure.mgmt.sql.operations.ElasticPoolsOperations.get
-  - azure.mgmt.sql.operations.ElasticPoolsOperations.get_database
-  - azure.mgmt.sql.operations.ElasticPoolsOperations.list_activity
   - azure.mgmt.sql.operations.ElasticPoolsOperations.list_by_server
-  - azure.mgmt.sql.operations.ElasticPoolsOperations.list_database_activity
-  - azure.mgmt.sql.operations.ElasticPoolsOperations.list_databases
+  - azure.mgmt.sql.operations.ElasticPoolsOperations.list_metric_definitions
+  - azure.mgmt.sql.operations.ElasticPoolsOperations.list_metrics
+  - azure.mgmt.sql.operations.ElasticPoolsOperations.update
+  - azure.mgmt.sql.operations.ElasticPoolsOperations.models
   class: azure.mgmt.sql.operations.ElasticPoolsOperations
   fullName: azure.mgmt.sql.operations.ElasticPoolsOperations
   inheritance:
@@ -20,12 +20,12 @@ items:
   name: ElasticPoolsOperations
   source:
     id: ElasticPoolsOperations
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 20
+    startLine: 21
   summary: 'ElasticPoolsOperations operations.
 
 
@@ -52,15 +52,10 @@ items:
 
         '
       id: serializer
-    - description: 'An objec model deserializer.
+    - description: 'An object model deserializer.
 
         '
       id: deserializer
-    variables:
-    - description: 'The API version to use for the request. Constant value: "2014-04-01".
-
-        '
-      id: api_version
   type: class
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations
 - class: azure.mgmt.sql.operations.ElasticPoolsOperations
@@ -73,18 +68,18 @@ items:
   name: create_or_update
   source:
     id: create_or_update
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 39
-  summary: 'Creates a new elastic pool or updates an existing elastic pool.
+    startLine: 403
+  summary: 'Creates or updates an elastic pool.
 
     '
   syntax:
     content: create_or_update(resource_group_name, server_name, elastic_pool_name,
-      parameters, custom_headers=None, raw=False, **operation_config)
+      parameters, custom_headers=None, raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -102,17 +97,13 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the elastic pool to be operated
-
-        on (updated or created).
+    - description: 'The name of the elastic pool.
 
         '
       id: elastic_pool_name
       type:
       - str
-    - description: 'The required parameters for creating or updating an
-
-        elastic pool.
+    - description: 'The elastic pool parameters.
 
         '
       id: parameters
@@ -126,18 +117,30 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns ElasticPool or
+
+        ClientRawResponse<ElasticPool> if raw==True
+
+        '
       type:
-      - msrestazure.azure_operation.AzureOperationPollerinstance that returns azure.mgmt.sql.models.ElasticPool
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ElasticPool]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ElasticPool]]
   type: method
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations.create_or_update
 - class: azure.mgmt.sql.operations.ElasticPoolsOperations
@@ -150,18 +153,18 @@ items:
   name: delete
   source:
     id: delete
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 140
-  summary: 'Deletes the elastic pool.
+    startLine: 500
+  summary: 'Deletes an elastic pool.
 
     '
   syntax:
     content: delete(resource_group_name, server_name, elastic_pool_name, custom_headers=None,
-      raw=False, **operation_config)
+      raw=False, polling=True, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -179,7 +182,7 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the elastic pool to be deleted.
+    - description: 'The name of the elastic pool.
 
         '
       id: elastic_pool_name
@@ -193,24 +196,30 @@ items:
       type:
       - dict
     - defaultValue: 'False'
-      description: 'returns the direct response alongside the
+      description: 'The poller return type is ClientRawResponse, the
 
-        deserialized response
+        direct response alongside the deserialized response
 
         '
       id: raw
       type:
       - bool
-    - description: '*Operation configuration
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
 
-        overrides*.
+        polling object for personal polling strategy
 
         '
-      id: operation_config
+      id: polling
     return:
+      description: 'An instance of LROPoller that returns None or
+
+        ClientRawResponse<None> if raw==True
+
+        '
       type:
-      - None
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrestazure.azure_operation.AzureOperationPoller[None]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
   type: method
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations.delete
 - class: azure.mgmt.sql.operations.ElasticPoolsOperations
@@ -223,12 +232,12 @@ items:
   name: get
   source:
     id: get
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 199
+    startLine: 279
   summary: 'Gets an elastic pool.
 
     '
@@ -252,9 +261,7 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the elastic pool to be
-
-        retrieved.
+    - description: 'The name of the elastic pool.
 
         '
       id: elastic_pool_name
@@ -283,166 +290,14 @@ items:
         '
       id: operation_config
     return:
+      description: 'ElasticPool or ClientRawResponse if raw=true
+
+        '
       type:
       - azure.mgmt.sql.models.ElasticPool
-      - msrest.pipeline.ClientRawResponseif raw=true
+      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations.get
-- class: azure.mgmt.sql.operations.ElasticPoolsOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.get_database
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: get_database
-  source:
-    id: get_database
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 486
-  summary: 'Gets a database inside of an elastic pool.
-
-    '
-  syntax:
-    content: get_database(resource_group_name, server_name, elastic_pool_name, database_name,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the elastic pool to be
-
-        retrieved.
-
-        '
-      id: elastic_pool_name
-      type:
-      - str
-    - description: 'The name of the database to be retrieved.
-
-        '
-      id: database_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.Database
-      - msrest.pipeline.ClientRawResponseif raw=true
-  type: method
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.get_database
-- class: azure.mgmt.sql.operations.ElasticPoolsOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_activity
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: list_activity
-  source:
-    id: list_activity
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
-    remote:
-      branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
-      repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 337
-  summary: 'Returns elastic pool activities.
-
-    '
-  syntax:
-    content: list_activity(resource_group_name, server_name, elastic_pool_name, custom_headers=None,
-      raw=False, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.
-
-        '
-      id: resource_group_name
-      type:
-      - str
-    - description: 'The name of the server.
-
-        '
-      id: server_name
-      type:
-      - str
-    - description: 'The name of the elastic pool for which to
-
-        get the current activity.
-
-        '
-      id: elastic_pool_name
-      type:
-      - str
-    - defaultValue: None
-      description: 'headers that will be added to the request
-
-        '
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response
-
-        '
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.
-
-        '
-      id: operation_config
-    return:
-      type:
-      - azure.mgmt.sql.models.ElasticPoolActivityPaged
-  type: method
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_activity
 - class: azure.mgmt.sql.operations.ElasticPoolsOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -453,17 +308,17 @@ items:
   name: list_by_server
   source:
     id: list_by_server
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 266
-  summary: 'Returns a list of elastic pools in a server.
+    startLine: 200
+  summary: 'Gets all elastic pools in a server.
 
     '
   syntax:
-    content: list_by_server(resource_group_name, server_name, custom_headers=None,
+    content: list_by_server(resource_group_name, server_name, skip=None, custom_headers=None,
       raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group that
@@ -482,6 +337,13 @@ items:
       id: server_name
       type:
       - str
+    - defaultValue: None
+      description: 'The number of elements in the collection to skip.
+
+        '
+      id: skip
+      type:
+      - int
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -505,31 +367,34 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of ElasticPool
+
+        '
       type:
-      - azure.mgmt.sql.models.ElasticPoolPaged
+      - azure.mgmt.sql.models.ElasticPoolPaged[azure.mgmt.sql.models.ElasticPool]
   type: method
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_by_server
 - class: azure.mgmt.sql.operations.ElasticPoolsOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_database_activity
+  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metric_definitions
   langs:
   - python
   module: azure.mgmt.sql.operations
-  name: list_database_activity
+  name: list_metric_definitions
   source:
-    id: list_database_activity
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    id: list_metric_definitions
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 412
-  summary: 'Returns activity on databases inside of an elastic pool.
+    startLine: 122
+  summary: 'Returns elastic pool metric definitions.
 
     '
   syntax:
-    content: list_database_activity(resource_group_name, server_name, elastic_pool_name,
+    content: list_metric_definitions(resource_group_name, server_name, elastic_pool_name,
       custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group that
@@ -577,32 +442,35 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of MetricDefinition
+
+        '
       type:
-      - azure.mgmt.sql.models.ElasticPoolDatabaseActivityPaged
+      - azure.mgmt.sql.models.MetricDefinitionPaged[azure.mgmt.sql.models.MetricDefinition]
   type: method
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_database_activity
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metric_definitions
 - class: azure.mgmt.sql.operations.ElasticPoolsOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_databases
+  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metrics
   langs:
   - python
   module: azure.mgmt.sql.operations
-  name: list_databases
+  name: list_metrics
   source:
-    id: list_databases
-    path: azure\mgmt\sql\operations\elastic_pools_operations.py
+    id: list_metrics
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
     remote:
       branch: master
-      path: azure\mgmt\sql\operations\elastic_pools_operations.py
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 556
-  summary: 'Returns a list of databases in an elastic pool.
+    startLine: 40
+  summary: 'Returns elastic pool  metrics.
 
     '
   syntax:
-    content: list_databases(resource_group_name, server_name, elastic_pool_name, custom_headers=None,
-      raw=False, **operation_config)
+    content: list_metrics(resource_group_name, server_name, elastic_pool_name, filter,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group that
 
@@ -620,12 +488,18 @@ items:
       id: server_name
       type:
       - str
-    - description: 'The name of the elastic pool to be
-
-        retrieved.
+    - description: 'The name of the elastic pool.
 
         '
       id: elastic_pool_name
+      type:
+      - str
+    - description: 'An OData filter expression that describes a subset of
+
+        metrics to return.
+
+        '
+      id: filter
       type:
       - str
     - defaultValue: None
@@ -651,10 +525,108 @@ items:
         '
       id: operation_config
     return:
+      description: 'An iterator like instance of Metric
+
+        '
       type:
-      - azure.mgmt.sql.models.DatabasePaged
+      - azure.mgmt.sql.models.MetricPaged[azure.mgmt.sql.models.Metric]
   type: method
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_databases
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metrics
+- class: azure.mgmt.sql.operations.ElasticPoolsOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.update
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: update
+  source:
+    id: update
+    path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
+    remote:
+      branch: master
+      path: azure-mgmt-sql\azure\mgmt\sql\operations\elastic_pools_operations.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 599
+  summary: 'Updates an elastic pool.
+
+    '
+  syntax:
+    content: update(resource_group_name, server_name, elastic_pool_name, parameters,
+      custom_headers=None, raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.
+
+        '
+      id: resource_group_name
+      type:
+      - str
+    - description: 'The name of the server.
+
+        '
+      id: server_name
+      type:
+      - str
+    - description: 'The name of the elastic pool.
+
+        '
+      id: elastic_pool_name
+      type:
+      - str
+    - description: 'The elastic pool update parameters.
+
+        '
+      id: parameters
+      type:
+      - azure.mgmt.sql.models.ElasticPoolUpdate
+    - defaultValue: None
+      description: 'headers that will be added to the request
+
+        '
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response
+
+        '
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy
+
+        '
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns ElasticPool or
+
+        ClientRawResponse<ElasticPool> if raw==True
+
+        '
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ElasticPool]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ElasticPool]]
+  type: method
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.update
+- class: azure.mgmt.sql.operations.ElasticPoolsOperations
+  fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.models
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: models
+  syntax:
+    content: models = <module 'azure.mgmt.sql.models' from 'c:\\python3\\lib\\site-packages\\azure_mgmt_sql-0.9.0-py3.6.egg\\azure\\mgmt\\sql\\models\\__init__.py'>
+  type: attribute
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.models
 references:
 - fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.create_or_update
   isExternal: false
@@ -671,28 +643,140 @@ references:
   name: get
   parent: azure.mgmt.sql.operations.ElasticPoolsOperations
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations.get
-- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.get_database
-  isExternal: false
-  name: get_database
-  parent: azure.mgmt.sql.operations.ElasticPoolsOperations
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.get_database
-- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_activity
-  isExternal: false
-  name: list_activity
-  parent: azure.mgmt.sql.operations.ElasticPoolsOperations
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_activity
 - fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_by_server
   isExternal: false
   name: list_by_server
   parent: azure.mgmt.sql.operations.ElasticPoolsOperations
   uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_by_server
-- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_database_activity
+- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metric_definitions
   isExternal: false
-  name: list_database_activity
+  name: list_metric_definitions
   parent: azure.mgmt.sql.operations.ElasticPoolsOperations
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_database_activity
-- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_databases
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metric_definitions
+- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metrics
   isExternal: false
-  name: list_databases
+  name: list_metrics
   parent: azure.mgmt.sql.operations.ElasticPoolsOperations
-  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_databases
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.list_metrics
+- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.update
+  isExternal: false
+  name: update
+  parent: azure.mgmt.sql.operations.ElasticPoolsOperations
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.update
+- fullName: azure.mgmt.sql.operations.ElasticPoolsOperations.models
+  isExternal: false
+  name: models
+  parent: azure.mgmt.sql.operations.ElasticPoolsOperations
+  uid: azure.mgmt.sql.operations.ElasticPoolsOperations.models
+- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ElasticPool]
+  name: AzureOperationPoller[ElasticPool]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ElasticPool
+    name: ElasticPool
+    uid: azure.mgmt.sql.models.ElasticPool
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ElasticPool]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ElasticPool]]
+  name: AzureOperationPoller[ClientRawResponse[ElasticPool]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ElasticPool
+    name: ElasticPool
+    uid: azure.mgmt.sql.models.ElasticPool
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ElasticPool]]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[None]
+  name: AzureOperationPoller[None]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: None
+    name: None
+    uid: None
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[None]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+  name: AzureOperationPoller[ClientRawResponse[None]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: None
+    name: None
+    uid: None
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+- fullName: azure.mgmt.sql.models.ElasticPoolPaged[azure.mgmt.sql.models.ElasticPool]
+  name: ElasticPoolPaged[ElasticPool]
+  spec.python:
+  - fullName: azure.mgmt.sql.models.ElasticPoolPaged
+    name: ElasticPoolPaged
+    uid: azure.mgmt.sql.models.ElasticPoolPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ElasticPool
+    name: ElasticPool
+    uid: azure.mgmt.sql.models.ElasticPool
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.sql.models.ElasticPoolPaged[azure.mgmt.sql.models.ElasticPool]
+- fullName: azure.mgmt.sql.models.MetricDefinitionPaged[azure.mgmt.sql.models.MetricDefinition]
+  name: MetricDefinitionPaged[MetricDefinition]
+  spec.python:
+  - fullName: azure.mgmt.sql.models.MetricDefinitionPaged
+    name: MetricDefinitionPaged
+    uid: azure.mgmt.sql.models.MetricDefinitionPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.MetricDefinition
+    name: MetricDefinition
+    uid: azure.mgmt.sql.models.MetricDefinition
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.sql.models.MetricDefinitionPaged[azure.mgmt.sql.models.MetricDefinition]
+- fullName: azure.mgmt.sql.models.MetricPaged[azure.mgmt.sql.models.Metric]
+  name: MetricPaged[Metric]
+  spec.python:
+  - fullName: azure.mgmt.sql.models.MetricPaged
+    name: MetricPaged
+    uid: azure.mgmt.sql.models.MetricPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.Metric
+    name: Metric
+    uid: azure.mgmt.sql.models.Metric
+  - fullName: ']'
+    name: ']'
+  uid: azure.mgmt.sql.models.MetricPaged[azure.mgmt.sql.models.Metric]

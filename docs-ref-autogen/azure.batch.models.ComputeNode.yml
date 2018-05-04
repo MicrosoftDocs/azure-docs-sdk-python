@@ -14,10 +14,10 @@ items:
   name: ComputeNode
   source:
     id: ComputeNode
-    path: azure\batch\models\compute_node.py
+    path: azure-batch\azure\batch\models\compute_node.py
     remote:
       branch: master
-      path: azure\batch\models\compute_node.py
+      path: azure-batch\azure\batch\models\compute_node.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 15
   summary: 'A compute node in the Batch service.
@@ -28,7 +28,7 @@ items:
       last_boot_time=None, allocation_time=None, ip_address=None, affinity_id=None,
       vm_size=None, total_tasks_run=None, running_tasks_count=None, total_tasks_succeeded=None,
       recent_tasks=None, start_task=None, start_task_info=None, certificate_references=None,
-      errors=None, is_dedicated=None)
+      errors=None, is_dedicated=None, endpoint_configuration=None)
     parameters:
     - description: 'The ID of the compute node. Every node that is added to a pool
 
@@ -48,13 +48,17 @@ items:
       id: url
       type:
       - str
-    - description: 'The current state of the compute node. Possible values
+    - description: 'The current state of the compute node. The low-priority node
 
-        include: ''idle'', ''rebooting'', ''reimaging'', ''running'', ''unusable'',
+        has been preempted. Tasks which were running on the node when it was
 
-        ''creating'', ''starting'', ''waitingForStartTask'', ''startTaskFailed'',
+        pre-empted will be rescheduled when another node becomes available.
 
-        ''unknown'', ''leavingPool'', ''offline'', ''preempted''
+        Possible values include: ''idle'', ''rebooting'', ''reimaging'', ''running'',
+
+        ''unusable'', ''creating'', ''starting'', ''waitingForStartTask'',
+
+        ''startTaskFailed'', ''unknown'', ''leavingPool'', ''offline'', ''preempted''
 
         '
       id: state
@@ -63,13 +67,7 @@ items:
       - azure.batch.models.ComputeNodeState
     - description: 'Whether the compute node is available for task
 
-        scheduling. enabled - Tasks can be scheduled on the node. disabled - No
-
-        new tasks will be scheduled on the node. Tasks already running on the node
-
-        may still run to completion. All nodes start with scheduling enabled.
-
-        Possible values include: ''enabled'', ''disabled''
+        scheduling. Possible values include: ''enabled'', ''disabled''
 
         '
       id: scheduling_state
@@ -116,7 +114,11 @@ items:
       - str
     - description: 'An identifier which can be passed when adding a task
 
-        to request that the task be scheduled close to this compute node.
+        to request that the task be scheduled on this node. Note that this is just
+
+        a soft affinity. If the target node is busy or unavailable at the time the
+
+        task is scheduled, then the task will be scheduled elsewhere.
 
         '
       id: affinity_id
@@ -130,7 +132,7 @@ items:
 
         for Cloud Services
 
-        ([http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/](http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/)).
+        ([https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/](https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/)).
 
         Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and
 
@@ -156,9 +158,9 @@ items:
       - str
     - description: 'The total number of job tasks completed on the
 
-        compute node. This includes Job Preparation, Job Release and Job Manager
+        compute node. This includes Job Manager tasks and normal tasks, but not
 
-        tasks, but not the pool start task.
+        Job Preparation, Job Release or Start tasks.
 
         '
       id: total_tasks_run
@@ -166,9 +168,9 @@ items:
       - int
     - description: 'The total number of currently running job
 
-        tasks on the compute node. This includes Job Preparation, Job Release, and
+        tasks on the compute node. This includes Job Manager tasks and normal
 
-        Job Manager tasks, but not the pool start task.
+        tasks, but not Job Preparation, Job Release or Start tasks.
 
         '
       id: running_tasks_count
@@ -178,22 +180,24 @@ items:
 
         completed successfully (with exitCode 0) on the compute node. This
 
-        includes Job Preparation, Job Release, and Job Manager tasks, but not the
+        includes Job Manager tasks and normal tasks, but not Job Preparation, Job
 
-        pool start task.
+        Release or Start tasks.
 
         '
       id: total_tasks_succeeded
       type:
       - int
-    - description: 'The list of tasks that are currently running on the
+    - description: 'A list of tasks whose state has recently changed.
 
-        compute node.
+        This property is present only if at least one task has run on this node
+
+        since it was assigned to the pool.
 
         '
       id: recent_tasks
       type:
-      - list of azure.batch.models.TaskInformation
+      - list[azure.batch.models.TaskInformation]
     - description: 'The task specified to run on the compute node as it
 
         joins the pool.
@@ -231,7 +235,7 @@ items:
         '
       id: certificate_references
       type:
-      - list of azure.batch.models.CertificateReference
+      - list[azure.batch.models.CertificateReference]
     - description: 'The list of errors that are currently being encountered by
 
         the compute node.
@@ -239,7 +243,7 @@ items:
         '
       id: errors
       type:
-      - list of azure.batch.models.ComputeNodeError
+      - list[azure.batch.models.ComputeNodeError]
     - description: 'Whether this compute node is a dedicated node. If
 
         false, the node is a low-priority node.
@@ -248,6 +252,56 @@ items:
       id: is_dedicated
       type:
       - bool
+    - description: 'The endpoint configuration for the compute
+
+        node.
+
+        '
+      id: endpoint_configuration
+      type:
+      - azure.batch.models.ComputeNodeEndpointConfiguration
   type: class
   uid: azure.batch.models.ComputeNode
-references: []
+references:
+- fullName: list[azure.batch.models.TaskInformation]
+  name: list[TaskInformation]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.batch.models.TaskInformation
+    name: TaskInformation
+    uid: azure.batch.models.TaskInformation
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.batch.models.TaskInformation]
+- fullName: list[azure.batch.models.CertificateReference]
+  name: list[CertificateReference]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.batch.models.CertificateReference
+    name: CertificateReference
+    uid: azure.batch.models.CertificateReference
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.batch.models.CertificateReference]
+- fullName: list[azure.batch.models.ComputeNodeError]
+  name: list[ComputeNodeError]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.batch.models.ComputeNodeError
+    name: ComputeNodeError
+    uid: azure.batch.models.ComputeNodeError
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.batch.models.ComputeNodeError]
