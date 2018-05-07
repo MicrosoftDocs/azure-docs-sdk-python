@@ -29,7 +29,7 @@ From a developer perspective, the Managed Disks experience in Azure CLI
 is idomatic to the CLI experience in other cross-platform tools. You can
 use the [Azure Python](https://azure.microsoft.com/develop/python/)
 SDK and the [azure-mgmt-compute package 0.33.0](https://pypi.python.org/pypi/azure-mgmt-compute) to
-administer Managed Disks. You can create a compute client using this [tutorial](http://azure-sdk-for-python.readthedocs.io/en/latest/resourcemanagementcomputenetwork.html).
+administer Managed Disks. You can create a compute client using this [tutorial](https://docs.microsoft.com/python/api/overview/azure/virtualmachines?view=azure-python).
 
 
 ## Standalone Managed Disks
