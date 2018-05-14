@@ -14,6 +14,8 @@ Submodules
 
 .. toctree::
 
+   azure.mgmt.network.v2018_02_01
+   azure.mgmt.network.v2018_01_01
    azure.mgmt.network.v2017_11_01
    azure.mgmt.network.v2017_10_01
    azure.mgmt.network.v2017_09_01
