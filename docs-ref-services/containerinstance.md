@@ -42,7 +42,7 @@ Create a credentials file with the [Azure CLI](/cli/azure) (or [Cloud Shell](htt
 
    `az ad sp create-for-rbac --sdk-auth > my.azureauth`
 
-Set the `AZURE_AUTH_LOCATION` with the full path to the generated credentials file. With the credentials file created and the environment variable set, the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] can be created.
+Set the `AZURE_AUTH_LOCATION` environment variable with the full path to the generated credentials file. With the credentials file created and the environment variable set, the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] can be created.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[authenticate](~/aci-docs-sample-python/src/aci_docs_sample.py#L44-L55 "Authenticate ACI and Resource Manager clients")]
@@ -90,14 +90,14 @@ This example lists the container groups in a resource group.
 This example gets a specific container group residing in a resource group and then prints a few of its properties (including its containers) and their values.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#231-253 "Get container group")]
+[!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L231-L253 "Get container group")]
 
 ## Delete a container group
 
-This example deletes a container group from a resource group.
+This example deletes several container groups from a resource group, as well as the resource group.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[delete_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#delete_container_group "Delete container group")]
+[!code-python[delete_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L70-L75 "Delete container groups and resource group")]
 
 ## Next steps
 
