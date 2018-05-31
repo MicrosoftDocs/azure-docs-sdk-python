@@ -3,10 +3,10 @@ title: Azure Container Instances libraries for python
 description: Reference for Azure Container Instances libraries for python
 keywords: Azure, python, SDK, API, ACI, Container Instances
 author: mmacy
-ms.author: marsma
 manager: jeconnoc
 
-ms.date: 07/10/2017
+ms.date: 06/01/2018
+ms.author: marsma
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
