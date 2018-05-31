@@ -1,6 +1,6 @@
 ---
-title: Azure Container Instances libraries for python
-description: Reference for Azure Container Instances libraries for python
+title: Azure Container Instances libraries for Python
+description: Reference for Azure Container Instances libraries for Python
 keywords: Azure, python, SDK, API, ACI, Container Instances
 author: mmacy
 manager: jeconnoc
@@ -14,7 +14,7 @@ ms.devlang: python
 ms.service: container-instances
 ---
 
-# Azure Container Instances libraries for python
+# Azure Container Instances libraries for Python
 
 Use the Microsoft Azure Container Instances libraries for Python to create and manage Azure container instances. Learn more by reading the [Azure Container Instances overview](/azure/container-instances/container-instances-overview).
 
