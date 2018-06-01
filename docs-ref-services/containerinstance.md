@@ -36,28 +36,30 @@ If you'd like to see the following code examples in context, you can find them i
 
 ## Authentication
 
-The example project uses file-based authentication to authenticate the Azure Container Instances and Resource Manager clients with Azure. File-based authentication queries the `AZURE_AUTH_LOCATION` environment variable for the path to a credentials file.
+One of the easiest ways to authenticate SDK clients (like the Azure Container Instances and Resource Manager clients in the following example) is with [file-based authentication](/python/azure/python-sdk-azure-authenticate#mgmt-auth-file). File-based authentication queries the `AZURE_AUTH_LOCATION` environment variable for the path to a credentials file. To use file-based authentication:
 
-Create a credentials file with the [Azure CLI](/cli/azure) (or [Cloud Shell](https://shell.azure.com/)):
+1. Create a credentials file with the [Azure CLI](/cli/azure) or [Cloud Shell](https://shell.azure.com/):
 
-`az ad sp create-for-rbac --sdk-auth > my.azureauth`
+   `az ad sp create-for-rbac --sdk-auth > my.azureauth`
 
-Set the `AZURE_AUTH_LOCATION` environment variable to the full path of the generated credentials file. For example (in Bash):
+   If you use the [Cloud Shell](https://shell.azure.com/) to generate the credentials file, copy its contents into a local file that your Python application can access.
 
-```bash
-export AZURE_AUTH_LOCATION=/home/yourusername/my.azureauth
-```
+2. Set the `AZURE_AUTH_LOCATION` environment variable to the full path of the generated credentials file. For example (in Bash):
 
-With the credentials file created and the environment variable set, the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] can be created.
+   ```bash
+   export AZURE_AUTH_LOCATION=/home/yourusername/my.azureauth
+   ```
+
+Once you've created the credentials file and populated the `AZURE_AUTH_LOCATION` environment variable, use the `get_client_from_auth_file` method of the [client_factory][client_factory] module to initialize the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] objects.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[authenticate](~/aci-docs-sample-python/src/aci_docs_sample.py#L44-L55 "Authenticate ACI and Resource Manager clients")]
 
-For more details about authentication with the Python management libraries for Azure, see [Authenticate with the Azure Management Libraries for Python](/python/azure/python-sdk-azure-authenticate).
+For more details about the available authentication methods in the Python management libraries for Azure, see [Authenticate with the Azure Management Libraries for Python](/python/azure/python-sdk-azure-authenticate).
 
 ## Create container group - single container
 
-This example creates a container group with a single container.
+This example creates a container group with a single container
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[create_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L77-L111 "Create single-container group")]
@@ -93,7 +95,7 @@ This example creates a container group with a single task-based container. This 
 
 This example lists the container groups in a resource group and then prints a few of their properties.
 
-When you list container groups,the [instance_view][instance_view] of each returned group is `None`. To get the details of the containers within a container group, you must then [get][containergroupoperations_get] the container group, which returns the group with its `instance_view` property populated. See the next section, [Get an existing container group](#get-an-existing-container-group), for an example of iterating over a container group's containers with its `instance_view`.
+When you list container groups,the [instance_view][instance_view] of each returned group is `None`. To get the details of the containers within a container group, you must then [get][containergroupoperations_get] the container group, which returns the group with its `instance_view` property populated. See the next section, [Get an existing container group](#get-an-existing-container-group), for an example of iterating over a container group's containers in its `instance_view`.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[list_container_groups](~/aci-docs-sample-python/src/aci_docs_sample.py#L217-L229 "List container groups")]
@@ -135,7 +137,8 @@ This example deletes several container groups from a resource group, as well as 
 [samples-python]: https://azure.microsoft.com/resources/samples/?platform=python
 
 <!-- TYPES -->
-[AzureOperationPoller]: /python/api/msrestazure.azure_operation.AzureOperationPoller?
+[AzureOperationPoller]: /python/api/msrestazure.azure_operation.AzureOperationPoller
+[client_factory]: /python/api/azure.common.client_factory
 [Container]: /python/api/azure.mgmt.containerinstance.models.container
 [ContainerGroupInstanceView]: /python/api/azure.mgmt.containerinstance.models.containergrouppropertiesinstanceview
 [containergroupoperations_get]: /python/api/azure.mgmt.containerinstance.operations.containergroupsoperations#get
