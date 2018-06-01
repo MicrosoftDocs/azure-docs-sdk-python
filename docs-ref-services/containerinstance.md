@@ -5,7 +5,7 @@ keywords: Azure, python, SDK, API, ACI, container, instances
 author: mmacy
 manager: jeconnoc
 
-ms.date: 06/01/2018
+ms.date: 06/04/2018
 ms.author: marsma
 ms.topic: article
 ms.prod: azure
@@ -53,7 +53,7 @@ One of the easiest ways to authenticate SDK clients (like the Azure Container In
 Once you've created the credentials file and populated the `AZURE_AUTH_LOCATION` environment variable, use the `get_client_from_auth_file` method of the [client_factory][client_factory] module to initialize the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] objects.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[authenticate](~/aci-docs-sample-python/src/aci_docs_sample.py#L44-L55 "Authenticate ACI and Resource Manager clients")]
+[!code-python[authenticate](~/aci-docs-sample-python/src/aci_docs_sample.py#L45-L58 "Authenticate ACI and Resource Manager clients")]
 
 For more details about the available authentication methods in the Python management libraries for Azure, see [Authenticate with the Azure Management Libraries for Python](/python/azure/python-sdk-azure-authenticate).
 
@@ -62,14 +62,14 @@ For more details about the available authentication methods in the Python manage
 This example creates a container group with a single container
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[create_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L77-L111 "Create single-container group")]
+[!code-python[create_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L94-L140 "Create single-container group")]
 
 ## Create container group - multiple containers
 
 This example creates a container group with two containers: an application container and a sidecar container.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[create_container_group_multi](~/aci-docs-sample-python/src/aci_docs_sample.py#L113-L153 "Create multi-container group")]
+[!code-python[create_container_group_multi](~/aci-docs-sample-python/src/aci_docs_sample.py#L143-L196 "Create multi-container group")]
 
 ## Create task-based container group
 
@@ -89,7 +89,7 @@ This example creates a container group with a single task-based container. This 
 * Operation polling with [AzureOperationPoller][AzureOperationPoller] - After the create method is invoked, the operation is polled to determine when it has completed and the container group's logs can be obtained.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[create_container_group_task](~/aci-docs-sample-python/src/aci_docs_sample.py#L155-L215 "Run a task-based container")]
+[!code-python[create_container_group_task](~/aci-docs-sample-python/src/aci_docs_sample.py#L199-L275 "Run a task-based container")]
 
 ## List container groups
 
@@ -98,7 +98,7 @@ This example lists the container groups in a resource group and then prints a fe
 When you list container groups,the [instance_view][instance_view] of each returned group is `None`. To get the details of the containers within a container group, you must then [get][containergroupoperations_get] the container group, which returns the group with its `instance_view` property populated. See the next section, [Get an existing container group](#get-an-existing-container-group), for an example of iterating over a container group's containers in its `instance_view`.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[list_container_groups](~/aci-docs-sample-python/src/aci_docs_sample.py#L217-L229 "List container groups")]
+[!code-python[list_container_groups](~/aci-docs-sample-python/src/aci_docs_sample.py#L278-L292 "List container groups")]
 
 ## Get an existing container group
 
@@ -107,14 +107,14 @@ This example gets a specific container group from a resource group, and then pri
 The [get operation][containergroupoperations_get] returns a container group with its [instance_view][instance_view] populated, which allows you to iterate over each container in the group. Only the `get` operation populates the `instance_vew` property of the container group--listing the container groups in a subscription or resource group doesn't populate the instance view due to the potentially expensive nature of the operation (for example, when listing hundreds of container groups, each potentially containing multiple containers). As mentioned previously in the [List container groups](#list-container-groups) section, after a `list`, you must subsequently `get` a specific container group to obtain its container instance details.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L231-L253 "Get container group")]
+[!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L295-L324 "Get container group")]
 
 ## Delete a container group
 
 This example deletes several container groups from a resource group, as well as the resource group.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[delete_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L70-L75 "Delete container groups and resource group")]
+[!code-python[delete_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L83-L91 "Delete container groups and resource group")]
 
 ## Next steps
 
