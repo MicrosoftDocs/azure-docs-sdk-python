@@ -40,9 +40,15 @@ The example project uses file-based authentication to authenticate the Azure Con
 
 Create a credentials file with the [Azure CLI](/cli/azure) (or [Cloud Shell](https://shell.azure.com/)):
 
-   `az ad sp create-for-rbac --sdk-auth > my.azureauth`
+`az ad sp create-for-rbac --sdk-auth > my.azureauth`
 
-Set the `AZURE_AUTH_LOCATION` environment variable with the full path to the generated credentials file. With the credentials file created and the environment variable set, the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] can be created.
+Set the `AZURE_AUTH_LOCATION` environment variable to the full path of the generated credentials file. For example (in Bash):
+
+```bash
+export AZURE_AUTH_LOCATION=/home/yourusername/my.azureauth
+```
+
+With the credentials file created and the environment variable set, the [ResourceManagementClient][ResourceManagementClient] and [ContainerInstanceManagementClient][ContainerInstanceManagementClient] can be created.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[authenticate](~/aci-docs-sample-python/src/aci_docs_sample.py#L44-L55 "Authenticate ACI and Resource Manager clients")]
@@ -65,29 +71,38 @@ This example creates a container group with two containers: an application conta
 
 ## Create task-based container group
 
-This example creates a container group with a single task-based container. The container is configured with a [restart policy](/azure/container-instances/container-instances-restart-policy) of "Never" and a [custom command line](/azure/container-instances/container-instances-restart-policy#command-line-override).
+This example creates a container group with a single task-based container. This example demonstrates several features:
 
-If you want to run a single command with several command-line arguments, for example `echo FOO BAR`, you must supply them as a string list to the `command` property of the [Container][Container]. For example:
+* [Command line override](/azure/container-instances/container-instances-restart-policy#command-line-override) - A custom command line, different from that which is specified in the container's Dockerfile `CMD` line, is specified. Command line override allows you to specify a custom command line to execute at container startup, overriding the default command line baked-in to the container. Regarding executing multiple commands at container startup, the following applies:
 
-`command = ['echo', 'FOO', 'BAR']`
+   If you want to run a **single command** with several command-line arguments, for example `echo FOO BAR`, you must supply them as a string list to the `command` property of the [Container][Container]. For example:
 
-If, however, you want to run multiple commands with (potentially) multiple arguments, you must execute a shell and pass the chained commands as an argument. For example, this executes both an `echo` and a `tail` command:
+   `command = ['echo', 'FOO', 'BAR']`
 
-`command = ['/bin/sh', '-c', 'echo FOO BAR && tail -f /dev/null']`
+   If, however, you want to run **multiple commands** with (potentially) multiple arguments, you must execute a shell and pass the chained commands as an argument. For example, this executes both an `echo` and a `tail` command:
+
+   `command = ['/bin/sh', '-c', 'echo FOO BAR && tail -f /dev/null']`
+* [Environment variables](/azure/container-instances/container-instances-environment-variables) - Two environment variables are specified for the container in the container group. Use environment variables to modify script or application behavior at runtime, or otherwise pass dynamic information to an application running in the container
+* [Restart policy](/azure/container-instances/container-instances-restart-policy) - The container is configured with a restart policy of "Never," useful for task-based containers that are executed as part of a batch job.
+* Operation polling with [AzureOperationPoller][AzureOperationPoller] - After the create method is invoked, the operation is polled to determine when it has completed.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[create_container_group_task](~/aci-docs-sample-python/src/aci_docs_sample.py#L155-L215 "Run a task-based container")]
 
 ## List container groups
 
-This example lists the container groups in a resource group.
+This example lists the container groups in a resource group and then prints a few of their properties.
+
+When you list container groups,the [instance_view][instance_view] of each returned group is `None`. To get the details of the containers within a container group, you must then [get][containergroupoperations_get] the container group, which returns the group with its `instance_view` property populated. See the next section, [Get an existing container group](#get-an-existing-container-group), for an example of iterating over a container group's containers with its `instance_view`.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[list_container_groups](~/aci-docs-sample-python/src/aci_docs_sample.py#L217-L229 "List container groups")]
 
 ## Get an existing container group
 
-This example gets a specific container group residing in a resource group and then prints a few of its properties (including its containers) and their values.
+This example gets a specific container group residing in a resource group, and then prints a few of its properties (including its containers) and their values.
+
+The [get operation][containergroupoperations_get] returns a container group with its [instance_view][instance_view] populated, which allows you to iterate over each container in the group. Only the `get` operation populates the `instance_vew` property of the container group--listing the container groups in a subscription or resource group doesn't populate the instance view due to the potentially expensive nature of the operation (for example, when listing hundreds of container groups, each potentially containing multiple containers). As mentioned in previously in the [List container groups](#list-container-groups) section, after a `list`, you must subsequently `get` a specific container group to obtain its container instance details.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L231-L253 "Get container group")]
@@ -107,17 +122,23 @@ This example deletes several container groups from a resource group, as well as 
 
 * More Azure Container Instances code samples:
 
-  [Azure Code Samples][samples]
+  [Azure Code Samples][samples-aci]
 
-* Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
+* Explore more [sample Python code][samples-python] you can use in your apps.
 
 > [!div class="nextstepaction"]
 > [Explore the management APIs](/python/api/overview/azure/containerinstance/management)
 
-[samples]: https://azure.microsoft.com/resources/samples/?sort=0&term=ACI
+<!-- LINKS - External -->
 [aci-docs-sample-python]: https://github.com/Azure-Samples/aci-docs-sample-python
+[samples-aci]: https://azure.microsoft.com/resources/samples/?sort=0&term=ACI
+[samples-python]: https://azure.microsoft.com/resources/samples/?platform=python
 
 <!-- TYPES -->
-[ResourceManagementClient]: /python/api/azure.mgmt.resource.resources.resourcemanagementclient
-[ContainerInstanceManagementClient]: /python/api/azure.mgmt.containerinstance.containerinstancemanagementclient
+[AzureOperationPoller]: /python/api/msrestazure.azure_operation.AzureOperationPoller?
 [Container]: /python/api/azure.mgmt.containerinstance.models.container
+[ContainerGroupInstanceView]: /python/api/azure.mgmt.containerinstance.models.containergrouppropertiesinstanceview
+[containergroupoperations_get]: /python/api/azure.mgmt.containerinstance.operations.containergroupsoperations#get
+[ContainerInstanceManagementClient]: /python/api/azure.mgmt.containerinstance.containerinstancemanagementclient
+[instance_view]: /python/api/azure.mgmt.containerinstance.models.containergroup#variables
+[ResourceManagementClient]: /python/api/azure.mgmt.resource.resources.resourcemanagementclient
