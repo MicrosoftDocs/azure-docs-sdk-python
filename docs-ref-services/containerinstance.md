@@ -82,9 +82,9 @@ This example creates a container group with a single task-based container. This 
    If, however, you want to run **multiple commands** with (potentially) multiple arguments, you must execute a shell and pass the chained commands as an argument. For example, this executes both an `echo` and a `tail` command:
 
    `command = ['/bin/sh', '-c', 'echo FOO BAR && tail -f /dev/null']`
-* [Environment variables](/azure/container-instances/container-instances-environment-variables) - Two environment variables are specified for the container in the container group. Use environment variables to modify script or application behavior at runtime, or otherwise pass dynamic information to an application running in the container
+* [Environment variables](/azure/container-instances/container-instances-environment-variables) - Two environment variables are specified for the container in the container group. Use environment variables to modify script or application behavior at runtime, or otherwise pass dynamic information to an application running in the container.
 * [Restart policy](/azure/container-instances/container-instances-restart-policy) - The container is configured with a restart policy of "Never," useful for task-based containers that are executed as part of a batch job.
-* Operation polling with [AzureOperationPoller][AzureOperationPoller] - After the create method is invoked, the operation is polled to determine when it has completed.
+* Operation polling with [AzureOperationPoller][AzureOperationPoller] - After the create method is invoked, the operation is polled to determine when it has completed and the container group's logs can be obtained.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[create_container_group_task](~/aci-docs-sample-python/src/aci_docs_sample.py#L155-L215 "Run a task-based container")]
@@ -100,9 +100,9 @@ When you list container groups,the [instance_view][instance_view] of each return
 
 ## Get an existing container group
 
-This example gets a specific container group residing in a resource group, and then prints a few of its properties (including its containers) and their values.
+This example gets a specific container group from a resource group, and then prints a few of its properties (including its containers) and their values.
 
-The [get operation][containergroupoperations_get] returns a container group with its [instance_view][instance_view] populated, which allows you to iterate over each container in the group. Only the `get` operation populates the `instance_vew` property of the container group--listing the container groups in a subscription or resource group doesn't populate the instance view due to the potentially expensive nature of the operation (for example, when listing hundreds of container groups, each potentially containing multiple containers). As mentioned in previously in the [List container groups](#list-container-groups) section, after a `list`, you must subsequently `get` a specific container group to obtain its container instance details.
+The [get operation][containergroupoperations_get] returns a container group with its [instance_view][instance_view] populated, which allows you to iterate over each container in the group. Only the `get` operation populates the `instance_vew` property of the container group--listing the container groups in a subscription or resource group doesn't populate the instance view due to the potentially expensive nature of the operation (for example, when listing hundreds of container groups, each potentially containing multiple containers). As mentioned previously in the [List container groups](#list-container-groups) section, after a `list`, you must subsequently `get` a specific container group to obtain its container instance details.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
 [!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L231-L253 "Get container group")]
