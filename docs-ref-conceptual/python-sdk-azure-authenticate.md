@@ -219,6 +219,6 @@ This sample shows user/password scenario. This does not support 2FA.
 
     credentials = UserPassCredentials(
         'user@domain.com',
-        'my_smart_password',
+        'my_smart_password'
     )
 ```
