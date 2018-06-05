@@ -80,7 +80,7 @@ print(secret_bundle.value)
 ```
 
 > [!div class="nextstepaction"]
-> [Explorer les API clientes](/python/api/overview/azure/keyvault/client)
+> [Explore the Client APIs](/python/api/overview/azure/keyvault/client)
 
 ### Management API
 
