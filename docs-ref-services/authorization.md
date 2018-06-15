@@ -42,7 +42,7 @@ subscription_id = '33333333-3333-3333-3333-333333333333'
 # See above for details on creating different types of AAD credentials
 credentials = UserPassCredentials(
     'user@domain.com',	# Your user
-    'my_password',		# Your password
+    'my_password' 		# Your password
 )
 
 authorization_client = AuthorizationManagementClient(
