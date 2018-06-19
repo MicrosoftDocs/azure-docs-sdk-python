@@ -19,7 +19,7 @@ items:
   - inheritance:
     - inheritance:
       - type: builtins.object
-      type: azure.storage.common.storageclient.StorageClient
+      type: azure.storage.storageclient.StorageClient
     type: azure.storage.blob.baseblobservice.BaseBlobService
   langs:
   - python
@@ -32,18 +32,18 @@ items:
       branch: master
       path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 65
+    startLine: 74
   summary: 'Block blobs let you upload large blobs efficiently. Block blobs are comprised
 
     of blocks, each of which is identified by a block ID. You create or modify a
 
     block blob by writing a set of blocks and committing them by their block IDs.
 
-    Each block can be a different size, up to a maximum of 100 MB, and a block blob
+    Each block can be a different size, up to a maximum of 4 MB, and a block blob
 
     can include up to 50,000 blocks. The maximum size of a block blob is therefore
 
-    approximately 4.75 TB (100 MB X 50,000 blocks). If you are writing a block
+    slightly more than 195 GB (4 MB X 50,000 blocks). If you are writing a block
 
     blob that is no more than 64 MB in size, you can upload it in its entirety with
 
@@ -64,7 +64,7 @@ items:
   syntax:
     content: BlockBlobService(account_name=None, account_key=None, sas_token=None,
       is_emulated=False, protocol='https', endpoint_suffix='core.windows.net', custom_domain=None,
-      request_session=None, connection_string=None, socket_timeout=None, token_credential=None)
+      request_session=None, connection_string=None, socket_timeout=None)
     variables:
     - description: 'The largest size upload supported in a single put call. This is
         used by
@@ -181,7 +181,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -211,7 +211,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -319,7 +319,7 @@ items:
       branch: master
       path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 320
+    startLine: 325
   summary: 'Creates a new blob from a file path, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.
@@ -362,7 +362,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -375,11 +375,7 @@ items:
 
         already validate. Note that this MD5 hash is not stored with the
 
-        blob. Also note that if enabled, the memory-efficient upload algorithm
-
-        will not be used, because computing the MD5 hash requires buffering
-
-        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.
+        blob.
 
         '
       id: validate_content
@@ -396,7 +392,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -504,7 +500,7 @@ items:
       branch: master
       path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 410
+    startLine: 413
   summary: 'Creates a new blob from a file/stream, or updates the content of
 
     an existing blob, with automatic chunking and progress
@@ -558,7 +554,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -571,11 +567,7 @@ items:
 
         already validate. Note that this MD5 hash is not stored with the
 
-        blob. Also note that if enabled, the memory-efficient upload algorithm
-
-        will not be used, because computing the MD5 hash requires buffering
-
-        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.
+        blob.
 
         '
       id: validate_content
@@ -592,7 +584,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -797,7 +789,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
@@ -827,7 +819,7 @@ items:
         '
       id: progress_callback
       type:
-      - func(current, total)
+      - callback function in format of func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use when the blob size
         exceeds
@@ -935,7 +927,7 @@ items:
       branch: master
       path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 271
+    startLine: 276
   summary: "Retrieves the list of blocks that have been uploaded as part of a\nblock\
     \ blob. There are two block lists maintained for a blob:\n\n\n   Committed Block\
     \ List:\n      The list of blocks that have been successfully committed to a\n\
@@ -1013,7 +1005,7 @@ items:
       branch: master
       path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 147
+    startLine: 152
   summary: 'Creates a new block to be committed as part of a blob.
 
     '
@@ -1100,7 +1092,7 @@ items:
       branch: master
       path: azure\storage\blob\blockblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 189
+    startLine: 194
   summary: 'Writes a blob by specifying the list of block IDs that make up the blob.
 
     In order to be written as part of a blob, a block must have been
@@ -1144,7 +1136,7 @@ items:
         '
       id: block_list
       type:
-      - list(azure.storage.blob.models.BlobBlock)
+      - list of azure.storage.blob.models.BlobBlock
     - defaultValue: None
       description: 'ContentSettings object used to set properties on the blob.
 
@@ -1158,7 +1150,7 @@ items:
         '
       id: metadata
       type:
-      - dict(str, str)
+      - a dict mapping str to str
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash of the block list content. The
         storage
@@ -1399,31 +1391,12 @@ references:
   name: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
-- fullName: dict(str, str)
-  name: dict(str, str)
+- fullName: callback function in format of func(current, total)
+  name: callback function in format of func(current, total)
   spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: (
-    name: (
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: )
-    name: )
-  uid: dict(str, str)
-- fullName: func(current, total)
-  name: func(current, total)
-  spec.python:
-  - fullName: func
-    name: func
-    uid: func
+  - fullName: callback function in format of func
+    name: callback function in format of func
+    uid: callback function in format of func
   - fullName: (
     name: (
   - fullName: current
@@ -1436,18 +1409,4 @@ references:
     uid: total
   - fullName: )
     name: )
-  uid: func(current, total)
-- fullName: list(azure.storage.blob.models.BlobBlock)
-  name: list(BlobBlock)
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: (
-    name: (
-  - fullName: azure.storage.blob.models.BlobBlock
-    name: BlobBlock
-    uid: azure.storage.blob.models.BlobBlock
-  - fullName: )
-    name: )
-  uid: list(azure.storage.blob.models.BlobBlock)
+  uid: callback function in format of func(current, total)
