@@ -7,7 +7,6 @@ Submodules
 .. toctree::
 
    azure.mgmt.authorization.models
-   azure.mgmt.authorization.operations
 
 Module contents
 ---------------
