@@ -3,7 +3,6 @@ api_name: []
 items:
 - children:
   - uamqp.address
-  - uamqp.authentication
   - uamqp.c_uamqp
   - uamqp.client
   - uamqp.connection
@@ -20,7 +19,7 @@ items:
   - uamqp.receive_message
   - uamqp.receive_messages
   - uamqp.send_message
-  - uamqp.async
+  - uamqp.authentication
   fullName: uamqp
   langs:
   - python
@@ -48,14 +47,15 @@ items:
       branch: master
       path: uamqp\__init__.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 158
+    startLine: 163
   summary: 'Gets the current platform information.
-
-    :returns: str
 
     '
   syntax:
     content: get_platform_info()
+    return:
+      type:
+      - str
   type: function
   uid: uamqp.get_platform_info
 - fullName: uamqp.receive_message
@@ -70,7 +70,7 @@ items:
       branch: master
       path: uamqp\__init__.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 64
+    startLine: 69
   summary: 'Receive a single message from an AMQP endpoint.
 
     '
@@ -83,16 +83,16 @@ items:
       id: source
       type:
       - str, bytes
-      - uamqp.Source
+      - uamqp.address.Source
     - defaultValue: None
       description: "The authentication credentials for the endpoint.\nThis should\
-        \ be one of the subclasses of ~uamqp.AMQPAuth. Currently\nthis includes:\n\
-        \n   ~uamqp.authentication.SASLAnonymous\n   ~uamqp.authentication.SASLPlain\n\
-        \   ~uamqp.authentication.SASTokenAuth\n\nIf no authentication is supplied,\
-        \ SASLAnnoymous will be used by default.\n"
+        \ be one of the subclasses of ~uamqp.authentication.AMQPAuth. Currently\n\
+        this includes:\n\n   * ~uamqp.authentication.SASLAnonymous \n\n   * ~uamqp.authentication.SASLPlain\
+        \ \n\n   * ~uamqp.authentication.SASTokenAuth \n\nIf no authentication is\
+        \ supplied, SASLAnnoymous will be used by default.\n"
       id: auth
       type:
-      - uamqp.AMQPAuth
+      - uamqp.authentication.common.AMQPAuth
     - defaultValue: '0'
       description: 'The timeout in seconds after which to return None if no messages
 
@@ -113,9 +113,9 @@ items:
       type:
       - bool
     return:
-      description: '~uamqp.Message or None
-
-        '
+      type:
+      - uamqp.message.Message
+      - None
   type: function
   uid: uamqp.receive_message
 - fullName: uamqp.receive_messages
@@ -130,7 +130,7 @@ items:
       branch: master
       path: uamqp\__init__.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 91
+    startLine: 96
   summary: 'Receive a batch of messages from an AMQP endpoint.
 
     '
@@ -144,16 +144,16 @@ items:
       id: source
       type:
       - str, bytes
-      - uamqp.Source
+      - uamqp.address.Source
     - defaultValue: None
       description: "The authentication credentials for the endpoint.\nThis should\
-        \ be one of the subclasses of ~uamqp.AMQPAuth. Currently\nthis includes:\n\
-        \n   ~uamqp.authentication.SASLAnonymous\n   ~uamqp.authentication.SASLPlain\n\
-        \   ~uamqp.authentication.SASTokenAuth\n\nIf no authentication is supplied,\
-        \ SASLAnnoymous will be used by default.\n"
+        \ be one of the subclasses of ~uamqp.authentication.AMQPAuth. Currently\n\
+        this includes:\n\n   * ~uamqp.authentication.SASLAnonymous \n\n   * ~uamqp.authentication.SASLPlain\
+        \ \n\n   * ~uamqp.authentication.SASTokenAuth \n\nIf no authentication is\
+        \ supplied, SASLAnnoymous will be used by default.\n"
       id: auth
       type:
-      - uamqp.AMQPAuth
+      - uamqp.authentication.common.AMQPAuth
     - defaultValue: None
       description: 'The maximum number of messages to return in a batch. If the
 
@@ -187,9 +187,8 @@ items:
       type:
       - bool
     return:
-      description: 'list[~uamqp.Message]
-
-        '
+      type:
+      - list[uamqp.message.Message]
   type: function
   uid: uamqp.receive_messages
 - fullName: uamqp.send_message
@@ -204,7 +203,7 @@ items:
       branch: master
       path: uamqp\__init__.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 38
+    startLine: 43
   summary: 'Send a single message to AMQP endpoint.
 
     '
@@ -217,23 +216,23 @@ items:
       id: target
       type:
       - str, bytes
-      - uamqp.Target
+      - uamqp.address.Target
     - description: 'The contents of the message to send.
 
         '
       id: data
       type:
       - str, bytes
-      - uamqp.Message
+      - uamqp.message.Message
     - defaultValue: None
       description: "The authentication credentials for the endpoint.\nThis should\
-        \ be one of the subclasses of ~uamqp.AMQPAuth. Currently\nthis includes:\n\
-        \n   ~uamqp.authentication.SASLAnonymous\n   ~uamqp.authentication.SASLPlain\n\
-        \   ~uamqp.authentication.SASTokenAuth\n\nIf no authentication is supplied,\
-        \ SASLAnnoymous will be used by default.\n"
+        \ be one of the subclasses of ~uamqp.authentication.AMQPAuth. Currently\n\
+        this includes:\n\n   * ~uamqp.authentication.SASLAnonymous \n\n   * ~uamqp.authentication.SASLPlain\
+        \ \n\n   * ~uamqp.authentication.SASTokenAuth \n\nIf no authentication is\
+        \ supplied, SASLAnnoymous will be used by default.\n"
       id: auth
       type:
-      - uamqp.AMQPAuth
+      - uamqp.authentication.common.AMQPAuth
     - defaultValue: 'False'
       description: 'Whether to turn on network trace logs. If *True*, trace logs
 
@@ -244,9 +243,8 @@ items:
       type:
       - bool
     return:
-      description: 'None
-
-        '
+      type:
+      - None
   type: function
   uid: uamqp.send_message
 references:
@@ -255,11 +253,6 @@ references:
   name: address
   parent: uamqp.address
   uid: uamqp.address
-- fullName: uamqp.authentication
-  isExternal: false
-  name: authentication
-  parent: uamqp.authentication
-  uid: uamqp.authentication
 - fullName: uamqp.c_uamqp
   isExternal: false
   name: c_uamqp
@@ -340,11 +333,11 @@ references:
   name: send_message
   parent: uamqp
   uid: uamqp.send_message
-- fullName: uamqp.async
+- fullName: uamqp.authentication
   isExternal: false
-  name: async
+  name: authentication
   parent: uamqp
-  uid: uamqp.async
+  uid: uamqp.authentication
 - fullName: str, bytes
   name: str, bytes
   spec.python:
@@ -357,3 +350,17 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
+- fullName: list[uamqp.message.Message]
+  name: list[Message]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.message.Message
+    name: Message
+    uid: uamqp.message.Message
+  - fullName: ']'
+    name: ']'
+  uid: list[uamqp.message.Message]

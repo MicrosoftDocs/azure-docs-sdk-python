@@ -6,6 +6,7 @@ items:
   - uamqp.client.ReceiveClient.receive_message_batch
   - uamqp.client.ReceiveClient.receive_messages
   - uamqp.client.ReceiveClient.receive_messages_iter
+  - uamqp.client.ReceiveClient.redirect
   class: uamqp.client.ReceiveClient
   fullName: uamqp.client.ReceiveClient
   inheritance:
@@ -23,8 +24,9 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 515
+    startLine: 570
   summary: 'An AMQP client for receiving messages.
+
 
 
 
@@ -33,17 +35,17 @@ items:
     '
   syntax:
     content: ReceiveClient(source, auth=None, client_name=None, debug=False, timeout=0,
-      **kwargs)
+      auto_complete=True, **kwargs)
     parameters:
     - description: 'The source AMQP service endpoint. This can either be the URI as
 
-        a string or a ~uamqp.Source object.
+        a string or a ~uamqp.address.Source object.
 
         '
       id: target
       type:
       - str, bytes
-      - uamqp.Source
+      - uamqp.address.Source
     - description: 'Authentication for the connection. If none is provided SASL Annoymous
 
         authentication will be used.
@@ -51,7 +53,7 @@ items:
         '
       id: auth
       type:
-      - uamqp.authentication.AMQPAuth
+      - uamqp.authentication.common.AMQPAuth
     - description: 'The name for the client, also known as the Container ID.
 
         If no name is provided, a random GUID will be used.
@@ -79,6 +81,22 @@ items:
       id: timeout
       type:
       - int
+    - description: 'Whether to automatically settle message received via callback
+
+        or via iterator. If the message has not been explicitly settled after processing
+
+        the message will be accepted. Alternatively, when used with batch receive,
+        this setting
+
+        will determine whether the messages are pre-emptively settled during batching,
+        or otherwise
+
+        let to the user to be explicitly settled.
+
+        '
+      id: auto_complete
+      type:
+      - bool
     - description: 'The mode by which to settle message receive
 
         operations. If set to *PeekLock*, the receiver will lock a message once received
@@ -195,7 +213,14 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 772
+    startLine: 882
+  summary: 'Close the ReceiverClient, shutting down the Link, Session and
+
+    Connection (unless an external Conneciton was supplied on opening,
+
+    which will be left open).
+
+    '
   syntax:
     content: close()
     parameters: []
@@ -214,7 +239,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 677
+    startLine: 761
   summary: 'Receive a batch of messages. Messages returned in the batch have already
     been
 
@@ -227,6 +252,17 @@ items:
     the
 
     number of messages returned per call will vary up to the maximum allowed.
+
+
+    If the receive client is configured with *auto_complete=True* then the messages
+    received
+
+    in the batch returned by this function will already be settled. Alternatively,
+    if
+
+    *auto_complete=False*, then each message will need to be explicitly settled before
+
+    it expires and is released.
 
     '
   syntax:
@@ -248,21 +284,12 @@ items:
     - defaultValue: None
       description: 'A callback to process messages as they arrive from the
 
-        service. It takes a single argument, a ~uamqp.Message object. The callback
-        can also
-
-        optionally return an altered Message instance to replace that which will be
-        returned
-
-        by this function. If the callback returns nothing, the original ~uamqp.Message
-        object
-
-        will be returned in the batch.
+        service. It takes a single argument, a ~uamqp.message.Message object.
 
         '
       id: on_message_received
       type:
-      - callable[uamqp.Message]
+      - callable[uamqp.message.Message]
     - defaultValue: '0'
       description: 'I timeout in milliseconds for which to wait to receive any messages.
 
@@ -293,10 +320,24 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 735
+    startLine: 821
   summary: 'Receive messages. This function will run indefinitely, until the client
 
     closes either via timeout, error or forced interruption (e.g. keyboard interrupt).
+
+
+    If the receive client is configured with *auto_complete=True* then the messages
+    that
+
+    have not been settled on completion of the provided callback will automatically
+    be
+
+    accepted provided it has not expired. If an error occurs or the message has expired
+
+    it will be released. Alternatively if *auto_complete=False*, each message will
+    need
+
+    to be explicitly settled during the callback, otherwise it will be released.
 
     '
   syntax:
@@ -304,12 +345,12 @@ items:
     parameters:
     - description: 'A callback to process messages as they arrive from the
 
-        service. It takes a single argument, a ~uamqp.Message object.
+        service. It takes a single argument, a ~uamqp.message.Message object.
 
         '
       id: on_message_received
       type:
-      - callable[uamqp.Message]
+      - callable[uamqp.message.Message]
   type: method
   uid: uamqp.client.ReceiveClient.receive_messages
 - class: uamqp.client.ReceiveClient
@@ -325,7 +366,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 756
+    startLine: 849
   summary: 'Receive messages by generator. Messages returned in the generator have
     already been
 
@@ -340,23 +381,50 @@ items:
     - defaultValue: None
       description: 'A callback to process messages as they arrive from the
 
-        service. It takes a single argument, a ~uamqp.Message object. The callback
-        can also
-
-        optionally return an altered Message instance to replace that which will be
-        returned
-
-        by this function. If the callback returns nothing, the original ~uamqp.Message
-        object
-
-        will be returned in the batch.
+        service. It takes a single argument, a ~uamqp.message.Message object.
 
         '
       id: on_message_received
       type:
-      - callable[uamqp.Message]
+      - callable[uamqp.message.Message]
   type: method
   uid: uamqp.client.ReceiveClient.receive_messages_iter
+- class: uamqp.client.ReceiveClient
+  fullName: uamqp.client.ReceiveClient.redirect
+  langs:
+  - python
+  module: uamqp.client
+  name: redirect
+  source:
+    id: redirect
+    path: uamqp\client.py
+    remote:
+      branch: master
+      path: uamqp\client.py
+      repo: https://github.com/Azure/azure-uamqp-python.git
+    startLine: 862
+  summary: 'Redirect the client endpoint using a Link DETACH redirect
+
+    response.
+
+    '
+  syntax:
+    content: redirect(redirect, auth)
+    parameters:
+    - description: 'The Link DETACH redirect details.
+
+        '
+      id: redirect
+      type:
+      - uamqp.errors.LinkRedirect
+    - description: 'Authentication credentials to the redirected endpoint.
+
+        '
+      id: auth
+      type:
+      - uamqp.authentication.common.AMQPAuth
+  type: method
+  uid: uamqp.client.ReceiveClient.redirect
 references:
 - fullName: uamqp.client.ReceiveClient.close
   isExternal: false
@@ -378,6 +446,11 @@ references:
   name: receive_messages_iter
   parent: uamqp.client.ReceiveClient
   uid: uamqp.client.ReceiveClient.receive_messages_iter
+- fullName: uamqp.client.ReceiveClient.redirect
+  isExternal: false
+  name: redirect
+  parent: uamqp.client.ReceiveClient
+  uid: uamqp.client.ReceiveClient.redirect
 - fullName: str, bytes
   name: str, bytes
   spec.python:
@@ -390,7 +463,7 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
-- fullName: callable[uamqp.Message]
+- fullName: callable[uamqp.message.Message]
   name: callable[Message]
   spec.python:
   - fullName: callable
@@ -398,9 +471,9 @@ references:
     uid: callable
   - fullName: '['
     name: '['
-  - fullName: uamqp.Message
+  - fullName: uamqp.message.Message
     name: Message
-    uid: uamqp.Message
+    uid: uamqp.message.Message
   - fullName: ']'
     name: ']'
-  uid: callable[uamqp.Message]
+  uid: callable[uamqp.message.Message]

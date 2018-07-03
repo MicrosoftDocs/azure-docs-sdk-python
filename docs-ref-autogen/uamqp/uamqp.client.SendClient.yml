@@ -5,6 +5,7 @@ items:
   - uamqp.client.SendClient.close
   - uamqp.client.SendClient.messages_pending
   - uamqp.client.SendClient.queue_message
+  - uamqp.client.SendClient.redirect
   - uamqp.client.SendClient.send_all_messages
   - uamqp.client.SendClient.send_message
   - uamqp.client.SendClient.wait
@@ -25,8 +26,9 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 283
+    startLine: 319
   summary: 'An AMQP client for sending messages.
+
 
 
 
@@ -41,13 +43,13 @@ items:
     parameters:
     - description: 'The target AMQP service endpoint. This can either be the URI as
 
-        a string or a ~uamqp.Target object.
+        a string or a ~uamqp.address.Target object.
 
         '
       id: target
       type:
       - str, bytes
-      - uamqp.Target
+      - uamqp.address.Target
     - description: 'Authentication for the connection. If none is provided SASL Annoymous
 
         authentication will be used.
@@ -55,7 +57,7 @@ items:
         '
       id: auth
       type:
-      - uamqp.authentication.AMQPAuth
+      - uamqp.authentication.common.AMQPAuth
     - description: 'The name for the client, also known as the Container ID.
 
         If no name is provided, a random GUID will be used.
@@ -194,7 +196,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 416
+    startLine: 470
   summary: 'Close down the client. No further messages
 
     can be sent and the client cannot be re-opened.
@@ -221,17 +223,18 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 476
+    startLine: 530
   summary: 'Check whether the client is holding any unsent
 
     messages in the queue.
-
-    :returns: bool
 
     '
   syntax:
     content: messages_pending()
     parameters: []
+    return:
+      type:
+      - bool
   type: method
   uid: uamqp.client.SendClient.messages_pending
 - class: uamqp.client.SendClient
@@ -247,7 +250,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 428
+    startLine: 482
   summary: 'Add a message to the send queue.
 
     No further action will be taken until either SendClient.wait()
@@ -264,14 +267,50 @@ items:
     parameters:
     - description: 'A message to send. This can either be a single instance
 
-        of ~uamqp.Message, or multiple messages wrapped in an instance
+        of ~uamqp.message.Message, or multiple messages wrapped in an instance
 
-        of ~uamqp.BatchMessage.
+        of ~uamqp.message.BatchMessage.
 
         '
       id: messages
   type: method
   uid: uamqp.client.SendClient.queue_message
+- class: uamqp.client.SendClient
+  fullName: uamqp.client.SendClient.redirect
+  langs:
+  - python
+  module: uamqp.client
+  name: redirect
+  source:
+    id: redirect
+    path: uamqp\client.py
+    remote:
+      branch: master
+      path: uamqp\client.py
+      repo: https://github.com/Azure/azure-uamqp-python.git
+    startLine: 454
+  summary: 'Redirect the client endpoint using a Link DETACH redirect
+
+    response.
+
+    '
+  syntax:
+    content: redirect(redirect, auth)
+    parameters:
+    - description: 'The Link DETACH redirect details.
+
+        '
+      id: redirect
+      type:
+      - uamqp.errors.LinkRedirect
+    - description: 'Authentication credentials to the redirected endpoint.
+
+        '
+      id: auth
+      type:
+      - uamqp.authentication.common.AMQPAuth
+  type: method
+  uid: uamqp.client.SendClient.redirect
 - class: uamqp.client.SendClient
   fullName: uamqp.client.SendClient.send_all_messages
   langs:
@@ -285,7 +324,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 490
+    startLine: 545
   summary: 'Send all pending messages in the queue. This will return a list
 
     of the send result of all the pending messages so it can be
@@ -308,9 +347,8 @@ items:
       type:
       - bool
     return:
-      description: 'list[~uamqp.constants.MessageState]
-
-        '
+      type:
+      - list[uamqp.constants.MessageState]
   type: method
   uid: uamqp.client.SendClient.send_all_messages
 - class: uamqp.client.SendClient
@@ -326,7 +364,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 444
+    startLine: 498
   summary: 'Send a single message or batched message.
 
     '
@@ -335,9 +373,9 @@ items:
     parameters:
     - description: 'A message to send. This can either be a single instance
 
-        of ~uamqp.Message, or multiple messages wrapped in an instance
+        of ~uamqp.message.Message, or multiple messages wrapped in an instance
 
-        of ~uamqp.BatchMessage.
+        of ~uamqp.message.BatchMessage.
 
         '
       id: messages
@@ -363,7 +401,7 @@ items:
       branch: master
       path: uamqp\client.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 483
+    startLine: 538
   summary: 'Run the client until all pending message in the queue
 
     have been processed.
@@ -390,6 +428,11 @@ references:
   name: queue_message
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.queue_message
+- fullName: uamqp.client.SendClient.redirect
+  isExternal: false
+  name: redirect
+  parent: uamqp.client.SendClient
+  uid: uamqp.client.SendClient.redirect
 - fullName: uamqp.client.SendClient.send_all_messages
   isExternal: false
   name: send_all_messages
@@ -417,3 +460,17 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
+- fullName: list[uamqp.constants.MessageState]
+  name: list[MessageState]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.constants.MessageState
+    name: MessageState
+    uid: uamqp.constants.MessageState
+  - fullName: ']'
+    name: ']'
+  uid: list[uamqp.constants.MessageState]
