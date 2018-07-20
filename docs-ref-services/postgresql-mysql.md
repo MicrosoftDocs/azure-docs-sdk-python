@@ -1,7 +1,7 @@
 ---
-title: Azure PostgreSQL/MySQL libraries for Python
+title: Azure MySQL/PostgreSQL libraries for Python
 description: 
-keywords: Azure, Python, SDK, API, SQL, database, MySQL
+keywords: Azure, Python, SDK, API, SQL, database, MySQL, PostgreSQL
 author: lisawong19
 ms.author: liwong
 manager: douge
@@ -12,7 +12,7 @@ ms.technology: azure
 ms.devlang: python
 ---
 
-# Azure PostgreSQL/MySQL libraries for Python 
+# Azure MySQL/PostgreSQL libraries for Python
 
 ## MySQL
 
@@ -100,7 +100,7 @@ firewall_rule = rule_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mysql/management)
+> [Explore the Management APIs](/python/api/overview/azure/postgresql/mysql/management)
 
 ## PostgreSQL
 Use the ODBC driver and pyodbc to connect to the database and execute SQL statements directly.
@@ -160,4 +160,4 @@ db = db_creation_poller.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/postgresql/management)
+> [Explore the Management APIs](/python/api/overview/azure/postgresql/mysql/management)
