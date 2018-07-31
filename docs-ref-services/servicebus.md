@@ -19,7 +19,7 @@ Microsoft Azure Service Bus supports a set of cloud-based, message-oriented midd
 
 ## Install the libraries
 ```bash
-pip install azure-mgmt-servicebus
+pip install azure-servicebus
 ```
 
 ## ServiceBus Queues
