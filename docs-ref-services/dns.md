@@ -65,6 +65,7 @@ zone = dns_client.zones.create_or_update(
 	'MyResourceGroup',
 	'pydns.com',
 	{
+	        'zone_type': 'Public', # or Private
 		'location': 'global'
 	}
 )
