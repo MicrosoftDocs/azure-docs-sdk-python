@@ -7,7 +7,7 @@ items:
   - uamqp.sender.MessageSender.get_state
   - uamqp.sender.MessageSender.on_state_changed
   - uamqp.sender.MessageSender.open
-  - uamqp.sender.MessageSender.send_async
+  - uamqp.sender.MessageSender.send
   class: uamqp.sender.MessageSender
   fullName: uamqp.sender.MessageSender
   inheritance:
@@ -41,7 +41,7 @@ items:
   syntax:
     content: 'MessageSender(session, source, target, name=None, send_settle_mode=<SenderSettleMode.Unsettled:
       0>, receive_settle_mode=<ReceiverSettleMode.PeekLock: 1>, max_message_size=262144,
-      link_credit=None, properties=None, on_detach_received=None, debug=False, encoding=''UTF-8'')'
+      link_credit=None, properties=None, error_policy=None, debug=False, encoding=''UTF-8'')'
     parameters:
     - description: 'The underlying Session with which to send.
 
@@ -102,16 +102,14 @@ items:
       id: properties
       type:
       - dict
-    - description: 'A callback to be run if the client receives
+    - description: 'A policy for parsing errors on link, connection and message
 
-        a link DETACH frame from the service. The callback must take 3 arguments,
-
-        the *condition*, the optional *description* and an optional info dict.
+        disposition to determine whether the error should be retryable.
 
         '
-      id: on_detach_received
+      id: error_policy
       type:
-      - Callable[bytes, bytes, dict]
+      - uamqp.errors.ErrorPolicy
     - description: 'Whether to turn on network trace logs. If *True*, trace logs
 
         will be logged at INFO level. Default is *False*.
@@ -162,7 +160,7 @@ items:
       branch: master
       path: uamqp\sender.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 145
+    startLine: 183
   summary: 'Close the sender, leaving the link intact.
 
     '
@@ -184,7 +182,7 @@ items:
       branch: master
       path: uamqp\sender.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 126
+    startLine: 164
   summary: 'Close both the Sender and the Link. Clean up any C objects.
 
     '
@@ -206,7 +204,7 @@ items:
       branch: master
       path: uamqp\sender.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 115
+    startLine: 153
   summary: 'Get the state of the MessageSender and its underlying Link.
 
     '
@@ -228,7 +226,7 @@ items:
       branch: master
       path: uamqp\sender.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 196
+    startLine: 217
   summary: 'Callback called whenever the underlying Sender undergoes a change
 
     of state. This function can be overridden.
@@ -262,7 +260,7 @@ items:
       branch: master
       path: uamqp\sender.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 131
+    startLine: 169
   summary: 'Open the MessageSender in order to start processing messages.
 
     '
@@ -272,33 +270,41 @@ items:
   type: method
   uid: uamqp.sender.MessageSender.open
 - class: uamqp.sender.MessageSender
-  fullName: uamqp.sender.MessageSender.send_async
+  fullName: uamqp.sender.MessageSender.send
   langs:
   - python
   module: uamqp.sender
-  name: send_async
+  name: send
   source:
-    id: send_async
+    id: send
     path: uamqp\sender.py
     remote:
       branch: master
       path: uamqp\sender.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 149
+    startLine: 187
   summary: "Add a single message to the internal pending queue to be processed\nby\
     \ the Connection without waiting for it to be sent.\n:param message: The message\
-    \ to send.\n:type message: ~uamqp.message.Message\n:param timeout: An expiry time\
-    \ for the message added to the queue. If the\n\n\n   message is not sent within\
-    \ this timeout it will be discarded with an error\n   state. If set to 0, the\
-    \ message will not expire. The default is 0.\n"
+    \ to send.\n:type message: ~uamqp.message.Message\n:param callback: The callback\
+    \ to be run once a disposition is received\n\n\n   in receipt of the message.\
+    \ The callback must take three arguments, the message,\n   the send result and\
+    \ the optional delivery condition (exception).\n\n"
   syntax:
-    content: send_async(message, timeout=0)
+    content: send(message, callback, timeout=0)
     parameters:
-    - id: message
+    - description: 'An expiry time for the message added to the queue. If the
+
+        message is not sent within this timeout it will be discarded with an error
+
+        state. If set to 0, the message will not expire. The default is 0.
+
+        '
+      id: timeout
+    - id: callback
     - defaultValue: '0'
       id: timeout
   type: method
-  uid: uamqp.sender.MessageSender.send_async
+  uid: uamqp.sender.MessageSender.send
 references:
 - fullName: uamqp.sender.MessageSender.close
   isExternal: false
@@ -325,32 +331,8 @@ references:
   name: open
   parent: uamqp.sender.MessageSender
   uid: uamqp.sender.MessageSender.open
-- fullName: uamqp.sender.MessageSender.send_async
+- fullName: uamqp.sender.MessageSender.send
   isExternal: false
-  name: send_async
+  name: send
   parent: uamqp.sender.MessageSender
-  uid: uamqp.sender.MessageSender.send_async
-- fullName: Callable[bytes, bytes, dict]
-  name: Callable[bytes, bytes, dict]
-  spec.python:
-  - fullName: Callable
-    name: Callable
-    uid: Callable
-  - fullName: '['
-    name: '['
-  - fullName: bytes
-    name: bytes
-    uid: bytes
-  - fullName: ', '
-    name: ', '
-  - fullName: bytes
-    name: bytes
-    uid: bytes
-  - fullName: ', '
-    name: ', '
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: ']'
-    name: ']'
-  uid: Callable[bytes, bytes, dict]
+  uid: uamqp.sender.MessageSender.send

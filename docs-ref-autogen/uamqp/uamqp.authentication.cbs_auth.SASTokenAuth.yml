@@ -33,7 +33,8 @@ items:
   syntax:
     content: SASTokenAuth(audience, uri, token, expires_in=None, expires_at=None,
       username=None, password=None, port=5671, timeout=10, retry_policy=<uamqp.authentication.cbs_auth.TokenRetryPolicy
-      object>, verify=None, token_type=b'servicebus.windows.net:sastoken', encoding='UTF-8')
+      object>, verify=None, token_type=b'servicebus.windows.net:sastoken', http_proxy=None,
+      encoding='UTF-8')
     parameters:
     - description: 'The token audience field. For SAS tokens
 
@@ -127,6 +128,17 @@ items:
       id: token_type
       type:
       - bytes
+    - description: 'HTTP proxy configuration. This should be a dictionary with
+
+        the following keys present: ''proxy_hostname'' and ''proxy_port''. Additional
+        optional
+
+        keys are ''username'' and ''password''.
+
+        '
+      id: http_proxy
+      type:
+      - dict
     - description: 'The encoding to use if hostname is provided as a str.
 
         Default is ''UTF-8''.
@@ -150,7 +162,7 @@ items:
       branch: master
       path: uamqp\authentication\cbs_auth.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 254
+    startLine: 259
   summary: "Attempt to create a CBS token session using a Shared Access Key such\n\
     as is used to connect to Azure services.\n\n\na decoded string.\n:type uri: str\n\
     :param key_name: The SAS token username, also referred to as the key\nname or\
@@ -161,18 +173,19 @@ items:
     :param timeout: The timeout in seconds in which to negotiate the token.\n\n\n\
     \   The default value is 10 seconds.\n\n\n\nretry policy has 3 retries.\n:type\
     \ retry_policy: ~uamqp.authentication.cbs_auth.TokenRetryPolicy\n:param verify:\
-    \ The path to a user-defined certificate.\n:type verify: str\n:param encoding:\
-    \ The encoding to use if hostname is provided as a str.\nDefault is 'UTF-8'.\n\
-    :type encoding: str\n"
+    \ The path to a user-defined certificate.\n:type verify: str\n:param http_proxy:\
+    \ HTTP proxy configuration. This should be a dictionary with\n\n\n   the following\
+    \ keys present: 'proxy_hostname' and 'proxy_port'. Additional optional\n   keys\
+    \ are 'username' and 'password'.\n\n\n\nDefault is 'UTF-8'.\n:type encoding: str\n"
   syntax:
     content: from_shared_access_key(uri, key_name, shared_access_key, expiry=None,
       port=5671, timeout=10, retry_policy=<uamqp.authentication.cbs_auth.TokenRetryPolicy
-      object>, verify=None, encoding='UTF-8')
+      object>, verify=None, http_proxy=None, encoding='UTF-8')
     parameters:
-    - description: 'The retry policy for the PUT token request. The default
+    - description: 'The encoding to use if hostname is provided as a str.
 
         '
-      id: retry_policy
+      id: encoding
     - id: uri
     - id: key_name
     - id: shared_access_key
@@ -185,6 +198,8 @@ items:
     - id: retry_policy
     - defaultValue: None
       id: verify
+    - defaultValue: None
+      id: http_proxy
     - defaultValue: UTF-8
       id: encoding
   type: method
@@ -202,7 +217,7 @@ items:
       branch: master
       path: uamqp\authentication\cbs_auth.py
       repo: https://github.com/Azure/azure-uamqp-python.git
-    startLine: 239
+    startLine: 244
   summary: 'If a username and password are present - attempt to use them to
 
     request a fresh SAS token.
