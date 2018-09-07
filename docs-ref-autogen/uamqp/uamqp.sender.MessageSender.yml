@@ -16,14 +16,6 @@ items:
   - python
   module: uamqp.sender
   name: MessageSender
-  source:
-    id: MessageSender
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 19
   summary: 'A Message Sender that opens its own exclsuive Link on an
 
     existing Session.
@@ -74,7 +66,7 @@ items:
 
         operations. If set to *Unsettled*, the client will wait for a confirmation
 
-        from the service that the message was successfully send. If set to ''Settled'',
+        from the service that the message was successfully sent. If set to ''Settled'',
 
         the client will not wait for confirmation and assume success.
 
@@ -82,6 +74,23 @@ items:
       id: send_settle_mode
       type:
       - uamqp.constants.SenderSettleMode
+    - description: 'The mode by which to settle message receive
+
+        operations. If set to *PeekLock*, the receiver will lock a message once received
+        until
+
+        the client accepts or rejects the message. If set to *ReceiveAndDelete*, the
+        service
+
+        will assume successful receipt of the message and clear it from the queue.
+        The
+
+        default is *PeekLock*.
+
+        '
+      id: receive_settle_mode
+      type:
+      - uamqp.constants.ReceiverSettleMode
     - description: 'The maximum allowed message size negotiated for the Link.
 
         '
@@ -96,7 +105,7 @@ items:
       id: link_credit
       type:
       - int
-    - description: 'Data to be sent in the Link ATTACH frame.
+    - description: 'Metadata to be sent in the Link ATTACH frame.
 
         '
       id: properties
@@ -139,6 +148,23 @@ items:
       id: send_settle_mode
       type:
       - uamqp.constants.SenderSettleMode
+    - description: 'The mode by which to settle message receive
+
+        operations. If set to *PeekLock*, the receiver will lock a message once received
+        until
+
+        the client accepts or rejects the message. If set to *ReceiveAndDelete*, the
+        service
+
+        will assume successful receipt of the message and clear it from the queue.
+        The
+
+        default is *PeekLock*.
+
+        '
+      id: receive_settle_mode
+      type:
+      - uamqp.constants.ReceiverSettleMode
     - description: 'The maximum allowed message size negotiated for the Link.
 
         '
@@ -153,14 +179,6 @@ items:
   - python
   module: uamqp.sender
   name: close
-  source:
-    id: close
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 183
   summary: 'Close the sender, leaving the link intact.
 
     '
@@ -175,14 +193,6 @@ items:
   - python
   module: uamqp.sender
   name: destroy
-  source:
-    id: destroy
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 164
   summary: 'Close both the Sender and the Link. Clean up any C objects.
 
     '
@@ -197,20 +207,15 @@ items:
   - python
   module: uamqp.sender
   name: get_state
-  source:
-    id: get_state
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 153
   summary: 'Get the state of the MessageSender and its underlying Link.
 
     '
   syntax:
     content: get_state()
     parameters: []
+    return:
+      type:
+      - uamqp.constants.MessageSenderState
   type: method
   uid: uamqp.sender.MessageSender.get_state
 - class: uamqp.sender.MessageSender
@@ -219,32 +224,26 @@ items:
   - python
   module: uamqp.sender
   name: on_state_changed
-  source:
-    id: on_state_changed
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 217
   summary: 'Callback called whenever the underlying Sender undergoes a change
 
     of state. This function can be overridden.
-
-    :param previous_state: The previous Sender state.
-
-    :type previous_state: ~uamqp.constants.MessageSenderState
-
-    :param new_state: The new Sender state.
-
-    :type new_state: ~uamqp.constants.MessageSenderState
 
     '
   syntax:
     content: on_state_changed(previous_state, new_state)
     parameters:
-    - id: previous_state
-    - id: new_state
+    - description: 'The previous Sender state.
+
+        '
+      id: previous_state
+      type:
+      - uamqp.constants.MessageSenderState
+    - description: 'The new Sender state.
+
+        '
+      id: new_state
+      type:
+      - uamqp.constants.MessageSenderState
   type: method
   uid: uamqp.sender.MessageSender.on_state_changed
 - class: uamqp.sender.MessageSender
@@ -253,14 +252,6 @@ items:
   - python
   module: uamqp.sender
   name: open
-  source:
-    id: open
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 169
   summary: 'Open the MessageSender in order to start processing messages.
 
     '
@@ -275,33 +266,38 @@ items:
   - python
   module: uamqp.sender
   name: send
-  source:
-    id: send
-    path: uamqp\sender.py
-    remote:
-      branch: HEAD
-      path: uamqp\sender.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 187
-  summary: "Add a single message to the internal pending queue to be processed\nby\
-    \ the Connection without waiting for it to be sent.\n:param message: The message\
-    \ to send.\n:type message: ~uamqp.message.Message\n:param callback: The callback\
-    \ to be run once a disposition is received\n\n\n   in receipt of the message.\
-    \ The callback must take three arguments, the message,\n   the send result and\
-    \ the optional delivery condition (exception).\n\n"
+  summary: 'Add a single message to the internal pending queue to be processed
+
+    by the Connection without waiting for it to be sent.
+
+    '
   syntax:
     content: send(message, callback, timeout=0)
     parameters:
-    - description: 'An expiry time for the message added to the queue. If the
+    - description: 'The message to send.
+
+        '
+      id: message
+      type:
+      - uamqp.message.Message
+    - description: 'The callback to be run once a disposition is received
+
+        in receipt of the message. The callback must take three arguments, the message,
+
+        the send result and the optional delivery condition (exception).
+
+        '
+      id: callback
+      type:
+      - callable[uamqp.message.Message, uamqp.constants.MessageSendResult, uamqp.errors.MessageException]
+    - defaultValue: '0'
+      description: 'An expiry time for the message added to the queue. If the
 
         message is not sent within this timeout it will be discarded with an error
 
         state. If set to 0, the message will not expire. The default is 0.
 
         '
-      id: timeout
-    - id: callback
-    - defaultValue: '0'
       id: timeout
   type: method
   uid: uamqp.sender.MessageSender.send
@@ -336,3 +332,27 @@ references:
   name: send
   parent: uamqp.sender.MessageSender
   uid: uamqp.sender.MessageSender.send
+- fullName: callable[uamqp.message.Message, uamqp.constants.MessageSendResult, uamqp.errors.MessageException]
+  name: callable[Message, MessageSendResult, MessageException]
+  spec.python:
+  - fullName: callable
+    name: callable
+    uid: callable
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.message.Message
+    name: Message
+    uid: uamqp.message.Message
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.constants.MessageSendResult
+    name: MessageSendResult
+    uid: uamqp.constants.MessageSendResult
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.errors.MessageException
+    name: MessageException
+    uid: uamqp.errors.MessageException
+  - fullName: ']'
+    name: ']'
+  uid: callable[uamqp.message.Message, uamqp.constants.MessageSendResult, uamqp.errors.MessageException]

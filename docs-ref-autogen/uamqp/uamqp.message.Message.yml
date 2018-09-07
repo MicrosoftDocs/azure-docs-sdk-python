@@ -19,14 +19,6 @@ items:
   - python
   module: uamqp.message
   name: Message
-  source:
-    id: Message
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 17
   summary: 'An AMQP message.
 
 
@@ -34,7 +26,7 @@ items:
 
     different body encoding will be used. If the data is str or bytes,
 
-    a single part DataBody will be sent. If the data is a list or str/bytes,
+    a single part DataBody will be sent. If the data is a list of str/bytes,
 
     a multipart DataBody will be sent. Any other type of list will be sent
 
@@ -54,7 +46,8 @@ items:
     '
   syntax:
     content: Message(body=None, properties=None, application_properties=None, annotations=None,
-      header=None, msg_format=None, message=None, settler=None, encoding='UTF-8')
+      header=None, msg_format=None, message=None, settler=None, delivery_no=None,
+      encoding='UTF-8')
     parameters:
     - description: 'The data to send in the message.
 
@@ -76,7 +69,7 @@ items:
       - dict
     - description: 'Service specific message annotations. Keys in the dictionary
 
-        must be ~uamqp.types.AMQPSymbol or ~uamqp.types.AMQPuLong.
+        must be *types.AMQPSymbol* or *types.AMQPuLong*.
 
         '
       id: annotations
@@ -108,12 +101,20 @@ items:
 
         that has been received from an AMQP service. Should only be specified together
 
-        with *message* and is to determine receive-settled mode of the client.
+        with *message* and is to settle the message.
 
         '
-      id: settled
+      id: settler
       type:
-      - int
+      - callable[uamqp.errors.MessageResponse]
+    - description: 'Internal only. This is used when wrapping an existing message
+
+        that has been received from an AMQP service. Should only be specified together
+
+        with *message* and specifies the messages client delivery number.
+
+        '
+      id: delivery_no
     - description: 'The encoding to use for parameters supplied as strings.
 
         Default is ''UTF-8''
@@ -127,7 +128,7 @@ items:
 
         the send operation of this message. The callback must take two parameters,
 
-        a result (of type ~uamqp.constants.MessageSendResult) and an error (of type
+        a result (of type *MessageSendResult*) and an error (of type
 
         Exception). The error parameter may be None if no error ocurred or the error
 
@@ -145,14 +146,6 @@ items:
   - python
   module: uamqp.message
   name: accept
-  source:
-    id: accept
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 238
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been accepted. If the client is running in PeekLock
@@ -178,14 +171,6 @@ items:
   - python
   module: uamqp.message
   name: gather
-  source:
-    id: gather
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 200
   summary: 'Return all the messages represented by this object.
 
     This will always be a list of a single message.
@@ -205,14 +190,6 @@ items:
   - python
   module: uamqp.message
   name: get_data
-  source:
-    id: get_data
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 190
   summary: 'Get the body data of the message. The format may vary depending
 
     on the body type.
@@ -232,14 +209,6 @@ items:
   - python
   module: uamqp.message
   name: get_message
-  source:
-    id: get_message
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 214
   summary: 'Get the underlying C message from this object.
 
     '
@@ -257,14 +226,6 @@ items:
   - python
   module: uamqp.message
   name: get_message_encoded_size
-  source:
-    id: get_message_encoded_size
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 177
   summary: 'Pre-emptively get the size of the message once it has been encoded
 
     to go over the wire so we can raise an error if the message will be
@@ -286,21 +247,13 @@ items:
   - python
   module: uamqp.message
   name: modify
-  source:
-    id: modify
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 298
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been modified. If the client is running in PeekLock
 
     mode, the service will wait on this disposition. Otherwise it will
 
-    be ignored. Returns *True* is message was released, or *False* if the message
+    be ignored. Returns *True* is message was modified, or *False* if the message
 
     was already settled.
 
@@ -342,14 +295,6 @@ items:
   - python
   module: uamqp.message
   name: reject
-  source:
-    id: reject
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 255
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been rejected. If the client is running in PeekLock
@@ -393,14 +338,6 @@ items:
   - python
   module: uamqp.message
   name: release
-  source:
-    id: release
-    path: uamqp\message.py
-    remote:
-      branch: HEAD
-      path: uamqp\message.py
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: 280
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been released. If the client is running in PeekLock
@@ -428,14 +365,6 @@ items:
   - python
   module: uamqp.message
   name: settled
-  source:
-    id: settled
-    path: null
-    remote:
-      branch: HEAD
-      path: null
-      repo: https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation
-    startLine: null
   summary: 'Whether the message transaction for this message has been completed.
 
     If this message is to be sent, the message will be *settled=True* once a
@@ -518,6 +447,20 @@ references:
   - fullName: ']'
     name: ']'
   uid: callable[uamqp.constants.MessageSendResult, Exception]
+- fullName: callable[uamqp.errors.MessageResponse]
+  name: callable[MessageResponse]
+  spec.python:
+  - fullName: callable
+    name: callable
+    uid: callable
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.errors.MessageResponse
+    name: MessageResponse
+    uid: uamqp.errors.MessageResponse
+  - fullName: ']'
+    name: ']'
+  uid: callable[uamqp.errors.MessageResponse]
 - fullName: list[uamqp.message.Message]
   name: list[Message]
   spec.python:
