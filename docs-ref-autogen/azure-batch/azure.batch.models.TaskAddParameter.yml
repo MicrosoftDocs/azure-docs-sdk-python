@@ -14,10 +14,10 @@ items:
   name: TaskAddParameter
   source:
     id: TaskAddParameter
-    path: azure-batch\azure\batch\models\task_add_parameter.py
+    path: azure-batch\azure\batch\models\task_add_parameter_py3.py
     remote:
       branch: master
-      path: azure-batch\azure\batch\models\task_add_parameter.py
+      path: azure-batch\azure\batch\models\task_add_parameter_py3.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 15
   summary: 'An Azure Batch task to add.
@@ -43,22 +43,26 @@ items:
 
     checkpointing.
 
+
+    All required parameters must be populated in order to send to Azure.
+
     '
   syntax:
-    content: TaskAddParameter(id, command_line, display_name=None, container_settings=None,
-      exit_conditions=None, resource_files=None, output_files=None, environment_settings=None,
-      affinity_info=None, constraints=None, user_identity=None, multi_instance_settings=None,
-      depends_on=None, application_package_references=None, authentication_token_settings=None)
+    content: 'TaskAddParameter(*, id: str, command_line: str, display_name: str =
+      None, container_settings=None, exit_conditions=None, resource_files=None, output_files=None,
+      environment_settings=None, affinity_info=None, constraints=None, user_identity=None,
+      multi_instance_settings=None, depends_on=None, application_package_references=None,
+      authentication_token_settings=None, **kwargs) -> None'
     parameters:
-    - description: 'A string that uniquely identifies the task within the job. The
+    - description: 'Required. A string that uniquely identifies the task within the
 
-        ID can contain any combination of alphanumeric characters including
+        job. The ID can contain any combination of alphanumeric characters
 
-        hyphens and underscores, and cannot contain more than 64 characters. The
+        including hyphens and underscores, and cannot contain more than 64
 
-        ID is case-preserving and case-insensitive (that is, you may not have two
+        characters. The ID is case-preserving and case-insensitive (that is, you
 
-        IDs within a job that differ only by case).
+        may not have two IDs within a job that differ only by case).
 
         '
       id: id
@@ -74,25 +78,25 @@ items:
       id: display_name
       type:
       - str
-    - description: 'The command line of the task. For multi-instance
+    - description: 'Required. The command line of the task. For
 
-        tasks, the command line is executed as the primary task, after the primary
+        multi-instance tasks, the command line is executed as the primary task,
 
-        task and all subtasks have finished executing the coordination command
+        after the primary task and all subtasks have finished executing the
 
-        line. The command line does not run under a shell, and therefore cannot
+        coordination command line. The command line does not run under a shell,
 
-        take advantage of shell features such as environment variable expansion.
+        and therefore cannot take advantage of shell features such as environment
 
-        If you want to take advantage of such features, you should invoke the
+        variable expansion. If you want to take advantage of such features, you
 
-        shell in the command line, for example using "cmd /c MyCommand" in Windows
+        should invoke the shell in the command line, for example using "cmd /c
 
-        or "/bin/sh -c MyCommand" in Linux. If the command line refers to file
+        MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command
 
-        paths, it should use a relative path (relative to the task working
+        line refers to file paths, it should use a relative path (relative to the
 
-        directory), or use the Batch provided environment variable
+        task working directory), or use the Batch provided environment variable
 
         ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).
 
@@ -134,7 +138,17 @@ items:
 
         multi-instance tasks, the resource files will only be downloaded to the
 
-        compute node on which the primary task is executed.
+        compute node on which the primary task is executed. There is a maximum
+
+        size for the list of resource files.  When the max size is exceeded, the
+
+        request will fail and the response error code will be
+
+        RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
+
+        must be reduced in size. This can be achieved using .zip files,
+
+        Application Packages, or Docker Containers.
 
         '
       id: resource_files

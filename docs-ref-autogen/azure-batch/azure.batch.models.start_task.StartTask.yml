@@ -45,26 +45,28 @@ items:
 
     checkpointing.
 
+
+    All required parameters must be populated in order to send to Azure.
+
     '
   syntax:
-    content: StartTask(command_line, container_settings=None, resource_files=None,
-      environment_settings=None, user_identity=None, max_task_retry_count=None, wait_for_success=None)
+    content: StartTask(**kwargs)
     parameters:
-    - description: 'The command line of the start task. The command line
+    - description: 'Required. The command line of the start task. The
 
-        does not run under a shell, and therefore cannot take advantage of shell
+        command line does not run under a shell, and therefore cannot take
 
-        features such as environment variable expansion. If you want to take
+        advantage of shell features such as environment variable expansion. If you
 
-        advantage of such features, you should invoke the shell in the command
+        want to take advantage of such features, you should invoke the shell in
 
-        line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c
+        the command line, for example using "cmd /c MyCommand" in Windows or
 
-        MyCommand" in Linux. If the command line refers to file paths, it should
+        "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths,
 
-        use a relative path (relative to the task working directory), or use the
+        it should use a relative path (relative to the task working directory), or
 
-        Batch provided environment variable
+        use the Batch provided environment variable
 
         ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).
 
@@ -90,9 +92,19 @@ items:
       - azure.batch.models.TaskContainerSettings
     - description: 'A list of files that the Batch service will
 
-        download to the compute node before running the command line. Files listed
+        download to the compute node before running the command line.  There is a
 
-        under this element are located in the task''s working directory.
+        maximum size for the list of resource files. When the max size is
+
+        exceeded, the request will fail and the response error code will be
+
+        RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
+
+        must be reduced in size. This can be achieved using .zip files,
+
+        Application Packages, or Docker Containers. Files listed under this
+
+        element are located in the task''s working directory.
 
         '
       id: resource_files
