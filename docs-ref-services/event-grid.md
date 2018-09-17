@@ -7,8 +7,6 @@ ms.author: liwong
 manager: routlaw
 ms.date: 08/21/2017
 ms.topic: article
-ms.prod:
-ms.technology:
 ms.devlang: python
 ms.service: event-grid
 ---
