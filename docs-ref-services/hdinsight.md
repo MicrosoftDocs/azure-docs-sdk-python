@@ -1,6 +1,6 @@
 ---
-title: Azure HDInsight libraries for Python
-description: Reference for Azure HDInsight libraries for python
+title: Azure HDInsight Python SDK Preview
+description: Reference for Azure HDInsight Python SDK
 keywords: Azure, python, SDK, API, HDInsight, HDI
 author: tylerfox
 ms.author: tyfox
