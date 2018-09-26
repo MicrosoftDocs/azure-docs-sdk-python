@@ -10,7 +10,6 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python          
-ms.service: active-directory
 ---
 
 # Azure Active Directory libraries for Python
