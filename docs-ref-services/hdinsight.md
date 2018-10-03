@@ -5,7 +5,7 @@ ms.service: hdinsight
 author: tylerfox
 ms.author: tyfox
 ms.date: 09/18/2018
-ms.topic: conceptual
+ms.topic: reference
 ms.devlang: python
 ---
 
