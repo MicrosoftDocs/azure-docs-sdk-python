@@ -151,7 +151,7 @@ items:
   uid: azure.batch.operations.TaskOperations.add
 - class: azure.batch.operations.TaskOperations
   exceptions:
-  - type: azure.batch.models.BatchErrorException
+  - type: azure.batch.custom.CreateTasksErrorException
   fullName: azure.batch.operations.TaskOperations.add_collection
   langs:
   - python
@@ -159,12 +159,12 @@ items:
   name: add_collection
   source:
     id: add_collection
-    path: azure-batch\azure\batch\operations\task_operations.py
+    path: azure-batch\azure\batch\custom\patch.py
     remote:
       branch: master
-      path: azure-batch\azure\batch\operations\task_operations.py
+      path: azure-batch\azure\batch\custom\patch.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 240
+    startLine: 200
   summary: 'Adds a collection of tasks to the specified job.
 
 
@@ -190,20 +190,12 @@ items:
 
     it is most efficient to resubmit only tasks that failed to add, and to
 
-    omit tasks that were successfully added on the first attempt. The
-
-    maximum lifetime of a task from addition to completion is 7 days. If a
-
-    task has not completed within 7 days of being added it will be
-
-    terminated by the Batch service and left in whatever state it was in at
-
-    that time.
+    omit tasks that were successfully added on the first attempt.
 
     '
   syntax:
     content: add_collection(job_id, value, task_add_collection_options=None, custom_headers=None,
-      raw=False, **operation_config)
+      raw=False, threads=0, **operation_config)
     parameters:
     - description: 'The ID of the job to which the task collection is to be
 
@@ -213,22 +205,20 @@ items:
       id: job_id
       type:
       - str
-    - description: 'The collection of tasks to add. The maximum count of
+    - description: 'The collection of tasks to add. The total serialized
 
-        tasks is 100. The total serialized size of this collection must be
+        size of this collection must be less than 4MB. If it is greater than
 
-        less than 1MB. If it is greater than 1MB (for example if each task has
+        4MB (for example if each task has 100''s of resource files or
 
-        100''s of resource files or environment variables), the request will
+        environment variables), the request will fail with code
 
-        fail with code ''RequestBodyTooLarge'' and should be retried again with
-
-        fewer tasks.
+        ''RequestBodyTooLarge'' and should be retried again with fewer tasks.
 
         '
       id: value
       type:
-      - list[azure.batch.models.TaskAddParameter]
+      - list of <xref:azure.batch.models.TaskAddParameter>
     - defaultValue: None
       description: 'Additional parameters for the
 
@@ -237,7 +227,7 @@ items:
         '
       id: task_add_collection_options
       type:
-      - azure.batch.models.TaskAddCollectionOptions
+      - <xref:azure.batch.models.TaskAddCollectionOptions>
     - defaultValue: None
       description: 'headers that will be added to the request
 
@@ -254,19 +244,29 @@ items:
       id: raw
       type:
       - bool
-    - description: '*Operation configuration
+    - defaultValue: '0'
+      description: 'number of threads to use in parallel when adding tasks. If specified
 
-        overrides*.
+        and greater than 0, will start additional threads to submit requests and wait
+        for them to finish.
+
+        Otherwise will submit add_collection requests sequentially on main thread
 
         '
-      id: operation_config
+      id: threads
+      type:
+      - int
     return:
-      description: 'TaskAddCollectionResult or ClientRawResponse if raw=true
+      description: '<xref:azure.batch.models.TaskAddCollectionResult> or
+
+        <xref:msrest.pipeline.ClientRawResponse> if
+
+        raw=true
 
         '
       type:
-      - azure.batch.models.TaskAddCollectionResult
-      - msrest.pipeline.ClientRawResponse
+      - <xref:azure.batch.models.TaskAddCollectionResult>
+      - <xref:msrest.pipeline.ClientRawResponse>
   type: method
   uid: azure.batch.operations.TaskOperations.add_collection
 - class: azure.batch.operations.TaskOperations
@@ -912,20 +912,6 @@ references:
   name: models
   parent: azure.batch.operations.TaskOperations
   uid: azure.batch.operations.TaskOperations.models
-- fullName: list[azure.batch.models.TaskAddParameter]
-  name: list[TaskAddParameter]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.TaskAddParameter
-    name: TaskAddParameter
-    uid: azure.batch.models.TaskAddParameter
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.TaskAddParameter]
 - fullName: azure.batch.models.CloudTaskPaged[azure.batch.models.CloudTask]
   name: CloudTaskPaged[CloudTask]
   spec.python:
