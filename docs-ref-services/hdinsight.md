@@ -1,23 +1,18 @@
 ---
 title: Azure HDInsight Python SDK Preview
-description: Reference for Azure HDInsight Python SDK
-keywords: Azure, python, SDK, API, HDInsight, HDI
+description: Reference for Azure HDInsight Python SDK. The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters.
+ms.service: hdinsight
 author: tylerfox
 ms.author: tyfox
-manager: arindamc
-
 ms.date: 09/18/2018
-ms.topic: article
-ms.prod: azure
-ms.technology: azure
+ms.topic: reference
 ms.devlang: python
-ms.service: hd-insight
 ---
 
 # HDInsight Python Management SDK Preview
 
 ## Overview
-The HDInsight .NET SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, scale, execute script actions, monitor, get properties of HDInsight clusters, and more.
+The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, scale, execute script actions, monitor, get properties of HDInsight clusters, and more.
 
 ## Prerequisites
 * An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/).
