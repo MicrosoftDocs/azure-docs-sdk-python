@@ -13,7 +13,7 @@ ms.devlang: python
 
 ## Overview
 
-The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, scale, execute script actions, monitor, get properties of HDInsight clusters, and more.
+The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, resize, execute script actions, monitor, get properties of HDInsight clusters, and more.
 
 ## Prerequisites
 
@@ -305,9 +305,9 @@ client.clusters.update("<Resource Group Name>", "<Cluster Name>", tags={<Diction
 client.clusters.update("<Resource Group Name>", "<Cluster Name>", tags={"tag1Name" : "tag1Value", "tag2Name" : "tag2Value"})
 ```
 
-### Scale Cluster
+### Resize Cluster
 
-You can scale a given cluster's number of worker nodes by specifying a new size like so:
+You can resize a given cluster's number of worker nodes by specifying a new size like so:
 
 ```python
 client.clusters.resize("<Resource Group Name>", "<Cluster Name>", target_instance_count=<Num of Worker Nodes>)
