@@ -181,11 +181,10 @@ from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
     # Create a Resource Management client
     resource_client = ResourceManagementClient(credentials, subscription_id)
 
-    
+
     # List resource groups as an example. The only limit is what role and policy are assigned to this MSI token.
     for resource_group in resource_client.resource_groups.list():
         print(resource_group.name)
-
 ```
 
 ## <a name="mgmt-auth-cli"></a>CLI-based authentication
