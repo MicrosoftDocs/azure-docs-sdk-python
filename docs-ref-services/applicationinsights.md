@@ -25,4 +25,4 @@ ms.service: multiple
 pip install azure-loganalytics
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/loganalytics/management)
+> [Explore the Management APIs](/python/api/overview/azure/applicationinsights/management)
