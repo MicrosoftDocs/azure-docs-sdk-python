@@ -40,7 +40,7 @@ items:
     parameters:
     - description: 'Required. Specifies the state of the policy. If state is
 
-        Enabled, storageEndpoint and storageAccountAccessKey are required.
+        Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
 
         Possible values include: ''Enabled'', ''Disabled''
 
@@ -62,9 +62,9 @@ items:
       - str
     - description: 'Specifies the identifier key of the
 
-        auditing storage account. If state is Enabled, storageAccountAccessKey is
+        auditing storage account. If state is Enabled and storageEndpoint is
 
-        required.
+        specified, storageAccountAccessKey is required.
 
         '
       id: storage_account_access_key
@@ -72,7 +72,7 @@ items:
       - str
     - description: 'Specifies the number of days to keep in the audit
 
-        logs.
+        logs in the storage account.
 
         '
       id: retention_days
@@ -176,13 +176,13 @@ items:
 
         The general form for defining an action to be audited is:
 
-        <action> ON <object> BY <principal>
+        {action} ON {object} BY {principal}
 
         Note that <object> in the above format can refer to an object like a
 
         table, view, or stored procedure, or an entire database or schema. For the
 
-        latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are
+        latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are
 
         used, respectively.
 
@@ -216,6 +216,42 @@ items:
 
         '
       id: is_storage_secondary_key_in_use
+      type:
+      - bool
+    - description: 'Specifies whether audit events are
+
+        sent to Azure Monitor.
+
+        In order to send the events to Azure Monitor, specify ''State'' as ''Enabled''
+
+        and ''IsAzureMonitorTargetEnabled'' as true.
+
+        When using REST API to configure auditing, Diagnostic Settings with
+
+        ''SQLSecurityAuditEvents'' diagnostic logs category on the database should
+
+        be also created.
+
+        Note that for server level audit you should use the ''master'' database as
+
+        {databaseName}.
+
+        Diagnostic Settings URI format:
+
+        PUT
+
+        [https://management.azure.com/subscriptions](https://management.azure.com/subscriptions)/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+
+        For more information, see [Diagnostic Settings REST
+
+        API]([https://go.microsoft.com/fwlink/?linkid=2033207](https://go.microsoft.com/fwlink/?linkid=2033207))
+
+        or [Diagnostic Settings
+
+        PowerShell]([https://go.microsoft.com/fwlink/?linkid=2033043](https://go.microsoft.com/fwlink/?linkid=2033043))
+
+        '
+      id: is_azure_monitor_target_enabled
       type:
       - bool
     variables:
