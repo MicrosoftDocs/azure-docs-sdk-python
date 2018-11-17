@@ -2,6 +2,8 @@
 api_name: []
 items:
 - children:
+  - uamqp.async_ops.client_async.AMQPClientAsync.auth_complete_async
+  - uamqp.async_ops.client_async.AMQPClientAsync.client_ready_async
   - uamqp.async_ops.client_async.AMQPClientAsync.close_async
   - uamqp.async_ops.client_async.AMQPClientAsync.do_work_async
   - uamqp.async_ops.client_async.AMQPClientAsync.mgmt_request_async
@@ -17,6 +19,8 @@ items:
   module: uamqp.async_ops.client_async
   name: AMQPClientAsync
   summary: 'An asynchronous AMQP client.
+
+
 
 
 
@@ -142,6 +146,14 @@ items:
       id: handle_max
       type:
       - int
+    - description: 'A callback function to be run on receipt of an ATTACH frame.
+
+        The function must take 4 arguments: source, target, properties and error.
+
+        '
+      id: on_attach
+      type:
+      - func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
     - description: 'The encoding to use for parameters supplied as strings.
 
         Default is ''UTF-8''
@@ -152,6 +164,46 @@ items:
       - str
   type: class
   uid: uamqp.async_ops.client_async.AMQPClientAsync
+- class: uamqp.async_ops.client_async.AMQPClientAsync
+  fullName: uamqp.async_ops.client_async.AMQPClientAsync.auth_complete_async
+  langs:
+  - python
+  module: uamqp.async_ops.client_async
+  name: auth_complete_async
+  summary: 'Whether the authentication handshake is complete during
+
+    connection initialization.
+
+    '
+  syntax:
+    content: auth_complete_async()
+    parameters: []
+    return:
+      type:
+      - bool
+  type: method
+  uid: uamqp.async_ops.client_async.AMQPClientAsync.auth_complete_async
+- class: uamqp.async_ops.client_async.AMQPClientAsync
+  fullName: uamqp.async_ops.client_async.AMQPClientAsync.client_ready_async
+  langs:
+  - python
+  module: uamqp.async_ops.client_async
+  name: client_ready_async
+  summary: 'Whether the handler has completed all start up processes such as
+
+    establishing the connection, session, link and authentication, and
+
+    is not ready to process messages.
+
+    '
+  syntax:
+    content: client_ready_async()
+    parameters: []
+    return:
+      type:
+      - bool
+  type: method
+  uid: uamqp.async_ops.client_async.AMQPClientAsync.client_ready_async
 - class: uamqp.async_ops.client_async.AMQPClientAsync
   fullName: uamqp.async_ops.client_async.AMQPClientAsync.close_async
   langs:
@@ -209,7 +261,8 @@ items:
 
     '
   syntax:
-    content: mgmt_request_async(message, operation, op_type=None, node=None, **kwargs)
+    content: mgmt_request_async(message, operation, op_type=None, node=None, callback=None,
+      **kwargs)
     parameters:
     - description: 'The message to send in the management request.
 
@@ -247,7 +300,8 @@ items:
       type:
       - bytes
       - str
-    - description: 'Provide an optional timeout in milliseconds within which a response
+    - defaultValue: None
+      description: 'Provide an optional timeout in milliseconds within which a response
 
         to the management request must be received.
 
@@ -255,6 +309,20 @@ items:
       id: timeout
       type:
       - int
+    - description: 'The function to process the returned parameters of the management
+
+        request including status code and a description if available. This can be
+        used
+
+        to reformat the response or raise an error based on content. The function
+        must
+
+        take 3 arguments - status code, response message and description.
+
+        '
+      id: callback
+      type:
+      - callable[int, bytes, uamqp.message.Message]
     - description: 'Provide an alternate name for the status code in the
 
         response body which can vary between services due to the spec still being
@@ -314,6 +382,16 @@ items:
   type: method
   uid: uamqp.async_ops.client_async.AMQPClientAsync.open_async
 references:
+- fullName: uamqp.async_ops.client_async.AMQPClientAsync.auth_complete_async
+  isExternal: false
+  name: auth_complete_async
+  parent: uamqp.async_ops.client_async.AMQPClientAsync
+  uid: uamqp.async_ops.client_async.AMQPClientAsync.auth_complete_async
+- fullName: uamqp.async_ops.client_async.AMQPClientAsync.client_ready_async
+  isExternal: false
+  name: client_ready_async
+  parent: uamqp.async_ops.client_async.AMQPClientAsync
+  uid: uamqp.async_ops.client_async.AMQPClientAsync.client_ready_async
 - fullName: uamqp.async_ops.client_async.AMQPClientAsync.close_async
   isExternal: false
   name: close_async
@@ -346,3 +424,56 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
+- fullName: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
+  name: func[Source, Target, dict, AMQPConnectionError]
+  spec.python:
+  - fullName: func
+    name: func
+    uid: func
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.address.Source
+    name: Source
+    uid: uamqp.address.Source
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.address.Target
+    name: Target
+    uid: uamqp.address.Target
+  - fullName: ', '
+    name: ', '
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.errors.AMQPConnectionError
+    name: AMQPConnectionError
+    uid: uamqp.errors.AMQPConnectionError
+  - fullName: ']'
+    name: ']'
+  uid: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
+- fullName: callable[int, bytes, uamqp.message.Message]
+  name: callable[int, bytes, Message]
+  spec.python:
+  - fullName: callable
+    name: callable
+    uid: callable
+  - fullName: '['
+    name: '['
+  - fullName: int
+    name: int
+    uid: int
+  - fullName: ', '
+    name: ', '
+  - fullName: bytes
+    name: bytes
+    uid: bytes
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.message.Message
+    name: Message
+    uid: uamqp.message.Message
+  - fullName: ']'
+    name: ']'
+  uid: callable[int, bytes, uamqp.message.Message]
