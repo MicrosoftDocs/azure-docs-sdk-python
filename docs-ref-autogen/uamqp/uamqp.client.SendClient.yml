@@ -2,7 +2,6 @@
 api_name: []
 items:
 - children:
-  - uamqp.client.SendClient.close
   - uamqp.client.SendClient.messages_pending
   - uamqp.client.SendClient.queue_message
   - uamqp.client.SendClient.redirect
@@ -20,7 +19,6 @@ items:
   module: uamqp.client
   name: SendClient
   summary: 'An AMQP client for sending messages.
-
 
 
 
@@ -187,6 +185,14 @@ items:
       id: handle_max
       type:
       - int
+    - description: 'A callback function to be run on receipt of an ATTACH frame.
+
+        The function must take 4 arguments: source, target, properties and error.
+
+        '
+      id: on_attach
+      type:
+      - func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
     - description: 'The encoding to use for parameters supplied as strings.
 
         Default is ''UTF-8''
@@ -198,32 +204,11 @@ items:
   type: class
   uid: uamqp.client.SendClient
 - class: uamqp.client.SendClient
-  fullName: uamqp.client.SendClient.close
-  langs:
-  - python
-  module: uamqp.client
-  name: close
-  summary: 'Close down the client. No further messages
-
-    can be sent and the client cannot be re-opened.
-
-
-    All pending, unsent messages will remain uncleared to allow
-
-    them to be inspected and queued to a new client.
-
-    '
-  syntax:
-    content: close()
-    parameters: []
-  type: method
-  uid: uamqp.client.SendClient.close
-- class: uamqp.client.SendClient
   fullName: uamqp.client.SendClient.messages_pending
   langs:
   - python
   module: uamqp.client
-  name: messages_pending
+  name: messages_pending()
   summary: 'Check whether the client is holding any unsent
 
     messages in the queue.
@@ -242,7 +227,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: queue_message
+  name: queue_message(*messages)
   summary: "Add one or more messages to the send queue.\nNo further action will be\
     \ taken until either *SendClient.wait()*\nor *SendClient.send_all_messages()*\
     \ has been called.\nThe client does not need to be open yet for messages to be\
@@ -265,7 +250,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: redirect
+  name: redirect(redirect, auth)
   summary: 'Redirect the client endpoint using a Link DETACH redirect
 
     response.
@@ -293,7 +278,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: send_all_messages
+  name: send_all_messages(close_on_done=True)
   summary: 'Send all pending messages in the queue. This will return a list
 
     of the send result of all the pending messages so it can be
@@ -325,7 +310,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: send_message
+  name: send_message(messages, close_on_done=False)
   summary: 'Send a single message or batched message.
 
     '
@@ -352,7 +337,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: wait
+  name: wait()
   summary: 'Run the client until all pending message in the queue
 
     have been processed. Returns whether the client is still running after the
@@ -369,39 +354,34 @@ items:
   type: method
   uid: uamqp.client.SendClient.wait
 references:
-- fullName: uamqp.client.SendClient.close
-  isExternal: false
-  name: close
-  parent: uamqp.client.SendClient
-  uid: uamqp.client.SendClient.close
 - fullName: uamqp.client.SendClient.messages_pending
   isExternal: false
-  name: messages_pending
+  name: messages_pending()
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.messages_pending
 - fullName: uamqp.client.SendClient.queue_message
   isExternal: false
-  name: queue_message
+  name: queue_message(*messages)
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.queue_message
 - fullName: uamqp.client.SendClient.redirect
   isExternal: false
-  name: redirect
+  name: redirect(redirect, auth)
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.redirect
 - fullName: uamqp.client.SendClient.send_all_messages
   isExternal: false
-  name: send_all_messages
+  name: send_all_messages(close_on_done=True)
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.send_all_messages
 - fullName: uamqp.client.SendClient.send_message
   isExternal: false
-  name: send_message
+  name: send_message(messages, close_on_done=False)
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.send_message
 - fullName: uamqp.client.SendClient.wait
   isExternal: false
-  name: wait
+  name: wait()
   parent: uamqp.client.SendClient
   uid: uamqp.client.SendClient.wait
 - fullName: str, bytes
@@ -416,6 +396,35 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
+- fullName: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
+  name: func[Source, Target, dict, AMQPConnectionError]
+  spec.python:
+  - fullName: func
+    name: func
+    uid: func
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.address.Source
+    name: Source
+    uid: uamqp.address.Source
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.address.Target
+    name: Target
+    uid: uamqp.address.Target
+  - fullName: ', '
+    name: ', '
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.errors.AMQPConnectionError
+    name: AMQPConnectionError
+    uid: uamqp.errors.AMQPConnectionError
+  - fullName: ']'
+    name: ']'
+  uid: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
 - fullName: list[uamqp.constants.MessageState]
   name: list[MessageState]
   spec.python:

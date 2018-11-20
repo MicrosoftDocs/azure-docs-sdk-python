@@ -3,6 +3,8 @@ api_name: []
 items:
 - children:
   - uamqp.message.Message.accept
+  - uamqp.message.Message.decode_from_bytes
+  - uamqp.message.Message.encode_message
   - uamqp.message.Message.gather
   - uamqp.message.Message.get_data
   - uamqp.message.Message.get_message
@@ -28,11 +30,13 @@ items:
 
     a single part DataBody will be sent. If the data is a list of str/bytes,
 
-    a multipart DataBody will be sent. Any other type of list will be sent
+    a multipart DataBody will be sent. Any other type of list or any other
 
-    as a SequenceBody, where as any other type of data will be sent as
+    type of data will be sent as a ValueBody.
 
-    a ValueBody. An empty payload will also be sent as a ValueBody.
+    An empty payload will also be sent as a ValueBody.
+
+
 
 
 
@@ -145,7 +149,7 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: accept
+  name: accept()
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been accepted. If the client is running in PeekLock
@@ -166,11 +170,54 @@ items:
   type: method
   uid: uamqp.message.Message.accept
 - class: uamqp.message.Message
+  fullName: uamqp.message.Message.decode_from_bytes
+  langs:
+  - python
+  module: uamqp.message
+  name: decode_from_bytes(data)
+  summary: 'Decode an AMQP message from a bytearray.
+
+    The returned message will not have a delivery context and
+
+    therefore will be considered to be in an "already settled" state.
+
+    '
+  syntax:
+    content: decode_from_bytes(data)
+    parameters:
+    - description: 'The AMQP wire-encoded bytes to decode.
+
+        '
+      id: data
+      type:
+      - bytes
+      - bytearray
+    - id: data
+  type: method
+  uid: uamqp.message.Message.decode_from_bytes
+- class: uamqp.message.Message
+  fullName: uamqp.message.Message.encode_message
+  langs:
+  - python
+  module: uamqp.message
+  name: encode_message()
+  summary: 'Encode message to AMQP wire-encoded bytearray.
+
+    '
+  syntax:
+    content: encode_message()
+    parameters: []
+    return:
+      type:
+      - bytearray
+  type: method
+  uid: uamqp.message.Message.encode_message
+- class: uamqp.message.Message
   fullName: uamqp.message.Message.gather
   langs:
   - python
   module: uamqp.message
-  name: gather
+  name: gather()
   summary: 'Return all the messages represented by this object.
 
     This will always be a list of a single message.
@@ -189,7 +236,7 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: get_data
+  name: get_data()
   summary: 'Get the body data of the message. The format may vary depending
 
     on the body type.
@@ -208,7 +255,7 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: get_message
+  name: get_message()
   summary: 'Get the underlying C message from this object.
 
     '
@@ -225,12 +272,15 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: get_message_encoded_size
+  name: get_message_encoded_size()
   summary: 'Pre-emptively get the size of the message once it has been encoded
 
     to go over the wire so we can raise an error if the message will be
 
     rejected for being to large.
+
+
+    This method is not available for messages that have been received.
 
     '
   syntax:
@@ -246,7 +296,7 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: modify
+  name: modify(failed, deliverable, annotations=None)
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been modified. If the client is running in PeekLock
@@ -294,7 +344,7 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: reject
+  name: reject(condition=None, description=None)
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been rejected. If the client is running in PeekLock
@@ -337,7 +387,7 @@ items:
   langs:
   - python
   module: uamqp.message
-  name: release
+  name: release()
   summary: 'Send a response disposition to the service to indicate that
 
     a received message has been released. If the client is running in PeekLock
@@ -385,42 +435,52 @@ items:
 references:
 - fullName: uamqp.message.Message.accept
   isExternal: false
-  name: accept
+  name: accept()
   parent: uamqp.message.Message
   uid: uamqp.message.Message.accept
+- fullName: uamqp.message.Message.decode_from_bytes
+  isExternal: false
+  name: decode_from_bytes(data)
+  parent: uamqp.message.Message
+  uid: uamqp.message.Message.decode_from_bytes
+- fullName: uamqp.message.Message.encode_message
+  isExternal: false
+  name: encode_message()
+  parent: uamqp.message.Message
+  uid: uamqp.message.Message.encode_message
 - fullName: uamqp.message.Message.gather
   isExternal: false
-  name: gather
+  name: gather()
   parent: uamqp.message.Message
   uid: uamqp.message.Message.gather
 - fullName: uamqp.message.Message.get_data
   isExternal: false
-  name: get_data
+  name: get_data()
   parent: uamqp.message.Message
   uid: uamqp.message.Message.get_data
 - fullName: uamqp.message.Message.get_message
   isExternal: false
-  name: get_message
+  name: get_message()
   parent: uamqp.message.Message
   uid: uamqp.message.Message.get_message
 - fullName: uamqp.message.Message.get_message_encoded_size
   isExternal: false
-  name: get_message_encoded_size
+  name: get_message_encoded_size()
   parent: uamqp.message.Message
   uid: uamqp.message.Message.get_message_encoded_size
 - fullName: uamqp.message.Message.modify
   isExternal: false
-  name: modify
+  name: modify(failed, deliverable, annotations=None)
   parent: uamqp.message.Message
   uid: uamqp.message.Message.modify
 - fullName: uamqp.message.Message.reject
   isExternal: false
-  name: reject
+  name: reject(condition=None, description=None)
   parent: uamqp.message.Message
   uid: uamqp.message.Message.reject
 - fullName: uamqp.message.Message.release
   isExternal: false
-  name: release
+  name: release()
   parent: uamqp.message.Message
   uid: uamqp.message.Message.release
 - fullName: uamqp.message.Message.settled
