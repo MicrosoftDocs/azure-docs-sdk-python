@@ -2,7 +2,6 @@
 api_name: []
 items:
 - children:
-  - uamqp.client.ReceiveClient.close
   - uamqp.client.ReceiveClient.receive_message_batch
   - uamqp.client.ReceiveClient.receive_messages
   - uamqp.client.ReceiveClient.receive_messages_iter
@@ -18,7 +17,6 @@ items:
   module: uamqp.client
   name: ReceiveClient
   summary: 'An AMQP client for receiving messages.
-
 
 
 
@@ -203,6 +201,14 @@ items:
       id: handle_max
       type:
       - int
+    - description: 'A callback function to be run on receipt of an ATTACH frame.
+
+        The function must take 4 arguments: source, target, properties and error.
+
+        '
+      id: on_attach
+      type:
+      - func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
     - description: 'The encoding to use for parameters supplied as strings.
 
         Default is ''UTF-8''
@@ -214,29 +220,11 @@ items:
   type: class
   uid: uamqp.client.ReceiveClient
 - class: uamqp.client.ReceiveClient
-  fullName: uamqp.client.ReceiveClient.close
-  langs:
-  - python
-  module: uamqp.client
-  name: close
-  summary: 'Close the ReceiverClient, shutting down the Link, Session and
-
-    Connection (unless an external Conneciton was supplied on opening,
-
-    which will be left open).
-
-    '
-  syntax:
-    content: close()
-    parameters: []
-  type: method
-  uid: uamqp.client.ReceiveClient.close
-- class: uamqp.client.ReceiveClient
   fullName: uamqp.client.ReceiveClient.receive_message_batch
   langs:
   - python
   module: uamqp.client
-  name: receive_message_batch
+  name: receive_message_batch(max_batch_size=None, on_message_received=None, timeout=0)
   summary: 'Receive a batch of messages. Messages returned in the batch have already
     been
 
@@ -309,7 +297,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: receive_messages
+  name: receive_messages(on_message_received)
   summary: 'Receive messages. This function will run indefinitely, until the client
 
     closes either via timeout, error or forced interruption (e.g. keyboard interrupt).
@@ -347,7 +335,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: receive_messages_iter
+  name: receive_messages_iter(on_message_received=None)
   summary: 'Receive messages by generator. Messages returned in the generator have
     already been
 
@@ -375,7 +363,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: redirect
+  name: redirect(redirect, auth)
   summary: 'Redirect the client endpoint using a Link DETACH redirect
 
     response.
@@ -399,29 +387,24 @@ items:
   type: method
   uid: uamqp.client.ReceiveClient.redirect
 references:
-- fullName: uamqp.client.ReceiveClient.close
-  isExternal: false
-  name: close
-  parent: uamqp.client.ReceiveClient
-  uid: uamqp.client.ReceiveClient.close
 - fullName: uamqp.client.ReceiveClient.receive_message_batch
   isExternal: false
-  name: receive_message_batch
+  name: receive_message_batch(max_batch_size=None, on_message_received=None, timeout=0)
   parent: uamqp.client.ReceiveClient
   uid: uamqp.client.ReceiveClient.receive_message_batch
 - fullName: uamqp.client.ReceiveClient.receive_messages
   isExternal: false
-  name: receive_messages
+  name: receive_messages(on_message_received)
   parent: uamqp.client.ReceiveClient
   uid: uamqp.client.ReceiveClient.receive_messages
 - fullName: uamqp.client.ReceiveClient.receive_messages_iter
   isExternal: false
-  name: receive_messages_iter
+  name: receive_messages_iter(on_message_received=None)
   parent: uamqp.client.ReceiveClient
   uid: uamqp.client.ReceiveClient.receive_messages_iter
 - fullName: uamqp.client.ReceiveClient.redirect
   isExternal: false
-  name: redirect
+  name: redirect(redirect, auth)
   parent: uamqp.client.ReceiveClient
   uid: uamqp.client.ReceiveClient.redirect
 - fullName: str, bytes
@@ -436,6 +419,35 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
+- fullName: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
+  name: func[Source, Target, dict, AMQPConnectionError]
+  spec.python:
+  - fullName: func
+    name: func
+    uid: func
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.address.Source
+    name: Source
+    uid: uamqp.address.Source
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.address.Target
+    name: Target
+    uid: uamqp.address.Target
+  - fullName: ', '
+    name: ', '
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.errors.AMQPConnectionError
+    name: AMQPConnectionError
+    uid: uamqp.errors.AMQPConnectionError
+  - fullName: ']'
+    name: ']'
+  uid: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
 - fullName: callable[uamqp.message.Message]
   name: callable[Message]
   spec.python:

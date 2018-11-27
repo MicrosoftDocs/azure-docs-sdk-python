@@ -2,6 +2,8 @@
 api_name: []
 items:
 - children:
+  - uamqp.client.AMQPClient.auth_complete
+  - uamqp.client.AMQPClient.client_ready
   - uamqp.client.AMQPClient.close
   - uamqp.client.AMQPClient.do_work
   - uamqp.client.AMQPClient.mgmt_request
@@ -15,6 +17,8 @@ items:
   module: uamqp.client
   name: AMQPClient
   summary: 'An AMQP client.
+
+
 
 
 
@@ -134,6 +138,14 @@ items:
       id: handle_max
       type:
       - int
+    - description: 'A callback function to be run on receipt of an ATTACH frame.
+
+        The function must take 4 arguments: source, target, properties and error.
+
+        '
+      id: on_attach
+      type:
+      - func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
     - description: 'The encoding to use for parameters supplied as strings.
 
         Default is ''UTF-8''
@@ -145,11 +157,51 @@ items:
   type: class
   uid: uamqp.client.AMQPClient
 - class: uamqp.client.AMQPClient
+  fullName: uamqp.client.AMQPClient.auth_complete
+  langs:
+  - python
+  module: uamqp.client
+  name: auth_complete()
+  summary: 'Whether the authentication handshake is complete during
+
+    connection initialization.
+
+    '
+  syntax:
+    content: auth_complete()
+    parameters: []
+    return:
+      type:
+      - bool
+  type: method
+  uid: uamqp.client.AMQPClient.auth_complete
+- class: uamqp.client.AMQPClient
+  fullName: uamqp.client.AMQPClient.client_ready
+  langs:
+  - python
+  module: uamqp.client
+  name: client_ready()
+  summary: 'Whether the handler has completed all start up processes such as
+
+    establishing the connection, session, link and authentication, and
+
+    is not ready to process messages.
+
+    '
+  syntax:
+    content: client_ready()
+    parameters: []
+    return:
+      type:
+      - bool
+  type: method
+  uid: uamqp.client.AMQPClient.client_ready
+- class: uamqp.client.AMQPClient
   fullName: uamqp.client.AMQPClient.close
   langs:
   - python
   module: uamqp.client
-  name: close
+  name: close()
   summary: 'Close the client. This includes closing the Session
 
     and CBS authentication layer as well as the Connection.
@@ -157,6 +209,16 @@ items:
     If the client was opened using an external Connection,
 
     this will be left intact.
+
+
+    No further messages can be sent or received and the client
+
+    cannot be re-opened.
+
+
+    All pending, unsent messages will remain uncleared to allow
+
+    them to be inspected and queued to a new client.
 
     '
   syntax:
@@ -169,7 +231,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: do_work
+  name: do_work()
   summary: 'Run a single connection iteration.
 
     This will return *True* if the connection is still open
@@ -192,7 +254,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: mgmt_request
+  name: mgmt_request(message, operation, op_type=None, node=None, callback=None, **kwargs)
   summary: 'Run a request/response operation. These are frequently used for management
 
     tasks against a $management node, however any node name can be specified
@@ -201,7 +263,8 @@ items:
 
     '
   syntax:
-    content: mgmt_request(message, operation, op_type=None, node=None, **kwargs)
+    content: mgmt_request(message, operation, op_type=None, node=None, callback=None,
+      **kwargs)
     parameters:
     - description: 'The message to send in the management request.
 
@@ -237,7 +300,8 @@ items:
       id: node
       type:
       - bytes
-    - description: 'Provide an optional timeout in milliseconds within which a response
+    - defaultValue: None
+      description: 'Provide an optional timeout in milliseconds within which a response
 
         to the management request must be received.
 
@@ -245,6 +309,20 @@ items:
       id: timeout
       type:
       - int
+    - description: 'The function to process the returned parameters of the management
+
+        request including status code and a description if available. This can be
+        used
+
+        to reformat the response or raise an error based on content. The function
+        must
+
+        take 3 arguments - status code, response message and description.
+
+        '
+      id: callback
+      type:
+      - callable[int, bytes, uamqp.message.Message]
     - description: 'Provide an alternate name for the status code in the
 
         response body which can vary between services due to the spec still being
@@ -277,7 +355,7 @@ items:
   langs:
   - python
   module: uamqp.client
-  name: open
+  name: open(connection=None)
   summary: 'Open the client. The client can create a new Connection
 
     or an existing Connection can be passed in. This existing Connection
@@ -302,24 +380,34 @@ items:
   type: method
   uid: uamqp.client.AMQPClient.open
 references:
+- fullName: uamqp.client.AMQPClient.auth_complete
+  isExternal: false
+  name: auth_complete()
+  parent: uamqp.client.AMQPClient
+  uid: uamqp.client.AMQPClient.auth_complete
+- fullName: uamqp.client.AMQPClient.client_ready
+  isExternal: false
+  name: client_ready()
+  parent: uamqp.client.AMQPClient
+  uid: uamqp.client.AMQPClient.client_ready
 - fullName: uamqp.client.AMQPClient.close
   isExternal: false
-  name: close
+  name: close()
   parent: uamqp.client.AMQPClient
   uid: uamqp.client.AMQPClient.close
 - fullName: uamqp.client.AMQPClient.do_work
   isExternal: false
-  name: do_work
+  name: do_work()
   parent: uamqp.client.AMQPClient
   uid: uamqp.client.AMQPClient.do_work
 - fullName: uamqp.client.AMQPClient.mgmt_request
   isExternal: false
-  name: mgmt_request
+  name: mgmt_request(message, operation, op_type=None, node=None, callback=None, **kwargs)
   parent: uamqp.client.AMQPClient
   uid: uamqp.client.AMQPClient.mgmt_request
 - fullName: uamqp.client.AMQPClient.open
   isExternal: false
-  name: open
+  name: open(connection=None)
   parent: uamqp.client.AMQPClient
   uid: uamqp.client.AMQPClient.open
 - fullName: str, bytes
@@ -334,3 +422,56 @@ references:
     name: bytes
     uid: bytes
   uid: str, bytes
+- fullName: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
+  name: func[Source, Target, dict, AMQPConnectionError]
+  spec.python:
+  - fullName: func
+    name: func
+    uid: func
+  - fullName: '['
+    name: '['
+  - fullName: uamqp.address.Source
+    name: Source
+    uid: uamqp.address.Source
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.address.Target
+    name: Target
+    uid: uamqp.address.Target
+  - fullName: ', '
+    name: ', '
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.errors.AMQPConnectionError
+    name: AMQPConnectionError
+    uid: uamqp.errors.AMQPConnectionError
+  - fullName: ']'
+    name: ']'
+  uid: func[uamqp.address.Source, uamqp.address.Target, dict, uamqp.errors.AMQPConnectionError]
+- fullName: callable[int, bytes, uamqp.message.Message]
+  name: callable[int, bytes, Message]
+  spec.python:
+  - fullName: callable
+    name: callable
+    uid: callable
+  - fullName: '['
+    name: '['
+  - fullName: int
+    name: int
+    uid: int
+  - fullName: ', '
+    name: ', '
+  - fullName: bytes
+    name: bytes
+    uid: bytes
+  - fullName: ', '
+    name: ', '
+  - fullName: uamqp.message.Message
+    name: Message
+    uid: uamqp.message.Message
+  - fullName: ']'
+    name: ']'
+  uid: callable[int, bytes, uamqp.message.Message]
