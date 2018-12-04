@@ -15,7 +15,7 @@ items:
   - inheritance:
     - inheritance:
       - type: builtins.object
-      type: azure.storage.storageclient.StorageClient
+      type: azure.storage.common.storageclient.StorageClient
     type: azure.storage.blob.baseblobservice.BaseBlobService
   langs:
   - python
@@ -28,7 +28,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 60
+    startLine: 53
   summary: 'An append blob is comprised of blocks and is optimized for append operations.
 
     When you modify an append blob, blocks are added to the end of the blob only,
@@ -55,7 +55,7 @@ items:
   syntax:
     content: AppendBlobService(account_name=None, account_key=None, sas_token=None,
       is_emulated=False, protocol='https', endpoint_suffix='core.windows.net', custom_domain=None,
-      request_session=None, connection_string=None, socket_timeout=None)
+      request_session=None, connection_string=None, socket_timeout=None, token_credential=None)
     variables:
     - description: 'The size of the blocks put by append_blob_from_* methods. Smaller
         blocks
@@ -77,7 +77,8 @@ items:
   module: azure.storage.blob.appendblobservice
   name: append_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     validate_content=False, maxsize_condition=None, progress_callback=None, lease_id=None,
-    timeout=None)
+    timeout=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
+    if_none_match=None)
   source:
     id: append_blob_from_bytes
     path: azure-storage-blob\azure\storage\blob\appendblobservice.py
@@ -85,7 +86,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 352
+    startLine: 376
   summary: 'Appends to the content of an existing blob from an array of bytes, with
 
     automatic chunking and progress notifications.
@@ -94,7 +95,8 @@ items:
   syntax:
     content: append_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
       validate_content=False, maxsize_condition=None, progress_callback=None, lease_id=None,
-      timeout=None)
+      timeout=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
+      if_none_match=None)
     parameters:
     - description: 'Name of existing container.
 
@@ -175,7 +177,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -195,6 +197,63 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
     return:
       description: 'ETag and last modified properties for the Append Blob
 
@@ -209,7 +268,8 @@ items:
   - python
   module: azure.storage.blob.appendblobservice
   name: append_blob_from_path(container_name, blob_name, file_path, validate_content=False,
-    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None, if_modified_since=None,
+    if_unmodified_since=None, if_match=None, if_none_match=None)
   source:
     id: append_blob_from_path
     path: azure-storage-blob\azure\storage\blob\appendblobservice.py
@@ -217,7 +277,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 294
+    startLine: 291
   summary: 'Appends to the content of an existing blob from a file path, with automatic
 
     chunking and progress notifications.
@@ -225,7 +285,8 @@ items:
     '
   syntax:
     content: append_blob_from_path(container_name, blob_name, file_path, validate_content=False,
-      maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+      maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None,
+      if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None)
     parameters:
     - description: 'Name of existing container.
 
@@ -290,7 +351,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -310,6 +371,63 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
     return:
       description: 'ETag and last modified properties for the Append Blob
 
@@ -324,7 +442,8 @@ items:
   - python
   module: azure.storage.blob.appendblobservice
   name: append_blob_from_stream(container_name, blob_name, stream, count=None, validate_content=False,
-    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None, if_modified_since=None,
+    if_unmodified_since=None, if_match=None, if_none_match=None)
   source:
     id: append_blob_from_stream
     path: azure-storage-blob\azure\storage\blob\appendblobservice.py
@@ -332,7 +451,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 489
+    startLine: 565
   summary: 'Appends to the content of an existing blob from a file/stream, with
 
     automatic chunking and progress notifications.
@@ -341,7 +460,8 @@ items:
   syntax:
     content: append_blob_from_stream(container_name, blob_name, stream, count=None,
       validate_content=False, maxsize_condition=None, progress_callback=None, lease_id=None,
-      timeout=None)
+      timeout=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
+      if_none_match=None)
     parameters:
     - description: 'Name of existing container.
 
@@ -414,7 +534,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -434,6 +554,63 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
     return:
       description: 'ETag and last modified properties for the Append Blob
 
@@ -448,7 +625,8 @@ items:
   - python
   module: azure.storage.blob.appendblobservice
   name: append_blob_from_text(container_name, blob_name, text, encoding='utf-8', validate_content=False,
-    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None, if_modified_since=None,
+    if_unmodified_since=None, if_match=None, if_none_match=None)
   source:
     id: append_blob_from_text
     path: azure-storage-blob\azure\storage\blob\appendblobservice.py
@@ -456,7 +634,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 425
+    startLine: 475
   summary: 'Appends to the content of an existing blob from str/unicode, with
 
     automatic chunking and progress notifications.
@@ -465,7 +643,8 @@ items:
   syntax:
     content: append_blob_from_text(container_name, blob_name, text, encoding='utf-8',
       validate_content=False, maxsize_condition=None, progress_callback=None, lease_id=None,
-      timeout=None)
+      timeout=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
+      if_none_match=None)
     parameters:
     - description: 'Name of existing container.
 
@@ -537,7 +716,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -557,6 +736,63 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.
+
+        '
+      id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetime will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.
+
+        '
+      id: if_match
+      type:
+      - str
+    - defaultValue: None
+      description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.
+
+        '
+      id: if_none_match
+      type:
+      - str
     return:
       description: 'ETag and last modified properties for the Append Blob
 
@@ -580,7 +816,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 197
+    startLine: 194
   summary: 'Commits a new block of data to the end of an existing append blob.
 
     '
@@ -753,8 +989,8 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\appendblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 125
-  summary: 'Creates a blob or overrides an existing blob. Use if_match=* to
+    startLine: 122
+  summary: 'Creates a blob or overrides an existing blob. Use if_none_match=* to
 
     prevent overriding an existing blob.
 
@@ -796,7 +1032,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -891,25 +1127,29 @@ references:
   isExternal: false
   name: append_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     validate_content=False, maxsize_condition=None, progress_callback=None, lease_id=None,
-    timeout=None)
+    timeout=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
+    if_none_match=None)
   parent: azure.storage.blob.appendblobservice.AppendBlobService
   uid: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_bytes
 - fullName: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_path
   isExternal: false
   name: append_blob_from_path(container_name, blob_name, file_path, validate_content=False,
-    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None, if_modified_since=None,
+    if_unmodified_since=None, if_match=None, if_none_match=None)
   parent: azure.storage.blob.appendblobservice.AppendBlobService
   uid: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_path
 - fullName: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_stream
   isExternal: false
   name: append_blob_from_stream(container_name, blob_name, stream, count=None, validate_content=False,
-    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None, if_modified_since=None,
+    if_unmodified_since=None, if_match=None, if_none_match=None)
   parent: azure.storage.blob.appendblobservice.AppendBlobService
   uid: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_stream
 - fullName: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_text
   isExternal: false
   name: append_blob_from_text(container_name, blob_name, text, encoding='utf-8', validate_content=False,
-    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None)
+    maxsize_condition=None, progress_callback=None, lease_id=None, timeout=None, if_modified_since=None,
+    if_unmodified_since=None, if_match=None, if_none_match=None)
   parent: azure.storage.blob.appendblobservice.AppendBlobService
   uid: azure.storage.blob.appendblobservice.AppendBlobService.append_blob_from_text
 - fullName: azure.storage.blob.appendblobservice.AppendBlobService.append_block
@@ -931,12 +1171,12 @@ references:
   name: MAX_BLOCK_SIZE
   parent: azure.storage.blob.appendblobservice.AppendBlobService
   uid: azure.storage.blob.appendblobservice.AppendBlobService.MAX_BLOCK_SIZE
-- fullName: callback function in format of func(current, total)
-  name: callback function in format of func(current, total)
+- fullName: func(current, total)
+  name: func(current, total)
   spec.python:
-  - fullName: callback function in format of func
-    name: callback function in format of func
-    uid: callback function in format of func
+  - fullName: func
+    name: func
+    uid: func
   - fullName: (
     name: (
   - fullName: current
@@ -949,4 +1189,23 @@ references:
     uid: total
   - fullName: )
     name: )
-  uid: callback function in format of func(current, total)
+  uid: func(current, total)
+- fullName: dict(str, str)
+  name: dict(str, str)
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: )
+    name: )
+  uid: dict(str, str)
