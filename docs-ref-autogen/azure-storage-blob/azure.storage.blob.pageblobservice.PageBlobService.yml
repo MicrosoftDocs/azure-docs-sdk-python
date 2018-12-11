@@ -22,7 +22,7 @@ items:
   - inheritance:
     - inheritance:
       - type: builtins.object
-      type: azure.storage.storageclient.StorageClient
+      type: azure.storage.common.storageclient.StorageClient
     type: azure.storage.blob.baseblobservice.BaseBlobService
   langs:
   - python
@@ -35,7 +35,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 69
+    startLine: 62
   summary: 'Page blobs are a collection of 512-byte pages optimized for random read
     and
 
@@ -51,7 +51,7 @@ items:
 
     Writes to page blobs happen in-place and are immediately committed to the
 
-    blob. The maximum size for a page blob is 1 TB.
+    blob. The maximum size for a page blob is 8 TB.
 
 
 
@@ -71,14 +71,15 @@ items:
   syntax:
     content: PageBlobService(account_name=None, account_key=None, sas_token=None,
       is_emulated=False, protocol='https', endpoint_suffix='core.windows.net', custom_domain=None,
-      request_session=None, connection_string=None, socket_timeout=None)
+      request_session=None, connection_string=None, socket_timeout=None, token_credential=None)
     variables:
     - description: 'The size of the pages put by create_blob_from_* methods. Smaller
         pages
 
         may be put if there is less data provided. The maximum page size the service
 
-        supports is 4MB.
+        supports is 4MB. When using the create_blob_from_* methods, empty pages are
+        skipped.
 
         '
       id: MAX_PAGE_SIZE
@@ -102,7 +103,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 386
+    startLine: 383
   summary: 'Clears a range of pages.
 
     '
@@ -272,21 +273,44 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1165
-  summary: "Copies a blob asynchronously. This operation returns a copy operation\n\
-    properties object, including a copy ID you can use to check or abort the\ncopy\
-    \ operation. The Blob service copies blobs on a best-effort basis.\n\nThe source\
-    \ blob for a copy operation must be a page blob. If the destination\nblob already\
-    \ exists, it must be of the same blob type as the source blob.\nAny existing destination\
-    \ blob will be overwritten.\nThe destination blob cannot be modified while a copy\
-    \ operation is in progress.\n\nWhen copying from a page blob, the Blob service\
-    \ creates a destination page\nblob of the source blob\u2019s length, initially\
-    \ containing all zeroes. Then\nthe source page ranges are enumerated, and non-empty\
-    \ ranges are copied.\n\nIf the tier on the source blob is larger than the tier\
-    \ being passed to this\ncopy operation or if the size of the blob exceeds the\
-    \ tier being passed to\nthis copy operation then the operation will fail.\n\n\
-    You can call get_blob_properties on the destination\nblob to check the status\
-    \ of the copy operation. The final blob will be\ncommitted when the copy completes.\n"
+    startLine: 1163
+  summary: 'Copies a blob asynchronously. This operation returns a copy operation
+
+    properties object, including a copy ID you can use to check or abort the
+
+    copy operation. The Blob service copies blobs on a best-effort basis.
+
+
+    The source blob for a copy operation must be a page blob. If the destination
+
+    blob already exists, it must be of the same blob type as the source blob.
+
+    Any existing destination blob will be overwritten.
+
+    The destination blob cannot be modified while a copy operation is in progress.
+
+
+    When copying from a page blob, the Blob service creates a destination page
+
+    blob of the source blob''s length, initially containing all zeroes. Then
+
+    the source page ranges are enumerated, and non-empty ranges are copied.
+
+
+    If the tier on the source blob is larger than the tier being passed to this
+
+    copy operation or if the size of the blob exceeds the tier being passed to
+
+    this copy operation then the operation will fail.
+
+
+    You can call get_blob_properties on the destination
+
+    blob to check the status of the copy operation. The final blob will be
+
+    committed when the copy completes.
+
+    '
   syntax:
     content: copy_blob(container_name, blob_name, copy_source, metadata=None, source_if_modified_since=None,
       source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
@@ -346,7 +370,7 @@ items:
         '
       id: metadata
       type:
-      - A dict mapping str to str.
+      - dict(str, str).
     - defaultValue: None
       description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
@@ -552,7 +576,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 135
+    startLine: 132
   summary: 'Creates a new Page Blob.
 
 
@@ -615,7 +639,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -723,12 +747,13 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1021
+    startLine: 1019
   summary: 'Creates a new blob from an array of bytes, or updates the content
 
     of an existing blob, with automatic chunking and progress
 
-    notifications.
+    notifications. Empty chunks are skipped, while non-emtpy ones(even if only partly
+    filled) are uploaded.
 
     '
   syntax:
@@ -784,7 +809,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each page of the blob. The
         storage
@@ -814,7 +839,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use.
 
@@ -932,10 +957,13 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 795
+    startLine: 792
   summary: 'Creates a new blob from a file path, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.
+
+    Empty chunks are skipped, while non-emtpy ones(even if only partly filled) are
+    uploaded.
 
     '
   syntax:
@@ -975,7 +1003,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each page of the blob. The
         storage
@@ -1005,7 +1033,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use.
 
@@ -1123,10 +1151,13 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 888
+    startLine: 885
   summary: 'Creates a new blob from a file/stream, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.
+
+    Empty chunks are skipped, while non-emtpy ones(even if only partly filled) are
+    uploaded.
 
     '
   syntax:
@@ -1174,7 +1205,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: 'False'
       description: 'If true, calculates an MD5 hash for each page of the blob. The
         storage
@@ -1204,7 +1235,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'Maximum number of parallel connections to use. Note that parallel
         upload
@@ -1324,7 +1355,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 476
+    startLine: 473
   summary: 'Returns the list of valid page ranges for a Page Blob or snapshot
 
     of a page blob.
@@ -1468,7 +1499,7 @@ items:
 
         '
       type:
-      - list of <xref:azure.storage.blob.models.PageRange>
+      - list(<xref:azure.storage.blob.models.PageRange>)
   type: method
   uid: azure.storage.blob.pageblobservice.PageBlobService.get_page_ranges
 - class: azure.storage.blob.pageblobservice.PageBlobService
@@ -1486,7 +1517,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 563
+    startLine: 560
   summary: 'The response will include only the pages that are different between either
     a
 
@@ -1643,7 +1674,7 @@ items:
 
         '
       type:
-      - list of <xref:azure.storage.blob.models.PageRange>
+      - list(<xref:azure.storage.blob.models.PageRange>)
   type: method
   uid: azure.storage.blob.pageblobservice.PageBlobService.get_page_ranges_diff
 - class: azure.storage.blob.pageblobservice.PageBlobService
@@ -1662,7 +1693,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 213
+    startLine: 210
   summary: 'Copies an incremental copy of a blob asynchronously. This operation returns
     a copy operation
 
@@ -1728,7 +1759,7 @@ items:
         '
       id: metadata
       type:
-      - A dict mapping str to str.
+      - dict(str, str).
     - defaultValue: None
       description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
@@ -1852,7 +1883,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 727
+    startLine: 724
   summary: 'Resizes a page blob to the specified size. If the specified value is less
 
     than the current size of the blob, then all pages above the specified value
@@ -1976,7 +2007,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1128
+    startLine: 1126
   summary: 'Sets the page blob tiers on the blob. This API is only supported for page
     blobs on premium accounts.
 
@@ -2037,7 +2068,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 657
+    startLine: 654
   summary: 'Sets the blob sequence number.
 
     '
@@ -2175,7 +2206,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\pageblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 296
+    startLine: 293
   summary: 'Updates a range of pages.
 
     '
@@ -2464,12 +2495,53 @@ references:
   name: MAX_PAGE_SIZE
   parent: azure.storage.blob.pageblobservice.PageBlobService
   uid: azure.storage.blob.pageblobservice.PageBlobService.MAX_PAGE_SIZE
-- fullName: callback function in format of func(current, total)
-  name: callback function in format of func(current, total)
+- fullName: dict(str, str).
+  name: dict(str, str)
   spec.python:
-  - fullName: callback function in format of func
-    name: callback function in format of func
-    uid: callback function in format of func
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: )
+    name: )
+  - fullName: .
+    name: ''
+    uid: .
+  uid: dict(str, str).
+- fullName: dict(str, str)
+  name: dict(str, str)
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: )
+    name: )
+  uid: dict(str, str)
+- fullName: func(current, total)
+  name: func(current, total)
+  spec.python:
+  - fullName: func
+    name: func
+    uid: func
   - fullName: (
     name: (
   - fullName: current
@@ -2482,4 +2554,18 @@ references:
     uid: total
   - fullName: )
     name: )
-  uid: callback function in format of func(current, total)
+  uid: func(current, total)
+- fullName: list(<xref:azure.storage.blob.models.PageRange>)
+  name: list(PageRange>)
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
+  - fullName: <xref:azure.storage.blob.models.PageRange>
+    name: PageRange>
+    uid: <xref:azure.storage.blob.models.PageRange>
+  - fullName: )
+    name: )
+  uid: list(<xref:azure.storage.blob.models.PageRange>)
