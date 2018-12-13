@@ -17,6 +17,7 @@ items:
   - azure.storage.blob.baseblobservice.BaseBlobService.generate_account_shared_access_signature
   - azure.storage.blob.baseblobservice.BaseBlobService.generate_blob_shared_access_signature
   - azure.storage.blob.baseblobservice.BaseBlobService.generate_container_shared_access_signature
+  - azure.storage.blob.baseblobservice.BaseBlobService.get_blob_account_information
   - azure.storage.blob.baseblobservice.BaseBlobService.get_blob_metadata
   - azure.storage.blob.baseblobservice.BaseBlobService.get_blob_properties
   - azure.storage.blob.baseblobservice.BaseBlobService.get_blob_service_properties
@@ -31,6 +32,7 @@ items:
   - azure.storage.blob.baseblobservice.BaseBlobService.list_blobs
   - azure.storage.blob.baseblobservice.BaseBlobService.list_containers
   - azure.storage.blob.baseblobservice.BaseBlobService.make_blob_url
+  - azure.storage.blob.baseblobservice.BaseBlobService.make_container_url
   - azure.storage.blob.baseblobservice.BaseBlobService.release_blob_lease
   - azure.storage.blob.baseblobservice.BaseBlobService.release_container_lease
   - azure.storage.blob.baseblobservice.BaseBlobService.renew_blob_lease
@@ -41,6 +43,7 @@ items:
   - azure.storage.blob.baseblobservice.BaseBlobService.set_container_acl
   - azure.storage.blob.baseblobservice.BaseBlobService.set_container_metadata
   - azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
+  - azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
   - azure.storage.blob.baseblobservice.BaseBlobService.MAX_CHUNK_GET_SIZE
   - azure.storage.blob.baseblobservice.BaseBlobService.MAX_SINGLE_GET_SIZE
   class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -48,7 +51,7 @@ items:
   inheritance:
   - inheritance:
     - type: builtins.object
-    type: azure.storage.storageclient.StorageClient
+    type: azure.storage.common.storageclient.StorageClient
   langs:
   - python
   module: azure.storage.blob.baseblobservice
@@ -60,7 +63,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 102
+    startLine: 99
   summary: 'This is the main class managing Blob resources.
 
 
@@ -115,11 +118,14 @@ items:
 
 
 
+
+
+
     '
   syntax:
     content: BaseBlobService(account_name=None, account_key=None, sas_token=None,
       is_emulated=False, protocol='https', endpoint_suffix='core.windows.net', custom_domain=None,
-      request_session=None, connection_string=None, socket_timeout=None)
+      request_session=None, connection_string=None, socket_timeout=None, token_credential=None)
     variables:
     - description: 'The size of the first range get performed by get_blob_to_* methods
         if
@@ -223,7 +229,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 3065
+    startLine: 3151
   summary: 'Aborts a pending copy_blob operation, and leaves a destination blob
 
     with zero length and full metadata.
@@ -283,7 +289,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2475
+    startLine: 2555
   summary: 'Requests a new lease. If the blob does not have an active lease, the Blob
 
     service creates a lease on the blob and returns a new lease ID.
@@ -414,7 +420,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 939
+    startLine: 972
   summary: 'Requests a new lease. If the container does not have an active lease,
 
     the Blob service creates a lease on the container and returns a new
@@ -513,7 +519,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2657
+    startLine: 2737
   summary: 'Breaks the lease, if the blob has an active lease. Once a lease is broken,
 
     it cannot be renewed. Any authorized request can break the lease; the request
@@ -658,7 +664,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1073
+    startLine: 1106
   summary: 'Break the lease, if the container has an active lease. Once a lease is
 
     broken, it cannot be renewed. Any authorized request can break the lease;
@@ -767,7 +773,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2731
+    startLine: 2811
   summary: 'Changes the lease ID of an active lease. A change must include the current
 
     lease ID and a new lease ID.
@@ -884,7 +890,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1128
+    startLine: 1161
   summary: 'Change the lease ID of an active lease. A change must include the current
 
     lease ID and a new lease ID.
@@ -973,7 +979,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2855
+    startLine: 2935
   summary: 'Copies a blob asynchronously. This operation returns a copy operation
 
     properties object, including a copy ID you can use to check or abort the
@@ -1083,7 +1089,7 @@ items:
         '
       id: metadata
       type:
-      - A dict mapping str to str.
+      - dict(str, str)
     - defaultValue: None
       description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
@@ -1270,7 +1276,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 560
+    startLine: 592
   summary: 'Creates a new container under the specified account. If the container
 
     with the same name already exists, the operation fails if
@@ -1296,15 +1302,14 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: None
       description: 'Possible values include: container, blob.
 
         '
       id: public_access
       type:
-      - One of the values listed in the <xref:azure.storage.blob.models.PublicAccess>
-        enum.
+      - azure.storage.blob.models.PublicAccess
     - defaultValue: 'False'
       description: 'Specify whether to throw an exception when the container exists.
 
@@ -1342,7 +1347,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 3102
+    startLine: 3188
   summary: 'Marks the specified blob or snapshot for deletion.
 
     The blob is later deleted during garbage collection.
@@ -1353,6 +1358,20 @@ items:
     snapshots. You can delete both at the same time with the Delete
 
     Blob operation.
+
+
+    If a delete retention policy is enabled for the service, then this operation soft
+    deletes the blob or snapshot
+
+    and retains the blob or snapshot for specified number of days.
+
+    After specified number of days, blob''s data is removed from the service during
+    garbage collection.
+
+    Soft deleted blob or snapshot is accessible through List Blobs API specifying
+    include=Include.Deleted option.
+
+    Soft-deleted blob or snapshot can be restored using Undelete API.
 
     '
   syntax:
@@ -1394,8 +1413,7 @@ items:
         '
       id: delete_snapshots
       type:
-      - One of the values listed in the <xref:azure.storage.blob.models.DeleteSnapshot>
-        enum.
+      - azure.storage.blob.models.DeleteSnapshot
     - defaultValue: None
       description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
@@ -1476,7 +1494,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 798
+    startLine: 831
   summary: 'Marks the specified container for deletion. The container and any blobs
 
     contained within it are later deleted during garbage collection.
@@ -1572,7 +1590,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1516
+    startLine: 1596
   summary: 'Returns a boolean indicating whether the container exists (if blob_name
 
     is None), or otherwise a boolean indicating whether the blob exists.
@@ -1632,7 +1650,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 259
+    startLine: 292
   summary: 'Generates a shared access signature for the blob service.
 
     Use the returned signature with the sas_token parameter of any BlobService.
@@ -1678,7 +1696,7 @@ items:
         '
       id: expiry
       type:
-      - datetime.datetime
+      - datetime
       - str
     - defaultValue: None
       description: 'The time at which the shared access signature becomes valid. If
@@ -1694,7 +1712,7 @@ items:
         '
       id: start
       type:
-      - datetime.datetime
+      - datetime
       - str
     - defaultValue: None
       description: 'Specifies an IP address or a range of IP addresses from which
@@ -1718,7 +1736,8 @@ items:
       description: 'Specifies the protocol permitted for a request made. The default
         value
 
-        is https,http. See <xref:azure.storage.models.Protocol> for possible values.
+        is https,http. See <xref:azure.storage.common.models.Protocol> for possible
+        values.
 
         '
       id: protocol
@@ -1747,7 +1766,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 392
+    startLine: 425
   summary: 'Generates a shared access signature for the blob.
 
     Use the returned signature with the sas_token parameter of any BlobService.
@@ -1803,7 +1822,7 @@ items:
         '
       id: expiry
       type:
-      - datetime.datetime
+      - datetime
       - str
     - defaultValue: None
       description: 'The time at which the shared access signature becomes valid. If
@@ -1819,7 +1838,7 @@ items:
         '
       id: start
       type:
-      - datetime.datetime
+      - datetime
       - str
     - defaultValue: None
       description: 'A unique value up to 64 characters in length that correlates to
@@ -1853,7 +1872,8 @@ items:
       description: 'Specifies the protocol permitted for a request made. The default
         value
 
-        is https,http. See <xref:azure.storage.models.Protocol> for possible values.
+        is https,http. See <xref:azure.storage.common.models.Protocol> for possible
+        values.
 
         '
       id: protocol
@@ -1928,7 +1948,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 307
+    startLine: 340
   summary: 'Generates a shared access signature for the container.
 
     Use the returned signature with the sas_token parameter of any BlobService.
@@ -1978,7 +1998,7 @@ items:
         '
       id: expiry
       type:
-      - datetime.datetime
+      - datetime
       - str
     - defaultValue: None
       description: 'The time at which the shared access signature becomes valid. If
@@ -1994,7 +2014,7 @@ items:
         '
       id: start
       type:
-      - datetime.datetime
+      - datetime
       - str
     - defaultValue: None
       description: 'A unique value up to 64 characters in length that correlates to
@@ -2030,7 +2050,8 @@ items:
       description: 'Specifies the protocol permitted for a request made. The default
         value
 
-        is https,http. See <xref:azure.storage.models.Protocol> for possible values.
+        is https,http. See <xref:azure.storage.common.models.Protocol> for possible
+        values.
 
         '
       id: protocol
@@ -2091,6 +2112,62 @@ items:
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.generate_container_shared_access_signature
 - class: azure.storage.blob.baseblobservice.BaseBlobService
+  fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_account_information
+  langs:
+  - python
+  module: azure.storage.blob.baseblobservice
+  name: get_blob_account_information(container_name=None, blob_name=None, timeout=None)
+  source:
+    id: get_blob_account_information
+    path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 1324
+  summary: 'Gets information related to the storage account.
+
+    The information can also be retrieved if the user has a SAS to a container or
+    blob.
+
+    '
+  syntax:
+    content: get_blob_account_information(container_name=None, blob_name=None, timeout=None)
+    parameters:
+    - defaultValue: None
+      description: 'Name of existing container.
+
+        Optional, unless using a SAS token to a specific container or blob, in which
+        case it''s required.
+
+        '
+      id: container_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'Name of existing blob.
+
+        Optional, unless using a SAS token to a specific blob, in which case it''s
+        required.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds.
+
+        '
+      id: timeout
+      type:
+      - int
+    return:
+      description: 'The <xref:azure.storage.blob.models.AccountInformation>.
+
+        '
+  type: method
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_account_information
+- class: azure.storage.blob.baseblobservice.BaseBlobService
   fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_metadata
   langs:
   - python
@@ -2105,7 +2182,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2250
+    startLine: 2330
   summary: 'Returns all user-defined metadata for the specified blob or snapshot.
 
     '
@@ -2211,7 +2288,7 @@ items:
 
         '
       type:
-      - a dict mapping str to str
+      - dict(str, str)
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_metadata
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -2229,13 +2306,14 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1388
+    startLine: 1467
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the blob. It does not return the content of the blob.
 
-    Returns <xref:azure.storage.blob.baseblobservice.Blob> with <xref:azure.storage.blob.baseblobservice.BlobProperties>
-    and a metadata dict.
+    Returns <xref:azure.storage.blob.models.Blob>
+
+    with <xref:azure.storage.blob.models.BlobProperties> and a metadata dict.
 
     '
   syntax:
@@ -2356,7 +2434,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1364
+    startLine: 1445
   summary: 'Gets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics.
@@ -2373,12 +2451,12 @@ items:
       type:
       - int
     return:
-      description: 'The blob service properties.
+      description: 'The blob <xref:azure.storage.common.models.ServiceProperties>
+        with an attached
+
+        target_version property.
 
         '
-      type:
-      - <xref:azure.storage.models.ServiceProperties> with an attachedtarget_version
-        property
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_service_properties
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -2394,7 +2472,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1287
+    startLine: 1351
   summary: 'Retrieves statistics related to replication for the Blob service. It is
 
     only available when read-access geo-redundant replication is enabled for
@@ -2442,7 +2520,7 @@ items:
 
         '
       type:
-      - <xref:azure.storage.models.ServiceStats>
+      - <xref:azure.storage.common.models.ServiceStats>
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_service_stats
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -2461,10 +2539,10 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2025
+    startLine: 2105
   summary: 'Downloads a blob as an array of bytes, with automatic chunking and
 
-    progress notifications. Returns an instance of <xref:azure.storage.blob.baseblobservice.Blob>
+    progress notifications. Returns an instance of <xref:azure.storage.blob.models.Blob>
     with
 
     properties, metadata, and content.
@@ -2559,7 +2637,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'If set to 2 or greater, an initial get will be done for the first
 
@@ -2693,11 +2771,10 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1661
+    startLine: 1752
   summary: 'Downloads a blob to a file path, with automatic chunking and progress
 
-    notifications. Returns an instance of <xref:azure.storage.blob.baseblobservice.Blob>
-    with
+    notifications. Returns an instance of <xref:azure.storage.blob.models.Blob> with
 
     properties and metadata.
 
@@ -2809,7 +2886,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'If set to 2 or greater, an initial get will be done for the first
 
@@ -2943,11 +3020,10 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1785
+    startLine: 1876
   summary: 'Downloads a blob to a stream, with automatic chunking and progress
 
-    notifications. Returns an instance of <xref:azure.storage.blob.baseblobservice.Blob>
-    with
+    notifications. Returns an instance of <xref:azure.storage.blob.models.Blob> with
 
     properties and metadata.
 
@@ -3047,7 +3123,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'If set to 2 or greater, an initial get will be done for the first
 
@@ -3181,11 +3257,10 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2138
+    startLine: 2218
   summary: 'Downloads a blob as unicode text, with automatic chunking and progress
 
-    notifications. Returns an instance of <xref:azure.storage.blob.baseblobservice.Blob>
-    with
+    notifications. Returns an instance of <xref:azure.storage.blob.models.Blob> with
 
     properties, metadata, and content.
 
@@ -3286,7 +3361,7 @@ items:
         '
       id: progress_callback
       type:
-      - callback function in format of func(current, total)
+      - func(current, total)
     - defaultValue: '2'
       description: 'If set to 2 or greater, an initial get will be done for the first
 
@@ -3417,7 +3492,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 712
+    startLine: 742
   summary: 'Gets the permissions for the specified container.
 
     The permissions indicate whether container data may be accessed publicly.
@@ -3448,11 +3523,13 @@ items:
       - int
     return:
       description: 'A dictionary of access policies associated with the container.
+        dict of str to
+
+        <xref:azure.storage.common.models.AccessPolicy> and a public_access property
+
+        if public access is turned on
 
         '
-      type:
-      - dict of str to <xref:azure.storage.blob.baseblobservice.AccessPolicy> and
-        a public_access propertyif public access is turned on
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_container_acl
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -3468,7 +3545,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 637
+    startLine: 667
   summary: 'Returns all user-defined metadata for the specified container.
 
     '
@@ -3502,7 +3579,7 @@ items:
 
         '
       type:
-      - a dict mapping str to str
+      - dict(str, str)
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_container_metadata
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -3518,7 +3595,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 609
+    startLine: 639
   summary: 'Returns all user-defined metadata and system properties for the specified
 
     container. The data returned does not include the container''s list of blobs.
@@ -3571,7 +3648,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1169
+    startLine: 1202
   summary: 'Returns a generator to list the blobs under the specified container.
 
     The generator will lazily follow the continuation tokens returned by
@@ -3684,7 +3761,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 480
+    startLine: 513
   summary: 'Returns a generator to list the containers under the specified account.
 
     The generator will lazily follow the continuation tokens returned by
@@ -3772,7 +3849,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 222
+    startLine: 228
   summary: 'Creates the url to access a blob.
 
     '
@@ -3830,6 +3907,59 @@ items:
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.make_blob_url
 - class: azure.storage.blob.baseblobservice.BaseBlobService
+  fullName: azure.storage.blob.baseblobservice.BaseBlobService.make_container_url
+  langs:
+  - python
+  module: azure.storage.blob.baseblobservice
+  name: make_container_url(container_name, protocol=None, sas_token=None)
+  source:
+    id: make_container_url
+    path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 265
+  summary: 'Creates the url to access a container.
+
+    '
+  syntax:
+    content: make_container_url(container_name, protocol=None, sas_token=None)
+    parameters:
+    - description: 'Name of container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'Protocol to use: ''http'' or ''https''. If not specified, uses
+        the
+
+        protocol specified when BaseBlobService was initialized.
+
+        '
+      id: protocol
+      type:
+      - str
+    - defaultValue: None
+      description: 'Shared access signature token created with
+
+        generate_shared_access_signature.
+
+        '
+      id: sas_token
+      type:
+      - str
+    return:
+      description: 'container access URL.
+
+        '
+      type:
+      - str
+  type: method
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.make_container_url
+- class: azure.storage.blob.baseblobservice.BaseBlobService
   fullName: azure.storage.blob.baseblobservice.BaseBlobService.release_blob_lease
   langs:
   - python
@@ -3843,7 +3973,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2603
+    startLine: 2683
   summary: 'Releases the lease. The lease may be released if the lease ID specified
     on the
 
@@ -3955,7 +4085,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1034
+    startLine: 1067
   summary: 'Release the lease. The lease may be released if the lease_id specified
     matches
 
@@ -4035,7 +4165,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2544
+    startLine: 2624
   summary: 'Renews the lease. The lease can be renewed if the lease ID specified on
 
     the request matches that associated with the blob. Note that the lease may
@@ -4153,7 +4283,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 990
+    startLine: 1023
   summary: 'Renews the lease. The lease can be renewed if the lease ID specified
 
     matches that associated with the container. Note that
@@ -4241,7 +4371,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2314
+    startLine: 2394
   summary: 'Sets user-defined metadata for the specified blob as one or more
 
     name-value pairs.
@@ -4274,7 +4404,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: None
       description: 'Required if the blob has an active lease.
 
@@ -4369,7 +4499,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1452
+    startLine: 1532
   summary: 'Sets system properties on the blob. If one property is set for the
 
     content_settings, all properties will be overriden.
@@ -4484,7 +4614,7 @@ items:
   - python
   module: azure.storage.blob.baseblobservice
   name: set_blob_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
-    cors=None, target_version=None, timeout=None)
+    cors=None, target_version=None, timeout=None, delete_retention_policy=None, static_website=None)
   source:
     id: set_blob_service_properties
     path: azure-storage-blob\azure\storage\blob\baseblobservice.py
@@ -4492,7 +4622,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 1323
+    startLine: 1387
   summary: 'Sets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics. If an element (ex Logging) is left as None, the
@@ -4502,7 +4632,8 @@ items:
     '
   syntax:
     content: set_blob_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
-      cors=None, target_version=None, timeout=None)
+      cors=None, target_version=None, timeout=None, delete_retention_policy=None,
+      static_website=None)
     parameters:
     - defaultValue: None
       description: 'Groups the Azure Analytics Logging settings.
@@ -4510,7 +4641,7 @@ items:
         '
       id: logging
       type:
-      - Logging
+      - <xref:azure.storage.common.models.Logging>
     - defaultValue: None
       description: 'The hour metrics settings provide a summary of request
 
@@ -4519,7 +4650,7 @@ items:
         '
       id: hour_metrics
       type:
-      - Metrics
+      - <xref:azure.storage.common.models.Metrics>
     - defaultValue: None
       description: 'The minute metrics settings provide request statistics
 
@@ -4528,7 +4659,7 @@ items:
         '
       id: minute_metrics
       type:
-      - Metrics
+      - <xref:azure.storage.common.models.Metrics>
     - defaultValue: None
       description: 'You can include up to five CorsRule elements in the
 
@@ -4539,7 +4670,7 @@ items:
         '
       id: cors
       type:
-      - list of <xref:azure.storage.blob.baseblobservice.CorsRule>
+      - list(<xref:azure.storage.common.models.CorsRule>)
     - defaultValue: None
       description: 'Indicates the default version to use for requests if an incoming
 
@@ -4548,7 +4679,7 @@ items:
         '
       id: target_version
       type:
-      - string
+      - str
     - defaultValue: None
       description: 'The timeout parameter is expressed in seconds.
 
@@ -4556,6 +4687,25 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'The delete retention policy specifies whether to retain deleted
+        blobs.
+
+        It also specifies the number of days and versions of blob to keep.
+
+        '
+      id: delete_retention_policy
+      type:
+      - <xref:azure.storage.common.models.DeleteRetentionPolicy>
+    - defaultValue: None
+      description: 'Specifies whether the static website feature is enabled,
+
+        and if yes, indicates the index document and 404 error document to use.
+
+        '
+      id: static_website
+      type:
+      - <xref:azure.storage.common.models.StaticWebsite>
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_service_properties
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -4572,7 +4722,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 743
+    startLine: 772
   summary: 'Sets the permissions for the specified container or stored access
 
     policies that may be used with Shared Access Signatures. The permissions
@@ -4601,15 +4751,14 @@ items:
         '
       id: signed_identifiers
       type:
-      - dict of str to <xref:azure.storage.blob.baseblobservice.AccessPolicy>
+      - dict(str, <xref:azure.storage.common.models.AccessPolicy>)
     - defaultValue: None
       description: 'Possible values include: container, blob.
 
         '
       id: public_access
       type:
-      - One of the values listed in the <xref:azure.storage.blob.models.PublicAccess>
-        enum.
+      - azure.storage.blob.models.PublicAccess
     - defaultValue: None
       description: 'If specified, set_container_acl only succeeds if the
 
@@ -4620,7 +4769,7 @@ items:
       type:
       - str
     - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+      description: 'A datetime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -4629,10 +4778,26 @@ items:
 
         Specify this header to perform the operation only
 
-        if the resource has been modified since the specified time.
+        if the resource has been modified since the specified date/time.
 
         '
       id: if_modified_since
+      type:
+      - datetime
+    - defaultValue: None
+      description: 'A datetime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.
+
+        '
+      id: if_unmodified_since
       type:
       - datetime
     - defaultValue: None
@@ -4642,8 +4807,6 @@ items:
       id: timeout
       type:
       - int
-    - defaultValue: None
-      id: timeout
     return:
       description: 'ETag and last modified properties for the updated Container
 
@@ -4666,7 +4829,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 666
+    startLine: 696
   summary: 'Sets one or more user-defined name-value pairs for the specified
 
     container. Each call to this operation replaces all existing metadata
@@ -4695,7 +4858,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: None
       description: 'If specified, set_container_metadata only succeeds if the
 
@@ -4750,7 +4913,7 @@ items:
       branch: master
       path: azure-storage-blob\azure\storage\blob\baseblobservice.py
       repo: https://github.com/Azure/azure-storage-python.git
-    startLine: 2788
+    startLine: 2868
   summary: 'Creates a read-only snapshot of a blob.
 
     '
@@ -4785,7 +4948,7 @@ items:
         '
       id: metadata
       type:
-      - a dict mapping str to str
+      - dict(str, str)
     - defaultValue: None
       description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
@@ -4865,6 +5028,51 @@ items:
       - <xref:azure.storage.blob.models.Blob>
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
+- class: azure.storage.blob.baseblobservice.BaseBlobService
+  fullName: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
+  langs:
+  - python
+  module: azure.storage.blob.baseblobservice
+  name: undelete_blob(container_name, blob_name, timeout=None)
+  source:
+    id: undelete_blob
+    path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+    remote:
+      branch: master
+      path: azure-storage-blob\azure\storage\blob\baseblobservice.py
+      repo: https://github.com/Azure/azure-storage-python.git
+    startLine: 3262
+  summary: 'The undelete Blob operation restores the contents and metadata of soft
+    deleted blob or snapshot.
+
+    Attempting to undelete a blob or snapshot that is not soft deleted will succeed
+    without any changes.
+
+    '
+  syntax:
+    content: undelete_blob(container_name, blob_name, timeout=None)
+    parameters:
+    - description: 'Name of existing container.
+
+        '
+      id: container_name
+      type:
+      - str
+    - description: 'Name of existing blob.
+
+        '
+      id: blob_name
+      type:
+      - str
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds.
+
+        '
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
 - class: azure.storage.blob.baseblobservice.BaseBlobService
   fullName: azure.storage.blob.baseblobservice.BaseBlobService.MAX_CHUNK_GET_SIZE
   langs:
@@ -4982,6 +5190,11 @@ references:
     content_disposition=None, content_encoding=None, content_language=None, content_type=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.generate_container_shared_access_signature
+- fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_account_information
+  isExternal: false
+  name: get_blob_account_information(container_name=None, blob_name=None, timeout=None)
+  parent: azure.storage.blob.baseblobservice.BaseBlobService
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_account_information
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_metadata
   isExternal: false
   name: get_blob_metadata(container_name, blob_name, snapshot=None, lease_id=None,
@@ -5070,6 +5283,11 @@ references:
   name: make_blob_url(container_name, blob_name, protocol=None, sas_token=None, snapshot=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.make_blob_url
+- fullName: azure.storage.blob.baseblobservice.BaseBlobService.make_container_url
+  isExternal: false
+  name: make_container_url(container_name, protocol=None, sas_token=None)
+  parent: azure.storage.blob.baseblobservice.BaseBlobService
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.make_container_url
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.release_blob_lease
   isExternal: false
   name: release_blob_lease(container_name, blob_name, lease_id, if_modified_since=None,
@@ -5111,7 +5329,7 @@ references:
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_service_properties
   isExternal: false
   name: set_blob_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
-    cors=None, target_version=None, timeout=None)
+    cors=None, target_version=None, timeout=None, delete_retention_policy=None, static_website=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_service_properties
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.set_container_acl
@@ -5132,6 +5350,11 @@ references:
     if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
+- fullName: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
+  isExternal: false
+  name: undelete_blob(container_name, blob_name, timeout=None)
+  parent: azure.storage.blob.baseblobservice.BaseBlobService
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.MAX_CHUNK_GET_SIZE
   isExternal: false
   name: MAX_CHUNK_GET_SIZE
@@ -5142,12 +5365,31 @@ references:
   name: MAX_SINGLE_GET_SIZE
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.MAX_SINGLE_GET_SIZE
-- fullName: callback function in format of func(current, total)
-  name: callback function in format of func(current, total)
+- fullName: dict(str, str)
+  name: dict(str, str)
   spec.python:
-  - fullName: callback function in format of func
-    name: callback function in format of func
-    uid: callback function in format of func
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: )
+    name: )
+  uid: dict(str, str)
+- fullName: func(current, total)
+  name: func(current, total)
+  spec.python:
+  - fullName: func
+    name: func
+    uid: func
   - fullName: (
     name: (
   - fullName: current
@@ -5160,4 +5402,37 @@ references:
     uid: total
   - fullName: )
     name: )
-  uid: callback function in format of func(current, total)
+  uid: func(current, total)
+- fullName: list(<xref:azure.storage.common.models.CorsRule>)
+  name: list(CorsRule>)
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
+  - fullName: <xref:azure.storage.common.models.CorsRule>
+    name: CorsRule>
+    uid: <xref:azure.storage.common.models.CorsRule>
+  - fullName: )
+    name: )
+  uid: list(<xref:azure.storage.common.models.CorsRule>)
+- fullName: dict(str, <xref:azure.storage.common.models.AccessPolicy>)
+  name: dict(str, AccessPolicy>)
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: <xref:azure.storage.common.models.AccessPolicy>
+    name: AccessPolicy>
+    uid: <xref:azure.storage.common.models.AccessPolicy>
+  - fullName: )
+    name: )
+  uid: dict(str, <xref:azure.storage.common.models.AccessPolicy>)
