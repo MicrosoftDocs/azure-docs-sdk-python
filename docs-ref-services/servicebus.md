@@ -2,10 +2,10 @@
 title: Service Bus libraries for Python 
 description: Reference documentation for the Python client and management libraries for Service Bus
 keywords: Azure, Python, SDK, API, messaging, pubsub, pub-sub, message broker
-author: lisawong19
-ms.author: liwong
-manager: routlaw
-ms.date: 02/21/2018
+author: annatisch
+ms.author: antisch
+manager: mayurid
+ms.date: 01/10/2019
 ms.topic: article
 ms.devlang: python
 ms.service: service-bus
@@ -175,7 +175,7 @@ The new package offers a new AMQP-based API for improved message passing reliabi
 
 
 ## How do I migrate my code to the new version?
-Code written against v0.21.0 can be ported to version 0.50.0 by simple changing the import namespace:
+Code written against v0.21.0 can be ported to version 0.50.0 by simply changing the import namespace:
 
 ```python
 from azure.servicebus.control_client import ServiceBusService
