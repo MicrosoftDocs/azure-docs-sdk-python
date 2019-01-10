@@ -14,18 +14,18 @@ items:
   name: NetworkConfiguration
   source:
     id: NetworkConfiguration
-    path: azure-batch\azure\batch\models\network_configuration_py3.py
+    path: azure-batch\azure\batch\models\_models_py3.py
     remote:
       branch: master
-      path: azure-batch\azure\batch\models\network_configuration_py3.py
+      path: azure-batch\azure\batch\models\_models_py3.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 15
+    startLine: 6170
   summary: 'The network configuration for a pool.
 
     '
   syntax:
-    content: 'NetworkConfiguration(*, subnet_id: str = None, endpoint_configuration=None,
-      **kwargs) -> None'
+    content: 'NetworkConfiguration(*, subnet_id: str = None, dynamic_vnet_assignment_scope=None,
+      endpoint_configuration=None, **kwargs) -> None'
     parameters:
     - description: 'The ARM resource identifier of the virtual network
 
@@ -41,41 +41,15 @@ items:
 
         doesn''t have enough free IP addresses, the pool will partially allocate
 
-        compute nodes, and a resize error will occur. The ''MicrosoftAzureBatch''
+        compute nodes, and a resize error will occur. For pools created with
 
-        service principal must have the ''Classic Virtual Machine Contributor''
+        virtualMachineConfiguration only ARM virtual networks
 
-        Role-Based Access Control (RBAC) role for the specified VNet. The
+        (''Microsoft.Network/virtualNetworks'') are supported, but for pools created
 
-        specified subnet must allow communication from the Azure Batch service to
+        with cloudServiceConfiguration both ARM and classic virtual networks are
 
-        be able to schedule tasks on the compute nodes. This can be verified by
-
-        checking if the specified VNet has any associated Network Security Groups
-
-        (NSG). If communication to the compute nodes in the specified subnet is
-
-        denied by an NSG, then the Batch service will set the state of the compute
-
-        nodes to unusable. For pools created with virtualMachineConfiguration only
-
-        ARM virtual networks (''Microsoft.Network/virtualNetworks'') are supported,
-
-        but for pools created with cloudServiceConfiguration both ARM and classic
-
-        virtual networks are supported. If the specified VNet has any associated
-
-        Network Security Groups (NSG), then a few reserved system ports must be
-
-        enabled for inbound communication. For pools created with a virtual
-
-        machine configuration, enable ports 29876 and 29877, as well as port 22
-
-        for Linux and port 3389 for Windows. For pools created with a cloud
-
-        service configuration, enable ports 10100, 20100, and 30100. Also enable
-
-        outbound connections to Azure Storage on port 443. For more details see:
+        supported. For more details, see:
 
         [https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration](https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration)
 
@@ -83,6 +57,15 @@ items:
       id: subnet_id
       type:
       - str
+    - description: 'The scope of dynamic vnet
+
+        assignment. Possible values include: ''none'', ''job''
+
+        '
+      id: dynamic_vnet_assignment_scope
+      type:
+      - str
+      - azure.batch.models.DynamicVNetAssignmentScope
     - description: 'The configuration for endpoints on compute
 
         nodes in the Batch pool. Pool endpoint configuration is only supported on
