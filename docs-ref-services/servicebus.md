@@ -15,12 +15,51 @@ ms.service: service-bus
 
 ## Overview
 
-Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging. 
+Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.
+
+As of version 0.50.0 a new AMQP-based API is available for sending and receiving messages. This update involves breaking changes.
+Please read [Migration from v0.21.1 to v0.50.0](#migration-from-v0.21.1-to-v0.50.0) to determine if upgrading is
+right for you at this time.
+
+For documentation on the legacy HTTP-based operations please see [Using HTTP-based operations of the legacy API](#using-http-based-operations-of-the-legacy-api)
+
+
+## Prerequisites
+
+* Azure subscription - [Create a free account](https://azure.microsoft.com/free/)
+* Azure [Service Bus namespace and management credentials](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal)
+* [Python 2.7-3.7](https://www.python.org/downloads/)
+
 
 ## Install the libraries
 ```bash
 pip install azure-servicebus
 ```
+
+## Create Client
+
+To get started, you will need to create a ServiceBusClient using the
+namespace and credentials that can be retrieved from the Azure Portal.
+```python
+import os
+from azure.servicebus import ServiceBusClient
+
+namespace = os.environ['SB_NAMESPACE']
+policy = os.environ['SB_ACCESS_POLICY']
+key = os.environ['SB_ACCESS_KEY']
+
+sb_client = ServiceBusClient(
+    service_namespace=namespace,
+    shared_access_key_name=policy,
+    shared_access_key_value=key)
+```
+A client can also be created with the Connection String from the portal directly:
+```python
+connection_str = os.environ['SB_CONN_STR']
+
+sb_client = ServiceBusClient.from_connection_string(connection_str)
+```
+
 
 ## ServiceBus Queues
 ServiceBus Queues are an alternative to Storage Queues that might be
@@ -29,12 +68,128 @@ useful in scenarios where more advanced messaging features are needed
 reads, scheduled delivery) using push-style delivery (using long
 polling).
 
-The service can use Shared Access Signature authentication, or ACS
-authentication.
+The service can use Shared Access Signature authentication.
 
-Service bus namespaces created using the Azure portal after August 2014
-no longer support ACS authentication. You can create ACS compatible
-namespaces with the Azure SDK.
+### Create queue
+This creates a new queue within the ServiceBus namespace. If a queue of the same name already exists an error will be raised. 
+```python
+sb_client.create_queue("MyQueue")
+```
+Optional parameters to configure the queue behaviour can also be specified
+```python
+sb_client.create_queue(
+    "MySessionQueue",
+    requires_session=True  # Create a sessionful queue
+    max_delivery_count=5  # Max delivery attempts per message
+)
+```
+
+### Get a queue client
+A QueueClient can be used to send and receive messages from the queue, along with other operations.
+```python
+queue_client = sb_client.get_queue("MyQueue")
+```
+
+### Sending messages
+The queue client can send one or messages at a time:
+```python
+from azure.servicebus import Message
+
+message = Message("Hello World")
+queue_client.send(message)
+
+message_one = Message("First")
+message_two = Message("Second")
+queue_client.send([message_one, message_two])
+```
+Each call to QueueClient.send will create a new service connection. To reuse the same connection for multiple send calls, you can open a sender:
+```python
+message_one = Message("First")
+message_two = Message("Second")
+
+with queue_client.get_sender() as sender:
+    sender.send(message_one)
+    sender.send(message_two)
+```
+
+### Receiving messages
+Message can be received from a queue as a continuous iterator. The default mode for message receiving is [PeekLock](https://docs.microsoft.com/rest/api/servicebus/peek-lock-message-non-destructive-read), which requires each message to be explicitly completed in order that it be removed from the queue.
+```python
+messages = queue_client.get_receiver()
+for message in messages:
+    print(message)
+    message.complete()
+```
+The service connection will remain open for the entirety of the iterator.
+If you find yourself only partially iterating the message stream, you should run the receiver in a `with` statement to ensure the connection is closed:
+```python
+with queue_client.get_receiver() as messages:
+    for message in messages:
+        print(message)
+        message.complete()
+        break
+```
+
+## ServiceBus Topics and Subscriptions
+
+ServiceBus topics are an abstraction on top of ServiceBus Queues that
+make pub/sub scenarios easy to implement.
+
+### Create topic
+This creates a new topic within the ServiceBus namespace. If a topic of the same name already exists an error will be raised. 
+```python
+sb_client.create_queue("MyTopic")
+```
+
+### Get a topic client
+A TopicClient can be used to send messages to the topic, along with other operations.
+```python
+topic_client = sb_client.get_topic("MyTopic")
+```
+
+### Create subscription
+This creates a new subscription for the specified topic within the ServiceBus namespace.
+```python
+sb_client.create_subscription("MyTopic", "MySubscription")
+```
+
+### Get a subscription client
+A SubscriptionClient can be used to receive messages from the topic, along with other operations.
+```python
+topic_client = sb_client.get_subscription("MyTopic", "MySubscription")
+```
+
+# Migration from v0.21.1 to v0.50.0
+Major breaking changes were introduced in version 0.50.0.
+The original HTTP-based API is still available in v0.50.0 - however it now exists under a new namesapce: `azure.servicebus.control_client`.
+
+The new package introduces a new AMQP-based API for sending and receiving messages.
+
+
+## Should I upgrade?
+The new package (v0.50.0) offers no improvements in HTTP-based operations over v0.21.1. The HTTP-based API is identical except that it now exists under a new namespace. For this reason if you only wish to use HTTP-based operations (`create_queue`, `delete_queue` etc) - there will be no additional benefit in upgrading at this time.
+
+
+## What's in the new package?
+The new package offers a new AMQP-based API for improved message passing reliability and performance.
+
+
+## How do I migrate my code to the new version?
+Code written against v0.21.0 can be ported to version 0.50.0 by simple changing the import namespace:
+
+```python
+from azure.servicebus.control_client import ServiceBusService
+
+key_name = 'RootManageSharedAccessKey' # SharedAccessKeyName from Azure portal
+key_value = '' # SharedAccessKey from Azure portal
+sbs = ServiceBusService(service_namespace,
+                        shared_access_key_name=key_name,
+                        shared_access_key_value=key_value)
+```
+
+# Using HTTP-based operations of the legacy API
+
+## ServiceBus Queues
 
 ### Shared Access Signature Authentication
 
@@ -42,7 +197,7 @@ To use Shared Access Signature authentication, create the service bus
 service with:
 
 ```python
-from azure.servicebus import ServiceBusService
+from azure.servicebus.control_client import ServiceBusService
 
 key_name = 'RootManageSharedAccessKey' # SharedAccessKeyName from Azure portal
 key_value = '' # SharedAccessKey from Azure portal
@@ -56,7 +211,7 @@ sbs = ServiceBusService(service_namespace,
 To use ACS authentication, create the service bus service with:
 
 ```python
-from azure.servicebus import ServiceBusService
+from azure.servicebus.control_client import ServiceBusService
 
 account_key = '' # DEFAULT KEY from Azure portal
 issuer = 'owner' # DEFAULT ISSUER from Azure portal
@@ -75,7 +230,7 @@ The **send\_queue\_message** method can then be called to insert the
 message into the queue:
 
 ```python
-from azure.servicebus import Message
+from azure.servicebus.control_client import Message
 
 msg = Message('Hello World!')
 sbs.send_queue_message('taskqueue', msg)
@@ -84,7 +239,7 @@ The **send\_queue\_message_batch** method can then be called to
 send several messages at once:
 
 ```python
-from azure.servicebus import Message
+from azure.servicebus.control_client import Message
 
 msg1 = Message('Hello World!')
 msg2 = Message('Hello World again!')
@@ -99,9 +254,6 @@ msg = sbs.receive_queue_message('taskqueue')
 
 ## ServiceBus Topics
 
-ServiceBus topics are an abstraction on top of ServiceBus Queues that
-make pub/sub scenarios easy to implement.
-
 The **create\_topic** method can be used to create a server-side topic:
 
 ```python
@@ -111,7 +263,7 @@ The **send\_topic\_message** method can be used to send a message to a
 topic:
 
 ```python
-from azure.servicebus import Message
+from azure.servicebus.control_client import Message
 
 msg = Message(b'Hello World!')
 sbs.send_topic_message('taskdiscussion', msg)
@@ -121,7 +273,7 @@ The **send\_topic\_message_batch** method can be used to send
 several messages at once:
 
 ```python
-from azure.servicebus import Message
+from azure.servicebus.control_client import Message
 
 msg1 = Message(b'Hello World!')
 msg2 = Message(b'Hello World again!')
@@ -137,7 +289,7 @@ calling the **create\_subscription** method followed by the
 sent before the subscription is created will not be received.
 
 ```python
-from azure.servicebus import Message
+from azure.servicebus.control_client import Message
 
 sbs.create_subscription('taskdiscussion', 'client1')
 msg = Message('Hello World!')
