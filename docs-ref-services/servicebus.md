@@ -39,8 +39,24 @@ pip install azure-servicebus
 
 ## Connect to Azure Service Bus
 
-To get started, you will need to create a ServiceBusClient using the
-connection string that can be retrieved from the Azure portal.
+### Get credentials
+
+Use the Azure CLI snippet below to populate an environment variable with the Service Bus connection string (you can also find this value in the Azure portal). The snippet is formatted for the Bash shell.
+
+```Bash
+RES_GROUP=<resource-group-name>
+NAMESPACE=<servicebus-namesapce>
+
+export SB_CONN_STR=$(az servicebus namespace authorization-rule keys list \
+ --resource-group $RES_GROUP \
+ --namespace-name $NAMESPACE \
+ --name RootManageSharedAccessKey \
+ --query primaryConnectionString \
+ --output tsv)
+```
+
+### Create client
+Once you've populated the `SB_CONN_STR` environment variable, you can create the ServiceBusClient.
 ```python
 import os
 from azure.servicebus import ServiceBusClient
