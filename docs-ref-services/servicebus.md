@@ -13,13 +13,14 @@ ms.service: service-bus
 
 # Service Bus libraries for Python
 
-## Overview
-
 Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.
 
-As of version 0.50.0 a new AMQP-based API is available for sending and receiving messages. This update involves breaking changes.
+## What's new in v0.50.0?
+As of version 0.50.0 a new AMQP-based API is available for sending and receiving messages. This update involves **breaking changes**.
 Please read [Migration from v0.21.1 to v0.50.0](#migration-from-v0.21.1-to-v0.50.0) to determine if upgrading is
 right for you at this time.
+
+The new AMQP-based API offers improved message passing reliability, performance and expanded feature support going forward.
 
 For documentation on the legacy HTTP-based operations please see [Using HTTP-based operations of the legacy API](#using-http-based-operations-of-the-legacy-api)
 
@@ -27,42 +28,31 @@ For documentation on the legacy HTTP-based operations please see [Using HTTP-bas
 ## Prerequisites
 
 * Azure subscription - [Create a free account](https://azure.microsoft.com/free/)
-* Azure [Service Bus namespace and management credentials](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal)
+* Azure [Service Bus namespace and management credentials](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal)
 * [Python 2.7-3.7](https://www.python.org/downloads/)
 
 
-## Install the libraries
+## Installation
 ```bash
 pip install azure-servicebus
 ```
 
-## Create Client
+## Connect to Azure Service Bus
 
 To get started, you will need to create a ServiceBusClient using the
-namespace and credentials that can be retrieved from the Azure Portal.
+connection string that can be retrieved from the Azure portal.
 ```python
 import os
 from azure.servicebus import ServiceBusClient
 
-namespace = os.environ['SB_NAMESPACE']
-policy = os.environ['SB_ACCESS_POLICY']
-key = os.environ['SB_ACCESS_KEY']
-
-sb_client = ServiceBusClient(
-    service_namespace=namespace,
-    shared_access_key_name=policy,
-    shared_access_key_value=key)
-```
-A client can also be created with the Connection String from the portal directly:
-```python
 connection_str = os.environ['SB_CONN_STR']
 
 sb_client = ServiceBusClient.from_connection_string(connection_str)
 ```
 
 
-## ServiceBus Queues
-ServiceBus Queues are an alternative to Storage Queues that might be
+## Service Bus Queues
+Service Bus Queues are an alternative to Storage Queues that might be
 useful in scenarios where more advanced messaging features are needed
 (larger message sizes, message ordering, single-operation destructive
 reads, scheduled delivery) using push-style delivery (using long
@@ -71,7 +61,7 @@ polling).
 The service can use Shared Access Signature authentication.
 
 ### Create queue
-This creates a new queue within the ServiceBus namespace. If a queue of the same name already exists an error will be raised. 
+This creates a new queue within the Service Bus namespace. If a queue of the same name already exists an error will be raised. 
 ```python
 sb_client.create_queue("MyQueue")
 ```
@@ -91,7 +81,7 @@ queue_client = sb_client.get_queue("MyQueue")
 ```
 
 ### Sending messages
-The queue client can send one or messages at a time:
+The queue client can send one or more messages at a time:
 ```python
 from azure.servicebus import Message
 
@@ -130,15 +120,15 @@ with queue_client.get_receiver() as messages:
         break
 ```
 
-## ServiceBus Topics and Subscriptions
+## Service Bus Topics and Subscriptions
 
-ServiceBus topics are an abstraction on top of ServiceBus Queues that
+Service Bus topics are an abstraction on top of Service Bus Queues that
 make pub/sub scenarios easy to implement.
 
 ### Create topic
-This creates a new topic within the ServiceBus namespace. If a topic of the same name already exists an error will be raised. 
+This creates a new topic within the Service Bus namespace. If a topic of the same name already exists an error will be raised. 
 ```python
-sb_client.create_queue("MyTopic")
+sb_client.create_topic("MyTopic")
 ```
 
 ### Get a topic client
@@ -148,7 +138,7 @@ topic_client = sb_client.get_topic("MyTopic")
 ```
 
 ### Create subscription
-This creates a new subscription for the specified topic within the ServiceBus namespace.
+This creates a new subscription for the specified topic within the Service Bus namespace.
 ```python
 sb_client.create_subscription("MyTopic", "MySubscription")
 ```
@@ -159,22 +149,15 @@ A SubscriptionClient can be used to receive messages from the topic, along with 
 topic_client = sb_client.get_subscription("MyTopic", "MySubscription")
 ```
 
-# Migration from v0.21.1 to v0.50.0
+## Migration from v0.21.1 to v0.50.0
 Major breaking changes were introduced in version 0.50.0.
 The original HTTP-based API is still available in v0.50.0 - however it now exists under a new namesapce: `azure.servicebus.control_client`.
 
-The new package introduces a new AMQP-based API for sending and receiving messages.
-
-
-## Should I upgrade?
+### Should I upgrade?
 The new package (v0.50.0) offers no improvements in HTTP-based operations over v0.21.1. The HTTP-based API is identical except that it now exists under a new namespace. For this reason if you only wish to use HTTP-based operations (`create_queue`, `delete_queue` etc) - there will be no additional benefit in upgrading at this time.
 
 
-## What's in the new package?
-The new package offers a new AMQP-based API for improved message passing reliability and performance.
-
-
-## How do I migrate my code to the new version?
+### How do I migrate my code to the new version?
 Code written against v0.21.0 can be ported to version 0.50.0 by simply changing the import namespace:
 
 ```python
@@ -187,11 +170,11 @@ sbs = ServiceBusService(service_namespace,
                         shared_access_key_value=key_value)
 ```
 
-# Using HTTP-based operations of the legacy API
+## Using HTTP-based operations of the legacy API
 
-## ServiceBus Queues
+### Service Bus Queues
 
-### Shared Access Signature Authentication
+#### Shared Access Signature Authentication
 
 To use Shared Access Signature authentication, create the service bus
 service with:
@@ -206,7 +189,7 @@ sbs = ServiceBusService(service_namespace,
                         shared_access_key_value=key_value)
 ```
 
-### ACS Authentication
+#### ACS Authentication
 
 To use ACS authentication, create the service bus service with:
 
@@ -219,7 +202,7 @@ sbs = ServiceBusService(service_namespace,
                         account_key=account_key,
                         issuer=issuer)
 ```
-### Sending and Receiving Messages
+#### Sending and Receiving Messages
 
 The **create\_queue** method can be used to ensure a queue exists:
 
@@ -252,7 +235,7 @@ dequeue the message.
 msg = sbs.receive_queue_message('taskqueue')
 ```
 
-## ServiceBus Topics
+### Service Bus Topics
 
 The **create\_topic** method can be used to create a server-side topic:
 
@@ -297,7 +280,7 @@ sbs.send_topic_message('taskdiscussion', msg)
 msg = sbs.receive_subscription_message('taskdiscussion', 'client1')
 ```
 
-## Event Hub
+### Event Hub
 
 Event Hubs enable the collection of event streams at high throughput, from
 a diverse set of devices and services.
@@ -314,31 +297,31 @@ sbs.send_event('myhub', '{ "DeviceId":"dev-01", "Temperature":"37.0" }')
 ```
 The event content is the event message or JSON-encoded string that contains multiple messages.
 
-## Advanced features
+### Advanced features
 
-### Broker Properties and User Properties
+#### Broker Properties and User Properties
 
 This section describes how to use Broker and User properties defined [here](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties):
 
 ```python
 sent_msg = Message(b'This is the third message',
-                    broker_properties={'Label': 'M3'},
-                    custom_properties={'Priority': 'Medium',
-                                        'Customer': 'ABC'}
+                   broker_properties={'Label': 'M3'},
+                   custom_properties={'Priority': 'Medium',
+                                      'Customer': 'ABC'}
             )
 ```
 You can use datetime, int, float or boolean
 
 ```python
 props = {'hello': 'world',
-            'number': 42,
-            'active': True,
-            'deceased': False,
-            'large': 8555111000,
-            'floating': 3.14,
-            'dob': datetime(2011, 12, 14),
-            'double_quote_message': 'This "should" work fine',
-            'quote_message': "This 'should' work fine"}
+         'number': 42,
+         'active': True,
+         'deceased': False,
+         'large': 8555111000,
+         'floating': 3.14,
+         'dob': datetime(2011, 12, 14),
+         'double_quote_message': 'This "should" work fine',
+         'quote_message': "This 'should' work fine"}
 sent_msg = Message(b'message with properties', custom_properties=props)
 ```
 For compatibility reason with old version of this library, 
@@ -349,7 +332,7 @@ will be made by Python before sending to the RestAPI.
 ```python
 broker_properties = '{"ForcePersistence": false, "Label": "My label"}'
 sent_msg = Message(b'receive message',
-                    broker_properties = broker_properties
+                   broker_properties = broker_properties
 )
 ```
 
