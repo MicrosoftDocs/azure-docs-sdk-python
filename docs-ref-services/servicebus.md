@@ -40,12 +40,11 @@ pip install azure-servicebus
 ## Connect to Azure Service Bus
 
 ### Get credentials
-
 Use the Azure CLI snippet below to populate an environment variable with the Service Bus connection string (you can also find this value in the Azure portal). The snippet is formatted for the Bash shell.
 
 ```Bash
 RES_GROUP=<resource-group-name>
-NAMESPACE=<servicebus-namesapce>
+NAMESPACE=<servicebus-namespace>
 
 export SB_CONN_STR=$(az servicebus namespace authorization-rule keys list \
  --resource-group $RES_GROUP \
