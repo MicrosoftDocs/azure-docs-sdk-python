@@ -267,7 +267,7 @@ client.clusters.list()
 client.clusters.list_by_resource_group("<Resource Group Name>")
 ```
 > [!NOTE]
-> Both `list()` and `list_by_resource_group()` return an `ClusterPaged` object. Calling `advance_page()` returns the a list of clusters on that page and advances the `ClusterPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages.
+> Both `list()` and `list_by_resource_group()` return a `ClusterPaged` object. Calling `advance_page()` returns a list of clusters on that page and advances the `ClusterPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages.
 
 #### Example
 
@@ -370,7 +370,7 @@ client.script_actions.delete("<Resource Group Name>", "<Cluster Name", "<Script 
 ### List Persisted Script Actions
 
 > [!NOTE]
-> `list()` and `list_persisted_scripts()` return a `RuntimeScriptActionDetailPaged` object. Calling `advance_page()` returns the a list of `RuntimeScriptActionDetail` on that page and advances the `RuntimeScriptActionDetailPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages. See the example below.
+> `list()` and `list_persisted_scripts()` return a `RuntimeScriptActionDetailPaged` object. Calling `advance_page()` returns a list of `RuntimeScriptActionDetail` on that page and advances the `RuntimeScriptActionDetailPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages. See the example below.
 
 To list all persisted script actions for the specified cluster:
 ```python
