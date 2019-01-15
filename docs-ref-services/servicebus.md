@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, messaging, pubsub, pub-sub, message broker
 author: annatisch
 ms.author: antisch
 manager: mayurid
-ms.date: 01/10/2019
+ms.date: 01/15/2019
 ms.topic: article
 ms.devlang: python
 ms.service: service-bus
@@ -15,14 +15,17 @@ ms.service: service-bus
 
 Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.
 
+* [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/azure-servicebus)
+* [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/servicebus/client?view=azure-python)
+
 ## What's new in v0.50.0?
 As of version 0.50.0 a new AMQP-based API is available for sending and receiving messages. This update involves **breaking changes**.
-Please read [Migration from v0.21.1 to v0.50.0](#migration-from-v0.21.1-to-v0.50.0) to determine if upgrading is
+Please read [Migration from v0.21.1 to v0.50.0](#migration-from-v0211-to-v0500) to determine if upgrading is
 right for you at this time.
 
 The new AMQP-based API offers improved message passing reliability, performance and expanded feature support going forward.
 
-For documentation on the legacy HTTP-based operations please see [Using HTTP-based operations of the legacy API](#using-http-based-operations-of-the-legacy-api)
+For documentation on the legacy HTTP-based operations please see [Using HTTP-based operations of the legacy API](#using-http-based-operations-of-the-legacy-api).
 
 
 ## Prerequisites
@@ -76,11 +79,11 @@ polling).
 The service can use Shared Access Signature authentication.
 
 ### Create queue
-This creates a new queue within the Service Bus namespace. If a queue of the same name already exists an error will be raised. 
+This creates a new queue within the Service Bus namespace. If a queue of the same name already exists within the namespace an error will be raised. 
 ```python
 sb_client.create_queue("MyQueue")
 ```
-Optional parameters to configure the queue behaviour can also be specified
+Optional parameters to configure the queue behaviour can also be specified.
 ```python
 sb_client.create_queue(
     "MySessionQueue",
@@ -118,7 +121,7 @@ with queue_client.get_sender() as sender:
 ```
 
 ### Receiving messages
-Message can be received from a queue as a continuous iterator. The default mode for message receiving is [PeekLock](https://docs.microsoft.com/rest/api/servicebus/peek-lock-message-non-destructive-read), which requires each message to be explicitly completed in order that it be removed from the queue.
+Messages can be received from a queue as a continuous iterator. The default mode for message receiving is [PeekLock](https://docs.microsoft.com/rest/api/servicebus/peek-lock-message-non-destructive-read), which requires each message to be explicitly completed in order that it be removed from the queue.
 ```python
 messages = queue_client.get_receiver()
 for message in messages:
@@ -137,8 +140,7 @@ with queue_client.get_receiver() as messages:
 
 ## Service Bus Topics and Subscriptions
 
-Service Bus topics are an abstraction on top of Service Bus Queues that
-make pub/sub scenarios easy to implement.
+Service Bus topics and subscriptions are an abstraction on top of Service Bus Queues that provide a one-to-many form of communication, in a publish/subscribe pattern. Messages are sent to a topic and delivered to one or more associated subscriptions, which is useful for scaling to large numbers of recipients.
 
 ### Create topic
 This creates a new topic within the Service Bus namespace. If a topic of the same name already exists an error will be raised. 
@@ -176,6 +178,7 @@ The new package (v0.50.0) offers no improvements in HTTP-based operations over v
 Code written against v0.21.0 can be ported to version 0.50.0 by simply changing the import namespace:
 
 ```python
+# from azure.servicebus import ServiceBusService  <- This will now raise an ImportError
 from azure.servicebus.control_client import ServiceBusService
 
 key_name = 'RootManageSharedAccessKey' # SharedAccessKeyName from Azure portal
@@ -186,10 +189,12 @@ sbs = ServiceBusService(service_namespace,
 ```
 
 ## Using HTTP-based operations of the legacy API
+The following documentation describes the legacy API and should be used for those wishing to port existing code to v0.50.0 without making any additional changes. This reference can also be used as guidance by those using v0.21.1.
+For those writing new code, we recommend using the new API described above.
 
 ### Service Bus Queues
 
-#### Shared Access Signature Authentication
+#### Shared Access Signature (SAS) Authentication
 
 To use Shared Access Signature authentication, create the service bus
 service with:
@@ -204,9 +209,9 @@ sbs = ServiceBusService(service_namespace,
                         shared_access_key_value=key_value)
 ```
 
-#### ACS Authentication
-
-To use ACS authentication, create the service bus service with:
+#### Access Control Service (ACS) Authentication
+ACS is no longer supported on new Service Bus namespaces. We recommend [migrating applications to SAS authentication](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-migrate-acs-sas).
+To use ACS authentication within an older Service Bus namesapce, create the ServiceBusService with:
 
 ```python
 from azure.servicebus.control_client import ServiceBusService
@@ -350,6 +355,12 @@ sent_msg = Message(b'receive message',
                    broker_properties = broker_properties
 )
 ```
+
+## Next Steps
+* [Service Bus documentation](https://docs.microsoft.com/azure/service-bus-messaging)
+* [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/azure-servicebus)
+* [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/servicebus/client?view=azure-python)
+* [Additional samples](https://github.com/Azure/azure-sdk-for-python/tree/master/azure-servicebus/examples)
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/servicebus/management)
