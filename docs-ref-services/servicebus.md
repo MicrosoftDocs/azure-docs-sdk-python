@@ -24,6 +24,7 @@ Please read [Migration from v0.21.1 to v0.50.0](#migration-from-v0211-to-v0500) 
 right for you at this time.
 
 The new AMQP-based API offers improved message passing reliability, performance and expanded feature support going forward.
+The new API also offers support for asynchronous operations (based on asyncio) for sending, receiving and handling messages.
 
 For documentation on the legacy HTTP-based operations please see [Using HTTP-based operations of the legacy API](#using-http-based-operations-of-the-legacy-api).
 
@@ -62,6 +63,15 @@ Once you've populated the `SB_CONN_STR` environment variable, you can create the
 ```python
 import os
 from azure.servicebus import ServiceBusClient
+
+connection_str = os.environ['SB_CONN_STR']
+
+sb_client = ServiceBusClient.from_connection_string(connection_str)
+```
+If you wish to use asynchronous operations, please use the `azure.servicebus.aio` namespace.
+```python
+import os
+from azure.servicebus.aio import ServiceBusClient
 
 connection_str = os.environ['SB_CONN_STR']
 
@@ -117,6 +127,20 @@ with queue_client.get_sender() as sender:
     sender.send(message_one)
     sender.send(message_two)
 ```
+If you are using an asynchronous client, the above operations will use async syntax:
+```python
+from azure.servicebus.aio import Message
+
+message = Message("Hello World")
+await queue_client.send(message)
+
+message_one = Message("First")
+message_two = Message("Second")
+async with queue_client.get_sender() as sender:
+    await sender.send(message_one)
+    await sender.send(message_two)
+```
+
 
 ### Receiving messages
 Messages can be received from a queue as a continuous iterator. The default mode for message receiving is [PeekLock](https://docs.microsoft.com/rest/api/servicebus/peek-lock-message-non-destructive-read), which requires each message to be explicitly completed in order that it be removed from the queue.
@@ -133,6 +157,14 @@ with queue_client.get_receiver() as messages:
     for message in messages:
         print(message)
         message.complete()
+        break
+```
+If you are using an asynchronous client, the above operations will use async syntax:
+```python
+async with queue_client.get_receiver() as messages:
+    async for message in messages:
+        print(message)
+        await message.complete()
         break
 ```
 
