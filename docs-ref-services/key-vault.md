@@ -36,11 +36,9 @@ Retrieve a [JSON web key](https://tools.ietf.org/html/draft-ietf-jose-json-web-k
 from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
 from azure.common.credentials import ServicePrincipalCredentials
 
-credentials = None
-
 def auth_callback(server, resource, scope):
     credentials = ServicePrincipalCredentials(
-        client_id = '', #client id
+        client_id = '',
         secret = '',
         tenant = '',
         resource = "https://vault.azure.net"
@@ -50,17 +48,15 @@ def auth_callback(server, resource, scope):
 
 client = KeyVaultClient(KeyVaultAuthentication(auth_callback))
 
-key_bundle = client.get_key(vault_url, key_name, key_version)
+key_bundle = client.get_key(VAULT_URL, KEY_NAME, KEY_VERSION)
 json_key = key_bundle.key
 ```
 
 Similarly, you can use the following snippet to retrieve a secret from the vault:
 
-```
+```python
 from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
 from azure.common.credentials import ServicePrincipalCredentials
-
-credentials = None
 
 def auth_callback(server, resource, scope):
     credentials = ServicePrincipalCredentials(
@@ -74,7 +70,7 @@ def auth_callback(server, resource, scope):
 
 client = KeyVaultClient(KeyVaultAuthentication(auth_callback))
 
-secret_bundle = client.get_secret("https://VAULT_ID.vault.azure.net/", "SECRET_ID", "SECRET_VERSION")
+secret_bundle = client.get_secret(VAULT_URL, SECRET_ID, SECRET_VERSION)
 
 print(secret_bundle.value)
 ```
@@ -98,6 +94,7 @@ GROUP_NAME = 'your_resource_group_name'
 KV_NAME = 'your_key_vault_name'
 #The object ID of the User or Application for access policies. Find this number in the portal
 OBJECT_ID = '00000000-0000-0000-0000-000000000000'
+TENANT_ID = os.environ['AZURE_TENANT_ID']
 
 kv_client = KeyVaultManagementClient(credentials, subscription_id)
 
@@ -110,9 +107,9 @@ vault = kv_client.vaults.create_or_update(
             'sku': {
                 'name': 'standard'
             },
-            'tenant_id': os.environ['AZURE_TENANT_ID'],
+            'tenant_id': TENANT_ID,
             'access_policies': [{
-                'tenant_id': os.environ['AZURE_TENANT_ID'],
+                'tenant_id': TENANT_ID,
                 'object_id': OBJECT_ID,
                 'permissions': {
                     'keys': ['all'],
@@ -122,6 +119,8 @@ vault = kv_client.vaults.create_or_update(
         }
     }
 )
+
+VAULT_URL = vault.properties.vault_uri
 ```
 > [!div class="nextstepaction"]
 > [Explore the Client APIs](/python/api/overview/azure/keyvault/client)
