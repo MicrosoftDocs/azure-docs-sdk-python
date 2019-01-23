@@ -144,7 +144,7 @@ Please see the [Python SDK authentication](https://docs.microsoft.com/python/azu
 #### Example
 In this example we will create a new Postgres database on our existing Postgres server.
 ```python
-from azure.mgtm.rdbms.postgresql import PostgreSQLManagementClient
+from azure.mgmt.rdbms.postgresql import PostgreSQLManagementClient
 
 SUBSCRIPTION_ID = "YOUR_AZURE_SUBSCRIPTION_ID"
 RESOURCE_GROUP = "YOUR_AZURE_RESOURCE_GROUP_WITH_POSTGRES"
