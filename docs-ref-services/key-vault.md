@@ -98,7 +98,7 @@ TENANT_ID = os.environ['AZURE_TENANT_ID']
 
 kv_client = KeyVaultManagementClient(credentials, subscription_id)
 
-vault = kv_client.vaults.create_or_update(
+operation = kv_client.vaults.create_or_update(
     GROUP_NAME,
     KV_NAME,
     {
@@ -119,8 +119,7 @@ vault = kv_client.vaults.create_or_update(
         }
     }
 )
-
-VAULT_URL = vault.properties.vault_uri
+operation.wait()
 ```
 > [!div class="nextstepaction"]
 > [Explore the Client APIs](/python/api/overview/azure/keyvault/client)
