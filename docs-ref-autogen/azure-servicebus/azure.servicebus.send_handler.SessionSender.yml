@@ -1,0 +1,300 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- children:
+  - azure.servicebus.send_handler.SessionSender.queue_message
+  - azure.servicebus.send_handler.SessionSender.schedule
+  - azure.servicebus.send_handler.SessionSender.send
+  class: azure.servicebus.send_handler.SessionSender
+  fullName: azure.servicebus.send_handler.SessionSender
+  inheritance:
+  - inheritance:
+    - inheritance:
+      - type: builtins.object
+      type: azure.servicebus.base_handler.BaseHandler
+    - inheritance:
+      - type: builtins.object
+      type: azure.servicebus.common.mixins.SenderMixin
+    type: azure.servicebus.send_handler.Sender
+  langs:
+  - python
+  module: azure.servicebus.send_handler
+  name: SessionSender
+  source:
+    id: SessionSender
+    path: azure-servicebus\azure\servicebus\send_handler.py
+    remote:
+      branch: master
+      path: azure-servicebus\azure\servicebus\send_handler.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 212
+  summary: 'A session message sender.
+
+
+    This handler is for sending messages to a sessionful Service Bus entity.
+
+    It operates a single connection that must be opened and closed on completion.
+
+    The Sender can be run within a context manager to ensure that the connection is
+    closed on exit.
+
+    The Sender should not be instantiated directly, and should be accessed from a
+    *QueueClient* or
+
+    *TopicClient* using the *get_sender()* method.
+
+    An attempt to send a message without a session ID specified either on the Sender
+    or the message
+
+    will raise a *ValueError*.
+
+
+
+    > [!NOTE]
+
+    > This object is not thread-safe.
+
+    >
+
+
+
+
+    '
+  syntax:
+    content: SessionSender(handler_id, target, auth_config, session=None, connection=None,
+      encoding='UTF-8', debug=False, **kwargs)
+    parameters:
+    - description: 'The ID used as the connection name for the Sender.
+
+        '
+      id: handler_id
+      type:
+      - str
+    - description: 'The endpoint to send messages to.
+
+        '
+      id: target
+      type:
+      - uamqp.Target
+    - description: 'The SASL auth credentials.
+
+        '
+      id: auth_config
+      type:
+      - dict[str, str]
+    - description: 'An optional session ID. If supplied, all outgoing messages will
+        have this
+
+        session ID added (unless they already have one specified).
+
+        '
+      id: session
+      type:
+      - str
+    - description: 'A shared connection [not yet supported].
+
+        '
+      id: connection
+      type:
+      - uamqp.Connection
+    - description: 'The encoding used for string properties. Default is ''UTF-8''.
+
+        '
+      id: encoding
+      type:
+      - str
+    - description: 'Whether to enable network trace debug logs.
+
+        '
+      id: debug
+      type:
+      - bool
+  type: class
+  uid: azure.servicebus.send_handler.SessionSender
+- class: azure.servicebus.send_handler.SessionSender
+  example:
+  - "Put the message to be sent later in the queue<!--[!code-python[Main](ples\\test_examples.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_repo\\\
+    \\0\\\\azure-servicebus\\\\examples\\\\test_examples.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   with queue_client.get_sender(session=\"MySessionID\"\
+    ) as sender:\n       message1 = Message(\"Hello World!\")\n       message2 = Message(\"\
+    How are you?\")\n       sender.queue_message(message1)\n       sender.queue_message(message2)\n\
+    \n       message_status = sender.send_pending_messages()\n       for status in\
+    \ message_status:\n           if not status[0]:\n               print(\"Message\
+    \ send failed: {}\".format(status[1]))\n\n   ````\n"
+  fullName: azure.servicebus.send_handler.SessionSender.queue_message
+  langs:
+  - python
+  module: azure.servicebus.send_handler
+  name: queue_message(message)
+  source:
+    id: queue_message
+    path: azure-servicebus\azure\servicebus\send_handler.py
+    remote:
+      branch: master
+      path: azure-servicebus\azure\servicebus\send_handler.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 269
+  summary: 'Queue a message to be sent later.
+
+
+    This operation should be followed up with send_pending_messages. If neither the
+    Sender nor the message
+
+    has a session ID, a *ValueError* will be raised.
+
+    '
+  syntax:
+    content: queue_message(message)
+    parameters:
+    - description: 'The message to be sent.
+
+        '
+      id: message
+      type:
+      - azure.servicebus.Message
+  type: method
+  uid: azure.servicebus.send_handler.SessionSender.queue_message
+- class: azure.servicebus.send_handler.SessionSender
+  example:
+  - "Schedule a message to be sent in future<!--[!code-python[Main](ples\\test_examples.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_repo\\\
+    \\0\\\\azure-servicebus\\\\examples\\\\test_examples.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   with queue_client.get_sender() as sender:\n    \
+    \   message = Message(\"Hello World!\")\n       today = datetime.datetime.today()\n\
+    \n       # Schedule the message 5 days from today\n       sequence_numbers = sender.schedule(today\
+    \ + datetime.timedelta(days=5), message)\n\n   ````\n"
+  fullName: azure.servicebus.send_handler.SessionSender.schedule
+  langs:
+  - python
+  module: azure.servicebus.send_handler
+  name: schedule(schedule_time, *messages)
+  source:
+    id: schedule
+    path: azure-servicebus\azure\servicebus\send_handler.py
+    remote:
+      branch: master
+      path: azure-servicebus\azure\servicebus\send_handler.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 291
+  summary: 'Send one or more messages to be enqueued at a specific time.
+
+
+    Returns a list of the sequence numbers of the enqueued messages.
+
+    '
+  syntax:
+    content: schedule(schedule_time, *messages)
+    parameters:
+    - description: 'The date and time to enqueue the messages.
+
+        '
+      id: schedule_time
+      type:
+      - datetime.datetime
+    - description: 'The messages to schedule.
+
+        '
+      id: messages
+      type:
+      - azure.servicebus.common.message.Message
+    return:
+      type:
+      - list[int]
+  type: method
+  uid: azure.servicebus.send_handler.SessionSender.schedule
+- class: azure.servicebus.send_handler.SessionSender
+  example:
+  - "Send a message and block<!--[!code-python[Main](ples\\test_examples.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_repo\\\\0\\\\\
+    azure-servicebus\\\\examples\\\\test_examples.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   # Send the message via sender\n   with queue_client.get_sender()\
+    \ as sender:\n       message = Message(\"Hello World!\")\n       sender.send(message)\n\
+    \n   ````\n"
+  fullName: azure.servicebus.send_handler.SessionSender.send
+  langs:
+  - python
+  module: azure.servicebus.send_handler
+  name: send(message)
+  source:
+    id: send
+    path: azure-servicebus\azure\servicebus\send_handler.py
+    remote:
+      branch: master
+      path: azure-servicebus\azure\servicebus\send_handler.py
+      repo: https://github.com/Azure/azure-sdk-for-python.git
+    startLine: 243
+  summary: 'Send a message and blocks until acknowledgement is received or the operation
+    fails.
+
+
+    If neither the Sender nor the message has a session ID, a *ValueError* will be
+    raised.
+
+    '
+  syntax:
+    content: send(message)
+    parameters:
+    - description: 'The message to be sent.
+
+        '
+      id: message
+      type:
+      - azure.servicebus.common.message.Message
+  type: method
+  uid: azure.servicebus.send_handler.SessionSender.send
+references:
+- fullName: azure.servicebus.send_handler.SessionSender.queue_message
+  isExternal: false
+  name: queue_message(message)
+  parent: azure.servicebus.send_handler.SessionSender
+  uid: azure.servicebus.send_handler.SessionSender.queue_message
+- fullName: azure.servicebus.send_handler.SessionSender.schedule
+  isExternal: false
+  name: schedule(schedule_time, *messages)
+  parent: azure.servicebus.send_handler.SessionSender
+  uid: azure.servicebus.send_handler.SessionSender.schedule
+- fullName: azure.servicebus.send_handler.SessionSender.send
+  isExternal: false
+  name: send(message)
+  parent: azure.servicebus.send_handler.SessionSender
+  uid: azure.servicebus.send_handler.SessionSender.send
+- fullName: dict[str, str]
+  name: dict[str, str]
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: dict[str, str]
+- fullName: list[int]
+  name: list[int]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: int
+    name: int
+    uid: int
+  - fullName: ']'
+    name: ']'
+  uid: list[int]
