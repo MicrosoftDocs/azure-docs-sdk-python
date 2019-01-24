@@ -119,7 +119,10 @@ operation = kv_client.vaults.create_or_update(
         }
     }
 )
-operation.wait()
+
+vault = operation.result()
+
+VAULT_URI = vault.properties.vault_uri
 ```
 > [!div class="nextstepaction"]
 > [Explore the Client APIs](/python/api/overview/azure/keyvault/client)
