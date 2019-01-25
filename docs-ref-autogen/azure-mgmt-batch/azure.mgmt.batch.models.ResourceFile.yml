@@ -14,37 +14,110 @@ items:
   name: ResourceFile
   source:
     id: ResourceFile
-    path: azure-mgmt-batch\azure\mgmt\batch\models\resource_file.py
+    path: azure-mgmt-batch\azure\mgmt\batch\models\_models_py3.py
     remote:
       branch: master
-      path: azure-mgmt-batch\azure\mgmt\batch\models\resource_file.py
+      path: azure-mgmt-batch\azure\mgmt\batch\models\_models_py3.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 15
-  summary: 'A file to be downloaded from Azure blob storage to a compute node.
+    startLine: 1323
+  summary: 'A single file or multiple files to be downloaded to a compute node.
 
     '
   syntax:
-    content: ResourceFile(blob_source, file_path, file_mode=None)
+    content: ResourceFile(auto_storage_container_name=None, storage_container_url=None,
+      http_url=None, blob_prefix=None, file_path=None, file_mode=None)
     parameters:
-    - description: 'The URL of the file within Azure Blob Storage. This
+    - description: 'The storage container name in the auto
 
-        URL must be readable using anonymous access; that is, the Batch service
+        storage account. The autoStorageContainerName, storageContainerUrl and
 
-        does not present any credentials when downloading the blob. There are two
+        httpUrl properties are mutually exclusive and one of them must be
 
-        ways to get such a URL for a blob in Azure storage: include a Shared
-
-        Access Signature (SAS) granting read permissions on the blob, or set the
-
-        ACL for the blob or its container to allow public access.
+        specified.
 
         '
-      id: blob_source
+      id: auto_storage_container_name
+      type:
+      - str
+    - description: 'The URL of the blob container within Azure
+
+        Blob Storage. The autoStorageContainerName, storageContainerUrl and
+
+        httpUrl properties are mutually exclusive and one of them must be
+
+        specified. This URL must be readable and listable using anonymous access;
+
+        that is, the Batch service does not present any credentials when
+
+        downloading blobs from the container. There are two ways to get such a URL
+
+        for a container in Azure storage: include a Shared Access Signature (SAS)
+
+        granting read and list permissions on the container, or set the ACL for
+
+        the container to allow public access.
+
+        '
+      id: storage_container_url
+      type:
+      - str
+    - description: 'The URL of the file to download. The
+
+        autoStorageContainerName, storageContainerUrl and httpUrl properties are
+
+        mutually exclusive and one of them must be specified. If the URL is Azure
+
+        Blob Storage, it must be readable using anonymous access; that is, the
+
+        Batch service does not present any credentials when downloading the blob.
+
+        There are two ways to get such a URL for a blob in Azure storage: include
+
+        a Shared Access Signature (SAS) granting read permissions on the blob, or
+
+        set the ACL for the blob or its container to allow public access.
+
+        '
+      id: http_url
+      type:
+      - str
+    - description: 'The blob prefix to use when downloading blobs from an
+
+        Azure Storage container. Only the blobs whose names begin with the
+
+        specified prefix will be downloaded. The property is valid only when
+
+        autoStorageContainerName or storageContainerUrl is used. This prefix can
+
+        be a partial filename or a subdirectory. If a prefix is not specified, all
+
+        the files in the container will be downloaded.
+
+        '
+      id: blob_prefix
       type:
       - str
     - description: 'The location on the compute node to which to download
 
-        the file, relative to the task''s working directory.
+        the file, relative to the task''s working directory. If the httpUrl
+
+        property is specified, the filePath is required and describes the path
+
+        which the file will be downloaded to, including the filename. Otherwise,
+
+        if the autoStorageContainerName or storageContainerUrl property is
+
+        specified, filePath is optional and is the directory to download the files
+
+        to. In the case where filePath is used as a directory, any directory
+
+        structure already associated with the input data will be retained in full
+
+        and appended to the specified filePath directory. The specified relative
+
+        path cannot break out of the task''s working directory (for example by
+
+        using ''..'').
 
         '
       id: file_path
