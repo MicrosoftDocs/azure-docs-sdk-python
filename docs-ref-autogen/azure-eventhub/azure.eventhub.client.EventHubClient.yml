@@ -8,6 +8,7 @@ items:
   - azure.eventhub.client.EventHubClient.create_properties
   - azure.eventhub.client.EventHubClient.from_connection_string
   - azure.eventhub.client.EventHubClient.from_iothub_connection_string
+  - azure.eventhub.client.EventHubClient.from_sas_token
   - azure.eventhub.client.EventHubClient.get_eventhub_info
   - azure.eventhub.client.EventHubClient.run
   - azure.eventhub.client.EventHubClient.stop
@@ -21,21 +22,10 @@ items:
   name: EventHubClient
   summary: 'The EventHubClient class defines a high level interface for sending
 
-    events to and receiving events from the Azure Event Hubs service.
-
-
-
-
-
-
-
-
-
-
-    '
+    events to and receiving events from the Azure Event Hubs service.'
   syntax:
     content: EventHubClient(address, username=None, password=None, debug=False, http_proxy=None,
-      auth_timeout=60)
+      auth_timeout=60, sas_token=None)
   type: class
   uid: azure.eventhub.client.EventHubClient
 - class: azure.eventhub.client.EventHubClient
@@ -53,35 +43,25 @@ items:
 
     a higher epoch value or they will be rejected. If a 2nd epoch receiver has
 
-    connected, the first will be closed.
-
-    '
+    connected, the first will be closed.'
   syntax:
     content: add_epoch_receiver(consumer_group, partition, epoch, prefetch=300, operation=None,
       keep_alive=30, auto_reconnect=True)
     parameters:
-    - description: 'The name of the consumer group.
-
-        '
+    - description: The name of the consumer group.
       id: consumer_group
       type:
       - str
-    - description: 'The ID of the partition.
-
-        '
+    - description: The ID of the partition.
       id: partition
       type:
       - str
-    - description: 'The epoch value for the receiver.
-
-        '
+    - description: The epoch value for the receiver.
       id: epoch
       type:
       - int
     - defaultValue: '300'
-      description: 'The message prefetch count of the receiver. Default is 300.
-
-        '
+      description: The message prefetch count of the receiver. Default is 300.
       id: prefetch
       type:
       - int
@@ -103,36 +83,26 @@ items:
   module: azure.eventhub.client
   name: add_receiver(consumer_group, partition, offset=None, prefetch=300, operation=None,
     keep_alive=30, auto_reconnect=True)
-  summary: 'Add a receiver to the client for a particular consumer group and partition.
-
-    '
+  summary: Add a receiver to the client for a particular consumer group and partition.
   syntax:
     content: add_receiver(consumer_group, partition, offset=None, prefetch=300, operation=None,
       keep_alive=30, auto_reconnect=True)
     parameters:
-    - description: 'The name of the consumer group.
-
-        '
+    - description: The name of the consumer group.
       id: consumer_group
       type:
       - str
-    - description: 'The ID of the partition.
-
-        '
+    - description: The ID of the partition.
       id: partition
       type:
       - str
     - defaultValue: None
-      description: 'The offset from which to start receiving.
-
-        '
+      description: The offset from which to start receiving.
       id: offset
       type:
       - azure.eventhub.common.Offset
     - defaultValue: '300'
-      description: 'The message prefetch count of the receiver. Default is 300.
-
-        '
+      description: The message prefetch count of the receiver. Default is 300.
       id: prefetch
       type:
       - int
@@ -154,9 +124,7 @@ items:
   module: azure.eventhub.client
   name: add_sender(partition=None, operation=None, send_timeout=60, keep_alive=30,
     auto_reconnect=True)
-  summary: 'Add a sender to the client to EventData object to an EventHub.
-
-    '
+  summary: Add a sender to the client to EventData object to an EventHub.
   syntax:
     content: add_sender(partition=None, operation=None, send_timeout=60, keep_alive=30,
       auto_reconnect=True)
@@ -166,17 +134,13 @@ items:
 
         If omitted, the events will be distributed to available partitions via
 
-        round-robin.
-
-        '
+        round-robin.'
       id: partition
     - defaultValue: None
       description: 'The timeout in seconds for an individual event to be sent from
         the time that it is
 
-        queued. Default value is 60 seconds. If set to 0, there will be no timeout.
-
-        '
+        queued. Default value is 60 seconds. If set to 0, there will be no timeout.'
       id: send_timeout
       type:
       - int
@@ -187,9 +151,7 @@ items:
         periods of inactivity. The default value is 30 seconds. If set to *None*,
         the connection will not
 
-        be pinged.
-
-        '
+        be pinged.'
       id: keep_alive
       type:
       - int
@@ -197,9 +159,7 @@ items:
       description: 'Whether to automatically reconnect the sender if a retryable error
         occurs.
 
-        Default value is *True*.
-
-        '
+        Default value is *True*.'
       id: auto_reconnect
     - defaultValue: 'True'
       id: auto_reconnect
@@ -216,9 +176,7 @@ items:
   name: create_properties()
   summary: 'Format the properties with which to instantiate the connection.
 
-    This acts like a user agent over HTTP.
-
-    '
+    This acts like a user agent over HTTP.'
   syntax:
     content: create_properties()
     parameters: []
@@ -233,32 +191,24 @@ items:
   - python
   module: azure.eventhub.client
   name: from_connection_string(conn_str, eventhub=None, **kwargs)
-  summary: 'Create an EventHubClient from a connection string.
-
-    '
+  summary: Create an EventHubClient from a connection string.
   syntax:
     content: from_connection_string(conn_str, eventhub=None, **kwargs)
     parameters:
-    - description: 'The connection string.
-
-        '
+    - description: The connection string.
       id: conn_str
       type:
       - str
     - description: 'The name of the EventHub, if the EntityName is
 
-        not included in the connection string.
-
-        '
+        not included in the connection string.'
       id: eventhub
       type:
       - str
     - defaultValue: None
       description: 'Whether to output network trace logs to the logger. Default
 
-        is *False*.
-
-        '
+        is *False*.'
       id: debug
       type:
       - bool
@@ -266,9 +216,7 @@ items:
 
         keys: ''proxy_hostname'' (str value) and ''proxy_port'' (int value).
 
-        Additionally the following keys may also be present: ''username'', ''password''.
-
-        '
+        Additionally the following keys may also be present: ''username'', ''password''.'
       id: http_proxy
       type:
       - dict[str, Any]
@@ -276,9 +224,7 @@ items:
         service.
 
         The default value is 60 seconds. If set to 0, no timeout will be enforced
-        from the client.
-
-        '
+        from the client.'
       id: auth_timeout
       type:
       - int
@@ -290,23 +236,17 @@ items:
   - python
   module: azure.eventhub.client
   name: from_iothub_connection_string(conn_str, **kwargs)
-  summary: 'Create an EventHubClient from an IoTHub connection string.
-
-    '
+  summary: Create an EventHubClient from an IoTHub connection string.
   syntax:
     content: from_iothub_connection_string(conn_str, **kwargs)
     parameters:
-    - description: 'The connection string.
-
-        '
+    - description: The connection string.
       id: conn_str
       type:
       - str
     - description: 'Whether to output network trace logs to the logger. Default
 
-        is *False*.
-
-        '
+        is *False*.'
       id: debug
       type:
       - bool
@@ -314,9 +254,7 @@ items:
 
         keys: ''proxy_hostname'' (str value) and ''proxy_port'' (int value).
 
-        Additionally the following keys may also be present: ''username'', ''password''.
-
-        '
+        Additionally the following keys may also be present: ''username'', ''password''.'
       id: http_proxy
       type:
       - dict[str, Any]
@@ -324,14 +262,67 @@ items:
         service.
 
         The default value is 60 seconds. If set to 0, no timeout will be enforced
-        from the client.
-
-        '
+        from the client.'
       id: auth_timeout
       type:
       - int
   type: method
   uid: azure.eventhub.client.EventHubClient.from_iothub_connection_string
+- class: azure.eventhub.client.EventHubClient
+  fullName: azure.eventhub.client.EventHubClient.from_sas_token
+  langs:
+  - python
+  module: azure.eventhub.client
+  name: from_sas_token(address, sas_token, eventhub=None, **kwargs)
+  summary: Create an EventHubClient from an existing auth token or token generator.
+  syntax:
+    content: from_sas_token(address, sas_token, eventhub=None, **kwargs)
+    parameters:
+    - description: The Event Hub address URL
+      id: address
+      type:
+      - str
+    - description: 'A SAS token or function that returns a SAS token. If a function
+        is supplied,
+
+        it will be used to retrieve subsequent tokens in the case of token expiry.
+        The function should
+
+        take no arguments.'
+      id: sas_token
+      type:
+      - str
+      - callable
+    - description: The name of the EventHub, if not already included in the address
+        URL.
+      id: eventhub
+      type:
+      - str
+    - defaultValue: None
+      description: 'Whether to output network trace logs to the logger. Default
+
+        is *False*.'
+      id: debug
+      type:
+      - bool
+    - description: 'HTTP proxy settings. This must be a dictionary with the following
+
+        keys: ''proxy_hostname'' (str value) and ''proxy_port'' (int value).
+
+        Additionally the following keys may also be present: ''username'', ''password''.'
+      id: http_proxy
+      type:
+      - dict[str, Any]
+    - description: 'The time in seconds to wait for a token to be authorized by the
+        service.
+
+        The default value is 60 seconds. If set to 0, no timeout will be enforced
+        from the client.'
+      id: auth_timeout
+      type:
+      - int
+  type: method
+  uid: azure.eventhub.client.EventHubClient.from_sas_token
 - class: azure.eventhub.client.EventHubClient
   fullName: azure.eventhub.client.EventHubClient.get_eventhub_info
   langs:
@@ -340,7 +331,7 @@ items:
   name: get_eventhub_info()
   summary: "Get details on the specified EventHub.\nKeys in the details dictionary\
     \ include:\n\n\n   -'name'\n   -'type'\n   -'created_at'\n   -'partition_count'\n\
-    \   -'partition_ids'\n"
+    \   -'partition_ids'"
   syntax:
     content: get_eventhub_info()
     parameters: []
@@ -367,9 +358,7 @@ items:
 
     and raise an exception.
 
-    If at least one client starts up successfully the run command will succeed.
-
-    '
+    If at least one client starts up successfully the run command will succeed.'
   syntax:
     content: run()
     parameters: []
@@ -384,9 +373,7 @@ items:
   - python
   module: azure.eventhub.client
   name: stop()
-  summary: 'Stop the EventHubClient and all its Sender/Receiver clients.
-
-    '
+  summary: Stop the EventHubClient and all its Sender/Receiver clients.
   syntax:
     content: stop()
     parameters: []
@@ -426,6 +413,11 @@ references:
   name: from_iothub_connection_string(conn_str, **kwargs)
   parent: azure.eventhub.client.EventHubClient
   uid: azure.eventhub.client.EventHubClient.from_iothub_connection_string
+- fullName: azure.eventhub.client.EventHubClient.from_sas_token
+  isExternal: false
+  name: from_sas_token(address, sas_token, eventhub=None, **kwargs)
+  parent: azure.eventhub.client.EventHubClient
+  uid: azure.eventhub.client.EventHubClient.from_sas_token
 - fullName: azure.eventhub.client.EventHubClient.get_eventhub_info
   isExternal: false
   name: get_eventhub_info()
