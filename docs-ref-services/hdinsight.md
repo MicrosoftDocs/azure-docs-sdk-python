@@ -1,41 +1,41 @@
 ---
 title: Azure HDInsight Python SDK Preview
-description: Reference for Azure HDInsight Python SDK
-keywords: Azure, python, SDK, API, HDInsight, HDI
+description: Reference for Azure HDInsight Python SDK. The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters.
+ms.service: hdinsight
 author: tylerfox
 ms.author: tyfox
-manager: arindamc
-
 ms.date: 09/18/2018
-ms.topic: article
-ms.prod: azure
-ms.technology: azure
+ms.topic: reference
 ms.devlang: python
-ms.service: hd-insight
 ---
 
 # HDInsight Python Management SDK Preview
 
 ## Overview
-The HDInsight .NET SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, scale, execute script actions, monitor, get properties of HDInsight clusters, and more.
+
+The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, resize, execute script actions, monitor, get properties of HDInsight clusters, and more.
 
 ## Prerequisites
+
 * An Azure account. If you don't have one, [get a free trial](https://azure.microsoft.com/free/).
 * [Python](https://www.python.org/downloads/)
 * [pip](https://pypi.org/project/pip/#description)
 
 ## SDK Installation
+
 The HDInsight Python SDK can be found in the [Python Package Index](https://pypi.org/project/azure-mgmt-hdinsight/) and can be installed by running: 
 
 `pip install azure-mgmt-hdinsight`
 
 ## Authentication
+
 The SDK first needs to be authenticated with your Azure subscription.  Follow the example below to create a service principal and use it to authenticate. After this is done, you will have an instance of an `HDInsightManagementClient`, which contains many methods (outlined in below sections) that can be used to perform management operations.
 
 > [!NOTE]
 > There are other ways to authenticate besides the below example that could potentially be better suited for your needs. All methods are outlined here: [Authenticate with the Azure Management Libraries for Python](https://docs.microsoft.com/en-us/python/azure/python-sdk-azure-authenticate?view=azure-python)
 
 ### Authentication Example Using a Service Principal
+
 First, login to [Azure Cloud Shell](https://shell.azure.com/bash). Verify you are currently using the subscription in which you want the service principal created. 
 
 ```azurecli-interactive
@@ -120,24 +120,29 @@ client = HDInsightManagementClient(credentials, SUBSCRIPTION_ID)
 
 
 ## Cluster Management
+
 > [!NOTE]
 > This section assumes you have already authenticated and constructed an `HDInsightManagementClient` instance and store it in a variable called `client`. Instructions for authenticating and obtaining an `HDInsightManagementClient` can be found in the Authentication section above.
 
 ### Create a Cluster
+
 A new cluster can be created by calling `client.clusters.create()`. 
 
 #### Example
+
 This example demonstrates how to create a Spark cluster with 2 head nodes and 1 worker node.
 
 > [!NOTE]
 > You first need to create a Resource Group and Storage Account, as explained below. If you have already created these, you can skip these steps.
 
 ##### Creating a Resource Group
+
 You can create a resource group using the [Azure Cloud Shell](https://shell.azure.com/bash) by running
 ```azurecli-interactive
 az group create -l <Region Name (i.e. eastus)> --n <Resource Group Name>
 ```
 ##### Creating a Storage Account
+
 You can create a storage account using the [Azure Cloud Shell](https://shell.azure.com/bash) by running:
 ```azurecli-interactive
 az storage account create -n <Storage Account Name> -g <Existing Resource Group Name> -l <Region Name (i.e. eastus)> --sku <SKU i.e. Standard_LRS>
@@ -227,6 +232,7 @@ client.clusters.create(
 ```
 
 ### Get Cluster Details
+
 To get properties for a given cluster:
 
 ```python
@@ -234,6 +240,7 @@ client.clusters.get("<Resource Group Name>", "<Cluster Name>")
 ```
 
 #### Example
+
 You can use `get` to confirm that you have successfully created your cluster.
 
 ```python
@@ -250,17 +257,20 @@ The output should look like:
 ### List Clusters
 
 #### List Clusters Under The Subscription
+
 ```python
 client.clusters.list()
 ```
 #### List Clusters By Resource Group
+
 ```python
 client.clusters.list_by_resource_group("<Resource Group Name>")
 ```
 > [!NOTE]
-> Both `list()` and `list_by_resource_group()` return an `ClusterPaged` object. Calling `advance_page()` returns the a list of clusters on that page and advances the `ClusterPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages.
+> Both `list()` and `list_by_resource_group()` return a `ClusterPaged` object. Calling `advance_page()` returns a list of clusters on that page and advances the `ClusterPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages.
 
 #### Example
+
 The following example prints the properties of all clusters for the current subscription:
 
 ```python
@@ -274,6 +284,7 @@ while True:
 ```
 
 ### Delete a Cluster
+
 To delete a cluster:
 
 ```python
@@ -281,6 +292,7 @@ client.clusters.delete("<Resource Group Name>", "<Cluster Name>")
 ```
 
 ### Update Cluster Tags
+
 You can update the tags of a given cluster like so:
 
 ```python
@@ -293,14 +305,16 @@ client.clusters.update("<Resource Group Name>", "<Cluster Name>", tags={<Diction
 client.clusters.update("<Resource Group Name>", "<Cluster Name>", tags={"tag1Name" : "tag1Value", "tag2Name" : "tag2Value"})
 ```
 
-### Scale Cluster
-You can scale a given cluster's number of worker nodes by specifying a new size like so:
+### Resize Cluster
+
+You can resize a given cluster's number of worker nodes by specifying a new size like so:
 
 ```python
 client.clusters.resize("<Resource Group Name>", "<Cluster Name>", target_instance_count=<Num of Worker Nodes>)
 ```
 
 ## Cluster Monitoring
+
 The HDInsight Management SDK can also be used to manage monitoring on your clusters via the Operations Management Suite (OMS).
 
 ### Enable OMS Monitoring
@@ -315,6 +329,7 @@ client.extension.enable_monitoring("<Resource Group Name>", "<Cluster Name>", wo
 ```
 
 ### View Status Of OMS Monitoring
+
 To get the status of OMS on your cluster:
 
 ```python
@@ -322,6 +337,7 @@ client.extension.get_monitoring_status("<Resource Group Name", "Cluster Name")
 ```
 
 ### Disable OMS Monitoring
+
 To disable OMS on your cluster:
 
 ```python
@@ -329,6 +345,7 @@ client.extension.disable_monitoring("<Resource Group Name>", "<Cluster Name>")
 ```
 
 ## Script Actions
+
 HDInsight provides a configuration method called script actions that invokes custom scripts to customize the cluster.
 > [!NOTE]
 > More information on how to use script actions can be found here: [Customize Linux-based HDInsight clusters using script actions](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux)
@@ -343,6 +360,7 @@ client.clusters.execute_script_actions("<Resource Group Name>", "<Cluster Name>"
 ```
 
 ### Delete Script Action
+
 To delete a specified persisted script action on a given cluster:
 
 ```python
@@ -352,7 +370,7 @@ client.script_actions.delete("<Resource Group Name>", "<Cluster Name", "<Script 
 ### List Persisted Script Actions
 
 > [!NOTE]
-> `list()` and `list_persisted_scripts()` return a `RuntimeScriptActionDetailPaged` object. Calling `advance_page()` returns the a list of `RuntimeScriptActionDetail` on that page and advances the `RuntimeScriptActionDetailPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages. See the example below.
+> `list()` and `list_persisted_scripts()` return a `RuntimeScriptActionDetailPaged` object. Calling `advance_page()` returns a list of `RuntimeScriptActionDetail` on that page and advances the `RuntimeScriptActionDetailPaged` object to the next page. This can be repeated until a `StopIteration` exception is raised, indicating that there are no more pages. See the example below.
 
 To list all persisted script actions for the specified cluster:
 ```python
@@ -360,6 +378,7 @@ client.script_actions.list_persisted_scripts("<Resource Group Name>", "<Cluster 
 ```
 
 #### Example
+
 ```python
 scripts_paged = client.script_actions.list_persisted_scripts(resource_group_name, cluster_name)
 while True:
@@ -371,6 +390,7 @@ while True:
 ```
 
 ### List All Scripts' Execution History
+
 To list all scripts' execution history for the specified cluster:
 
 ```python
@@ -378,6 +398,7 @@ client.script_execution_history.list("<Resource Group Name>", "<Cluster Name>")
 ```
 
 #### Example
+
 This example prints all the details for all past script executions.
 
 ```python

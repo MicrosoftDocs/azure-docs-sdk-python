@@ -79,6 +79,14 @@ print(results)
 
 ## Samples
 
-[Develop a Python app using Azure Cosmos DB](https://azure.microsoft.com/resources/samples/azure-cosmos-db-documentdb-python-getting-started/)
+* [Develop a Python app to access and manage data stored in Azure Cosmos DB SQL API account](https://github.com/Azure-Samples/azure-cosmos-db-python-getting-started.git)
+
+* [Develop a Python app to access and manage data stored in Azure Cosmos DB MongoDB API account](https://github.com/Azure-Samples/CosmosDB-Flask-Mongo-Sample.git)
+
+* [Develop a Python app to access and manage data stored in Azure Cosmos DB Gremlin API account](https://github.com/Azure-Samples/azure-cosmos-db-graph-python-getting-started.git)
+
+* [Develop a Python app to access and manage data stored in Azure Cosmos DB Cassandra API account](https://github.com/Azure-Samples/azure-cosmos-db-cassandra-python-getting-started.git)
+
+* [Develop a Python app to access and manage data stored in Azure Cosmos DB Table API account](https://github.com/Azure-Samples/storage-python-getting-started.git)
 
 
