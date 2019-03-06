@@ -79,7 +79,7 @@ metrics_data = client.metrics.list(
     resource_id,
     timespan="{}/{}".format(yesterday, today),
     interval='PT1H',
-    metric='Percentage CPU',
+    metricnames='Percentage CPU',
     aggregation='Total'
 )
 
