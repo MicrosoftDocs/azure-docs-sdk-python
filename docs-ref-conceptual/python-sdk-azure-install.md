@@ -70,3 +70,22 @@ If you want to install `azure` from source:
     git clone git://github.com/Azure/azure-sdk-for-python.git
     cd azure-sdk-for-python
     python setup.py install
+
+## Install an older version with pip
+You can install an older version of `azure` by specifying 'azure==3.0.0' verion details.
+```bash
+pip install azure==3.0.0 
+```
+## Check SDK Installation details with pip
+You can check `azure` sdk installation location, verstion details etc
+```bash
+pip show azure # Show installed Version, location details etc.
+pip freeze  # List installed packages, including editables.
+pip show azure # Output installed packages in requirements format.
+```
+## To Uninstall with pip
+You can uninstall all Azure libraries single line using the `azure` meta-package.
+```bash
+pip uninstall azure 
+```
+
