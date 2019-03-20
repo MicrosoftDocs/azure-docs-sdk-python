@@ -84,7 +84,7 @@ pip freeze  # List installed packages, including editables.
 pip show azure # Output installed packages in requirements format.
 ```
 ## To Uninstall with pip
-You can uninstall all Azure libraries single line using the `azure` meta-package.
+You can uninstall all Azure libraries in a single line using the `azure` meta-package.
 ```bash
 pip uninstall azure 
 ```
