@@ -47,8 +47,8 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.vision.face.operations
-  name: create(large_person_group_id, name=None, user_data=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: create(large_person_group_id, name=None, user_data=None, recognition_model='recognition_01',
+    custom_headers=None, raw=False, **operation_config)
   source:
     id: create
     path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
@@ -57,12 +57,68 @@ items:
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
     startLine: 36
-  summary: 'Create a new large person group with specified largePersonGroupId, name
+  summary: 'Create a new large person group with user-specified largePersonGroupId,
 
-    and user-provided userData.'
+    name, an optional userData and recognitionModel.
+
+    <br /> A large person group is the container of the uploaded person
+
+    data, including face images and face recognition feature, and up to
+
+    1,000,000 people.
+
+    <br /> After creation, use [LargePersonGroup Person -
+
+    Create](/docs/services/563879b61984550e40cbbe8d/operations/599adcba3a7b9412a4d53f40)
+
+    to add person into the group, and call [LargePersonGroup -
+
+    Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4)
+
+    to get this group ready for [Face -
+
+    Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+
+    <br /> The person face, image, and userData will be stored on server
+
+    until [LargePersonGroup Person -
+
+    Delete](/docs/services/563879b61984550e40cbbe8d/operations/599ade5c6ac60f11b48b5aa2)
+
+    or [LargePersonGroup -
+
+    Delete](/docs/services/563879b61984550e40cbbe8d/operations/599adc216ac60f11b48b5a9f)
+
+    is called.
+
+    <br />
+
+    * Free-tier subscription quota: 1,000 large person groups.
+
+    * S0-tier subscription quota: 1,000,000 large person groups.
+
+    <br />
+
+    ''recognitionModel'' should be specified to associate with this large
+
+    person group. The default value for ''recognitionModel'' is
+
+    ''recognition_01'', if the latest model needed, please explicitly specify
+
+    the model you need in this parameter. New faces that are added to an
+
+    existing large person group will use the recognition model that''s
+
+    already associated with the collection. Existing face features in a
+
+    large person group can''t be updated to features extracted by another
+
+    version of recognition model.
+
+    .'
   syntax:
-    content: create(large_person_group_id, name=None, user_data=None, custom_headers=None,
-      raw=False, **operation_config)
+    content: create(large_person_group_id, name=None, user_data=None, recognition_model='recognition_01',
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'Id referencing a particular large person
 
@@ -80,6 +136,14 @@ items:
       id: user_data
       type:
       - str
+    - defaultValue: recognition_01
+      description: 'Possible values include: ''recognition_01'',
+
+        ''recognition_02'''
+      id: recognition_model
+      type:
+      - str
+      - azure.cognitiveservices.vision.face.models.RecognitionModel
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -118,7 +182,7 @@ items:
       branch: master
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 92
+    startLine: 124
   summary: 'Delete an existing large person group. Persisted face features of all
 
     people in the large person group will also be deleted.'
@@ -161,7 +225,8 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.vision.face.operations
-  name: get(large_person_group_id, custom_headers=None, raw=False, **operation_config)
+  name: get(large_person_group_id, return_recognition_model=False, custom_headers=None,
+    raw=False, **operation_config)
   source:
     id: get
     path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
@@ -169,12 +234,21 @@ items:
       branch: master
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 138
-  summary: 'Retrieve the information of a large person group, including its name
+    startLine: 170
+  summary: 'Retrieve the information of a large person group, including its name,
 
-    and userData.'
+    userData and recognitionModel. This API returns large person group
+
+    information only, use [LargePersonGroup Person -
+
+    List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1)
+
+    instead to retrieve person information under the large person group.
+
+    .'
   syntax:
-    content: get(large_person_group_id, custom_headers=None, raw=False, **operation_config)
+    content: get(large_person_group_id, return_recognition_model=False, custom_headers=None,
+      raw=False, **operation_config)
     parameters:
     - description: 'Id referencing a particular large person
 
@@ -182,6 +256,13 @@ items:
       id: large_person_group_id
       type:
       - str
+    - defaultValue: 'False'
+      description: 'A value indicating whether the
+
+        operation should return ''recognitionModel'' in response.'
+      id: return_recognition_model
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -221,7 +302,7 @@ items:
       branch: master
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 249
+    startLine: 290
   summary: 'Retrieve the training status of a large person group (completed or
 
     ongoing).'
@@ -265,7 +346,8 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.vision.face.operations
-  name: list(start=None, top=1000, custom_headers=None, raw=False, **operation_config)
+  name: list(start=None, top=1000, return_recognition_model=False, custom_headers=None,
+    raw=False, **operation_config)
   source:
     id: list
     path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
@@ -273,10 +355,22 @@ items:
       branch: master
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 304
-  summary: List large person groups and their information.
+    startLine: 345
+  summary: "List all existing large person groups\u2019 largePersonGroupId, name,\n\
+    userData and recognitionModel.<br />\n* Large person groups are stored in alphabetical\
+    \ order of\nlargePersonGroupId.\n* \"start\" parameter (string, optional) is a\
+    \ user-provided\nlargePersonGroupId value that returned entries have larger ids\
+    \ by\nstring comparison. \"start\" set to empty to indicate return from the\n\
+    first item.\n* \"top\" parameter (int, optional) specifies the number of entries\
+    \ to\nreturn. A maximal of 1000 entries can be returned in one call. To fetch\n\
+    more, you can specify \"start\" with the last returned entry\u2019s Id of the\n\
+    current call.\n<br />\nFor example, total 5 large person groups: \"group1\", ...,\
+    \ \"group5\".\n<br /> \"start=&top=\" will return all 5 groups.\n<br /> \"start=&top=2\"\
+    \ will return \"group1\", \"group2\".\n<br /> \"start=group2&top=3\" will return\
+    \ \"group3\", \"group4\", \"group5\".\n."
   syntax:
-    content: list(start=None, top=1000, custom_headers=None, raw=False, **operation_config)
+    content: list(start=None, top=1000, return_recognition_model=False, custom_headers=None,
+      raw=False, **operation_config)
     parameters:
     - defaultValue: None
       description: 'List large person groups from the least
@@ -290,6 +384,13 @@ items:
       id: top
       type:
       - int
+    - defaultValue: 'False'
+      description: 'A value indicating whether the
+
+        operation should return ''recognitionModel'' in response.'
+      id: return_recognition_model
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -328,7 +429,7 @@ items:
       branch: master
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 364
+    startLine: 427
   summary: 'Queue a large person group training task, the training task may not be
 
     started immediately.'
@@ -380,7 +481,7 @@ items:
       branch: master
       path: azure-cognitiveservices-vision-face\azure\cognitiveservices\vision\face\operations\large_person_group_operations.py
       repo: https://github.com/Azure/azure-sdk-for-python.git
-    startLine: 193
+    startLine: 234
   summary: 'Update an existing large person group''s display name and userData. The
 
     properties which does not appear in request body will not be updated.'
@@ -440,8 +541,8 @@ items:
 references:
 - fullName: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.create
   isExternal: false
-  name: create(large_person_group_id, name=None, user_data=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: create(large_person_group_id, name=None, user_data=None, recognition_model='recognition_01',
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations
   uid: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.create
 - fullName: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.delete
@@ -451,7 +552,8 @@ references:
   uid: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.delete
 - fullName: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.get
   isExternal: false
-  name: get(large_person_group_id, custom_headers=None, raw=False, **operation_config)
+  name: get(large_person_group_id, return_recognition_model=False, custom_headers=None,
+    raw=False, **operation_config)
   parent: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations
   uid: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.get
 - fullName: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.get_training_status
@@ -462,7 +564,8 @@ references:
   uid: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.get_training_status
 - fullName: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.list
   isExternal: false
-  name: list(start=None, top=1000, custom_headers=None, raw=False, **operation_config)
+  name: list(start=None, top=1000, return_recognition_model=False, custom_headers=None,
+    raw=False, **operation_config)
   parent: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations
   uid: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.list
 - fullName: azure.cognitiveservices.vision.face.operations.LargePersonGroupOperations.train
