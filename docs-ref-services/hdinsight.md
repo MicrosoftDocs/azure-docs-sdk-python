@@ -1,19 +1,19 @@
 ---
-title: Azure HDInsight Python SDK Preview
-description: Reference for Azure HDInsight Python SDK. The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters.
+title: Azure HDInsight SDK for Python
+description: Reference for Azure HDInsight SDK for Python. The HDInsight SDK for Python provides classes and methods that allow you to manage your HDInsight clusters.
 ms.service: hdinsight
 author: tylerfox
 ms.author: tyfox
-ms.date: 09/18/2018
+ms.date: 04/10/2019
 ms.topic: reference
 ms.devlang: python
 ---
 
-# HDInsight Python Management SDK Preview
+# HDInsight SDK for Python
 
 ## Overview
 
-The HDInsight Python SDK provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, resize, execute script actions, monitor, get properties of HDInsight clusters, and more.
+The HDInsight SDK for Python provides classes and methods that allow you to manage your HDInsight clusters. It includes operations to create, delete, update, list, resize, execute script actions, monitor, get properties of HDInsight clusters, and more.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ The HDInsight Python SDK provides classes and methods that allow you to manage y
 
 ## SDK Installation
 
-The HDInsight Python SDK can be found in the [Python Package Index](https://pypi.org/project/azure-mgmt-hdinsight/) and can be installed by running: 
+The HDInsight SDK for Python can be found in the [Python Package Index](https://pypi.org/project/azure-mgmt-hdinsight/) and can be installed by running: 
 
 `pip install azure-mgmt-hdinsight`
 
@@ -230,6 +230,10 @@ client.clusters.create(
         properties=params
     ))
 ```
+
+#### Samples
+
+Code samples for creating several common types of HDInsight clusters are also available: [HDInsight Python Samples](https://github.com/Azure-Samples/hdinsight-python-sdk-samples).
 
 ### Get Cluster Details
 
