@@ -205,7 +205,7 @@ The SDK is able to create a client using the Azure CLI's active subscription.
 
 > [!IMPORTANT]
 > This should be used as quick start developer experience. For production purposes, use 
-> [ADAL](#authenticate-with-token-credentials) or your own credentials system.
+> [ADAL](#mgmt-auth-legacy) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
 To define active credentials, use [az login](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
