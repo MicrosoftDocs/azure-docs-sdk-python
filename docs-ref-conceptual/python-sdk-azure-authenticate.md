@@ -2,10 +2,10 @@
 title: Authenticate with the Azure management libraries for Python
 description: Authenticate with a service principal into the Azure management libraries for Python
 keywords: Azure, Python, SDK, API, authentication, active directory, service principal
-author: lisawong19
-ms.author: liwong
-manager: douge
-ms.date: 07/24/2017
+author: sptramer
+ms.author: sttramer
+manager: carmonm
+ms.date: 04/11/2019
 ms.topic: article
 ms.technology: azure
 ms.devlang: python
@@ -23,82 +23,86 @@ Store the credentials securely in a configuration file, the registry, or Azure K
 The following example uses a [Service Principal](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli?toc=%2fazure%2fazure-resource-manager%2ftoc.json) for authentication.
 
 > [!NOTE]
-> You can create a Service Principal via the Azure CLI 2.0
+> To create a service principal with the Azure CLI, use the following command:
+>
 > ```bash
 > az ad sp create-for-rbac --name "MY-PRINCIPAL-NAME" --password "STRONG-SECRET-PASSWORD"
 > ```
+>
+> To learn more about setting up service princpals with the CLI, see
+> [Create an Azure service principal with Azure CLI](/cli/azure/create-an-azure-service-principal-azure-cli)
 
 ```python
-    from azure.common.credentials import ServicePrincipalCredentials
+from azure.common.credentials import ServicePrincipalCredentials
 
-    # Tenant ID for your Azure Subscription
-    TENANT_ID = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
+# Tenant ID for your Azure subscription
+TENANT_ID = '<Your tenant ID>'
 
-    # Your Service Principal App ID
-    CLIENT = 'a2ab11af-01aa-4759-8345-7803287dbd39'
+# Your service principal App ID
+CLIENT = '<Your service principal ID>'
 
-    # Your Service Principal Password
-    KEY = 'password'
+# Your service principal password
+KEY = '<Your service principal password>'
 
-    credentials = ServicePrincipalCredentials(
-        client_id = CLIENT,
-        secret = KEY,
-        tenant = TENANT_ID
-    )
+credentials = ServicePrincipalCredentials(
+    client_id = CLIENT,
+    secret = KEY,
+    tenant = TENANT_ID
+)
 ```
 
 > [NOTE!]
 > To connect to one of the Azure sovereign clouds, use the `cloud_environment` parameter.
-
-```python
-    from azure.common.credentials import ServicePrincipalCredentials
-    from msrestazure.azure_cloud import AZURE_CHINA_CLOUD
-
-    # Tenant ID for your Azure Subscription
-    TENANT_ID = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
-
-    # Your Service Principal App ID
-    CLIENT = 'a2ab11af-01aa-4759-8345-7803287dbd39'
-
-    # Your Service Principal Password
-    KEY = 'password'
-
-    credentials = ServicePrincipalCredentials(
-        client_id = CLIENT,
-        secret = KEY,
-        tenant = TENANT_ID,
-        cloud_environment = AZURE_CHINA_CLOUD
-    )
-```
+>
+> ```python
+> from azure.common.credentials import ServicePrincipalCredentials
+> from msrestazure.azure_cloud import AZURE_CHINA_CLOUD
+> 
+> # Tenant ID for your Azure Subscription
+> TENANT_ID = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
+> 
+> # Your Service Principal App ID
+> CLIENT = 'a2ab11af-01aa-4759-8345-7803287dbd39'
+> 
+> # Your Service Principal Password
+> KEY = 'password'
+> 
+> credentials = ServicePrincipalCredentials(
+>     client_id = CLIENT,
+>     secret = KEY,
+>     tenant = TENANT_ID,
+>     cloud_environment = AZURE_CHINA_CLOUD
+> )
+> ```
 
 If you need more control, it is recommended to use [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-python)
 and the SDK ADAL wrapper. Please refer to the ADAL website for all the available scenarios
 list and samples. For instance for service principal authentication:
 
 ```python
-    import adal
-    from msrestazure.azure_active_directory import AdalAuthentication
-    from msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
+import adal
+from msrestazure.azure_active_directory import AdalAuthentication
+from msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
 
-    # Tenant ID for your Azure Subscription
-    TENANT_ID = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
+# Tenant ID for your Azure Subscription
+TENANT_ID = 'ABCDEFGH-1234-1234-1234-ABCDEFGHIJKL'
 
-    # Your Service Principal App ID
-    CLIENT = 'a2ab11af-01aa-4759-8345-7803287dbd39'
+# Your Service Principal App ID
+CLIENT = 'a2ab11af-01aa-4759-8345-7803287dbd39'
 
-    # Your Service Principal Password
-    KEY = 'password'
+# Your Service Principal Password
+KEY = 'password'
 
-    LOGIN_ENDPOINT = AZURE_PUBLIC_CLOUD.endpoints.active_directory
-    RESOURCE = AZURE_PUBLIC_CLOUD.endpoints.active_directory_resource_id
+LOGIN_ENDPOINT = AZURE_PUBLIC_CLOUD.endpoints.active_directory
+RESOURCE = AZURE_PUBLIC_CLOUD.endpoints.active_directory_resource_id
 
-    context = adal.AuthenticationContext(LOGIN_ENDPOINT + '/' + TENANT_ID)
-    credentials = AdalAuthentication(
-        context.acquire_token_with_client_credentials,
-        RESOURCE,
-        CLIENT,
-        KEY
-    )
+context = adal.AuthenticationContext(LOGIN_ENDPOINT + '/' + TENANT_ID)
+credentials = AdalAuthentication(
+    context.acquire_token_with_client_credentials,
+    RESOURCE,
+    CLIENT,
+    KEY
+)
 ```
 
 All ADAL valid calls can be used with the `AdalAuthentication` class.
@@ -141,10 +145,10 @@ If you want to create the file yourself, please follow this format:
 
 ```json
 {
-    "clientId": "ad735158-65ca-11e7-ba4d-ecb1d756380e",
-    "clientSecret": "b70bb224-65ca-11e7-810c-ecb1d756380e",
-    "subscriptionId": "bfc42d3a-65ca-11e7-95cf-ecb1d756380e",
-    "tenantId": "c81da1d8-65ca-11e7-b1d1-ecb1d756380e",
+    "clientId": "<Service principal ID>",
+    "clientSecret": "<Service principal secret/password>",
+    "subscriptionId": "<Subscription associated with the service principal>",
+    "tenantId": "<The service principal's tenant>",
     "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
     "resourceManagerEndpointUrl": "https://management.azure.com/",
     "activeDirectoryGraphResourceId": "https://graph.windows.net/",
@@ -155,6 +159,7 @@ If you want to create the file yourself, please follow this format:
 ```
 
 You can then create any client using the client factory:
+
 ```python
 from azure.common.client_factory import get_client_from_auth_file
 from azure.mgmt.compute import ComputeManagementClient
@@ -162,38 +167,45 @@ from azure.mgmt.compute import ComputeManagementClient
 client = get_client_from_auth_file(ComputeManagementClient)
 ```
 
-## <a name="mgmt-auth-msi"></a>Authenticate with Managed Service Identity(MSI) 
-MSI is a simple way for a resource in Azure to use SDK/CLI without the need to create specific credentials.
+## <a name="mgmt-auth-msi"></a>Authenticate with Azure Managed Identities
+Azure Managed Identity is a simple way for a resource in Azure to use SDK/CLI without the need to create specific credentials.
+
+> [!IMPORTANT]
+>
+> To use managed identities, you must be connecting to Azure from an Azure resource, such as an Azure Function or a VM running in
+> Azure. To learn how to configure a managed identity for a resource, see 
+> [Configure managed identities for Azure resources](/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vm)
+> and [How to use managed identities for Azure resources](/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-sign-in).
 
 ```python
 from msrestazure.azure_active_directory import MSIAuthentication
 from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
 
-    # Create MSI Authentication
-    credentials = MSIAuthentication()
+# Create MSI Authentication
+credentials = MSIAuthentication()
 
 
-    # Create a Subscription Client
-    subscription_client = SubscriptionClient(credentials)
-    subscription = next(subscription_client.subscriptions.list())
-    subscription_id = subscription.subscription_id
+# Create a Subscription Client
+subscription_client = SubscriptionClient(credentials)
+subscription = next(subscription_client.subscriptions.list())
+subscription_id = subscription.subscription_id
 
-    # Create a Resource Management client
-    resource_client = ResourceManagementClient(credentials, subscription_id)
+# Create a Resource Management client
+resource_client = ResourceManagementClient(credentials, subscription_id)
 
 
-    # List resource groups as an example. The only limit is what role and policy are assigned to this MSI token.
-    for resource_group in resource_client.resource_groups.list():
-        print(resource_group.name)
+# List resource groups as an example. The only limit is what role and policy are assigned to this MSI token.
+for resource_group in resource_client.resource_groups.list():
+    print(resource_group.name)
 ```
 
 ## <a name="mgmt-auth-cli"></a>CLI-based authentication
 
-The SDK is able to create a client using your CLI active subscription.
+The SDK is able to create a client using the Azure CLI's active subscription.
 
 > [!IMPORTANT]
 > This should be used as quick start developer experience. For production purposes, use 
-> [ADAL](#authenticate-with-token-credentials) or your own credentials system.
+> [ADAL](#mgmt-auth-legacy) or your own credentials system.
 > Any change to your CLI configuration will impact the SDK execution.
 
 To define active credentials, use [az login](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
@@ -214,10 +226,10 @@ In previous version of the SDK, ADAL was not yet available and we provided a `Us
 This sample shows user/password scenario. This does not support 2FA.
 
 ```python
-    from azure.common.credentials import UserPassCredentials
+from azure.common.credentials import UserPassCredentials
 
-    credentials = UserPassCredentials(
-        'user@domain.com',
-        'my_smart_password'
-    )
+credentials = UserPassCredentials(
+    'user@domain.com',
+    'my_smart_password'
+)
 ```
