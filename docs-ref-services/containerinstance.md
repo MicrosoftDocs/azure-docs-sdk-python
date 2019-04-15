@@ -2,11 +2,11 @@
 title: Azure Container Instances libraries for Python
 description: Reference for Azure Container Instances libraries for Python
 keywords: Azure, python, SDK, API, ACI, container, instances
-author: mmacy
+author: dlepow
 manager: jeconnoc
 
-ms.date: 06/04/2018
-ms.author: marsma
+ms.date: 04/15/2019
+ms.author: danlep
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -62,14 +62,14 @@ For more details about the available authentication methods in the Python manage
 This example creates a container group with a single container
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[create_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L94-L140 "Create single-container group")]
+[!code-python[create_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L94-L141 "Create single-container group")]
 
 ## Create container group - multiple containers
 
 This example creates a container group with two containers: an application container and a sidecar container.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[create_container_group_multi](~/aci-docs-sample-python/src/aci_docs_sample.py#L143-L196 "Create multi-container group")]
+[!code-python[create_container_group_multi](~/aci-docs-sample-python/src/aci_docs_sample.py#L144-L197 "Create multi-container group")]
 
 ## Create task-based container group
 
@@ -89,7 +89,7 @@ This example creates a container group with a single task-based container. This 
 * Operation polling with [AzureOperationPoller][AzureOperationPoller] - After the create method is invoked, the operation is polled to determine when it has completed and the container group's logs can be obtained.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[create_container_group_task](~/aci-docs-sample-python/src/aci_docs_sample.py#L199-L275 "Run a task-based container")]
+[!code-python[create_container_group_task](~/aci-docs-sample-python/src/aci_docs_sample.py#L200-L276 "Run a task-based container")]
 
 ## List container groups
 
@@ -98,7 +98,7 @@ This example lists the container groups in a resource group and then prints a fe
 When you list container groups,the [instance_view][instance_view] of each returned group is `None`. To get the details of the containers within a container group, you must then [get][containergroupoperations_get] the container group, which returns the group with its `instance_view` property populated. See the next section, [Get an existing container group](#get-an-existing-container-group), for an example of iterating over a container group's containers in its `instance_view`.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[list_container_groups](~/aci-docs-sample-python/src/aci_docs_sample.py#L278-L292 "List container groups")]
+[!code-python[list_container_groups](~/aci-docs-sample-python/src/aci_docs_sample.py#L279-L293 "List container groups")]
 
 ## Get an existing container group
 
@@ -107,7 +107,7 @@ This example gets a specific container group from a resource group, and then pri
 The [get operation][containergroupoperations_get] returns a container group with its [instance_view][instance_view] populated, which allows you to iterate over each container in the group. Only the `get` operation populates the `instance_vew` property of the container group--listing the container groups in a subscription or resource group doesn't populate the instance view due to the potentially expensive nature of the operation (for example, when listing hundreds of container groups, each potentially containing multiple containers). As mentioned previously in the [List container groups](#list-container-groups) section, after a `list`, you must subsequently `get` a specific container group to obtain its container instance details.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L295-L324 "Get container group")]
+[!code-python[get_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L296-L325 "Get container group")]
 
 ## Delete a container group
 
