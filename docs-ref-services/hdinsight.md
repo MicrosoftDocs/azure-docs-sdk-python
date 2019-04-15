@@ -126,7 +126,11 @@ client = HDInsightManagementClient(credentials, SUBSCRIPTION_ID)
 
 ### Create a Cluster
 
-A new cluster can be created by calling `client.clusters.create()`. 
+A new cluster can be created by calling `client.clusters.create()`.
+
+#### Samples
+
+Code samples for creating several common types of HDInsight clusters are available: [HDInsight Python Samples](https://github.com/Azure-Samples/hdinsight-python-sdk-samples).
 
 #### Example
 
@@ -230,10 +234,6 @@ client.clusters.create(
         properties=params
     ))
 ```
-
-#### Samples
-
-Code samples for creating several common types of HDInsight clusters are also available: [HDInsight Python Samples](https://github.com/Azure-Samples/hdinsight-python-sdk-samples).
 
 ### Get Cluster Details
 
