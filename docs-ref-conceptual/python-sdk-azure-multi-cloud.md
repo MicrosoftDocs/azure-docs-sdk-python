@@ -1,5 +1,5 @@
 ---
-title: Mutli-cloud 
+title: Multi-cloud 
 description: use Azure on all regions
 author: lmazuel 
 ms.author: lmazuel
