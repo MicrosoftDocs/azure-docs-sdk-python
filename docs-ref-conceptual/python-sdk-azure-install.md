@@ -80,7 +80,7 @@ pip install azure==3.0.0
 You can check `azure` SDK installation location, version details etc.
 ```bash
 pip show azure # Show installed version, location details etc.
-pip freeze # Output installed packages in requirements format.
+pip freeze     # Output installed packages in requirements format.
 pip list  # List installed packages, including editables.
 ```
 ## To uninstall with pip
@@ -88,4 +88,4 @@ You can uninstall all Azure libraries in a single line using the `azure` meta-pa
 ```bash
 pip uninstall azure 
 ```
-
+Note: `pip uninstall azure`removes the `azure `meta-package but leaves the individual` azure-*` packages behind (and others, like `adal `and `msrest`). It's a Python and pip limitation, for all packages that has dependencies, uninstalling the initial package does not uninstall the dependencies. To remove `azure-` and it's supporting packages, run something like `pip freeze | grep 'azure-' | xargs pip uninstall -y` (and then individual uninstalls for adal, msrest, and msrestazure).
