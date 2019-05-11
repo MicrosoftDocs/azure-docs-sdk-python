@@ -81,7 +81,7 @@ You can check `azure` SDK installation location, version details etc.
 ```bash
 pip show azure # Show installed version, location details etc.
 pip freeze     # Output installed packages in requirements format.
-pip list  # List installed packages, including editables.
+pip list       # List installed packages, including editables.
 ```
 ## To uninstall with pip
 You can uninstall all Azure libraries in a single line using the `azure` meta-package.
@@ -89,7 +89,7 @@ You can uninstall all Azure libraries in a single line using the `azure` meta-pa
 pip uninstall azure 
 ```
 > [!NOTE]
-> `pip uninstall azure`removes the `azure` meta-package but leaves the individual `azure-*` packages behind (and others, like `adal` and `msrest` ). It's a Python and pip limitation, for all packages that has dependencies, uninstalling the initial package does not uninstall the dependencies. To remove `azure-` and it's supporting packages, run the command `pip freeze | grep 'azure-' | xargs pip uninstall -y` (and then perform individual uninstalls for adal, msrest, and msrestazure).
+> `pip uninstall azure`removes the `azure` meta-package but leaves the individual `azure-*` packages behind (and others, like `adal` and `msrest` ). An aspect of Python and pip is that for all packages that have dependencies, uninstalling the initial package does not uninstall the dependencies. To remove `azure-` and its supporting packages, run the command `pip freeze | grep 'azure-' | xargs pip uninstall -y` (and then perform individual uninstalls for adal, msrest, and msrestazure).
 
 
 
