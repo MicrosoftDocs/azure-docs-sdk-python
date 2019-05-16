@@ -45,7 +45,7 @@ Machine-assisted moderation of text, video and images, augmented with human revi
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
 ```
-pip install azure-cognitiveservices-vision-computervision
+pip install azure-cognitiveservices-vision-contentmoderator
 ```
 
 [Learn more](/azure/cognitive-services/content-moderator/overview) about the Content Moderator service.
