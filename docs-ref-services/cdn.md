@@ -50,7 +50,7 @@ profile_poller = cdn_client.profiles.create('my-resource-group',
                                             })
 profile = profile_poller.result()
 
-endpoint_poller = client.endpoints.create('my-resource-group',
+endpoint_poller = cdn_client.endpoints.create('my-resource-group',
                                           'cdn-name',
                                           'unique-endpoint-name', 
                                           { 
