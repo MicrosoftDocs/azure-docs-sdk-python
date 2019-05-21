@@ -26,11 +26,9 @@ pip install azure-mgmt-notificationhubs
 
 The following code creates an instance of the management client.
 
-You will need to provide your ``subscription_id`` which can be retrieved
-from [your subscription list](https://manage.windowsazure.com/#Workspaces/AdminTasks/SubscriptionMapping).
+You will need to provide your ``subscription_id`` which can be retrieved from [your subscription list](https://manage.windowsazure.com/#Workspaces/AdminTasks/SubscriptionMapping).
 
-See [Resource Management Authentication](/python/azure/python-sdk-azure-authenticate)
-for details on handling Azure Active Directory authentication with the Python SDK, and creating a ``Credentials`` instance.
+See [Resource Management Authentication](/python/azure/python-sdk-azure-authenticate) for details on handling Azure Active Directory authentication with the Python SDK, and creating a ``Credentials`` instance.
 
 ```python
 from azure.mgmt.notificationhubs import NotificationHubsManagementClient
@@ -54,6 +52,7 @@ redis_client = NotificationHubsManagementClient(
 ## Check namespace availability
 
 The following code check namespace availability of a notification hub.
+
 ```python
 from azure.mgmt.notificationhubs.models import CheckAvailabilityParameters
 
