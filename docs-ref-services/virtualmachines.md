@@ -28,8 +28,8 @@ Create, configure, manage and scale Windows and Linux virtual machines in Azure 
 Install the library via pip.
 
 ```bash
-pip install azure-mgmt-compute 
-```   
+pip install azure-mgmt-compute
+```
 
 ### Example
 

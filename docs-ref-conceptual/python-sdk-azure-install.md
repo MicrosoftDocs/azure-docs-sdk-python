@@ -16,6 +16,7 @@ ms.service: multiple
 # Installation
 
 ## Which Python and which version to use
+
 There are several Python interpreters available - examples include:
 
 * CPython - the standard and most commonly used Python interpreter
@@ -26,6 +27,7 @@ There are several Python interpreters available - examples include:
 **CPython** v2.7 or v3.4+ and PyPy 5.4.0 are tested and supported for the Python Azure SDK.
 
 ## Where to get Python?
+
 There are several ways to get CPython:
 
 * Directly from [Python](https://www.python.org/)
@@ -49,15 +51,13 @@ Preview packages can be installed using the `--pre` flag:
 pip install --pre azure-mgmt-compute # will install only the latest Compute Management library
 ```
 
-You can also install a set of Azure libraries in a single line using the
-`azure` meta-package.
+You can also install a set of Azure libraries in a single line using the `azure` meta-package.
 
 ```bash
 pip install azure
 ```
 
-We publish a preview version of this package, which you can access using
-the --pre flag:
+We publish a preview version of this package, which you can access using the --pre flag:
 
 ```bash
 pip install --pre azure
@@ -67,6 +67,8 @@ pip install --pre azure
 
 If you want to install `azure` from source:
 
-    git clone git://github.com/Azure/azure-sdk-for-python.git
-    cd azure-sdk-for-python
-    python setup.py install
+```bash
+git clone git://github.com/Azure/azure-sdk-for-python.git
+cd azure-sdk-for-python
+python setup.py install
+```

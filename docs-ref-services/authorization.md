@@ -26,11 +26,9 @@ pip install azure-mgmt-authorization
 
 The following code creates an instance of the management client.
 
-You will need to provide your ``subscription_id`` which can be retrieved
-from [your subscription list](https://manage.windowsazure.com/#Workspaces/AdminTasks/SubscriptionMapping).
+You will need to provide your ``subscription_id`` which can be retrieved from [your subscription list](https://manage.windowsazure.com/#Workspaces/AdminTasks/SubscriptionMapping).
 
-See [Resource Management Authentication](/python/azure/python-sdk-azure-authenticate)
-for details on handling Azure Active Directory authentication with the Python SDK, and creating a ``Credentials`` instance.
+See [Resource Management Authentication](/python/azure/python-sdk-azure-authenticate) for details on handling Azure Active Directory authentication with the Python SDK, and creating a ``Credentials`` instance.
 
 ```python
 from azure.mgmt.authorization import AuthorizationManagementClient
@@ -49,12 +47,11 @@ authorization_client = AuthorizationManagementClient(
     credentials,
     subscription_id
 )
-``` 
+```
 
 ## Check permissions for a resource group
 
-The following code checks permissions in a given resource group.
-To create or manage resource groups, see [Resource Management](/python/api/overview/azure/azure.mgmt.resource).
+The following code checks permissions in a given resource group. To create or manage resource groups, see [Resource Management](/python/api/overview/azure/azure.mgmt.resource).
 
 ```python
 from azure.mgmt.redis.models import Sku, RedisCreateOrUpdateParameters
@@ -68,4 +65,3 @@ permissions = self.authorization_client.permissions.list_for_resource_group(
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/authorization/management)
-

@@ -18,11 +18,11 @@ ms.service: multiple
 
 ## Install the libraries
 
-
 ### Management
 
 ```bash
 pip install azure-mgmt-trafficmanager
 ```
+
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/trafficmanager/management)
