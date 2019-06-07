@@ -18,6 +18,8 @@ items:
   - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.list_endpoints
   - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.list_supported_cultures
   - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.list_usage_scenarios
+  - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_published_application_as_gzip
+  - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_trained_application_as_gzip
   - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.publish
   - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.update
   - azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.update_publish_settings
@@ -57,15 +59,15 @@ items:
   syntax:
     content: add(application_create_object, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: 'A model containing Name, Description
+    - description: 'An application containing Name,
 
-        (optional), Culture, Usage Scenario (optional), Domain (optional) and
+        Description (optional), Culture, Usage Scenario (optional), Domain
 
-        initial version ID (optional) of the application. Default value for
+        (optional) and initial version ID (optional) of the application.
 
-        the version ID is 0.1. Note: the culture cannot be changed after the
+        Default value for the version ID is "0.1". Note: the culture cannot be
 
-        app is created.'
+        changed after the app is created.'
       id: application_create_object
       type:
       - azure.cognitiveservices.language.luis.authoring.models.ApplicationCreateObject
@@ -101,7 +103,9 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_custom_prebuilt_domain(domain_name=None, culture=None, custom_headers=None,
     raw=False, **operation_config)
-  summary: Adds a prebuilt domain along with its models as a new application.
+  summary: 'Adds a prebuilt domain along with its intent and entity models as a new
+
+    application.'
   syntax:
     content: add_custom_prebuilt_domain(domain_name=None, culture=None, custom_headers=None,
       raw=False, **operation_config)
@@ -146,15 +150,20 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: delete(app_id, custom_headers=None, raw=False, **operation_config)
+  name: delete(app_id, force=False, custom_headers=None, raw=False, **operation_config)
   summary: Deletes an application.
   syntax:
-    content: delete(app_id, custom_headers=None, raw=False, **operation_config)
+    content: delete(app_id, force=False, custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
       type:
       - str
+    - defaultValue: 'False'
+      description: A flag to indicate whether to force an operation.
+      id: force
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -187,7 +196,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: download_query_logs(app_id, custom_headers=None, raw=False, callback=None,
     **operation_config)
-  summary: Gets the query logs of the past month for the application.
+  summary: Gets the logs of the past month's endpoint queries for the application.
   syntax:
     content: download_query_logs(app_id, custom_headers=None, raw=False, callback=None,
       **operation_config)
@@ -277,7 +286,7 @@ items:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_publish_settings(app_id, custom_headers=None, raw=False, **operation_config)
-  summary: Get the application publish settings.
+  summary: Get the application publish settings including 'UseAllTrainingData'.
   syntax:
     content: get_publish_settings(app_id, custom_headers=None, raw=False, **operation_config)
     parameters:
@@ -316,7 +325,7 @@ items:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_settings(app_id, custom_headers=None, raw=False, **operation_config)
-  summary: Get the application settings.
+  summary: Get the application settings including 'UseAllTrainingData'.
   syntax:
     content: get_settings(app_id, custom_headers=None, raw=False, **operation_config)
     parameters:
@@ -355,9 +364,9 @@ items:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: import_method(luis_app, app_name=None, custom_headers=None, raw=False, **operation_config)
-  summary: 'Imports an application to LUIS, the application''s structure should be
+  summary: 'Imports an application to LUIS, the application''s structure is included
 
-    included in in the request body.'
+    in the request body.'
   syntax:
     content: import_method(luis_app, app_name=None, custom_headers=None, raw=False,
       **operation_config)
@@ -369,7 +378,9 @@ items:
     - defaultValue: None
       description: 'The application name to create. If not specified, the
 
-        application name will be read from the imported object.'
+        application name will be read from the imported object. If the
+
+        application name already exists, an error is returned.'
       id: app_name
       type:
       - str
@@ -404,7 +415,7 @@ items:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list(skip=0, take=100, custom_headers=None, raw=False, **operation_config)
-  summary: Lists all of the user applications.
+  summary: Lists all of the user's applications.
   syntax:
     content: list(skip=0, take=100, custom_headers=None, raw=False, **operation_config)
     parameters:
@@ -488,7 +499,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_available_custom_prebuilt_domains_for_culture(culture, custom_headers=None,
     raw=False, **operation_config)
-  summary: Gets all the available custom prebuilt domains for a specific culture.
+  summary: Gets all the available prebuilt domains for a specific culture.
   syntax:
     content: list_available_custom_prebuilt_domains_for_culture(culture, custom_headers=None,
       raw=False, **operation_config)
@@ -637,7 +648,11 @@ items:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_supported_cultures(custom_headers=None, raw=False, **operation_config)
-  summary: Gets the supported application cultures.
+  summary: 'Gets a list of supported cultures. Cultures are equivalent to the
+
+    written language and locale. For example,"en-us" represents the U.S.
+
+    variation of English.'
   syntax:
     content: list_supported_cultures(custom_headers=None, raw=False, **operation_config)
     parameters:
@@ -702,27 +717,159 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.publish
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_published_application_as_gzip
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: publish(app_id, application_publish_object, custom_headers=None, raw=False,
-    **operation_config)
-  summary: Publishes a specific version of the application.
+  name: package_published_application_as_gzip(app_id, slot_name, custom_headers=None,
+    raw=False, callback=None, **operation_config)
+  summary: 'package - Gets published LUIS application package in binary stream GZip
+
+    format.
+
+
+    Packages a published LUIS application as a GZip file to be used in the
+
+    LUIS container.'
   syntax:
-    content: publish(app_id, application_publish_object, custom_headers=None, raw=False,
-      **operation_config)
+    content: package_published_application_as_gzip(app_id, slot_name, custom_headers=None,
+      raw=False, callback=None, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
       type:
       - str
-    - description: 'The application publish object. The
-
-        region is the target region that the application is published to.'
-      id: application_publish_object
+    - description: The publishing slot name.
+      id: slot_name
       type:
-      - azure.cognitiveservices.language.luis.authoring.models.ApplicationPublishObject
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: None
+      description: 'When specified, will be called with each chunk of
+
+        data that is streamed. The callback should take two arguments, the
+
+        bytes of the current chunk of data and the response object. If the
+
+        data is uploading, response will be None.'
+      id: callback
+      type:
+      - Callable[Bytes, response=None]
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+    return:
+      description: object or ClientRawResponse if raw=true
+      type:
+      - Generator
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_published_application_as_gzip
+- class: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_trained_application_as_gzip
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: package_trained_application_as_gzip(app_id, version_id, custom_headers=None,
+    raw=False, callback=None, **operation_config)
+  summary: 'package - Gets trained LUIS application package in binary stream GZip
+
+    format.
+
+
+    Packages trained LUIS application as GZip file to be used in the LUIS
+
+    container.'
+  syntax:
+    content: package_trained_application_as_gzip(app_id, version_id, custom_headers=None,
+      raw=False, callback=None, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: None
+      description: 'When specified, will be called with each chunk of
+
+        data that is streamed. The callback should take two arguments, the
+
+        bytes of the current chunk of data and the response object. If the
+
+        data is uploading, response will be None.'
+      id: callback
+      type:
+      - Callable[Bytes, response=None]
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+    return:
+      description: object or ClientRawResponse if raw=true
+      type:
+      - Generator
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_trained_application_as_gzip
+- class: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.publish
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: publish(app_id, version_id=None, is_staging=False, custom_headers=None, raw=False,
+    **operation_config)
+  summary: Publishes a specific version of the application.
+  syntax:
+    content: publish(app_id, version_id=None, is_staging=False, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      type:
+      - str
+    - defaultValue: None
+      description: The version ID to publish.
+      id: version_id
+      type:
+      - str
+    - defaultValue: 'False'
+      description: 'Indicates if the staging slot should be used,
+
+        instead of the Production one.'
+      id: is_staging
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -808,7 +955,9 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_publish_settings(app_id, publish_setting_update_object, custom_headers=None,
     raw=False, **operation_config)
-  summary: Updates the application publish settings.
+  summary: 'Updates the application publish settings including
+
+    ''UseAllTrainingData''.'
   syntax:
     content: update_publish_settings(app_id, publish_setting_update_object, custom_headers=None,
       raw=False, **operation_config)
@@ -853,10 +1002,10 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: update_settings(app_id, public=None, custom_headers=None, raw=False, **operation_config)
-  summary: Updates the application settings.
+  name: update_settings(app_id, is_public=None, custom_headers=None, raw=False, **operation_config)
+  summary: Updates the application settings including 'UseAllTrainingData'.
   syntax:
-    content: update_settings(app_id, public=None, custom_headers=None, raw=False,
+    content: update_settings(app_id, is_public=None, custom_headers=None, raw=False,
       **operation_config)
     parameters:
     - description: The application ID.
@@ -864,10 +1013,10 @@ items:
       type:
       - str
     - defaultValue: None
-      description: 'Setting your application as public allows other people
+      description: 'Setting your application as public allows other
 
-        to use your application''s endpoint using their own keys.'
-      id: public
+        people to use your application''s endpoint using their own keys.'
+      id: is_public
       type:
       - bool
     - defaultValue: None
@@ -918,7 +1067,7 @@ references:
   uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.add_custom_prebuilt_domain
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.delete
   isExternal: false
-  name: delete(app_id, custom_headers=None, raw=False, **operation_config)
+  name: delete(app_id, force=False, custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.delete
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.download_query_logs
@@ -988,9 +1137,21 @@ references:
   name: list_usage_scenarios(custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.list_usage_scenarios
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_published_application_as_gzip
+  isExternal: false
+  name: package_published_application_as_gzip(app_id, slot_name, custom_headers=None,
+    raw=False, callback=None, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_published_application_as_gzip
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_trained_application_as_gzip
+  isExternal: false
+  name: package_trained_application_as_gzip(app_id, version_id, custom_headers=None,
+    raw=False, callback=None, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.package_trained_application_as_gzip
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.publish
   isExternal: false
-  name: publish(app_id, application_publish_object, custom_headers=None, raw=False,
+  name: publish(app_id, version_id=None, is_staging=False, custom_headers=None, raw=False,
     **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.publish
@@ -1008,7 +1169,7 @@ references:
   uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.update_publish_settings
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.update_settings
   isExternal: false
-  name: update_settings(app_id, public=None, custom_headers=None, raw=False, **operation_config)
+  name: update_settings(app_id, is_public=None, custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.update_settings
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.AppsOperations.models

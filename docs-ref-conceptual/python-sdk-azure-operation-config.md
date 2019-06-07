@@ -14,8 +14,7 @@ ms.service: multiple
 
 # Operation config 
 
-Methods on operations have extra parameters which can be provided in the
-kwargs. This is called operation_config.
+Methods on operations have extra parameters which can be provided in the `kwargs`. This is called operation_config.
 
 The options for operation configuration are:
 
