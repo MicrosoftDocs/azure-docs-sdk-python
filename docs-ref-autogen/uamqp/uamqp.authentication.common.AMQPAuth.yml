@@ -3,7 +3,9 @@ api_name: []
 items:
 - children:
   - uamqp.authentication.common.AMQPAuth.close
+  - uamqp.authentication.common.AMQPAuth.set_io
   - uamqp.authentication.common.AMQPAuth.set_tlsio
+  - uamqp.authentication.common.AMQPAuth.set_wsio
   class: uamqp.authentication.common.AMQPAuth
   fullName: uamqp.authentication.common.AMQPAuth
   inheritance:
@@ -14,7 +16,8 @@ items:
   name: AMQPAuth
   summary: AMQP authentication mixin.
   syntax:
-    content: AMQPAuth(hostname, port=5671, verify=None, http_proxy=None, encoding='UTF-8')
+    content: 'AMQPAuth(hostname, port=5671, verify=None, http_proxy=None, transport_type=<TransportType.Amqp:
+      1>, encoding=''UTF-8'')'
     parameters:
     - description: The AMQP endpoint hostname.
       id: hostname
@@ -38,6 +41,15 @@ items:
       id: http_proxy
       type:
       - dict
+    - description: 'The transport protocol type - default is ~uamqp.TransportType.Amqp.
+
+        ~uamqp.TransportType.AmqpOverWebsocket is applied when http_proxy is set or
+        the
+
+        transport type is explicitly requested.'
+      id: transport_type
+      type:
+      - uamqp.TransportType
     - description: 'The encoding to use if hostname is provided as a str.
 
         Default is ''UTF-8''.'
@@ -61,16 +73,31 @@ items:
   type: method
   uid: uamqp.authentication.common.AMQPAuth.close
 - class: uamqp.authentication.common.AMQPAuth
+  fullName: uamqp.authentication.common.AMQPAuth.set_io
+  langs:
+  - python
+  module: uamqp.authentication.common
+  name: set_io(hostname, port, http_proxy, transport_type)
+  syntax:
+    content: set_io(hostname, port, http_proxy, transport_type)
+    parameters:
+    - id: hostname
+    - id: port
+    - id: http_proxy
+    - id: transport_type
+  type: method
+  uid: uamqp.authentication.common.AMQPAuth.set_io
+- class: uamqp.authentication.common.AMQPAuth
   fullName: uamqp.authentication.common.AMQPAuth.set_tlsio
   langs:
   - python
   module: uamqp.authentication.common
-  name: set_tlsio(hostname, port, http_proxy)
+  name: set_tlsio(hostname, port)
   summary: 'Setup the default underlying TLS IO layer. On Windows this is
 
     Schannel, on Linux and MacOS this is OpenSSL.'
   syntax:
-    content: set_tlsio(hostname, port, http_proxy)
+    content: set_tlsio(hostname, port)
     parameters:
     - description: The endpoint hostname.
       id: hostname
@@ -80,17 +107,47 @@ items:
       id: port
       type:
       - int
-    - id: http_proxy
   type: method
   uid: uamqp.authentication.common.AMQPAuth.set_tlsio
+- class: uamqp.authentication.common.AMQPAuth
+  fullName: uamqp.authentication.common.AMQPAuth.set_wsio
+  langs:
+  - python
+  module: uamqp.authentication.common
+  name: set_wsio(hostname, port, http_proxy)
+  summary: Setup the default underlying Web Socket IO layer.
+  syntax:
+    content: set_wsio(hostname, port, http_proxy)
+    parameters:
+    - description: The endpoint hostname.
+      id: hostname
+      type:
+      - bytes
+    - description: The WSS port.
+      id: port
+      type:
+      - int
+    - id: http_proxy
+  type: method
+  uid: uamqp.authentication.common.AMQPAuth.set_wsio
 references:
 - fullName: uamqp.authentication.common.AMQPAuth.close
   isExternal: false
   name: close()
   parent: uamqp.authentication.common.AMQPAuth
   uid: uamqp.authentication.common.AMQPAuth.close
+- fullName: uamqp.authentication.common.AMQPAuth.set_io
+  isExternal: false
+  name: set_io(hostname, port, http_proxy, transport_type)
+  parent: uamqp.authentication.common.AMQPAuth
+  uid: uamqp.authentication.common.AMQPAuth.set_io
 - fullName: uamqp.authentication.common.AMQPAuth.set_tlsio
   isExternal: false
-  name: set_tlsio(hostname, port, http_proxy)
+  name: set_tlsio(hostname, port)
   parent: uamqp.authentication.common.AMQPAuth
   uid: uamqp.authentication.common.AMQPAuth.set_tlsio
+- fullName: uamqp.authentication.common.AMQPAuth.set_wsio
+  isExternal: false
+  name: set_wsio(hostname, port, http_proxy)
+  parent: uamqp.authentication.common.AMQPAuth
+  uid: uamqp.authentication.common.AMQPAuth.set_wsio
