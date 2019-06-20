@@ -12,30 +12,39 @@ items:
   - python
   module: azure.batch.models
   name: StartTask
-  summary: 'A task which is run when a compute node joins a pool in the Azure Batch
+  summary: 'A Task which is run when a Node joins a Pool in the Azure Batch service,
+    or
 
-    service, or when the compute node is rebooted or reimaged.
+    when the Compute Node is rebooted or reimaged.
 
 
-    Batch will retry tasks when a recovery operation is triggered on a compute
+    Batch will retry Tasks when a recovery operation is triggered on a Node.
 
-    node. Examples of recovery operations include (but are not limited to) when
+    Examples of recovery operations include (but are not limited to) when an
 
-    an unhealthy compute node is rebooted or a compute node disappeared due to
+    unhealthy Node is rebooted or a Compute Node disappeared due to host
 
-    host failure. Retries due to recovery operations are independent of and are
+    failure. Retries due to recovery operations are independent of and are not
 
-    not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is
+    counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
 
-    0, an internal retry due to a recovery operation may occur. Because of
+    an internal retry due to a recovery operation may occur. Because of this,
 
-    this, all tasks should be idempotent. This means tasks need to tolerate
+    all Tasks should be idempotent. This means Tasks need to tolerate being
 
-    being interrupted and restarted without causing any corruption or duplicate
+    interrupted and restarted without causing any corruption or duplicate data.
 
-    data. The best practice for long running tasks is to use some form of
+    The best practice for long running Tasks is to use some form of
 
-    checkpointing.
+    checkpointing. In some cases the start Task may be re-run even though the
+
+    Compute Node was not rebooted. Special care should be taken to avoid start
+
+    Tasks which create breakaway process or install/launch services from the
+
+    start Task working directory, as this will block Batch from being able to
+
+    re-run the start Task.
 
 
     All required parameters must be populated in order to send to Azure.'
@@ -44,7 +53,7 @@ items:
       environment_settings=None, user_identity=None, max_task_retry_count: int = None,
       wait_for_success: bool = None, **kwargs) -> None'
     parameters:
-    - description: 'Required. The command line of the start task. The
+    - description: 'Required. The command line of the start Task. The
 
         command line does not run under a shell, and therefore cannot take
 
@@ -56,7 +65,7 @@ items:
 
         "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths,
 
-        it should use a relative path (relative to the task working directory), or
+        it should use a relative path (relative to the Task working directory), or
 
         use the Batch provided environment variable
 
@@ -66,21 +75,25 @@ items:
       - str
     - description: 'The settings for the container under which the
 
-        start task runs. When this is specified, all directories recursively below
+        start Task runs. When this is specified, all directories recursively below
 
         the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the
 
-        node) are mapped into the container, all task environment variables are
+        node) are mapped into the container, all Task environment variables are
 
-        mapped into the container, and the task command line is executed in the
+        mapped into the container, and the Task command line is executed in the
 
-        container.'
+        container. Files produced in the container outside of
+
+        AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning
+
+        that Batch file APIs will not be able to access those files.'
       id: container_settings
       type:
       - azure.batch.models.TaskContainerSettings
     - description: 'A list of files that the Batch service will
 
-        download to the compute node before running the command line.  There is a
+        download to the Compute Node before running the command line.  There is a
 
         maximum size for the list of resource files. When the max size is
 
@@ -92,63 +105,63 @@ items:
 
         Application Packages, or Docker Containers. Files listed under this
 
-        element are located in the task''s working directory.'
+        element are located in the Task''s working directory.'
       id: resource_files
       type:
       - list[azure.batch.models.ResourceFile]
     - description: 'A list of environment variable settings for
 
-        the start task.'
+        the start Task.'
       id: environment_settings
       type:
       - list[azure.batch.models.EnvironmentSetting]
-    - description: 'The user identity under which the start task runs.
+    - description: 'The user identity under which the start Task runs.
 
-        If omitted, the task runs as a non-administrative user unique to the task.'
+        If omitted, the Task runs as a non-administrative user unique to the Task.'
       id: user_identity
       type:
       - azure.batch.models.UserIdentity
-    - description: 'The maximum number of times the task may be
+    - description: 'The maximum number of times the Task may be
 
-        retried. The Batch service retries a task if its exit code is nonzero.
+        retried. The Batch service retries a Task if its exit code is nonzero.
 
         Note that this value specifically controls the number of retries. The
 
-        Batch service will try the task once, and may then retry up to this limit.
+        Batch service will try the Task once, and may then retry up to this limit.
 
-        For example, if the maximum retry count is 3, Batch tries the task up to 4
+        For example, if the maximum retry count is 3, Batch tries the Task up to 4
 
         times (one initial try and 3 retries). If the maximum retry count is 0,
 
-        the Batch service does not retry the task. If the maximum retry count is
+        the Batch service does not retry the Task. If the maximum retry count is
 
-        -1, the Batch service retries the task without limit.'
+        -1, the Batch service retries the Task without limit.'
       id: max_task_retry_count
       type:
       - int
     - description: 'Whether the Batch service should wait for the
 
-        start task to complete successfully (that is, to exit with exit code 0)
+        start Task to complete successfully (that is, to exit with exit code 0)
 
-        before scheduling any tasks on the compute node. If true and the start
+        before scheduling any Tasks on the Compute Node. If true and the start
 
-        task fails on a compute node, the Batch service retries the start task up
+        Task fails on a Node, the Batch service retries the start Task up to its
 
-        to its maximum retry count (maxTaskRetryCount). If the task has still not
+        maximum retry count (maxTaskRetryCount). If the Task has still not
 
         completed successfully after all retries, then the Batch service marks the
 
-        compute node unusable, and will not schedule tasks to it. This condition
+        Node unusable, and will not schedule Tasks to it. This condition can be
 
-        can be detected via the node state and failure info details. If false, the
+        detected via the Compute Node state and failure info details. If false,
 
-        Batch service will not wait for the start task to complete. In this case,
+        the Batch service will not wait for the start Task to complete. In this
 
-        other tasks can start executing on the compute node while the start task
+        case, other Tasks can start executing on the Compute Node while the start
 
-        is still running; and even if the start task fails, new tasks will
+        Task is still running; and even if the start Task fails, new Tasks will
 
-        continue to be scheduled on the node. The default is false.'
+        continue to be scheduled on the Compute Node. The default is false.'
       id: wait_for_success
       type:
       - bool
