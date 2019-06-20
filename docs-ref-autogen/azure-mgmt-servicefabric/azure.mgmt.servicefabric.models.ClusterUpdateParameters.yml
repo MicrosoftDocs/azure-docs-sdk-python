@@ -14,34 +14,50 @@ items:
   name: ClusterUpdateParameters
   summary: Cluster update request.
   syntax:
-    content: 'ClusterUpdateParameters(*, reliability_level=None, upgrade_mode=None,
-      cluster_code_version: str = None, certificate=None, client_certificate_thumbprints=None,
-      client_certificate_common_names=None, fabric_settings=None, reverse_proxy_certificate=None,
-      node_types=None, upgrade_description=None, add_on_features=None, tags=None,
-      **kwargs) -> None'
+    content: 'ClusterUpdateParameters(*, add_on_features=None, certificate=None, certificate_common_names=None,
+      client_certificate_common_names=None, client_certificate_thumbprints=None, cluster_code_version:
+      str = None, event_store_service_enabled: bool = None, fabric_settings=None,
+      node_types=None, reliability_level=None, reverse_proxy_certificate=None, upgrade_description=None,
+      upgrade_mode=None, tags=None, **kwargs) -> None'
     parameters:
-    - description: 'The reliability level sets the replica set size
+    - description: 'The list of add-on features to enable in the
 
-        of system services. Learn about
-
-        [ReliabilityLevel]([https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity)).
-
-        Possible values include: ''Bronze'', ''Silver'', ''Gold'''
-      id: reliability_level
+        cluster.'
+      id: add_on_features
       type:
-      - str
-      - azure.mgmt.servicefabric.models.enum
-    - description: 'The upgrade mode of the cluster. This indicates if
+      - list[str]
+    - description: 'The certificate to use for securing the cluster. The
 
-        the cluster should be automatically upgraded when new Service Fabric
+        certificate provided will be used for  node to node security within the
 
-        runtime version is available. Possible values include: ''Automatic'',
+        cluster, SSL certificate for cluster management endpoint and default
 
-        ''Manual'''
-      id: upgrade_mode
+        admin client.'
+      id: certificate
       type:
-      - str
-      - azure.mgmt.servicefabric.models.enum
+      - azure.mgmt.servicefabric.models.CertificateDescription
+    - description: 'Describes a list of server certificates
+
+        referenced by common name that are used to secure the cluster.'
+      id: certificate_common_names
+      type:
+      - azure.mgmt.servicefabric.models.ServerCertificateCommonNames
+    - description: 'The list of client certificates
+
+        referenced by common name that are allowed to manage the cluster. This
+
+        will overwrite the existing list.'
+      id: client_certificate_common_names
+      type:
+      - list[azure.mgmt.servicefabric.models.ClientCertificateCommonName]
+    - description: 'The list of client certificates
+
+        referenced by thumbprint that are allowed to manage the cluster. This will
+
+        overwrite the existing list.'
+      id: client_certificate_thumbprints
+      type:
+      - list[azure.mgmt.servicefabric.models.ClientCertificateThumbprint]
     - description: 'The Service Fabric runtime version of the
 
         cluster. This property can only by set the user when **upgradeMode** is
@@ -54,60 +70,78 @@ items:
       id: cluster_code_version
       type:
       - str
-    - description: 'The certificate to use for securing the cluster. The
+    - description: 'Indicates if the event store service
 
-        certificate provided will be used for  node to node security within the
-
-        cluster, SSL certificate for cluster management endpoint and default
-
-        admin client.'
-      id: certificate
+        is enabled.'
+      id: event_store_service_enabled
       type:
-      - azure.mgmt.servicefabric.models.CertificateDescription
-    - description: 'The list of client certificates
-
-        referenced by thumbprint that are allowed to manage the cluster. This will
-
-        overwrite the existing list.'
-      id: client_certificate_thumbprints
-      type:
-      - list[azure.mgmt.servicefabric.models.ClientCertificateThumbprint]
-    - description: 'The list of client certificates
-
-        referenced by common name that are allowed to manage the cluster. This
-
-        will overwrite the existing list.'
-      id: client_certificate_common_names
-      type:
-      - list[azure.mgmt.servicefabric.models.ClientCertificateCommonName]
+      - bool
     - description: 'The list of custom fabric settings to configure
 
         the cluster. This will overwrite the existing list.'
       id: fabric_settings
       type:
       - list[azure.mgmt.servicefabric.models.SettingsSectionDescription]
-    - description: 'The server certificate used by reverse
-
-        proxy.'
-      id: reverse_proxy_certificate
-      type:
-      - azure.mgmt.servicefabric.models.CertificateDescription
     - description: 'The list of node types in the cluster. This will
 
         overwrite the existing list.'
       id: node_types
       type:
       - list[azure.mgmt.servicefabric.models.NodeTypeDescription]
+    - description: 'The reliability level sets the replica set size
+
+        of system services. Learn about
+
+        [ReliabilityLevel]([https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity)).
+
+        - None - Run the System services with a target replica set count of 1.
+
+        This should only be used for test clusters.
+
+        - Bronze - Run the System services with a target replica set count of 3.
+
+        This should only be used for test clusters.
+
+        - Silver - Run the System services with a target replica set count of 5.
+
+        - Gold - Run the System services with a target replica set count of 7.
+
+        - Platinum - Run the System services with a target replica set count of 9.
+
+        . Possible values include: ''None'', ''Bronze'', ''Silver'', ''Gold'', ''Platinum'''
+      id: reliability_level
+      type:
+      - str
+      - azure.mgmt.servicefabric.models.enum
+    - description: 'The server certificate used by reverse
+
+        proxy.'
+      id: reverse_proxy_certificate
+      type:
+      - azure.mgmt.servicefabric.models.CertificateDescription
     - description: The policy to use when upgrading the cluster.
       id: upgrade_description
       type:
       - azure.mgmt.servicefabric.models.ClusterUpgradePolicy
-    - description: 'The list of add-on features to enable in the
+    - description: 'The upgrade mode of the cluster when new Service
 
-        cluster.'
-      id: add_on_features
+        Fabric runtime version is available.
+
+        - Automatic - The cluster will be automatically upgraded to the latest
+
+        Service Fabric runtime version as soon as it is available.
+
+        - Manual - The cluster will not be automatically upgraded to the latest
+
+        Service Fabric runtime version. The cluster is upgraded by setting the
+
+        **clusterCodeVersion** property in the cluster resource.
+
+        . Possible values include: ''Automatic'', ''Manual'''
+      id: upgrade_mode
       type:
-      - list[str]
+      - str
+      - azure.mgmt.servicefabric.models.enum
     - description: Cluster update parameters
       id: tags
       type:
@@ -115,20 +149,20 @@ items:
   type: class
   uid: azure.mgmt.servicefabric.models.ClusterUpdateParameters
 references:
-- fullName: list[azure.mgmt.servicefabric.models.ClientCertificateThumbprint]
-  name: list[ClientCertificateThumbprint]
+- fullName: list[str]
+  name: list[str]
   spec.python:
   - fullName: list
     name: list
     uid: list
   - fullName: '['
     name: '['
-  - fullName: azure.mgmt.servicefabric.models.ClientCertificateThumbprint
-    name: ClientCertificateThumbprint
-    uid: azure.mgmt.servicefabric.models.ClientCertificateThumbprint
+  - fullName: str
+    name: str
+    uid: str
   - fullName: ']'
     name: ']'
-  uid: list[azure.mgmt.servicefabric.models.ClientCertificateThumbprint]
+  uid: list[str]
 - fullName: list[azure.mgmt.servicefabric.models.ClientCertificateCommonName]
   name: list[ClientCertificateCommonName]
   spec.python:
@@ -143,6 +177,20 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[azure.mgmt.servicefabric.models.ClientCertificateCommonName]
+- fullName: list[azure.mgmt.servicefabric.models.ClientCertificateThumbprint]
+  name: list[ClientCertificateThumbprint]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.servicefabric.models.ClientCertificateThumbprint
+    name: ClientCertificateThumbprint
+    uid: azure.mgmt.servicefabric.models.ClientCertificateThumbprint
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.mgmt.servicefabric.models.ClientCertificateThumbprint]
 - fullName: list[azure.mgmt.servicefabric.models.SettingsSectionDescription]
   name: list[SettingsSectionDescription]
   spec.python:
@@ -171,20 +219,6 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[azure.mgmt.servicefabric.models.NodeTypeDescription]
-- fullName: list[str]
-  name: list[str]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: list[str]
 - fullName: dict[str, str]
   name: dict[str, str]
   spec.python:
