@@ -20,7 +20,7 @@ Work with resources and data stored in [Azure MySQL Database](/azure/mysql/overv
 
 ### Client ODBC driver and pyodbc
 
-The recommended client library for accessing Azure Database for MySQL is the Microsoft [ODBC driver](/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries). Use the ODBC driver to connect to the database and execute SQL statements directly.
+The recommended client library for accessing Azure Database for MySQL is the Microsoft [ODBC driver](/azure/sql-database/sql-database-connect-query-python#prerequisites). Use the ODBC driver to connect to the database and execute SQL statements directly.
 
 #### Example
 
@@ -108,7 +108,7 @@ Use the ODBC driver and pyodbc to connect to the database and execute SQL statem
 Learn more about [Azure Database for PostgreSQL](https://docs.microsoft.com/azure/postgresql/).
 
 ### Client ODBC driver and pyodbc
-The recommended client library for accessing Azure Database for PostgreSQL is the Microsoft [ODBC driver and pyodbc](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries)
+The recommended client library for accessing Azure Database for PostgreSQL is the Microsoft [ODBC driver and pyodbc](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#prerequisites).
 
 #### Example 
 

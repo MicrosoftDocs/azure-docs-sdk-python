@@ -75,7 +75,7 @@ This example creates a container group with two containers: an application conta
 
 This example creates a container group with a single task-based container. This example demonstrates several features:
 
-* [Command line override](/azure/container-instances/container-instances-restart-policy#command-line-override) - A custom command line, different from that which is specified in the container's Dockerfile `CMD` line, is specified. Command line override allows you to specify a custom command line to execute at container startup, overriding the default command line baked-in to the container. Regarding executing multiple commands at container startup, the following applies:
+* [Command line override](/azure/container-instances/container-instances-start-command) - A custom command line, different from that which is specified in the container's Dockerfile `CMD` line, is specified. Command line override allows you to specify a custom command line to execute at container startup, overriding the default command line baked-in to the container. Regarding executing multiple commands at container startup, the following applies:
 
    If you want to run a **single command** with several command-line arguments, for example `echo FOO BAR`, you must supply them as a string list to the `command` property of the [Container][Container]. For example:
 
@@ -141,7 +141,7 @@ This example deletes several container groups from a resource group, as well as 
 [client_factory]: /python/api/azure.common.client_factory
 [Container]: /python/api/azure.mgmt.containerinstance.models.container
 [ContainerGroupInstanceView]: /python/api/azure.mgmt.containerinstance.models.containergrouppropertiesinstanceview
-[containergroupoperations_get]: /python/api/azure.mgmt.containerinstance.operations.containergroupsoperations#get
+[containergroupoperations_get]: /python/api/azure.mgmt.containerinstance.operations.containergroupsoperations#get-resource-group-name--container-group-name--custom-headers-none--raw-false----operation-config-
 [ContainerInstanceManagementClient]: /python/api/azure.mgmt.containerinstance.containerinstancemanagementclient
 [instance_view]: /python/api/azure.mgmt.containerinstance.models.containergroup#variables
 [ResourceManagementClient]: /python/api/azure.mgmt.resource.resources.resourcemanagementclient
