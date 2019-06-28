@@ -160,7 +160,7 @@ Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 pip install azure-cognitiveservices-search-newssearch
 ```
 
-[Learn more](/azure/cognitive-services/bing-news-search/search-the-web) about the Bing News Search service and get started with the [News Search API Python quickstart](//azure/cognitive-services/bing-news-search/python).
+[Learn more](/azure/cognitive-services/bing-news-search/search-the-web) about the Bing News Search service and get started with the [News Search API Python quickstart](/azure/cognitive-services/bing-news-search/python).
 
 
 ## Language modules
