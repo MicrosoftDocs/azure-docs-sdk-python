@@ -32,7 +32,7 @@ Returns information about visual content found in an image:
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-vision-computervision
 ```
 
@@ -44,7 +44,7 @@ Machine-assisted moderation of text, video and images, augmented with human revi
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-vision-contentmoderator
 ```
 
@@ -56,7 +56,7 @@ Upload images to train and customize a computer vision model for your specific u
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-vision-customvision
 ```
 
@@ -70,7 +70,7 @@ Detect, identify, analyze, organize, and tag faces in photos.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install cognitive-face
 ```
 
@@ -86,7 +86,7 @@ Retrieve web documents indexed by the Bing Web Search API and narrow down the re
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-search-websearch
 ```
 
@@ -100,7 +100,7 @@ Search for images and get thumbnails, full image URLs, image metadata and more i
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-search-imagesearch
 ```
 
@@ -115,7 +115,7 @@ Search for the most relevant entity (place, person, or thing) for a given search
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-search-entitysearch
 ```
 
@@ -127,7 +127,7 @@ Build and a custom web search that meets your specific search domain.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-search-customsearch
 ```
 
@@ -141,7 +141,7 @@ Find videos across the web and get results with creator, encoding, length, and v
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-search-videosearch
 ```
 
@@ -156,7 +156,7 @@ Search the web for news articles and work with article, related news, images, an
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-search-newssearch
 ```
 
@@ -177,7 +177,7 @@ The Text Analytics API is a cloud-based service that provides  natural language 
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-language-textanalytics
 ```
 
@@ -192,7 +192,7 @@ Perform contextual grammar and spell checking with the Bing Spell Check API.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
-```
+```python
 pip install azure-cognitiveservices-language-spellcheck
 ```
 
