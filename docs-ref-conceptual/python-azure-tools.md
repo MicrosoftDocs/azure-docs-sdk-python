@@ -8,7 +8,7 @@ ms.topic: article
 ms.service: Azure
 ms.technology: Azure
 ms.date: 06/21/2017
-ms.author: liwong
+ms.author: routlaw
 ---
 
 # Azure tools for Python developers

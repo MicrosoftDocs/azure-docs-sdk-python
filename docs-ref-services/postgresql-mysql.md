@@ -3,7 +3,7 @@ title: Azure MySQL/PostgreSQL libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, SQL, database, MySQL, PostgreSQL
 author: lisawong19
-ms.author: liwong
+ms.author: routlaw
 manager: douge
 ms.date: 07/19/2017
 ms.topic: article
