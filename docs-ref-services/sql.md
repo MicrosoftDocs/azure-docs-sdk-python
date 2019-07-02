@@ -2,7 +2,7 @@
 title: Azure SQL Database libraries for Python
 description: Connect to Azure SQL database using the ODBC driver and pyodbc or manage Azure SQL instances with the management API.
 author: lisawong19  
-ms.author: liwong
+ms.author: routlaw
 manager: routlaw
 ms.date: 01/09/2018
 ms.topic: reference

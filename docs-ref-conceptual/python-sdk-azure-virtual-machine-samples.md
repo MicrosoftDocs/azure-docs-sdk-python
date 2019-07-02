@@ -3,7 +3,7 @@ title: Azure management libraries for Python virtual machine samples
 description: Get sample code for creating and updating Azure virtual machines using the Azure management libraries for Python
 keywords: Azure, Python, SDK, API, virtual machines
 author: lisawong19
-ms.author: liwong
+ms.author: routlaw
 manager: douge
 ms.date: 06/02/2017
 ms.topic: article
