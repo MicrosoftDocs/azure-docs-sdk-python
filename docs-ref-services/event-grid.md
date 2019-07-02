@@ -3,7 +3,7 @@ title: Azure Event Grid libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, Event Grid 
 author: lisawong19
-ms.author: liwong
+ms.author: routlaw
 manager: routlaw
 ms.date: 08/21/2017
 ms.topic: article
@@ -82,7 +82,7 @@ pip install azure-mgmt-eventgrid
 ### Example
 
 The following creates a custom topic and subscribes an endpoint to the topic. The code then sends an event to the topic through HTTPS.
-RequestBin is an open source, third-party tool that enables you to create an endpoint, and view requests that are sent to it. Go to [RequestBin](https://requestb.in/), and click **Create a RequestBin**. Copy the bin URL, because you need it when subscribing to the topic.
+RequestBin is an open source, third-party tool that enables you to create an endpoint, and view requests that are sent to it. Go to [RequestBin](https://requestbin.com), and click **Create a RequestBin**. Copy the bin URL, because you need it when subscribing to the topic.
 
 ```python
 from azure.mgmt.resource import ResourceManagementClient

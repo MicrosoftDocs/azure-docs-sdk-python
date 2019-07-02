@@ -26,7 +26,7 @@ ms.service: multiple
 
 ## Overview	
 
-Sign-on users and control access to applications and APIs with [Active Directory Graph](/azure/active-directory/develop/active-directory-graph-apis).	
+Sign-on users and control access to applications and APIs with [Active Directory Graph](/azure/active-directory/develop/active-directory-graph-api).	
 
 ## Client library	
 

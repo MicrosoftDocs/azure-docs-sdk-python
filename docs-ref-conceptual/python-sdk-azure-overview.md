@@ -3,7 +3,7 @@ title: Azure libraries for Python
 description: Overview of the Azure management and service libraries for Python
 keywords: Azure, Python, SDK, API
 author: lisawong19
-ms.author: liwong
+ms.author: routlaw
 manager: douge
 ms.date: 06/01/2017
 ms.topic: article
@@ -78,4 +78,4 @@ A [reference](/python/api/overview/azure) is available for all packages in both 
 
 ## Get help and give feedback
 
-Post questions to the community on [Stack Overflow](http://stackoverflow.com/questions/tagged/azure-sdk-python) and open issues against the SDK on the [project GitHub](https://github.com/Azure/azure-sdk-for-python).
+Post questions to the community on [Stack Overflow](https://stackoverflow.com/questions/tagged/azure-sdk-python) and open issues against the SDK on the [project GitHub](https://github.com/Azure/azure-sdk-for-python).

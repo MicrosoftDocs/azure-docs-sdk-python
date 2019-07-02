@@ -9,7 +9,7 @@ ms.topic: article
 ms.service: Azure
 ms.technology: Azure
 ms.date: 6/15/2017
-ms.author: liwong
+ms.author: routlaw
 ---
 
 # List images

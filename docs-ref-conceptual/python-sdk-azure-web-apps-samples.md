@@ -3,7 +3,7 @@ title: Azure management libraries for Python web app samples
 description: Get sample code for creating and updating Azure web apps hosted in App Service using the Azure management libraries for Python
 keywords: Azure, Java, SDK, API, web apps, app service
 author: lisawong19  
-ms.author: liwong
+ms.author: routlaw
 manager: douge
 ms.date: 06/05/2017
 ms.topic: article

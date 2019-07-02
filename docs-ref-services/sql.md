@@ -2,7 +2,7 @@
 title: Azure SQL Database libraries for Python
 description: Connect to Azure SQL database using the ODBC driver and pyodbc or manage Azure SQL instances with the management API.
 author: lisawong19  
-ms.author: liwong
+ms.author: routlaw
 manager: routlaw
 ms.date: 01/09/2018
 ms.topic: reference
@@ -21,7 +21,7 @@ Work with data stored in [Azure SQL Database](/azure/sql-database/sql-database-t
 ```bash
 pip install pyodbc
 ```
-More [details](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#install-the-python-and-database-communication-libraries) about installing the python and database communication libraries.
+More [details](https://docs.microsoft.com/azure/sql-database/sql-database-connect-query-python#prerequisites) about installing the python and database communication libraries.
 
 ## Connect and execute a SQL query
 
@@ -55,7 +55,7 @@ while row:
 
 ## Connecting to ORMs
 
-pyodbc works with other ORMs such as [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/dialects/mssql.html?highlight=pyodbc#module-sqlalchemy.dialects.mssql.pyodbc) and [Django](https://github.com/lionheart/django-pyodbc/). 
+pyodbc works with other ORMs such as [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/dialects/mssql.html?highlight=pyodbc#module-sqlalchemy.dialects.mssql.pyodbc) and [Django](https://github.com/lionheart/django-pyodbc/). 
 
 ## [Management API](/python/api/overview/azure/sql/management)
 
