@@ -415,4 +415,4 @@ sent_msg = Message(b'receive message',
 * [Service Bus documentation](https://docs.microsoft.com/azure/service-bus-messaging)
 * [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/azure-servicebus)
 * [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/servicebus/client?view=azure-python)
-* [Additional samples](https://github.com/Azure/azure-sdk-for-python/tree/master/azure-servicebus/examples)
+* [Additional samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus/examples)
