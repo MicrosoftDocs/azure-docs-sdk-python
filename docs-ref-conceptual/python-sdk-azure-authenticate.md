@@ -26,7 +26,7 @@ The following example uses a [Service Principal](https://docs.microsoft.com/cli/
 > To create a service principal with the Azure CLI, use the following command:
 >
 > ```bash
-> az ad sp create-for-rbac --name "MY-PRINCIPAL-NAME" --password "STRONG-SECRET-PASSWORD"
+> az ad sp create-for-rbac --name "MY-PRINCIPAL-NAME"
 > ```
 >
 > To learn more about setting up service princpals with the CLI, see
