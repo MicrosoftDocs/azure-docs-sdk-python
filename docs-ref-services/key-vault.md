@@ -129,9 +129,9 @@ operation = client.vaults.create_or_update(
             'sku': {
                 'name': 'standard'
             },
-            'tenant_id': TENANT_ID,
+            'tenant_id': ALLOW_TENANT_ID,
             'access_policies': [{
-                'object_id': OBJECT_ID,
+                'object_id': ALLOW_OBJECT_ID,
                 'tenant_id': ALLOW_TENANT_ID,
                 'permissions': {
                     'keys': ['all'],
