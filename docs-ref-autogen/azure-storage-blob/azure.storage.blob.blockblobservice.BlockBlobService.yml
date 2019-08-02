@@ -2,6 +2,7 @@
 api_name: []
 items:
 - children:
+  - azure.storage.blob.blockblobservice.BlockBlobService.batch_set_standard_blob_tier
   - azure.storage.blob.blockblobservice.BlockBlobService.copy_blob
   - azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
   - azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
@@ -83,6 +84,39 @@ items:
   type: class
   uid: azure.storage.blob.blockblobservice.BlockBlobService
 - class: azure.storage.blob.blockblobservice.BlockBlobService
+  fullName: azure.storage.blob.blockblobservice.BlockBlobService.batch_set_standard_blob_tier
+  langs:
+  - python
+  module: azure.storage.blob.blockblobservice
+  name: batch_set_standard_blob_tier(batch_set_blob_tier_sub_requests, timeout=None)
+  summary: 'Sends a batch of multiple set block blob tiers requests.
+
+    This API is only supported for block blobs on standard storage accounts.'
+  syntax:
+    content: batch_set_standard_blob_tier(batch_set_blob_tier_sub_requests, timeout=None)
+    parameters:
+    - description: The set block blob tier requests to send as a batch.
+      id: batch_set_blob_tier_sub_requests
+      type:
+      - list(BatchSetBlobTierSubRequest)
+    - defaultValue: None
+      description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.'
+      id: timeout
+      type:
+      - int
+    return:
+      description: parsed batch set tier HTTP response which indicates if each sub-request
+        is successful.
+      type:
+      - list of <xref:azure.storage.blob.models.BatchSubResponse>
+  type: method
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.batch_set_standard_blob_tier
+- class: azure.storage.blob.blockblobservice.BlockBlobService
   fullName: azure.storage.blob.blockblobservice.BlockBlobService.copy_blob
   langs:
   - python
@@ -91,7 +125,7 @@ items:
     source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
     destination_if_modified_since=None, destination_if_unmodified_since=None, destination_if_match=None,
     destination_if_none_match=None, destination_lease_id=None, source_lease_id=None,
-    timeout=None, requires_sync=None)
+    timeout=None, requires_sync=None, standard_blob_tier=None, rehydrate_priority=None)
   summary: 'Copies a blob. This operation returns a copy operation
 
     properties object. The copy operation may be configured to either be an
@@ -289,6 +323,16 @@ items:
 
     Enforces that the service will not return a response until the copy is complete.
 
+    :param StandardBlobTier standard_blob_tier:
+
+    A standard blob tier value to set the blob to. For this version of the library,
+
+    this is only applicable to block blobs on standard storage accounts.
+
+    :param <xref:azure.storage.blob.models.RehydratePriority> rehydrate_priority:
+
+    Indicates the priority with which to rehydrate an archived blob
+
     :return: Copy operation properties such as status, source, and ID.
 
     :rtype: <xref:azure.storage.blob.models.CopyProperties>'
@@ -297,7 +341,7 @@ items:
       source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
       destination_if_modified_since=None, destination_if_unmodified_since=None, destination_if_match=None,
       destination_if_none_match=None, destination_lease_id=None, source_lease_id=None,
-      timeout=None, requires_sync=None)
+      timeout=None, requires_sync=None, standard_blob_tier=None, rehydrate_priority=None)
     parameters:
     - description: ''
       id: container_name
@@ -331,6 +375,10 @@ items:
       id: timeout
     - defaultValue: None
       id: requires_sync
+    - defaultValue: None
+      id: standard_blob_tier
+    - defaultValue: None
+      id: rehydrate_priority
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.copy_blob
 - class: azure.storage.blob.blockblobservice.BlockBlobService
@@ -341,7 +389,7 @@ items:
   name: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   summary: 'Creates a new blob from an array of bytes, or updates the content
 
     of an existing blob, with automatic chunking and progress
@@ -351,7 +399,7 @@ items:
     content: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
       content_settings=None, metadata=None, validate_content=False, progress_callback=None,
       max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None)
+      if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -476,6 +524,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -485,6 +544,14 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - StandardBlobTier
     return:
       description: ETag and last modified properties for the Block Blob
       type:
@@ -499,7 +566,7 @@ items:
   name: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   summary: 'Creates a new blob from a file path, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.'
@@ -507,7 +574,7 @@ items:
     content: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
       metadata=None, validate_content=False, progress_callback=None, max_connections=2,
       lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-      if_none_match=None, timeout=None)
+      if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -624,6 +691,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -633,6 +711,14 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - StandardBlobTier
     return:
       description: ETag and last modified properties for the Block Blob
       type:
@@ -647,7 +733,8 @@ items:
   name: create_blob_from_stream(container_name, blob_name, stream, count=None, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None, use_byte_buffer=False)
+    if_none_match=None, timeout=None, use_byte_buffer=False, standard_blob_tier=None,
+    cpk=None)
   summary: 'Creates a new blob from a file/stream, or updates the content of
 
     an existing blob, with automatic chunking and progress
@@ -657,7 +744,8 @@ items:
     content: create_blob_from_stream(container_name, blob_name, stream, count=None,
       content_settings=None, metadata=None, validate_content=False, progress_callback=None,
       max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None, use_byte_buffer=False)
+      if_match=None, if_none_match=None, timeout=None, use_byte_buffer=False, standard_blob_tier=None,
+      cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -781,6 +869,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: 'False'
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -790,7 +889,7 @@ items:
       id: timeout
       type:
       - int
-    - defaultValue: 'False'
+    - defaultValue: None
       description: 'If True, this will force usage of the original full block buffering
         upload path.
 
@@ -835,6 +934,14 @@ items:
       id: use_byte_buffer
       type:
       - bool
+    - defaultValue: None
+      description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - StandardBlobTier
     return:
       description: ETag and last modified properties for the Block Blob
       type:
@@ -849,7 +956,7 @@ items:
   name: create_blob_from_text(container_name, blob_name, text, encoding='utf-8', content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   summary: 'Creates a new blob from str/unicode, or updates the content of an
 
     existing blob, with automatic chunking and progress notifications.'
@@ -857,7 +964,7 @@ items:
     content: create_blob_from_text(container_name, blob_name, text, encoding='utf-8',
       content_settings=None, metadata=None, validate_content=False, progress_callback=None,
       max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None)
+      if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -975,6 +1082,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -984,6 +1102,14 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - StandardBlobTier
     return:
       description: ETag and last modified properties for the Block Blob
       type:
@@ -1053,11 +1179,11 @@ items:
   - python
   module: azure.storage.blob.blockblobservice
   name: put_block(container_name, blob_name, block, block_id, validate_content=False,
-    lease_id=None, timeout=None)
+    lease_id=None, timeout=None, cpk=None)
   summary: Creates a new block to be committed as part of a blob.
   syntax:
     content: put_block(container_name, blob_name, block, block_id, validate_content=False,
-      lease_id=None, timeout=None)
+      lease_id=None, timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -1072,15 +1198,12 @@ items:
       type:
       - io.IOBase
       - bytesContent of the block.
-    - description: 'A valid Base64 string value that identifies the block. Prior to
+    - description: 'A string value that identifies the block. The string should be
+        less than
 
-        encoding, the string must be less than or equal to 64 bytes in size.
+        or equal to 64 bytes in size.
 
-        For a given blob, the length of the value specified for the blockid
-
-        parameter must be the same size for each block. Note that the Base64
-
-        string must be URL-encoded.'
+        For a given blob, the block_id must be the same size for each block.'
       id: block_id
       type:
       - str
@@ -1105,6 +1228,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1117,12 +1251,12 @@ items:
   - python
   module: azure.storage.blob.blockblobservice
   name: put_block_from_url(container_name, blob_name, copy_source_url, block_id, source_range_start=None,
-    source_range_end=None, source_content_md5=None, lease_id=None, timeout=None)
+    source_range_end=None, source_content_md5=None, lease_id=None, timeout=None, cpk=None)
   summary: Creates a new block to be committed as part of a blob.
   syntax:
     content: put_block_from_url(container_name, blob_name, copy_source_url, block_id,
       source_range_start=None, source_range_end=None, source_content_md5=None, lease_id=None,
-      timeout=None)
+      timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -1151,15 +1285,12 @@ items:
       type:
       - int
     - defaultValue: None
-      description: 'A valid Base64 string value that identifies the block. Prior to
+      description: 'A string value that identifies the block. The string should be
+        less than
 
-        encoding, the string must be less than or equal to 64 bytes in size.
+        or equal to 64 bytes in size.
 
-        For a given blob, the length of the value specified for the blockid
-
-        parameter must be the same size for each block. Note that the Base64
-
-        string must be URL-encoded.'
+        For a given blob, the block_id must be the same size for each block.'
       id: block_id
       type:
       - str
@@ -1175,6 +1306,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1188,7 +1330,8 @@ items:
   module: azure.storage.blob.blockblobservice
   name: put_block_list(container_name, blob_name, block_list, content_settings=None,
     metadata=None, validate_content=False, lease_id=None, if_modified_since=None,
-    if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None)
+    if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None,
+    cpk=None)
   summary: 'Writes a blob by specifying the list of block IDs that make up the blob.
 
     In order to be written as part of a blob, a block must have been
@@ -1210,7 +1353,8 @@ items:
   syntax:
     content: put_block_list(container_name, blob_name, block_list, content_settings=None,
       metadata=None, validate_content=False, lease_id=None, if_modified_since=None,
-      if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None)
+      if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None,
+      cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -1306,10 +1450,29 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
+    - defaultValue: None
+      description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - StandardBlobTier
     return:
       description: ETag and last modified properties for the updated Block Blob
       type:
@@ -1321,12 +1484,15 @@ items:
   langs:
   - python
   module: azure.storage.blob.blockblobservice
-  name: set_standard_blob_tier(container_name, blob_name, standard_blob_tier, timeout=None)
-  summary: Sets the block blob tiers on the blob. This API is only supported for block
-    blobs on standard storage accounts.
+  name: set_standard_blob_tier(container_name, blob_name, standard_blob_tier, timeout=None,
+    rehydrate_priority=None)
+  summary: "Sets the block blob tiers on the blob. This API is only supported for\
+    \ block blobs on standard storage accounts.\n\n\n:param <xref:azure.storage.blob.models.RehydratePriority>\
+    \ rehydrate_priority:\n   Indicates the priority with which to rehydrate an archived\
+    \ blob"
   syntax:
     content: set_standard_blob_tier(container_name, blob_name, standard_blob_tier,
-      timeout=None)
+      timeout=None, rehydrate_priority=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -1353,6 +1519,8 @@ items:
       id: timeout
       type:
       - int
+    - defaultValue: None
+      id: rehydrate_priority
   type: method
   uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
 - class: azure.storage.blob.blockblobservice.BlockBlobService
@@ -1386,13 +1554,18 @@ items:
   type: attribute
   uid: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
 references:
+- fullName: azure.storage.blob.blockblobservice.BlockBlobService.batch_set_standard_blob_tier
+  isExternal: false
+  name: batch_set_standard_blob_tier(batch_set_blob_tier_sub_requests, timeout=None)
+  parent: azure.storage.blob.blockblobservice.BlockBlobService
+  uid: azure.storage.blob.blockblobservice.BlockBlobService.batch_set_standard_blob_tier
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.copy_blob
   isExternal: false
   name: copy_blob(container_name, blob_name, copy_source, metadata=None, source_if_modified_since=None,
     source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
     destination_if_modified_since=None, destination_if_unmodified_since=None, destination_if_match=None,
     destination_if_none_match=None, destination_lease_id=None, source_lease_id=None,
-    timeout=None, requires_sync=None)
+    timeout=None, requires_sync=None, standard_blob_tier=None, rehydrate_priority=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.copy_blob
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
@@ -1400,7 +1573,7 @@ references:
   name: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
@@ -1408,7 +1581,7 @@ references:
   name: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_path
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
@@ -1416,7 +1589,8 @@ references:
   name: create_blob_from_stream(container_name, blob_name, stream, count=None, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None, use_byte_buffer=False)
+    if_none_match=None, timeout=None, use_byte_buffer=False, standard_blob_tier=None,
+    cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_stream
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
@@ -1424,7 +1598,7 @@ references:
   name: create_blob_from_text(container_name, blob_name, text, encoding='utf-8', content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_text
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.get_block_list
@@ -1436,25 +1610,27 @@ references:
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block
   isExternal: false
   name: put_block(container_name, blob_name, block, block_id, validate_content=False,
-    lease_id=None, timeout=None)
+    lease_id=None, timeout=None, cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block_from_url
   isExternal: false
   name: put_block_from_url(container_name, blob_name, copy_source_url, block_id, source_range_start=None,
-    source_range_end=None, source_content_md5=None, lease_id=None, timeout=None)
+    source_range_end=None, source_content_md5=None, lease_id=None, timeout=None, cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_from_url
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
   isExternal: false
   name: put_block_list(container_name, blob_name, block_list, content_settings=None,
     metadata=None, validate_content=False, lease_id=None, if_modified_since=None,
-    if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None)
+    if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None,
+    cpk=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_list
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
   isExternal: false
-  name: set_standard_blob_tier(container_name, blob_name, standard_blob_tier, timeout=None)
+  name: set_standard_blob_tier(container_name, blob_name, standard_blob_tier, timeout=None,
+    rehydrate_priority=None)
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
 - fullName: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
@@ -1472,6 +1648,20 @@ references:
   name: MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
   parent: azure.storage.blob.blockblobservice.BlockBlobService
   uid: azure.storage.blob.blockblobservice.BlockBlobService.MIN_LARGE_BLOCK_UPLOAD_THRESHOLD
+- fullName: list(BatchSetBlobTierSubRequest)
+  name: list(BatchSetBlobTierSubRequest)
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
+  - fullName: BatchSetBlobTierSubRequest
+    name: BatchSetBlobTierSubRequest
+    uid: BatchSetBlobTierSubRequest
+  - fullName: )
+    name: )
+  uid: list(BatchSetBlobTierSubRequest)
 - fullName: dict(str, str)
   name: dict(str, str)
   spec.python:
