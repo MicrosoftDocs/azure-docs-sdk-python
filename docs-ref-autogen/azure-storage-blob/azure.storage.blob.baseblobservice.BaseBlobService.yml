@@ -5,6 +5,7 @@ items:
   - azure.storage.blob.baseblobservice.BaseBlobService.abort_copy_blob
   - azure.storage.blob.baseblobservice.BaseBlobService.acquire_blob_lease
   - azure.storage.blob.baseblobservice.BaseBlobService.acquire_container_lease
+  - azure.storage.blob.baseblobservice.BaseBlobService.batch_delete_blobs
   - azure.storage.blob.baseblobservice.BaseBlobService.break_blob_lease
   - azure.storage.blob.baseblobservice.BaseBlobService.break_container_lease
   - azure.storage.blob.baseblobservice.BaseBlobService.change_blob_lease
@@ -369,6 +370,37 @@ items:
       description: str
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.acquire_container_lease
+- class: azure.storage.blob.baseblobservice.BaseBlobService
+  fullName: azure.storage.blob.baseblobservice.BaseBlobService.batch_delete_blobs
+  langs:
+  - python
+  module: azure.storage.blob.baseblobservice
+  name: batch_delete_blobs(batch_delete_sub_requests, timeout=None)
+  summary: 'Sends a batch of multiple blob delete requests.
+
+
+    The blob delete method deletes the specified blob or snapshot. Note that deleting
+    a blob also deletes all its
+
+    snapshots. For more information, see [https://docs.microsoft.com/rest/api/storageservices/delete-blob](https://docs.microsoft.com/rest/api/storageservices/delete-blob)'
+  syntax:
+    content: batch_delete_blobs(batch_delete_sub_requests, timeout=None)
+    parameters:
+    - description: The blob delete requests to send as a batch.
+      id: batch_delete_sub_requests
+      type:
+      - list(BatchDeleteSubRequest)
+    - defaultValue: None
+      description: The timeout parameter is expressed in seconds.
+      id: timeout
+      type:
+      - int
+    return:
+      description: parsed batch delete HTTP response
+      type:
+      - list of <xref:azure.storage.blob.models.BatchSubResponse>
+  type: method
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.batch_delete_blobs
 - class: azure.storage.blob.baseblobservice.BaseBlobService
   fullName: azure.storage.blob.baseblobservice.BaseBlobService.break_blob_lease
   langs:
@@ -1000,7 +1032,15 @@ items:
     content: create_container(container_name, metadata=None, public_access=None, fail_on_exist=False,
       timeout=None)
     parameters:
-    - description: Name of container to create.
+    - description: 'Name of container to create.
+
+        The container name may only contain lowercase letters, numbers, and hyphens,
+        and must begin with a letter or
+
+        a number. Each hyphen must be preceded and followed by a non-hyphen character.
+        The name must also be
+
+        between 3 and 63 characters long.'
       id: container_name
       type:
       - str
@@ -1721,12 +1761,12 @@ items:
   module: azure.storage.blob.baseblobservice
   name: get_blob_metadata(container_name, blob_name, snapshot=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   summary: Returns all user-defined metadata for the specified blob or snapshot.
   syntax:
     content: get_blob_metadata(container_name, blob_name, snapshot=None, lease_id=None,
       if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-      timeout=None)
+      timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -1798,6 +1838,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Decrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1815,7 +1866,7 @@ items:
   module: azure.storage.blob.baseblobservice
   name: get_blob_properties(container_name, blob_name, snapshot=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the blob. It does not return the content of the blob.
@@ -1826,7 +1877,7 @@ items:
   syntax:
     content: get_blob_properties(container_name, blob_name, snapshot=None, lease_id=None,
       if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-      timeout=None)
+      timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -1897,6 +1948,17 @@ items:
       id: if_none_match
       type:
       - str
+    - defaultValue: None
+      description: 'Decrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
@@ -1990,7 +2052,7 @@ items:
   name: get_blob_to_bytes(container_name, blob_name, snapshot=None, start_range=None,
     end_range=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, cpk=None)
   summary: 'Downloads a blob as an array of bytes, with automatic chunking and
 
     progress notifications. Returns an instance of <xref:azure.storage.blob.models.Blob>
@@ -2001,7 +2063,7 @@ items:
     content: get_blob_to_bytes(container_name, blob_name, snapshot=None, start_range=None,
       end_range=None, validate_content=False, progress_callback=None, max_connections=2,
       lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-      if_none_match=None, timeout=None)
+      if_none_match=None, timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -2153,6 +2215,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Decrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -2182,7 +2255,7 @@ items:
   name: get_blob_to_path(container_name, blob_name, file_path, open_mode='wb', snapshot=None,
     start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   summary: 'Downloads a blob to a file path, with automatic chunking and progress
 
     notifications. Returns an instance of <xref:azure.storage.blob.models.Blob> with
@@ -2192,7 +2265,7 @@ items:
     content: get_blob_to_path(container_name, blob_name, file_path, open_mode='wb',
       snapshot=None, start_range=None, end_range=None, validate_content=False, progress_callback=None,
       max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None)
+      if_match=None, if_none_match=None, timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -2358,6 +2431,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Decrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -2387,7 +2471,7 @@ items:
   name: get_blob_to_stream(container_name, blob_name, stream, snapshot=None, start_range=None,
     end_range=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, cpk=None)
   summary: 'Downloads a blob to a stream, with automatic chunking and progress
 
     notifications. Returns an instance of <xref:azure.storage.blob.models.Blob> with
@@ -2397,7 +2481,7 @@ items:
     content: get_blob_to_stream(container_name, blob_name, stream, snapshot=None,
       start_range=None, end_range=None, validate_content=False, progress_callback=None,
       max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None)
+      if_match=None, if_none_match=None, timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -2553,6 +2637,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Decrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -2582,7 +2677,7 @@ items:
   name: get_blob_to_text(container_name, blob_name, encoding='utf-8', snapshot=None,
     start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   summary: 'Downloads a blob as unicode text, with automatic chunking and progress
 
     notifications. Returns an instance of <xref:azure.storage.blob.models.Blob> with
@@ -2592,7 +2687,7 @@ items:
     content: get_blob_to_text(container_name, blob_name, encoding='utf-8', snapshot=None,
       start_range=None, end_range=None, validate_content=False, progress_callback=None,
       max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None)
+      if_match=None, if_none_match=None, timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -2749,6 +2844,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Decrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -2896,6 +3002,10 @@ items:
       id: timeout
       type:
       - int
+    return:
+      description: The user delegation key.
+      type:
+      - azure.storage.blob.models.UserDelegationKey
   type: method
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_user_delegation_key
 - class: azure.storage.blob.baseblobservice.BaseBlobService
@@ -3536,14 +3646,14 @@ items:
   module: azure.storage.blob.baseblobservice
   name: set_blob_metadata(container_name, blob_name, metadata=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   summary: 'Sets user-defined metadata for the specified blob as one or more
 
     name-value pairs.'
   syntax:
     content: set_blob_metadata(container_name, blob_name, metadata=None, lease_id=None,
       if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-      timeout=None)
+      timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -3617,6 +3727,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -3634,14 +3755,14 @@ items:
   module: azure.storage.blob.baseblobservice
   name: set_blob_properties(container_name, blob_name, content_settings=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   summary: 'Sets system properties on the blob. If one property is set for the
 
     content_settings, all properties will be overriden.'
   syntax:
     content: set_blob_properties(container_name, blob_name, content_settings=None,
       lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-      if_none_match=None, timeout=None)
+      if_none_match=None, timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -3710,6 +3831,17 @@ items:
       id: if_none_match
       type:
       - str
+    - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
@@ -3944,12 +4076,13 @@ items:
   - python
   module: azure.storage.blob.baseblobservice
   name: snapshot_blob(container_name, blob_name, metadata=None, if_modified_since=None,
-    if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None)
+    if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None,
+    cpk=None)
   summary: Creates a read-only snapshot of a blob.
   syntax:
     content: snapshot_blob(container_name, blob_name, metadata=None, if_modified_since=None,
       if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None,
-      timeout=None)
+      timeout=None, cpk=None)
     parameters:
     - description: Name of existing container.
       id: container_name
@@ -4026,6 +4159,17 @@ items:
       id: lease_id
       type:
       - str
+    - defaultValue: None
+      description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - defaultValue: None
       description: The timeout parameter is expressed in seconds.
       id: timeout
@@ -4105,6 +4249,11 @@ references:
     if_modified_since=None, if_unmodified_since=None, timeout=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.acquire_container_lease
+- fullName: azure.storage.blob.baseblobservice.BaseBlobService.batch_delete_blobs
+  isExternal: false
+  name: batch_delete_blobs(batch_delete_sub_requests, timeout=None)
+  parent: azure.storage.blob.baseblobservice.BaseBlobService
+  uid: azure.storage.blob.baseblobservice.BaseBlobService.batch_delete_blobs
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.break_blob_lease
   isExternal: false
   name: break_blob_lease(container_name, blob_name, lease_break_period=None, if_modified_since=None,
@@ -4194,14 +4343,14 @@ references:
   isExternal: false
   name: get_blob_metadata(container_name, blob_name, snapshot=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_metadata
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_properties
   isExternal: false
   name: get_blob_properties(container_name, blob_name, snapshot=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_properties
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_service_properties
@@ -4219,7 +4368,7 @@ references:
   name: get_blob_to_bytes(container_name, blob_name, snapshot=None, start_range=None,
     end_range=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_bytes
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_path
@@ -4227,7 +4376,7 @@ references:
   name: get_blob_to_path(container_name, blob_name, file_path, open_mode='wb', snapshot=None,
     start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_path
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_stream
@@ -4235,7 +4384,7 @@ references:
   name: get_blob_to_stream(container_name, blob_name, stream, snapshot=None, start_range=None,
     end_range=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_stream
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_text
@@ -4243,7 +4392,7 @@ references:
   name: get_blob_to_text(container_name, blob_name, encoding='utf-8', snapshot=None,
     start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.get_blob_to_text
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.get_container_acl
@@ -4322,14 +4471,14 @@ references:
   isExternal: false
   name: set_blob_metadata(container_name, blob_name, metadata=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_metadata
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_properties
   isExternal: false
   name: set_blob_properties(container_name, blob_name, content_settings=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_properties
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.set_blob_service_properties
@@ -4353,7 +4502,8 @@ references:
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
   isExternal: false
   name: snapshot_blob(container_name, blob_name, metadata=None, if_modified_since=None,
-    if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None)
+    if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None,
+    cpk=None)
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.snapshot_blob
 - fullName: azure.storage.blob.baseblobservice.BaseBlobService.undelete_blob
@@ -4371,6 +4521,20 @@ references:
   name: MAX_SINGLE_GET_SIZE
   parent: azure.storage.blob.baseblobservice.BaseBlobService
   uid: azure.storage.blob.baseblobservice.BaseBlobService.MAX_SINGLE_GET_SIZE
+- fullName: list(BatchDeleteSubRequest)
+  name: list(BatchDeleteSubRequest)
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
+  - fullName: BatchDeleteSubRequest
+    name: BatchDeleteSubRequest
+    uid: BatchDeleteSubRequest
+  - fullName: )
+    name: )
+  uid: list(BatchDeleteSubRequest)
 - fullName: dict(str, str)
   name: dict(str, str)
   spec.python:
