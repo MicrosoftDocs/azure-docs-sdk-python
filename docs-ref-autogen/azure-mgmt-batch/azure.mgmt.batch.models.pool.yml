@@ -21,10 +21,11 @@ items:
 
     sending a request.'
   syntax:
-    content: Pool(display_name=None, vm_size=None, deployment_configuration=None,
+    content: 'Pool(*, display_name: str = None, vm_size: str = None, deployment_configuration=None,
       scale_settings=None, inter_node_communication=None, network_configuration=None,
-      max_tasks_per_node=None, task_scheduling_policy=None, user_accounts=None, metadata=None,
-      start_task=None, certificates=None, application_packages=None, application_licenses=None)
+      max_tasks_per_node: int = None, task_scheduling_policy=None, user_accounts=None,
+      metadata=None, start_task=None, certificates=None, application_packages=None,
+      application_licenses=None, mount_configuration=None, **kwargs) -> None'
     parameters:
     - description: 'The display name for the pool. The display name need
 
@@ -103,13 +104,17 @@ items:
       - azure.mgmt.batch.models.NetworkConfiguration
     - description: 'The maximum number of tasks that can run
 
-        concurrently on a single compute node in the pool.'
+        concurrently on a single compute node in the pool. The default value is 1.
+
+        The maximum value is the smaller of 4 times the number of cores of the
+
+        vmSize of the pool or 256.'
       id: max_tasks_per_node
       type:
       - int
     - description: 'How tasks are distributed across compute
 
-        nodes in a pool.'
+        nodes in a pool. If not specified, the default is spread.'
       id: task_scheduling_policy
       type:
       - azure.mgmt.batch.models.TaskSchedulingPolicy
@@ -157,13 +162,15 @@ items:
       - list[azure.mgmt.batch.models.CertificateReference]
     - description: 'The list of application packages to be
 
-        installed on each compute node in the pool. Changes to application
+        installed on each compute node in the pool. Changes to application package
 
-        packages affect all new compute nodes joining the pool, but do not affect
+        references affect all new compute nodes joining the pool, but do not
 
-        compute nodes that are already in the pool until they are rebooted or
+        affect compute nodes that are already in the pool until they are rebooted
 
-        reimaged.'
+        or reimaged. There is a maximum of 10 application package references on
+
+        any given pool.'
       id: application_packages
       type:
       - list[azure.mgmt.batch.models.ApplicationPackageReference]
@@ -179,6 +186,12 @@ items:
       id: application_licenses
       type:
       - list[str]
+    - description: 'A list of file systems to mount on each node
+
+        in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.'
+      id: mount_configuration
+      type:
+      - list[azure.mgmt.batch.models.MountConfiguration]
     variables:
     - description: The ID of the resource.
       id: id
@@ -335,3 +348,17 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[str]
+- fullName: list[azure.mgmt.batch.models.MountConfiguration]
+  name: list[MountConfiguration]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.batch.models.MountConfiguration
+    name: MountConfiguration
+    uid: azure.mgmt.batch.models.MountConfiguration
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.mgmt.batch.models.MountConfiguration]
