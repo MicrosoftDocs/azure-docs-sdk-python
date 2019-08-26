@@ -1,6 +1,21 @@
+---
+title: Azure DataLake Store Gen1 library for Python
+description: A python interface to the Azure Data-lake Storage system gen 1
+keywords: Azure, Python, SDK, API, DataLake, ADLS
+author: akharit
+ms.author: akharit
+manager: pkasturi
+ms.date: 08/26/2019
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: datalake-store
+---
+
 # azure-datalake-store
 
-A pure-python interface to the Azure Data-lake Storage system, providing
+A pure-python interface to the Azure Data-lake Storage gen 1 system, providing
 pythonic file-system and file objects, seamless transition between Windows and
 POSIX remote paths, high-performance up- and down-loader.
 
@@ -122,7 +137,7 @@ be transferred, files matching a specific glob-pattern or any particular file.
 # download the whole directory structure using 5 threads, 16MB chunks
 ADLDownloader(adl, '', 'my_temp_dir', 5, 2**24)
 ```
-# API
+## API
 
 #### class azure.datalake.store.core.AzureDLFileSystem(token=None, per_call_timeout_seconds=60, \*\*kwargs)
 Access Azure DataLake Store as if it were a file-system
@@ -161,26 +176,6 @@ Access Azure DataLake Store as if it were a file-system
 
 
 ### Methods
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- !! processed by numpydoc !! -->
 
@@ -1403,7 +1398,7 @@ It will raise AssertionError if the downloader is active.
 <!-- !! processed by numpydoc !! -->
 
 #### azure.datalake.store.lib.auth(tenant_id=None, username=None, password=None, client_id='', client_secret=None, resource='https://datalake.azure.net/', require_2fa=False, authority=None, retry_policy=None, \*\*kwargs)
-User/password authentication
+User/password authentication.
 
 
 * **Parameters**
