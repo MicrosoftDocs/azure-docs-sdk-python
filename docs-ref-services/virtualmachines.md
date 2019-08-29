@@ -85,6 +85,6 @@ View the [complete list](https://azure.microsoft.com/resources/samples/?platform
 [2]: https://github.com/Azure-Samples/resource-manager-python-manage-resources-with-msi
 [3]: https://github.com/Azure-Samples/compute-python-msi-vm
 [4]: https://azure.microsoft.com/resources/samples/network-python-manage-loadbalancer
-[5]: /azure/python/docs-ref-conceptual/python-sdk-azure-samples-managed-disks
-[6]: /azure/python/docs-ref-conceptual/python-sdk-azure-samples-list-images
-[7]: /azure/python/docs-ref-conceptual/python-sdk-azure-samples-monitor-vms
+[5]: /azure/python/python-sdk-azure-samples-managed-disks
+[6]: /azure/python/python-sdk-azure-samples-list-images
+[7]: /azure/python/python-sdk-azure-samples-monitor-vms
