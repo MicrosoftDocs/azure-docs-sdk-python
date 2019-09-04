@@ -7,6 +7,7 @@ items:
   - azure.keyvault.keys.aio.KeyClient.create_key
   - azure.keyvault.keys.aio.KeyClient.create_rsa_key
   - azure.keyvault.keys.aio.KeyClient.delete_key
+  - azure.keyvault.keys.aio.KeyClient.get_cryptography_client
   - azure.keyvault.keys.aio.KeyClient.get_deleted_key
   - azure.keyvault.keys.aio.KeyClient.get_key
   - azure.keyvault.keys.aio.KeyClient.import_key
@@ -24,14 +25,23 @@ items:
   inheritance:
   - inheritance:
     - type: builtins.object
-    type: azure.keyvault.keys.aio._internal._AsyncKeyVaultClientBase
+    type: azure.keyvault.keys._shared.async_client_base.AsyncKeyVaultClientBase
   langs:
   - python
   module: azure.keyvault.keys.aio
   name: KeyClient
-  summary: The KeyClient class defines a high level interface for managing keys in
-    the specified vault.
-  syntax: {}
+  summary: A high-level asynchronous interface for managing a vault's keys.
+  syntax:
+    parameters:
+    - description: 'An object which can provide an access token for the vault, such
+        as a credential from
+
+        <xref:azure.identity.aio>'
+      id: credential
+    - description: URL of the vault the client will access
+      id: vault_url
+      type:
+      - str
   type: class
   uid: azure.keyvault.keys.aio.KeyClient
 - class: azure.keyvault.keys.aio.KeyClient
@@ -40,46 +50,26 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'backup_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) -> bytes'
-  summary: 'Requests a backup of the specified key to the client.
+  summary: 'Back up a key in a protected form that can''t be used outside Azure Key
+    Vault. This is intended to allow
+
+    copying a key from one vault to another. Requires the key/backup permission.
 
 
-    The Key Backup operation exports a key from Azure Key Vault in a
+    Backup / restore cannot be performed across geopolitical boundaries. For example,
+    a backup from a vault in a
 
-    protected form. Note that this operation does NOT return key material
-
-    in a form that can be used outside the Azure Key Vault system, the
-
-    returned key material is either protected to a Azure Key Vault HSM or
-
-    to Azure Key Vault itself. The intent of this operation is to allow a
-
-    client to GENERATE a key in one Azure Key Vault instance, BACKUP the
-
-    key, and then RESTORE it into another Azure Key Vault instance. The
-
-    BACKUP operation may be used to export, in protected form, any key type
-
-    from Azure Key Vault. Individual versions of a key cannot be backed up.
-
-    BACKUP / RESTORE can be performed within geographical boundaries only;
-
-    meaning that a BACKUP from one geographical area cannot be restored to
-
-    another geographical area. For example, a backup from the US
-
-    geographical area cannot be restored in an EU geographical area. This
-
-    operation requires the key/backup permission.'
+    USA region cannot be restored to a vault in an EU region.'
   syntax:
     content: 'backup_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
       bytes'
     parameters:
-    - description: The name of the key.
+    - description: The name of the key
       id: name
       type:
       - str
     return:
-      description: The raw bytes of the key backup.
+      description: The raw bytes of the key backup
       type:
       - bytes
   type: method
@@ -94,71 +84,58 @@ items:
     typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
     NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
     tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
-  summary: 'Creates a new Elliptic curve type key, stores it, then returns key attributes
-    to the client.
+    typing.Any]) -> azure.keyvault.keys.models.Key'
+  summary: 'Create a new elliptic curve key. If `name` is already in use, create a
+    new version of the key. Requires
 
-
-    The create key operation can be used to create any key type in Azure
-
-    Key Vault. If the named key already exists, Azure Key Vault creates a
-
-    new version of the key. It requires the keys/create permission.'
+    the keys/create permission.'
   syntax:
     content: 'create_ec_key(name: str, hsm: bool, curve: typing.Union[str, NoneType]
       = None, key_operations: typing.Union[typing.List[str], NoneType] = None, enabled:
       typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
       NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
       tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-      typing.Any]) -> azure.keyvault.keys._models.Key'
+      typing.Any]) -> azure.keyvault.keys.models.Key'
     parameters:
-    - description: 'The name for the new key. The system will generate
-
-        the version name for the new key.'
+    - description: The name for the new key. Key Vault will generate the key's version.
       id: name
       type:
       - str
-    - description: Whether to import as a hardware key (HSM) or software key.
+    - description: Whether to create as a hardware key (HSM) or software key.
       id: hsm
       type:
       - bool
-    - description: 'Elliptic curve name. If none then defaults to ''P-256''. For valid
-        values, see
-
-        JsonWebKeyCurveName. Possible values include: ''P-256'', ''P-384'',
-
-        ''P-521'', ''SECP256K1'''
+    - description: (optional) Elliptic curve name. Defaults to the NIST P-256 elliptic
+        curve.
       id: curve
       type:
+      - azure.keyvault.keys.enums.JsonWebKeyCurveName
       - str
-      - azure.keyvault.keys._generated.v7_0.models.JsonWebKeyCurveName
-    - description: Supported key operations.
+    - description: (optional) Allowed key operations
       id: key_operations
       type:
-      - list[str
-      - azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation]
-    - description: Determines whether the object is enabled.
+      - list(azure.keyvault.keys.enums.JsonWebKeyOperation)
+    - description: (optional) Whether the key is enabled for use
       id: enabled
       type:
       - bool
-    - description: Expiry date of the key in UTC.
+    - description: (optional) Expiry date of the key in UTC
       id: expires
       type:
       - datetime.datetime
-    - description: Not before date of the key in UTC
+    - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: 'Application specific metadata in the form of key-value
-
-        pairs.'
+    - description: (optional) Application specific metadata in the form of key-value
+        pairs
       id: tags
       type:
-      - Dict[str, str]
+      - dict
     return:
-      description: The created EC key
+      description: The created key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.create_ec_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -171,80 +148,62 @@ items:
     NoneType] = None, enabled: typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
     NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
     tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
-  summary: 'Creates a new key, stores it, then returns the key to the client.
+    typing.Any]) -> azure.keyvault.keys.models.Key'
+  summary: 'Create a key. If `name` is already in use, create a new version of the
+    key. Requires the keys/create
 
-
-    The create key operation can be used to create any key type in Azure
-
-    Key Vault. If the named key already exists, Azure Key Vault creates a
-
-    new version of the key. It requires the keys/create permission.'
+    permission.'
   syntax:
     content: 'create_key(name: str, key_type: str, size: typing.Union[int, NoneType]
       = None, curve: typing.Union[str, NoneType] = None, key_operations: typing.Union[typing.List[str],
       NoneType] = None, enabled: typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
       NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
       tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-      typing.Any]) -> azure.keyvault.keys._models.Key'
+      typing.Any]) -> azure.keyvault.keys.models.Key'
     parameters:
-    - description: 'The name for the new key. The system will generate
-
-        the version name for the new key.'
+    - description: The name of the new key. Key Vault will generate the key's version.
       id: name
       type:
       - str
-    - description: 'The type of key to create. For valid values, see
-
-        JsonWebKeyType. Possible values include: ''EC'', ''EC-HSM'', ''RSA'',
-
-        ''RSA-HSM'', ''oct'''
+    - description: The type of key to create
       id: key_type
       type:
       - str
-      - azure.keyvault.keys._generated.v7_0.models.JsonWebKeyType
-    - description: 'The key size in bits. For example: 2048, 3072, or
-
-        4096 for RSA.'
+      - azure.keyvault.keys.enums.JsonWebKeyType
+    - description: (optional) RSA key size in bits, for example 2048, 3072, or 4096.
       id: size
       type:
       - int
-    - description: 'Elliptic curve name. If none then defaults to ''P-256''. For valid
-        values, see
-
-        JsonWebKeyCurveName. Possible values include: ''P-256'', ''P-384'',
-
-        ''P-521'', ''SECP256K1'''
-      id: curve
-      type:
-      - str or
-    - description: Supported key operations.
+    - description: (optional) Allowed key operations
       id: key_operations
       type:
-      - list[str
-      - azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation]
-    - description: Determines whether the object is enabled.
+      - list(str
+      - azure.keyvault.keys.enums.JsonWebKeyOperation)
+    - description: (optional) Whether the key is enabled for use
       id: enabled
       type:
       - bool
-    - description: Expiry date of the key in UTC.
+    - description: (optional) Expiry date of the key in UTC
       id: expires
-      type:
-      - datetime.datetime
-    - description: Not before date of the key in UTC
+    - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: 'Application specific metadata in the form of key-value
-
-        pairs.'
+    - description: (optional) Application specific metadata in the form of key-value
+        pairs
       id: tags
       type:
-      - Dict[str, str]
+      - dict
+    - description: (optional) Elliptic curve name. Defaults to the NIST P-256 elliptic
+        curve.
+      id: curve
+      type:
+      - azure.keyvault.keys.enums.JsonWebKeyCurveName
+      - str
     return:
       description: The created key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.create_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -257,66 +216,55 @@ items:
     typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
     NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
     tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
-  summary: 'Creates a new RSA type key, stores it, then returns the key to the client.
+    typing.Any]) -> azure.keyvault.keys.models.Key'
+  summary: 'Create a new RSA key. If `name` is already in use, create a new version
+    of the key. Requires the
 
-
-    The create key operation can be used to create any key type in Azure
-
-    Key Vault. If the named key already exists, Azure Key Vault creates a
-
-    new version of the key. It requires the keys/create permission.'
+    keys/create permission.'
   syntax:
     content: 'create_rsa_key(name: str, hsm: bool, size: typing.Union[int, NoneType]
       = None, key_operations: typing.Union[typing.List[str], NoneType] = None, enabled:
       typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
       NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
       tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-      typing.Any]) -> azure.keyvault.keys._models.Key'
+      typing.Any]) -> azure.keyvault.keys.models.Key'
     parameters:
-    - description: 'The name for the new key. The system will generate
-
-        the version name for the new key.'
+    - description: The name for the new key. Key Vault will generate the key's version.
       id: name
       type:
       - str
-    - description: Whether to import as a hardware key (HSM) or software key.
+    - description: Whether to create a hardware key (HSM) or software key
       id: hsm
       type:
       - bool
-    - description: 'The key size in bits. For example: 2048, 3072, or
-
-        4096 for RSA.'
+    - description: (optional) Key size in bits, for example 2048, 3072, or 4096
       id: size
       type:
       - int
-    - description: Supported key operations.
+    - description: (optional) Allowed key operations
       id: key_operations
       type:
-      - list[str
-      - azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation]
-    - description: Determines whether the object is enabled.
+      - list(str
+      - azure.keyvault.keys.enums.JsonWebKeyOperation)
+    - description: (optional) Whether the key is enabled for use
       id: enabled
       type:
       - bool
-    - description: Expiry date of the key in UTC.
+    - description: (optional) Expiry date of the key in UTC
       id: expires
-      type:
-      - datetime.datetime
-    - description: Not before date of the key in UTC
+    - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: 'Application specific metadata in the form of key-value
-
-        pairs.'
+    - description: (optional) Application specific metadata in the form of key-value
+        pairs
       id: tags
       type:
-      - Dict[str, str]
+      - dict
     return:
-      description: The created RSA key
+      description: The created key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.create_rsa_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -324,22 +272,12 @@ items:
   langs:
   - python
   module: azure.keyvault.keys.aio
-  name: 'delete_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.DeletedKey'
-  summary: 'Deletes a key from the Key Vault.
-
-
-    The delete key operation cannot be used to remove individual versions
-
-    of a key. This operation removes the cryptographic material associated
-
-    with the key, which means the key is not usable for Sign/Verify,
-
-    Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
-
-    keys/delete permission.'
+  name: 'delete_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.DeletedKey'
+  summary: Delete all versions of a key and its cryptographic material. Requires the
+    keys/delete permission.
   syntax:
     content: 'delete_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
-      azure.keyvault.keys._models.DeletedKey'
+      azure.keyvault.keys.models.DeletedKey'
     parameters:
     - description: The name of the key to delete.
       id: name
@@ -348,38 +286,44 @@ items:
     return:
       description: The deleted key
       type:
-      - azure.keyvault.keys._models.DeletedKey
+      - azure.keyvault.keys.models.DeletedKey
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.delete_key
+- class: azure.keyvault.keys.aio.KeyClient
+  fullName: azure.keyvault.keys.aio.KeyClient.get_cryptography_client
+  langs:
+  - python
+  module: azure.keyvault.keys.aio
+  name: 'get_cryptography_client(key: typing.Union[azure.keyvault.keys.models.Key,
+    str], **kwargs: typing.Any) -> azure.keyvault.keys.crypto.aio.client.CryptographyClient'
+  syntax:
+    content: 'get_cryptography_client(key: typing.Union[azure.keyvault.keys.models.Key,
+      str], **kwargs: typing.Any) -> azure.keyvault.keys.crypto.aio.client.CryptographyClient'
+  type: method
+  uid: azure.keyvault.keys.aio.KeyClient.get_cryptography_client
 - class: azure.keyvault.keys.aio.KeyClient
   fullName: azure.keyvault.keys.aio.KeyClient.get_deleted_key
   langs:
   - python
   module: azure.keyvault.keys.aio
   name: 'get_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
-    azure.keyvault.keys._models.DeletedKey'
-  summary: 'Gets a deleted key from the Key Vault
+    azure.keyvault.keys.models.DeletedKey'
+  summary: 'Get a deleted key. This is only possible in a vault with soft-delete enabled.
+    Requires the keys/get
 
-
-    The Get Deleted Key operation is applicable for soft-delete enabled
-
-    vaults. While the operation can be invoked on any vault, it will return
-
-    an error if invoked on a non soft-delete enabled vault. This operation
-
-    requires the keys/get permission.'
+    permission.'
   syntax:
     content: 'get_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any])
-      -> azure.keyvault.keys._models.DeletedKey'
+      -> azure.keyvault.keys.models.DeletedKey'
     parameters:
-    - description: The name of the key.
+    - description: The name of the key
       id: name
       type:
       - str
     return:
       description: The deleted key
       type:
-      - azure.keyvault.keys._models.DeletedKey
+      - azure.keyvault.keys.models.DeletedKey
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.get_deleted_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -388,34 +332,27 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'get_key(name: str, version: typing.Union[str, NoneType] = None, **kwargs:
-    typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
-  summary: 'Gets the public part of a stored key.
-
-
-    The get key operation is applicable to all key types. If the requested
-
-    key is symmetric, then no key material is released in the response.
-
-    This operation requires the keys/get permission.'
+    typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
+  summary: Get a key's attributes and, if it's an asymmetric key, its public material.
+    Requires the keys/get permission.
   syntax:
     content: 'get_key(name: str, version: typing.Union[str, NoneType] = None, **kwargs:
-      typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
+      typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
     parameters:
     - description: The name of the key to get.
       id: name
       type:
       - str
-    - description: 'Retrieves a specific version of a key. If the version is None
-        or an empty string,
+    - description: '(optional) A specific version of the key to get. If not specified,
+        gets the latest version
 
-        the latest version of the key is returned'
+        of the key.'
       id: version
       type:
       - str
     return:
-      description: Key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.get_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -423,63 +360,54 @@ items:
   langs:
   - python
   module: azure.keyvault.keys.aio
-  name: 'import_key(name: str, key: typing.List[str], hsm: typing.Union[bool, NoneType]
-    = None, enabled: typing.Union[bool, NoneType] = None, not_before: typing.Union[datetime.datetime,
+  name: 'import_key(name: str, key: azure.keyvault.keys.models.JsonWebKey, hsm: typing.Union[bool,
+    NoneType] = None, enabled: typing.Union[bool, NoneType] = None, not_before: typing.Union[datetime.datetime,
     NoneType] = None, expires: typing.Union[datetime.datetime, NoneType] = None, tags:
     typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
-  summary: 'Imports an externally created key, stores it, and returns the key to the
-    client.
+    typing.Any]) -> azure.keyvault.keys.models.Key'
+  summary: 'Import an externally created key. If `name` is already in use, import
+    the key as a new version. Requires
 
-
-    The import key operation may be used to import any key type into an
-
-    Azure Key Vault. If the named key already exists, Azure Key Vault
-
-    creates a new version of the key. This operation requires the
-
-    keys/import permission.'
+    the keys/import permission.'
   syntax:
-    content: 'import_key(name: str, key: typing.List[str], hsm: typing.Union[bool,
-      NoneType] = None, enabled: typing.Union[bool, NoneType] = None, not_before:
-      typing.Union[datetime.datetime, NoneType] = None, expires: typing.Union[datetime.datetime,
-      NoneType] = None, tags: typing.Union[typing.Dict[str, str], NoneType] = None,
-      **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
+    content: 'import_key(name: str, key: azure.keyvault.keys.models.JsonWebKey, hsm:
+      typing.Union[bool, NoneType] = None, enabled: typing.Union[bool, NoneType] =
+      None, not_before: typing.Union[datetime.datetime, NoneType] = None, expires:
+      typing.Union[datetime.datetime, NoneType] = None, tags: typing.Union[typing.Dict[str,
+      str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
     parameters:
-    - description: Name for the imported key.
+    - description: Name for the imported key
       id: name
       type:
       - str
-    - description: The Json web key
+    - description: The JSON web key to import
       id: key
       type:
-      - azure.security.keyvault.v7_0.models.JsonWebKey
-    - description: Whether to import as a hardware key (HSM) or software key.
+      - azure.keyvault.keys.models.JsonWebKey
+    - description: (optional) Whether to import as a hardware key (HSM) or software
+        key
       id: hsm
       type:
       - bool
-    - description: Determines whether the object is enabled.
+    - description: (optional) Whether the key is enabled for use
       id: enabled
       type:
       - bool
-    - description: Expiry date of the key  in UTC.
+    - description: (optional) Expiry date of the key in UTC
       id: expires
-      type:
-      - datetime.datetime
-    - description: Not before date of the key in UTC
+    - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: 'Application specific metadata in the form of key-value
-
-        pairs.'
+    - description: (optional) Application specific metadata in the form of key-value
+        pairs
       id: tags
       type:
-      - Dict[str, str]
+      - dict
     return:
       description: The imported key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.import_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -487,29 +415,17 @@ items:
   langs:
   - python
   module: azure.keyvault.keys.aio
-  name: 'list_deleted_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys._models.DeletedKey]'
-  summary: 'Lists the deleted keys in the specified vault.
+  name: 'list_deleted_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys.models.DeletedKey]'
+  summary: 'List all deleted keys, including the public part of each. This is only
+    possible in a vault with soft-delete
 
-
-    Retrieves a list of the keys in the Key Vault as JSON Web Key
-
-    structures that contain the public part of a deleted key. This
-
-    operation includes deletion-specific information. The Get Deleted Keys
-
-    operation is applicable for vaults enabled for soft-delete. While the
-
-    operation can be invoked on any vault, it will return an error if
-
-    invoked on a non soft-delete enabled vault. This operation requires the
-
-    keys/list permission.'
+    enabled. Requires the keys/list permission.'
   syntax:
-    content: 'list_deleted_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys._models.DeletedKey]'
+    content: 'list_deleted_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys.models.DeletedKey]'
     return:
-      description: An iterator like instance of DeletedKey
+      description: An iterator of deleted keys
       type:
-      - typing.AsyncIterable[azure.keyvault.keys._models.DeletedKey]
+      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.DeletedKey]
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.list_deleted_keys
 - class: azure.keyvault.keys.aio.KeyClient
@@ -518,25 +434,21 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'list_key_versions(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
-    typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]'
-  summary: 'Retrieves a list of individual key versions with the same key name.
-
-
-    The full key identifier, attributes, and tags are provided in the
-
-    response. This operation requires the keys/list permission.'
+    typing.AsyncIterable[azure.keyvault.keys.models.KeyBase]'
+  summary: List the identifiers, attributes, and tags of a key's versions. Requires
+    the keys/list permission.
   syntax:
     content: 'list_key_versions(name: str, **kwargs: typing.Mapping[str, typing.Any])
-      -> typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]'
+      -> typing.AsyncIterable[azure.keyvault.keys.models.KeyBase]'
     parameters:
-    - description: The name of the key.
+    - description: The name of the key
       id: name
       type:
       - str
     return:
-      description: An iterator like instance of KeyBase
+      description: An iterator of keys without their cryptographic material
       type:
-      - typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]
+      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.list_key_versions
 - class: azure.keyvault.keys.aio.KeyClient
@@ -544,27 +456,16 @@ items:
   langs:
   - python
   module: azure.keyvault.keys.aio
-  name: 'list_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]'
-  summary: 'List keys in the specified vault.
-
-
-    Retrieves a list of the keys in the Key Vault as JSON Web Key
-
-    structures that contain the public part of a stored key. The LIST
-
-    operation is applicable to all key types, however only the base key
-
-    identifier, attributes, and tags are provided in the response.
-
-    Individual versions of a key are not listed in the response. This
-
-    operation requires the keys/list permission.'
+  name: 'list_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys.models.KeyBase]'
+  summary: List identifiers, attributes, and tags of all keys in the vault. Requires
+    the keys/list permission.
   syntax:
-    content: 'list_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]'
+    content: 'list_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys.models.KeyBase]'
     return:
-      description: An iterator like instance of KeyBase
+      description: An iterator of keys without their cryptographic material or version
+        information
       type:
-      - typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]
+      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.list_keys
 - class: azure.keyvault.keys.aio.KeyClient
@@ -573,7 +474,7 @@ items:
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n   # if the\
     \ vault has soft-delete enabled, purge permanently deletes a deleted key\n   #\
-    \ (with soft-delete disabled, delete itself is permanent)\n   await key_client.purge_deleted_key(\"\
+    \ (with soft-delete disabled, delete_key is permanent)\n   await key_client.purge_deleted_key(\"\
     key-name\")\n   ````\n"
   fullName: azure.keyvault.keys.aio.KeyClient.purge_deleted_key
   langs:
@@ -581,16 +482,14 @@ items:
   module: azure.keyvault.keys.aio
   name: 'purge_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
     None'
-  summary: 'Permanently deletes the specified key.
+  summary: 'Permanently delete the specified key. This is only possible in vaults
+    with soft-delete enabled. If a vault
+
+    does not have soft-delete enabled, <xref:azure.keyvault.keys.aio.KeyClient.delete_key>
+    is permanent, and this method will return an error.
 
 
-    The Purge Deleted Key operation is applicable for soft-delete enabled
-
-    vaults. While the operation can be invoked on any vault, it will return
-
-    an error if invoked on a non soft-delete enabled vault. This operation
-
-    requires the keys/purge permission.'
+    Requires the keys/purge permission.'
   syntax:
     content: 'purge_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any])
       -> None'
@@ -601,8 +500,6 @@ items:
       - str
     return:
       description: None
-      type:
-      - None
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.purge_deleted_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -611,33 +508,29 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'recover_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any])
-    -> azure.keyvault.keys._models.Key'
-  summary: 'Recovers the deleted key to its latest version.
+    -> azure.keyvault.keys.models.Key'
+  summary: 'Recover a deleted key to its latest version. This is only possible in
+    vaults with soft-delete enabled. If a
+
+    vault does not have soft-delete enabled, <xref:azure.keyvault.keys.aio.KeyClient.delete_key>
+    is permanent, and this method will return an error.
+
+    Attempting to recover an non-deleted key will also return an error.
 
 
-    The Recover Deleted Key operation is applicable for deleted keys in
-
-    soft-delete enabled vaults. It recovers the deleted key back to its
-
-    latest version under /keys. An attempt to recover an non-deleted key
-
-    will return an error. Consider this the inverse of the delete operation
-
-    on soft-delete enabled vaults. This operation requires the keys/recover
-
-    permission.'
+    Requires the keys/recover permission.'
   syntax:
     content: 'recover_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any])
-      -> azure.keyvault.keys._models.Key'
+      -> azure.keyvault.keys.models.Key'
     parameters:
-    - description: The name of the deleted key.
+    - description: The name of the deleted key
       id: name
       type:
       - str
     return:
-      description: The recovered deleted key
+      description: The recovered key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.recover_deleted_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -646,40 +539,20 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'restore_key(backup: bytes, **kwargs: typing.Mapping[str, typing.Any]) ->
-    azure.keyvault.keys._models.Key'
-  summary: 'Restores a backed up key to a vault.
+    azure.keyvault.keys.models.Key'
+  summary: 'Restore a key backup to the vault. This imports all versions of the key,
+    with its name, attributes, and
+
+    access control policies. Requires the keys/restore permission.
 
 
-    Imports a previously backed up key into Azure Key Vault, restoring the
+    If the backed up key''s name is already in use in the target vault, restoring
+    it will fail. Also, the target
 
-    key, its key identifier, attributes and access control policies. The
-
-    RESTORE operation may be used to import a previously backed up key.
-
-    Individual versions of a key cannot be restored. The key is restored in
-
-    its entirety with the same key name as it had when it was backed up. If
-
-    the key name is not available in the target Key Vault, the RESTORE
-
-    operation will be rejected. While the key name is retained during
-
-    restore, the final key identifier will change if the key is restored to
-
-    a different vault. Restore will restore all versions and preserve
-
-    version identifiers. The RESTORE operation is subject to security
-
-    constraints: The target Key Vault must be owned by the same Microsoft
-
-    Azure Subscription as the source Key Vault The user must have RESTORE
-
-    permission in the target Key Vault. This operation requires the
-
-    keys/restore permission.'
+    vault must be owned by the same Microsoft Azure subscription as the source vault.'
   syntax:
     content: 'restore_key(backup: bytes, **kwargs: typing.Mapping[str, typing.Any])
-      -> azure.keyvault.keys._models.Key'
+      -> azure.keyvault.keys.models.Key'
     parameters:
     - description: The raw bytes of the key backup
       id: backup
@@ -688,7 +561,7 @@ items:
     return:
       description: The restored key
       type:
-      - azure.keyvault.keys._models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.restore_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -697,7 +570,7 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'unwrap_key(name: str, algorithm: str, value: bytes, version: typing.Union[str,
-    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.KeyOperationResult'
+    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.KeyOperationResult'
   summary: 'Unwraps a symmetric key using the specified key that was initially used
 
     for wrapping that key.
@@ -714,7 +587,7 @@ items:
     key. This operation requires the keys/unwrapKey permission.'
   syntax:
     content: 'unwrap_key(name: str, algorithm: str, value: bytes, version: typing.Union[str,
-      NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.KeyOperationResult'
+      NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.KeyOperationResult'
     parameters:
     - description: The name of the key.
       id: name
@@ -730,7 +603,7 @@ items:
       id: algorithm
       type:
       - str
-      - azure.security.keyvault.v7_0.models.JsonWebKeyEncryptionAlgorithm
+      - azure.keyvault.keys.models.JsonWebKeyEncryptionAlgorithm
     - description: ''
       id: value
       type:
@@ -750,63 +623,52 @@ items:
     typing.Union[typing.List[str], NoneType] = None, enabled: typing.Union[bool, NoneType]
     = None, not_before: typing.Union[datetime.datetime, NoneType] = None, expires:
     typing.Union[datetime.datetime, NoneType] = None, tags: typing.Union[typing.Dict[str,
-    str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
-  summary: 'The update key operation changes specified attributes of a stored key
+    str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
+  summary: 'Change attributes of a key. Cannot change a key''s cryptographic material.
+    Requires the keys/update
 
-    and can be applied to any key type and key version stored in Azure Key
-
-    Vault.
-
-
-    In order to perform this operation, the key must already exist in the
-
-    Key Vault. Note: The cryptographic material of a key itself cannot be
-
-    changed. This operation requires the keys/update permission.'
+    permission.'
   syntax:
     content: 'update_key(name: str, version: typing.Union[str, NoneType] = None, key_operations:
       typing.Union[typing.List[str], NoneType] = None, enabled: typing.Union[bool,
       NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
       expires: typing.Union[datetime.datetime, NoneType] = None, tags: typing.Union[typing.Dict[str,
-      str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
+      str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
     parameters:
-    - description: The name of key to update.
+    - description: The name of key to update
       id: name
       type:
       - str
-    - description: The version of the key to update.
+    - description: (optional) The version of the key to update
       id: version
       type:
       - str
-    - description: 'Json web key operations. For more information on
-
-        possible key operations, see JsonWebKeyOperation.'
+    - description: (optional) Allowed key operations
       id: key_operations
       type:
-      - list[str
-      - azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation]
-    - description: Determines whether the object is enabled.
+      - list(str
+      - azure.keyvault.keys.enums.JsonWebKeyOperation)
+    - description: (optional) Whether the key is enabled for use
       id: enabled
       type:
       - bool
-    - description: Expiry date of the key in UTC.
+    - description: (optional) Expiry date of the key in UTC
       id: expires
       type:
       - datetime.datetime
-    - description: Not before date of the key in UTC
+    - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: 'Application specific metadata in the form of key-value
-
-        pairs.'
+    - description: (optional) Application specific metadata in the form of key-value
+        pairs
       id: tags
       type:
-      - Dict[str, str]
+      - dict
     return:
       description: The updated key
       type:
-      - azure.security.keyvault.v7_0.models.Key
+      - azure.keyvault.keys.models.Key
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.update_key
 - class: azure.keyvault.keys.aio.KeyClient
@@ -815,7 +677,7 @@ items:
   - python
   module: azure.keyvault.keys.aio
   name: 'wrap_key(name: str, algorithm: str, value: bytes, version: typing.Union[str,
-    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.KeyOperationResult'
+    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.KeyOperationResult'
   summary: 'Wraps a symmetric key using a specified key.
 
 
@@ -836,7 +698,7 @@ items:
     operation requires the keys/wrapKey permission.'
   syntax:
     content: 'wrap_key(name: str, algorithm: str, value: bytes, version: typing.Union[str,
-      NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.KeyOperationResult'
+      NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.KeyOperationResult'
     parameters:
     - description: The name of the key.
       id: name
@@ -852,7 +714,7 @@ items:
       id: algorithm
       type:
       - str
-      - azure.security.keyvault.v7_0.models.JsonWebKeyEncryptionAlgorithm
+      - azure.keyvault.keys.models.JsonWebKeyEncryptionAlgorithm
     - description: ''
       id: value
       type:
@@ -876,7 +738,7 @@ references:
     typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
     NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
     tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
+    typing.Any]) -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.create_ec_key
 - fullName: azure.keyvault.keys.aio.KeyClient.create_key
@@ -886,7 +748,7 @@ references:
     NoneType] = None, enabled: typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
     NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
     tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
+    typing.Any]) -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.create_key
 - fullName: azure.keyvault.keys.aio.KeyClient.create_rsa_key
@@ -896,49 +758,55 @@ references:
     typing.Union[bool, NoneType] = None, expires: typing.Union[datetime.datetime,
     NoneType] = None, not_before: typing.Union[datetime.datetime, NoneType] = None,
     tags: typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
+    typing.Any]) -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.create_rsa_key
 - fullName: azure.keyvault.keys.aio.KeyClient.delete_key
   isExternal: false
-  name: 'delete_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.DeletedKey'
+  name: 'delete_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.DeletedKey'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.delete_key
+- fullName: azure.keyvault.keys.aio.KeyClient.get_cryptography_client
+  isExternal: false
+  name: 'get_cryptography_client(key: typing.Union[azure.keyvault.keys.models.Key,
+    str], **kwargs: typing.Any) -> azure.keyvault.keys.crypto.aio.client.CryptographyClient'
+  parent: azure.keyvault.keys.aio.KeyClient
+  uid: azure.keyvault.keys.aio.KeyClient.get_cryptography_client
 - fullName: azure.keyvault.keys.aio.KeyClient.get_deleted_key
   isExternal: false
   name: 'get_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
-    azure.keyvault.keys._models.DeletedKey'
+    azure.keyvault.keys.models.DeletedKey'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.get_deleted_key
 - fullName: azure.keyvault.keys.aio.KeyClient.get_key
   isExternal: false
   name: 'get_key(name: str, version: typing.Union[str, NoneType] = None, **kwargs:
-    typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
+    typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.get_key
 - fullName: azure.keyvault.keys.aio.KeyClient.import_key
   isExternal: false
-  name: 'import_key(name: str, key: typing.List[str], hsm: typing.Union[bool, NoneType]
-    = None, enabled: typing.Union[bool, NoneType] = None, not_before: typing.Union[datetime.datetime,
+  name: 'import_key(name: str, key: azure.keyvault.keys.models.JsonWebKey, hsm: typing.Union[bool,
+    NoneType] = None, enabled: typing.Union[bool, NoneType] = None, not_before: typing.Union[datetime.datetime,
     NoneType] = None, expires: typing.Union[datetime.datetime, NoneType] = None, tags:
     typing.Union[typing.Dict[str, str], NoneType] = None, **kwargs: typing.Mapping[str,
-    typing.Any]) -> azure.keyvault.keys._models.Key'
+    typing.Any]) -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.import_key
 - fullName: azure.keyvault.keys.aio.KeyClient.list_deleted_keys
   isExternal: false
-  name: 'list_deleted_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys._models.DeletedKey]'
+  name: 'list_deleted_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys.models.DeletedKey]'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.list_deleted_keys
 - fullName: azure.keyvault.keys.aio.KeyClient.list_key_versions
   isExternal: false
   name: 'list_key_versions(name: str, **kwargs: typing.Mapping[str, typing.Any]) ->
-    typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]'
+    typing.AsyncIterable[azure.keyvault.keys.models.KeyBase]'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.list_key_versions
 - fullName: azure.keyvault.keys.aio.KeyClient.list_keys
   isExternal: false
-  name: 'list_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]'
+  name: 'list_keys(**kwargs: typing.Mapping[str, typing.Any]) -> typing.AsyncIterable[azure.keyvault.keys.models.KeyBase]'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.list_keys
 - fullName: azure.keyvault.keys.aio.KeyClient.purge_deleted_key
@@ -950,19 +818,19 @@ references:
 - fullName: azure.keyvault.keys.aio.KeyClient.recover_deleted_key
   isExternal: false
   name: 'recover_deleted_key(name: str, **kwargs: typing.Mapping[str, typing.Any])
-    -> azure.keyvault.keys._models.Key'
+    -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.recover_deleted_key
 - fullName: azure.keyvault.keys.aio.KeyClient.restore_key
   isExternal: false
   name: 'restore_key(backup: bytes, **kwargs: typing.Mapping[str, typing.Any]) ->
-    azure.keyvault.keys._models.Key'
+    azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.restore_key
 - fullName: azure.keyvault.keys.aio.KeyClient.unwrap_key
   isExternal: false
   name: 'unwrap_key(name: str, algorithm: str, value: bytes, version: typing.Union[str,
-    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.KeyOperationResult'
+    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.KeyOperationResult'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.unwrap_key
 - fullName: azure.keyvault.keys.aio.KeyClient.update_key
@@ -971,80 +839,75 @@ references:
     typing.Union[typing.List[str], NoneType] = None, enabled: typing.Union[bool, NoneType]
     = None, not_before: typing.Union[datetime.datetime, NoneType] = None, expires:
     typing.Union[datetime.datetime, NoneType] = None, tags: typing.Union[typing.Dict[str,
-    str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.Key'
+    str], NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.Key'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.update_key
 - fullName: azure.keyvault.keys.aio.KeyClient.wrap_key
   isExternal: false
   name: 'wrap_key(name: str, algorithm: str, value: bytes, version: typing.Union[str,
-    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys._models.KeyOperationResult'
+    NoneType] = None, **kwargs: typing.Mapping[str, typing.Any]) -> azure.keyvault.keys.models.KeyOperationResult'
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.wrap_key
-- fullName: list[str
-  name: list[str
+- fullName: list(azure.keyvault.keys.enums.JsonWebKeyOperation)
+  name: list(JsonWebKeyOperation)
   spec.python:
   - fullName: list
     name: list
     uid: list
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  uid: list[str
-- fullName: azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation]
-  name: JsonWebKeyOperation]
-  spec.python:
-  - fullName: azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation
+  - fullName: (
+    name: (
+  - fullName: azure.keyvault.keys.enums.JsonWebKeyOperation
     name: JsonWebKeyOperation
-    uid: azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation
-  - fullName: ']'
-    name: ']'
-  uid: azure.keyvault.keys._generated.v7_0.models.JsonWebKeyOperation]
-- fullName: Dict[str, str]
-  name: Dict[str, str]
+    uid: azure.keyvault.keys.enums.JsonWebKeyOperation
+  - fullName: )
+    name: )
+  uid: list(azure.keyvault.keys.enums.JsonWebKeyOperation)
+- fullName: list(str
+  name: list(str
   spec.python:
-  - fullName: Dict
-    name: Dict
-    uid: Dict
-  - fullName: '['
-    name: '['
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
   - fullName: str
     name: str
     uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: Dict[str, str]
-- fullName: typing.AsyncIterable[azure.keyvault.keys._models.DeletedKey]
-  name: AsyncIterable[DeletedKey]
+  uid: list(str
+- fullName: azure.keyvault.keys.enums.JsonWebKeyOperation)
+  name: JsonWebKeyOperation)
   spec.python:
-  - fullName: typing.AsyncIterable
-    name: AsyncIterable
-    uid: typing.AsyncIterable
+  - fullName: azure.keyvault.keys.enums.JsonWebKeyOperation
+    name: JsonWebKeyOperation
+    uid: azure.keyvault.keys.enums.JsonWebKeyOperation
+  - fullName: )
+    name: )
+  uid: azure.keyvault.keys.enums.JsonWebKeyOperation)
+- fullName: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.DeletedKey]
+  name: AsyncItemPaged[DeletedKey]
+  spec.python:
+  - fullName: azure.core.async_paging.AsyncItemPaged
+    name: AsyncItemPaged
+    uid: azure.core.async_paging.AsyncItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.keyvault.keys._models.DeletedKey
+  - fullName: azure.keyvault.keys.models.DeletedKey
     name: DeletedKey
-    uid: azure.keyvault.keys._models.DeletedKey
+    uid: azure.keyvault.keys.models.DeletedKey
   - fullName: ']'
     name: ']'
-  uid: typing.AsyncIterable[azure.keyvault.keys._models.DeletedKey]
-- fullName: typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]
-  name: AsyncIterable[KeyBase]
+  uid: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.DeletedKey]
+- fullName: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
+  name: AsyncItemPaged[KeyBase]
   spec.python:
-  - fullName: typing.AsyncIterable
-    name: AsyncIterable
-    uid: typing.AsyncIterable
+  - fullName: azure.core.async_paging.AsyncItemPaged
+    name: AsyncItemPaged
+    uid: azure.core.async_paging.AsyncItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.keyvault.keys._models.KeyBase
+  - fullName: azure.keyvault.keys.models.KeyBase
     name: KeyBase
-    uid: azure.keyvault.keys._models.KeyBase
+    uid: azure.keyvault.keys.models.KeyBase
   - fullName: ']'
     name: ']'
-  uid: typing.AsyncIterable[azure.keyvault.keys._models.KeyBase]
+  uid: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
