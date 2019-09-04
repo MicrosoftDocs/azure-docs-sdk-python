@@ -3,22 +3,30 @@ api_name: []
 items:
 - children:
   - azure.eventhub.producer.EventHubProducer.close
+  - azure.eventhub.producer.EventHubProducer.create_batch
   - azure.eventhub.producer.EventHubProducer.send
   class: azure.eventhub.producer.EventHubProducer
   fullName: azure.eventhub.producer.EventHubProducer
   inheritance:
-  - type: builtins.object
+  - inheritance:
+    - type: builtins.object
+    type: azure.eventhub._consumer_producer_mixin.ConsumerProducerMixin
   langs:
   - python
   module: azure.eventhub.producer
   name: EventHubProducer
-  summary: "A producer responsible for transmitting EventData to a specific Event\
-    \ Hub,\n   grouped together in batches. Depending on the options specified at\
-    \ creation, the producer may\n   be created to allow event data to be automatically\
-    \ routed to an available partition or specific\n   to a partition."
+  summary: 'A producer responsible for transmitting EventData to a specific Event
+    Hub,
+
+    grouped together in batches. Depending on the options specified at creation, the
+    producer may
+
+    be created to allow event data to be automatically routed to an available partition
+    or specific
+
+    to a partition.'
   syntax:
-    content: EventHubProducer(client, target, partition=None, send_timeout=60, keep_alive=None,
-      auto_reconnect=True)
+    content: EventHubProducer(client, target, **kwargs)
   type: class
   uid: azure.eventhub.producer.EventHubProducer
 - class: azure.eventhub.producer.EventHubProducer
@@ -45,29 +53,48 @@ items:
   type: method
   uid: azure.eventhub.producer.EventHubProducer.close
 - class: azure.eventhub.producer.EventHubProducer
+  fullName: azure.eventhub.producer.EventHubProducer.create_batch
+  langs:
+  - python
+  module: azure.eventhub.producer
+  name: create_batch(max_size=None, partition_key=None)
+  summary: "Create an EventDataBatch object with max size being max_size.\nThe max_size\
+    \ should be no greater than the max allowed message size defined by the service\
+    \ side.\n:param max_size: The maximum size of bytes data that an EventDataBatch\
+    \ object can hold.\n:type max_size: int\n:param partition_key: With the given\
+    \ partition_key, event data will land to\n\n\n   a particular partition of the\
+    \ Event Hub decided by the service."
+  syntax:
+    content: create_batch(max_size=None, partition_key=None)
+    parameters:
+    - defaultValue: None
+      id: max_size
+    - defaultValue: None
+      id: partition_key
+    return:
+      description: an EventDataBatch instance
+      type:
+      - azure.eventhub.EventDataBatch
+  type: method
+  uid: azure.eventhub.producer.EventHubProducer.create_batch
+- class: azure.eventhub.producer.EventHubProducer
   fullName: azure.eventhub.producer.EventHubProducer.send
   langs:
   - python
   module: azure.eventhub.producer
-  name: send(event_data, partition_key=None)
-  summary: 'Sends an event data and blocks until acknowledgement is
-
-    received or operation times out.'
+  name: send(event_data, partition_key=None, timeout=None)
+  summary: "Sends an event data and blocks until acknowledgement is\nreceived or operation\
+    \ times out.\n\n\n:type timeout:float\n:raises: ~azure.eventhub.AuthenticationError,\
+    \ ~azure.eventhub.ConnectError, ~azure.eventhub.ConnectionLostError,\n\n\n   ~azure.eventhub.EventDataError,\
+    \ ~azure.eventhub.EventDataSendError, ~azure.eventhub.EventHubError"
   syntax:
-    content: send(event_data, partition_key=None)
+    content: send(event_data, partition_key=None, timeout=None)
     parameters:
-    - description: The event to be sent. It can be an EventData object, or iterable
-        of EventData objects
-      id: event_data
-      type:
-      - azure.eventhub.common.EventData, Iterator, Generator, list
+    - id: event_data
     - defaultValue: None
-      description: 'With the given partition_key, event data will land to
-
-        a particular partition of the Event Hub decided by the service.'
       id: partition_key
-      type:
-      - str
+    - defaultValue: None
+      id: timeout
     return:
       description: None
       type:
@@ -80,30 +107,13 @@ references:
   name: close(exception=None)
   parent: azure.eventhub.producer.EventHubProducer
   uid: azure.eventhub.producer.EventHubProducer.close
+- fullName: azure.eventhub.producer.EventHubProducer.create_batch
+  isExternal: false
+  name: create_batch(max_size=None, partition_key=None)
+  parent: azure.eventhub.producer.EventHubProducer
+  uid: azure.eventhub.producer.EventHubProducer.create_batch
 - fullName: azure.eventhub.producer.EventHubProducer.send
   isExternal: false
-  name: send(event_data, partition_key=None)
+  name: send(event_data, partition_key=None, timeout=None)
   parent: azure.eventhub.producer.EventHubProducer
   uid: azure.eventhub.producer.EventHubProducer.send
-- fullName: azure.eventhub.common.EventData, Iterator, Generator, list
-  name: EventData, Iterator, Generator, list
-  spec.python:
-  - fullName: azure.eventhub.common.EventData
-    name: EventData
-    uid: azure.eventhub.common.EventData
-  - fullName: ', '
-    name: ', '
-  - fullName: Iterator
-    name: Iterator
-    uid: Iterator
-  - fullName: ', '
-    name: ', '
-  - fullName: Generator
-    name: Generator
-    uid: Generator
-  - fullName: ', '
-    name: ', '
-  - fullName: list
-    name: list
-    uid: list
-  uid: azure.eventhub.common.EventData, Iterator, Generator, list

@@ -16,7 +16,7 @@ items:
   inheritance:
   - inheritance:
     - type: builtins.object
-    type: azure.storage.queue._shared.utils.StorageAccountHostsMixin
+    type: azure.storage.queue._shared.base_client.StorageAccountHostsMixin
   langs:
   - python
   module: azure.storage.queue.queue_service_client
@@ -112,15 +112,13 @@ items:
       id: name
       type:
       - str
-    - defaultValue: None
-      description: 'A dict with name_value pairs to associate with the
+    - description: 'A dict with name_value pairs to associate with the
 
         queue as metadata. Example: {''Category'': ''test''}'
       id: metadata
       type:
       - dict(str, str)
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -160,8 +158,7 @@ items:
       type:
       - str
       - azure.storage.queue.models.QueueProperties
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -322,8 +319,7 @@ items:
   syntax:
     content: get_service_properties(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -372,8 +368,7 @@ items:
   syntax:
     content: get_service_stats(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -388,7 +383,7 @@ items:
   langs:
   - python
   module: azure.storage.queue.queue_service_client
-  name: list_queues(name_starts_with=None, include_metadata=False, marker=None, results_per_page=None,
+  name: list_queues(name_starts_with=None, include_metadata=False, results_per_page=None,
     timeout=None, **kwargs)
   summary: 'Returns a generator to list the queues under the specified account.
 
@@ -397,40 +392,26 @@ items:
 
     the service and stop when all queues have been returned.'
   syntax:
-    content: list_queues(name_starts_with=None, include_metadata=False, marker=None,
-      results_per_page=None, timeout=None, **kwargs)
+    content: list_queues(name_starts_with=None, include_metadata=False, results_per_page=None,
+      timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Filters the results to return only queues whose names
+    - description: 'Filters the results to return only queues whose names
 
         begin with the specified prefix.'
       id: name_starts_with
       type:
       - str
-    - defaultValue: 'False'
-      description: Specifies that queue metadata be returned in the response.
+    - description: Specifies that queue metadata be returned in the response.
       id: include_metadata
       type:
       - bool
-    - defaultValue: None
-      description: 'An opaque continuation token. This value can be retrieved from
-        the
-
-        next_marker field of a previous generator object. If specified,
-
-        this generator will begin returning results from this point.'
-      id: marker
-      type:
-      - str
-    - defaultValue: None
-      description: 'The maximum number of queue names to retrieve per API
+    - description: 'The maximum number of queue names to retrieve per API
 
         call. If the request does not specify the server will return up to 5,000 items.'
       id: results_per_page
       type:
       - int
-    - defaultValue: None
-      description: 'The server timeout, expressed in seconds. This function may make
+    - description: 'The server timeout, expressed in seconds. This function may make
         multiple
 
         calls to the service in which case the timeout value specified will be
@@ -442,7 +423,7 @@ items:
     return:
       description: An iterable (auto-paging) of QueueProperties.
       type:
-      - azure.core.queue.models.QueuePropertiesPaged
+      - azure.core.paging.ItemPaged[azure.core.queue.models.QueueProperties]
   type: method
   uid: azure.storage.queue.queue_service_client.QueueServiceClient.list_queues
 - class: azure.storage.queue.queue_service_client.QueueServiceClient
@@ -464,27 +445,23 @@ items:
     content: set_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
       cors=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: Groups the Azure Analytics Logging settings.
+    - description: Groups the Azure Analytics Logging settings.
       id: logging
       type:
       - azure.storage.queue.models.Logging
-    - defaultValue: None
-      description: 'The hour metrics settings provide a summary of request
+    - description: 'The hour metrics settings provide a summary of request
 
         statistics grouped by API in hourly aggregates for queues.'
       id: hour_metrics
       type:
       - azure.storage.queue.models.Metrics
-    - defaultValue: None
-      description: 'The minute metrics settings provide request statistics
+    - description: 'The minute metrics settings provide request statistics
 
         for each minute for queues.'
       id: minute_metrics
       type:
       - azure.storage.queue.models.Metrics
-    - defaultValue: None
-      description: 'You can include up to five CorsRule elements in the
+    - description: 'You can include up to five CorsRule elements in the
 
         list. If an empty list is specified, all CORS rules will be deleted,
 
@@ -492,8 +469,7 @@ items:
       id: cors
       type:
       - list(<xref:azure.storage.queue.models.CorsRule>)
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -541,7 +517,7 @@ references:
   uid: azure.storage.queue.queue_service_client.QueueServiceClient.get_service_stats
 - fullName: azure.storage.queue.queue_service_client.QueueServiceClient.list_queues
   isExternal: false
-  name: list_queues(name_starts_with=None, include_metadata=False, marker=None, results_per_page=None,
+  name: list_queues(name_starts_with=None, include_metadata=False, results_per_page=None,
     timeout=None, **kwargs)
   parent: azure.storage.queue.queue_service_client.QueueServiceClient
   uid: azure.storage.queue.queue_service_client.QueueServiceClient.list_queues
@@ -570,6 +546,20 @@ references:
   - fullName: )
     name: )
   uid: dict(str, str)
+- fullName: azure.core.paging.ItemPaged[azure.core.queue.models.QueueProperties]
+  name: ItemPaged[QueueProperties]
+  spec.python:
+  - fullName: azure.core.paging.ItemPaged
+    name: ItemPaged
+    uid: azure.core.paging.ItemPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.core.queue.models.QueueProperties
+    name: QueueProperties
+    uid: azure.core.queue.models.QueueProperties
+  - fullName: ']'
+    name: ']'
+  uid: azure.core.paging.ItemPaged[azure.core.queue.models.QueueProperties]
 - fullName: list(<xref:azure.storage.queue.models.CorsRule>)
   name: list(CorsRule>)
   spec.python:

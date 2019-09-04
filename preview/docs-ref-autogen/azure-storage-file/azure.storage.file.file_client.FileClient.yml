@@ -2,9 +2,9 @@
 api_name: []
 items:
 - children:
+  - azure.storage.file.file_client.FileClient.abort_copy
   - azure.storage.file.file_client.FileClient.clear_range
   - azure.storage.file.file_client.FileClient.close_handles
-  - azure.storage.file.file_client.FileClient.copy_file_from_url
   - azure.storage.file.file_client.FileClient.create_file
   - azure.storage.file.file_client.FileClient.delete_file
   - azure.storage.file.file_client.FileClient.download_file
@@ -16,6 +16,7 @@ items:
   - azure.storage.file.file_client.FileClient.resize_file
   - azure.storage.file.file_client.FileClient.set_file_metadata
   - azure.storage.file.file_client.FileClient.set_http_headers
+  - azure.storage.file.file_client.FileClient.start_copy_from_url
   - azure.storage.file.file_client.FileClient.upload_file
   - azure.storage.file.file_client.FileClient.upload_range
   class: azure.storage.file.file_client.FileClient
@@ -23,7 +24,7 @@ items:
   inheritance:
   - inheritance:
     - type: builtins.object
-    type: azure.storage.file._shared.utils.StorageAccountHostsMixin
+    type: azure.storage.file._shared.base_client.StorageAccountHostsMixin
   langs:
   - python
   module: azure.storage.file.file_client
@@ -110,6 +111,35 @@ items:
   type: class
   uid: azure.storage.file.file_client.FileClient
 - class: azure.storage.file.file_client.FileClient
+  fullName: azure.storage.file.file_client.FileClient.abort_copy
+  langs:
+  - python
+  module: azure.storage.file.file_client
+  name: abort_copy(copy_id, timeout=None, **kwargs)
+  summary: 'Abort an ongoing copy operation.
+
+
+    This will leave a destination file with zero length and full metadata.
+
+    This will raise an error if the copy operation has already ended.'
+  syntax:
+    content: abort_copy(copy_id, timeout=None, **kwargs)
+    parameters:
+    - description: 'The copy operation to abort. This can be either an ID, or an
+
+        instance of FileProperties.'
+      id: copy_id
+      type:
+      - str
+      - azure.storage.file.models.FileProperties
+    - defaultValue: None
+      id: timeout
+    return:
+      type:
+      - None
+  type: method
+  uid: azure.storage.file.file_client.FileClient.abort_copy
+- class: azure.storage.file.file_client.FileClient
   fullName: azure.storage.file.file_client.FileClient.clear_range
   langs:
   - python
@@ -141,8 +171,7 @@ items:
       id: end_range
       type:
       - int
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -167,16 +196,14 @@ items:
   syntax:
     content: close_handles(handle=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Optionally, a specific handle to close. The default value is ''*''
+    - description: 'Optionally, a specific handle to close. The default value is ''*''
 
         which will attempt to close all open handles.'
       id: handle
       type:
       - str
       - azure.storage.file.models.Handle
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -186,38 +213,6 @@ items:
       - azure.core.polling.LROPoller
   type: method
   uid: azure.storage.file.file_client.FileClient.close_handles
-- class: azure.storage.file.file_client.FileClient
-  fullName: azure.storage.file.file_client.FileClient.copy_file_from_url
-  langs:
-  - python
-  module: azure.storage.file.file_client
-  name: copy_file_from_url(source_url, metadata=None, timeout=None, **kwargs)
-  summary: 'Copies the file from the provided URL to the file referenced by
-
-    the client.'
-  syntax:
-    content: copy_file_from_url(source_url, metadata=None, timeout=None, **kwargs)
-    parameters:
-    - description: Specifies the URL of the source file.
-      id: source_url
-      type:
-      - str
-    - defaultValue: None
-      description: Name-value pairs associated with the file as metadata.
-      id: metadata
-      type:
-      - dict(str, str)
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
-      id: timeout
-      type:
-      - int
-    return:
-      description: Polling object in order to wait on or abort the operation
-      type:
-      - azure.storage.file.polling.CopyStatusPoller
-  type: method
-  uid: azure.storage.file.file_client.FileClient.copy_file_from_url
 - class: azure.storage.file.file_client.FileClient
   fullName: azure.storage.file.file_client.FileClient.create_file
   langs:
@@ -238,18 +233,15 @@ items:
       id: size
       type:
       - int
-    - defaultValue: None
-      description: ContentSettings object used to set file properties.
+    - description: ContentSettings object used to set file properties.
       id: content_settings
       type:
       - azure.storage.file.models.ContentSettings
-    - defaultValue: None
-      description: Name-value pairs associated with the file as metadata.
+    - description: Name-value pairs associated with the file as metadata.
       id: metadata
       type:
       - dict(str, str)
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -271,8 +263,7 @@ items:
   syntax:
     content: delete_file(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -293,22 +284,19 @@ items:
     content: download_file(offset=None, length=None, validate_content=False, timeout=None,
       **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Start of byte range to use for downloading a section of the file.
+    - description: 'Start of byte range to use for downloading a section of the file.
 
         Must be set if length is provided.'
       id: offset
       type:
       - int
-    - defaultValue: None
-      description: 'Number of bytes to read from the stream. This is optional, but
+    - description: 'Number of bytes to read from the stream. This is optional, but
 
         should be supplied for optimal performance.'
       id: length
       type:
       - int
-    - defaultValue: 'False'
-      description: 'If true, calculates an MD5 hash for each chunk of the file. The
+    - description: 'If true, calculates an MD5 hash for each chunk of the file. The
         storage
 
         service checks the hash of the content that has arrived with the hash
@@ -327,8 +315,7 @@ items:
       id: validate_content
       type:
       - bool
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -530,8 +517,7 @@ items:
   syntax:
     content: get_file_properties(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -551,8 +537,7 @@ items:
   syntax:
     content: get_ranges(start_range=None, end_range=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Specifies the start offset of bytes over which to get ranges.
+    - description: 'Specifies the start offset of bytes over which to get ranges.
 
         The start_range and end_range params are inclusive.
 
@@ -560,8 +545,7 @@ items:
       id: start_range
       type:
       - int
-    - defaultValue: None
-      description: 'Specifies the end offset of bytes over which to get ranges.
+    - description: 'Specifies the end offset of bytes over which to get ranges.
 
         The start_range and end_range params are inclusive.
 
@@ -569,8 +553,7 @@ items:
       id: end_range
       type:
       - int
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -585,28 +568,19 @@ items:
   langs:
   - python
   module: azure.storage.file.file_client
-  name: list_handles(marker=None, timeout=None, **kwargs)
+  name: list_handles(timeout=None, **kwargs)
   summary: Lists handles for file.
   syntax:
-    content: list_handles(marker=None, timeout=None, **kwargs)
+    content: list_handles(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'An opaque continuation token. This value can be retrieved from
-        the
-
-        next_marker field of a previous generator object. If specified,
-
-        this generator will begin returning results from this point.'
-      id: marker
-      type:
-      - str
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
     return:
       description: An auto-paging iterable of HandleItems
+      type:
+      - azure.core.paging.ItemPaged[azure.storage.file.models.Handle]
   type: method
   uid: azure.storage.file.file_client.FileClient.list_handles
 - class: azure.storage.file.file_client.FileClient
@@ -623,8 +597,7 @@ items:
       id: size
       type:
       - int
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -653,13 +626,11 @@ items:
   syntax:
     content: set_file_metadata(metadata=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: Name-value pairs associated with the file as metadata.
+    - description: Name-value pairs associated with the file as metadata.
       id: metadata
       type:
       - dict(str, str)
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -683,8 +654,7 @@ items:
       id: content_settings
       type:
       - azure.storage.file.models.ContentSettings
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -694,6 +664,40 @@ items:
       - dict(str, Any)
   type: method
   uid: azure.storage.file.file_client.FileClient.set_http_headers
+- class: azure.storage.file.file_client.FileClient
+  fullName: azure.storage.file.file_client.FileClient.start_copy_from_url
+  langs:
+  - python
+  module: azure.storage.file.file_client
+  name: start_copy_from_url(source_url, metadata=None, timeout=None, **kwargs)
+  summary: 'Initiates the copying of data from a source URL into the file
+
+    referenced by the client.
+
+
+    The status of this copy operation can be found using the *get_properties*
+
+    method.'
+  syntax:
+    content: start_copy_from_url(source_url, metadata=None, timeout=None, **kwargs)
+    parameters:
+    - description: Specifies the URL of the source file.
+      id: source_url
+      type:
+      - str
+    - description: Name-value pairs associated with the file as metadata.
+      id: metadata
+      type:
+      - dict(str, str)
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      type:
+      - int
+    return:
+      type:
+      - dict(str, Any)
+  type: method
+  uid: azure.storage.file.file_client.FileClient.start_copy_from_url
 - class: azure.storage.file.file_client.FileClient
   fullName: azure.storage.file.file_client.FileClient.upload_file
   langs:
@@ -710,24 +714,20 @@ items:
       id: data
       type:
       - Any
-    - defaultValue: None
-      description: Length of the file in bytes. Specify its maximum size, up to 1
+    - description: Length of the file in bytes. Specify its maximum size, up to 1
         TiB.
       id: length
       type:
       - int
-    - defaultValue: None
-      description: Name-value pairs associated with the file as metadata.
+    - description: Name-value pairs associated with the file as metadata.
       id: metadata
       type:
       - dict(str, str)
-    - defaultValue: None
-      description: ContentSettings object used to set file properties.
+    - description: ContentSettings object used to set file properties.
       id: content_settings
       type:
       - azure.storage.file.models.ContentSettings
-    - defaultValue: 'False'
-      description: 'If true, calculates an MD5 hash for each range of the file. The
+    - description: 'If true, calculates an MD5 hash for each range of the file. The
         storage
 
         service checks the hash of the content that has arrived with the hash
@@ -742,18 +742,15 @@ items:
       id: validate_content
       type:
       - bool
-    - defaultValue: '1'
-      description: Maximum number of parallel connections to use.
+    - description: Maximum number of parallel connections to use.
       id: max_connections
       type:
       - int
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
-    - defaultValue: UTF-8
-      description: Defaults to UTF-8.
+    - description: Defaults to UTF-8.
       id: encoding
       type:
       - str
@@ -799,8 +796,7 @@ items:
       id: end_range
       type:
       - int
-    - defaultValue: 'False'
-      description: 'If true, calculates an MD5 hash of the page content. The storage
+    - description: 'If true, calculates an MD5 hash of the page content. The storage
 
         service checks the hash of the content that has arrived
 
@@ -814,13 +810,11 @@ items:
       id: validate_content
       type:
       - bool
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
-    - defaultValue: UTF-8
-      description: Defaults to UTF-8.
+    - description: Defaults to UTF-8.
       id: encoding
       type:
       - str
@@ -831,6 +825,11 @@ items:
   type: method
   uid: azure.storage.file.file_client.FileClient.upload_range
 references:
+- fullName: azure.storage.file.file_client.FileClient.abort_copy
+  isExternal: false
+  name: abort_copy(copy_id, timeout=None, **kwargs)
+  parent: azure.storage.file.file_client.FileClient
+  uid: azure.storage.file.file_client.FileClient.abort_copy
 - fullName: azure.storage.file.file_client.FileClient.clear_range
   isExternal: false
   name: clear_range(start_range, end_range, timeout=None, **kwargs)
@@ -841,11 +840,6 @@ references:
   name: close_handles(handle=None, timeout=None, **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.close_handles
-- fullName: azure.storage.file.file_client.FileClient.copy_file_from_url
-  isExternal: false
-  name: copy_file_from_url(source_url, metadata=None, timeout=None, **kwargs)
-  parent: azure.storage.file.file_client.FileClient
-  uid: azure.storage.file.file_client.FileClient.copy_file_from_url
 - fullName: azure.storage.file.file_client.FileClient.create_file
   isExternal: false
   name: create_file(size, content_settings=None, metadata=None, timeout=None, **kwargs)
@@ -887,7 +881,7 @@ references:
   uid: azure.storage.file.file_client.FileClient.get_ranges
 - fullName: azure.storage.file.file_client.FileClient.list_handles
   isExternal: false
-  name: list_handles(marker=None, timeout=None, **kwargs)
+  name: list_handles(timeout=None, **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.list_handles
 - fullName: azure.storage.file.file_client.FileClient.resize_file
@@ -905,6 +899,11 @@ references:
   name: set_http_headers(content_settings, timeout=None, **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.set_http_headers
+- fullName: azure.storage.file.file_client.FileClient.start_copy_from_url
+  isExternal: false
+  name: start_copy_from_url(source_url, metadata=None, timeout=None, **kwargs)
+  parent: azure.storage.file.file_client.FileClient
+  uid: azure.storage.file.file_client.FileClient.start_copy_from_url
 - fullName: azure.storage.file.file_client.FileClient.upload_file
   isExternal: false
   name: upload_file(data, length=None, metadata=None, content_settings=None, validate_content=False,
@@ -1000,3 +999,17 @@ references:
   - fullName: ']'
     name: ']'
   uid: List[dict[str, int]]
+- fullName: azure.core.paging.ItemPaged[azure.storage.file.models.Handle]
+  name: ItemPaged[Handle]
+  spec.python:
+  - fullName: azure.core.paging.ItemPaged
+    name: ItemPaged
+    uid: azure.core.paging.ItemPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.storage.file.models.Handle
+    name: Handle
+    uid: azure.storage.file.models.Handle
+  - fullName: ']'
+    name: ']'
+  uid: azure.core.paging.ItemPaged[azure.storage.file.models.Handle]
