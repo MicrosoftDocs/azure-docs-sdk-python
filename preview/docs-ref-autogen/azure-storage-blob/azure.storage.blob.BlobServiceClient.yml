@@ -18,7 +18,7 @@ items:
   inheritance:
   - inheritance:
     - type: builtins.object
-    type: azure.storage.blob._shared.utils.StorageAccountHostsMixin
+    type: azure.storage.blob._shared.base_client.StorageAccountHostsMixin
   langs:
   - python
   module: azure.storage.blob
@@ -119,21 +119,18 @@ items:
       id: name
       type:
       - str
-    - defaultValue: None
-      description: 'A dict with name-value pairs to associate with the
+    - description: 'A dict with name-value pairs to associate with the
 
         container as metadata. Example: *{''Category'':''test''}*'
       id: metadata
       type:
       - dict(str, str)
-    - defaultValue: None
-      description: 'Possible values include: container, blob.'
+    - description: 'Possible values include: container, blob.'
       id: public_access
       type:
       - str
       - azure.storage.blob.models.PublicAccess
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -147,8 +144,7 @@ items:
   langs:
   - python
   module: azure.storage.blob
-  name: delete_container(container, lease=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, **kwargs)
+  name: delete_container(container, lease=None, timeout=None, **kwargs)
   summary: 'Marks the specified container for deletion.
 
 
@@ -157,8 +153,7 @@ items:
 
     If the container is not found, a ResourceNotFoundError will be raised.'
   syntax:
-    content: delete_container(container, lease=None, if_modified_since=None, if_unmodified_since=None,
-      if_match=None, if_none_match=None, timeout=None, **kwargs)
+    content: delete_container(container, lease=None, timeout=None, **kwargs)
     parameters:
     - description: 'The container to delete. This can either be the name of the container,
 
@@ -167,8 +162,7 @@ items:
       type:
       - str
       - azure.storage.blob.models.ContainerProperties
-    - defaultValue: None
-      description: 'If specified, delete_container only succeeds if the
+    - description: 'If specified, delete_container only succeeds if the
 
         container''s lease is active and matches this ID.
 
@@ -176,8 +170,7 @@ items:
       id: lease
       type:
       - azure.storage.blob.lease.LeaseClient
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -190,8 +183,7 @@ items:
       id: if_modified_since
       type:
       - datetime
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -204,16 +196,14 @@ items:
       id: if_unmodified_since
       type:
       - datetime
-    - defaultValue: None
-      description: 'An ETag value, or the wildcard character (*). Specify this header
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
         the operation only if the resource''s ETag matches the value specified.'
       id: if_match
       type:
       - str
-    - defaultValue: None
-      description: 'An ETag value, or the wildcard character (*). Specify this header
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
 
         to perform the operation only if the resource''s ETag does not match
 
@@ -225,8 +215,7 @@ items:
       id: if_none_match
       type:
       - str
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -374,7 +363,6 @@ items:
     The keys in the returned dictionary include ''sku_name'' and ''account_kind''.'
   syntax:
     content: get_account_information(**kwargs)
-    parameters: []
     return:
       description: A dict of account information (SKU and account type).
       type:
@@ -463,8 +451,7 @@ items:
   syntax:
     content: get_service_properties(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -513,8 +500,7 @@ items:
   syntax:
     content: get_service_stats(timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -529,8 +515,8 @@ items:
   langs:
   - python
   module: azure.storage.blob
-  name: list_containers(name_starts_with=None, include_metadata=False, marker=None,
-    results_per_page=None, timeout=None, **kwargs)
+  name: list_containers(name_starts_with=None, include_metadata=False, results_per_page=None,
+    timeout=None, **kwargs)
   summary: 'Returns a generator to list the containers under the specified account.
 
 
@@ -538,49 +524,35 @@ items:
 
     the service and stop when all containers have been returned.'
   syntax:
-    content: list_containers(name_starts_with=None, include_metadata=False, marker=None,
-      results_per_page=None, timeout=None, **kwargs)
+    content: list_containers(name_starts_with=None, include_metadata=False, results_per_page=None,
+      timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Filters the results to return only containers whose names
+    - description: 'Filters the results to return only containers whose names
 
         begin with the specified prefix.'
       id: name_starts_with
       type:
       - str
-    - defaultValue: 'False'
-      description: 'Specifies that container metadata be returned in the response.
+    - description: 'Specifies that container metadata be returned in the response.
 
         The default value is *False*.'
       id: include_metadata
       type:
       - bool
-    - defaultValue: None
-      description: 'An opaque continuation token. This value can be retrieved from
-        the
-
-        next_marker field of a previous generator object. If specified,
-
-        this generator will begin returning results from this point.'
-      id: marker
-      type:
-      - str
-    - defaultValue: None
-      description: 'The maximum number of container names to retrieve per API
+    - description: 'The maximum number of container names to retrieve per API
 
         call. If the request does not specify the server will return up to 5,000 items.'
       id: results_per_page
       type:
       - int
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
     return:
       description: An iterable (auto-paging) of ContainerProperties.
       type:
-      - azure.core.blob.models.ContainerPropertiesPaged
+      - azure.core.paging.ItemPaged[azure.core.blob.models.ContainerProperties]
   type: method
   uid: azure.storage.blob.BlobServiceClient.list_containers
 - class: azure.storage.blob.BlobServiceClient
@@ -604,27 +576,23 @@ items:
       cors=None, target_version=None, delete_retention_policy=None, static_website=None,
       timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: Groups the Azure Analytics Logging settings.
+    - description: Groups the Azure Analytics Logging settings.
       id: logging
       type:
       - <xref:azure.storage.blob.models.Logging>
-    - defaultValue: None
-      description: 'The hour metrics settings provide a summary of request
+    - description: 'The hour metrics settings provide a summary of request
 
         statistics grouped by API in hourly aggregates for blobs.'
       id: hour_metrics
       type:
       - <xref:azure.storage.blob.models.Metrics>
-    - defaultValue: None
-      description: 'The minute metrics settings provide request statistics
+    - description: 'The minute metrics settings provide request statistics
 
         for each minute for blobs.'
       id: minute_metrics
       type:
       - <xref:azure.storage.blob.models.Metrics>
-    - defaultValue: None
-      description: 'You can include up to five CorsRule elements in the
+    - description: 'You can include up to five CorsRule elements in the
 
         list. If an empty list is specified, all CORS rules will be deleted,
 
@@ -632,30 +600,26 @@ items:
       id: cors
       type:
       - list(<xref:azure.storage.blob.models.CorsRule>)
-    - defaultValue: None
-      description: 'Indicates the default version to use for requests if an incoming
+    - description: 'Indicates the default version to use for requests if an incoming
 
         request''s version is not specified.'
       id: target_version
       type:
       - str
-    - defaultValue: None
-      description: 'The delete retention policy specifies whether to retain deleted
+    - description: 'The delete retention policy specifies whether to retain deleted
         blobs.
 
         It also specifies the number of days and versions of blob to keep.'
       id: delete_retention_policy
       type:
       - <xref:azure.storage.blob.models.RetentionPolicy>
-    - defaultValue: None
-      description: 'Specifies whether the static website feature is enabled,
+    - description: 'Specifies whether the static website feature is enabled,
 
         and if yes, indicates the index document and 404 error document to use.'
       id: static_website
       type:
       - <xref:azure.storage.blob.models.StaticWebsite>
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -672,8 +636,7 @@ references:
   uid: azure.storage.blob.BlobServiceClient.create_container
 - fullName: azure.storage.blob.BlobServiceClient.delete_container
   isExternal: false
-  name: delete_container(container, lease=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, **kwargs)
+  name: delete_container(container, lease=None, timeout=None, **kwargs)
   parent: azure.storage.blob.BlobServiceClient
   uid: azure.storage.blob.BlobServiceClient.delete_container
 - fullName: azure.storage.blob.BlobServiceClient.from_connection_string
@@ -714,8 +677,8 @@ references:
   uid: azure.storage.blob.BlobServiceClient.get_service_stats
 - fullName: azure.storage.blob.BlobServiceClient.list_containers
   isExternal: false
-  name: list_containers(name_starts_with=None, include_metadata=False, marker=None,
-    results_per_page=None, timeout=None, **kwargs)
+  name: list_containers(name_starts_with=None, include_metadata=False, results_per_page=None,
+    timeout=None, **kwargs)
   parent: azure.storage.blob.BlobServiceClient
   uid: azure.storage.blob.BlobServiceClient.list_containers
 - fullName: azure.storage.blob.BlobServiceClient.set_service_properties
@@ -763,6 +726,20 @@ references:
   - fullName: )
     name: )
   uid: dict(str, Any)
+- fullName: azure.core.paging.ItemPaged[azure.core.blob.models.ContainerProperties]
+  name: ItemPaged[ContainerProperties]
+  spec.python:
+  - fullName: azure.core.paging.ItemPaged
+    name: ItemPaged
+    uid: azure.core.paging.ItemPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.core.blob.models.ContainerProperties
+    name: ContainerProperties
+    uid: azure.core.blob.models.ContainerProperties
+  - fullName: ']'
+    name: ']'
+  uid: azure.core.paging.ItemPaged[azure.core.blob.models.ContainerProperties]
 - fullName: list(<xref:azure.storage.blob.models.CorsRule>)
   name: list(CorsRule>)
   spec.python:
