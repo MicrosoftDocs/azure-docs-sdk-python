@@ -5,6 +5,7 @@ items:
   - azure.storage.blob.BlobClient.abort_copy
   - azure.storage.blob.BlobClient.acquire_lease
   - azure.storage.blob.BlobClient.append_block
+  - azure.storage.blob.BlobClient.append_block_from_url
   - azure.storage.blob.BlobClient.clear_page
   - azure.storage.blob.BlobClient.commit_block_list
   - azure.storage.blob.BlobClient.create_append_blob
@@ -30,6 +31,7 @@ items:
   - azure.storage.blob.BlobClient.undelete_blob
   - azure.storage.blob.BlobClient.upload_blob
   - azure.storage.blob.BlobClient.upload_page
+  - azure.storage.blob.BlobClient.upload_pages_from_url
   class: azure.storage.blob.BlobClient
   fullName: azure.storage.blob.BlobClient
   inheritance:
@@ -87,7 +89,7 @@ items:
     - description: 'The full endpoint URL to the Blob, including snapshot and SAS
         token if used. This could be
 
-        either the primary endpoint, or the secondard endpoint depending on the current
+        either the primary endpoint, or the secondary endpoint depending on the current
         *location_mode*.'
       id: url
       type:
@@ -100,7 +102,7 @@ items:
       id: primary_hostname
       type:
       - str
-    - description: 'The full secondard endpoint URL if configured. If not available
+    - description: 'The full secondary endpoint URL if configured. If not available
 
         a ValueError will be raised. To explicitly specify a secondary hostname, use
         the optional
@@ -142,11 +144,11 @@ items:
     parameters:
     - description: 'The copy operation to abort. This can be either an ID, or an
 
-        instance of FileProperties.'
+        instance of BlobProperties.'
       id: copy_id
       type:
       - str
-      - azure.storage.file.models.FileProperties
+      - azure.storage.blob.models.BlobProperties
     return:
       type:
       - None
@@ -354,6 +356,16 @@ items:
       id: encoding
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -365,6 +377,181 @@ items:
       - dict(str, Any)
   type: method
   uid: azure.storage.blob.BlobClient.append_block
+- class: azure.storage.blob.BlobClient
+  fullName: azure.storage.blob.BlobClient.append_block_from_url
+  langs:
+  - python
+  module: azure.storage.blob
+  name: append_block_from_url(copy_source_url, source_range_start=None, source_range_end=None,
+    source_content_md5=None, maxsize_condition=None, appendpos_condition=None, **kwargs)
+  summary: Creates a new block to be committed as part of a blob, where the contents
+    are read from a source url.
+  syntax:
+    content: append_block_from_url(copy_source_url, source_range_start=None, source_range_end=None,
+      source_content_md5=None, maxsize_condition=None, appendpos_condition=None, **kwargs)
+    parameters:
+    - description: 'The URL of the source data. It can point to any Azure Blob or
+        File, that is either public or has a
+
+        shared access signature attached.'
+      id: copy_source_url
+      type:
+      - str
+    - description: This indicates the start of the range of bytes(inclusive) that
+        has to be taken from the copy source.
+      id: source_range_start
+      type:
+      - int
+    - description: This indicates the end of the range of bytes(inclusive) that has
+        to be taken from the copy source.
+      id: source_range_end
+      type:
+      - int
+    - description: If given, the service will calculate the MD5 hash of the block
+        content and compare against this value.
+      id: source_content_md5
+      type:
+      - bytearray
+    - description: 'Optional conditional header. The max length in bytes permitted
+        for
+
+        the append blob. If the Append Block operation would cause the blob
+
+        to exceed that limit or if the blob size is already greater than the
+
+        value specified in this header, the request will fail with
+
+        MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
+      id: maxsize_condition
+      type:
+      - int
+    - description: 'Optional conditional header, used only for the Append Block operation.
+
+        A number indicating the byte offset to compare. Append Block will
+
+        succeed only if the append position is equal to this number. If it
+
+        is not, the request will fail with the
+
+        AppendPositionConditionNotMet error
+
+        (HTTP status code 412 - Precondition Failed).'
+      id: appendpos_condition
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a LeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: or str lease
+      type:
+      - azure.storage.blob.lease.LeaseClient
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      type:
+      - datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      type:
+      - datetime
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.'
+      id: if_match
+      type:
+      - str
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.'
+      id: if_none_match
+      type:
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the source resource has been modified since the specified time.'
+      id: source_if_modified_since
+      type:
+      - datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the source resource has not been modified since the specified date/time.'
+      id: source_if_unmodified_since
+      type:
+      - datetime
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the source resource''s ETag matches the value specified.'
+      id: source_if_match
+      type:
+      - str
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the source resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the source resource does not exist, and fail the
+
+        operation if it does exist.'
+      id: source_if_none_match
+      type:
+      - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.blob.BlobClient.append_block_from_url
 - class: azure.storage.blob.BlobClient
   fullName: azure.storage.blob.BlobClient.clear_page
   langs:
@@ -467,6 +654,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -570,6 +767,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -651,6 +858,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -751,6 +968,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -851,6 +1078,16 @@ items:
       type:
       - azure.storage.blob.lease.LeaseClient
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1056,6 +1293,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -1132,8 +1379,9 @@ items:
   - python
   module: azure.storage.blob
   name: generate_shared_access_signature(permission=None, expiry=None, start=None,
-    policy_id=None, ip=None, protocol=None, cache_control=None, content_disposition=None,
-    content_encoding=None, content_language=None, content_type=None)
+    policy_id=None, ip=None, protocol=None, account_name=None, cache_control=None,
+    content_disposition=None, content_encoding=None, content_language=None, content_type=None,
+    user_delegation_key=None)
   summary: 'Generates a shared access signature for the blob.
 
     Use the returned signature with the credential parameter of any BlobServiceClient,
@@ -1141,8 +1389,9 @@ items:
     ContainerClient or BlobClient.'
   syntax:
     content: generate_shared_access_signature(permission=None, expiry=None, start=None,
-      policy_id=None, ip=None, protocol=None, cache_control=None, content_disposition=None,
-      content_encoding=None, content_language=None, content_type=None)
+      policy_id=None, ip=None, protocol=None, account_name=None, cache_control=None,
+      content_disposition=None, content_encoding=None, content_language=None, content_type=None,
+      user_delegation_key=None)
     parameters:
     - defaultValue: None
       description: 'The permissions associated with the shared access signature. The
@@ -1222,6 +1471,12 @@ items:
       type:
       - str
     - defaultValue: None
+      description: Specifies the account_name when using oauth token as credential.
+        If you use oauth token as credential.
+      id: account_name
+      type:
+      - str
+    - defaultValue: None
       description: 'Response header value for Cache-Control when resource is accessed
 
         using this shared access signature.'
@@ -1257,6 +1512,19 @@ items:
       id: content_type
       type:
       - str
+    - defaultValue: None
+      description: 'Instead of an account key, the user could pass in a user delegation
+        key.
+
+        A user delegation key can be obtained from the service by authenticating with
+        an AAD identity;
+
+        this can be accomplished by calling get_user_delegation_key.
+
+        When present, the SAS is signed with the user delegation key instead.'
+      id: user_delegation_key
+      type:
+      - azure.storage.blob._shared.models.UserDelegationKey
     return:
       description: A Shared Access Signature (sas) token.
       type:
@@ -1349,6 +1617,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1587,6 +1865,15 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'A page blob tier value to set the blob to. The tier correlates
+        to the size of the
+
+        blob and number of allowed IOPS. This is only applicable to page blobs on
+
+        premium storage accounts.'
+      id: premium_page_blob_tier
+      type:
+      - azure.storage.blob.models.PremiumPageBlobTier
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1668,6 +1955,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1993,6 +2290,16 @@ items:
       id: encoding
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -2048,6 +2355,16 @@ items:
       type:
       - azure.storage.blob.lease.LeaseClient
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -2135,7 +2452,9 @@ items:
 
         [https://myaccount.blob.core.windows.net/mycontainer/myblob](https://myaccount.blob.core.windows.net/mycontainer/myblob)
 
+
         [https://myaccount.blob.core.windows.net/mycontainer/myblob](https://myaccount.blob.core.windows.net/mycontainer/myblob)?snapshot=<DateTime>
+
 
         [https://otheraccount.blob.core.windows.net/mycontainer/myblob?sastoken](https://otheraccount.blob.core.windows.net/mycontainer/myblob?sastoken)'
       id: source_url
@@ -2313,14 +2632,11 @@ items:
       id: requires_sync
       type:
       - bool
-    - description: A poller will be used for this operation. Defaults to True.
-      id: polling
-      type:
-      - bool
     return:
-      description: A pollable object to check copy operation status (and abort).
+      description: A dictionary of copy properties (etag, last_modified, copy_id,
+        copy_status).
       type:
-      - <xref:azure.storage.blob.polling.CopyStatusPoller>
+      - Dict[str, Union[str, datetime]]
   type: method
   uid: azure.storage.blob.BlobClient.start_copy_from_url
 - class: azure.storage.blob.BlobClient
@@ -2473,15 +2789,6 @@ items:
       id: if_none_match
       type:
       - str
-    - description: 'The timeout parameter is expressed in seconds. This method may
-        make
-
-        multiple calls to the Azure service and the timeout will apply to
-
-        each call individually.'
-      id: timeout
-      type:
-      - int
     - description: 'A page blob tier value to set the blob to. The tier correlates
         to the size of the
 
@@ -2511,10 +2818,29 @@ items:
       id: max_connections
       type:
       - int
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: Defaults to UTF-8.
       id: encoding
       type:
       - str
+    - description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.'
+      id: timeout
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified)
       type:
@@ -2647,6 +2973,16 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
     - description: Defaults to UTF-8.
       id: encoding
       type:
@@ -2661,6 +2997,186 @@ items:
       - dict(str, Any)
   type: method
   uid: azure.storage.blob.BlobClient.upload_page
+- class: azure.storage.blob.BlobClient
+  fullName: azure.storage.blob.BlobClient.upload_pages_from_url
+  langs:
+  - python
+  module: azure.storage.blob
+  name: upload_pages_from_url(source_url, range_start, range_end, source_range_start,
+    source_content_md5=None, **kwargs)
+  summary: Updates a range of pages to a page blob where the contents are read from
+    a URL.
+  syntax:
+    content: upload_pages_from_url(source_url, range_start, range_end, source_range_start,
+      source_content_md5=None, **kwargs)
+    parameters:
+    - description: 'The URL of the source data. It can point to any Azure Blob or
+        File, that is either public or has a
+
+        shared access signature attached.'
+      id: source_url
+      type:
+      - str
+    - description: 'Start of byte range to use for writing to a section of the blob.
+
+        Pages must be aligned with 512-byte boundaries, the start offset
+
+        must be a modulus of 512 and the end offset must be a modulus of
+
+        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
+      id: range_start
+      type:
+      - int
+    - description: 'End of byte range to use for writing to a section of the blob.
+
+        Pages must be aligned with 512-byte boundaries, the start offset
+
+        must be a modulus of 512 and the end offset must be a modulus of
+
+        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
+      id: range_end
+      type:
+      - int
+    - description: 'This indicates the start of the range of bytes(inclusive) that
+        has to be taken from the copy source.
+
+        The service will read the same number of bytes as the destination range (end_range-start_range).'
+      id: source_range_start
+      type:
+      - int
+    - description: If given, the service will calculate the MD5 hash of the block
+        content and compare against this value.
+      id: source_content_md5
+      type:
+      - bytes
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the source resource has been modified since the specified time.'
+      id: source_if_modified_since
+      type:
+      - datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the source resource has not been modified since the specified date/time.'
+      id: source_if_unmodified_since
+      type:
+      - datetime
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the source resource''s ETag matches the value specified.'
+      id: source_if_match
+      type:
+      - str
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the source resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the source resource does not exist, and fail the
+
+        operation if it does exist.'
+      id: source_if_none_match
+      type:
+      - str
+    - description: Required if the blob has an active lease.
+      id: lease
+      type:
+      - str
+    - description: 'If the blob''s sequence number is less than or equal to
+
+        the specified value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lte
+      type:
+      - int
+    - description: 'If the blob''s sequence number is less than the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lt
+      type:
+      - int
+    - description: 'If the blob''s sequence number is equal to the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_eq
+      type:
+      - int
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      type:
+      - datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      type:
+      - datetime
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+        to perform
+
+        the operation only if the resource''s ETag matches the value specified.'
+      id: if_match
+      type:
+      - str
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
+
+        to perform the operation only if the resource''s ETag does not match
+
+        the value specified. Specify the wildcard character (*) to perform
+
+        the operation only if the resource does not exist, and fail the
+
+        operation if it does exist.'
+      id: if_none_match
+      type:
+      - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      type:
+      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.blob.BlobClient.upload_pages_from_url
 references:
 - fullName: azure.storage.blob.BlobClient.abort_copy
   isExternal: false
@@ -2678,6 +3194,12 @@ references:
     appendpos_condition=None, **kwargs)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.append_block
+- fullName: azure.storage.blob.BlobClient.append_block_from_url
+  isExternal: false
+  name: append_block_from_url(copy_source_url, source_range_start=None, source_range_end=None,
+    source_content_md5=None, maxsize_condition=None, appendpos_condition=None, **kwargs)
+  parent: azure.storage.blob.BlobClient
+  uid: azure.storage.blob.BlobClient.append_block_from_url
 - fullName: azure.storage.blob.BlobClient.clear_page
   isExternal: false
   name: clear_page(start_range, end_range, **kwargs)
@@ -2724,8 +3246,9 @@ references:
 - fullName: azure.storage.blob.BlobClient.generate_shared_access_signature
   isExternal: false
   name: generate_shared_access_signature(permission=None, expiry=None, start=None,
-    policy_id=None, ip=None, protocol=None, cache_control=None, content_disposition=None,
-    content_encoding=None, content_language=None, content_type=None)
+    policy_id=None, ip=None, protocol=None, account_name=None, cache_control=None,
+    content_disposition=None, content_encoding=None, content_language=None, content_type=None,
+    user_delegation_key=None)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.generate_shared_access_signature
 - fullName: azure.storage.blob.BlobClient.get_account_information
@@ -2813,6 +3336,12 @@ references:
     **kwargs)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.upload_page
+- fullName: azure.storage.blob.BlobClient.upload_pages_from_url
+  isExternal: false
+  name: upload_pages_from_url(source_url, range_start, range_end, source_range_start,
+    source_content_md5=None, **kwargs)
+  parent: azure.storage.blob.BlobClient
+  uid: azure.storage.blob.BlobClient.upload_pages_from_url
 - fullName: dict(str, Any)
   name: dict(str, Any)
   spec.python:
@@ -2994,3 +3523,34 @@ references:
   - fullName: ']'
     name: ']'
   uid: Dict[str, Any]
+- fullName: Dict[str, Union[str, datetime]]
+  name: Dict[str, Union[str, datetime]]
+  spec.python:
+  - fullName: Dict
+    name: Dict
+    uid: Dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: Union
+    name: Union
+    uid: Union
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: datetime
+    name: datetime
+    uid: datetime
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: Dict[str, Union[str, datetime]]

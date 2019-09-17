@@ -1,0 +1,112 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- children:
+  - azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.start
+  - azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.stop
+  class: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+  example:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n   import asyncio\n\
+    \   import logging\n   import os\n   from azure.eventhub.aio import EventHubClient\n\
+    \   from azure.eventhub.aio.eventprocessor import EventProcessor, PartitionProcessor\n\
+    \   from azure.eventhub.aio.eventprocessor import SamplePartitionManager\n\n \
+    \  RECEIVE_TIMEOUT = 5  # timeout in seconds for a receiving operation. 0 or None\
+    \ means no timeout\n   RETRY_TOTAL = 3  # max number of retries for receive operations\
+    \ within the receive timeout.\n                    # Actual number of retries\
+    \ clould be less if RECEIVE_TIMEOUT is too small\n   CONNECTION_STR = os.environ[\"\
+    EVENT_HUB_CONN_STR\"]\n\n   logging.basicConfig(level=logging.INFO)\n\n   async\
+    \ def do_operation(event):\n       # do some sync or async operations. If the\
+    \ operation is i/o bound, async will have better performance\n       print(event)\n\
+    \n\n   class MyPartitionProcessor(PartitionProcessor):\n       async def process_events(self,\
+    \ events, partition_context):\n           if events:\n               await asyncio.gather(*[do_operation(event)\
+    \ for event in events])\n               await partition_context.update_checkpoint(events[-1].offset,\
+    \ events[-1].sequence_number)\n\n   async def main():\n       client = EventHubClient.from_connection_string(CONNECTION_STR,\
+    \ receive_timeout=RECEIVE_TIMEOUT,\n                                         \
+    \             retry_total=RETRY_TOTAL)\n       partition_manager = SamplePartitionManager(db_filename=\"\
+    :memory:\")  # a filename to persist checkpoint\n       try:\n           event_processor\
+    \ = EventProcessor(client, \"$default\", MyPartitionProcessor,\n             \
+    \                               partition_manager, polling_interval=10)\n    \
+    \       asyncio.create_task(event_processor.start())\n           await asyncio.sleep(60)\n\
+    \           await event_processor.stop()\n       finally:\n           await partition_manager.close()\n\
+    \n   if __name__ == '__main__':\n       asyncio.get_event_loop().run_until_complete(main())\n\
+    \   ````\n"
+  fullName: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+  inheritance:
+  - type: builtins.object
+  langs:
+  - python
+  module: azure.eventhub.aio.eventprocessor.event_processor
+  name: EventProcessor
+  summary: 'An EventProcessor constantly receives events from multiple partitions
+    of the Event Hub in the context of a given
+
+    consumer group. The received data will be sent to PartitionProcessor to be processed.
+
+
+    It provides the user a convenient way to receive events from multiple partitions
+    and save checkpoints.
+
+    If multiple EventProcessors are running for an event hub, they will automatically
+    balance load.'
+  syntax:
+    content: 'EventProcessor(eventhub_client: azure.eventhub.aio.client_async.EventHubClient,
+      consumer_group_name: str, partition_processor_type: typing.Type[azure.eventhub.aio.eventprocessor.partition_processor.PartitionProcessor],
+      partition_manager: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager,
+      *, initial_event_position: azure.eventhub.common.EventPosition = <azure.eventhub.common.EventPosition
+      object>, polling_interval: float = 10.0)'
+  type: class
+  uid: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+- class: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+  fullName: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.start
+  langs:
+  - python
+  module: azure.eventhub.aio.eventprocessor.event_processor
+  name: start()
+  summary: "Start the EventProcessor.\n\nThe EventProcessor will try to claim and\
+    \ balance partition ownership with other *EventProcessor*\n   and asynchronously\
+    \ start receiving EventData from EventHub and processing events."
+  syntax:
+    content: start()
+    parameters: []
+    return:
+      description: None
+  type: method
+  uid: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.start
+- class: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+  fullName: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.stop
+  langs:
+  - python
+  module: azure.eventhub.aio.eventprocessor.event_processor
+  name: stop()
+  summary: 'Stop the EventProcessor.
+
+
+    The EventProcessor will stop receiving events from EventHubs and release the ownership
+    of the partitions
+
+    it is working on.
+
+    Other running EventProcessor will take over these released partitions.
+
+
+    A stopped EventProcessor can be restarted by calling method *start* again.'
+  syntax:
+    content: stop()
+    parameters: []
+    return:
+      description: None
+  type: method
+  uid: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.stop
+references:
+- fullName: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.start
+  isExternal: false
+  name: start()
+  parent: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+  uid: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.start
+- fullName: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.stop
+  isExternal: false
+  name: stop()
+  parent: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor
+  uid: azure.eventhub.aio.eventprocessor.event_processor.EventProcessor.stop

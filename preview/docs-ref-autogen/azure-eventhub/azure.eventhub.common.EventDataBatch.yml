@@ -12,12 +12,26 @@ items:
   - python
   module: azure.eventhub.common
   name: EventDataBatch
-  summary: 'The EventDataBatch class is a holder of a batch of event data within max
-    size bytes.
+  summary: 'Sending events in batch get better performance than sending individual
+    events.
 
-    Use ~azure.eventhub.Producer.create_batch method to create an EventDataBatch object.
+    EventDataBatch helps you create the maximum allowed size batch of *EventData*
+    to improve sending performance.
 
-    Do not instantiate an EventDataBatch object directly.'
+
+    Use *try_add* method to add events until the maximum batch size limit in bytes
+    has been reached -
+
+    a *ValueError* will be raised.
+
+    Use *send* method of ~azure.eventhub.EventHubProducer or ~azure.eventhub.aio.EventHubProducer
+    for sending.
+
+
+    Please use the *create_batch* method of *EventHubProducer*
+
+    to create an *EventDataBatch* object instead of instantiating an *EventDataBatch*
+    object directly.'
   syntax:
     content: EventDataBatch(max_size=None, partition_key=None)
   type: class
@@ -42,9 +56,11 @@ items:
   name: try_add(event_data)
   summary: 'The message size is a sum up of body, properties, header, etc.
 
-    :param event_data:
+    :param event_data: ~azure.eventhub.EventData
 
-    :return:'
+    :return: None
+
+    :raise: ValueError, when exceeding the size limit.'
   syntax:
     content: try_add(event_data)
     parameters:
