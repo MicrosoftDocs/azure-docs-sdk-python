@@ -19,6 +19,7 @@ items:
   - azure.storage.file.file_client.FileClient.start_copy_from_url
   - azure.storage.file.file_client.FileClient.upload_file
   - azure.storage.file.file_client.FileClient.upload_range
+  - azure.storage.file.file_client.FileClient.upload_range_from_url
   class: azure.storage.file.file_client.FileClient
   fullName: azure.storage.file.file_client.FileClient
   inheritance:
@@ -218,14 +219,17 @@ items:
   langs:
   - python
   module: azure.storage.file.file_client
-  name: create_file(size, content_settings=None, metadata=None, timeout=None, **kwargs)
+  name: create_file(size, content_settings=None, metadata=None, file_attributes='none',
+    file_creation_time='now', file_last_write_time='now', file_permission=None, file_permission_key=None,
+    timeout=None, **kwargs)
   summary: 'Creates a new file.
 
 
     Note that it only initializes the file with no content.'
   syntax:
-    content: create_file(size, content_settings=None, metadata=None, timeout=None,
-      **kwargs)
+    content: create_file(size, content_settings=None, metadata=None, file_attributes='none',
+      file_creation_time='now', file_last_write_time='now', file_permission=None,
+      file_permission_key=None, timeout=None, **kwargs)
     parameters:
     - description: 'Specifies the maximum size for the file,
 
@@ -245,6 +249,54 @@ items:
       id: timeout
       type:
       - int
+    - description: 'The file system attributes for files and directories.
+
+        If not set, the default value would be "None" and the attributes will be set
+        to "Archive".
+
+        Here is an example for when the var type is str: ''Temporary|Archive''.
+
+        file_attributes value is not case sensitive.'
+      id: file_attributes
+      type:
+      - str
+      - <xref:azure.storage.file.models.NTFSAttributes>
+    - description: 'Creation time for the file
+
+        Default value: Now.'
+      id: file_creation_time
+      type:
+      - str
+      - datetime
+    - description: 'Last write time for the file
+
+        Default value: Now.'
+      id: file_last_write_time
+      type:
+      - str
+      - datetime
+    - description: 'If specified the permission (security
+
+        descriptor) shall be set for the directory/file. This header can be
+
+        used if Permission size is <= 8KB, else x-ms-file-permission-key
+
+        header shall be used. Default value: Inherit. If SDDL is specified as
+
+        input, it must have owner, group and dacl. Note: Only one of the
+
+        x-ms-file-permission or x-ms-file-permission-key should be specified.'
+      id: file_permission
+      type:
+      - str
+    - description: 'Key of the permission to be set for the
+
+        directory/file. Note: Only one of the x-ms-file-permission or
+
+        x-ms-file-permission-key should be specified.'
+      id: file_permission_key
+      type:
+      - str
     return:
       description: File-updated property dict (Etag and last modified).
       type:
@@ -645,10 +697,14 @@ items:
   langs:
   - python
   module: azure.storage.file.file_client
-  name: set_http_headers(content_settings, timeout=None, **kwargs)
+  name: set_http_headers(content_settings, file_attributes='preserve', file_creation_time='preserve',
+    file_last_write_time='preserve', file_permission=None, file_permission_key=None,
+    timeout=None, **kwargs)
   summary: Sets HTTP headers on the file.
   syntax:
-    content: set_http_headers(content_settings, timeout=None, **kwargs)
+    content: set_http_headers(content_settings, file_attributes='preserve', file_creation_time='preserve',
+      file_last_write_time='preserve', file_permission=None, file_permission_key=None,
+      timeout=None, **kwargs)
     parameters:
     - description: ContentSettings object used to set file properties.
       id: content_settings
@@ -658,6 +714,51 @@ items:
       id: timeout
       type:
       - int
+    - description: 'The file system attributes for files and directories.
+
+        If not set, indicates preservation of existing values.
+
+        Here is an example for when the var type is str: ''Temporary|Archive'''
+      id: file_attributes
+      type:
+      - str
+      - <xref:azure.storage.file.models.NTFSAttributes>
+    - description: 'Creation time for the file
+
+        Default value: Now.'
+      id: file_creation_time
+      type:
+      - str
+      - datetime
+    - description: 'Last write time for the file
+
+        Default value: Now.'
+      id: file_last_write_time
+      type:
+      - str
+      - datetime
+    - description: 'If specified the permission (security
+
+        descriptor) shall be set for the directory/file. This header can be
+
+        used if Permission size is <= 8KB, else x-ms-file-permission-key
+
+        header shall be used. Default value: Inherit. If SDDL is specified as
+
+        input, it must have owner, group and dacl. Note: Only one of the
+
+        x-ms-file-permission or x-ms-file-permission-key should be specified.'
+      id: file_permission
+      type:
+      - str
+    - description: 'Key of the permission to be set for the
+
+        directory/file. Note: Only one of the x-ms-file-permission or
+
+        x-ms-file-permission-key should be specified.'
+      id: file_permission_key
+      type:
+      - str
     return:
       description: File-updated property dict (Etag and last modified).
       type:
@@ -704,11 +805,15 @@ items:
   - python
   module: azure.storage.file.file_client
   name: upload_file(data, length=None, metadata=None, content_settings=None, validate_content=False,
-    max_connections=1, timeout=None, encoding='UTF-8', **kwargs)
+    max_connections=1, file_attributes='none', file_creation_time='now', file_last_write_time='now',
+    file_permission=None, file_permission_key=None, encoding='UTF-8', timeout=None,
+    **kwargs)
   summary: Uploads a new file.
   syntax:
     content: upload_file(data, length=None, metadata=None, content_settings=None,
-      validate_content=False, max_connections=1, timeout=None, encoding='UTF-8', **kwargs)
+      validate_content=False, max_connections=1, file_attributes='none', file_creation_time='now',
+      file_last_write_time='now', file_permission=None, file_permission_key=None,
+      encoding='UTF-8', timeout=None, **kwargs)
     parameters:
     - description: Content of the file.
       id: data
@@ -752,6 +857,54 @@ items:
       - int
     - description: Defaults to UTF-8.
       id: encoding
+      type:
+      - str
+    - description: 'The file system attributes for files and directories.
+
+        If not set, the default value would be "None" and the attributes will be set
+        to "Archive".
+
+        Here is an example for when the var type is str: ''Temporary|Archive''.
+
+        file_attributes value is not case sensitive.'
+      id: file_attributes
+      type:
+      - str
+      - <xref:azure.storage.file.models.NTFSAttributes>
+    - description: 'Creation time for the file
+
+        Default value: Now.'
+      id: file_creation_time
+      type:
+      - str
+      - datetime
+    - description: 'Last write time for the file
+
+        Default value: Now.'
+      id: file_last_write_time
+      type:
+      - str
+      - datetime
+    - description: 'If specified the permission (security
+
+        descriptor) shall be set for the directory/file. This header can be
+
+        used if Permission size is <= 8KB, else x-ms-file-permission-key
+
+        header shall be used. Default value: Inherit. If SDDL is specified as
+
+        input, it must have owner, group and dacl. Note: Only one of the
+
+        x-ms-file-permission or x-ms-file-permission-key should be specified.'
+      id: file_permission
+      type:
+      - str
+    - description: 'Key of the permission to be set for the
+
+        directory/file. Note: Only one of the x-ms-file-permission or
+
+        x-ms-file-permission-key should be specified.'
+      id: file_permission_key
       type:
       - str
     return:
@@ -824,6 +977,74 @@ items:
       - Dict[str, Any]
   type: method
   uid: azure.storage.file.file_client.FileClient.upload_range
+- class: azure.storage.file.file_client.FileClient
+  fullName: azure.storage.file.file_client.FileClient.upload_range_from_url
+  langs:
+  - python
+  module: azure.storage.file.file_client
+  name: upload_range_from_url(source_url, range_start, range_end, source_range_start,
+    **kwargs)
+  summary: Writes the bytes from one Azure File endpoint into the specified range
+    of another Azure File endpoint.
+  syntax:
+    content: upload_range_from_url(source_url, range_start, range_end, source_range_start,
+      **kwargs)
+    parameters:
+    - description: 'Start of byte range to use for updating a section of the file.
+
+        The range can be up to 4 MB in size.
+
+        The start_range and end_range params are inclusive.
+
+        Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+      id: range_start
+      type:
+      - int
+    - description: 'End of byte range to use for updating a section of the file.
+
+        The range can be up to 4 MB in size.
+
+        The start_range and end_range params are inclusive.
+
+        Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+      id: range_end
+      type:
+      - int
+    - description: 'A URL of up to 2 KB in length that specifies an Azure file or
+        blob.
+
+        The value should be URL-encoded as it would appear in a request URI.
+
+        If the source is in another account, the source must either be public
+
+        or must be authenticated via a shared access signature. If the source
+
+        is public, no authentication is required.
+
+        Examples:
+
+        [https://myaccount.file.core.windows.net/myshare/mydir/myfile](https://myaccount.file.core.windows.net/myshare/mydir/myfile)
+
+        [https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken](https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken)'
+      id: source_url
+      type:
+      - str
+    - description: 'Start of byte range to use for updating a section of the file.
+
+        The range can be up to 4 MB in size.
+
+        The start_range and end_range params are inclusive.
+
+        Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+      id: source_range_start
+      type:
+      - int
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      type:
+      - int
+  type: method
+  uid: azure.storage.file.file_client.FileClient.upload_range_from_url
 references:
 - fullName: azure.storage.file.file_client.FileClient.abort_copy
   isExternal: false
@@ -842,7 +1063,9 @@ references:
   uid: azure.storage.file.file_client.FileClient.close_handles
 - fullName: azure.storage.file.file_client.FileClient.create_file
   isExternal: false
-  name: create_file(size, content_settings=None, metadata=None, timeout=None, **kwargs)
+  name: create_file(size, content_settings=None, metadata=None, file_attributes='none',
+    file_creation_time='now', file_last_write_time='now', file_permission=None, file_permission_key=None,
+    timeout=None, **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.create_file
 - fullName: azure.storage.file.file_client.FileClient.delete_file
@@ -896,7 +1119,9 @@ references:
   uid: azure.storage.file.file_client.FileClient.set_file_metadata
 - fullName: azure.storage.file.file_client.FileClient.set_http_headers
   isExternal: false
-  name: set_http_headers(content_settings, timeout=None, **kwargs)
+  name: set_http_headers(content_settings, file_attributes='preserve', file_creation_time='preserve',
+    file_last_write_time='preserve', file_permission=None, file_permission_key=None,
+    timeout=None, **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.set_http_headers
 - fullName: azure.storage.file.file_client.FileClient.start_copy_from_url
@@ -907,7 +1132,9 @@ references:
 - fullName: azure.storage.file.file_client.FileClient.upload_file
   isExternal: false
   name: upload_file(data, length=None, metadata=None, content_settings=None, validate_content=False,
-    max_connections=1, timeout=None, encoding='UTF-8', **kwargs)
+    max_connections=1, file_attributes='none', file_creation_time='now', file_last_write_time='now',
+    file_permission=None, file_permission_key=None, encoding='UTF-8', timeout=None,
+    **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.upload_file
 - fullName: azure.storage.file.file_client.FileClient.upload_range
@@ -916,6 +1143,12 @@ references:
     encoding='UTF-8', **kwargs)
   parent: azure.storage.file.file_client.FileClient
   uid: azure.storage.file.file_client.FileClient.upload_range
+- fullName: azure.storage.file.file_client.FileClient.upload_range_from_url
+  isExternal: false
+  name: upload_range_from_url(source_url, range_start, range_end, source_range_start,
+    **kwargs)
+  parent: azure.storage.file.file_client.FileClient
+  uid: azure.storage.file.file_client.FileClient.upload_range_from_url
 - fullName: Dict[str, Any]
   name: Dict[str, Any]
   spec.python:

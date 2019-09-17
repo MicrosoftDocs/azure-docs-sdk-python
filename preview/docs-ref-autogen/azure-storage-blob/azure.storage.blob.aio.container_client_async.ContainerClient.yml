@@ -70,7 +70,7 @@ items:
     - description: 'The full endpoint URL to the Container, including SAS token if
         used. This could be
 
-        either the primary endpoint, or the secondard endpoint depending on the current
+        either the primary endpoint, or the secondary endpoint depending on the current
         *location_mode*.'
       id: url
       type:
@@ -83,7 +83,7 @@ items:
       id: primary_hostname
       type:
       - str
-    - description: 'The full secondard endpoint URL if configured. If not available
+    - description: 'The full secondary endpoint URL if configured. If not available
 
         a ValueError will be raised. To explicitly specify a secondary hostname, use
         the optional
@@ -122,8 +122,7 @@ items:
   syntax:
     content: acquire_lease(lease_duration=-1, lease_id=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: '-1'
-      description: 'Specifies the duration of the lease, in seconds, or negative one
+    - description: 'Specifies the duration of the lease, in seconds, or negative one
 
         (-1) for a lease that never expires. A non-infinite lease can be
 
@@ -133,15 +132,13 @@ items:
       id: lease_duration
       type:
       - int
-    - defaultValue: None
-      description: 'Proposed lease ID, in a GUID string format. The Blob service returns
+    - description: 'Proposed lease ID, in a GUID string format. The Blob service returns
 
         400 (Invalid request) if the proposed lease ID is not in the correct format.'
       id: lease_id
       type:
       - str
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -193,7 +190,7 @@ items:
     return:
       description: A LeaseClient object, that can be run in a context manager.
       type:
-      - azure.storage.blob.lease.LeaseClient
+      - azure.storage.blob.aio.lease_async.LeaseClient
   type: method
   uid: azure.storage.blob.aio.container_client_async.ContainerClient.acquire_lease
 - class: azure.storage.blob.aio.container_client_async.ContainerClient
@@ -208,20 +205,17 @@ items:
   syntax:
     content: create_container(metadata=None, public_access=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'A dict with name_value pairs to associate with the
+    - description: 'A dict with name_value pairs to associate with the
 
         container as metadata. Example:{''Category'':''test''}'
       id: metadata
       type:
       - dict[str, str]
-    - defaultValue: None
-      description: 'Possible values include: container, blob.'
+    - description: 'Possible values include: container, blob.'
       id: public_access
       type:
       - azure.storage.blob.models.PublicAccess
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -271,24 +265,21 @@ items:
       type:
       - str
       - azure.storage.blob.models.BlobProperties
-    - defaultValue: None
-      description: "Required if the blob has associated snapshots. Values include:\n\
+    - description: "Required if the blob has associated snapshots. Values include:\n\
         \   * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
         \ the blob along with all snapshots."
       id: delete_snapshots
       type:
       - str
-    - defaultValue: None
-      description: 'Required if the blob has an active lease. Value can be a Lease
+    - description: 'Required if the blob has an active lease. Value can be a Lease
         object
 
         or the lease ID as a string.'
       id: lease
       type:
-      - azure.storage.blob.lease.LeaseClient
+      - azure.storage.blob.aio.lease_async.LeaseClient
       - str
-    - defaultValue: None
-      description: "Required if the blob has associated snapshots. Values include:\n\
+    - description: "Required if the blob has associated snapshots. Values include:\n\
         \   * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
         \ the blob along with all snapshots."
       id: delete_snapshots
@@ -360,17 +351,15 @@ items:
   syntax:
     content: delete_container(lease=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'If specified, delete_container only succeeds if the
+    - description: 'If specified, delete_container only succeeds if the
 
         container''s lease is active and matches this ID.
 
         Required if the container has an active lease.'
       id: lease
       type:
-      - azure.storage.blob.lease.LeaseClient
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+      - azure.storage.blob.aio.lease_async.LeaseClient
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -439,7 +428,6 @@ items:
     The keys in the returned dictionary include ''sku_name'' and ''account_kind''.'
   syntax:
     content: get_account_information(**kwargs)
-    parameters: []
     return:
       description: A dict of account information (SKU and account type).
       type:
@@ -475,7 +463,7 @@ items:
     return:
       description: A BlobClient.
       type:
-      - azure.storage.blob.blob_client.BlobClient
+      - azure.storage.blob.aio.blob_client_async.BlobClient
   type: method
   uid: azure.storage.blob.aio.container_client_async.ContainerClient.get_blob_client
 - class: azure.storage.blob.aio.container_client_async.ContainerClient
@@ -490,15 +478,13 @@ items:
   syntax:
     content: get_container_access_policy(lease=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'If specified, get_container_access_policy only succeeds if the
+    - description: 'If specified, get_container_access_policy only succeeds if the
 
         container''s lease is active and matches this ID.'
       id: lease
       type:
       - str
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -520,15 +506,13 @@ items:
   syntax:
     content: get_container_properties(lease=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'If specified, get_container_properties only succeeds if the
+    - description: 'If specified, get_container_properties only succeeds if the
 
         container''s lease is active and matches this ID.'
       id: lease
       type:
-      - azure.storage.blob.lease.LeaseClient
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+      - azure.storage.blob.aio.lease_async.LeaseClient
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -552,23 +536,20 @@ items:
   syntax:
     content: list_blobs(name_starts_with=None, include=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Filters the results to return only blobs whose names
+    - description: 'Filters the results to return only blobs whose names
 
         begin with the specified prefix.'
       id: name_starts_with
       type:
       - str
-    - defaultValue: None
-      description: 'Specifies one or more additional datasets to include in the response.
+    - description: 'Specifies one or more additional datasets to include in the response.
 
         Options include: ''snapshots'', ''metadata'', ''uncommittedblobs'', ''copy'',
         ''deleted''.'
       id: include
       type:
       - list[str]
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
@@ -594,8 +575,7 @@ items:
     content: set_container_access_policy(signed_identifiers=None, public_access=None,
       lease=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'A dictionary of access policies to associate with the container.
+    - description: 'A dictionary of access policies to associate with the container.
         The
 
         dictionary may contain up to 5 elements. An empty dictionary
@@ -604,22 +584,19 @@ items:
       id: signed_identifiers
       type:
       - dict(str, <xref:azure.storage.blob.models.AccessPolicy>)
-    - defaultValue: None
-      description: 'Possible values include: container, blob.'
+    - description: 'Possible values include: container, blob.'
       id: public_access
       type:
       - azure.storage.blob.models.PublicAccess
-    - defaultValue: None
-      description: 'Required if the container has an active lease. Value can be a
+    - description: 'Required if the container has an active lease. Value can be a
         LeaseClient object
 
         or the lease ID as a string.'
       id: lease
       type:
-      - azure.storage.blob.lease.LeaseClient
+      - azure.storage.blob.aio.lease_async.LeaseClient
       - str
-    - defaultValue: None
-      description: 'A datetime value. Azure expects the date value passed in to be
+    - description: 'A datetime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -669,23 +646,20 @@ items:
   syntax:
     content: set_container_metadata(metadata=None, lease=None, timeout=None, **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'A dict containing name-value pairs to associate with the container
+    - description: 'A dict containing name-value pairs to associate with the container
         as
 
         metadata. Example: {''category'':''test''}'
       id: metadata
       type:
       - dict[str, str]
-    - defaultValue: None
-      description: 'If specified, set_container_metadata only succeeds if the
+    - description: 'If specified, set_container_metadata only succeeds if the
 
         container''s lease is active and matches this ID.'
       id: lease
       type:
       - str
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -734,8 +708,7 @@ items:
       id: blob_type
       type:
       - azure.storage.blob.models.BlobType
-    - defaultValue: BlobType.BlockBlob
-      description: 'Whether the blob to be uploaded should overwrite the current data.
+    - description: 'Whether the blob to be uploaded should overwrite the current data.
 
         If True, upload_blob will silently overwrite the existing data. If set to
         False, the
@@ -753,25 +726,21 @@ items:
       id: overwrite
       type:
       - bool
-    - defaultValue: 'False'
-      description: 'Number of bytes to read from the stream. This is optional, but
+    - description: 'Number of bytes to read from the stream. This is optional, but
 
         should be supplied for optimal performance.'
       id: length
       type:
       - int
-    - defaultValue: None
-      description: Name-value pairs associated with the blob as metadata.
+    - description: Name-value pairs associated with the blob as metadata.
       id: metadata
       type:
       - dict(str, str)
-    - defaultValue: None
-      description: ContentSettings object used to set blob properties.
+    - description: ContentSettings object used to set blob properties.
       id: content_settings
       type:
       - azure.storage.blob.models.ContentSettings
-    - defaultValue: None
-      description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+    - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
 
         service checks the hash of the content that has arrived with the hash
@@ -790,17 +759,15 @@ items:
       id: validate_content
       type:
       - bool
-    - defaultValue: 'False'
-      description: 'Required if the container has an active lease. Value can be a
+    - description: 'Required if the container has an active lease. Value can be a
         LeaseClient object
 
         or the lease ID as a string.'
       id: lease
       type:
-      - azure.storage.blob.lease.LeaseClient
+      - azure.storage.blob.aio.lease_async.LeaseClient
       - str
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -813,8 +780,7 @@ items:
       id: if_modified_since
       type:
       - datetime
-    - defaultValue: None
-      description: 'A DateTime value. Azure expects the date value passed in to be
+    - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
         If timezone is included, any non-UTC datetimes will be converted to UTC.
@@ -827,16 +793,14 @@ items:
       id: if_unmodified_since
       type:
       - datetime
-    - defaultValue: '1'
-      description: 'An ETag value, or the wildcard character (*). Specify this header
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
         the operation only if the resource''s ETag matches the value specified.'
       id: if_match
       type:
       - str
-    - defaultValue: UTF-8
-      description: 'An ETag value, or the wildcard character (*). Specify this header
+    - description: 'An ETag value, or the wildcard character (*). Specify this header
 
         to perform the operation only if the resource''s ETag does not match
 
@@ -893,7 +857,7 @@ items:
     return:
       description: A BlobClient to interact with the newly uploaded blob.
       type:
-      - azure.storage.blob.blob_cient.BlobClient
+      - azure.storage.blob.aio.blob_client_async.BlobClient
   type: method
   uid: azure.storage.blob.aio.container_client_async.ContainerClient.upload_blob
 - class: azure.storage.blob.aio.container_client_async.ContainerClient
@@ -914,23 +878,20 @@ items:
     content: walk_blobs(name_starts_with=None, include=None, delimiter='/', timeout=None,
       **kwargs)
     parameters:
-    - defaultValue: None
-      description: 'Filters the results to return only blobs whose names
+    - description: 'Filters the results to return only blobs whose names
 
         begin with the specified prefix.'
       id: name_starts_with
       type:
       - str
-    - defaultValue: None
-      description: 'Specifies one or more additional datasets to include in the response.
+    - description: 'Specifies one or more additional datasets to include in the response.
 
         Options include: ''snapshots'', ''metadata'', ''uncommittedblobs'', ''copy'',
         ''deleted''.'
       id: include
       type:
       - list[str]
-    - defaultValue: /
-      description: 'When the request includes this parameter, the operation returns
+    - description: 'When the request includes this parameter, the operation returns
         a BlobPrefix
 
         element in the response body that acts as a placeholder for all blobs whose
@@ -941,8 +902,7 @@ items:
       id: delimiter
       type:
       - str
-    - defaultValue: None
-      description: The timeout parameter is expressed in seconds.
+    - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
