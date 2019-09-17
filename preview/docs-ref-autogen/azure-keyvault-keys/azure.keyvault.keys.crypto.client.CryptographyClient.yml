@@ -7,9 +7,9 @@ items:
   - azure.keyvault.keys.crypto.client.CryptographyClient.get_key
   - azure.keyvault.keys.crypto.client.CryptographyClient.key_id
   - azure.keyvault.keys.crypto.client.CryptographyClient.sign
-  - azure.keyvault.keys.crypto.client.CryptographyClient.unwrap
+  - azure.keyvault.keys.crypto.client.CryptographyClient.unwrap_key
   - azure.keyvault.keys.crypto.client.CryptographyClient.verify
-  - azure.keyvault.keys.crypto.client.CryptographyClient.wrap
+  - azure.keyvault.keys.crypto.client.CryptographyClient.wrap_key
   class: azure.keyvault.keys.crypto.client.CryptographyClient
   fullName: azure.keyvault.keys.crypto.client.CryptographyClient
   inheritance:
@@ -21,8 +21,25 @@ items:
   module: azure.keyvault.keys.crypto.client
   name: CryptographyClient
   summary: "Performs cryptographic operations using Azure Key Vault keys.\n\nKeyword\
-    \ arguments\n   * *api_version* - version of the Key Vault API to use. Defaults\
-    \ to the most recent."
+    \ arguments\n   * **api_version** - version of the Key Vault API to use. Defaults\
+    \ to the most recent. \n\nCreating a `CryptographyClient`:\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false,\
+    \ \"highlight_args\": {}} -->\n\n````python\n\n   from azure.identity import DefaultAzureCredential\n\
+    \   from azure.keyvault.keys.crypto import CryptographyClient\n\n   credential\
+    \ = DefaultAzureCredential()\n\n   # create a CryptographyClient using a Key instance\n\
+    \   key = key_client.get_key(\"mykey\")\n   crypto_client = CryptographyClient(key,\
+    \ credential)\n\n   # or a Key's id, which must include a version\n   key_id =\
+    \ \"https://<your vault>.vault.azure.net/keys/mykey/fe4fdcab688c479a9aa80f01ffeac26\"\
+    \n   crypto_client = CryptographyClient(key_id, credential)\n   ````\n\nYou can\
+    \ also obtain a `CryptographyClient` from a <xref:azure.keyvault.keys.KeyClient>:\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n   from azure.identity\
+    \ import DefaultAzureCredential\n   from azure.keyvault.keys import KeyClient\n\
+    \n   credential = DefaultAzureCredential()\n   key_client = KeyClient(vault_url=<your\
+    \ vault url>, credential=credential)\n   crypto_client = key_client.get_cryptography_client(\"\
+    mykey\")\n   ````"
   syntax:
     content: CryptographyClient(key, credential, **kwargs)
     parameters:
@@ -87,7 +104,7 @@ items:
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {}} -->\n\n````python\n\n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\
     \n   # encrypt returns a tuple with the ciphertext and the metadata required to\
-    \ decrypt it\n   key_id, algorithm, ciphertext, authentication_tag = client.encrypt(EncryptionAlgorithm.rsa_oaep,\
+    \ decrypt it\n   key_id, algorithm, ciphertext, authentication_tag =\n       client.encrypt(EncryptionAlgorithm.rsa_oaep,\
     \ b\"plaintext\")\n   ````"
   syntax:
     content: encrypt(algorithm, plaintext, **kwargs)
@@ -167,20 +184,20 @@ items:
   type: method
   uid: azure.keyvault.keys.crypto.client.CryptographyClient.sign
 - class: azure.keyvault.keys.crypto.client.CryptographyClient
-  fullName: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap
+  fullName: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap_key
   langs:
   - python
   module: azure.keyvault.keys.crypto.client
-  name: unwrap(algorithm, encrypted_key, **kwargs)
+  name: unwrap_key(algorithm, encrypted_key, **kwargs)
   summary: "Unwrap a key previously wrapped with the client's key. Requires the keys/unwrapKey\
     \ permission.\n\nExample:\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {}} -->\n\n\
     ````python\n\n   from azure.keyvault.keys.crypto import KeyWrapAlgorithm\n\n \
-    \  result = client.unwrap(KeyWrapAlgorithm.rsa_oaep, wrapped_bytes)\n   unwrapped_bytes\
+    \  result = client.unwrap_key(KeyWrapAlgorithm.rsa_oaep, wrapped_bytes)\n   unwrapped_bytes\
     \ = result.unwrapped_bytes\n   ````"
   syntax:
-    content: unwrap(algorithm, encrypted_key, **kwargs)
+    content: unwrap_key(algorithm, encrypted_key, **kwargs)
     parameters:
     - description: wrapping algorithm to use
       id: algorithm
@@ -194,7 +211,7 @@ items:
       type:
       - <xref:azure.keyvault.keys.crypto.UnwrapKeyResult>
   type: method
-  uid: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap
+  uid: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap_key
 - class: azure.keyvault.keys.crypto.client.CryptographyClient
   fullName: azure.keyvault.keys.crypto.client.CryptographyClient.verify
   langs:
@@ -229,21 +246,21 @@ items:
   type: method
   uid: azure.keyvault.keys.crypto.client.CryptographyClient.verify
 - class: azure.keyvault.keys.crypto.client.CryptographyClient
-  fullName: azure.keyvault.keys.crypto.client.CryptographyClient.wrap
+  fullName: azure.keyvault.keys.crypto.client.CryptographyClient.wrap_key
   langs:
   - python
   module: azure.keyvault.keys.crypto.client
-  name: wrap(algorithm, key, **kwargs)
+  name: wrap_key(algorithm, key, **kwargs)
   summary: "Wrap a key with the client's key. Requires the keys/wrapKey permission.\n\
     \nExample:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
     \ \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n\
     \   from azure.keyvault.keys.crypto import KeyWrapAlgorithm\n\n   # wrap returns\
     \ a tuple with the wrapped bytes and the metadata required to unwrap the key\n\
-    \   key_id, wrap_algorithm, wrapped_bytes = client.wrap(KeyWrapAlgorithm.rsa_oaep,\
+    \   key_id, wrap_algorithm, wrapped_bytes = client.wrap_key(KeyWrapAlgorithm.rsa_oaep,\
     \ key_bytes)\n   ````"
   syntax:
-    content: wrap(algorithm, key, **kwargs)
+    content: wrap_key(algorithm, key, **kwargs)
     parameters:
     - description: wrapping algorithm to use
       id: algorithm
@@ -257,7 +274,7 @@ items:
       type:
       - <xref:azure.keyvault.keys.crypto.WrapKeyResult>
   type: method
-  uid: azure.keyvault.keys.crypto.client.CryptographyClient.wrap
+  uid: azure.keyvault.keys.crypto.client.CryptographyClient.wrap_key
 references:
 - fullName: azure.keyvault.keys.crypto.client.CryptographyClient.decrypt
   isExternal: false
@@ -284,18 +301,18 @@ references:
   name: sign(algorithm, digest, **kwargs)
   parent: azure.keyvault.keys.crypto.client.CryptographyClient
   uid: azure.keyvault.keys.crypto.client.CryptographyClient.sign
-- fullName: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap
+- fullName: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap_key
   isExternal: false
-  name: unwrap(algorithm, encrypted_key, **kwargs)
+  name: unwrap_key(algorithm, encrypted_key, **kwargs)
   parent: azure.keyvault.keys.crypto.client.CryptographyClient
-  uid: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap
+  uid: azure.keyvault.keys.crypto.client.CryptographyClient.unwrap_key
 - fullName: azure.keyvault.keys.crypto.client.CryptographyClient.verify
   isExternal: false
   name: verify(algorithm, digest, signature, **kwargs)
   parent: azure.keyvault.keys.crypto.client.CryptographyClient
   uid: azure.keyvault.keys.crypto.client.CryptographyClient.verify
-- fullName: azure.keyvault.keys.crypto.client.CryptographyClient.wrap
+- fullName: azure.keyvault.keys.crypto.client.CryptographyClient.wrap_key
   isExternal: false
-  name: wrap(algorithm, key, **kwargs)
+  name: wrap_key(algorithm, key, **kwargs)
   parent: azure.keyvault.keys.crypto.client.CryptographyClient
-  uid: azure.keyvault.keys.crypto.client.CryptographyClient.wrap
+  uid: azure.keyvault.keys.crypto.client.CryptographyClient.wrap_key
