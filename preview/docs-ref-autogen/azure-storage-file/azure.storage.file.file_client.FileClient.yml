@@ -49,7 +49,7 @@ items:
       id: share
       type:
       - str
-      - azure.storage.file.models.ShareProperties
+      - azure.storage.file.ShareProperties
     - description: 'The file path to the file with which to interact. If specified,
         this value will override
 
@@ -132,7 +132,7 @@ items:
       id: copy_id
       type:
       - str
-      - azure.storage.file.models.FileProperties
+      - azure.storage.file.FileProperties
     - defaultValue: None
       id: timeout
     return:
@@ -203,7 +203,7 @@ items:
       id: handle
       type:
       - str
-      - azure.storage.file.models.Handle
+      - azure.storage.file.Handle
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -240,7 +240,7 @@ items:
     - description: ContentSettings object used to set file properties.
       id: content_settings
       type:
-      - azure.storage.file.models.ContentSettings
+      - azure.storage.file.ContentSettings
     - description: Name-value pairs associated with the file as metadata.
       id: metadata
       type:
@@ -260,21 +260,21 @@ items:
       id: file_attributes
       type:
       - str
-      - <xref:azure.storage.file.models.NTFSAttributes>
+      - <xref:azure.storage.file.NTFSAttributes>
     - description: 'Creation time for the file
 
         Default value: Now.'
       id: file_creation_time
       type:
       - str
-      - datetime
+      - datetime.datetime
     - description: 'Last write time for the file
 
         Default value: Now.'
       id: file_last_write_time
       type:
       - str
-      - datetime
+      - datetime.datetime
     - description: 'If specified the permission (security
 
         descriptor) shall be set for the directory/file. This header can be
@@ -397,7 +397,7 @@ items:
       id: share
       type:
       - str
-      - azure.storage.file.models.ShareProperties
+      - azure.storage.file.ShareProperties
     - defaultValue: None
       description: The file path.
       id: file_path
@@ -454,7 +454,7 @@ items:
         specified in an associated stored access policy.'
       id: permission
       type:
-      - azure.storage.file.models.FilePermissions
+      - azure.storage.file.FileSasPermissions
     - defaultValue: None
       description: 'The time at which the shared access signature becomes invalid.
 
@@ -469,7 +469,7 @@ items:
         is assumed to be UTC.'
       id: expiry
       type:
-      - datetime
+      - datetime.datetime
       - str
     - defaultValue: None
       description: 'The time at which the shared access signature becomes valid. If
@@ -483,7 +483,7 @@ items:
         be UTC.'
       id: start
       type:
-      - datetime
+      - datetime.datetime
       - str
     - defaultValue: None
       description: 'A unique value up to 64 characters in length that correlates to
@@ -574,9 +574,8 @@ items:
       type:
       - int
     return:
-      description: FileProperties
       type:
-      - azure.storage.file.models.FileProperties
+      - azure.storage.file.FileProperties
   type: method
   uid: azure.storage.file.file_client.FileClient.get_file_properties
 - class: azure.storage.file.file_client.FileClient
@@ -630,9 +629,9 @@ items:
       type:
       - int
     return:
-      description: An auto-paging iterable of HandleItems
+      description: An auto-paging iterable of HandleItem
       type:
-      - azure.core.paging.ItemPaged[azure.storage.file.models.Handle]
+      - azure.core.paging.ItemPaged[azure.storage.file.HandleItem]
   type: method
   uid: azure.storage.file.file_client.FileClient.list_handles
 - class: azure.storage.file.file_client.FileClient
@@ -709,7 +708,7 @@ items:
     - description: ContentSettings object used to set file properties.
       id: content_settings
       type:
-      - azure.storage.file.models.ContentSettings
+      - azure.storage.file.ContentSettings
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -722,21 +721,21 @@ items:
       id: file_attributes
       type:
       - str
-      - <xref:azure.storage.file.models.NTFSAttributes>
+      - <xref:azure.storage.file.NTFSAttributes>
     - description: 'Creation time for the file
 
         Default value: Now.'
       id: file_creation_time
       type:
       - str
-      - datetime
+      - datetime.datetime
     - description: 'Last write time for the file
 
         Default value: Now.'
       id: file_last_write_time
       type:
       - str
-      - datetime
+      - datetime.datetime
     - description: 'If specified the permission (security
 
         descriptor) shall be set for the directory/file. This header can be
@@ -805,13 +804,13 @@ items:
   - python
   module: azure.storage.file.file_client
   name: upload_file(data, length=None, metadata=None, content_settings=None, validate_content=False,
-    max_connections=1, file_attributes='none', file_creation_time='now', file_last_write_time='now',
+    max_concurrency=1, file_attributes='none', file_creation_time='now', file_last_write_time='now',
     file_permission=None, file_permission_key=None, encoding='UTF-8', timeout=None,
     **kwargs)
   summary: Uploads a new file.
   syntax:
     content: upload_file(data, length=None, metadata=None, content_settings=None,
-      validate_content=False, max_connections=1, file_attributes='none', file_creation_time='now',
+      validate_content=False, max_concurrency=1, file_attributes='none', file_creation_time='now',
       file_last_write_time='now', file_permission=None, file_permission_key=None,
       encoding='UTF-8', timeout=None, **kwargs)
     parameters:
@@ -831,7 +830,7 @@ items:
     - description: ContentSettings object used to set file properties.
       id: content_settings
       type:
-      - azure.storage.file.models.ContentSettings
+      - azure.storage.file.ContentSettings
     - description: 'If true, calculates an MD5 hash for each range of the file. The
         storage
 
@@ -848,7 +847,7 @@ items:
       type:
       - bool
     - description: Maximum number of parallel connections to use.
-      id: max_connections
+      id: max_concurrency
       type:
       - int
     - description: The timeout parameter is expressed in seconds.
@@ -870,21 +869,21 @@ items:
       id: file_attributes
       type:
       - str
-      - <xref:azure.storage.file.models.NTFSAttributes>
+      - azure.storage.file.NTFSAttributes
     - description: 'Creation time for the file
 
         Default value: Now.'
       id: file_creation_time
       type:
       - str
-      - datetime
+      - datetime.datetime
     - description: 'Last write time for the file
 
         Default value: Now.'
       id: file_last_write_time
       type:
       - str
-      - datetime
+      - datetime.datetime
     - description: 'If specified the permission (security
 
         descriptor) shall be set for the directory/file. This header can be
@@ -1132,7 +1131,7 @@ references:
 - fullName: azure.storage.file.file_client.FileClient.upload_file
   isExternal: false
   name: upload_file(data, length=None, metadata=None, content_settings=None, validate_content=False,
-    max_connections=1, file_attributes='none', file_creation_time='now', file_last_write_time='now',
+    max_concurrency=1, file_attributes='none', file_creation_time='now', file_last_write_time='now',
     file_permission=None, file_permission_key=None, encoding='UTF-8', timeout=None,
     **kwargs)
   parent: azure.storage.file.file_client.FileClient
@@ -1232,17 +1231,17 @@ references:
   - fullName: ']'
     name: ']'
   uid: List[dict[str, int]]
-- fullName: azure.core.paging.ItemPaged[azure.storage.file.models.Handle]
-  name: ItemPaged[Handle]
+- fullName: azure.core.paging.ItemPaged[azure.storage.file.HandleItem]
+  name: ItemPaged[HandleItem]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.storage.file.models.Handle
-    name: Handle
-    uid: azure.storage.file.models.Handle
+  - fullName: azure.storage.file.HandleItem
+    name: HandleItem
+    uid: azure.storage.file.HandleItem
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.storage.file.models.Handle]
+  uid: azure.core.paging.ItemPaged[azure.storage.file.HandleItem]
