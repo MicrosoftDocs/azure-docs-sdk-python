@@ -72,6 +72,7 @@ items:
   - azure.mgmt.sql.models.LongTermRetentionBackup
   - azure.mgmt.sql.models.ManagedBackupShortTermRetentionPolicy
   - azure.mgmt.sql.models.ManagedDatabase
+  - azure.mgmt.sql.models.ManagedDatabaseRestoreDetailsResult
   - azure.mgmt.sql.models.ManagedDatabaseSecurityAlertPolicy
   - azure.mgmt.sql.models.ManagedDatabaseUpdate
   - azure.mgmt.sql.models.ManagedInstance
@@ -199,6 +200,8 @@ items:
   - azure.mgmt.sql.models.SubscriptionUsagePaged
   - azure.mgmt.sql.models.VirtualClusterPaged
   - azure.mgmt.sql.models.VirtualNetworkRulePaged
+  - azure.mgmt.sql.models.ServerBlobAuditingPolicyPaged
+  - azure.mgmt.sql.models.DatabaseBlobAuditingPolicyPaged
   - azure.mgmt.sql.models.DatabaseVulnerabilityAssessmentPaged
   - azure.mgmt.sql.models.JobAgentPaged
   - azure.mgmt.sql.models.JobCredentialPaged
@@ -209,7 +212,6 @@ items:
   - azure.mgmt.sql.models.JobVersionPaged
   - azure.mgmt.sql.models.LongTermRetentionBackupPaged
   - azure.mgmt.sql.models.ManagedBackupShortTermRetentionPolicyPaged
-  - azure.mgmt.sql.models.ManagedDatabasePaged
   - azure.mgmt.sql.models.ServerDnsAliasPaged
   - azure.mgmt.sql.models.ServerSecurityAlertPolicyPaged
   - azure.mgmt.sql.models.RestorableDroppedManagedDatabasePaged
@@ -231,6 +233,7 @@ items:
   - azure.mgmt.sql.models.InstancePoolPaged
   - azure.mgmt.sql.models.UsagePaged
   - azure.mgmt.sql.models.ManagedInstancePaged
+  - azure.mgmt.sql.models.ManagedDatabasePaged
   - azure.mgmt.sql.models.PrivateEndpointConnectionPaged
   - azure.mgmt.sql.models.PrivateLinkResourcePaged
   - azure.mgmt.sql.models.CheckNameAvailabilityReason
@@ -285,9 +288,6 @@ items:
   - azure.mgmt.sql.models.JobStepActionSource
   - azure.mgmt.sql.models.JobStepOutputType
   - azure.mgmt.sql.models.JobTargetGroupMembershipType
-  - azure.mgmt.sql.models.ManagedDatabaseStatus
-  - azure.mgmt.sql.models.CatalogCollationType
-  - azure.mgmt.sql.models.ManagedDatabaseCreateMode
   - azure.mgmt.sql.models.AutomaticTuningServerMode
   - azure.mgmt.sql.models.AutomaticTuningServerReason
   - azure.mgmt.sql.models.RestorePointType
@@ -299,6 +299,7 @@ items:
   - azure.mgmt.sql.models.CreateMode
   - azure.mgmt.sql.models.SampleName
   - azure.mgmt.sql.models.DatabaseStatus
+  - azure.mgmt.sql.models.CatalogCollationType
   - azure.mgmt.sql.models.DatabaseLicenseType
   - azure.mgmt.sql.models.DatabaseReadScale
   - azure.mgmt.sql.models.ElasticPoolState
@@ -310,6 +311,8 @@ items:
   - azure.mgmt.sql.models.ManagedServerCreateMode
   - azure.mgmt.sql.models.ManagedInstanceLicenseType
   - azure.mgmt.sql.models.ManagedInstanceProxyOverride
+  - azure.mgmt.sql.models.ManagedDatabaseStatus
+  - azure.mgmt.sql.models.ManagedDatabaseCreateMode
   - azure.mgmt.sql.models.LongTermRetentionDatabaseState
   - azure.mgmt.sql.models.VulnerabilityAssessmentPolicyBaselineName
   - azure.mgmt.sql.models.SensitivityLabelSource
@@ -673,6 +676,11 @@ references:
   name: ManagedDatabase
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.ManagedDatabase
+- fullName: azure.mgmt.sql.models.ManagedDatabaseRestoreDetailsResult
+  isExternal: false
+  name: ManagedDatabaseRestoreDetailsResult
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.ManagedDatabaseRestoreDetailsResult
 - fullName: azure.mgmt.sql.models.ManagedDatabaseSecurityAlertPolicy
   isExternal: false
   name: ManagedDatabaseSecurityAlertPolicy
@@ -1308,6 +1316,16 @@ references:
   name: VirtualNetworkRulePaged
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.VirtualNetworkRulePaged
+- fullName: azure.mgmt.sql.models.ServerBlobAuditingPolicyPaged
+  isExternal: false
+  name: ServerBlobAuditingPolicyPaged
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.ServerBlobAuditingPolicyPaged
+- fullName: azure.mgmt.sql.models.DatabaseBlobAuditingPolicyPaged
+  isExternal: false
+  name: DatabaseBlobAuditingPolicyPaged
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.DatabaseBlobAuditingPolicyPaged
 - fullName: azure.mgmt.sql.models.DatabaseVulnerabilityAssessmentPaged
   isExternal: false
   name: DatabaseVulnerabilityAssessmentPaged
@@ -1358,11 +1376,6 @@ references:
   name: ManagedBackupShortTermRetentionPolicyPaged
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.ManagedBackupShortTermRetentionPolicyPaged
-- fullName: azure.mgmt.sql.models.ManagedDatabasePaged
-  isExternal: false
-  name: ManagedDatabasePaged
-  parent: azure.mgmt.sql.models
-  uid: azure.mgmt.sql.models.ManagedDatabasePaged
 - fullName: azure.mgmt.sql.models.ServerDnsAliasPaged
   isExternal: false
   name: ServerDnsAliasPaged
@@ -1468,6 +1481,11 @@ references:
   name: ManagedInstancePaged
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.ManagedInstancePaged
+- fullName: azure.mgmt.sql.models.ManagedDatabasePaged
+  isExternal: false
+  name: ManagedDatabasePaged
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.ManagedDatabasePaged
 - fullName: azure.mgmt.sql.models.PrivateEndpointConnectionPaged
   isExternal: false
   name: PrivateEndpointConnectionPaged
@@ -1738,21 +1756,6 @@ references:
   name: JobTargetGroupMembershipType
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.JobTargetGroupMembershipType
-- fullName: azure.mgmt.sql.models.ManagedDatabaseStatus
-  isExternal: false
-  name: ManagedDatabaseStatus
-  parent: azure.mgmt.sql.models
-  uid: azure.mgmt.sql.models.ManagedDatabaseStatus
-- fullName: azure.mgmt.sql.models.CatalogCollationType
-  isExternal: false
-  name: CatalogCollationType
-  parent: azure.mgmt.sql.models
-  uid: azure.mgmt.sql.models.CatalogCollationType
-- fullName: azure.mgmt.sql.models.ManagedDatabaseCreateMode
-  isExternal: false
-  name: ManagedDatabaseCreateMode
-  parent: azure.mgmt.sql.models
-  uid: azure.mgmt.sql.models.ManagedDatabaseCreateMode
 - fullName: azure.mgmt.sql.models.AutomaticTuningServerMode
   isExternal: false
   name: AutomaticTuningServerMode
@@ -1808,6 +1811,11 @@ references:
   name: DatabaseStatus
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.DatabaseStatus
+- fullName: azure.mgmt.sql.models.CatalogCollationType
+  isExternal: false
+  name: CatalogCollationType
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.CatalogCollationType
 - fullName: azure.mgmt.sql.models.DatabaseLicenseType
   isExternal: false
   name: DatabaseLicenseType
@@ -1863,6 +1871,16 @@ references:
   name: ManagedInstanceProxyOverride
   parent: azure.mgmt.sql.models
   uid: azure.mgmt.sql.models.ManagedInstanceProxyOverride
+- fullName: azure.mgmt.sql.models.ManagedDatabaseStatus
+  isExternal: false
+  name: ManagedDatabaseStatus
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.ManagedDatabaseStatus
+- fullName: azure.mgmt.sql.models.ManagedDatabaseCreateMode
+  isExternal: false
+  name: ManagedDatabaseCreateMode
+  parent: azure.mgmt.sql.models
+  uid: azure.mgmt.sql.models.ManagedDatabaseCreateMode
 - fullName: azure.mgmt.sql.models.LongTermRetentionDatabaseState
   isExternal: false
   name: LongTermRetentionDatabaseState
