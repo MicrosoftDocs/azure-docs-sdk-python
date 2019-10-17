@@ -2,9 +2,9 @@
 api_name: []
 items:
 - children:
+  - azure.core.tracing.common.change_context
   - azure.core.tracing.common.get_function_and_class_name
-  - azure.core.tracing.common.get_parent_span
-  - azure.core.tracing.common.set_span_contexts
+  - azure.core.tracing.common.with_current_context
   fullName: azure.core.tracing.common
   langs:
   - python
@@ -13,6 +13,30 @@ items:
   summary: Common functions shared by both the sync and the async decorators.
   type: module
   uid: azure.core.tracing.common
+- fullName: azure.core.tracing.common.change_context
+  langs:
+  - python
+  module: azure.core.tracing.common
+  name: change_context(span)
+  summary: 'Execute this block inside the given context and restore it afterwards.
+
+
+    This does not start and ends the span, but just make sure all code is executed
+    within
+
+    that span.
+
+
+    If span is None, no-op.'
+  syntax:
+    content: change_context(span)
+    parameters:
+    - description: A span
+      id: span
+      type:
+      - AbstractSpan
+  type: function
+  uid: azure.core.tracing.common.change_context
 - fullName: azure.core.tracing.common.get_function_and_class_name
   langs:
   - python
@@ -35,63 +59,37 @@ items:
       - List[Any]
   type: function
   uid: azure.core.tracing.common.get_function_and_class_name
-- fullName: azure.core.tracing.common.get_parent_span
+- fullName: azure.core.tracing.common.with_current_context
   langs:
   - python
   module: azure.core.tracing.common
-  name: get_parent_span(parent_span)
-  summary: 'Returns the current span so that the function''s span will be its child.
-    It will create a new span if there is
-
-    no current span in any of the context.'
+  name: with_current_context(func)
+  summary: Passes the current spans to the new context the function will be run in.
   syntax:
-    content: get_parent_span(parent_span)
+    content: with_current_context(func)
     parameters:
-    - description: The parent_span arg that the user passes into the top level function
-      id: parent_span
+    - description: The function that will be run in the new context
+      id: func
     return:
-      description: the parent_span of the function to be traced
-      type:
-      - '*azure.core.tracing.abstract_span.AbstractSpan*'
+      description: The target the pass in instead of the function
   type: function
-  uid: azure.core.tracing.common.get_parent_span
-- fullName: azure.core.tracing.common.set_span_contexts
-  langs:
-  - python
-  module: azure.core.tracing.common
-  name: set_span_contexts(wrapped_span, span_instance=None)
-  summary: 'Set the sdk context and the implementation context. *span_instance* will
-    be used to set the implementation context
-
-    if passed in else will use *wrapped_span.span_instance*.'
-  syntax:
-    content: set_span_contexts(wrapped_span, span_instance=None)
-    parameters:
-    - description: The *AbstractSpan* to set as the sdk context
-      id: wrapped_span
-      type:
-      - azure.core.tracing.abstract_span.AbstractSpan
-    - defaultValue: None
-      description: The span to set as the current span for the implementation context
-      id: span_instance
-  type: function
-  uid: azure.core.tracing.common.set_span_contexts
+  uid: azure.core.tracing.common.with_current_context
 references:
+- fullName: azure.core.tracing.common.change_context
+  isExternal: false
+  name: change_context(span)
+  parent: azure.core.tracing.common
+  uid: azure.core.tracing.common.change_context
 - fullName: azure.core.tracing.common.get_function_and_class_name
   isExternal: false
   name: get_function_and_class_name(func, *args)
   parent: azure.core.tracing.common
   uid: azure.core.tracing.common.get_function_and_class_name
-- fullName: azure.core.tracing.common.get_parent_span
+- fullName: azure.core.tracing.common.with_current_context
   isExternal: false
-  name: get_parent_span(parent_span)
+  name: with_current_context(func)
   parent: azure.core.tracing.common
-  uid: azure.core.tracing.common.get_parent_span
-- fullName: azure.core.tracing.common.set_span_contexts
-  isExternal: false
-  name: set_span_contexts(wrapped_span, span_instance=None)
-  parent: azure.core.tracing.common
-  uid: azure.core.tracing.common.set_span_contexts
+  uid: azure.core.tracing.common.with_current_context
 - fullName: List[Any]
   name: List[Any]
   spec.python:

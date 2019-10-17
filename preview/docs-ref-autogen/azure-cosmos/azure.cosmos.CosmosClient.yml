@@ -3,6 +3,7 @@ api_name: []
 items:
 - children:
   - azure.cosmos.CosmosClient.create_database
+  - azure.cosmos.CosmosClient.create_database_if_not_exists
   - azure.cosmos.CosmosClient.delete_database
   - azure.cosmos.CosmosClient.from_connection_string
   - azure.cosmos.CosmosClient.get_database_account
@@ -17,26 +18,76 @@ items:
   - python
   module: azure.cosmos
   name: CosmosClient
-  summary: "Provides a client-side logical representation of an Azure Cosmos DB account.\n\
-    Use this client to configure and execute requests to the Azure Cosmos DB service.\n\
-    \n**Keyword arguments:**\n\n*request_timeout* - The HTTP request timeout in seconds.\n\
-    *media_request_timeout* - The media request timeout in seconds.\n*connection_mode*\
-    \ - The connection mode for the client - currently only supports 'Gateway'.\n\
-    *media_read_mode* - The mode for use with downloading attachment content - default\
-    \ value is *Buffered*.\n*proxy_config* - Instance of ~azure.cosmos.documents.ProxyConfiguration\n\
-    *ssl_config* - Instance of ~azure.cosmos.documents.SSLConfiguration\n*connection_verify*\
-    \ - Whether to verify the connection, default value is True.\n*connection_cert*\
-    \ - An alternative certificate to verify the connection.\n*retry_total* - Maximum\
-    \ retry attempts.\n*retry_backoff_max* - Maximum retry wait time in seconds.\n\
-    *retry_fixed_interval* - Fixed retry interval in milliseconds.\n*enable_endpoint_discovery*\
-    \ - Enable endpoint discovery for geo-replicated database accounts. Default is\
-    \ True.\n*preferred_locations* - The preferred locations for geo-replicated database\
-    \ accounts.\n\n\n   When *enable_endpoint_discovery* is true and *preferred_locations*\
-    \ is non-empty,\n   the client will use this list to evaluate the final location,\
-    \ taking into consideration\n   the order specified in *preferred_locations* list.\
-    \ The locations in this list are specified\n   as the names of the azure Cosmos\
-    \ locations like, 'West US', 'East US', 'Central India'\n   and so on.\n\n\n*connection_policy*\
-    \ - An instance of ~azure.cosmos.documents.ConnectionPolicy"
+  summary: 'Provides a client-side logical representation of an Azure Cosmos DB account.
+
+    Use this client to configure and execute requests to the Azure Cosmos DB service.
+
+
+    **Keyword arguments:**
+
+
+    *timeout* - An absolute timeout in seconds, for the combined HTTP request and
+    response processing.
+
+
+    *request_timeout* - The HTTP request timeout in seconds.
+
+
+    *media_request_timeout* - The media request timeout in seconds.
+
+
+    *connection_mode* - The connection mode for the client - currently only supports
+    ''Gateway''.
+
+
+    *media_read_mode* - The mode for use with downloading attachment content - default
+    value is *Buffered*.
+
+
+    *proxy_config* - Instance of *azure.cosmos.ProxyConfiguration*.
+
+
+    *ssl_config* - Instance of *azure.cosmos.SSLConfiguration*.
+
+
+    *connection_verify* - Whether to verify the connection, default value is True.
+
+
+    *connection_cert* - An alternative certificate to verify the connection.
+
+
+    *retry_total* - Maximum retry attempts.
+
+
+    *retry_backoff_max* - Maximum retry wait time in seconds.
+
+
+    *retry_fixed_interval* - Fixed retry interval in milliseconds.
+
+
+    *retry_read* - Maximum number of socket read retry attempts.
+
+
+    *retry_connect* - Maximum number of connection error retry attempts.
+
+
+    *retry_status* - Maximum number of retry attempts on error status codes.
+
+
+    *retry_on_status_codes* - A list of specific status codes to retry on.
+
+
+    *retry_backoff_factor* - Factor to calculate wait time between retry attempts.
+
+
+    *enable_endpoint_discovery* - Enable endpoint discovery for geo-replicated database
+    accounts. Default is True.
+
+
+    *preferred_locations* - The preferred locations for geo-replicated database accounts.
+
+
+    *connection_policy* - An instance of *azure.cosmos.documents.ConnectionPolicy*'
   syntax:
     content: CosmosClient(url, credential, consistency_level='Session', **kwargs)
     parameters:
@@ -48,7 +99,7 @@ items:
       id: credential
       type:
       - str
-      - dict(str, str)
+      - dict[str, str]
     - description: Consistency level to use for the session. The default value is
         "Session".
       id: consistency_level
@@ -58,8 +109,8 @@ items:
   uid: azure.cosmos.CosmosClient
 - class: azure.cosmos.CosmosClient
   exceptions:
-  - description: If database with the given ID already exists.
-    type: CosmosResourceExistsError
+  - description: Database with the given ID already exists.
+    type: ~azure.cosmos.errors.CosmosResourceExistsError
   fullName: azure.cosmos.CosmosClient.create_database
   langs:
   - python
@@ -77,13 +128,13 @@ items:
       type:
       - str
     - description: Initial headers to be sent as part of the request.
-      id: str) initial_headers
+      id: initial_headers
       type:
-      - dict(str,
+      - dict[str, str]
     - description: Conditions Associated with the request.
-      id: str) access_condition
+      id: access_condition
       type:
-      - dict(str,
+      - dict[str, str]
     - description: Enable returning query metrics in response headers.
       id: populate_query_metrics
       type:
@@ -93,9 +144,9 @@ items:
       type:
       - int
     - description: Dictionary of additional properties to be used for the request.
-      id: Any) request_options
+      id: request_options
       type:
-      - dict(str,
+      - dict[str, Any]
     - description: a callable invoked with the response metadata
       id: response_hook
       type:
@@ -103,13 +154,71 @@ items:
     return:
       description: A DatabaseProxy instance representing the new database.
       type:
-      - azure.cosmos.database.DatabaseProxy
+      - azure.cosmos.DatabaseProxy
   type: method
   uid: azure.cosmos.CosmosClient.create_database
 - class: azure.cosmos.CosmosClient
   exceptions:
+  - description: The database read or creation failed.
+    type: ~azure.cosmos.errors.CosmosHttpResponseError
+  fullName: azure.cosmos.CosmosClient.create_database_if_not_exists
+  langs:
+  - python
+  module: azure.cosmos
+  name: create_database_if_not_exists(id, populate_query_metrics=None, offer_throughput=None,
+    **kwargs)
+  summary: 'Create the database if it does not exist already.
+
+
+    If the database already exists, the existing settings are returned.
+
+    Note: it does not check or update the existing database settings or offer throughput
+
+    if they differ from what was passed into the method.'
+  syntax:
+    content: create_database_if_not_exists(id, populate_query_metrics=None, offer_throughput=None,
+      **kwargs)
+    parameters:
+    - description: ID (name) of the database to read or create.
+      id: id
+    - description: Token for use with Session consistency.
+      id: session_token
+      type:
+      - str
+    - description: Initial headers to be sent as part of the request.
+      id: initial_headers
+      type:
+      - dict[str, str]
+    - description: Conditions Associated with the request.
+      id: access_condition
+      type:
+      - dict[str, str]
+    - description: Enable returning query metrics in response headers.
+      id: populate_query_metrics
+      type:
+      - bool
+    - description: The provisioned throughput for this offer.
+      id: offer_throughput
+      type:
+      - int
+    - description: Dictionary of additional properties to be used for the request.
+      id: request_options
+      type:
+      - dict[str, Any]
+    - description: a callable invoked with the response metadata
+      id: response_hook
+      type:
+      - Callable
+    return:
+      description: A DatabaseProxy instance representing the database.
+      type:
+      - azure.cosmos.DatabaseProxy
+  type: method
+  uid: azure.cosmos.CosmosClient.create_database_if_not_exists
+- class: azure.cosmos.CosmosClient
+  exceptions:
   - description: If the database couldn't be deleted.
-    type: CosmosHttpResponseError
+    type: ~azure.cosmos.errors.CosmosHttpResponseError
   fullName: azure.cosmos.CosmosClient.delete_database
   langs:
   - python
@@ -126,27 +235,27 @@ items:
       type:
       - str
       - dict(str, str)
-      - azure.cosmos.database.DatabaseProxy
+      - azure.cosmos.DatabaseProxy
     - description: Token for use with Session consistency.
       id: session_token
       type:
       - str
     - description: Initial headers to be sent as part of the request.
-      id: str] initial_headers
+      id: initial_headers
       type:
-      - dict[str,
+      - dict[str, str]
     - description: Conditions Associated with the request.
-      id: str] access_condition
+      id: access_condition
       type:
-      - dict[str,
+      - dict[str, str]
     - description: Enable returning query metrics in response headers.
       id: populate_query_metrics
       type:
       - bool
     - description: Dictionary of additional properties to be used for the request.
-      id: str] request_options
+      id: request_options
       type:
-      - dict[str,
+      - dict[str, Any]
     - description: a callable invoked with the response metadata
       id: response_hook
       type:
@@ -213,7 +322,7 @@ items:
       description: A *DatabaseAccount* instance representing the Cosmos DB Database
         Account.
       type:
-      - azure.cosmos.documents.DatabaseAccount
+      - azure.cosmos.DatabaseAccount
   type: method
   uid: azure.cosmos.CosmosClient.get_database_account
 - class: azure.cosmos.CosmosClient
@@ -233,11 +342,11 @@ items:
       type:
       - str
       - dict(str, str)
-      - azure.cosmos.database.DatabaseProxy
+      - azure.cosmos.DatabaseProxy
     return:
       description: A *DatabaseProxy* instance representing the retrieved database.
       type:
-      - azure.cosmos.database.DatabaseProxy
+      - azure.cosmos.DatabaseProxy
   type: method
   uid: azure.cosmos.CosmosClient.get_database_client
 - class: azure.cosmos.CosmosClient
@@ -259,17 +368,17 @@ items:
       type:
       - str
     - description: Initial headers to be sent as part of the request.
-      id: str] initial_headers
+      id: initial_headers
       type:
-      - dict[str,
+      - dict[str, str]
     - description: Enable returning query metrics in response headers.
       id: populate_query_metrics
       type:
       - bool
     - description: Dictionary of additional properties to be used for the request.
-      id: str] feed_options
+      id: feed_options
       type:
-      - dict[str,
+      - dict[str, str]
     - description: a callable invoked with the response metadata
       id: response_hook
       type:
@@ -316,17 +425,17 @@ items:
       type:
       - str
     - description: Initial headers to be sent as part of the request.
-      id: str] initial_headers
+      id: initial_headers
       type:
-      - dict[str,
+      - dict[str, str]
     - description: Enable returning query metrics in response headers.
       id: populate_query_metrics
       type:
       - bool
     - description: Dictionary of additional properties to be used for the request.
-      id: Any] feed_options
+      id: feed_options
       type:
-      - dict[str,
+      - dict[str, Any]
     - description: a callable invoked with the response metadata
       id: response_hook
       type:
@@ -343,6 +452,12 @@ references:
   name: create_database(id, populate_query_metrics=None, offer_throughput=None, **kwargs)
   parent: azure.cosmos.CosmosClient
   uid: azure.cosmos.CosmosClient.create_database
+- fullName: azure.cosmos.CosmosClient.create_database_if_not_exists
+  isExternal: false
+  name: create_database_if_not_exists(id, populate_query_metrics=None, offer_throughput=None,
+    **kwargs)
+  parent: azure.cosmos.CosmosClient
+  uid: azure.cosmos.CosmosClient.create_database_if_not_exists
 - fullName: azure.cosmos.CosmosClient.delete_database
   isExternal: false
   name: delete_database(database, populate_query_metrics=None, **kwargs)
@@ -375,6 +490,44 @@ references:
     max_item_count=None, populate_query_metrics=None, **kwargs)
   parent: azure.cosmos.CosmosClient
   uid: azure.cosmos.CosmosClient.query_databases
+- fullName: dict[str, str]
+  name: dict[str, str]
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: dict[str, str]
+- fullName: dict[str, Any]
+  name: dict[str, Any]
+  spec.python:
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: Any
+    name: Any
+    uid: Any
+  - fullName: ']'
+    name: ']'
+  uid: dict[str, Any]
 - fullName: dict(str, str)
   name: dict(str, str)
   spec.python:
@@ -394,54 +547,6 @@ references:
   - fullName: )
     name: )
   uid: dict(str, str)
-- fullName: dict(str,
-  name: dict(str,
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: (
-    name: (
-  - fullName: str,
-    name: str,
-    uid: str,
-  uid: dict(str,
-- fullName: dict[str,
-  name: dict[str,
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: '['
-    name: '['
-  - fullName: str,
-    name: str,
-    uid: str,
-  uid: dict[str,
-- fullName: dict[str,
-  name: dict[str,
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: '['
-    name: '['
-  - fullName: str,
-    name: str,
-    uid: str,
-  uid: dict[str,
-- fullName: dict[str,
-  name: dict[str,
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: '['
-    name: '['
-  - fullName: str,
-    name: str,
-    uid: str,
-  uid: dict[str,
 - fullName: Iterable[dict[str, str]]
   name: Iterable[dict[str, str]]
   spec.python:

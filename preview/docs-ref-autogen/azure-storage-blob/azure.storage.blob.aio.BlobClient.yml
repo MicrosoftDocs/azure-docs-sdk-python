@@ -48,31 +48,21 @@ items:
   summary: A client to interact with a specific blob, although that blob may not yet
     exist.
   syntax:
-    content: BlobClient(blob_url, container=None, blob=None, snapshot=None, credential=None,
-      loop=None, **kwargs)
+    content: BlobClient(account_url, container_name, blob_name, snapshot=None, credential=None,
+      **kwargs)
     parameters:
-    - description: 'The full URI to the blob. This can also be a URL to the storage
-        account
-
-        or container, in which case the blob and/or container must also be specified.'
-      id: blob_url
+    - description: The full URI to the account.
+      id: account_url
       type:
       - str
-    - description: 'The container for the blob. If specified, this value will override
-
-        a container value specified in the blob URL.'
-      id: container
+    - description: The container for the blob.
+      id: container_name
       type:
       - str
-      - azure.storage.blob.models.ContainerProperties
-    - description: 'The blob with which to interact. If specified, this value will
-        override
-
-        a blob value specified in the blob URL.'
-      id: blob
+    - description: The mame of the blob with which to interact.
+      id: blob_name
       type:
       - str
-      - azure.storage.blob.models.BlobProperties
     - description: The optional blob snapshot on which to operate.
       id: snapshot
       type:
@@ -151,7 +141,7 @@ items:
       id: copy_id
       type:
       - str
-      - azure.storage.blob.models.BlobProperties
+      - azure.storage.blob.BlobProperties
     return:
       type:
       - None
@@ -202,7 +192,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -215,7 +205,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -250,12 +240,10 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: append_block(data, length=None, validate_content=False, maxsize_condition=None,
-    appendpos_condition=None, **kwargs)
+  name: append_block(data, length=None, **kwargs)
   summary: Commits a new block of data to the end of the existing append blob.
   syntax:
-    content: append_block(data, length=None, validate_content=False, maxsize_condition=None,
-      appendpos_condition=None, **kwargs)
+    content: append_block(data, length=None, **kwargs)
     parameters:
     - description: Content of the block.
       id: data
@@ -322,7 +310,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -335,7 +323,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -368,7 +356,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -385,13 +373,13 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: append_block_from_url(copy_source_url, source_range_start=None, source_range_end=None,
-    source_content_md5=None, maxsize_condition=None, appendpos_condition=None, **kwargs)
+  name: append_block_from_url(copy_source_url, source_offset=None, source_length=None,
+    **kwargs)
   summary: Creates a new block to be committed as part of a blob, where the contents
     are read from a source url.
   syntax:
-    content: append_block_from_url(copy_source_url, source_range_start=None, source_range_end=None,
-      source_content_md5=None, maxsize_condition=None, appendpos_condition=None, **kwargs)
+    content: append_block_from_url(copy_source_url, source_offset=None, source_length=None,
+      **kwargs)
     parameters:
     - description: 'The URL of the source data. It can point to any Azure Blob or
         File, that is either public or has a
@@ -402,12 +390,12 @@ items:
       - str
     - description: This indicates the start of the range of bytes(inclusive) that
         has to be taken from the copy source.
-      id: source_range_start
+      id: source_offset
       type:
       - int
-    - description: This indicates the end of the range of bytes(inclusive) that has
-        to be taken from the copy source.
-      id: source_range_end
+    - description: This indicates the end of the range of bytes that has to be taken
+        from the copy source.
+      id: source_length
       type:
       - int
     - description: If given, the service will calculate the MD5 hash of the block
@@ -461,7 +449,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -474,7 +462,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -506,7 +494,7 @@ items:
         if the source resource has been modified since the specified time.'
       id: source_if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -519,7 +507,7 @@ items:
         the source resource has not been modified since the specified date/time.'
       id: source_if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -548,7 +536,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -560,29 +548,29 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: clear_page(start_range, end_range, **kwargs)
+  name: clear_page(offset, length, **kwargs)
   summary: Clears a range of pages.
   syntax:
-    content: clear_page(start_range, end_range, **kwargs)
+    content: clear_page(offset, length, **kwargs)
     parameters:
-    - description: 'Start of byte range to use for writing to a section of the blob.
+    - description: 'Start of byte range to use for downloading a section of the blob.
+
+        Must be set if length is provided.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
-
-        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
-      id: start_range
+        must be a modulus of 512.'
+      id: offset
       type:
       - int
-    - description: 'End of byte range to use for writing to a section of the blob.
+    - description: 'Number of bytes to use for writing to a section of the blob.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
+        must be a modulus of 512 and the length must be a modulus of
 
-        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
-      id: end_range
+        512.'
+      id: length
       type:
       - int
     - description: 'Required if the blob has an active lease. Value can be a LeaseClient
@@ -623,7 +611,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -636,7 +624,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify an ETag
         value for this conditional
 
@@ -665,7 +653,7 @@ items:
         premium storage accounts.'
       id: premium_page_blob_tier
       type:
-      - azure.storage.blob.models.PremiumPageBlobTier
+      - azure.storage.blob.PremiumPageBlobTier
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -681,14 +669,12 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: commit_block_list(block_list, content_settings=None, metadata=None, validate_content=False,
-    **kwargs)
+  name: commit_block_list(block_list, content_settings=None, metadata=None, **kwargs)
   summary: 'The Commit Block List operation writes a blob by specifying the list of
 
     block IDs that make up the blob.'
   syntax:
-    content: commit_block_list(block_list, content_settings=None, metadata=None, validate_content=False,
-      **kwargs)
+    content: commit_block_list(block_list, content_settings=None, metadata=None, **kwargs)
     parameters:
     - description: List of Blockblobs.
       id: block_list
@@ -705,7 +691,7 @@ items:
     - description: ContentSettings object used to set blob properties.
       id: content_settings
       type:
-      - azure.storage.blob.models.ContentSettings
+      - azure.storage.blob.ContentSettings
     - description: Name-value pairs associated with the blob as metadata.
       id: metadata
       type:
@@ -736,7 +722,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -749,7 +735,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -769,6 +755,13 @@ items:
       id: if_none_match
       type:
       - str
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - azure.storage.blob.StandardBlobTier
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -778,7 +771,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -802,7 +795,7 @@ items:
     - description: ContentSettings object used to set properties on the blob.
       id: content_settings
       type:
-      - azure.storage.blob.models.ContentSettings
+      - azure.storage.blob.ContentSettings
     - description: Name-value pairs associated with the blob as metadata.
       id: metadata
       type:
@@ -827,7 +820,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -840,7 +833,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -869,7 +862,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -885,12 +878,12 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: create_page_blob(size, content_settings=None, sequence_number=None, metadata=None,
-    premium_page_blob_tier=None, **kwargs)
+  name: create_page_blob(size, content_settings=None, metadata=None, premium_page_blob_tier=None,
+    **kwargs)
   summary: Creates a new Page Blob of the specified size.
   syntax:
-    content: create_page_blob(size, content_settings=None, sequence_number=None, metadata=None,
-      premium_page_blob_tier=None, **kwargs)
+    content: create_page_blob(size, content_settings=None, metadata=None, premium_page_blob_tier=None,
+      **kwargs)
     parameters:
     - description: 'This header specifies the maximum size
 
@@ -903,7 +896,7 @@ items:
     - description: ContentSettings object used to set properties on the blob.
       id: content_settings
       type:
-      - azure.storage.blob.models.ContentSettings
+      - azure.storage.blob.ContentSettings
     - description: 'Only for Page blobs. The sequence number is a user-controlled
         value that you can use to
 
@@ -937,7 +930,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -950,7 +943,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -979,7 +972,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -992,7 +985,7 @@ items:
         premium storage accounts.'
       id: premium_page_blob_tier
       type:
-      - azure.storage.blob.models.PremiumPageBlobTier
+      - azure.storage.blob.PremiumPageBlobTier
     return:
       description: Blob-updated property dict (Etag and last modified).
       type:
@@ -1039,7 +1032,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1052,7 +1045,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1089,7 +1082,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1159,7 +1152,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1172,7 +1165,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1206,10 +1199,10 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: download_blob(offset=None, length=None, validate_content=False, **kwargs)
+  name: download_blob(offset=None, length=None, **kwargs)
   summary: Downloads a blob to a stream with automatic chunking.
   syntax:
-    content: download_blob(offset=None, length=None, validate_content=False, **kwargs)
+    content: download_blob(offset=None, length=None, **kwargs)
     parameters:
     - description: 'Start of byte range to use for downloading a section of the blob.
 
@@ -1262,7 +1255,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1275,7 +1268,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1304,7 +1297,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -1373,7 +1366,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1386,7 +1379,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1415,7 +1408,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1423,7 +1416,7 @@ items:
     return:
       description: BlobProperties
       type:
-      - azure.storage.blob.models.BlobProperties
+      - azure.storage.blob.BlobProperties
   type: method
   uid: azure.storage.blob.aio.BlobClient.get_blob_properties
 - class: azure.storage.blob.aio.BlobClient
@@ -1461,7 +1454,7 @@ items:
     return:
       description: A tuple of two lists - committed and uncommitted blocks
       type:
-      - tuple(list(azure.storage.blob.models.BlobBlock), list(azure.storage.blob.models.BlobBlock))
+      - tuple(list(azure.storage.blob.BlobBlock), list(azure.storage.blob.BlobBlock))
   type: method
   uid: azure.storage.blob.aio.BlobClient.get_block_list
 - class: azure.storage.blob.aio.BlobClient
@@ -1469,41 +1462,36 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: get_page_ranges(start_range=None, end_range=None, previous_snapshot_diff=None,
-    **kwargs)
+  name: get_page_ranges(offset=None, length=None, previous_snapshot_diff=None, **kwargs)
   summary: 'Returns the list of valid page ranges for a Page Blob or snapshot
 
     of a page blob.'
   syntax:
-    content: get_page_ranges(start_range=None, end_range=None, previous_snapshot_diff=None,
+    content: get_page_ranges(offset=None, length=None, previous_snapshot_diff=None,
       **kwargs)
     parameters:
-    - description: 'Start of byte range to use for getting valid page ranges.
+    - description: 'Start of byte range to use for downloading a section of the blob.
 
-        If no end_range is given, all bytes after the start_range will be searched.
+        Must be set if length is provided.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
+        must be a modulus of 512 and the length  must be a modulus of
 
-        512-1. Examples of valid byte ranges are 0-511, 512-, etc.'
-      id: start_range
+        512.'
+      id: offset
       type:
       - int
-    - description: 'End of byte range to use for getting valid page ranges.
+    - description: 'Number of bytes to use for getting valid page ranges.
 
-        If end_range is given, start_range must be provided.
-
-        This range will return valid page ranges for from the offset start up to
-
-        offset end.
+        If length is given, offset must be provided.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
+        must be a modulus of 512 and the length  must be a modulus of
 
-        512-1. Examples of valid byte ranges are 0-511, 512-, etc.'
-      id: end_range
+        512.'
+      id: length
       type:
       - int
     - description: 'Required if the blob has an active lease. Value can be a LeaseClient
@@ -1535,7 +1523,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1548,7 +1536,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1621,7 +1609,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1634,7 +1622,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1662,7 +1650,7 @@ items:
         premium storage accounts.'
       id: premium_page_blob_tier
       type:
-      - azure.storage.blob.models.PremiumPageBlobTier
+      - azure.storage.blob.PremiumPageBlobTier
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1711,7 +1699,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1724,7 +1712,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1753,7 +1741,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -1778,7 +1766,7 @@ items:
     - description: ContentSettings object used to set blob properties.
       id: content_settings
       type:
-      - azure.storage.blob.models.ContentSettings
+      - azure.storage.blob.ContentSettings
     - description: 'Required if the blob has an active lease. Value can be a LeaseClient
         object
 
@@ -1799,7 +1787,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1812,7 +1800,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -1861,7 +1849,7 @@ items:
         premium storage accounts.'
       id: premium_page_blob_tier
       type:
-      - azure.storage.blob.models.PremiumPageBlobTier
+      - azure.storage.blob.PremiumPageBlobTier
     - description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -1897,8 +1885,7 @@ items:
     - description: 'This property indicates how the service should modify the blob''s
         sequence
 
-        number. See <xref:azure.storage.blob.models.SequenceNumberAction> for more
-        information.'
+        number. See <xref:azure.storage.blob.SequenceNumberAction> for more information.'
       id: sequence_number_action
       type:
       - str
@@ -1931,7 +1918,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -1944,7 +1931,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -2004,7 +1991,11 @@ items:
       id: standard_blob_tier
       type:
       - str
-      - azure.storage.blob.models.StandardBlobTier
+      - azure.storage.blob.StandardBlobTier
+    - description: Indicates the priority with which to rehydrate an archived blob
+      id: rehydrate_priority
+      type:
+      - azure.storage.blob.RehydratePriority
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -2027,10 +2018,10 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: stage_block(block_id, data, length=None, validate_content=False, **kwargs)
+  name: stage_block(block_id, data, length=None, **kwargs)
   summary: Creates a new block to be committed as part of a blob.
   syntax:
-    content: stage_block(block_id, data, length=None, validate_content=False, **kwargs)
+    content: stage_block(block_id, data, length=None, **kwargs)
     parameters:
     - description: 'A valid Base64 string value that identifies the
 
@@ -2088,7 +2079,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -2153,7 +2144,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -2273,7 +2264,7 @@ items:
         blob has been modified since the specified date/time.'
       id: source_if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -2286,7 +2277,7 @@ items:
         has not been modified since the specified date/time.'
       id: source_if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this conditional
 
         header to copy the source blob only if its ETag matches the value
@@ -2327,7 +2318,7 @@ items:
         status code 412 (Precondition Failed).'
       id: destination_if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -2344,7 +2335,7 @@ items:
         returns status code 412 (Precondition Failed).'
       id: destination_if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify an ETag
         value for
 
@@ -2415,7 +2406,18 @@ items:
         premium storage accounts.'
       id: premium_page_blob_tier
       type:
-      - azure.storage.blob.models.PremiumPageBlobTier
+      - azure.storage.blob.PremiumPageBlobTier
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - azure.storage.blob.StandardBlobTier
+    - description: Indicates the priority with which to rehydrate an archived blob
+      id: rehydrate_priority
+      type:
+      - azure.storage.blob.RehydratePriority
     - description: Enforces that the service will not return a response until the
         copy is complete.
       id: requires_sync
@@ -2457,14 +2459,12 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, overwrite=False,
-    length=None, metadata=None, content_settings=None, validate_content=False, max_connections=1,
-    **kwargs)'
+  name: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, length=None,
+    metadata=None, **kwargs)'
   summary: Creates a new blob from a data source with automatic chunking.
   syntax:
-    content: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, overwrite=False,
-      length=None, metadata=None, content_settings=None, validate_content=False, max_connections=1,
-      **kwargs)'
+    content: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, length=None,
+      metadata=None, **kwargs)'
     parameters:
     - description: The blob data to upload.
       id: data
@@ -2473,7 +2473,7 @@ items:
         either BlockBlob, PageBlob or AppendBlob. The default value is BlockBlob.'
       id: blob_type
       type:
-      - azure.storage.blob.models.BlobType
+      - azure.storage.blob.BlobType
     - description: 'Whether the blob to be uploaded should overwrite the current data.
 
         If True, upload_blob will silently overwrite the existing data. If set to
@@ -2505,7 +2505,7 @@ items:
     - description: ContentSettings object used to set blob properties.
       id: content_settings
       type:
-      - azure.storage.blob.models.ContentSettings
+      - azure.storage.blob.ContentSettings
     - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
         storage
 
@@ -2545,7 +2545,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -2558,7 +2558,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -2586,7 +2586,14 @@ items:
         premium storage accounts.'
       id: premium_page_blob_tier
       type:
-      - azure.storage.blob.models.PremiumPageBlobTier
+      - azure.storage.blob.PremiumPageBlobTier
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      type:
+      - azure.storage.blob.StandardBlobTier
     - description: 'Optional conditional header. The max length in bytes permitted
         for
 
@@ -2604,7 +2611,7 @@ items:
         exceeds
 
         64MB.'
-      id: max_connections
+      id: max_concurrency
       type:
       - int
     - description: 'Encrypts the data on the service-side with the given key.
@@ -2616,7 +2623,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: Defaults to UTF-8.
       id: encoding
       type:
@@ -2641,38 +2648,34 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: upload_page(page, start_range, end_range, length=None, validate_content=False,
-    **kwargs)
+  name: upload_page(page, offset, length, **kwargs)
   summary: The Upload Pages operation writes a range of pages to a page blob.
   syntax:
-    content: upload_page(page, start_range, end_range, length=None, validate_content=False,
-      **kwargs)
+    content: upload_page(page, offset, length, **kwargs)
     parameters:
     - description: Content of the page.
       id: page
       type:
       - bytes
-    - description: 'Start of byte range to use for writing to a section of the blob.
+    - description: 'Start of byte range to use for downloading a section of the blob.
+
+        Must be set if length is provided.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
+        must be a modulus of 512 and the length  must be a modulus of
 
-        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
-      id: start_range
+        512.'
+      id: offset
       type:
       - int
-    - description: 'End of byte range to use for writing to a section of the blob.
+    - description: 'Number of bytes to use for writing to a section of the blob.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
+        must be a modulus of 512 and the length must be a modulus of
 
-        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
-      id: end_range
-      type:
-      - int
-    - description: Length of the page
+        512.'
       id: length
       type:
       - int
@@ -2728,7 +2731,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -2741,7 +2744,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify an ETag
         value for this conditional
 
@@ -2771,7 +2774,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: Defaults to UTF-8.
       id: encoding
       type:
@@ -2791,13 +2794,11 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: upload_pages_from_url(source_url, range_start, range_end, source_range_start,
-    source_content_md5=None, **kwargs)
+  name: upload_pages_from_url(source_url, offset, length, source_offset, **kwargs)
   summary: Updates a range of pages to a page blob where the contents are read from
     a URL.
   syntax:
-    content: upload_pages_from_url(source_url, range_start, range_end, source_range_start,
-      source_content_md5=None, **kwargs)
+    content: upload_pages_from_url(source_url, offset, length, source_offset, **kwargs)
     parameters:
     - description: 'The URL of the source data. It can point to any Azure Blob or
         File, that is either public or has a
@@ -2806,31 +2807,27 @@ items:
       id: source_url
       type:
       - str
-    - description: 'Start of byte range to use for writing to a section of the blob.
+    - description: 'Start of byte range to use for downloading a section of the blob.
 
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the end offset must be a modulus of
-
-        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
-      id: range_start
+        Must be set if length is provided.'
+      id: offset
       type:
       - int
-    - description: 'End of byte range to use for writing to a section of the blob.
+    - description: 'Number of bytes to use for writing to a section of the blob.
 
         Pages must be aligned with 512-byte boundaries, the start offset
 
-        must be a modulus of 512 and the end offset must be a modulus of
+        must be a modulus of 512 and the length must be a modulus of
 
-        512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
-      id: range_end
+        512.'
+      id: length
       type:
       - int
     - description: 'This indicates the start of the range of bytes(inclusive) that
         has to be taken from the copy source.
 
-        The service will read the same number of bytes as the destination range (end_range-start_range).'
-      id: source_range_start
+        The service will read the same number of bytes as the destination range (length-offset).'
+      id: source_offset
       type:
       - int
     - description: If given, the service will calculate the MD5 hash of the block
@@ -2850,7 +2847,7 @@ items:
         if the source resource has been modified since the specified time.'
       id: source_if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -2863,7 +2860,7 @@ items:
         the source resource has not been modified since the specified date/time.'
       id: source_if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -2917,7 +2914,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -2930,7 +2927,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -2959,7 +2956,7 @@ items:
         a secure connection must be established to transfer the key.'
       id: cpk
       type:
-      - azure.storage.blob.models.CustomerProvidedEncryptionKey
+      - azure.storage.blob.CustomerProvidedEncryptionKey
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -2979,25 +2976,23 @@ references:
   uid: azure.storage.blob.aio.BlobClient.acquire_lease
 - fullName: azure.storage.blob.aio.BlobClient.append_block
   isExternal: false
-  name: append_block(data, length=None, validate_content=False, maxsize_condition=None,
-    appendpos_condition=None, **kwargs)
+  name: append_block(data, length=None, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.append_block
 - fullName: azure.storage.blob.aio.BlobClient.append_block_from_url
   isExternal: false
-  name: append_block_from_url(copy_source_url, source_range_start=None, source_range_end=None,
-    source_content_md5=None, maxsize_condition=None, appendpos_condition=None, **kwargs)
+  name: append_block_from_url(copy_source_url, source_offset=None, source_length=None,
+    **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.append_block_from_url
 - fullName: azure.storage.blob.aio.BlobClient.clear_page
   isExternal: false
-  name: clear_page(start_range, end_range, **kwargs)
+  name: clear_page(offset, length, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.clear_page
 - fullName: azure.storage.blob.aio.BlobClient.commit_block_list
   isExternal: false
-  name: commit_block_list(block_list, content_settings=None, metadata=None, validate_content=False,
-    **kwargs)
+  name: commit_block_list(block_list, content_settings=None, metadata=None, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.commit_block_list
 - fullName: azure.storage.blob.aio.BlobClient.create_append_blob
@@ -3007,8 +3002,8 @@ references:
   uid: azure.storage.blob.aio.BlobClient.create_append_blob
 - fullName: azure.storage.blob.aio.BlobClient.create_page_blob
   isExternal: false
-  name: create_page_blob(size, content_settings=None, sequence_number=None, metadata=None,
-    premium_page_blob_tier=None, **kwargs)
+  name: create_page_blob(size, content_settings=None, metadata=None, premium_page_blob_tier=None,
+    **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.create_page_blob
 - fullName: azure.storage.blob.aio.BlobClient.create_snapshot
@@ -3023,7 +3018,7 @@ references:
   uid: azure.storage.blob.aio.BlobClient.delete_blob
 - fullName: azure.storage.blob.aio.BlobClient.download_blob
   isExternal: false
-  name: download_blob(offset=None, length=None, validate_content=False, **kwargs)
+  name: download_blob(offset=None, length=None, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.download_blob
 - fullName: azure.storage.blob.aio.BlobClient.get_account_information
@@ -3043,8 +3038,7 @@ references:
   uid: azure.storage.blob.aio.BlobClient.get_block_list
 - fullName: azure.storage.blob.aio.BlobClient.get_page_ranges
   isExternal: false
-  name: get_page_ranges(start_range=None, end_range=None, previous_snapshot_diff=None,
-    **kwargs)
+  name: get_page_ranges(offset=None, length=None, previous_snapshot_diff=None, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.get_page_ranges
 - fullName: azure.storage.blob.aio.BlobClient.resize_blob
@@ -3079,7 +3073,7 @@ references:
   uid: azure.storage.blob.aio.BlobClient.set_standard_blob_tier
 - fullName: azure.storage.blob.aio.BlobClient.stage_block
   isExternal: false
-  name: stage_block(block_id, data, length=None, validate_content=False, **kwargs)
+  name: stage_block(block_id, data, length=None, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.stage_block
 - fullName: azure.storage.blob.aio.BlobClient.stage_block_from_url
@@ -3100,21 +3094,18 @@ references:
   uid: azure.storage.blob.aio.BlobClient.undelete_blob
 - fullName: azure.storage.blob.aio.BlobClient.upload_blob
   isExternal: false
-  name: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, overwrite=False,
-    length=None, metadata=None, content_settings=None, validate_content=False, max_connections=1,
-    **kwargs)'
+  name: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, length=None,
+    metadata=None, **kwargs)'
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.upload_blob
 - fullName: azure.storage.blob.aio.BlobClient.upload_page
   isExternal: false
-  name: upload_page(page, start_range, end_range, length=None, validate_content=False,
-    **kwargs)
+  name: upload_page(page, offset, length, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.upload_page
 - fullName: azure.storage.blob.aio.BlobClient.upload_pages_from_url
   isExternal: false
-  name: upload_pages_from_url(source_url, range_start, range_end, source_range_start,
-    source_content_md5=None, **kwargs)
+  name: upload_pages_from_url(source_url, offset, length, source_offset, **kwargs)
   parent: azure.storage.blob.aio.BlobClient
   uid: azure.storage.blob.aio.BlobClient.upload_pages_from_url
 - fullName: dict(str, Any)
@@ -3193,7 +3184,7 @@ references:
   - fullName: ']'
     name: ']'
   uid: dict[str, Any]
-- fullName: tuple(list(azure.storage.blob.models.BlobBlock), list(azure.storage.blob.models.BlobBlock))
+- fullName: tuple(list(azure.storage.blob.BlobBlock), list(azure.storage.blob.BlobBlock))
   name: tuple(list(BlobBlock), list(BlobBlock))
   spec.python:
   - fullName: tuple
@@ -3206,9 +3197,9 @@ references:
     uid: list
   - fullName: (
     name: (
-  - fullName: azure.storage.blob.models.BlobBlock
+  - fullName: azure.storage.blob.BlobBlock
     name: BlobBlock
-    uid: azure.storage.blob.models.BlobBlock
+    uid: azure.storage.blob.BlobBlock
   - fullName: )
     name: )
   - fullName: ', '
@@ -3218,14 +3209,14 @@ references:
     uid: list
   - fullName: (
     name: (
-  - fullName: azure.storage.blob.models.BlobBlock
+  - fullName: azure.storage.blob.BlobBlock
     name: BlobBlock
-    uid: azure.storage.blob.models.BlobBlock
+    uid: azure.storage.blob.BlobBlock
   - fullName: )
     name: )
   - fullName: )
     name: )
-  uid: tuple(list(azure.storage.blob.models.BlobBlock), list(azure.storage.blob.models.BlobBlock))
+  uid: tuple(list(azure.storage.blob.BlobBlock), list(azure.storage.blob.BlobBlock))
 - fullName: tuple(list(dict(str, str), list(dict(str, str))
   name: tuple(list(dict(str, str), list(dict(str, str))
   spec.python:

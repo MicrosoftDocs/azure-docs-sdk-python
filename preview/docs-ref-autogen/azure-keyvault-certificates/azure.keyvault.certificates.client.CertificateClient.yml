@@ -28,7 +28,7 @@ items:
   - azure.keyvault.certificates.client.CertificateClient.purge_deleted_certificate
   - azure.keyvault.certificates.client.CertificateClient.recover_deleted_certificate
   - azure.keyvault.certificates.client.CertificateClient.restore_certificate
-  - azure.keyvault.certificates.client.CertificateClient.update_certificate
+  - azure.keyvault.certificates.client.CertificateClient.update_certificate_properties
   - azure.keyvault.certificates.client.CertificateClient.update_issuer
   - azure.keyvault.certificates.client.CertificateClient.update_policy
   class: azure.keyvault.certificates.client.CertificateClient
@@ -47,11 +47,13 @@ items:
 
     .. admonition:: Example'
   syntax:
-    content: CertificateClient(vault_url, credential, transport=None, api_version=None,
+    content: CertificateClient(vault_endpoint, credential, transport=None, api_version=None,
       **kwargs)
   type: class
   uid: azure.keyvault.certificates.client.CertificateClient
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.backup_certificate
   langs:
   - python
@@ -79,6 +81,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.backup_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.cancel_certificate_operation
   langs:
   - python
@@ -104,19 +108,20 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.cancel_certificate_operation
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.create_certificate
   langs:
   - python
   module: azure.keyvault.certificates.client
-  name: create_certificate(name, policy=None, enabled=None, tags=None, **kwargs)
-  summary: 'Creates a new certificate.
-
-
-    If this is the first version, the certificate resource is created. This
-
-    operation requires the certificates/create permission.'
+  name: create_certificate(name, policy=None, **kwargs)
+  summary: "Creates a new certificate.\n\nIf this is the first version, the certificate\
+    \ resource is created. This\noperation requires the certificates/create permission.\n\
+    \nKeyword arguments\n   * *enabled (bool)* - Determines whether the object is\
+    \ enabled. \n\n   * *tags (dict[str, str])* - Application specific metadata in\
+    \ the form of key-value pairs."
   syntax:
-    content: create_certificate(name, policy=None, enabled=None, tags=None, **kwargs)
+    content: create_certificate(name, policy=None, **kwargs)
     parameters:
     - description: The name of the certificate.
       id: name
@@ -126,21 +131,20 @@ items:
       id: policy
       type:
       - azure.keyvault.certificates.models.CertificatePolicy
-    - description: Determines whether the object is enabled.
-      id: enabled
-      type:
-      - bool
-    - description: Application specific metadata in the form of key-value pairs.
-      id: tags
-      type:
-      - dict(str, str)
     return:
-      description: The created CertificateOperation
+      description: 'An LROPoller for the create certificate operation. Waiting on
+        the poller
+
+        gives you the certificate if creation is successful, the CertificateOperation
+        if not.'
       type:
-      - azure.core.polling.LROPoller
+      - azure.core.polling.LROPoller[azure.keyvault.certificates.models.Certificate
+      - azure.keyvault.certificates.models.CertificateOperation]
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.create_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.create_contacts
   langs:
   - python
@@ -166,23 +170,21 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.create_contacts
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.create_issuer
   langs:
   - python
   module: azure.keyvault.certificates.client
   name: create_issuer(name, provider, account_id=None, password=None, organization_id=None,
-    admin_details=None, enabled=None, **kwargs)
-  summary: 'Sets the specified certificate issuer.
-
-
-    The SetCertificateIssuer operation adds or updates the specified
-
-    certificate issuer. This operation requires the certificates/setissuers
-
-    permission.'
+    admin_details=None, **kwargs)
+  summary: "Sets the specified certificate issuer.\n\nThe SetCertificateIssuer operation\
+    \ adds or updates the specified\ncertificate issuer. This operation requires the\
+    \ certificates/setissuers\npermission.\n\nKeyword arguments\n   * *enabled (bool)*\
+    \ - Determines whether the object is enabled."
   syntax:
     content: create_issuer(name, provider, account_id=None, password=None, organization_id=None,
-      admin_details=None, enabled=None, **kwargs)
+      admin_details=None, **kwargs)
     parameters:
     - description: The name of the issuer.
       id: name
@@ -208,10 +210,6 @@ items:
       id: admin_details
       type:
       - list[azure.keyvault.certificates.models.AdministratorDetails]
-    - description: Determines whether the object is enabled.
-      id: enabled
-      type:
-      - bool
     return:
       description: The created Issuer
       type:
@@ -219,6 +217,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.create_issuer
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.delete_certificate
   langs:
   - python
@@ -248,6 +248,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.delete_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.delete_certificate_operation
   langs:
   - python
@@ -295,6 +297,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.delete_contacts
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.delete_issuer
   langs:
   - python
@@ -320,6 +324,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.delete_issuer
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_certificate
   langs:
   - python
@@ -349,6 +355,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_certificate_operation
   langs:
   - python
@@ -374,6 +382,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_certificate_operation
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_certificate_with_policy
   langs:
   - python
@@ -423,6 +433,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_contacts
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_deleted_certificate
   langs:
   - python
@@ -435,7 +447,7 @@ items:
 
     such as retention interval, scheduled permanent deletion, and the
 
-    current deletion recovery level. This operaiton requires the certificates/
+    current deletion recovery level. This operation requires the certificates/
 
     get permission.'
   syntax:
@@ -452,6 +464,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_deleted_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_issuer
   langs:
   - python
@@ -477,6 +491,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_issuer
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_pending_certificate_signing_request
   langs:
   - python
@@ -501,11 +517,13 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_pending_certificate_signing_request
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.get_policy
   langs:
   - python
   module: azure.keyvault.certificates.client
-  name: get_policy(name, **kwargs)
+  name: get_policy(certificate_name, **kwargs)
   summary: 'Gets the policy for a certificate.
 
 
@@ -513,10 +531,10 @@ items:
 
     vault. This operation requires the certificates/get permission.'
   syntax:
-    content: get_policy(name, **kwargs)
+    content: get_policy(certificate_name, **kwargs)
     parameters:
     - description: The name of the certificate in a given key vault.
-      id: name
+      id: certificate_name
       type:
       - str
     return:
@@ -526,27 +544,23 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.get_policy
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.import_certificate
   langs:
   - python
   module: azure.keyvault.certificates.client
-  name: import_certificate(name, certificate_bytes, password=None, policy=None, enabled=None,
-    tags=None, **kwargs)
-  summary: 'Imports a certificate into a specified key vault.
-
-
-    Imports an existing valid certificate, containing a private key, into
-
-    Azure Key Vault. The certificate to be imported can be in either PFX or
-
-    PEM format. If the certificate is in PEM format the PEM file must
-
-    contain the key as well as x509 certificates. This operation requires
-
-    the certificates/import permission.'
+  name: import_certificate(name, certificate_bytes, password=None, policy=None, **kwargs)
+  summary: "Imports a certificate into a specified key vault.\n\nImports an existing\
+    \ valid certificate, containing a private key, into\nAzure Key Vault. The certificate\
+    \ to be imported can be in either PFX or\nPEM format. If the certificate is in\
+    \ PEM format the PEM file must\ncontain the key as well as x509 certificates.\
+    \ This operation requires\nthe certificates/import permission.\n\nKeyword arguments\n\
+    \   * *enabled (bool)* - Determines whether the object is enabled. \n\n   * *tags\
+    \ (dict[str, str])* - Application specific metadata in the form of key-value pairs."
   syntax:
     content: import_certificate(name, certificate_bytes, password=None, policy=None,
-      enabled=None, tags=None, **kwargs)
+      **kwargs)
     parameters:
     - description: The name of the certificate.
       id: name
@@ -569,16 +583,6 @@ items:
       id: policy
       type:
       - azure.keyvault.certificates.models.CertificatePolicy
-    - description: Determines whether the object is enabled.
-      id: enabled
-      type:
-      - bool
-    - description: 'Application specific metadata in the form of key-value
-
-        pairs.'
-      id: tags
-      type:
-      - dict[str, str]
     return:
       description: The imported Certificate
       type:
@@ -586,6 +590,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.import_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.list_certificate_versions
   langs:
   - python
@@ -607,12 +613,14 @@ items:
       type:
       - str
     return:
-      description: An iterator like instance of CertificateBase
+      description: An iterator like instance of CertificateProperties
       type:
-      - azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateBase]
+      - azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateProperties]
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.list_certificate_versions
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.list_certificates
   langs:
   - python
@@ -636,12 +644,14 @@ items:
       type:
       - bool
     return:
-      description: An iterator like instance of CertificateBase
+      description: An iterator like instance of CertificateProperties
       type:
-      - azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateBase]
+      - azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateProperties]
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.list_certificates
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.list_deleted_certificates
   langs:
   - python
@@ -697,28 +707,24 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.list_issuers
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.merge_certificate
   langs:
   - python
   module: azure.keyvault.certificates.client
-  name: merge_certificate(name, x509_certificates, enabled=None, tags=None, **kwargs)
-  summary: 'Merges a certificate or a certificate chain with a key pair existing on
-    the server.
-
-
-    Performs the merging of a certificate or certificate chain with a key pair currently
-
-    available in the service. This operation requires the certificates/create permission.
-
-    Make sure when creating the certificate to merge using create_certificate that
-    you set
-
-    it''s issuer to ''Unknown''. This way Key Vault knows that the certificate will
-    not be signed
-
-    by an issuer known to it.'
+  name: merge_certificate(name, x509_certificates, **kwargs)
+  summary: "Merges a certificate or a certificate chain with a key pair existing on\
+    \ the server.\n\nPerforms the merging of a certificate or certificate chain with\
+    \ a key pair currently\navailable in the service. This operation requires the\
+    \ certificates/create permission.\nMake sure when creating the certificate to\
+    \ merge using create_certificate that you set\nit's issuer to 'Unknown'. This\
+    \ way Key Vault knows that the certificate will not be signed\nby an issuer known\
+    \ to it.\n\nKeyword arguments\n   * *enabled (bool)* - Determines whether the\
+    \ object is enabled. \n\n   * *tags (dict[str, str])* - Application specific metadata\
+    \ in the form of key-value pairs."
   syntax:
-    content: merge_certificate(name, x509_certificates, enabled=None, tags=None, **kwargs)
+    content: merge_certificate(name, x509_certificates, **kwargs)
     parameters:
     - description: The name of the certificate
       id: name
@@ -728,14 +734,6 @@ items:
       id: x509_certificates
       type:
       - list[bytearray]
-    - description: Determines whether the object is enabled.
-      id: enabled
-      type:
-      - bool
-    - description: Application specific metadata in the form of key-value pairs.
-      id: tags
-      type:
-      - dict[str, str]
     return:
       description: The merged certificate
       type:
@@ -743,6 +741,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.merge_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.purge_deleted_certificate
   langs:
   - python
@@ -772,6 +772,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.purge_deleted_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.recover_deleted_certificate
   langs:
   - python
@@ -803,6 +805,8 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.recover_deleted_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.restore_certificate
   langs:
   - python
@@ -828,21 +832,21 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.restore_certificate
 - class: azure.keyvault.certificates.client.CertificateClient
-  fullName: azure.keyvault.certificates.client.CertificateClient.update_certificate
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  fullName: azure.keyvault.certificates.client.CertificateClient.update_certificate_properties
   langs:
   - python
   module: azure.keyvault.certificates.client
-  name: update_certificate(name, version=None, enabled=None, tags=None, **kwargs)
-  summary: 'Updates the specified attributes associated with the given certificate.
-
-
-    The UpdateCertificate operation applies the specified update on the
-
-    given certificate; the only elements updated are the certificate''s
-
-    attributes. This operation requires the certificates/update permission.'
+  name: update_certificate_properties(name, version=None, **kwargs)
+  summary: "Updates the specified attributes associated with the given certificate.\n\
+    \nThe UpdateCertificate operation applies the specified update on the\ngiven certificate;\
+    \ the only elements updated are the certificate's\nattributes. This operation\
+    \ requires the certificates/update permission.\n\nKeyword arguments\n   * *enabled\
+    \ (bool)* - Determines whether the object is enabled. \n\n   * *tags (dict[str,\
+    \ str])* - Application specific metadata in the form of key-value pairs."
   syntax:
-    content: update_certificate(name, version=None, enabled=None, tags=None, **kwargs)
+    content: update_certificate_properties(name, version=None, **kwargs)
     parameters:
     - description: 'The name of the certificate in the given key
 
@@ -854,36 +858,28 @@ items:
       id: version
       type:
       - str
-    - description: Determines whether the object is enabled.
-      id: enabled
-      type:
-      - bool
-    - description: Application specific metadata in the form of key-value pairs.
-      id: tags
-      type:
-      - dict(str, str)
     return:
       description: The updated Certificate
       type:
       - azure.keyvault.certificates.models.Certificate
   type: method
-  uid: azure.keyvault.certificates.client.CertificateClient.update_certificate
+  uid: azure.keyvault.certificates.client.CertificateClient.update_certificate_properties
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.update_issuer
   langs:
   - python
   module: azure.keyvault.certificates.client
   name: update_issuer(name, provider=None, account_id=None, password=None, organization_id=None,
-    admin_details=None, enabled=None, **kwargs)
-  summary: 'Updates the specified certificate issuer.
-
-
-    Performs an update on the specified certificate issuer entity.
-
-    This operation requires the certificates/setissuers permission.'
+    admin_details=None, **kwargs)
+  summary: "Updates the specified certificate issuer.\n\nPerforms an update on the\
+    \ specified certificate issuer entity.\nThis operation requires the certificates/setissuers\
+    \ permission.\n\nKeyword arguments\n   * *enabled (bool)* - Determines whether\
+    \ the object is enabled."
   syntax:
     content: update_issuer(name, provider=None, account_id=None, password=None, organization_id=None,
-      admin_details=None, enabled=None, **kwargs)
+      admin_details=None, **kwargs)
     parameters:
     - description: The name of the issuer.
       id: name
@@ -920,11 +916,13 @@ items:
   type: method
   uid: azure.keyvault.certificates.client.CertificateClient.update_issuer
 - class: azure.keyvault.certificates.client.CertificateClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.certificates.client.CertificateClient.update_policy
   langs:
   - python
   module: azure.keyvault.certificates.client
-  name: update_policy(name, policy, **kwargs)
+  name: update_policy(certificate_name, policy, **kwargs)
   summary: 'Updates the policy for a certificate.
 
 
@@ -932,10 +930,10 @@ items:
 
     This operation requires the certificates/update permission.'
   syntax:
-    content: update_policy(name, policy, **kwargs)
+    content: update_policy(certificate_name, policy, **kwargs)
     parameters:
     - description: The name of the certificate in the given vault.
-      id: name
+      id: certificate_name
       type:
       - str
     - description: The policy for the certificate.
@@ -961,7 +959,7 @@ references:
   uid: azure.keyvault.certificates.client.CertificateClient.cancel_certificate_operation
 - fullName: azure.keyvault.certificates.client.CertificateClient.create_certificate
   isExternal: false
-  name: create_certificate(name, policy=None, enabled=None, tags=None, **kwargs)
+  name: create_certificate(name, policy=None, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.create_certificate
 - fullName: azure.keyvault.certificates.client.CertificateClient.create_contacts
@@ -972,7 +970,7 @@ references:
 - fullName: azure.keyvault.certificates.client.CertificateClient.create_issuer
   isExternal: false
   name: create_issuer(name, provider, account_id=None, password=None, organization_id=None,
-    admin_details=None, enabled=None, **kwargs)
+    admin_details=None, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.create_issuer
 - fullName: azure.keyvault.certificates.client.CertificateClient.delete_certificate
@@ -1032,13 +1030,12 @@ references:
   uid: azure.keyvault.certificates.client.CertificateClient.get_pending_certificate_signing_request
 - fullName: azure.keyvault.certificates.client.CertificateClient.get_policy
   isExternal: false
-  name: get_policy(name, **kwargs)
+  name: get_policy(certificate_name, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.get_policy
 - fullName: azure.keyvault.certificates.client.CertificateClient.import_certificate
   isExternal: false
-  name: import_certificate(name, certificate_bytes, password=None, policy=None, enabled=None,
-    tags=None, **kwargs)
+  name: import_certificate(name, certificate_bytes, password=None, policy=None, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.import_certificate
 - fullName: azure.keyvault.certificates.client.CertificateClient.list_certificate_versions
@@ -1063,7 +1060,7 @@ references:
   uid: azure.keyvault.certificates.client.CertificateClient.list_issuers
 - fullName: azure.keyvault.certificates.client.CertificateClient.merge_certificate
   isExternal: false
-  name: merge_certificate(name, x509_certificates, enabled=None, tags=None, **kwargs)
+  name: merge_certificate(name, x509_certificates, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.merge_certificate
 - fullName: azure.keyvault.certificates.client.CertificateClient.purge_deleted_certificate
@@ -1081,41 +1078,43 @@ references:
   name: restore_certificate(backup, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.restore_certificate
-- fullName: azure.keyvault.certificates.client.CertificateClient.update_certificate
+- fullName: azure.keyvault.certificates.client.CertificateClient.update_certificate_properties
   isExternal: false
-  name: update_certificate(name, version=None, enabled=None, tags=None, **kwargs)
+  name: update_certificate_properties(name, version=None, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
-  uid: azure.keyvault.certificates.client.CertificateClient.update_certificate
+  uid: azure.keyvault.certificates.client.CertificateClient.update_certificate_properties
 - fullName: azure.keyvault.certificates.client.CertificateClient.update_issuer
   isExternal: false
   name: update_issuer(name, provider=None, account_id=None, password=None, organization_id=None,
-    admin_details=None, enabled=None, **kwargs)
+    admin_details=None, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.update_issuer
 - fullName: azure.keyvault.certificates.client.CertificateClient.update_policy
   isExternal: false
-  name: update_policy(name, policy, **kwargs)
+  name: update_policy(certificate_name, policy, **kwargs)
   parent: azure.keyvault.certificates.client.CertificateClient
   uid: azure.keyvault.certificates.client.CertificateClient.update_policy
-- fullName: dict(str, str)
-  name: dict(str, str)
+- fullName: azure.core.polling.LROPoller[azure.keyvault.certificates.models.Certificate
+  name: LROPoller[Certificate
   spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: (
-    name: (
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: )
-    name: )
-  uid: dict(str, str)
+  - fullName: azure.core.polling.LROPoller
+    name: LROPoller
+    uid: azure.core.polling.LROPoller
+  - fullName: '['
+    name: '['
+  - fullName: azure.keyvault.certificates.models.Certificate
+    name: Certificate
+    uid: azure.keyvault.certificates.models.Certificate
+  uid: azure.core.polling.LROPoller[azure.keyvault.certificates.models.Certificate
+- fullName: azure.keyvault.certificates.models.CertificateOperation]
+  name: CertificateOperation]
+  spec.python:
+  - fullName: azure.keyvault.certificates.models.CertificateOperation
+    name: CertificateOperation
+    uid: azure.keyvault.certificates.models.CertificateOperation
+  - fullName: ']'
+    name: ']'
+  uid: azure.keyvault.certificates.models.CertificateOperation]
 - fullName: list[azure.keyvault.certificates.models.Contact]
   name: list[Contact]
   spec.python:
@@ -1163,20 +1162,20 @@ references:
   - fullName: ']'
     name: ']'
   uid: dict[str, str]
-- fullName: azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateBase]
-  name: ItemPaged[CertificateBase]
+- fullName: azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateProperties]
+  name: ItemPaged[CertificateProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.keyvault.certificates.models.CertificateBase
-    name: CertificateBase
-    uid: azure.keyvault.certificates.models.CertificateBase
+  - fullName: azure.keyvault.certificates.models.CertificateProperties
+    name: CertificateProperties
+    uid: azure.keyvault.certificates.models.CertificateProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateBase]
+  uid: azure.core.paging.ItemPaged[azure.keyvault.certificates.models.CertificateProperties]
 - fullName: azure.core.paging.ItemPaged[azure.keyvault.certificates.models.DeletedCertificate]
   name: ItemPaged[DeletedCertificate]
   spec.python:

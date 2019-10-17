@@ -17,7 +17,7 @@ items:
   - azure.keyvault.keys.aio.KeyClient.purge_deleted_key
   - azure.keyvault.keys.aio.KeyClient.recover_deleted_key
   - azure.keyvault.keys.aio.KeyClient.restore_key
-  - azure.keyvault.keys.aio.KeyClient.update_key
+  - azure.keyvault.keys.aio.KeyClient.update_key_properties
   class: azure.keyvault.keys.aio.KeyClient
   fullName: azure.keyvault.keys.aio.KeyClient
   inheritance:
@@ -31,18 +31,20 @@ items:
   summary: A high-level asynchronous interface for managing a vault's keys.
   syntax:
     parameters:
+    - description: URL of the vault the client will access
+      id: vault_endpoint
+      type:
+      - str
     - description: 'An object which can provide an access token for the vault, such
         as a credential from
 
         <xref:azure.identity.aio>'
       id: credential
-    - description: URL of the vault the client will access
-      id: vault_url
-      type:
-      - str
   type: class
   uid: azure.keyvault.keys.aio.KeyClient
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.keys.aio.KeyClient.backup_key
   langs:
   - python
@@ -71,15 +73,17 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.backup_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.keys.aio.KeyClient.create_ec_key
   langs:
   - python
   module: azure.keyvault.keys.aio
   name: create_ec_key
-  summary: 'Create a new elliptic curve key. If `name` is already in use, create a
-    new version of the key. Requires
-
-    the keys/create permission.'
+  summary: "Create a new elliptic curve key. If `name` is already in use, create a\
+    \ new version of the key. Requires\nthe keys/create permission.\n\nKeyword arguments\n\
+    \   * *enabled (bool)* - Whether the key is enabled for use. \n\n   * *tags (dict[str,\
+    \ str])* - Application specific metadata in the form of key-value pairs."
   syntax:
     parameters:
     - description: The name for the new key. Key Vault will generate the key's version.
@@ -94,16 +98,12 @@ items:
         curve.
       id: curve
       type:
-      - azure.keyvault.keys.enums.JsonWebKeyCurveName
+      - azure.keyvault.keys.enums.KeyCurveName
       - str
     - description: (optional) Allowed key operations
       id: key_operations
       type:
-      - list(azure.keyvault.keys.enums.JsonWebKeyOperation)
-    - description: (optional) Whether the key is enabled for use
-      id: enabled
-      type:
-      - bool
+      - list(azure.keyvault.keys.enums.KeyOperation)
     - description: (optional) Expiry date of the key in UTC
       id: expires
       type:
@@ -112,11 +112,6 @@ items:
       id: not_before
       type:
       - datetime.datetime
-    - description: (optional) Application specific metadata in the form of key-value
-        pairs
-      id: tags
-      type:
-      - dict
     return:
       description: The created key
       type:
@@ -124,15 +119,17 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.create_ec_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.keys.aio.KeyClient.create_key
   langs:
   - python
   module: azure.keyvault.keys.aio
   name: create_key
-  summary: 'Create a key. If `name` is already in use, create a new version of the
-    key. Requires the keys/create
-
-    permission.'
+  summary: "Create a key. If `name` is already in use, create a new version of the\
+    \ key. Requires the keys/create\npermission.\n\nKeyword arguments\n   * *enabled\
+    \ (bool)* - Whether the key is enabled for use. \n\n   * *tags (dict[str, str])*\
+    \ - Application specific metadata in the form of key-value pairs."
   syntax:
     parameters:
     - description: The name of the new key. Key Vault will generate the key's version.
@@ -143,7 +140,7 @@ items:
       id: key_type
       type:
       - str
-      - azure.keyvault.keys.enums.JsonWebKeyType
+      - azure.keyvault.keys.enums.KeyType
     - description: (optional) RSA key size in bits, for example 2048, 3072, or 4096.
       id: size
       type:
@@ -152,27 +149,18 @@ items:
       id: key_operations
       type:
       - list(str
-      - azure.keyvault.keys.enums.JsonWebKeyOperation)
-    - description: (optional) Whether the key is enabled for use
-      id: enabled
-      type:
-      - bool
+      - azure.keyvault.keys.enums.KeyOperation)
     - description: (optional) Expiry date of the key in UTC
       id: expires
     - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: (optional) Application specific metadata in the form of key-value
-        pairs
-      id: tags
-      type:
-      - dict
     - description: (optional) Elliptic curve name. Defaults to the NIST P-256 elliptic
         curve.
       id: curve
       type:
-      - azure.keyvault.keys.enums.JsonWebKeyCurveName
+      - azure.keyvault.keys.enums.KeyCurveName
       - str
     return:
       description: The created key
@@ -181,15 +169,17 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.create_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.keys.aio.KeyClient.create_rsa_key
   langs:
   - python
   module: azure.keyvault.keys.aio
   name: create_rsa_key
-  summary: 'Create a new RSA key. If `name` is already in use, create a new version
-    of the key. Requires the
-
-    keys/create permission.'
+  summary: "Create a new RSA key. If `name` is already in use, create a new version\
+    \ of the key. Requires the\nkeys/create permission.\n\nKeyword arguments\n   *\
+    \ *enabled (bool)* - Whether the key is enabled for use. \n\n   * *tags (dict[str,\
+    \ str])* - Application specific metadata in the form of key-value pairs."
   syntax:
     parameters:
     - description: The name for the new key. Key Vault will generate the key's version.
@@ -208,22 +198,13 @@ items:
       id: key_operations
       type:
       - list(str
-      - azure.keyvault.keys.enums.JsonWebKeyOperation)
-    - description: (optional) Whether the key is enabled for use
-      id: enabled
-      type:
-      - bool
+      - azure.keyvault.keys.enums.KeyOperation)
     - description: (optional) Expiry date of the key in UTC
       id: expires
     - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: (optional) Application specific metadata in the form of key-value
-        pairs
-      id: tags
-      type:
-      - dict
     return:
       description: The created key
       type:
@@ -231,6 +212,8 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.create_rsa_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.keys.aio.KeyClient.delete_key
   langs:
   - python
@@ -257,12 +240,32 @@ items:
   module: azure.keyvault.keys.aio
   name: 'get_cryptography_client(key: typing.Union[azure.keyvault.keys.models.Key,
     str], **kwargs: typing.Any) -> azure.keyvault.keys.crypto.aio.client.CryptographyClient'
+  summary: 'Get a <xref:azure.keyvault.keys.crypto.aio.CryptographyClient> capable
+    of performing cryptographic operations
+
+    with a key.'
   syntax:
     content: 'get_cryptography_client(key: typing.Union[azure.keyvault.keys.models.Key,
       str], **kwargs: typing.Any) -> azure.keyvault.keys.crypto.aio.client.CryptographyClient'
+    parameters:
+    - description: 'Either a <xref:azure.keyvault.keys.Key> instance as returned by
+
+        <xref:azure.keyvault.keys.aio.KeyClient.get_key>, or a string. If a string,
+        the value must be the full
+
+        identifier of an Azure Key Vault key with a version.'
+      id: key
+      type:
+      - str
+      - <xref:azure.keyvault.keys.Key>
+    return:
+      type:
+      - <xref:azure.keyvault.keys.crypto.aio.CryptographyClient>
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.get_cryptography_client
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.keys.aio.KeyClient.get_deleted_key
   langs:
   - python
@@ -285,6 +288,8 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.get_deleted_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
   fullName: azure.keyvault.keys.aio.KeyClient.get_key
   langs:
   - python
@@ -311,15 +316,17 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.get_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.keys.aio.KeyClient.import_key
   langs:
   - python
   module: azure.keyvault.keys.aio
   name: import_key
-  summary: 'Import an externally created key. If `name` is already in use, import
-    the key as a new version. Requires
-
-    the keys/import permission.'
+  summary: "Import an externally created key. If `name` is already in use, import\
+    \ the key as a new version. Requires\nthe keys/import permission.\n\nKeyword arguments\n\
+    \   * *enabled (bool)* - Whether the key is enabled for use. \n\n   * *tags (dict[str,\
+    \ str])* - Application specific metadata in the form of key-value pairs."
   syntax:
     parameters:
     - description: Name for the imported key
@@ -335,21 +342,12 @@ items:
       id: hsm
       type:
       - bool
-    - description: (optional) Whether the key is enabled for use
-      id: enabled
-      type:
-      - bool
     - description: (optional) Expiry date of the key in UTC
       id: expires
     - description: (optional) Not before date of the key in UTC
       id: not_before
       type:
       - datetime.datetime
-    - description: (optional) Application specific metadata in the form of key-value
-        pairs
-      id: tags
-      type:
-      - dict
     return:
       description: The imported key
       type:
@@ -390,7 +388,7 @@ items:
     return:
       description: An iterator of keys without their cryptographic material
       type:
-      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
+      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyProperties]
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.list_key_versions
 - class: azure.keyvault.keys.aio.KeyClient
@@ -406,7 +404,7 @@ items:
       description: An iterator of keys without their cryptographic material or version
         information
       type:
-      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
+      - azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyProperties]
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.list_keys
 - class: azure.keyvault.keys.aio.KeyClient
@@ -417,6 +415,8 @@ items:
     \ vault has soft-delete enabled, purge permanently deletes a deleted key\n   #\
     \ (with soft-delete disabled, delete_key is permanent)\n   await key_client.purge_deleted_key(\"\
     key-name\")\n   ````\n"
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.keys.aio.KeyClient.purge_deleted_key
   langs:
   - python
@@ -441,6 +441,8 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.purge_deleted_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
   fullName: azure.keyvault.keys.aio.KeyClient.recover_deleted_key
   langs:
   - python
@@ -469,6 +471,8 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.recover_deleted_key
 - class: azure.keyvault.keys.aio.KeyClient
+  exceptions:
+  - type: azure.core.exceptions.ResourceExistsError
   fullName: azure.keyvault.keys.aio.KeyClient.restore_key
   langs:
   - python
@@ -497,15 +501,17 @@ items:
   type: method
   uid: azure.keyvault.keys.aio.KeyClient.restore_key
 - class: azure.keyvault.keys.aio.KeyClient
-  fullName: azure.keyvault.keys.aio.KeyClient.update_key
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+  fullName: azure.keyvault.keys.aio.KeyClient.update_key_properties
   langs:
   - python
   module: azure.keyvault.keys.aio
-  name: update_key
-  summary: 'Change attributes of a key. Cannot change a key''s cryptographic material.
-    Requires the keys/update
-
-    permission.'
+  name: update_key_properties
+  summary: "Change attributes of a key. Cannot change a key's cryptographic material.\
+    \ Requires the keys/update\npermission.\n\nKeyword arguments\n   * *enabled (bool)*\
+    \ - Whether the key is enabled for use. \n\n   * *tags (dict[str, str])* - Application\
+    \ specific metadata in the form of key-value pairs."
   syntax:
     parameters:
     - description: The name of key to update
@@ -520,11 +526,7 @@ items:
       id: key_operations
       type:
       - list(str
-      - azure.keyvault.keys.enums.JsonWebKeyOperation)
-    - description: (optional) Whether the key is enabled for use
-      id: enabled
-      type:
-      - bool
+      - azure.keyvault.keys.enums.KeyOperation)
     - description: (optional) Expiry date of the key in UTC
       id: expires
       type:
@@ -533,17 +535,12 @@ items:
       id: not_before
       type:
       - datetime.datetime
-    - description: (optional) Application specific metadata in the form of key-value
-        pairs
-      id: tags
-      type:
-      - dict
     return:
       description: The updated key
       type:
       - azure.keyvault.keys.models.Key
   type: method
-  uid: azure.keyvault.keys.aio.KeyClient.update_key
+  uid: azure.keyvault.keys.aio.KeyClient.update_key_properties
 references:
 - fullName: azure.keyvault.keys.aio.KeyClient.backup_key
   isExternal: false
@@ -621,25 +618,25 @@ references:
   name: restore_key
   parent: azure.keyvault.keys.aio.KeyClient
   uid: azure.keyvault.keys.aio.KeyClient.restore_key
-- fullName: azure.keyvault.keys.aio.KeyClient.update_key
+- fullName: azure.keyvault.keys.aio.KeyClient.update_key_properties
   isExternal: false
-  name: update_key
+  name: update_key_properties
   parent: azure.keyvault.keys.aio.KeyClient
-  uid: azure.keyvault.keys.aio.KeyClient.update_key
-- fullName: list(azure.keyvault.keys.enums.JsonWebKeyOperation)
-  name: list(JsonWebKeyOperation)
+  uid: azure.keyvault.keys.aio.KeyClient.update_key_properties
+- fullName: list(azure.keyvault.keys.enums.KeyOperation)
+  name: list(KeyOperation)
   spec.python:
   - fullName: list
     name: list
     uid: list
   - fullName: (
     name: (
-  - fullName: azure.keyvault.keys.enums.JsonWebKeyOperation
-    name: JsonWebKeyOperation
-    uid: azure.keyvault.keys.enums.JsonWebKeyOperation
+  - fullName: azure.keyvault.keys.enums.KeyOperation
+    name: KeyOperation
+    uid: azure.keyvault.keys.enums.KeyOperation
   - fullName: )
     name: )
-  uid: list(azure.keyvault.keys.enums.JsonWebKeyOperation)
+  uid: list(azure.keyvault.keys.enums.KeyOperation)
 - fullName: list(str
   name: list(str
   spec.python:
@@ -652,15 +649,15 @@ references:
     name: str
     uid: str
   uid: list(str
-- fullName: azure.keyvault.keys.enums.JsonWebKeyOperation)
-  name: JsonWebKeyOperation)
+- fullName: azure.keyvault.keys.enums.KeyOperation)
+  name: KeyOperation)
   spec.python:
-  - fullName: azure.keyvault.keys.enums.JsonWebKeyOperation
-    name: JsonWebKeyOperation
-    uid: azure.keyvault.keys.enums.JsonWebKeyOperation
+  - fullName: azure.keyvault.keys.enums.KeyOperation
+    name: KeyOperation
+    uid: azure.keyvault.keys.enums.KeyOperation
   - fullName: )
     name: )
-  uid: azure.keyvault.keys.enums.JsonWebKeyOperation)
+  uid: azure.keyvault.keys.enums.KeyOperation)
 - fullName: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.DeletedKey]
   name: AsyncItemPaged[DeletedKey]
   spec.python:
@@ -675,17 +672,17 @@ references:
   - fullName: ']'
     name: ']'
   uid: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.DeletedKey]
-- fullName: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
-  name: AsyncItemPaged[KeyBase]
+- fullName: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyProperties]
+  name: AsyncItemPaged[KeyProperties]
   spec.python:
   - fullName: azure.core.async_paging.AsyncItemPaged
     name: AsyncItemPaged
     uid: azure.core.async_paging.AsyncItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.keyvault.keys.models.KeyBase
-    name: KeyBase
-    uid: azure.keyvault.keys.models.KeyBase
+  - fullName: azure.keyvault.keys.models.KeyProperties
+    name: KeyProperties
+    uid: azure.keyvault.keys.models.KeyProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyBase]
+  uid: azure.core.async_paging.AsyncItemPaged[azure.keyvault.keys.models.KeyProperties]
