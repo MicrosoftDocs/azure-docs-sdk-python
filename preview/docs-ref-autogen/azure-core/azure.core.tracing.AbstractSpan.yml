@@ -6,7 +6,10 @@ items:
   - azure.core.tracing.AbstractSpan.finish
   - azure.core.tracing.AbstractSpan.get_current_span
   - azure.core.tracing.AbstractSpan.get_current_tracer
+  - azure.core.tracing.AbstractSpan.get_trace_parent
+  - azure.core.tracing.AbstractSpan.kind
   - azure.core.tracing.AbstractSpan.link
+  - azure.core.tracing.AbstractSpan.link_from_headers
   - azure.core.tracing.AbstractSpan.set_current_span
   - azure.core.tracing.AbstractSpan.set_current_tracer
   - azure.core.tracing.AbstractSpan.set_http_attributes
@@ -14,6 +17,7 @@ items:
   - azure.core.tracing.AbstractSpan.span_instance
   - azure.core.tracing.AbstractSpan.start
   - azure.core.tracing.AbstractSpan.to_header
+  - azure.core.tracing.AbstractSpan.with_current_context
   class: azure.core.tracing.AbstractSpan
   fullName: azure.core.tracing.AbstractSpan
   inheritance:
@@ -88,15 +92,59 @@ items:
   type: method
   uid: azure.core.tracing.AbstractSpan.get_current_tracer
 - class: azure.core.tracing.AbstractSpan
+  fullName: azure.core.tracing.AbstractSpan.get_trace_parent
+  langs:
+  - python
+  module: azure.core.tracing
+  name: get_trace_parent()
+  summary: Return traceparent string.
+  syntax:
+    content: get_trace_parent()
+    parameters: []
+    return:
+      description: a traceparent string
+      type:
+      - str
+  type: method
+  uid: azure.core.tracing.AbstractSpan.get_trace_parent
+- class: azure.core.tracing.AbstractSpan
+  fullName: azure.core.tracing.AbstractSpan.kind
+  langs:
+  - python
+  module: azure.core.tracing
+  name: kind
+  summary: Get the span kind of this span.
+  syntax: {}
+  type: attribute
+  uid: azure.core.tracing.AbstractSpan.kind
+- class: azure.core.tracing.AbstractSpan
   fullName: azure.core.tracing.AbstractSpan.link
   langs:
   - python
   module: azure.core.tracing
-  name: link(headers)
+  name: link(traceparent)
+  summary: Given a traceparent, extracts the context and links the context to the
+    current tracer.
+  syntax:
+    content: link(traceparent)
+    parameters:
+    - description: A string representing a traceparent
+      id: traceparent
+      type:
+      - str
+    - id: traceparent
+  type: method
+  uid: azure.core.tracing.AbstractSpan.link
+- class: azure.core.tracing.AbstractSpan
+  fullName: azure.core.tracing.AbstractSpan.link_from_headers
+  langs:
+  - python
+  module: azure.core.tracing
+  name: link_from_headers(headers)
   summary: Given a dictionary, extracts the context and links the context to the current
     tracer.
   syntax:
-    content: link(headers)
+    content: link_from_headers(headers)
     parameters:
     - description: A dictionary of the request header as key value pairs.
       id: headers
@@ -104,7 +152,7 @@ items:
       - dict
     - id: headers
   type: method
-  uid: azure.core.tracing.AbstractSpan.link
+  uid: azure.core.tracing.AbstractSpan.link_from_headers
 - class: azure.core.tracing.AbstractSpan
   fullName: azure.core.tracing.AbstractSpan.set_current_span
   langs:
@@ -205,6 +253,23 @@ items:
     parameters: []
   type: method
   uid: azure.core.tracing.AbstractSpan.to_header
+- class: azure.core.tracing.AbstractSpan
+  fullName: azure.core.tracing.AbstractSpan.with_current_context
+  langs:
+  - python
+  module: azure.core.tracing
+  name: with_current_context(func)
+  summary: Passes the current spans to the new context the function will be run in.
+  syntax:
+    content: with_current_context(func)
+    parameters:
+    - description: The function that will be run in the new context
+      id: func
+    - id: func
+    return:
+      description: The target the pass in instead of the function
+  type: method
+  uid: azure.core.tracing.AbstractSpan.with_current_context
 references:
 - fullName: azure.core.tracing.AbstractSpan.add_attribute
   isExternal: false
@@ -226,11 +291,26 @@ references:
   name: get_current_tracer()
   parent: azure.core.tracing.AbstractSpan
   uid: azure.core.tracing.AbstractSpan.get_current_tracer
+- fullName: azure.core.tracing.AbstractSpan.get_trace_parent
+  isExternal: false
+  name: get_trace_parent()
+  parent: azure.core.tracing.AbstractSpan
+  uid: azure.core.tracing.AbstractSpan.get_trace_parent
+- fullName: azure.core.tracing.AbstractSpan.kind
+  isExternal: false
+  name: kind
+  parent: azure.core.tracing.AbstractSpan
+  uid: azure.core.tracing.AbstractSpan.kind
 - fullName: azure.core.tracing.AbstractSpan.link
   isExternal: false
-  name: link(headers)
+  name: link(traceparent)
   parent: azure.core.tracing.AbstractSpan
   uid: azure.core.tracing.AbstractSpan.link
+- fullName: azure.core.tracing.AbstractSpan.link_from_headers
+  isExternal: false
+  name: link_from_headers(headers)
+  parent: azure.core.tracing.AbstractSpan
+  uid: azure.core.tracing.AbstractSpan.link_from_headers
 - fullName: azure.core.tracing.AbstractSpan.set_current_span
   isExternal: false
   name: set_current_span(span)
@@ -266,3 +346,8 @@ references:
   name: to_header()
   parent: azure.core.tracing.AbstractSpan
   uid: azure.core.tracing.AbstractSpan.to_header
+- fullName: azure.core.tracing.AbstractSpan.with_current_context
+  isExternal: false
+  name: with_current_context(func)
+  parent: azure.core.tracing.AbstractSpan
+  uid: azure.core.tracing.AbstractSpan.with_current_context

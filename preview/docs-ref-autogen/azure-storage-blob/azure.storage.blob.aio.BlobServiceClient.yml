@@ -38,7 +38,7 @@ items:
 
     can also be retrieved using the *get_client* functions.'
   syntax:
-    content: BlobServiceClient(account_url, credential=None, loop=None, **kwargs)
+    content: BlobServiceClient(account_url, credential=None, **kwargs)
     parameters:
     - description: 'The URL to the blob storage account. Any other entities included
 
@@ -106,7 +106,7 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: create_container(name, metadata=None, public_access=None, timeout=None, **kwargs)
+  name: create_container(name, metadata=None, public_access=None, **kwargs)
   summary: 'Creates a new container under the specified account.
 
 
@@ -116,8 +116,7 @@ items:
 
     created container.'
   syntax:
-    content: create_container(name, metadata=None, public_access=None, timeout=None,
-      **kwargs)
+    content: create_container(name, metadata=None, public_access=None, **kwargs)
     parameters:
     - description: The name of the container to create.
       id: name
@@ -133,14 +132,14 @@ items:
       id: public_access
       type:
       - str
-      - azure.storage.blob.models.PublicAccess
+      - azure.storage.blob.PublicAccess
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
       - int
     return:
       type:
-      - azure.storage.blob.aio.container_client_async.ContainerClient
+      - azure.storage.blob.aio.ContainerClient
   type: method
   uid: azure.storage.blob.aio.BlobServiceClient.create_container
 - class: azure.storage.blob.aio.BlobServiceClient
@@ -148,7 +147,7 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: delete_container(container, lease=None, timeout=None, **kwargs)
+  name: delete_container(container, lease=None, **kwargs)
   summary: 'Marks the specified container for deletion.
 
 
@@ -157,7 +156,7 @@ items:
 
     If the container is not found, a ResourceNotFoundError will be raised.'
   syntax:
-    content: delete_container(container, lease=None, timeout=None, **kwargs)
+    content: delete_container(container, lease=None, **kwargs)
     parameters:
     - description: 'The container to delete. This can either be the name of the container,
 
@@ -165,7 +164,7 @@ items:
       id: container
       type:
       - str
-      - azure.storage.blob.models.ContainerProperties
+      - azure.storage.blob.ContainerProperties
     - description: 'If specified, delete_container only succeeds if the
 
         container''s lease is active and matches this ID.
@@ -186,7 +185,7 @@ items:
         if the resource has been modified since the specified time.'
       id: if_modified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -199,7 +198,7 @@ items:
         the resource has not been modified since the specified date/time.'
       id: if_unmodified_since
       type:
-      - datetime
+      - datetime.datetime
     - description: 'An ETag value, or the wildcard character (*). Specify this header
         to perform
 
@@ -262,29 +261,23 @@ items:
   syntax:
     content: get_blob_client(container, blob, snapshot=None)
     parameters:
-    - description: 'The container that the blob is in. This can either be the name
-        of the container,
-
-        or an instance of ContainerProperties.'
+    - description: The container that the blob is in.
       id: container
       type:
       - str
-      - azure.storage.blob.models.ContainerProperties
-    - description: 'The blob with which to interact. This can either be the name of
-        the blob,
-
-        or an instance of BlobProperties.'
+      - azure.storage.ContainerProperties
+    - description: The blob with which to interact.
       id: blob
       type:
       - str
-      - azure.storage.blob.models.BlobProperties
+      - azure.storage.BlobProperties
     - defaultValue: None
       description: 'The optional blob snapshot on which to operate. This can either
         be the ID of the snapshot,
 
         or a dictionary output returned by
 
-        <xref:azure.storage.blob.aio.blob_client_async.BlobClient.create_snapshot>.'
+        <xref:azure.storage.blob.aio.BlobClient.create_snapshot>.'
       id: snapshot
       type:
       - str
@@ -292,7 +285,7 @@ items:
     return:
       description: A BlobClient.
       type:
-      - azure.storage.blob.aio.blob_client_async.BlobClient
+      - azure.storage.blob.aio.BlobClient
   type: method
   uid: azure.storage.blob.aio.BlobServiceClient.get_blob_client
 - class: azure.storage.blob.aio.BlobServiceClient
@@ -308,17 +301,15 @@ items:
   syntax:
     content: get_container_client(container)
     parameters:
-    - description: 'The container. This can either be the name of the container,
-
-        or an instance of ContainerProperties.'
+    - description: The container that the blob is in.
       id: container
       type:
       - str
-      - azure.storage.blob.models.ContainerProperties
+      - azure.storage.blob.ContainerProperties
     return:
       description: A ContainerClient.
       type:
-      - azure.core.blob.aio.container_client_async.ContainerClient
+      - azure.core.blob.aio.ContainerClient
   type: method
   uid: azure.storage.blob.aio.BlobServiceClient.get_container_client
 - class: azure.storage.blob.aio.BlobServiceClient
@@ -326,12 +317,12 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: get_service_properties(timeout=None, **kwargs)
+  name: get_service_properties(**kwargs)
   summary: 'Gets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics.'
   syntax:
-    content: get_service_properties(timeout=None, **kwargs)
+    content: get_service_properties(**kwargs)
     parameters:
     - description: The timeout parameter is expressed in seconds.
       id: timeout
@@ -347,7 +338,7 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: get_service_stats(timeout=None, **kwargs)
+  name: get_service_stats(**kwargs)
   summary: 'Retrieves statistics related to replication for the Blob service.
 
 
@@ -380,7 +371,7 @@ items:
 
     replication is enabled for your storage account.'
   syntax:
-    content: get_service_stats(timeout=None, **kwargs)
+    content: get_service_stats(**kwargs)
     parameters:
     - description: The timeout parameter is expressed in seconds.
       id: timeout
@@ -397,22 +388,21 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: get_user_delegation_key(key_start_time, key_expiry_time, timeout=None, **kwargs)
+  name: get_user_delegation_key(key_start_time, key_expiry_time, **kwargs)
   summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
 
     A token credential must be present on the service object for this request to succeed.'
   syntax:
-    content: get_user_delegation_key(key_start_time, key_expiry_time, timeout=None,
-      **kwargs)
+    content: get_user_delegation_key(key_start_time, key_expiry_time, **kwargs)
     parameters:
     - description: A DateTime value. Indicates when the key becomes valid.
       id: key_start_time
       type:
-      - datetime
+      - datetime.datetime
     - description: A DateTime value. Indicates when the key stops being valid.
       id: key_expiry_time
       type:
-      - datetime
+      - datetime.datetime
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -420,7 +410,7 @@ items:
     return:
       description: The user delegation key.
       type:
-      - azure.storage.blob._shared.models.UserDelegationKey
+      - azure.storage.blob.UserDelegationKey
   type: method
   uid: azure.storage.blob.aio.BlobServiceClient.get_user_delegation_key
 - class: azure.storage.blob.aio.BlobServiceClient
@@ -428,8 +418,7 @@ items:
   langs:
   - python
   module: azure.storage.blob.aio
-  name: list_containers(name_starts_with=None, include_metadata=False, results_per_page=None,
-    timeout=None, **kwargs)
+  name: list_containers(name_starts_with=None, include_metadata=False, **kwargs)
   summary: 'Returns a generator to list the containers under the specified account.
 
 
@@ -437,8 +426,7 @@ items:
 
     the service and stop when all containers have been returned.'
   syntax:
-    content: list_containers(name_starts_with=None, include_metadata=False, results_per_page=None,
-      timeout=None, **kwargs)
+    content: list_containers(name_starts_with=None, include_metadata=False, **kwargs)
     parameters:
     - description: 'Filters the results to return only containers whose names
 
@@ -465,7 +453,7 @@ items:
     return:
       description: An iterable (auto-paging) of ContainerProperties.
       type:
-      - azure.core.async_paging.AsyncItemPaged[azure.storage.blob.models.ContainerProperties]
+      - azure.core.async_paging.AsyncItemPaged[azure.storage.blob.ContainerProperties]
   type: method
   uid: azure.storage.blob.aio.BlobServiceClient.list_containers
 - class: azure.storage.blob.aio.BlobServiceClient
@@ -475,7 +463,7 @@ items:
   module: azure.storage.blob.aio
   name: set_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
     cors=None, target_version=None, delete_retention_policy=None, static_website=None,
-    timeout=None, **kwargs)
+    **kwargs)
   summary: 'Sets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics.
@@ -487,24 +475,24 @@ items:
   syntax:
     content: set_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
       cors=None, target_version=None, delete_retention_policy=None, static_website=None,
-      timeout=None, **kwargs)
+      **kwargs)
     parameters:
     - description: Groups the Azure Analytics Logging settings.
       id: logging
       type:
-      - <xref:azure.storage.blob.models.Logging>
+      - azure.storage.blob.Logging
     - description: 'The hour metrics settings provide a summary of request
 
         statistics grouped by API in hourly aggregates for blobs.'
       id: hour_metrics
       type:
-      - <xref:azure.storage.blob.models.Metrics>
+      - azure.storage.blob.Metrics
     - description: 'The minute metrics settings provide request statistics
 
         for each minute for blobs.'
       id: minute_metrics
       type:
-      - <xref:azure.storage.blob.models.Metrics>
+      - azure.storage.blob.Metrics
     - description: 'You can include up to five CorsRule elements in the
 
         list. If an empty list is specified, all CORS rules will be deleted,
@@ -512,7 +500,7 @@ items:
         and CORS will be disabled for the service.'
       id: cors
       type:
-      - list(<xref:azure.storage.blob.models.CorsRule>)
+      - list[azure.storage.blob.CorsRule]
     - description: 'Indicates the default version to use for requests if an incoming
 
         request''s version is not specified.'
@@ -525,13 +513,13 @@ items:
         It also specifies the number of days and versions of blob to keep.'
       id: delete_retention_policy
       type:
-      - <xref:azure.storage.blob.models.RetentionPolicy>
+      - azure.storage.blob.RetentionPolicy
     - description: 'Specifies whether the static website feature is enabled,
 
         and if yes, indicates the index document and 404 error document to use.'
       id: static_website
       type:
-      - <xref:azure.storage.blob.models.StaticWebsite>
+      - azure.storage.blob.StaticWebsite
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       type:
@@ -544,12 +532,12 @@ items:
 references:
 - fullName: azure.storage.blob.aio.BlobServiceClient.create_container
   isExternal: false
-  name: create_container(name, metadata=None, public_access=None, timeout=None, **kwargs)
+  name: create_container(name, metadata=None, public_access=None, **kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.create_container
 - fullName: azure.storage.blob.aio.BlobServiceClient.delete_container
   isExternal: false
-  name: delete_container(container, lease=None, timeout=None, **kwargs)
+  name: delete_container(container, lease=None, **kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.delete_container
 - fullName: azure.storage.blob.aio.BlobServiceClient.get_account_information
@@ -569,30 +557,29 @@ references:
   uid: azure.storage.blob.aio.BlobServiceClient.get_container_client
 - fullName: azure.storage.blob.aio.BlobServiceClient.get_service_properties
   isExternal: false
-  name: get_service_properties(timeout=None, **kwargs)
+  name: get_service_properties(**kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.get_service_properties
 - fullName: azure.storage.blob.aio.BlobServiceClient.get_service_stats
   isExternal: false
-  name: get_service_stats(timeout=None, **kwargs)
+  name: get_service_stats(**kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.get_service_stats
 - fullName: azure.storage.blob.aio.BlobServiceClient.get_user_delegation_key
   isExternal: false
-  name: get_user_delegation_key(key_start_time, key_expiry_time, timeout=None, **kwargs)
+  name: get_user_delegation_key(key_start_time, key_expiry_time, **kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.get_user_delegation_key
 - fullName: azure.storage.blob.aio.BlobServiceClient.list_containers
   isExternal: false
-  name: list_containers(name_starts_with=None, include_metadata=False, results_per_page=None,
-    timeout=None, **kwargs)
+  name: list_containers(name_starts_with=None, include_metadata=False, **kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.list_containers
 - fullName: azure.storage.blob.aio.BlobServiceClient.set_service_properties
   isExternal: false
   name: set_service_properties(logging=None, hour_metrics=None, minute_metrics=None,
     cors=None, target_version=None, delete_retention_policy=None, static_website=None,
-    timeout=None, **kwargs)
+    **kwargs)
   parent: azure.storage.blob.aio.BlobServiceClient
   uid: azure.storage.blob.aio.BlobServiceClient.set_service_properties
 - fullName: dict(str, str)
@@ -633,7 +620,7 @@ references:
   - fullName: )
     name: )
   uid: dict(str, Any)
-- fullName: azure.core.async_paging.AsyncItemPaged[azure.storage.blob.models.ContainerProperties]
+- fullName: azure.core.async_paging.AsyncItemPaged[azure.storage.blob.ContainerProperties]
   name: AsyncItemPaged[ContainerProperties]
   spec.python:
   - fullName: azure.core.async_paging.AsyncItemPaged
@@ -641,23 +628,23 @@ references:
     uid: azure.core.async_paging.AsyncItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.storage.blob.models.ContainerProperties
+  - fullName: azure.storage.blob.ContainerProperties
     name: ContainerProperties
-    uid: azure.storage.blob.models.ContainerProperties
+    uid: azure.storage.blob.ContainerProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.async_paging.AsyncItemPaged[azure.storage.blob.models.ContainerProperties]
-- fullName: list(<xref:azure.storage.blob.models.CorsRule>)
-  name: list(CorsRule>)
+  uid: azure.core.async_paging.AsyncItemPaged[azure.storage.blob.ContainerProperties]
+- fullName: list[azure.storage.blob.CorsRule]
+  name: list[CorsRule]
   spec.python:
   - fullName: list
     name: list
     uid: list
-  - fullName: (
-    name: (
-  - fullName: <xref:azure.storage.blob.models.CorsRule>
-    name: CorsRule>
-    uid: <xref:azure.storage.blob.models.CorsRule>
-  - fullName: )
-    name: )
-  uid: list(<xref:azure.storage.blob.models.CorsRule>)
+  - fullName: '['
+    name: '['
+  - fullName: azure.storage.blob.CorsRule
+    name: CorsRule
+    uid: azure.storage.blob.CorsRule
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.storage.blob.CorsRule]
