@@ -8,7 +8,7 @@ manager: douge
 ms.date: 03/20/2018
 ms.topic: article
 ms.devlang: python
-ms.service: cosmosdb
+ms.service: cosmos-db
 ---
 
 # Azure Cosmos DB libraries for Python
