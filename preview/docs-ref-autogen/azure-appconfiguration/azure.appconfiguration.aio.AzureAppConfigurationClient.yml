@@ -23,14 +23,17 @@ items:
     \ service.\n\n   param str base_url:\n      base url of the service\n\n   param\
     \ credential:\n      An object which can provide secrets for the app configuration\
     \ service\n\n   type credential:\n      azure.AppConfigConnectionStringCredential\n\
-    \nThis is the async version of <xref:azure.appconfiguration.ConfigurationClient>"
+    \n   keyword Pipeline pipeline:\n      If omitted, the standard pipeline is used.\n\
+    \n   keyword HttpTransport transport:\n      If omitted, the standard pipeline\
+    \ is used.\n\n   keyword list[HTTPPolicy] policies:\n      If omitted, the standard\
+    \ pipeline is used.\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
   syntax:
     content: AzureAppConfigurationClient(base_url, credential, **kwargs)
   type: class
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: ResourceExistsError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.add_configuration_setting
   langs:
   - python
@@ -60,7 +63,7 @@ items:
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.add_configuration_setting
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: ResourceNotFoundError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.clear_read_only
   langs:
   - python
@@ -87,13 +90,12 @@ items:
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.clear_read_only
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: ResourceReadOnlyError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.delete_configuration_setting
   langs:
   - python
   module: azure.appconfiguration.aio
-  name: 'delete_configuration_setting(key, label=None, etag=None, match_condition=<MatchConditions.Unconditionally:
-    1>, **kwargs)'
+  name: delete_configuration_setting(key, label=None, **kwargs)
   summary: "Delete a ConfigurationSetting if it exists\n\nExample\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
     : [], \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false,\
@@ -101,8 +103,7 @@ items:
     \ = await async_client.delete_configuration_setting(\n       key=\"MyKey\", label=\"\
     MyLabel\"\n   )\n   ````"
   syntax:
-    content: 'delete_configuration_setting(key, label=None, etag=None, match_condition=<MatchConditions.Unconditionally:
-      1>, **kwargs)'
+    content: delete_configuration_setting(key, label=None, **kwargs)
     parameters:
     - description: key used to identify the ConfigurationSetting
       id: key
@@ -112,14 +113,6 @@ items:
       id: label
       type:
       - str
-    - description: check if the ConfigurationSetting is changed. Set None to skip
-        checking etag
-      id: etag
-      type:
-      - str
-      - None
-    - description: the match condition to use upon the etag
-      id: match_condition
     return:
       description: The deleted ConfigurationSetting returned from the service, or
         None if it doesn't exist.
@@ -136,7 +129,7 @@ items:
   summary: "Create AzureAppConfigurationClient from a Connection String.\n\n   param\
     \ connection_string:\n      Connection String\n      (one of the access keys of\
     \ the Azure App Configuration resource)\n      used to access the Azure App Configuration.\n\
-    \n   type connection_string:\n      str\n\nThis is the async version of <xref:azure.appconfiguration.ConfigurationClient>\n\
+    \n   type connection_string:\n      str\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>\n\
     \nExample\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
     \ \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n\
@@ -152,7 +145,7 @@ items:
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.from_connection_string
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: ResourceNotFoundError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.get_configuration_setting
   langs:
   - python
@@ -185,6 +178,8 @@ items:
       - None
     - description: the match condition to use upon the etag
       id: match_condition
+      type:
+      - azure.core.MatchConditions
     return:
       description: The matched ConfigurationSetting object
       type:
@@ -193,7 +188,7 @@ items:
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.get_configuration_setting
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: HttpRequestError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.list_configuration_settings
   langs:
   - python
@@ -233,7 +228,7 @@ items:
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_configuration_settings
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: HttpRequestError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.list_revisions
   langs:
   - python
@@ -271,6 +266,8 @@ items:
   type: method
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_revisions
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
+  exceptions:
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.set_configuration_setting
   langs:
   - python
@@ -279,31 +276,36 @@ items:
     1>, **kwargs)'
   summary: "Add or update a ConfigurationSetting.\nIf the configuration setting identified\
     \ by key and label does not exist, this is a create.\nOtherwise this is an update.\n\
-    \n\nor updated (if exists) to the service\n:type configuration_setting: <xref:azure.appconfiguration.aio.ConfigurationSetting>\n\
-    :param match_condition: the match condition to use upon the etag\n:type MatchConditions:\
-    \ <xref:azure.appconfiguration.aio.MatchConditions>\n:keyword dict headers: if\
-    \ \"headers\" exists, its value (a dict) will be added to the http request header\n\
-    :return: The ConfigurationSetting returned from the service\n:rtype: <xref:azure.appconfiguration.aio.ConfigurationSetting>\n\
-    :raises: <xref:azure.appconfiguration.aio.ResourceReadOnlyError>, <xref:azure.appconfiguration.aio.ResourceModifiedError>,\
-    \ <xref:azure.appconfiguration.aio.HttpRequestError>\n\nExample\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false,\
-    \ \"highlight_args\": {}} -->\n\n````python\n\n   # in async function\n   config_setting\
-    \ = ConfigurationSetting(\n       key=\"MyKey\",\n       label=\"MyLabel\",\n\
-    \       value=\"my set value\",\n       content_type=\"my set content type\",\n\
-    \       tags={\"my set tag\": \"my set tag value\"}\n   )\n   returned_config_setting\
-    \ = await async_client.set_configuration_setting(config_setting)\n   ````"
+    \nExample\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
+    \ \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\"\
+    : \"python\", \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n\
+    \   # in async function\n   config_setting = ConfigurationSetting(\n       key=\"\
+    MyKey\",\n       label=\"MyLabel\",\n       value=\"my set value\",\n       content_type=\"\
+    my set content type\",\n       tags={\"my set tag\": \"my set tag value\"}\n \
+    \  )\n   returned_config_setting = await async_client.set_configuration_setting(config_setting)\n\
+    \   ````"
   syntax:
     content: 'set_configuration_setting(configuration_setting, match_condition=<MatchConditions.Unconditionally:
       1>, **kwargs)'
     parameters:
-    - description: the ConfigurationSetting to be added (if not exists)
+    - description: the ConfigurationSetting to be added (if not exists)         or
+        updated (if exists) to the service
       id: configuration_setting
+      type:
+      - azure.appconfiguration.aio.ConfigurationSetting
+    - description: the match condition to use upon the etag
+      id: match_condition
+      type:
+      - azure.core.MatchConditions
+    return:
+      description: The ConfigurationSetting returned from the service
+      type:
+      - <xref:azure.appconfiguration.aio.ConfigurationSetting>
   type: method
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.set_configuration_setting
 - class: azure.appconfiguration.aio.AzureAppConfigurationClient
   exceptions:
-  - type: ResourceNotFoundError
+  - type: HttpResponseError
   fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.set_read_only
   langs:
   - python
@@ -341,8 +343,7 @@ references:
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.clear_read_only
 - fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.delete_configuration_setting
   isExternal: false
-  name: 'delete_configuration_setting(key, label=None, etag=None, match_condition=<MatchConditions.Unconditionally:
-    1>, **kwargs)'
+  name: delete_configuration_setting(key, label=None, **kwargs)
   parent: azure.appconfiguration.aio.AzureAppConfigurationClient
   uid: azure.appconfiguration.aio.AzureAppConfigurationClient.delete_configuration_setting
 - fullName: azure.appconfiguration.aio.AzureAppConfigurationClient.from_connection_string

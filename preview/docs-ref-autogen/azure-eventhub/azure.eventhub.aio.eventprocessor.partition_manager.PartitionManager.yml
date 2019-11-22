@@ -3,6 +3,7 @@ api_name: []
 items:
 - children:
   - azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.claim_ownership
+  - azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_checkpoints
   - azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_ownership
   - azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.update_checkpoint
   class: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
@@ -36,42 +37,32 @@ items:
     - description: Iterable of dictionaries containing all the ownership to claim.
       id: ownership_list
       type:
-      - Iterable of dict
+      - Iterable[Dict[str,Any]]
     return:
-      description: 'Iterable of dictionaries containing the following partition ownership
-        information:
-
-        eventhub_name
-
-        consumer_group_name
-
-        owner_id
-
-        partition_id
-
-        owner_level
-
-        offset
-
-        sequence_number
-
-        last_modified_time
-
-        etag'
+      type:
+      - 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition ownership
+        information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+        * owner_id * partition_id * last_modified_time * etag '
   type: method
   uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.claim_ownership
 - class: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
-  fullName: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_ownership
+  fullName: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_checkpoints
   langs:
   - python
   module: azure.eventhub.aio.eventprocessor.partition_manager
-  name: 'list_ownership(eventhub_name: str, consumer_group_name: str) -> typing.Iterable[typing.Dict[str,
-    typing.Any]]'
-  summary: Retrieves a complete ownership list from the chosen storage service.
+  name: 'list_checkpoints(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+    str)'
+  summary: List the updated checkpoints from the store
   syntax:
-    content: 'list_ownership(eventhub_name: str, consumer_group_name: str) -> typing.Iterable[typing.Dict[str,
-      typing.Any]]'
+    content: 'list_checkpoints(fully_qualified_namespace: str, eventhub_name: str,
+      consumer_group_name: str)'
     parameters:
+    - description: 'The fully qualified namespace that the event hub belongs to.
+
+        The format is like "<namespace>.servicebus.windows.net"'
+      id: fully_qualified_namespace
+      type:
+      - str
     - description: 'The name of the specific Event Hub the ownership are associated
         with, relative to
 
@@ -84,26 +75,46 @@ items:
       type:
       - str
     return:
-      description: 'Iterable of dictionaries containing the following partition ownership
-        information:
+      type:
+      - 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition ownership
+        information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+        * partition_id * sequence_number * offset '
+  type: method
+  uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_checkpoints
+- class: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
+  fullName: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_ownership
+  langs:
+  - python
+  module: azure.eventhub.aio.eventprocessor.partition_manager
+  name: 'list_ownership(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+    str) -> typing.Iterable[typing.Dict[str, typing.Any]]'
+  summary: Retrieves a complete ownership list from the chosen storage service.
+  syntax:
+    content: 'list_ownership(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+      str) -> typing.Iterable[typing.Dict[str, typing.Any]]'
+    parameters:
+    - description: 'The fully qualified namespace that the event hub belongs to.
 
-        eventhub_name
+        The format is like "<namespace>.servicebus.windows.net"'
+      id: fully_qualified_namespace
+      type:
+      - str
+    - description: 'The name of the specific Event Hub the ownership are associated
+        with, relative to
 
-        consumer_group_name
-
-        owner_id
-
-        partition_id
-
-        owner_level
-
-        offset
-
-        sequence_number
-
-        last_modified_time
-
-        etag'
+        the Event Hubs namespace that contains it.'
+      id: eventhub_name
+      type:
+      - str
+    - description: The name of the consumer group the ownership are associated with.
+      id: consumer_group_name
+      type:
+      - str
+    return:
+      type:
+      - 'Iterable[Dict[str, Any]], Iterable of dictionaries containing partition ownership
+        information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+        * owner_id * partition_id * last_modified_time * etag '
   type: method
   uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_ownership
 - class: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
@@ -111,16 +122,23 @@ items:
   langs:
   - python
   module: azure.eventhub.aio.eventprocessor.partition_manager
-  name: update_checkpoint(eventhub_name, consumer_group_name, partition_id, owner_id,
-    offset, sequence_number) -> None
+  name: 'update_checkpoint(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+    str, partition_id: str, offset: str, sequence_number: int) -> None'
   summary: 'Updates the checkpoint using the given information for the associated
     partition and
 
     consumer group in the chosen storage service.'
   syntax:
-    content: update_checkpoint(eventhub_name, consumer_group_name, partition_id, owner_id,
-      offset, sequence_number) -> None
+    content: 'update_checkpoint(fully_qualified_namespace: str, eventhub_name: str,
+      consumer_group_name: str, partition_id: str, offset: str, sequence_number: int)
+      -> None'
     parameters:
+    - description: 'The fully qualified namespace that the event hub belongs to.
+
+        The format is like "<namespace>.servicebus.windows.net"'
+      id: fully_qualified_namespace
+      type:
+      - str
     - description: 'The name of the specific Event Hub the ownership are associated
         with, relative to
 
@@ -136,23 +154,21 @@ items:
       id: partition_id
       type:
       - str
-    - description: The identifier of the ~azure.eventhub.eventprocessor.EventProcessor.
-      id: owner_id
-      type:
-      - str
-    - description: The offset of the ~azure.eventhub.EventData the new checkpoint
-        will be associated with.
+    - description: 'The offset of the <xref:azure.eventhub.EventData>
+
+        the new checkpoint will be associated with.'
       id: offset
       type:
       - str
-    - description: 'The sequence_number of the ~azure.eventhub.EventData the new checkpoint
+    - description: 'The sequence_number of the <xref:azure.eventhub.EventData>
 
-        will be associated with.'
+        the new checkpoint will be associated with.'
       id: sequence_number
       type:
       - int
     return:
-      description: None
+      type:
+      - None
   type: method
   uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.update_checkpoint
 references:
@@ -162,15 +178,159 @@ references:
     -> typing.Iterable[typing.Dict[str, typing.Any]]'
   parent: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
   uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.claim_ownership
+- fullName: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_checkpoints
+  isExternal: false
+  name: 'list_checkpoints(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+    str)'
+  parent: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
+  uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_checkpoints
 - fullName: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_ownership
   isExternal: false
-  name: 'list_ownership(eventhub_name: str, consumer_group_name: str) -> typing.Iterable[typing.Dict[str,
-    typing.Any]]'
+  name: 'list_ownership(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+    str) -> typing.Iterable[typing.Dict[str, typing.Any]]'
   parent: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
   uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.list_ownership
 - fullName: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.update_checkpoint
   isExternal: false
-  name: update_checkpoint(eventhub_name, consumer_group_name, partition_id, owner_id,
-    offset, sequence_number) -> None
+  name: 'update_checkpoint(fully_qualified_namespace: str, eventhub_name: str, consumer_group_name:
+    str, partition_id: str, offset: str, sequence_number: int) -> None'
   parent: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager
   uid: azure.eventhub.aio.eventprocessor.partition_manager.PartitionManager.update_checkpoint
+- fullName: Iterable[Dict[str,Any]]
+  name: Iterable[Dict[str,Any]]
+  spec.python:
+  - fullName: Iterable
+    name: Iterable
+    uid: Iterable
+  - fullName: '['
+    name: '['
+  - fullName: Dict
+    name: Dict
+    uid: Dict
+  - fullName: '['
+    name: '['
+  - fullName: str,Any
+    name: str,Any
+    uid: str,Any
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: Iterable[Dict[str,Any]]
+- fullName: 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition
+    ownership information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * owner_id * partition_id * last_modified_time * etag '
+  name: 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition ownership
+    information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * owner_id * partition_id * last_modified_time * etag '
+  spec.python:
+  - fullName: Iterable
+    name: Iterable
+    uid: Iterable
+  - fullName: '['
+    name: '['
+  - fullName: Dict
+    name: Dict
+    uid: Dict
+  - fullName: '['
+    name: '['
+  - fullName: str,Any
+    name: str,Any
+    uid: str,Any
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  - fullName: ', '
+    name: ', '
+  - fullName: 'Iterable of dictionaries containing partition ownership information:*
+      fully_qualified_namespace * eventhub_name * consumer_group_name * owner_id *
+      partition_id * last_modified_time * etag '
+    name: 'Iterable of dictionaries containing partition ownership information:* fully_qualified_namespace
+      * eventhub_name * consumer_group_name * owner_id * partition_id * last_modified_time
+      * etag '
+    uid: 'Iterable of dictionaries containing partition ownership information:* fully_qualified_namespace
+      * eventhub_name * consumer_group_name * owner_id * partition_id * last_modified_time
+      * etag '
+  uid: 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition ownership
+    information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * owner_id * partition_id * last_modified_time * etag '
+- fullName: 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition
+    ownership information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * partition_id * sequence_number * offset '
+  name: 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition ownership
+    information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * partition_id * sequence_number * offset '
+  spec.python:
+  - fullName: Iterable
+    name: Iterable
+    uid: Iterable
+  - fullName: '['
+    name: '['
+  - fullName: Dict
+    name: Dict
+    uid: Dict
+  - fullName: '['
+    name: '['
+  - fullName: str,Any
+    name: str,Any
+    uid: str,Any
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  - fullName: ', '
+    name: ', '
+  - fullName: 'Iterable of dictionaries containing partition ownership information:*
+      fully_qualified_namespace * eventhub_name * consumer_group_name * partition_id
+      * sequence_number * offset '
+    name: 'Iterable of dictionaries containing partition ownership information:* fully_qualified_namespace
+      * eventhub_name * consumer_group_name * partition_id * sequence_number * offset '
+    uid: 'Iterable of dictionaries containing partition ownership information:* fully_qualified_namespace
+      * eventhub_name * consumer_group_name * partition_id * sequence_number * offset '
+  uid: 'Iterable[Dict[str,Any]], Iterable of dictionaries containing partition ownership
+    information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * partition_id * sequence_number * offset '
+- fullName: 'Iterable[Dict[str, Any]], Iterable of dictionaries containing partition
+    ownership information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * owner_id * partition_id * last_modified_time * etag '
+  name: 'Iterable[Dict[str, Any]], Iterable of dictionaries containing partition ownership
+    information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * owner_id * partition_id * last_modified_time * etag '
+  spec.python:
+  - fullName: Iterable
+    name: Iterable
+    uid: Iterable
+  - fullName: '['
+    name: '['
+  - fullName: Dict
+    name: Dict
+    uid: Dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: Any
+    name: Any
+    uid: Any
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  - fullName: ', '
+    name: ', '
+  - fullName: 'Iterable of dictionaries containing partition ownership information:*
+      fully_qualified_namespace * eventhub_name * consumer_group_name * owner_id *
+      partition_id * last_modified_time * etag '
+    name: 'Iterable of dictionaries containing partition ownership information:* fully_qualified_namespace
+      * eventhub_name * consumer_group_name * owner_id * partition_id * last_modified_time
+      * etag '
+    uid: 'Iterable of dictionaries containing partition ownership information:* fully_qualified_namespace
+      * eventhub_name * consumer_group_name * owner_id * partition_id * last_modified_time
+      * etag '
+  uid: 'Iterable[Dict[str, Any]], Iterable of dictionaries containing partition ownership
+    information:* fully_qualified_namespace * eventhub_name * consumer_group_name
+    * owner_id * partition_id * last_modified_time * etag '

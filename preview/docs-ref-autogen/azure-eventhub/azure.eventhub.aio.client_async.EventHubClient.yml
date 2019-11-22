@@ -3,8 +3,6 @@ api_name: []
 items:
 - children:
   - azure.eventhub.aio.client_async.EventHubClient.close
-  - azure.eventhub.aio.client_async.EventHubClient.create_consumer
-  - azure.eventhub.aio.client_async.EventHubClient.create_producer
   - azure.eventhub.aio.client_async.EventHubClient.get_partition_ids
   - azure.eventhub.aio.client_async.EventHubClient.get_partition_properties
   - azure.eventhub.aio.client_async.EventHubClient.get_properties
@@ -37,110 +35,6 @@ items:
   type: method
   uid: azure.eventhub.aio.client_async.EventHubClient.close
 - class: azure.eventhub.aio.client_async.EventHubClient
-  fullName: azure.eventhub.aio.client_async.EventHubClient.create_consumer
-  langs:
-  - python
-  module: azure.eventhub.aio.client_async
-  name: 'create_consumer(consumer_group: str, partition_id: str, event_position: azure.eventhub.common.EventPosition,
-    **kwargs) -> azure.eventhub.aio.consumer_async.EventHubConsumer'
-  summary: Create an async consumer to the client for a particular consumer group
-    and partition.
-  syntax:
-    content: 'create_consumer(consumer_group: str, partition_id: str, event_position:
-      azure.eventhub.common.EventPosition, **kwargs) -> azure.eventhub.aio.consumer_async.EventHubConsumer'
-    parameters:
-    - description: 'The name of the consumer group this consumer is associated with.
-
-        Events are read in the context of this group. The default consumer_group for
-        an event hub is "$Default".'
-      id: consumer_group
-      type:
-      - str
-    - description: The identifier of the Event Hub partition from which events will
-        be received.
-      id: partition_id
-      type:
-      - str
-    - description: The position within the partition where the consumer should begin
-        reading events.
-      id: event_position
-      type:
-      - azure.eventhub.common.EventPosition
-    - description: 'The priority of the exclusive consumer. The client will create
-        an exclusive
-
-        consumer if owner_level is set.'
-      id: owner_level
-      type:
-      - int
-    - description: The message prefetch count of the consumer. Default is 300.
-      id: prefetch
-      type:
-      - int
-    - description: 'Indicates whether or not the consumer should request information
-
-        on the last enqueued event on its associated partition, and track that information
-        as events are received.
-
-        When information about the partition''s last enqueued event is being tracked,
-        each event received from the
-
-        Event Hubs service will carry metadata about the partition. This results in
-        a small amount of additional
-
-        network bandwidth consumption that is generally a favorable trade-off when
-        considered against periodically
-
-        making requests for partition properties using the Event Hub client.
-
-        It is set to *False* by default.'
-      id: track_last_enqueued_event_properties
-      type:
-      - bool
-    - description: An event loop. If not specified the default event loop will be
-        used.
-      id: loop
-    return:
-      type:
-      - azure.eventhub.aio.consumer_async.EventHubConsumer
-  type: method
-  uid: azure.eventhub.aio.client_async.EventHubClient.create_consumer
-- class: azure.eventhub.aio.client_async.EventHubClient
-  fullName: azure.eventhub.aio.client_async.EventHubClient.create_producer
-  langs:
-  - python
-  module: azure.eventhub.aio.client_async
-  name: 'create_producer(*, partition_id: str = None, send_timeout: float = None,
-    loop: asyncio.events.AbstractEventLoop = None) -> azure.eventhub.aio.producer_async.EventHubProducer'
-  summary: Create an async producer to send EventData object to an EventHub.
-  syntax:
-    content: 'create_producer(*, partition_id: str = None, send_timeout: float = None,
-      loop: asyncio.events.AbstractEventLoop = None) -> azure.eventhub.aio.producer_async.EventHubProducer'
-    parameters:
-    - description: 'Optionally specify a particular partition to send to.
-
-        If omitted, the events will be distributed to available partitions via
-
-        round-robin.'
-      id: partition_id
-      type:
-      - str
-    - description: 'The timeout in seconds for an individual event to be sent from
-        the time that it is
-
-        queued. Default value is 60 seconds. If set to 0, there will be no timeout.'
-      id: send_timeout
-      type:
-      - float
-    - description: An event loop. If not specified the default event loop will be
-        used.
-      id: loop
-    return:
-      type:
-      - azure.eventhub.aio.producer_async.EventHubProducer
-  type: method
-  uid: azure.eventhub.aio.client_async.EventHubClient.create_producer
-- class: azure.eventhub.aio.client_async.EventHubClient
   fullName: azure.eventhub.aio.client_async.EventHubClient.get_partition_ids
   langs:
   - python
@@ -156,15 +50,17 @@ items:
   type: method
   uid: azure.eventhub.aio.client_async.EventHubClient.get_partition_ids
 - class: azure.eventhub.aio.client_async.EventHubClient
+  exceptions:
+  - type: azure.eventhub.EventHubError
   fullName: azure.eventhub.aio.client_async.EventHubClient.get_partition_properties
   langs:
   - python
   module: azure.eventhub.aio.client_async
   name: get_partition_properties(partition)
   summary: "Get properties of the specified partition async.\nKeys in the details\
-    \ dictionary include:\n\n   -'event_hub_path'\n   -'id'\n   -'beginning_sequence_number'\n\
-    \   -'last_enqueued_sequence_number'\n   -'last_enqueued_offset'\n   -'last_enqueued_time_utc'\n\
-    \   -'is_empty'"
+    \ dictionary include:\n\n   * event_hub_path \n\n   * id \n\n   * beginning_sequence_number\
+    \ \n\n   * last_enqueued_sequence_number \n\n   * last_enqueued_offset \n\n  \
+    \ * last_enqueued_time_utc \n\n   * is_empty"
   syntax:
     content: get_partition_properties(partition)
     parameters:
@@ -184,7 +80,7 @@ items:
   module: azure.eventhub.aio.client_async
   name: get_properties()
   summary: "Get properties of the specified EventHub async.\nKeys in the details dictionary\
-    \ include:\n\n   -'path'\n   -'created_at'\n   -'partition_ids'"
+    \ include:\n\n   * path \n\n   * created_at \n\n   * partition_ids"
   syntax:
     content: get_properties()
     parameters: []
@@ -199,18 +95,6 @@ references:
   name: close()
   parent: azure.eventhub.aio.client_async.EventHubClient
   uid: azure.eventhub.aio.client_async.EventHubClient.close
-- fullName: azure.eventhub.aio.client_async.EventHubClient.create_consumer
-  isExternal: false
-  name: 'create_consumer(consumer_group: str, partition_id: str, event_position: azure.eventhub.common.EventPosition,
-    **kwargs) -> azure.eventhub.aio.consumer_async.EventHubConsumer'
-  parent: azure.eventhub.aio.client_async.EventHubClient
-  uid: azure.eventhub.aio.client_async.EventHubClient.create_consumer
-- fullName: azure.eventhub.aio.client_async.EventHubClient.create_producer
-  isExternal: false
-  name: 'create_producer(*, partition_id: str = None, send_timeout: float = None,
-    loop: asyncio.events.AbstractEventLoop = None) -> azure.eventhub.aio.producer_async.EventHubProducer'
-  parent: azure.eventhub.aio.client_async.EventHubClient
-  uid: azure.eventhub.aio.client_async.EventHubClient.create_producer
 - fullName: azure.eventhub.aio.client_async.EventHubClient.get_partition_ids
   isExternal: false
   name: get_partition_ids()
