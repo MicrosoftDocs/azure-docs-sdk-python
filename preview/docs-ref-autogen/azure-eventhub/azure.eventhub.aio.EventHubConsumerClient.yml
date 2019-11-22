@@ -6,6 +6,20 @@ items:
   - azure.eventhub.aio.EventHubConsumerClient.from_connection_string
   - azure.eventhub.aio.EventHubConsumerClient.receive
   class: azure.eventhub.aio.EventHubConsumerClient
+  example:
+  - "Create a new instance of the EventHubConsumerClient.<!--[!code-python[Main](les\\\
+    async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\1\\\\azure-eventhub-5.0.0b5\\\\samples\\\
+    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   import os\n   from azure.eventhub import EventHubSharedKeyCredential\n\
+    \   from azure.eventhub.aio import EventHubConsumerClient\n\n   hostname = os.environ['EVENT_HUB_HOSTNAME']\n\
+    \   event_hub = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
+    \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   consumer = EventHubConsumerClient(host=hostname,\n\
+    \                                     event_hub_path=event_hub,\n            \
+    \                         credential=EventHubSharedKeyCredential(shared_access_policy,\
+    \ shared_access_key))\n\n   ````\n"
   fullName: azure.eventhub.aio.EventHubConsumerClient
   inheritance:
   - inheritance:
@@ -75,6 +89,26 @@ items:
   type: class
   uid: azure.eventhub.aio.EventHubConsumerClient
 - class: azure.eventhub.aio.EventHubConsumerClient
+  example:
+  - "Close down the client.<!--[!code-python[Main](les\\async_samples\\sample_code_eventhub_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
+    \\1\\\\azure-eventhub-5.0.0b5\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n\n\
+    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   event_hub\
+    \ = os.environ['EVENT_HUB_NAME']\n\n   from azure.eventhub.aio import EventHubConsumerClient\n\
+    \   consumer = EventHubConsumerClient.from_connection_string(\n       conn_str=event_hub_connection_str,\n\
+    \       event_hub_path=event_hub\n   )\n\n   logger = logging.getLogger(\"azure.eventhub\"\
+    )\n\n   async def on_events(partition_context, events):\n       logger.info(\"\
+    Received {} messages from partition: {}\".format(\n           len(events), partition_context.partition_id))\n\
+    \       # Do ops on received events\n\n   # The receive method is a coroutine\
+    \ method which can be called by `await consumer.receive(...)` and it will block.\n\
+    \   # so execute it in an async task to better demonstrate how to stop the receiving\
+    \ by calling he close method.\n\n   recv_task = asyncio.ensure_future(consumer.receive(on_events=on_events,\
+    \ consumer_group='$Default'))\n   await asyncio.sleep(3)  # keep receiving for\
+    \ 3 seconds\n   recv_task.cancel()  # stop receiving\n\n   # Close down the consumer\
+    \ handler explicitly.\n   await consumer.close()\n\n   ````\n"
   fullName: azure.eventhub.aio.EventHubConsumerClient.close
   langs:
   - python
@@ -91,6 +125,18 @@ items:
   type: method
   uid: azure.eventhub.aio.EventHubConsumerClient.close
 - class: azure.eventhub.aio.EventHubConsumerClient
+  example:
+  - "Create a new instance of the EventHubConsumerClient from connection string.<!--[!code-python[Main](les\\\
+    async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\1\\\\azure-eventhub-5.0.0b5\\\\samples\\\
+    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubConsumerClient\n\
+    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   event_hub\
+    \ = os.environ['EVENT_HUB_NAME']\n   consumer = EventHubConsumerClient.from_connection_string(conn_str=event_hub_connection_str,\n\
+    \                                                            event_hub_path=event_hub)\n\
+    \n   ````\n"
   fullName: azure.eventhub.aio.EventHubConsumerClient.from_connection_string
   langs:
   - python
@@ -108,6 +154,19 @@ items:
   type: method
   uid: azure.eventhub.aio.EventHubConsumerClient.from_connection_string
 - class: azure.eventhub.aio.EventHubConsumerClient
+  example:
+  - "Receive events from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
+    sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\source_code\\\\1\\\\azure-eventhub-5.0.0b5\\\\samples\\\\async_samples\\\
+    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"language\":\
+    \ \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+    \n````python\n\n       logger = logging.getLogger(\"azure.eventhub\")\n\n    \
+    \   async def on_events(partition_context, events):\n           logger.info(\"\
+    Received {} messages from partition: {}\".format(\n               len(events),\
+    \ partition_context.partition_id))\n           # Do ops on received events\n \
+    \      async with consumer:\n           await consumer.receive(on_events=on_events,\
+    \ consumer_group=\"$default\")\n\n   ````\n"
   fullName: azure.eventhub.aio.EventHubConsumerClient.receive
   langs:
   - python
