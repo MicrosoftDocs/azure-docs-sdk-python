@@ -4,7 +4,7 @@ description: Reference documentation for the Python client libraries for Azure K
 author: sptramer
 manager: carmonm
 ms.author: sttramer
-ms.date: 06/10/2019
+ms.date: 11/25/2019
 ms.topic: conceptual
 ms.devlang: python
 ms.service: keyvault
@@ -15,10 +15,9 @@ ms.service: keyvault
 [Azure Key Vault](/azure/key-vault/) is Azure's storage and management system for cryptographic keys, secrets, and certificate
 management. The Python SDK API for Key Vault is split between client libraries and management libraries.
 
-Use the client library to:
-- Access, update, or delete items stored in an Azure Key Vault
-- Get metadata for stored certificates
-- Verify signatures against symmetric keys in Key Vault
+Use the following client libraries to:
+- Create, store, and control access to the keys used to encrypt your data (azure-keyvault-keys)
+- Securely store and control access to tokens, passwords, certificates, API keys, and other secrets (azure-keyvault-secrets)
 
 Use the management library to:
 - Create, update, or delete new Key Vault stores
@@ -31,57 +30,51 @@ Use the management library to:
 ### Client library
 
 ```bash
-pip install azure-keyvault
+pip install  azure-keyvault-secrets azure-keyvault-keys azure-identity
 ```
 
 ## Examples
 
-The following examples use service principal authentication, which is the recommended sign in method
-for applications that connect to Azure. To learn about service principal authentication, see
-[Authenticate with the Azure SDK for Python](https://docs.microsoft.com/en-us/python/azure/python-sdk-azure-authenticate)
-
 Retrieve the public portion of an asymmetric key from a vault:
 
 ```python
-from azure.keyvault import KeyVaultClient
-from azure.common.credentials import ServicePrincipalCredentials
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.keys import KeyClient
 
-credentials = ServicePrincipalCredentials(
-    client_id = '...',
-    secret = '...',
-    tenant = '...'
-)
+credential = DefaultAzureCredential()
 
-client = KeyVaultClient(credentials)
+key_client = KeyClient("https://<vaultname>.vault.azure.net", credential)
 
-# VAULT_URL must be in the format 'https://<vaultname>.vault.azure.net'
-# KEY_VERSION is required, and can be obtained with the KeyVaultClient.get_key_versions(self, vault_url, key_name) API
-key_bundle = client.get_key(VAULT_URL, KEY_NAME, KEY_VERSION)
-key = key_bundle.key
+key = key_client.get_key("key-name")
+print(key.name)
 ```
 
 Retrieve a secret from a vault:
 
 ```python
-from azure.keyvault import KeyVaultClient
-from azure.common.credentials import ServicePrincipalCredentials
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 
-credentials = ServicePrincipalCredentials(
-    client_id = '...',
-    secret = '...',
-    tenant = '...'
-)
+credential = DefaultAzureCredential()
 
-client = KeyVaultClient(credentials)
+secret_client = SecretClient(vault_url="https://<vaultname>.vault.azure.net", credential=credential)
+secret = secret_client.get_secret("secret-name")
 
-# VAULT_URL must be in the format 'https://<vaultname>.vault.azure.net'
-# SECRET_VERSION is required, and can be obtained with the KeyVaultClient.get_secret_versions(self, vault_url, secret_id) API
-secret_bundle = client.get_secret(VAULT_URL, SECRET_ID, SECRET_VERSION)
-secret = secret_bundle.value
+print(secret.name)
+print(secret.value)
+
 ```
 
+| Service | Package | Readme | Samples | API Reference | Changelog |
+| ------- | ------- | ------ | ------- | ------------- | --------- |
+| Identity | [azure-identity - 1.0.0](https://pypi.org/project/azure-identity/1.0.0) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/README.md) | N/A | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/HISTORY.md) |
+| Key Vault - Certificates | [azure-keyvault-certificates - 4.0.0b5](https://pypi.org/project/azure-keyvault-certificates/4.0.0b5) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.0.0b5/sdk/keyvault/azure-keyvault-certificates/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.0.0b5/sdk/keyvault/azure-keyvault-certificates/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-certificates/4.0.0b5/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.0.0b5/sdk/keyvault/azure-keyvault-certificates/HISTORY.md) |
+| Key Vault - Keys | [azure-keyvault-keys - 4.0.0](https://pypi.org/project/azure-keyvault-keys/4.0.0) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-keys/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/HISTORY.md) |
+| Key Vault - Secrets | [azure-keyvault-secrets - 4.0.0](https://pypi.org/project/azure-keyvault-secrets/4.0.0) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-secrets/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/HISTORY.md) |
+
+
 > [!div class="nextstepaction"]
-> [Explore the Client APIs](/python/api/overview/azure/keyvault/client)
+> [Get Started with the Client APIs](/azure/key-vault/quick-create-python)
 
 ### Management library
 
