@@ -30,7 +30,9 @@ Use the management library to:
 ### Client library
 
 ```bash
-pip install  azure-keyvault-secrets azure-keyvault-keys azure-identity
+pip install azure-keyvault-secrets 
+pip install azure-keyvault-keys
+pip install azure-identity
 ```
 
 ## Examples
@@ -45,7 +47,8 @@ credential = DefaultAzureCredential()
 
 key_client = KeyClient("https://<vaultname>.vault.azure.net", credential)
 
-key = key_client.get_key("key-name")
+//NOTE: please replace the ("<your-key-name>") with the name of your key in the vault 
+key = key_client.get_key("<your-key-name>")
 print(key.name)
 ```
 
@@ -58,6 +61,8 @@ from azure.keyvault.secrets import SecretClient
 credential = DefaultAzureCredential()
 
 secret_client = SecretClient(vault_url="https://<vaultname>.vault.azure.net", credential=credential)
+
+//NOTE: please replace the ("<your-secret-name>") with the name of the secret in your vault
 secret = secret_client.get_secret("secret-name")
 
 print(secret.name)
@@ -65,12 +70,11 @@ print(secret.value)
 
 ```
 
-| Service | Package | Readme | Samples | API Reference | Changelog |
+| Service | Package | README | Samples | API Reference | Changelog |
 | ------- | ------- | ------ | ------- | ------------- | --------- |
-| Identity | [azure-identity - 1.0.0](https://pypi.org/project/azure-identity/1.0.0) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/README.md) | N/A | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/HISTORY.md) |
-| Key Vault - Certificates | [azure-keyvault-certificates - 4.0.0b5](https://pypi.org/project/azure-keyvault-certificates/4.0.0b5) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.0.0b5/sdk/keyvault/azure-keyvault-certificates/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.0.0b5/sdk/keyvault/azure-keyvault-certificates/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-certificates/4.0.0b5/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.0.0b5/sdk/keyvault/azure-keyvault-certificates/HISTORY.md) |
-| Key Vault - Keys | [azure-keyvault-keys - 4.0.0](https://pypi.org/project/azure-keyvault-keys/4.0.0) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-keys/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/HISTORY.md) |
-| Key Vault - Secrets | [azure-keyvault-secrets - 4.0.0](https://pypi.org/project/azure-keyvault-secrets/4.0.0) | [ReadMe](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-secrets/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/HISTORY.md) |
+| Identity | [azure-identity - 1.0.0](https://pypi.org/project/azure-identity/1.0.0) | [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/README.md) | N/A | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/HISTORY.md) |
+| Key Vault - Keys | [azure-keyvault-keys - 4.0.0](https://pypi.org/project/azure-keyvault-keys/4.0.0) | [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-keys/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/HISTORY.md) |
+| Key Vault - Secrets | [azure-keyvault-secrets - 4.0.0](https://pypi.org/project/azure-keyvault-secrets/4.0.0) | [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-secrets/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/HISTORY.md) |
 
 
 > [!div class="nextstepaction"]
