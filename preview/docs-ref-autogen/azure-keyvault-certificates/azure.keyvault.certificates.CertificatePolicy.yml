@@ -6,14 +6,14 @@ items:
   - azure.keyvault.certificates.CertificatePolicy.certificate_type
   - azure.keyvault.certificates.CertificatePolicy.content_type
   - azure.keyvault.certificates.CertificatePolicy.created_on
-  - azure.keyvault.certificates.CertificatePolicy.curve
-  - azure.keyvault.certificates.CertificatePolicy.ekus
   - azure.keyvault.certificates.CertificatePolicy.enabled
+  - azure.keyvault.certificates.CertificatePolicy.enhanced_key_usage
   - azure.keyvault.certificates.CertificatePolicy.expires_on
   - azure.keyvault.certificates.CertificatePolicy.exportable
   - azure.keyvault.certificates.CertificatePolicy.get_default
   - azure.keyvault.certificates.CertificatePolicy.id
   - azure.keyvault.certificates.CertificatePolicy.issuer_name
+  - azure.keyvault.certificates.CertificatePolicy.key_curve_name
   - azure.keyvault.certificates.CertificatePolicy.key_size
   - azure.keyvault.certificates.CertificatePolicy.key_type
   - azure.keyvault.certificates.CertificatePolicy.key_usage
@@ -23,8 +23,8 @@ items:
   - azure.keyvault.certificates.CertificatePolicy.reuse_key
   - azure.keyvault.certificates.CertificatePolicy.san_dns_names
   - azure.keyvault.certificates.CertificatePolicy.san_emails
-  - azure.keyvault.certificates.CertificatePolicy.san_upns
-  - azure.keyvault.certificates.CertificatePolicy.subject_name
+  - azure.keyvault.certificates.CertificatePolicy.san_user_principal_names
+  - azure.keyvault.certificates.CertificatePolicy.subject
   - azure.keyvault.certificates.CertificatePolicy.updated_on
   - azure.keyvault.certificates.CertificatePolicy.validity_in_months
   class: azure.keyvault.certificates.CertificatePolicy
@@ -37,87 +37,14 @@ items:
   name: CertificatePolicy
   summary: Management policy for a certificate.
   syntax:
-    content: CertificatePolicy(issuer_name, subject_name, exportable=None, key_type=None,
-      key_size=None, reuse_key=None, curve=None, ekus=None, key_usage=None, content_type=None,
-      validity_in_months=None, lifetime_actions=None, certificate_type=None, certificate_transparency=None,
-      **kwargs)
+    content: CertificatePolicy(issuer_name, **kwargs)
     parameters:
-    - description: 'Indicates if the private key can be exported. For valid values,
-
-        see KeyType.'
-      id: exportable
-      type:
-      - bool
-    - description: The type of key pair to be used for the certificate.
-      id: key_type
-      type:
-      - str
-      - azure.keyvault.certificates.enums.KeyType
-    - description: 'The key size in bits. For example: 2048, 3072, or 4096
-
-        for RSA.'
-      id: key_size
-      type:
-      - int
-    - description: 'Indicates if the same key pair will be used on certificate
-
-        renewal.'
-      id: reuse_key
-      type:
-      - bool
-    - description: Elliptic curve name. For valid values, see KeyCurveName.
-      id: curve
-      type:
-      - str
-      - azure.keyvault.certificates.enums.KeyCurveName
-    - description: The enhanced key usages.
-      id: ekus
-      type:
-      - list[str]
-    - description: List of key usages.
-      id: key_usage
-      type:
-      - list[str
-      - azure.keyvault.certificates.enums.KeyUsageType]
-    - description: 'The media type (MIME type) of the secret backing the certificate.
-
-        For valid values, see SecretContentType.'
-      id: content_type
-      type:
-      - azure.keyvault.certificates.enums.SecretContentType
-      - str
-    - description: 'The subject name of the certificate. Should be a valid X509
-
-        distinguished name.'
-      id: subject_name
-      type:
-      - str
-    - description: The duration that the certificate is valid in months.
-      id: validity_in_months
-      type:
-      - int
-    - description: 'Actions that will be performed by Key Vault over the lifetime
-
-        of a certificate'
-      id: lifetime_actions
-      type:
-      - Iterable[azure.keyvault.certificates.LifetimeAction]
     - description: 'Name of the referenced issuer object or reserved names; for example,
 
         ''Self'' or ''Unknown"'
       id: issuer_name
       type:
       - str
-    - description: Type of certificate to be requested from the issuer provider.
-      id: certificate_type
-      type:
-      - str
-    - description: 'Indicates if the certificates generated under this policy
-
-        should be published to certificate transparency logs.'
-      id: certificate_transparency
-      type:
-      - bool
   type: class
   uid: azure.keyvault.certificates.CertificatePolicy
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -158,7 +85,7 @@ items:
   syntax:
     return:
       type:
-      - azure.keyvault.certificates.enums.SecretContentType
+      - azure.keyvault.certificates.CertificateContentType
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.content_type
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -171,35 +98,9 @@ items:
   syntax:
     return:
       type:
-      - datetime
+      - datetime.datetime
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.created_on
-- class: azure.keyvault.certificates.CertificatePolicy
-  fullName: azure.keyvault.certificates.CertificatePolicy.curve
-  langs:
-  - python
-  module: azure.keyvault.certificates
-  name: curve
-  summary: Elliptic curve name.
-  syntax:
-    return:
-      type:
-      - azure.keyvault.certificates.enums.KeyCurveName
-  type: attribute
-  uid: azure.keyvault.certificates.CertificatePolicy.curve
-- class: azure.keyvault.certificates.CertificatePolicy
-  fullName: azure.keyvault.certificates.CertificatePolicy.ekus
-  langs:
-  - python
-  module: azure.keyvault.certificates
-  name: ekus
-  summary: The enhanced key usage.
-  syntax:
-    return:
-      type:
-      - list[str]
-  type: attribute
-  uid: azure.keyvault.certificates.CertificatePolicy.ekus
 - class: azure.keyvault.certificates.CertificatePolicy
   fullName: azure.keyvault.certificates.CertificatePolicy.enabled
   langs:
@@ -214,6 +115,19 @@ items:
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.enabled
 - class: azure.keyvault.certificates.CertificatePolicy
+  fullName: azure.keyvault.certificates.CertificatePolicy.enhanced_key_usage
+  langs:
+  - python
+  module: azure.keyvault.certificates
+  name: enhanced_key_usage
+  summary: The enhanced key usage.
+  syntax:
+    return:
+      type:
+      - list[str]
+  type: attribute
+  uid: azure.keyvault.certificates.CertificatePolicy.enhanced_key_usage
+- class: azure.keyvault.certificates.CertificatePolicy
   fullName: azure.keyvault.certificates.CertificatePolicy.expires_on
   langs:
   - python
@@ -223,7 +137,7 @@ items:
   syntax:
     return:
       type:
-      - datetime
+      - datetime.datetime
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.expires_on
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -277,6 +191,19 @@ items:
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.issuer_name
 - class: azure.keyvault.certificates.CertificatePolicy
+  fullName: azure.keyvault.certificates.CertificatePolicy.key_curve_name
+  langs:
+  - python
+  module: azure.keyvault.certificates
+  name: key_curve_name
+  summary: Elliptic curve name.
+  syntax:
+    return:
+      type:
+      - azure.keyvault.certificates.KeyCurveName
+  type: attribute
+  uid: azure.keyvault.certificates.CertificatePolicy.key_curve_name
+- class: azure.keyvault.certificates.CertificatePolicy
   fullName: azure.keyvault.certificates.CertificatePolicy.key_size
   langs:
   - python
@@ -299,7 +226,7 @@ items:
   syntax:
     return:
       type:
-      - azure.keyvault.certificates.enums.KeyType
+      - azure.keyvault.certificates.KeyType
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.key_type
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -312,7 +239,7 @@ items:
   syntax:
     return:
       type:
-      - list[azure.keyvault.certificates.enums.KeyUsageType]
+      - list[azure.keyvault.certificates.KeyUsageType]
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.key_usage
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -327,7 +254,7 @@ items:
   syntax:
     return:
       type:
-      - list[azure.keyvault.certificates.models.LifetimeAction]
+      - list[azure.keyvault.certificates.LifetimeAction]
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.lifetime_actions
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -340,7 +267,7 @@ items:
   syntax:
     return:
       type:
-      - datetime
+      - datetime.datetime
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.not_before
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -396,28 +323,31 @@ items:
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.san_emails
 - class: azure.keyvault.certificates.CertificatePolicy
-  fullName: azure.keyvault.certificates.CertificatePolicy.san_upns
+  fullName: azure.keyvault.certificates.CertificatePolicy.san_user_principal_names
   langs:
   - python
   module: azure.keyvault.certificates
-  name: san_upns
+  name: san_user_principal_names
   summary: The subject alternative user principal names.
   syntax:
     return:
       type:
       - list[str]
   type: attribute
-  uid: azure.keyvault.certificates.CertificatePolicy.san_upns
+  uid: azure.keyvault.certificates.CertificatePolicy.san_user_principal_names
 - class: azure.keyvault.certificates.CertificatePolicy
-  fullName: azure.keyvault.certificates.CertificatePolicy.subject_name
+  fullName: azure.keyvault.certificates.CertificatePolicy.subject
   langs:
   - python
   module: azure.keyvault.certificates
-  name: subject_name
-  summary: '*rtype* -- str'
-  syntax: {}
+  name: subject
+  summary: The subject name of the certificate.
+  syntax:
+    return:
+      type:
+      - str
   type: attribute
-  uid: azure.keyvault.certificates.CertificatePolicy.subject_name
+  uid: azure.keyvault.certificates.CertificatePolicy.subject
 - class: azure.keyvault.certificates.CertificatePolicy
   fullName: azure.keyvault.certificates.CertificatePolicy.updated_on
   langs:
@@ -428,7 +358,7 @@ items:
   syntax:
     return:
       type:
-      - datetime
+      - datetime.datetime
   type: attribute
   uid: azure.keyvault.certificates.CertificatePolicy.updated_on
 - class: azure.keyvault.certificates.CertificatePolicy
@@ -465,21 +395,16 @@ references:
   name: created_on
   parent: azure.keyvault.certificates.CertificatePolicy
   uid: azure.keyvault.certificates.CertificatePolicy.created_on
-- fullName: azure.keyvault.certificates.CertificatePolicy.curve
-  isExternal: false
-  name: curve
-  parent: azure.keyvault.certificates.CertificatePolicy
-  uid: azure.keyvault.certificates.CertificatePolicy.curve
-- fullName: azure.keyvault.certificates.CertificatePolicy.ekus
-  isExternal: false
-  name: ekus
-  parent: azure.keyvault.certificates.CertificatePolicy
-  uid: azure.keyvault.certificates.CertificatePolicy.ekus
 - fullName: azure.keyvault.certificates.CertificatePolicy.enabled
   isExternal: false
   name: enabled
   parent: azure.keyvault.certificates.CertificatePolicy
   uid: azure.keyvault.certificates.CertificatePolicy.enabled
+- fullName: azure.keyvault.certificates.CertificatePolicy.enhanced_key_usage
+  isExternal: false
+  name: enhanced_key_usage
+  parent: azure.keyvault.certificates.CertificatePolicy
+  uid: azure.keyvault.certificates.CertificatePolicy.enhanced_key_usage
 - fullName: azure.keyvault.certificates.CertificatePolicy.expires_on
   isExternal: false
   name: expires_on
@@ -505,6 +430,11 @@ references:
   name: issuer_name
   parent: azure.keyvault.certificates.CertificatePolicy
   uid: azure.keyvault.certificates.CertificatePolicy.issuer_name
+- fullName: azure.keyvault.certificates.CertificatePolicy.key_curve_name
+  isExternal: false
+  name: key_curve_name
+  parent: azure.keyvault.certificates.CertificatePolicy
+  uid: azure.keyvault.certificates.CertificatePolicy.key_curve_name
 - fullName: azure.keyvault.certificates.CertificatePolicy.key_size
   isExternal: false
   name: key_size
@@ -550,16 +480,16 @@ references:
   name: san_emails
   parent: azure.keyvault.certificates.CertificatePolicy
   uid: azure.keyvault.certificates.CertificatePolicy.san_emails
-- fullName: azure.keyvault.certificates.CertificatePolicy.san_upns
+- fullName: azure.keyvault.certificates.CertificatePolicy.san_user_principal_names
   isExternal: false
-  name: san_upns
+  name: san_user_principal_names
   parent: azure.keyvault.certificates.CertificatePolicy
-  uid: azure.keyvault.certificates.CertificatePolicy.san_upns
-- fullName: azure.keyvault.certificates.CertificatePolicy.subject_name
+  uid: azure.keyvault.certificates.CertificatePolicy.san_user_principal_names
+- fullName: azure.keyvault.certificates.CertificatePolicy.subject
   isExternal: false
-  name: subject_name
+  name: subject
   parent: azure.keyvault.certificates.CertificatePolicy
-  uid: azure.keyvault.certificates.CertificatePolicy.subject_name
+  uid: azure.keyvault.certificates.CertificatePolicy.subject
 - fullName: azure.keyvault.certificates.CertificatePolicy.updated_on
   isExternal: false
   name: updated_on
@@ -584,42 +514,7 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[str]
-- fullName: list[str
-  name: list[str
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  uid: list[str
-- fullName: azure.keyvault.certificates.enums.KeyUsageType]
-  name: KeyUsageType]
-  spec.python:
-  - fullName: azure.keyvault.certificates.enums.KeyUsageType
-    name: KeyUsageType
-    uid: azure.keyvault.certificates.enums.KeyUsageType
-  - fullName: ']'
-    name: ']'
-  uid: azure.keyvault.certificates.enums.KeyUsageType]
-- fullName: Iterable[azure.keyvault.certificates.LifetimeAction]
-  name: Iterable[LifetimeAction]
-  spec.python:
-  - fullName: Iterable
-    name: Iterable
-    uid: Iterable
-  - fullName: '['
-    name: '['
-  - fullName: azure.keyvault.certificates.LifetimeAction
-    name: LifetimeAction
-    uid: azure.keyvault.certificates.LifetimeAction
-  - fullName: ']'
-    name: ']'
-  uid: Iterable[azure.keyvault.certificates.LifetimeAction]
-- fullName: list[azure.keyvault.certificates.enums.KeyUsageType]
+- fullName: list[azure.keyvault.certificates.KeyUsageType]
   name: list[KeyUsageType]
   spec.python:
   - fullName: list
@@ -627,13 +522,13 @@ references:
     uid: list
   - fullName: '['
     name: '['
-  - fullName: azure.keyvault.certificates.enums.KeyUsageType
+  - fullName: azure.keyvault.certificates.KeyUsageType
     name: KeyUsageType
-    uid: azure.keyvault.certificates.enums.KeyUsageType
+    uid: azure.keyvault.certificates.KeyUsageType
   - fullName: ']'
     name: ']'
-  uid: list[azure.keyvault.certificates.enums.KeyUsageType]
-- fullName: list[azure.keyvault.certificates.models.LifetimeAction]
+  uid: list[azure.keyvault.certificates.KeyUsageType]
+- fullName: list[azure.keyvault.certificates.LifetimeAction]
   name: list[LifetimeAction]
   spec.python:
   - fullName: list
@@ -641,9 +536,9 @@ references:
     uid: list
   - fullName: '['
     name: '['
-  - fullName: azure.keyvault.certificates.models.LifetimeAction
+  - fullName: azure.keyvault.certificates.LifetimeAction
     name: LifetimeAction
-    uid: azure.keyvault.certificates.models.LifetimeAction
+    uid: azure.keyvault.certificates.LifetimeAction
   - fullName: ']'
     name: ']'
-  uid: list[azure.keyvault.certificates.models.LifetimeAction]
+  uid: list[azure.keyvault.certificates.LifetimeAction]
