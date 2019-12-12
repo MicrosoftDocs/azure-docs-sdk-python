@@ -21,8 +21,9 @@ items:
   syntax:
     content: 'StatelessServiceUpdateDescription(*, flags: str = None, placement_constraints:
       str = None, correlation_scheme=None, load_metrics=None, service_placement_policies=None,
-      default_move_cost=None, scaling_policies=None, instance_count: int = None, **kwargs)
-      -> None'
+      default_move_cost=None, scaling_policies=None, instance_count: int = None, min_instance_count:
+      int = None, min_instance_percentage: int = None, instance_close_delay_duration_seconds:
+      str = None, **kwargs) -> None'
     parameters:
     - description: 'Flags indicating whether other properties are set. Each of
 
@@ -86,7 +87,23 @@ items:
 
         - ScalingPolicy - Indicates the ScalingPolicies property is set. The value
 
-        is 1024.'
+        is 1024.
+
+        - ServicePlacementTimeLimit - Indicates the ServicePlacementTimeLimit
+
+        property is set. The value is 2048.
+
+        - MinInstanceCount - Indicates the MinInstanceCount property is set. The
+
+        value is 4096.
+
+        - MinInstancePercentage - Indicates the MinInstancePercentage property is
+
+        set. The value is 8192.
+
+        - InstanceCloseDelayDuration - Indicates the InstanceCloseDelayDuration
+
+        property is set. The value is 16384.'
       id: flags
       type:
       - str
@@ -116,7 +133,7 @@ items:
       - list[azure.servicefabric.models.ServicePlacementPolicyDescription]
     - description: 'The move cost for the service. Possible values
 
-        include: ''Zero'', ''Low'', ''Medium'', ''High'''
+        include: ''Zero'', ''Low'', ''Medium'', ''High'', ''VeryHigh'''
       id: default_move_cost
       type:
       - str
@@ -133,6 +150,76 @@ items:
       id: instance_count
       type:
       - int
+    - description: 'MinInstanceCount is the minimum number of
+
+        instances that must be up to meet the EnsureAvailability safety check
+
+        during operations like upgrade or deactivate node.
+
+        The actual number that is used is max( MinInstanceCount, ceil(
+
+        MinInstancePercentage/100.0 * InstanceCount) ).
+
+        Note, if InstanceCount is set to -1, during MinInstanceCount computation
+
+        -1 is first converted into the number of nodes on which the instances are
+
+        allowed to be placed according to the placement constraints on the
+
+        service.'
+      id: min_instance_count
+      type:
+      - int
+    - description: 'MinInstancePercentage is the minimum
+
+        percentage of InstanceCount that must be up to meet the EnsureAvailability
+
+        safety check during operations like upgrade or deactivate node.
+
+        The actual number that is used is max( MinInstanceCount, ceil(
+
+        MinInstancePercentage/100.0 * InstanceCount) ).
+
+        Note, if InstanceCount is set to -1, during MinInstancePercentage
+
+        computation, -1 is first converted into the number of nodes on which the
+
+        instances are allowed to be placed according to the placement constraints
+
+        on the service.'
+      id: min_instance_percentage
+      type:
+      - int
+    - description: 'Duration in seconds, to wait
+
+        before a stateless instance is closed, to allow the active requests to
+
+        drain gracefully. This would be effective when the instance is closing
+
+        during the application/cluster upgrade and disabling node.
+
+        The endpoint exposed on this instance is removed prior to starting the
+
+        delay, which prevents new connections to this instance.
+
+        In addition, clients that have subscribed to service endpoint change
+
+        events([https://docs.microsoft.com/en-us/dotnet/api/system.fabric.fabricclient.servicemanagementclient.registerservicenotificationfilterasync](https://docs.microsoft.com/en-us/dotnet/api/system.fabric.fabricclient.servicemanagementclient.registerservicenotificationfilterasync)),
+
+        can do
+
+        the following upon receiving the endpoint removal notification:
+
+        - Stop sending new requests to this instance.
+
+        - Close existing connections after in-flight requests have completed.
+
+        - Connect to a different instance of the service partition for future
+
+        requests.'
+      id: instance_close_delay_duration_seconds
+      type:
+      - str
   type: class
   uid: azure.servicefabric.models.StatelessServiceUpdateDescription
 references:
