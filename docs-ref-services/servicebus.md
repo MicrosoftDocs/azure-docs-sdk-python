@@ -101,7 +101,7 @@ Optional parameters to configure the queue behavior can also be specified.
 ```python
 sb_client.create_queue(
     "MySessionQueue",
-    requires_session=True  # Create a sessionful queue
+    requires_session=True,  # Create a sessionful queue
     max_delivery_count=5  # Max delivery attempts per message
 )
 ```
