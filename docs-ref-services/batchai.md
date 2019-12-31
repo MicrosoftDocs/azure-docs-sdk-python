@@ -14,4 +14,4 @@ ms.service: bacth-ai
 # Azure Batch AI libraries for Python
 
 >[!Note]
->**Azure Batch AI has been retired.** The capabilities of Azure Batch AI are now available as a managed compute target in Azure Machine Learning service. For more information, see [What happened to Batch AI?](https://aka.ms/batchai-retirement)
+>**Azure Batch AI has been retired.** The capabilities of Azure Batch AI are now available as a managed compute target in Azure Machine Learning. For more information, see [What happened to Batch AI?](https://aka.ms/batchai-retirement)
