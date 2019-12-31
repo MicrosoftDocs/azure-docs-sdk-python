@@ -8,7 +8,7 @@ manager: cjgronlun
 ms.date: 03/26/2019
 ms.topic: article
 ms.devlang: python
-ms.service: bacth-ai
+ms.service: batch-ai
 ---
 
 # Azure Batch AI libraries for Python
