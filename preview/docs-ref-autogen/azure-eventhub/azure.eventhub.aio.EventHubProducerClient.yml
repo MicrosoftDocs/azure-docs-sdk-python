@@ -5,13 +5,16 @@ items:
   - azure.eventhub.aio.EventHubProducerClient.close
   - azure.eventhub.aio.EventHubProducerClient.create_batch
   - azure.eventhub.aio.EventHubProducerClient.from_connection_string
+  - azure.eventhub.aio.EventHubProducerClient.get_eventhub_properties
+  - azure.eventhub.aio.EventHubProducerClient.get_partition_ids
+  - azure.eventhub.aio.EventHubProducerClient.get_partition_properties
   - azure.eventhub.aio.EventHubProducerClient.send_batch
   class: azure.eventhub.aio.EventHubProducerClient
   example:
   - "Create a new instance of the EventHubProducerClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\1\\\\azure-eventhub-5.0.0b6\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\8\\\\azure-eventhub-5.0.0\\\\samples\\\
     \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubProducerClient,\
@@ -65,15 +68,16 @@ items:
   - "Close down the handler.<!--[!code-python[Main](les\\async_samples\\sample_code_eventhub_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\1\\\\azure-eventhub-5.0.0b6\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    \\8\\\\azure-eventhub-5.0.0\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n  \
     \ from azure.eventhub.aio import EventHubProducerClient\n   from azure.eventhub\
     \ import EventData\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
     \   eventhub_name = os.environ['EVENT_HUB_NAME']\n\n   producer = EventHubProducerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\n\
-    \   )\n   try:\n       event_data_batch = await producer.create_batch(max_size_in_bytes=10000)\n\
-    \       while True:\n           try:\n               event_data_batch.add(EventData('Message\
+    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
+    \  # EventHub name should be specified if it doesn't show up in connection string.\n\
+    \   )\n   try:\n       event_data_batch = await producer.create_batch()\n    \
+    \   while True:\n           try:\n               event_data_batch.add(EventData('Message\
     \ inside EventBatchData'))\n           except ValueError:\n               # The\
     \ EventDataBatch object reaches its max_size.\n               # You can send the\
     \ full EventDataBatch object and create a new one here.\n               break\n\
@@ -97,16 +101,15 @@ items:
   - "Create EventDataBatch object within limited size<!--[!code-python[Main](les\\\
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\1\\\\azure-eventhub-5.0.0b6\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\8\\\\azure-eventhub-5.0.0\\\\samples\\\
     \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n       from azure.eventhub import EventData\n     \
-    \  event_data_batch = await producer.create_batch(max_size_in_bytes=10000)\n \
-    \      while True:\n           try:\n               event_data_batch.add(EventData('Message\
-    \ inside EventBatchData'))\n           except ValueError:\n               # The\
-    \ EventDataBatch object reaches its max_size.\n               # You can send the\
-    \ full EventDataBatch object and create a new one here.\n               break\n\
-    \n   ````\n"
+    \  event_data_batch = await producer.create_batch()\n       while True:\n    \
+    \       try:\n               event_data_batch.add(EventData('Message inside EventBatchData'))\n\
+    \           except ValueError:\n               # The EventDataBatch object reaches\
+    \ its max_size.\n               # You can send the full EventDataBatch object\
+    \ and create a new one here.\n               break\n\n   ````\n"
   fullName: azure.eventhub.aio.EventHubProducerClient.create_batch
   langs:
   - python
@@ -138,8 +141,10 @@ items:
       id: partition_key
       type:
       - str
-    - description: The maximum size of bytes data that an EventDataBatch object can
-        hold.
+    - description: 'The maximum size of bytes data that an EventDataBatch object can
+        hold. By
+
+        default, the value is determined by your Event Hubs tier.'
       id: max_size_in_bytes
       type:
       - int
@@ -153,14 +158,15 @@ items:
   - "Create a new instance of the EventHubProducerClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\1\\\\azure-eventhub-5.0.0b6\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\8\\\\azure-eventhub-5.0.0\\\\samples\\\
     \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubProducerClient\n\
     \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
-    \ = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(conn_str=event_hub_connection_str,\n\
-    \                                                            eventhub_name=eventhub_name)\n\
-    \n   ````\n"
+    \ = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(\n\
+    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
+    \  # EventHub name should be specified if it doesn't show up in connection string.\n\
+    \   )\n\n   ````\n"
   fullName: azure.eventhub.aio.EventHubProducerClient.from_connection_string
   langs:
   - python
@@ -179,15 +185,70 @@ items:
   type: method
   uid: azure.eventhub.aio.EventHubProducerClient.from_connection_string
 - class: azure.eventhub.aio.EventHubProducerClient
+  fullName: azure.eventhub.aio.EventHubProducerClient.get_eventhub_properties
+  langs:
+  - python
+  module: azure.eventhub.aio
+  name: get_eventhub_properties() -> typing.Dict[str, typing.Any]
+  summary: "Get properties of the Event Hub.\n\nKeys in the returned dictionary include:\n\
+    \n   * *eventhub_name* (str) \n\n   * *created_at* (UTC datetime.datetime) \n\n\
+    \   * *partition_ids* (list[str])"
+  syntax:
+    content: get_eventhub_properties() -> typing.Dict[str, typing.Any]
+    return:
+      type:
+      - dict
+  type: method
+  uid: azure.eventhub.aio.EventHubProducerClient.get_eventhub_properties
+- class: azure.eventhub.aio.EventHubProducerClient
+  fullName: azure.eventhub.aio.EventHubProducerClient.get_partition_ids
+  langs:
+  - python
+  module: azure.eventhub.aio
+  name: get_partition_ids() -> typing.List[str]
+  summary: Get partition IDs of the Event Hub.
+  syntax:
+    content: get_partition_ids() -> typing.List[str]
+    return:
+      type:
+      - list[str]
+  type: method
+  uid: azure.eventhub.aio.EventHubProducerClient.get_partition_ids
+- class: azure.eventhub.aio.EventHubProducerClient
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
+  fullName: azure.eventhub.aio.EventHubProducerClient.get_partition_properties
+  langs:
+  - python
+  module: azure.eventhub.aio
+  name: 'get_partition_properties(partition_id: str) -> typing.Dict[str, typing.Any]'
+  summary: "Get properties of the specified partition.\n\nKeys in the properties dictionary\
+    \ include:\n\n   * *eventhub_name* (str) \n\n   * *id* (str) \n\n   * *beginning_sequence_number*\
+    \ (int) \n\n   * *last_enqueued_sequence_number* (int) \n\n   * *last_enqueued_offset*\
+    \ (str) \n\n   * *last_enqueued_time_utc* (UTC datetime.datetime) \n\n   * *is_empty*\
+    \ (bool)"
+  syntax:
+    content: 'get_partition_properties(partition_id: str) -> typing.Dict[str, typing.Any]'
+    parameters:
+    - description: The target partition ID.
+      id: partition_id
+      type:
+      - str
+    return:
+      type:
+      - dict
+  type: method
+  uid: azure.eventhub.aio.EventHubProducerClient.get_partition_properties
+- class: azure.eventhub.aio.EventHubProducerClient
   example:
   - "Asynchronously sends event data<!--[!code-python[Main](les\\async_samples\\sample_code_eventhub_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\1\\\\azure-eventhub-5.0.0b6\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    \\8\\\\azure-eventhub-5.0.0\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n       async with\
-    \ producer:\n           event_data_batch = await producer.create_batch(max_size_in_bytes=10000)\n\
-    \           while True:\n               try:\n                   event_data_batch.add(EventData('Message\
+    \ producer:\n           event_data_batch = await producer.create_batch()\n   \
+    \        while True:\n               try:\n                   event_data_batch.add(EventData('Message\
     \ inside EventBatchData'))\n               except ValueError:\n              \
     \     # The EventDataBatch object reaches its max_size.\n                   #\
     \ You can send the full EventDataBatch object and create a new one here.\n   \
@@ -241,9 +302,38 @@ references:
   name: from_connection_string
   parent: azure.eventhub.aio.EventHubProducerClient
   uid: azure.eventhub.aio.EventHubProducerClient.from_connection_string
+- fullName: azure.eventhub.aio.EventHubProducerClient.get_eventhub_properties
+  isExternal: false
+  name: get_eventhub_properties() -> typing.Dict[str, typing.Any]
+  parent: azure.eventhub.aio.EventHubProducerClient
+  uid: azure.eventhub.aio.EventHubProducerClient.get_eventhub_properties
+- fullName: azure.eventhub.aio.EventHubProducerClient.get_partition_ids
+  isExternal: false
+  name: get_partition_ids() -> typing.List[str]
+  parent: azure.eventhub.aio.EventHubProducerClient
+  uid: azure.eventhub.aio.EventHubProducerClient.get_partition_ids
+- fullName: azure.eventhub.aio.EventHubProducerClient.get_partition_properties
+  isExternal: false
+  name: 'get_partition_properties(partition_id: str) -> typing.Dict[str, typing.Any]'
+  parent: azure.eventhub.aio.EventHubProducerClient
+  uid: azure.eventhub.aio.EventHubProducerClient.get_partition_properties
 - fullName: azure.eventhub.aio.EventHubProducerClient.send_batch
   isExternal: false
   name: 'send_batch(event_data_batch: azure.eventhub._common.EventDataBatch, *, timeout:
     typing.Union[int, float, NoneType] = None) -> None'
   parent: azure.eventhub.aio.EventHubProducerClient
   uid: azure.eventhub.aio.EventHubProducerClient.send_batch
+- fullName: list[str]
+  name: list[str]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: list[str]
