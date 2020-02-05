@@ -13,6 +13,7 @@ items:
   - azure.iot.hub.IoTHubRegistryManager.delete_module
   - azure.iot.hub.IoTHubRegistryManager.get_device
   - azure.iot.hub.IoTHubRegistryManager.get_device_registry_statistics
+  - azure.iot.hub.IoTHubRegistryManager.get_devices
   - azure.iot.hub.IoTHubRegistryManager.get_module
   - azure.iot.hub.IoTHubRegistryManager.get_module_twin
   - azure.iot.hub.IoTHubRegistryManager.get_modules
@@ -53,8 +54,12 @@ items:
   module: azure.iot.hub
   name: bulk_create_or_update_devices(devices)
   summary: "Create, update, or delete the identities of multiple devices from the\n\
-    \   IoT hub identity registry. Different operations (create, update, delete) on\
-    \ different\n   devices are allowed."
+    \   IoTHub identity registry.\n\n   Create, update, or delete the identities of\
+    \ multiple devices from the\n   IoTHub identity registry. A device identity can\
+    \ be specified only once\n   in the list. Different operations (create, update,\
+    \ delete) on different\n   devices are allowed. A maximum of 100 devices can be\
+    \ specified per\n   invocation. For large scale operations, consider using the\
+    \ import\n   feature using blob\n   storage([https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities](https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities))."
   syntax:
     content: bulk_create_or_update_devices(devices)
     parameters:
@@ -336,6 +341,33 @@ items:
   type: method
   uid: azure.iot.hub.IoTHubRegistryManager.get_device_registry_statistics
 - class: azure.iot.hub.IoTHubRegistryManager
+  fullName: azure.iot.hub.IoTHubRegistryManager.get_devices
+  langs:
+  - python
+  module: azure.iot.hub
+  name: get_devices(max_number_of_devices=None)
+  summary: "Get the identities of multiple devices from the IoTHub identity\n   registry.\
+    \ Not recommended. Use the IoTHub query language to retrieve\n   device twin and\
+    \ device identity information. See\n   [https://docs.microsoft.com/en-us/rest/api/iothub/service/queryiothub](https://docs.microsoft.com/en-us/rest/api/iothub/service/queryiothub)\n\
+    \   and\n   [https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-query-language](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-query-language)\n\
+    \   for more information."
+  syntax:
+    content: get_devices(max_number_of_devices=None)
+    parameters:
+    - defaultValue: None
+      description: 'This parameter when specified, defines the maximum number
+
+        of device identities that are returned. Any value outside the range of
+
+        1-1000 is considered to be 1000'
+      id: max_number_of_devices
+      type:
+      - int
+    return:
+      description: List of device info.
+  type: method
+  uid: azure.iot.hub.IoTHubRegistryManager.get_devices
+- class: azure.iot.hub.IoTHubRegistryManager
   fullName: azure.iot.hub.IoTHubRegistryManager.get_module
   langs:
   - python
@@ -482,18 +514,30 @@ items:
   langs:
   - python
   module: azure.iot.hub
-  name: query_iot_hub(query_specification)
-  summary: "Query an IoT hub to retrieve information regarding device twins using\
-    \ a\n   SQL-like language."
+  name: query_iot_hub(query_specification, continuation_token=None, max_item_count=None)
+  summary: "Query an IoTHub to retrieve information regarding device twins using a\n\
+    \   SQL-like language.\n   See [https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language](https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language)\n\
+    \   for more information. Pagination of results is supported. This returns\n \
+    \  information about device twins only."
   syntax:
-    content: query_iot_hub(query_specification)
+    content: query_iot_hub(query_specification, continuation_token=None, max_item_count=None)
     parameters:
     - description: The query specification.
       id: query
       type:
       - QuerySpecification
+    - defaultValue: None
+      description: Continuation token for paging
+      id: continuation_token
+      type:
+      - str
+    - defaultValue: None
+      description: Maximum number of requested device twins
+      id: max_item_count
+      type:
+      - str
     return:
-      description: The BulkRegistryOperationResult object.
+      description: The QueryResult object.
   type: method
   uid: azure.iot.hub.IoTHubRegistryManager.query_iot_hub
 - class: azure.iot.hub.IoTHubRegistryManager
@@ -872,6 +916,11 @@ references:
   name: get_device_registry_statistics()
   parent: azure.iot.hub.IoTHubRegistryManager
   uid: azure.iot.hub.IoTHubRegistryManager.get_device_registry_statistics
+- fullName: azure.iot.hub.IoTHubRegistryManager.get_devices
+  isExternal: false
+  name: get_devices(max_number_of_devices=None)
+  parent: azure.iot.hub.IoTHubRegistryManager
+  uid: azure.iot.hub.IoTHubRegistryManager.get_devices
 - fullName: azure.iot.hub.IoTHubRegistryManager.get_module
   isExternal: false
   name: get_module(device_id, module_id)
@@ -909,7 +958,7 @@ references:
   uid: azure.iot.hub.IoTHubRegistryManager.invoke_device_module_method
 - fullName: azure.iot.hub.IoTHubRegistryManager.query_iot_hub
   isExternal: false
-  name: query_iot_hub(query_specification)
+  name: query_iot_hub(query_specification, continuation_token=None, max_item_count=None)
   parent: azure.iot.hub.IoTHubRegistryManager
   uid: azure.iot.hub.IoTHubRegistryManager.query_iot_hub
 - fullName: azure.iot.hub.IoTHubRegistryManager.replace_module_twin
