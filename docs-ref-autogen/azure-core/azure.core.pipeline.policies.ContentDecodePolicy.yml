@@ -4,6 +4,7 @@ items:
 - children:
   - azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_http_generics
   - azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_text
+  - azure.core.pipeline.policies.ContentDecodePolicy.on_request
   - azure.core.pipeline.policies.ContentDecodePolicy.on_response
   - azure.core.pipeline.policies.ContentDecodePolicy.CONTEXT_NAME
   - azure.core.pipeline.policies.ContentDecodePolicy.JSON_REGEXP
@@ -20,7 +21,13 @@ items:
   module: azure.core.pipeline.policies
   name: ContentDecodePolicy
   summary: Policy for decoding unstreamed response content.
-  syntax: {}
+  syntax:
+    content: ContentDecodePolicy(response_encoding=None, **kwargs)
+    parameters:
+    - description: The encoding to use if known for this service (will disable auto-detection)
+      id: response_encoding
+      type:
+      - str
   type: class
   uid: azure.core.pipeline.policies.ContentDecodePolicy
 - class: azure.core.pipeline.policies.ContentDecodePolicy
@@ -31,17 +38,20 @@ items:
   langs:
   - python
   module: azure.core.pipeline.policies
-  name: deserialize_from_http_generics(response)
+  name: deserialize_from_http_generics(response, encoding=None)
   summary: 'Deserialize from HTTP response.
 
 
     Headers will tested for "content-type"'
   syntax:
-    content: deserialize_from_http_generics(response)
+    content: deserialize_from_http_generics(response, encoding=None)
     parameters:
     - description: The HTTP response
       id: response
-    - id: response
+    - description: The encoding to use if known for this service (will disable auto-detection)
+      id: encoding
+    - defaultValue: None
+      id: encoding
     return:
       description: A dict or XML tree, depending of the mime-type
   type: method
@@ -83,6 +93,18 @@ items:
       description: A dict or XML tree, depending of the mime_type
   type: method
   uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_text
+- class: azure.core.pipeline.policies.ContentDecodePolicy
+  fullName: azure.core.pipeline.policies.ContentDecodePolicy.on_request
+  langs:
+  - python
+  module: azure.core.pipeline.policies
+  name: on_request(request)
+  syntax:
+    content: on_request(request)
+    parameters:
+    - id: request
+  type: method
+  uid: azure.core.pipeline.policies.ContentDecodePolicy.on_request
 - class: azure.core.pipeline.policies.ContentDecodePolicy
   exceptions:
   - description: If JSON is requested and parsing is impossible.
@@ -145,7 +167,7 @@ items:
 references:
 - fullName: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_http_generics
   isExternal: false
-  name: deserialize_from_http_generics(response)
+  name: deserialize_from_http_generics(response, encoding=None)
   parent: azure.core.pipeline.policies.ContentDecodePolicy
   uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_http_generics
 - fullName: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_text
@@ -153,6 +175,11 @@ references:
   name: deserialize_from_text(data, mime_type=None, response=None)
   parent: azure.core.pipeline.policies.ContentDecodePolicy
   uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_text
+- fullName: azure.core.pipeline.policies.ContentDecodePolicy.on_request
+  isExternal: false
+  name: on_request(request)
+  parent: azure.core.pipeline.policies.ContentDecodePolicy
+  uid: azure.core.pipeline.policies.ContentDecodePolicy.on_request
 - fullName: azure.core.pipeline.policies.ContentDecodePolicy.on_response
   isExternal: false
   name: on_response(request, response)
