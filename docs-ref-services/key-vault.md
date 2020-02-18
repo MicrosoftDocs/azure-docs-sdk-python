@@ -7,7 +7,7 @@ ms.author: sttramer
 ms.date: 06/10/2019
 ms.topic: conceptual
 ms.devlang: python
-ms.service: keyvault
+ms.service: key-vault
 ---
 
 # Azure Key Vault libraries for Python
