@@ -7,7 +7,7 @@ ms.author: kraigb
 ms.date: 03/10/2020
 ms.topic: conceptual
 ms.devlang: python
-ms.service: keyvault
+ms.service: key-vault
 ---
 
 # Azure Key Vault libraries for Python
@@ -35,9 +35,10 @@ Install the management library with `pip install azure-mgmt-keyvault`, along wit
 
 To manage a key vault, an application must first authenticate with the Key Vault service. Authentication is best done using [Azure Managed Identities](/azure/active-directory/managed-identities-azure-resources/overview) (part of Azure Active Directory), and can also also be done with a service principal.
 
-To use Managed Identities, acquire a `DefaultAzureCredential` object as shown in the following code. (To run this code on a developer workstation, see [Using Managed Identities locally](using-managed-identities-locally)).
+To use Managed Identities, acquire a `DefaultAzureCredential` object as shown in the following code. (To run this code on a developer workstation, see [Using Managed Identities locally](#using-managed-identities-locally)).
 
 ```python
+# Authentication with Managed Identities
 from azure.identity import DefaultAzureCredential
 
 # Acquire default Azure credentials, which are useful in most circumstances.
@@ -49,6 +50,7 @@ To use a service principal, acquire a `ServicePrincipalCredential` object as sho
 To find the object ID for the service principal, go to the [Azure portal](https://portal.azure.com), navigate to your subscription, select **Access Control (IAM)**, select **Role assignments**, and locate the appropriate service principal. Select that service principal to open it, then find the object ID on the **Overview** page.
 
 ```python
+# Authentication with a service principal
 from azure.common.credentials import ServicePrincipalCredentials
 
 # Replace the values with your specific IDs
@@ -125,9 +127,10 @@ Install the library with `pip install azure-keyvault`.
 
 To access a key vault, an application must first authenticate with the Key Vault service. Authentication is best done using [Azure Managed Identities](/azure/active-directory/managed-identities-azure-resources/overview) (part of Azure Active Directory), and can also also be done with a service principal.
 
-To use Managed Identities, acquire a `DefaultAzureCredential` object. (To run this code on a developer workstation, see [Using Managed Identities locally](using-managed-identities-locally)).
+To use Managed Identities, acquire a `DefaultAzureCredential` object. (To run this code on a developer workstation, see [Using Managed Identities locally](#using-managed-identities-locally)).
 
 ```python
+# Authentication with Managed Identities
 from azure.identity import DefaultAzureCredential
 
 # Acquire default Azure credentials, which are useful in most circumstances.
@@ -137,6 +140,7 @@ credentials = DefaultAzureCredential()
 To use a service principal, acquire a `ServicePrincipalCredential` object. Review [Authenticate with the Azure SDK for Python](/azure/python/python-sdk-azure-authenticate) for information on obtaining a tenant ID, a client ID, and application secret.
 
 ```python
+# Authentication with a service principal
 from azure.common.credentials import ServicePrincipalCredentials
 
 # Replace the values with your specific IDs
@@ -192,7 +196,9 @@ No credential in this chain provided a token.
 Attempted credentials:
         EnvironmentCredential: Incomplete environment configuration
         ImdsCredential: IMDS endpoint unavailable
-        SharedTokenCacheCredential: The shared cache contains no signed-in accounts. To authenticate with SharedTokenCacheCredential, login through developer tooling supporting Azure single sign on
+        SharedTokenCacheCredential: The shared cache contains no signed-in accounts.
+        To authenticate with SharedTokenCacheCredential, login through developer tooling
+        supporting Azure single sign on.
 </pre>
 
 There are two options to run the code locally:
@@ -224,6 +230,7 @@ There are two options to run the code locally:
     1. Create the following environment variables using values from the JSON:
 
         | Variable name | Value from create-for-rbac output |
+        | --- | --- |
         | `AZURE_CLIENT_ID` | `appId` |
         | `AZURE_CLIENT_SECRET` | `password` |
         | `AZURE_TENANT_ID` | `tenant` |
