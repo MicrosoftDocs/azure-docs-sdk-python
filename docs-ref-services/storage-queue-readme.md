@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, Storage, Queue
 author: maggiepint
 ms.author: magpint
 manager: twolley
-ms.date: 02/21/2020
+ms.date: 03/12/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -13,7 +13,7 @@ ms.devlang: python
 ms.service: storage
 ---
 
-# Azure Storage Queues for Python Readme - Version 12.1.0
+# Azure Storage Queues for Python Readme - Version 12.1.1
 
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. A single queue message can be up to 64 KiB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 

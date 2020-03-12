@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, Storage, Blob
 author: maggiepint
 ms.author: magpint
 manager: twolley
-ms.date: 02/21/2020
+ms.date: 03/12/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -13,7 +13,7 @@ ms.devlang: python
 ms.service: storage
 ---
 
-# Azure Blob Storage for Python Readme - Version 12.2.0
+# Azure Blob Storage for Python Readme - Version 12.3.0
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob storage is optimized for storing massive amounts of unstructured data, such as text or binary data.
 
 Blob storage is ideal for:
