@@ -53,14 +53,15 @@ new_pool.virtual_machine_configuration = vmc
 client.pool.add(new_pool)
 ```
 
+> [!div class="nextstepaction"]
+> [Explore the Client APIs](/python/api/overview/azure/batch/client)
+
 ## Management API
 Use the Azure Batch management libraries to create and delete batch accounts, read and regenerate batch account keys, and manage batch account storage.
 
 ```bash
 pip install azure-mgmt-batch
 ```
-> [!div class="nextstepaction"]
-> [Explore the Client APIs](/python/api/overview/azure/batch/client)
 
 ### Example
 Create an Azure Batch account and configure a new application and Azure storage account for it.
