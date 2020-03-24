@@ -33,7 +33,7 @@ items:
     - description: An object model deserializer.
       id: deserializer
     variables:
-    - description: 'Api version. Constant value: "2019-05-01-preview".'
+    - description: 'Api version. Constant value: "2020-04-01".'
       id: api_version
   type: class
   uid: azure.mgmt.support.operations.SupportTicketsOperations
@@ -96,29 +96,54 @@ items:
   module: azure.mgmt.support.operations
   name: create(support_ticket_name, create_support_ticket_parameters, custom_headers=None,
     raw=False, polling=True, **operation_config)
-  summary: 'Creates a new support ticket for Quota increase, Technical, Billing,
+  summary: 'Creates a new support ticket for Subscription and Service limits
 
-    and Subscription Management issues for the specified subscription.
+    (Quota), Technical, Billing, and Subscription Management issues for the
 
-    <br/><br/>A paid technical support plan is required to create a support
+    specified subscription. Learn the
 
-    ticket using this API. <a href=''[https://aka.ms/supportticketAPI''](https://aka.ms/supportticketAPI'')>Learn
+    [prerequisites]([https://aka.ms/supportAPI](https://aka.ms/supportAPI)) required
+    to create a support
 
-    more</a> <br/><br/> Use the Services API to map the right Service Id to
+    ticket.<br/><br/>Always call the Services and ProblemClassifications
 
-    the issue type. For example: For billing tickets set *serviceId* to
+    API to get the most recent set of services and problem categories
 
-    *''/providers/Microsoft.Support/services/517f2da6-78fd-0498-4e22-ad26996b1dfc''*.
+    required for support ticket creation.<br/><br/>Adding attachments are
 
-    <br/> For Technical issues, the Service id will map to the Azure
+    not currently supported via the API. To add a file to an existing
 
-    service you want to raise a support ticket for. <br/><br/>Always call
+    support ticket, visit the [Manage support
 
-    the Services and ProblemClassifications API to get the most recent set
+    ticket]([https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/managesupportrequest](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/managesupportrequest))
 
-    of services and problem categories required for support ticket
+    page in the Azure portal, select the support ticket, and use the file
 
-    creation.'
+    upload control to add a new file.<br/><br/>Providing consent to share
+
+    diagnostic information with Azure support is currently not supported
+
+    via the API. Azure support engineer, working on your ticket, will reach
+
+    out to you for consent if your issue requires gathering diagnostic
+
+    information from your Azure resources.<br/><br/>**Creating a support
+
+    ticket for on-behalf-of**: Include _x-reference<!-- {"ids": [], "classes": [],
+    "names": [], "dupnames": [], "backrefs": [], "name": "ms-authorization-auxiliary",
+    "refname": "ms-authorization-auxiliary"} -->
+
+    header to provide an auxiliary token as per
+
+    [this]([https://docs.microsoft.com/azure/azure-resource-manager/management/authenticate-multi-tenant](https://docs.microsoft.com/azure/azure-resource-manager/management/authenticate-multi-tenant)).
+
+    The primary token will be from the tenant for whom a support ticket is
+
+    being raised against the subscription, i.e. Cloud solution provider
+
+    (CSP) customer tenant. The auxiliary token will be from the Cloud
+
+    solution provider (CSP) partner tenant.'
   syntax:
     content: create(support_ticket_name, create_support_ticket_parameters, custom_headers=None,
       raw=False, polling=True, **operation_config)
@@ -167,13 +192,11 @@ items:
   - python
   module: azure.mgmt.support.operations
   name: get(support_ticket_name, custom_headers=None, raw=False, **operation_config)
-  summary: 'Gets details for a specific support ticket in an Azure subscription.
+  summary: 'Get ticket details for an Azure subscription. Support ticket data is
 
-    <br/><br/>Support ticket data is available for 12 months after ticket
+    available for 12 months after ticket creation. If a ticket was created
 
-    creation. If a ticket was created more than 12 months ago, a request
-
-    for data might cause an error.'
+    more than 12 months ago, a request for data might cause an error.'
   syntax:
     content: get(support_ticket_name, custom_headers=None, raw=False, **operation_config)
     parameters:
@@ -212,19 +235,19 @@ items:
   - python
   module: azure.mgmt.support.operations
   name: list(top=None, filter=None, custom_headers=None, raw=False, **operation_config)
-  summary: 'Lists all the support tickets for an Azure subscription. <br/><br/>You
+  summary: 'Lists all the support tickets for an Azure subscription. You can also
 
-    can also filter the support tickets by <i>Status</i> or
+    filter the support tickets by _Status_ or _CreatedDate_ using the
 
-    <i>CreatedDate</i> using the $filter parameter. Output will be a paged
+    $filter parameter. Output will be a paged result with _nextLink_, using
 
-    result with <i>nextLink</i>, using which you can retrieve the next set
+    which you can retrieve the next set of support tickets.
 
-    of support tickets. <br/><br/>Support ticket data is available for 12
+    <br/><br/>Support ticket data is available for 12 months after ticket
 
-    months after ticket creation. If a ticket was created more than 12
+    creation. If a ticket was created more than 12 months ago, a request
 
-    months ago, a request for data might cause an error.'
+    for data might cause an error.'
   syntax:
     content: list(top=None, filter=None, custom_headers=None, raw=False, **operation_config)
     parameters:
@@ -238,17 +261,15 @@ items:
     - defaultValue: None
       description: 'The filter to apply on the operation. We support ''odata
 
-        v4.0'' filter semantics. <a target=''_blank''
+        v4.0'' filter semantics. [Learn
 
-        href=''[https://docs.microsoft.com/odata/concepts/queryoptions-overview''](https://docs.microsoft.com/odata/concepts/queryoptions-overview'')>Learn
+        more]([https://docs.microsoft.com/odata/concepts/queryoptions-overview](https://docs.microsoft.com/odata/concepts/queryoptions-overview)).
 
-        more</a> <br/><i>Status</i> filter can only be used with ''eq''
+        _Status_ filter can only be used with ''eq'' operator. For _CreatedDate_
 
-        operator. For <i>CreatedDate</i> filter, the supported operators are
+        filter, the supported operators are ''gt'' and ''ge''. When using both
 
-        ''gt'' and ''ge''. When using both filters, combine them using the logical
-
-        ''AND''.'
+        filters, combine them using the logical ''AND''.'
       id: filter
       type:
       - str
@@ -281,42 +302,37 @@ items:
   langs:
   - python
   module: azure.mgmt.support.operations
-  name: update(support_ticket_name, severity=None, contact_details=None, custom_headers=None,
-    raw=False, **operation_config)
-  summary: 'This API allows you to update the severity level or your contact
+  name: update(support_ticket_name, update_support_ticket, custom_headers=None, raw=False,
+    **operation_config)
+  summary: 'This API allows you to update the severity level, ticket status, and
 
-    information in the support ticket. <br/><br/> Note: The severity levels
+    your contact information in the support ticket.<br/><br/>Note: The
 
-    cannot be changed if a support ticket is actively being worked upon by
+    severity levels cannot be changed if a support ticket is actively being
 
-    an Azure support engineer. In such a case, contact your support
+    worked upon by an Azure support engineer. In such a case, contact your
 
-    engineer to request severity update by adding a new communication using
+    support engineer to request severity update by adding a new
 
-    the Communications API.'
+    communication using the Communications API.<br/><br/>Changing the
+
+    ticket status to _closed_ is allowed only on an unassigned case. When
+
+    an engineer is actively working on the ticket, send your ticket closure
+
+    request by sending a note to your engineer.'
   syntax:
-    content: update(support_ticket_name, severity=None, contact_details=None, custom_headers=None,
+    content: update(support_ticket_name, update_support_ticket, custom_headers=None,
       raw=False, **operation_config)
     parameters:
     - description: Support ticket name
       id: support_ticket_name
       type:
       - str
-    - defaultValue: None
-      description: 'Severity level. Possible values include: ''minimal'',
-
-        ''moderate'', ''critical'''
-      id: severity
+    - description: UpdateSupportTicket object
+      id: update_support_ticket
       type:
-      - str
-      - azure.mgmt.support.models.SeverityLevel
-    - defaultValue: None
-      description: 'Contact details to be updated on the support
-
-        ticket.'
-      id: contact_details
-      type:
-      - azure.mgmt.support.models.UpdateContactProfile
+      - azure.mgmt.support.models.UpdateSupportTicket
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -374,8 +390,8 @@ references:
   uid: azure.mgmt.support.operations.SupportTicketsOperations.list
 - fullName: azure.mgmt.support.operations.SupportTicketsOperations.update
   isExternal: false
-  name: update(support_ticket_name, severity=None, contact_details=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: update(support_ticket_name, update_support_ticket, custom_headers=None, raw=False,
+    **operation_config)
   parent: azure.mgmt.support.operations.SupportTicketsOperations
   uid: azure.mgmt.support.operations.SupportTicketsOperations.update
 - fullName: azure.mgmt.support.operations.SupportTicketsOperations.models
