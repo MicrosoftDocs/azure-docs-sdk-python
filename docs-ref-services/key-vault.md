@@ -17,7 +17,8 @@ management. The Python SDK API for Key Vault is split between client libraries a
 
 Use the following client libraries to:
 - Create, store, and control access to the keys used to encrypt your data (azure-keyvault-keys)
-- Securely store and control access to tokens, passwords, certificates, API keys, and other secrets (azure-keyvault-secrets)
+- Securely store and control access to tokens, passwords, API keys, and other secrets (azure-keyvault-secrets)
+- Create, manage, and deploy SSL/TLS certificates (azure-keyvault-certificates)
 
 Use the management library to:
 - Create, update, or delete new Key Vault stores
