@@ -33,6 +33,7 @@ Use the management library to:
 ```bash
 pip install azure-keyvault-secrets 
 pip install azure-keyvault-keys
+pip install azure-keyvault-certificates
 pip install azure-identity
 ```
 
@@ -70,13 +71,8 @@ print(secret.name)
 print(secret.value)
 
 ```
-
-| Service | Package | README | Samples | API Reference | Changelog |
-| ------- | ------- | ------ | ------- | ------------- | --------- |
-| Identity | [azure-identity - 1.0.0](https://pypi.org/project/azure-identity/1.0.0) | [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/README.md) | N/A | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.0.0/sdk/identity/azure-identity/HISTORY.md) |
-| Key Vault - Keys | [azure-keyvault-keys - 4.0.0](https://pypi.org/project/azure-keyvault-keys/4.0.0) | [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-keys/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-keys_4.0.0/sdk/keyvault/azure-keyvault-keys/HISTORY.md) |
-| Key Vault - Secrets | [azure-keyvault-secrets - 4.0.0](https://pypi.org/project/azure-keyvault-secrets/4.0.0) | [README](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/README.md) | [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/samples) | [Api Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-keyvault-secrets/4.0.0/index.html) | [ChangeLog](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-secrets_4.0.0/sdk/keyvault/azure-keyvault-secrets/HISTORY.md) |
-
+Find more details about latest packages [here](https://azure.github.io/azure-sdk/releases/latest/index.html).
+Follow the link to the source code directory to find the latest key vault README, Change Log and Examples.
 
 > [!div class="nextstepaction"]
 > [Get Started with the Client APIs](/azure/key-vault/quick-create-python)
