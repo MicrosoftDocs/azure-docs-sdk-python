@@ -25,7 +25,8 @@ items:
     content: 'VaultProperties(*, tenant_id: str, sku, access_policies=None, vault_uri:
       str = None, enabled_for_deployment: bool = None, enabled_for_disk_encryption:
       bool = None, enabled_for_template_deployment: bool = None, enable_soft_delete:
-      bool = None, create_mode=None, enable_purge_protection: bool = None, network_acls=None,
+      bool = True, soft_delete_retention_in_days: int = 90, enable_rbac_authorization:
+      bool = False, create_mode=None, enable_purge_protection: bool = None, network_acls=None,
       **kwargs) -> None'
     parameters:
     - description: 'Required. The Azure Active Directory tenant ID that
@@ -78,10 +79,40 @@ items:
       - bool
     - description: 'Property to specify whether the ''soft delete''
 
-        functionality is enabled for this key vault. If omitted, assume true as
+        functionality is enabled for this key vault. If it''s not set to any
 
-        default value. Once set to true, cannot be reverted to false.'
+        value(true or false) when creating new key vault, it will be set to true
+
+        by default. Once set to true, it cannot be reverted to false. Default
+
+        value: True .'
       id: enable_soft_delete
+      type:
+      - bool
+    - description: 'softDelete data retention days. It
+
+        accepts >=7 and <=90. Default value: 90 .'
+      id: soft_delete_retention_in_days
+      type:
+      - int
+    - description: 'Property that controls how data actions
+
+        are authorized. When true, the key vault will use Role Based Access
+
+        Control (RBAC) for authorization of data actions, and the access policies
+
+        specified in vault properties will be  ignored (warning: this is a preview
+
+        feature). When false, the key vault will use the access policies specified
+
+        in vault properties, and any policy stored on Azure Resource Manager will
+
+        be ignored. If null or not specified, the vault is created with the
+
+        default value of false. Note that management actions are always authorized
+
+        with RBAC. Default value: False .'
+      id: enable_rbac_authorization
       type:
       - bool
     - description: 'The vault''s create mode to indicate whether the vault
