@@ -49,7 +49,7 @@ credential = DefaultAzureCredential()
 
 key_client = KeyClient("https://<vaultname>.vault.azure.net", credential)
 
-//NOTE: please replace the ("<your-key-name>") with the name of your key in the vault 
+# NOTE: please replace the ("<your-key-name>") with the name of your key in the vault 
 key = key_client.get_key("<your-key-name>")
 print(key.name)
 ```
