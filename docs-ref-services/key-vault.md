@@ -64,7 +64,7 @@ credential = DefaultAzureCredential()
 
 secret_client = SecretClient(vault_url="https://<vaultname>.vault.azure.net", credential=credential)
 
-//NOTE: please replace the ("<your-secret-name>") with the name of the secret in your vault
+# NOTE: please replace the ("<your-secret-name>") with the name of the secret in your vault
 secret = secret_client.get_secret("secret-name")
 
 print(secret.name)
