@@ -1,19 +1,17 @@
 ---
-title: Azure Storage Queues for Python Readme
-description: 
-keywords: Azure, Python, SDK, API, Storage, Queue
+title: Azure Storage Queues client library for Python
+keywords: Azure, Python, SDK, API, storage, azure-storage-queue
 author: maggiepint
 ms.author: magpint
-manager: twolley
-ms.date: 03/12/2020
+ms.date: 04/16/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
+ms.devlang: Python
 ms.service: storage
 ---
+ # Azure Storage Queues client library for Python - Version 12.1.1 
 
-# Azure Storage Queues for Python Readme - Version 12.1.1
 
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS. A single queue message can be up to 64 KiB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 
@@ -32,7 +30,8 @@ Common uses of Queue storage include:
 [Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
 
 ### Install the package
-Install the Azure Storage Queues client library for Python with [pip](https://pypi.org/project/pip/):
+Install the Azure Storage Queues client library for Python - Version 12.1.1 
+ with [pip](https://pypi.org/project/pip/):
 
 ```bash
 pip install azure-storage-queue
@@ -54,7 +53,8 @@ az storage account create -n my-storage-account-name -g my-resource-group
 ```
 
 ### Create the client
-The Azure Storage Queues client library for Python allows you to interact with three types of resources: the storage
+The Azure Storage Queues client library for Python - Version 12.1.1 
+ allows you to interact with three types of resources: the storage
 account itself, queues, and messages. Interaction with these resources starts with an instance of a [client](#clients).
 To create a client object, you will need the storage account's queue service endpoint URL and a credential that allows
 you to access the storage account:
@@ -160,7 +160,8 @@ The following components make up the Azure Queue Service:
 * A queue within the storage account, which contains a set of messages
 * A message within a queue, in any format, of up to 64 KiB
 
-The Azure Storage Queues client library for Python allows you to interact with each of these components through the
+The Azure Storage Queues client library for Python - Version 12.1.1 
+ allows you to interact with each of these components through the
 use of a dedicated client object.
 
 ### Clients
@@ -386,3 +387,10 @@ Several Storage Queues Python SDK samples are available to you in the SDK's GitH
     
 ### Additional documentation
 For more extensive documentation on Azure Queue storage, see the [Azure Queue storage documentation](https://docs.microsoft.com/azure/storage/queues/) on docs.microsoft.com.
+
+## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

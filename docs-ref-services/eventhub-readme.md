@@ -1,19 +1,17 @@
 ---
-title: Python Azure Event Hubs Readme
-description: 
-keywords: Azure, Python, SDK, API, Event Hubs
+title: Azure Event Hubs client library for Python
+keywords: Azure, Python, SDK, API, eventhub, azure-eventhub
 author: maggiepint
 ms.author: magpint
-manager: twolley
-ms.date: 03/12/2020
+ms.date: 04/16/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: event-hubs
+ms.devlang: Python
+ms.service: eventhub
 ---
+ # Azure Event Hubs client library for Python - Version 5.0.1 
 
-# Azure Event Hubs client library for Python - Version 5.0.1
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream
 them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected
@@ -44,7 +42,8 @@ There, you can also find detailed instructions for using the Azure CLI, Azure Po
 
 ### Install the package
 
-Install the Azure Event Hubs client library for Python with pip:
+Install the Azure Event Hubs client library for Python - Version 5.0.1 
+ with pip:
 
 ```
 $ pip install azure-eventhub
