@@ -1,19 +1,17 @@
 ---
-title: Python Azure Key Vault Keys Readme
-description: 
-keywords: Azure, Python, SDK, API, Key Vault, Keys
+title: Azure Key Vault Keys client library for Python
+keywords: Azure, Python, SDK, API, keyvault, azure-keyvault-keys
 author: maggiepint
 ms.author: magpint
-manager: twolley
-ms.date: 03/11/2020
+ms.date: 04/16/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: key-vault
+ms.devlang: Python
+ms.service: keyvault
 ---
+ # Azure Key Vault Keys client library for Python - Version 4.1.0 
 
-# Azure Key Vault Keys for Python Readme - Version 4.1.0
 Azure Key Vault helps solve the following problems:
 - Cryptographic key management (this library) - create, store, and control
 access to the keys used to encrypt your data
@@ -420,6 +418,21 @@ recover keys
 For more extensive documentation on Azure Key Vault, see the
 [API reference documentation][reference_docs].
 
+## Contributing
+This project welcomes contributions and suggestions. Most contributions require
+you to agree to a Contributor License Agreement (CLA) declaring that you have
+the right to, and actually do, grant us the rights to use your contribution.
+For details, visit https://cla.microsoft.com.
+
+When you submit a pull request, a CLA-bot will automatically determine whether
+you need to provide a CLA and decorate the PR appropriately (e.g., label,
+comment). Simply follow the instructions provided by the bot. You will only
+need to do this once across all repos using our CLA.
+
+This project has adopted the
+[Microsoft Open Source Code of Conduct][code_of_conduct]. For more information,
+see the Code of Conduct FAQ or contact opencode@microsoft.com with any
+additional questions or comments.
 
 [azure_cloud_shell]: https://shell.azure.com/bash
 [azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/core/azure-core#azure-core-library-exceptions
@@ -427,6 +440,7 @@ For more extensive documentation on Azure Key Vault, see the
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_sub]: https://azure.microsoft.com/free/
 [default_cred_ref]: https://aka.ms/azsdk-python-identity-default-cred-ref
+[code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-keys/samples/hello_world.py
 [hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-keys/samples/hello_world_async.py
 [backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations.py
