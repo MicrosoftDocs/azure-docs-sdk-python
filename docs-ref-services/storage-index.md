@@ -1,5 +1,5 @@
 ---
-title: Azure Storage libraries for Python
+title: Azure Storage client libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, Storage
 author: lisawong19
@@ -13,16 +13,32 @@ ms.devlang: python
 ms.service: storage
 ---
 
-# Azure Storage libraries for Python
+# Azure Storage client libraries for Python
 
 ## Client Packages (12.X.X)
 
-|Service| PyPi package| Examples|Getting Started Guide|
-|---|---|---|--|
-|**Storage Blob**|[azure-storage-blob](https://pypi.org/project/azure-storage-blob/)|[storage-blob-python-examples](https://docs.microsoft.com/en-us/samples/azure/azure-sdk-for-python/storage-blob-samples/)|[Azure Storage Blob Quickstart](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python)|
-|**Storage Queue**|[azure-storage-queue](https://pypi.org/project/azure-storage-queue/)|[storage-queue-python-examples](https://docs.microsoft.com/en-us/samples/azure/azure-sdk-for-python/storage-queue-samples/)|[Azure Storage Queue Quickstart](https://docs.microsoft.com/en-us/azure/storage/queues/storage-quickstart-queues-python)|
-|**Storage File Share**|[azure-storage-file-share](https://pypi.org/project/azure-storage-file-share/)|[storage-file-share-python-examples](https://docs.microsoft.com/en-us/samples/azure/azure-sdk-for-python/storage-file-share-samples/)||
-|||||
+| Package Name | Reference                                     | Package Manager                                   | Source                                                 |
+|--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| Storage Blob | [Reference](storage-blob-readme) | [PyPi](https://pypi.org/project/azure-storage-blob/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob) |
+| Storage Queue | [Reference](storage-queue-readme) | [PyPi](https://pypi.org/project/azure-storage-queue/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-queue/azure/storage/queue) |
+| Storage File Share | [Reference](storage-file-share-readme) | [PyPi](https://pypi.org/project/azure-storage-file-share/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
+| Storage File Data Lake (Preview) | [Reference](storage-file-datalake-readme) | [PyPi](https://pypi.org/project/azure-storage-file-datalake/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-datalake/azure/storage/filedatalake) |
+|              |                                               |                                                   |                                                        |
+
+## Client Packages (2.X.X)
+| Package Name | Reference                                     | Package Manager                                   | Source                                                 |
+|--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| Storage Blob | [Reference](azure-storage-blob/?view=azure-python-previous) | [PyPi](https://pypi.org/project/azure-storage-blob/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob) |
+| Storage Queue | [Reference](azure-storage-queue/?view=azure-python-previous) | [PyPi](https://pypi.org/project/azure-storage-queue/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-queue/azure/storage/queue) |
+| Storage File Share | [Reference](azure-storage-file/?view=azure-python-previous) | [PyPi](https://pypi.org/project/azure-storage-file/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
+|              |                                               |                                                   |                                                        |
+
+## Management
+| Package Name | Reference                                     | Package Manager                                   | Source                                                 |
+|--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| Storage Management | [Reference](storage/management) | [PyPi](https://pypi.org/project/azure-mgmt-storage/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-mgmt-storage) |
+|              |                                               |                                                   |                                                        |
+
 
 ## Install the libraries
 
