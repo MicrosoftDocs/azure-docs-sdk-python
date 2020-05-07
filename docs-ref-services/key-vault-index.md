@@ -16,13 +16,13 @@ The Azure Key Vault client libraries for Python offer a convenient interface for
 
 ## Libraries for data access
 
-The latest version of the Azure Key Vault libraries is version 4.x. Microsoft recommends using version 4.x for new applications.
+The latest version of the Azure Key Vault libraries is version 4.x.x. Microsoft recommends using version 4.x.x for new applications.
 
-### Version 4.x
+### Version 4.x.x
 
-The version 4.x client libraries for Python are part of the Azure SDK for Python. The source code for the Azure Key Vault client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault).
+The version 4.x.x client libraries for Python are part of the Azure SDK for Python. The source code for the Azure Key Vault client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault).
 
-Use the following version 4.x libraries to work with certificates, keys, and secrets:
+Use the following version 4.x.x libraries to work with certificates, keys, and secrets:
 
 | Library | Reference | Package | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
