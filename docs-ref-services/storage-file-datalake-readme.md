@@ -10,8 +10,8 @@ ms.technology: azure
 ms.devlang: Python
 ms.service: storage
 ---
- # Azure DataLake service client library for Python - Version 12.0.0 
 
+# Azure DataLake service client library for Python - Version 12.0.1
 Overview
 
 This preview package for Python includes ADLS Gen2 specific API support made available in Storage SDK. This includes:
