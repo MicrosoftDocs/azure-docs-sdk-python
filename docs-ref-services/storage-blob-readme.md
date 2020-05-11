@@ -26,34 +26,23 @@ Blob storage is ideal for:
 
 ## Getting started
 
-### Prerequisites
-* Python 2.7, or 3.5 or later is required to use this package.
-* You must have an [Azure subscription](https://azure.microsoft.com/free/) and an
-[Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
+## 1: Set up your local development environment
+ 
+If you haven't already, follow all the instructions on [Configure your local Python dev environment for Azure](configure-local-development-environment.md).
+ 
+Be sure to create a service principal for local development, and create and activate a virtual environment for this project.
 
-### Install the package
-Install the Azure Storage Blobs client library for Python with [pip](https://pypi.org/project/pip/):
+## 2. Create a storage account
+[Create a storage account](https://docs.microsoft.com/azure/storage/common/storage-account-create)
+
+## 3. Install the package
 
 ```bash
 pip install azure-storage-blob
 ```
 
-### Create a storage account
-If you wish to create a new storage account, you can use the
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
-[Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
-or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
-```bash
-# Create a new resource group to hold the storage account -
-# if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
-
-# Create the storage account
-az storage account create -n my-storage-account-name -g my-resource-group
-```
-
-### Create the client
+## 4. Create the client
 The Azure Storage Blobs client library for Python allows you to interact with three types of resources: the storage
 account itself, blob storage containers, and blobs. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's blob service account URL and a
