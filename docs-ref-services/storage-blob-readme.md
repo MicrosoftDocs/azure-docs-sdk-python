@@ -10,8 +10,7 @@ ms.technology: azure
 ms.devlang: Python
 ms.service: storage
 ---
- # Azure Storage Blobs client library for Python - Version 12.3.0 
-
+# Azure Storage Blobs client library for Python - Version 12.3.0
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob storage is optimized for storing massive amounts of unstructured data, such as text or binary data.
 
 Blob storage is ideal for:
@@ -33,8 +32,7 @@ Blob storage is ideal for:
 [Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
 
 ### Install the package
-Install the Azure Storage Blobs client library for Python - Version 12.3.0 
- with [pip](https://pypi.org/project/pip/):
+Install the Azure Storage Blobs client library for Python with [pip](https://pypi.org/project/pip/):
 
 ```bash
 pip install azure-storage-blob
@@ -56,8 +54,7 @@ az storage account create -n my-storage-account-name -g my-resource-group
 ```
 
 ### Create the client
-The Azure Storage Blobs client library for Python - Version 12.3.0 
- allows you to interact with three types of resources: the storage
+The Azure Storage Blobs client library for Python allows you to interact with three types of resources: the storage
 account itself, blob storage containers, and blobs. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's blob service account URL and a
 credential that allows you to access the storage account:
@@ -166,8 +163,7 @@ The following components make up the Azure Blob Service:
 * A container within the storage account
 * A blob within a container
 
-The Azure Storage Blobs client library for Python - Version 12.3.0 
- allows you to interact with each of these components through the
+The Azure Storage Blobs client library for Python allows you to interact with each of these components through the
 use of a dedicated client object.
 
 ### Clients
