@@ -24,37 +24,24 @@ Azure file shares can be used to:
 
 ## Getting started
 
-### Prerequisites
-* Python 2.7, or 3.5 or later is required to use this package.
-* You must have an [Azure subscription](https://azure.microsoft.com/free/) and an
-[Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
+## 1: Set up your local development environment
+ 
+If you haven't already, follow all the instructions on [Configure your local Python dev environment for Azure](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash).
+ 
+Be sure to create a service principal for local development, and create and activate a virtual environment for this project.
 
-### Install the package
-Install the Azure Storage File Share client library for Python - Version 12.1.1 
- with [pip](https://pypi.org/project/pip/):
+## 2. Create a storage account
 
-```bash
-pip install azure-storage-file-share
-```
+[Create a storage account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal)
 
-### Create a storage account
-If you wish to create a new storage account, you can use the
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
-[Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
-or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
+## 3. Install the package
 
 ```bash
-# Create a new resource group to hold the storage account -
-# if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
-
-# Create the storage account
-az storage account create -n my-storage-account-name -g my-resource-group
+pip install azure-storage-queue
 ```
 
-### Create the client
-The Azure Storage File Share client library for Python - Version 12.1.1 
- allows you to interact with four types of resources: the storage
+## 4. Create the client
+The Azure Storage File Share client library for Python allows you to interact with four types of resources: the storage
 account itself, file shares, directories, and files. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's file service URL and a
 credential that allows you to access the storage account:
@@ -62,19 +49,13 @@ credential that allows you to access the storage account:
 ```python
 from azure.storage.fileshare import ShareServiceClient
 
-service = ShareServiceClient(account_url="https://<my-storage-account-name>.file.core.windows.net/", credential=credential)
+service = ShareServiceClient(account_url="https://<my-storage-account-name>.file.core.windows.net/", credential=new DefaultAzureCredential())
 ```
 
-#### Looking up the account URL
-You can find the storage account's file service URL using the
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints),
-[Azure PowerShell](https://docs.microsoft.com/powershell/module/az.storage/get-azstorageaccount),
-or [Azure CLI](https://docs.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show):
+*Notes:* If you have created a service principal following the [configure your local environment documentation](configure-local-development-environment.md), `Default Azure Credential` works without additional parameters. For additional configuration options see [Authorizing access to data in Azure Storage](/azure/storage/common/storage-auth).
 
-```bash
-# Get the file service URL for the storage account
-az storage account show -n my-storage-account-name -g my-resource-group --query "primaryEndpoints.file"
-```
+You can find the storage account's blob service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
+
 
 #### Types of credentials
 The `credential` parameter may be provided in a number of different forms, depending on the type of

@@ -15,7 +15,7 @@ ms.service: storage
 
 # Azure Storage client libraries for Python
 
-## Client Packages (12.X.X)
+## Client Packages (12.X.X) - Latest
 
 | Package Name | Reference                                     | Package Manager                                   | Source                                                 |
 |--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
@@ -25,12 +25,12 @@ ms.service: storage
 | Storage File Data Lake (Preview) | [Reference](storage-file-datalake-readme) | [PyPi](https://pypi.org/project/azure-storage-file-datalake/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-datalake/azure/storage/filedatalake) |
 |              |                                               |                                                   |                                                        |
 
-## Client Packages (2.X.X)
+## Client Packages (2.X.X) - Legacy
 | Package Name | Reference                                     | Package Manager                                   | Source                                                 |
 |--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| Storage Blob | [Reference](azure-storage-blob/?view=azure-python-previous) | [PyPi](https://pypi.org/project/azure-storage-blob/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob) |
-| Storage Queue | [Reference](azure-storage-queue/?view=azure-python-previous) | [PyPi](https://pypi.org/project/azure-storage-queue/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-queue/azure/storage/queue) |
-| Storage File Share | [Reference](azure-storage-file/?view=azure-python-previous) | [PyPi](https://pypi.org/project/azure-storage-file/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
+| Storage Blob | [Reference](azure-storage-blob/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-blob/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob) |
+| Storage Queue | [Reference](azure-storage-queue/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-queue/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-queue/azure/storage/queue) |
+| Storage File Share | [Reference](azure-storage-file/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-file/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
 |              |                                               |                                                   |                                                        |
 
 ## Management
