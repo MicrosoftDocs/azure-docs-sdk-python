@@ -59,46 +59,6 @@ service = BlobServiceClient(account_url="https://<my-storage-account-name>.blob.
 
 You can find the storage account's blob service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
 
-## Key concepts
-The following components make up the Azure Blob Service:
-* The storage account itself
-* A container within the storage account
-* A blob within a container
-
-The Azure Storage Blobs client library for Python allows you to interact with each of these components through the
-use of a dedicated client object.
-
-### Clients
-Four different clients are provided to to interact with the various components of the Blob Service:
-1. [BlobServiceClient](https://aka.ms/azsdk-python-storage-blob-blobserviceclient) -
-    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
-    client instances to access the containers and blobs within. It provides operations to retrieve and configure the
-    account properties as well as list, create, and delete containers within the account. To perform operations on a
-    specific container or blob, retrieve a client using the `get_container_client` or `get_blob_client` methods.
-2. [ContainerClient](https://aka.ms/azsdk-python-storage-blob-containerclient) -
-    this client represents interaction with a specific container (which need not exist yet), and allows you to acquire
-    preconfigured client instances to access the blobs within. It provides operations to create, delete, or configure a
-    container and includes operations to list, upload, and delete the blobs within it. To perform operations on a
-    specific blob within the container, retrieve a client using the `get_blob_client` method.
-3. [BlobClient](https://aka.ms/azsdk-python-storage-blob-blobclient) -
-    this client represents interaction with a specific blob (which need not exist yet). It provides operations to
-    upload, download, delete, and create snapshots of a blob, as well as specific operations per blob type.
-4. [BlobLeaseClient](https://aka.ms/azsdk-python-storage-blob-blobleaseclient) -
-    this client represents lease interactions with a `ContainerClient` or `BlobClient`. It provides operations to
-    acquire, renew, release, change, and break a lease on a specified resource.
-
-### Blob Types
-Once you've initialized a Client, you can choose from the different types of blobs:
-* [Block blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
-  store text and binary data, up to approximately 4.75 TiB. Block blobs are made up of blocks of data that can be
-  managed individually
-* [Append blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-append-blobs)
-  are made up of blocks like block blobs, but are optimized for append operations. Append blobs are ideal for scenarios
-  such as logging data from virtual machines
-* [Page blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
-  store random access files up to 8 TiB in size. Page blobs store virtual hard drive (VHD) files and serve as disks for
-  Azure virtual machines
-
 ## Examples
 The following sections provide several code snippets covering some of the most common Storage Blob tasks, including:
 
@@ -204,6 +164,47 @@ async for blob in container.list_blobs():
 print(blob_list)
 ```
 
+## Understanding the Examples
+The following components make up the Azure Blob Service:
+* The storage account itself
+* A container within the storage account
+* A blob within a container
+
+The Azure Storage Blobs client library for Python allows you to interact with each of these components through the
+use of a dedicated client object.
+
+### Clients
+Four different clients are provided to to interact with the various components of the Blob Service:
+1. [BlobServiceClient](https://aka.ms/azsdk-python-storage-blob-blobserviceclient) -
+    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
+    client instances to access the containers and blobs within. It provides operations to retrieve and configure the
+    account properties as well as list, create, and delete containers within the account. To perform operations on a
+    specific container or blob, retrieve a client using the `get_container_client` or `get_blob_client` methods.
+2. [ContainerClient](https://aka.ms/azsdk-python-storage-blob-containerclient) -
+    this client represents interaction with a specific container (which need not exist yet), and allows you to acquire
+    preconfigured client instances to access the blobs within. It provides operations to create, delete, or configure a
+    container and includes operations to list, upload, and delete the blobs within it. To perform operations on a
+    specific blob within the container, retrieve a client using the `get_blob_client` method.
+3. [BlobClient](https://aka.ms/azsdk-python-storage-blob-blobclient) -
+    this client represents interaction with a specific blob (which need not exist yet). It provides operations to
+    upload, download, delete, and create snapshots of a blob, as well as specific operations per blob type.
+4. [BlobLeaseClient](https://aka.ms/azsdk-python-storage-blob-blobleaseclient) -
+    this client represents lease interactions with a `ContainerClient` or `BlobClient`. It provides operations to
+    acquire, renew, release, change, and break a lease on a specified resource.
+
+### Blob Types
+Once you've initialized a Client, you can choose from the different types of blobs:
+* [Block blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
+  store text and binary data, up to approximately 4.75 TiB. Block blobs are made up of blocks of data that can be
+  managed individually
+* [Append blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-append-blobs)
+  are made up of blocks like block blobs, but are optimized for append operations. Append blobs are ideal for scenarios
+  such as logging data from virtual machines
+* [Page blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
+  store random access files up to 8 TiB in size. Page blobs store virtual hard drive (VHD) files and serve as disks for
+  Azure virtual machines
+
+
 ## Optional Configuration
 
 Optional keyword arguments that can be passed in at the client and per-operation level. 
@@ -287,7 +288,6 @@ even when it isn't enabled for the client:
 ```py
 service_client.get_service_stats(logging_enable=True)
 ```
-
 ## Next steps
 
 ### More sample code

@@ -57,94 +57,6 @@ service = ShareServiceClient(account_url="https://<my-storage-account-name>.file
 You can find the storage account's blob service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
 
 
-#### Types of credentials
-The `credential` parameter may be provided in a number of different forms, depending on the type of
-[authorization](https://docs.microsoft.com/azure/storage/common/storage-auth) you wish to use:
-1. To use a [shared access signature (SAS) token](https://docs.microsoft.com/azure/storage/common/storage-sas-overview),
-   provide the token as a string. If your account URL includes the SAS token, omit the credential parameter.
-   You can generate a SAS token from the Azure Portal under "Shared access signature" or use one of the `generate_sas()`
-   functions to create a sas token for the storage account, share, or file:
-
-    ```python
-    from datetime import datetime, timedelta
-    from azure.storage.fileshare import ShareServiceClient, generate_account_sas, ResourceTypes, AccountSasPermissions
-    
-    sas_token = generate_account_sas(
-        account_name="<storage-account-name>",
-        account_key="<account-access-key>",
-        resource_types=ResourceTypes(service=True),
-        permission=AccountSasPermissions(read=True),
-        expiry=datetime.utcnow() + timedelta(hours=1)
-    )
-    
-    share_service_client = ShareServiceClient(account_url="https://<my_account_name>.file.core.windows.net", credential=sas_token)
-    ```
-
-2. To use a storage account [shared key](https://docs.microsoft.com/rest/api/storageservices/authenticate-with-shared-key/)
-   (aka account key or access key), provide the key as a string. This can be found in the Azure Portal under the "Access Keys" 
-   section or by running the following Azure CLI command:
-
-    ```az storage account keys list -g MyResourceGroup -n MyStorageAccount```
-
-    Use the key as the credential parameter to authenticate the client:
-    ```python
-    from azure.storage.fileshare import ShareServiceClient
-    service = ShareServiceClient(account_url="https://<my_account_name>.file.core.windows.net", credential="<account_access_key>")
-    ```
-
-#### Creating the client from a connection string
-Depending on your use case and authorization method, you may prefer to initialize a client instance with a storage
-connection string instead of providing the account URL and credential separately. To do this, pass the storage
-connection string to the client's `from_connection_string` class method:
-
-```python
-from azure.storage.fileshare import ShareServiceClient
-
-connection_string = "DefaultEndpointsProtocol=https;AccountName=xxxx;AccountKey=xxxx;EndpointSuffix=core.windows.net"
-service = ShareServiceClient.from_connection_string(conn_str=connection_string)
-```
-
-The connection string to your storage account can be found in the Azure Portal under the "Access Keys" section or by running the following CLI command:
-
-```bash
-az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
-```
-
-## Key concepts
-The following components make up the Azure File Share Service:
-* The storage account itself
-* A file share within the storage account
-* An optional hierarchy of directories within the file share
-* A file within the file share, which may be up to 1 TiB in size
-
-The Azure Storage File Share client library for Python - Version 12.1.1 
- allows you to interact with each of these components through the
-use of a dedicated client object.
-
-### Clients
-Four different clients are provided to to interact with the various components of the File Share Service:
-1. [ShareServiceClient](https://aka.ms/azsdk-python-storage-fileshare-shareserviceclient) -
-    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
-    client instances to access the file shares within. It provides operations to retrieve and configure the service
-    properties as well as list, create, and delete shares within the account. To perform operations on a specific share,
-    retrieve a client using the `get_share_client` method.
-2. [ShareClient](https://aka.ms/azsdk-python-storage-fileshare-shareclient) -
-    this client represents interaction with a specific file share (which need not exist yet), and allows you to acquire
-    preconfigured client instances to access the directories and files within. It provides operations to create, delete,
-    configure, or create snapshots of a share and includes operations to create and enumerate the contents of
-    directories within it. To perform operations on a specific directory or file, retrieve a client using the
-    `get_directory_client` or `get_file_client` methods.
-3. [ShareDirectoryClient](https://aka.ms/azsdk-python-storage-fileshare-sharedirectoryclient) -
-    this client represents interaction with a specific directory (which need not exist yet). It provides operations to
-    create, delete, or enumerate the contents of an immediate or nested subdirectory, and includes operations to create
-    and delete files within it. For operations relating to a specific subdirectory or file, a client for that entity can
-    also be retrieved using the `get_subdirectory_client` and `get_file_client` functions.
-4. [ShareFileClient](http://aka.ms/azsdk-python-storage-fileshare-sharefileclient) -
-    this client represents interaction with a specific file (which need not exist yet). It provides operations to
-    upload, download, create, delete, and copy a file.
-
-For details on path naming restrictions, see [Naming and Referencing Shares, Directories, Files, and Metadata](https://docs.microsoft.com/rest/api/storageservices/naming-and-referencing-shares--directories--files--and-metadata).
-
 ## Examples
 The following sections provide several code snippets covering some of the most common Storage File Share tasks, including:
 
@@ -244,6 +156,42 @@ async for item in parent_dir.list_directories_and_files():
     my_files.append(item)
 print(my_files)
 ```
+
+## Understanding The Examples
+The following components make up the Azure File Share Service:
+* The storage account itself
+* A file share within the storage account
+* An optional hierarchy of directories within the file share
+* A file within the file share, which may be up to 1 TiB in size
+
+The Azure Storage File Share client library for Python - Version 12.1.1 
+ allows you to interact with each of these components through the
+use of a dedicated client object.
+
+### Clients
+Four different clients are provided to to interact with the various components of the File Share Service:
+1. [ShareServiceClient](https://aka.ms/azsdk-python-storage-fileshare-shareserviceclient) -
+    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
+    client instances to access the file shares within. It provides operations to retrieve and configure the service
+    properties as well as list, create, and delete shares within the account. To perform operations on a specific share,
+    retrieve a client using the `get_share_client` method.
+2. [ShareClient](https://aka.ms/azsdk-python-storage-fileshare-shareclient) -
+    this client represents interaction with a specific file share (which need not exist yet), and allows you to acquire
+    preconfigured client instances to access the directories and files within. It provides operations to create, delete,
+    configure, or create snapshots of a share and includes operations to create and enumerate the contents of
+    directories within it. To perform operations on a specific directory or file, retrieve a client using the
+    `get_directory_client` or `get_file_client` methods.
+3. [ShareDirectoryClient](https://aka.ms/azsdk-python-storage-fileshare-sharedirectoryclient) -
+    this client represents interaction with a specific directory (which need not exist yet). It provides operations to
+    create, delete, or enumerate the contents of an immediate or nested subdirectory, and includes operations to create
+    and delete files within it. For operations relating to a specific subdirectory or file, a client for that entity can
+    also be retrieved using the `get_subdirectory_client` and `get_file_client` functions.
+4. [ShareFileClient](http://aka.ms/azsdk-python-storage-fileshare-sharefileclient) -
+    this client represents interaction with a specific file (which need not exist yet). It provides operations to
+    upload, download, create, delete, and copy a file.
+
+For details on path naming restrictions, see [Naming and Referencing Shares, Directories, Files, and Metadata](https://docs.microsoft.com/rest/api/storageservices/naming-and-referencing-shares--directories--files--and-metadata).
+
 
 ## Optional Configuration
 

@@ -58,37 +58,6 @@ service = QueueServiceClient(account_url="https://<my-storage-account-name>.queu
 You can find the storage account's queue service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
 
 
-## Key concepts
-The following components make up the Azure Queue Service:
-* The storage account itself
-* A queue within the storage account, which contains a set of messages
-* A message within a queue, in any format, of up to 64 KiB
-
-The Azure Storage Queues client library for Python - Version 12.1.1 
- allows you to interact with each of these components through the
-use of a dedicated client object.
-
-### Clients
-Two different clients are provided to to interact with the various components of the Queue Service:
-1. [QueueServiceClient](https://aka.ms/azsdk-python-storage-queue-queueserviceclient) -
-    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
-    client instances to access the queues within. It provides operations to retrieve and configure the account
-    properties as well as list, create, and delete queues within the account. To perform operations on a specific queue,
-    retrieve a client using the `get_queue_client` method.
-2. [QueueClient](https://aka.ms/azsdk-python-storage-queue-queueclient) -
-    this client represents interaction with a specific queue (which need not exist yet). It provides operations to
-    create, delete, or configure a queue and includes operations to send, receive, peek, delete, and update messages
-    within it.
-
-### Messages
-* **Send** - Adds a message to the queue and optionally sets a visibility timeout for the message.
-* **Receive** - Retrieves a message from the queue and makes it invisible to other consumers.
-* **Peek** - Retrieves a message from the front of the queue, without changing the message visibility.
-* **Update** - Updates the visibility timeout of a message and/or the message contents.
-* **Delete** - Deletes a specified message from the queue.
-* **Clear** - Clears all messages from the queue.
-
-
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Storage Queue tasks, including:
@@ -183,6 +152,37 @@ async for message in response:
     print(message.content)
     await queue.delete_message(message)
 ```
+
+
+## Understanding the Examples
+The following components make up the Azure Queue Service:
+* The storage account itself
+* A queue within the storage account, which contains a set of messages
+* A message within a queue, in any format, of up to 64 KiB
+
+The Azure Storage Queues client library for Python - Version 12.1.1 
+ allows you to interact with each of these components through the
+use of a dedicated client object.
+
+### Clients
+Two different clients are provided to to interact with the various components of the Queue Service:
+1. [QueueServiceClient](https://aka.ms/azsdk-python-storage-queue-queueserviceclient) -
+    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
+    client instances to access the queues within. It provides operations to retrieve and configure the account
+    properties as well as list, create, and delete queues within the account. To perform operations on a specific queue,
+    retrieve a client using the `get_queue_client` method.
+2. [QueueClient](https://aka.ms/azsdk-python-storage-queue-queueclient) -
+    this client represents interaction with a specific queue (which need not exist yet). It provides operations to
+    create, delete, or configure a queue and includes operations to send, receive, peek, delete, and update messages
+    within it.
+
+### Messages
+* **Send** - Adds a message to the queue and optionally sets a visibility timeout for the message.
+* **Receive** - Retrieves a message from the queue and makes it invisible to other consumers.
+* **Peek** - Retrieves a message from the front of the queue, without changing the message visibility.
+* **Update** - Updates the visibility timeout of a message and/or the message contents.
+* **Delete** - Deletes a specified message from the queue.
+* **Clear** - Clears all messages from the queue.
 
 ## Optional Configuration
 
