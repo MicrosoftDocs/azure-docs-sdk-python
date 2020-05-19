@@ -55,7 +55,7 @@ from azure.storage.blob import BlobServiceClient
 service = BlobServiceClient(account_url="https://<my-storage-account-name>.blob.core.windows.net/", credential=new DefaultAzureCredential())
 ```
 
-*Notes:* If you have created a service principal following the [configure your local environment documentation](configure-local-development-environment.md), `Default Azure Credential` works without additional parameters. For additional configuration options see [Authorizing access to data in Azure Storage](/azure/storage/common/storage-auth?toc=/azure/storage/blobs/toc.json).
+*Notes:* If you have created a service principal following the [configure your local environment documentation](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash), `Default Azure Credential` works without additional parameters. For additional configuration options see [Authorizing access to data in Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth?toc=/azure/storage/blobs/toc.json).
 
 You can find the storage account's blob service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
 

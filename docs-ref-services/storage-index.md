@@ -28,9 +28,9 @@ ms.service: storage
 ## Client Packages (2.X.X) - Legacy
 | Package Name | Reference                                     | Package Manager                                   | Source                                                 |
 |--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| Storage Blob | [Reference](azure-storage-blob/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-blob/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob) |
-| Storage Queue | [Reference](azure-storage-queue/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-queue/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-queue/azure/storage/queue) |
-| Storage File Share | [Reference](azure-storage-file/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-file/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
+| Storage Blob | [Reference](/python/api/azure-storage-blob/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-blob/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob) |
+| Storage Queue | [Reference](/python/api/azure-storage-queue/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-queue/2.1.0/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-queue/azure/storage/queue) |
+| Storage File Share | [Reference](/python/api/azure-storage-file/?view=azure-python-previous&preserve-view=true) | [PyPi](https://pypi.org/project/azure-storage-file/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
 |              |                                               |                                                   |                                                        |
 
 ## Management
