@@ -34,13 +34,13 @@ Use the following version 4.x.x libraries to work with certificates, keys, and s
 
 ### Version 1.x.x
 
-The source code for the Azure Key Vault client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault).
+The source code for the Azure Key Vault client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault_1.1.0/azure-keyvault).
 
 Use the following version 1.x.x libraries to work with certificates, keys, and secrets:
 
 | Library | Reference | Package | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    azure-keyvault   |    [Reference](https://docs.microsoft.com/python/api/overview/azure/keyvault?view=azure-python-previous)    |    [PyPI](https://pypi.org/project/azure-keyvault/1.1.0/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault)    |
+|    azure-keyvault   |    [Reference](https://docs.microsoft.com/python/api/overview/azure/keyvault?view=azure-python-previous)    |    [PyPI](https://pypi.org/project/azure-keyvault/1.1.0/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault_1.1.0/azure-keyvault)    |
 
 ## Libraries for resource management
 
