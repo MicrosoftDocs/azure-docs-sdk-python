@@ -26,34 +26,24 @@ Blob storage is ideal for:
 
 ## Getting started
 
-### Prerequisites
-* Python 2.7, or 3.5 or later is required to use this package.
-* You must have an [Azure subscription](https://azure.microsoft.com/free/) and an
-[Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
+## 1: Set up your local development environment
+ 
+If you haven't already, follow all the instructions on [Configure your local Python dev environment for Azure](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash).
+ 
+Be sure to create a service principal for local development, and create and activate a virtual environment for this project.
 
-### Install the package
-Install the Azure Storage Blobs client library for Python with [pip](https://pypi.org/project/pip/):
+## 2. Create a storage account
+
+[Create a storage account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal)
+
+## 3. Install the package
 
 ```bash
 pip install azure-storage-blob
 ```
 
-### Create a storage account
-If you wish to create a new storage account, you can use the
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
-[Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
-or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
-```bash
-# Create a new resource group to hold the storage account -
-# if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
-
-# Create the storage account
-az storage account create -n my-storage-account-name -g my-resource-group
-```
-
-### Create the client
+## 4. Create the client
 The Azure Storage Blobs client library for Python allows you to interact with three types of resources: the storage
 account itself, blob storage containers, and blobs. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's blob service account URL and a
@@ -62,140 +52,12 @@ credential that allows you to access the storage account:
 ```python
 from azure.storage.blob import BlobServiceClient
 
-service = BlobServiceClient(account_url="https://<my-storage-account-name>.blob.core.windows.net/", credential=credential)
+service = BlobServiceClient(account_url="https://<my-storage-account-name>.blob.core.windows.net/", credential=new DefaultAzureCredential())
 ```
 
-#### Looking up the account URL
-You can find the storage account's blob service URL using the 
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints),
-[Azure PowerShell](https://docs.microsoft.com/powershell/module/az.storage/get-azstorageaccount),
-or [Azure CLI](https://docs.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show):
+*Notes:* If you have created a service principal following the [configure your local environment documentation](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash), `Default Azure Credential` works without additional parameters. For additional configuration options see [Authorizing access to data in Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth?toc=/azure/storage/blobs/toc.json).
 
-```bash
-# Get the blob service account url for the storage account
-az storage account show -n my-storage-account-name -g my-resource-group --query "primaryEndpoints.blob"
-```
-
-#### Types of credentials
-The `credential` parameter may be provided in a number of different forms, depending on the type of
-[authorization](https://docs.microsoft.com/azure/storage/common/storage-auth) you wish to use:
-1. To use an [Azure Active Directory (AAD) token credential](https://docs.microsoft.com/azure/storage/common/storage-auth-aad),
-   provide an instance of the desired credential type obtained from the
-   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials) library.
-   For example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#defaultazurecredential)
-   can be used to authenticate the client.
-   
-   This requires some initial setup:
-   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#install-the-package)
-   * [Register a new AAD application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app) and give permissions to access Azure Storage
-   * [Grant access](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal) to Azure Blob data with RBAC in the Azure Portal
-   * Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
-     AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-   
-   Use the returned token credential to authenticate the client:
-    ```python
-        from azure.identity import DefaultAzureCredential
-        from azure.storage.blob import BlobServiceClient
-        token_credential = DefaultAzureCredential()
-    
-        blob_service_client = BlobServiceClient(
-            account_url="https://<my_account_name>.blob.core.windows.net",
-            credential=token_credential
-        )
-    ```
-
-2. To use a [shared access signature (SAS) token](https://docs.microsoft.com/azure/storage/common/storage-sas-overview),
-   provide the token as a string. If your account URL includes the SAS token, omit the credential parameter.
-   You can generate a SAS token from the Azure Portal under "Shared access signature" or use one of the `generate_sas()`
-   functions to create a sas token for the storage account, container, or blob:
-
-    ```python
-    from datetime import datetime, timedelta
-    from azure.storage.blob import BlobServiceClient, generate_account_sas, ResourceTypes, AccountSasPermissions
-    
-    sas_token = generate_account_sas(
-        account_name="<storage-account-name>",
-        account_key="<account-access-key>",
-        resource_types=ResourceTypes(service=True),
-        permission=AccountSasPermissions(read=True),
-        expiry=datetime.utcnow() + timedelta(hours=1)
-    )
-    
-    blob_service_client = BlobServiceClient(account_url="https://<my_account_name>.blob.core.windows.net", credential=sas_token)
-    ```
-
-3. To use a storage account [shared key](https://docs.microsoft.com/rest/api/storageservices/authenticate-with-shared-key/)
-   (aka account key or access key), provide the key as a string. This can be found in the Azure Portal under the "Access Keys" 
-   section or by running the following Azure CLI command:
-
-    ```az storage account keys list -g MyResourceGroup -n MyStorageAccount```
-
-    Use the key as the credential parameter to authenticate the client:
-    ```python
-    from azure.storage.blob import BlobServiceClient
-    service = BlobServiceClient(account_url="https://<my_account_name>.blob.core.windows.net", credential="<account_access_key>")
-    ```
-   
-4. To use [anonymous public read access](https://docs.microsoft.com/azure/storage/blobs/storage-manage-access-to-resources),
-   simply omit the credential parameter.
-
-#### Creating the client from a connection string
-Depending on your use case and authorization method, you may prefer to initialize a client instance with a storage
-connection string instead of providing the account URL and credential separately. To do this, pass the storage
-connection string to the client's `from_connection_string` class method:
-
-```python
-from azure.storage.blob import BlobServiceClient
-
-connection_string = "DefaultEndpointsProtocol=https;AccountName=xxxx;AccountKey=xxxx;EndpointSuffix=core.windows.net"
-service = BlobServiceClient.from_connection_string(conn_str=connection_string)
-```
-
-The connection string to your storage account can be found in the Azure Portal under the "Access Keys" section or by running the following CLI command:
-
-```bash
-az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
-```
-
-## Key concepts
-The following components make up the Azure Blob Service:
-* The storage account itself
-* A container within the storage account
-* A blob within a container
-
-The Azure Storage Blobs client library for Python allows you to interact with each of these components through the
-use of a dedicated client object.
-
-### Clients
-Four different clients are provided to to interact with the various components of the Blob Service:
-1. [BlobServiceClient](https://aka.ms/azsdk-python-storage-blob-blobserviceclient) -
-    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
-    client instances to access the containers and blobs within. It provides operations to retrieve and configure the
-    account properties as well as list, create, and delete containers within the account. To perform operations on a
-    specific container or blob, retrieve a client using the `get_container_client` or `get_blob_client` methods.
-2. [ContainerClient](https://aka.ms/azsdk-python-storage-blob-containerclient) -
-    this client represents interaction with a specific container (which need not exist yet), and allows you to acquire
-    preconfigured client instances to access the blobs within. It provides operations to create, delete, or configure a
-    container and includes operations to list, upload, and delete the blobs within it. To perform operations on a
-    specific blob within the container, retrieve a client using the `get_blob_client` method.
-3. [BlobClient](https://aka.ms/azsdk-python-storage-blob-blobclient) -
-    this client represents interaction with a specific blob (which need not exist yet). It provides operations to
-    upload, download, delete, and create snapshots of a blob, as well as specific operations per blob type.
-4. [BlobLeaseClient](https://aka.ms/azsdk-python-storage-blob-blobleaseclient) -
-    this client represents lease interactions with a `ContainerClient` or `BlobClient`. It provides operations to
-    acquire, renew, release, change, and break a lease on a specified resource.
-
-### Blob Types
-Once you've initialized a Client, you can choose from the different types of blobs:
-* [Block blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
-  store text and binary data, up to approximately 4.75 TiB. Block blobs are made up of blocks of data that can be
-  managed individually
-* [Append blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-append-blobs)
-  are made up of blocks like block blobs, but are optimized for append operations. Append blobs are ideal for scenarios
-  such as logging data from virtual machines
-* [Page blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
-  store random access files up to 8 TiB in size. Page blobs store virtual hard drive (VHD) files and serve as disks for
-  Azure virtual machines
+You can find the storage account's blob service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
 
 ## Examples
 The following sections provide several code snippets covering some of the most common Storage Blob tasks, including:
@@ -302,6 +164,47 @@ async for blob in container.list_blobs():
 print(blob_list)
 ```
 
+## Understanding the Examples
+The following components make up the Azure Blob Service:
+* The storage account itself
+* A container within the storage account
+* A blob within a container
+
+The Azure Storage Blobs client library for Python allows you to interact with each of these components through the
+use of a dedicated client object.
+
+### Clients
+Four different clients are provided to to interact with the various components of the Blob Service:
+1. [BlobServiceClient](https://aka.ms/azsdk-python-storage-blob-blobserviceclient) -
+    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
+    client instances to access the containers and blobs within. It provides operations to retrieve and configure the
+    account properties as well as list, create, and delete containers within the account. To perform operations on a
+    specific container or blob, retrieve a client using the `get_container_client` or `get_blob_client` methods.
+2. [ContainerClient](https://aka.ms/azsdk-python-storage-blob-containerclient) -
+    this client represents interaction with a specific container (which need not exist yet), and allows you to acquire
+    preconfigured client instances to access the blobs within. It provides operations to create, delete, or configure a
+    container and includes operations to list, upload, and delete the blobs within it. To perform operations on a
+    specific blob within the container, retrieve a client using the `get_blob_client` method.
+3. [BlobClient](https://aka.ms/azsdk-python-storage-blob-blobclient) -
+    this client represents interaction with a specific blob (which need not exist yet). It provides operations to
+    upload, download, delete, and create snapshots of a blob, as well as specific operations per blob type.
+4. [BlobLeaseClient](https://aka.ms/azsdk-python-storage-blob-blobleaseclient) -
+    this client represents lease interactions with a `ContainerClient` or `BlobClient`. It provides operations to
+    acquire, renew, release, change, and break a lease on a specified resource.
+
+### Blob Types
+Once you've initialized a Client, you can choose from the different types of blobs:
+* [Block blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
+  store text and binary data, up to approximately 4.75 TiB. Block blobs are made up of blocks of data that can be
+  managed individually
+* [Append blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-append-blobs)
+  are made up of blocks like block blobs, but are optimized for append operations. Append blobs are ideal for scenarios
+  such as logging data from virtual machines
+* [Page blobs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
+  store random access files up to 8 TiB in size. Page blobs store virtual hard drive (VHD) files and serve as disks for
+  Azure virtual machines
+
+
 ## Optional Configuration
 
 Optional keyword arguments that can be passed in at the client and per-operation level. 
@@ -385,7 +288,6 @@ even when it isn't enabled for the client:
 ```py
 service_client.get_service_stats(logging_enable=True)
 ```
-
 ## Next steps
 
 ### More sample code
