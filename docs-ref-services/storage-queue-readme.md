@@ -24,37 +24,25 @@ Common uses of Queue storage include:
 
 ## Getting started
 
-### Prerequisites
-* Python 2.7, or 3.5 or later is required to use this package.
-* You must have an [Azure subscription](https://azure.microsoft.com/free/) and an
-[Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
+## 1: Set up your local development environment
+ 
+If you haven't already, follow all the instructions on [Configure your local Python dev environment for Azure](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash).
+ 
+Be sure to create a service principal for local development, and create and activate a virtual environment for this project.
 
-### Install the package
-Install the Azure Storage Queues client library for Python - Version 12.1.1 
- with [pip](https://pypi.org/project/pip/):
+## 2. Create a storage account
+
+[Create a storage account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal)
+
+## 3. Install the package
 
 ```bash
 pip install azure-storage-queue
 ```
 
-### Create a storage account
-If you wish to create a new storage account, you can use the
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
-[Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
-or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
-```bash
-# Create a new resource group to hold the storage account -
-# if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
-
-# Create the storage account
-az storage account create -n my-storage-account-name -g my-resource-group
-```
-
-### Create the client
-The Azure Storage Queues client library for Python - Version 12.1.1 
- allows you to interact with three types of resources: the storage
+## 4. Create the client
+The Azure Storage Queues client library for Python allows you to interact with three types of resources: the storage
 account itself, queues, and messages. Interaction with these resources starts with an instance of a [client](#clients).
 To create a client object, you will need the storage account's queue service endpoint URL and a credential that allows
 you to access the storage account:
@@ -62,127 +50,12 @@ you to access the storage account:
 ```python
 from azure.storage.queue import QueueServiceClient
 
-service = QueueServiceClient(account_url="https://<my-storage-account-name>.queue.core.windows.net/", credential=credential)
+service = QueueServiceClient(account_url="https://<my-storage-account-name>.queue.core.windows.net/", credential=new DefaultAzureCredential())
 ```
 
-#### Looking up the account URL
-You can find the storage account's queue service URL using the 
-[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints),
-[Azure PowerShell](https://docs.microsoft.com/powershell/module/az.storage/get-azstorageaccount),
-or [Azure CLI](https://docs.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show):
+*Notes:* If you have created a service principal following the [configure your local environment documentation](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash), `Default Azure Credential` works without additional parameters. For additional configuration options see [Authorizing access to data in Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth?toc=/azure/storage/queues/toc.json).
 
-```bash
-# Get the queue service URL for the storage account
-az storage account show -n my-storage-account-name -g my-resource-group --query "primaryEndpoints.queue"
-```
-
-#### Types of credentials
-The `credential` parameter may be provided in a number of different forms, depending on the type of
-[authorization](https://docs.microsoft.com/azure/storage/common/storage-auth) you wish to use:
-1. To use a [shared access signature (SAS) token](https://docs.microsoft.com/azure/storage/common/storage-sas-overview),
-   provide the token as a string. If your account URL includes the SAS token, omit the credential parameter.
-   You can generate a SAS token from the Azure Portal under "Shared access signature" or use one of the `generate_sas()`
-   functions to create a sas token for the storage account or queue:
-
-    ```python
-    from datetime import datetime, timedelta
-    from azure.storage.queue import QueueServiceClient, generate_account_sas, ResourceTypes, AccountSasPermissions
-    
-    sas_token = generate_account_sas(
-        account_name="<storage-account-name>",
-        account_key="<account-access-key>",
-        resource_types=ResourceTypes(service=True),
-        permission=AccountSasPermissions(read=True),
-        expiry=datetime.utcnow() + timedelta(hours=1)
-    )
-    
-    queue_service_client = QueueServiceClient(account_url="https://<my_account_name>.queue.core.windows.net", credential=sas_token)
-    ```
-
-2. To use a storage account [shared key](https://docs.microsoft.com/rest/api/storageservices/authenticate-with-shared-key/)
-   (aka account key or access key), provide the key as a string. This can be found in the Azure Portal under the "Access Keys" 
-   section or by running the following Azure CLI command:
-
-    ```az storage account keys list -g MyResourceGroup -n MyStorageAccount```
-
-    Use the key as the credential parameter to authenticate the client:
-    ```python
-    from azure.storage.queue import QueueServiceClient
-    service = QueueServiceClient(account_url="https://<my_account_name>.queue.core.windows.net", credential="<account_access_key>")
-    ```
-
-3. To use an [Azure Active Directory (AAD) token credential](https://docs.microsoft.com/azure/storage/common/storage-auth-aad),
-   provide an instance of the desired credential type obtained from the
-   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials) library.
-   For example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#defaultazurecredential)
-   can be used to authenticate the client.
-   
-   This requires some initial setup:
-   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#install-the-package)
-   * [Register a new AAD application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app) and give permissions to access Azure Storage
-   * [Grant access](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal) to Azure Queue data with RBAC in the Azure Portal
-   * Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
-     AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-   
-   Use the returned token credential to authenticate the client:
-    ```python
-        from azure.identity import DefaultAzureCredential
-        from azure.storage.queue import QueueServiceClient
-        token_credential = DefaultAzureCredential()
-    
-        queue_service_client = QueueServiceClient(
-            account_url="https://<my_account_name>.queue.core.windows.net",
-            credential=token_credential
-        )
-    ```
-
-#### Creating the client from a connection string
-Depending on your use case and authorization method, you may prefer to initialize a client instance with a storage
-connection string instead of providing the account URL and credential separately. To do this, pass the storage
-connection string to the client's `from_connection_string` class method:
-
-```python
-from azure.storage.queue import QueueServiceClient
-
-connection_string = "DefaultEndpointsProtocol=https;AccountName=xxxx;AccountKey=xxxx;EndpointSuffix=core.windows.net"
-service = QueueServiceClient.from_connection_string(conn_str=connection_string)
-```
-
-The connection string to your storage account can be found in the Azure Portal under the "Access Keys" section or by running the following CLI command:
-
-```bash
-az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
-```
-
-## Key concepts
-The following components make up the Azure Queue Service:
-* The storage account itself
-* A queue within the storage account, which contains a set of messages
-* A message within a queue, in any format, of up to 64 KiB
-
-The Azure Storage Queues client library for Python - Version 12.1.1 
- allows you to interact with each of these components through the
-use of a dedicated client object.
-
-### Clients
-Two different clients are provided to to interact with the various components of the Queue Service:
-1. [QueueServiceClient](https://aka.ms/azsdk-python-storage-queue-queueserviceclient) -
-    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
-    client instances to access the queues within. It provides operations to retrieve and configure the account
-    properties as well as list, create, and delete queues within the account. To perform operations on a specific queue,
-    retrieve a client using the `get_queue_client` method.
-2. [QueueClient](https://aka.ms/azsdk-python-storage-queue-queueclient) -
-    this client represents interaction with a specific queue (which need not exist yet). It provides operations to
-    create, delete, or configure a queue and includes operations to send, receive, peek, delete, and update messages
-    within it.
-
-### Messages
-* **Send** - Adds a message to the queue and optionally sets a visibility timeout for the message.
-* **Receive** - Retrieves a message from the queue and makes it invisible to other consumers.
-* **Peek** - Retrieves a message from the front of the queue, without changing the message visibility.
-* **Update** - Updates the visibility timeout of a message and/or the message contents.
-* **Delete** - Deletes a specified message from the queue.
-* **Clear** - Clears all messages from the queue.
+You can find the storage account's queue service URL using the [Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints).
 
 
 ## Examples
@@ -279,6 +152,37 @@ async for message in response:
     print(message.content)
     await queue.delete_message(message)
 ```
+
+
+## Understanding the Examples
+The following components make up the Azure Queue Service:
+* The storage account itself
+* A queue within the storage account, which contains a set of messages
+* A message within a queue, in any format, of up to 64 KiB
+
+The Azure Storage Queues client library for Python - Version 12.1.1 
+ allows you to interact with each of these components through the
+use of a dedicated client object.
+
+### Clients
+Two different clients are provided to to interact with the various components of the Queue Service:
+1. [QueueServiceClient](https://aka.ms/azsdk-python-storage-queue-queueserviceclient) -
+    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
+    client instances to access the queues within. It provides operations to retrieve and configure the account
+    properties as well as list, create, and delete queues within the account. To perform operations on a specific queue,
+    retrieve a client using the `get_queue_client` method.
+2. [QueueClient](https://aka.ms/azsdk-python-storage-queue-queueclient) -
+    this client represents interaction with a specific queue (which need not exist yet). It provides operations to
+    create, delete, or configure a queue and includes operations to send, receive, peek, delete, and update messages
+    within it.
+
+### Messages
+* **Send** - Adds a message to the queue and optionally sets a visibility timeout for the message.
+* **Receive** - Retrieves a message from the queue and makes it invisible to other consumers.
+* **Peek** - Retrieves a message from the front of the queue, without changing the message visibility.
+* **Update** - Updates the visibility timeout of a message and/or the message contents.
+* **Delete** - Deletes a specified message from the queue.
+* **Clear** - Clears all messages from the queue.
 
 ## Optional Configuration
 
