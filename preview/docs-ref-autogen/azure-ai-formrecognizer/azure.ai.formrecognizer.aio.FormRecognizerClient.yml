@@ -2,26 +2,38 @@
 api_name: []
 items:
 - children:
+  - azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content
+  - azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content_from_url
+  - azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms
+  - azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms_from_url
+  - azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts
+  - azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts_from_url
   - azure.ai.formrecognizer.aio.FormRecognizerClient.close
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.get_form_training_client
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content_from_url
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms_from_url
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts
-  - azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts_from_url
   class: azure.ai.formrecognizer.aio.FormRecognizerClient
   example:
   - "Creating the FormRecognizerClient with an endpoint and API key.<!--[!code-python[Main](les\\\
-    async_samples\\sample_get_bounding_boxes_async.py )]-->\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\12\\\\azure-ai-formrecognizer-1.0.0b2\\\
-    \\samples\\\\async_samples\\\\sample_get_bounding_boxes_async.py\", \"xml:space\"\
+    async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\
+    \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
     \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-    \n   form_recognizer_client = FormRecognizerClient(\n       endpoint=self.endpoint,\
-    \ credential=AzureKeyCredential(self.key)\n   )\n\n   ````\n"
+    \   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_KEY\"]\n\n   form_recognizer_client = FormRecognizerClient(endpoint,\
+    \ AzureKeyCredential(key))\n\n   ````\n\nCreating the FormRecognizerClient with\
+    \ a token credential.<!--[!code-python[Main](les\\async_samples\\sample_authentication_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\\async_samples\\\\sample_authentication_async.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential\
+    \ will use the values from these environment\n   variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,\
+    \ AZURE_CLIENT_SECRET\n   \"\"\"\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    \   from azure.identity.aio import DefaultAzureCredential\n\n   endpoint = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_AAD_ENDPOINT\"]\n   credential = DefaultAzureCredential()\n\
+    \n   form_recognizer_client = FormRecognizerClient(endpoint, credential)\n\n \
+    \  ````\n"
   fullName: azure.ai.formrecognizer.aio.FormRecognizerClient
   inheritance:
   - type: builtins.object
@@ -48,12 +60,387 @@ items:
       - str
     - description: 'Credentials needed for the client to connect to Azure.
 
-        This is an instance of AzureKeyCredential if using an API key.'
+        This is an instance of AzureKeyCredential if using an API key or a token
+
+        credential from <xref:azure.identity>.'
       id: credential
       type:
       - azure.core.credentials.AzureKeyCredential
+      - azure.core.credentials_async.AsyncTokenCredential
   type: class
   uid: azure.ai.formrecognizer.aio.FormRecognizerClient
+- class: azure.ai.formrecognizer.aio.FormRecognizerClient
+  example:
+  - "Recognize text and content/layout information from a form.<!--[!code-python[Main](les\\\
+    async_samples\\sample_recognize_content_async.py )]-->\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\
+    \\samples\\\\async_samples\\\\sample_recognize_content_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_KEY\"]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint,\
+    \ credential=AzureKeyCredential(key)\n   ) as form_recognizer_client:\n\n    \
+    \   with open(path_to_sample_forms, \"rb\") as f:\n           poller = await form_recognizer_client.begin_recognize_content(form=f)\n\
+    \n       contents = await poller.result()\n\n       for idx, content in enumerate(contents):\n\
+    \           print(\"----Recognizing content from page #{}----\".format(idx))\n\
+    \           print(\"Has width: {} and height: {}, measured with unit: {}\".format(\n\
+    \               content.width,\n               content.height,\n             \
+    \  content.unit\n           ))\n           for table_idx, table in enumerate(content.tables):\n\
+    \               print(\"Table # {} has {} rows and {} columns\".format(table_idx,\
+    \ table.row_count, table.column_count))\n               for cell in table.cells:\n\
+    \                   print(\"...Cell[{}][{}] has text '{}' within bounding box\
+    \ '{}'\".format(\n                       cell.row_index,\n                   \
+    \    cell.column_index,\n                       cell.text,\n                 \
+    \      format_bounding_box(cell.bounding_box)\n                   ))\n\n   ````\n"
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content
+  langs:
+  - python
+  module: azure.ai.formrecognizer.aio
+  name: 'begin_recognize_content(form: typing.Union[bytes, typing.IO[bytes]], **kwargs:
+    typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
+  namewithoutparameters: begin_recognize_content
+  summary: 'Extract text and content/layout information from a given document.
+
+    The input document must be of one of the supported content types - ''application/pdf'',
+
+    ''image/jpeg'', ''image/png'' or ''image/tiff''.'
+  syntax:
+    content: 'begin_recognize_content(form: typing.Union[bytes, typing.IO[bytes]],
+      **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
+    parameters:
+    - description: JPEG, PNG, PDF and TIFF type file stream or bytes.
+      id: form
+      isRequired: true
+      type:
+      - bytes
+      - IO[bytes]
+    return:
+      description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
+
+        object to return a list[<xref:azure.ai.formrecognizer.FormPage>].'
+      type:
+      - azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.FormPage]]
+  type: method
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content
+- class: azure.ai.formrecognizer.aio.FormRecognizerClient
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content_from_url
+  langs:
+  - python
+  module: azure.ai.formrecognizer.aio
+  name: 'begin_recognize_content_from_url(form_url: str, **kwargs: typing.Any) ->
+    azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
+  namewithoutparameters: begin_recognize_content_from_url
+  summary: 'Extract text and layout information from a given document.
+
+    The input document must be the location (Url) of the document to be analyzed.'
+  syntax:
+    content: 'begin_recognize_content_from_url(form_url: str, **kwargs: typing.Any)
+      -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
+    parameters:
+    - description: 'The url of the form to analyze. The input must be a valid, encoded
+        url
+
+        of one of the supported formats: JPEG, PNG, PDF and TIFF.'
+      id: form_url
+      isRequired: true
+      type:
+      - str
+    return:
+      description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
+
+        object to return a list[<xref:azure.ai.formrecognizer.FormPage>].'
+      type:
+      - azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.FormPage]]
+  type: method
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content_from_url
+- class: azure.ai.formrecognizer.aio.FormRecognizerClient
+  example:
+  - "Recognize fields and values from a custom form.<!--[!code-python[Main](les\\\
+    async_samples\\sample_recognize_custom_forms_async.py )]-->\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\
+    \\samples\\\\async_samples\\\\sample_recognize_custom_forms_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_KEY\"]\n   model_id = os.environ[\"CUSTOM_TRAINED_MODEL_ID\"\
+    ]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint, credential=AzureKeyCredential(key)\n\
+    \   ) as form_recognizer_client:\n\n       # Make sure your form's type is included\
+    \ in the list of form types the custom model can recognize\n       with open(path_to_sample_forms,\
+    \ \"rb\") as f:\n           poller = await form_recognizer_client.begin_recognize_custom_forms(\n\
+    \               model_id=model_id, form=f\n           )\n       forms = await\
+    \ poller.result()\n\n       for idx, form in enumerate(forms):\n           print(\"\
+    --------Recognizing Form #{}--------\".format(idx))\n           print(\"Form {}\
+    \ has type {}\".format(idx, form.form_type))\n           for name, field in form.fields.items():\n\
+    \               # each field is of type FormField\n               # The value\
+    \ of the field can also be a FormField, or a list of FormFields\n            \
+    \   # In our sample, it is just a FormField.\n               print(\"...Field\
+    \ '{}' has value '{}' with a confidence score of {}\".format(\n              \
+    \     name, field.value, field.confidence\n               ))\n               #\
+    \ label data is populated if you are using a model trained with unlabeled data,\
+    \ since the service needs to make predictions for\n               # labels if\
+    \ not explicitly given to it.\n               if field.label_data:\n         \
+    \          print(\"...Field '{}' has label '{}' with a confidence score of {}\"\
+    .format(\n                       name,\n                       field.label_data.text,\n\
+    \                       field.confidence\n                   ))\n           print(\"\
+    -----------------------------------\")\n\n   ````\n"
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms
+  langs:
+  - python
+  module: azure.ai.formrecognizer.aio
+  name: 'begin_recognize_custom_forms(model_id: str, form: typing.Union[bytes, typing.IO[bytes]],
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
+  namewithoutparameters: begin_recognize_custom_forms
+  summary: 'Analyze a custom form with a model trained with or without labels. The
+    form
+
+    to analyze should be of the same type as the forms that were used to train the
+    model.
+
+    The input document must be of one of the supported content types - ''application/pdf'',
+
+    ''image/jpeg'', ''image/png'' or ''image/tiff''.'
+  syntax:
+    content: 'begin_recognize_custom_forms(model_id: str, form: typing.Union[bytes,
+      typing.IO[bytes]], **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
+    parameters:
+    - description: Custom model identifier.
+      id: model_id
+      isRequired: true
+      type:
+      - str
+    - description: JPEG, PNG, PDF and TIFF type file stream or bytes.
+      id: form
+      isRequired: true
+      type:
+      - bytes
+      - IO[bytes]
+    return:
+      description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
+
+        object to return a list[<xref:azure.ai.formrecognizer.RecognizedForm>].'
+      type:
+      - azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedForm]
+  type: method
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms
+- class: azure.ai.formrecognizer.aio.FormRecognizerClient
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms_from_url
+  langs:
+  - python
+  module: azure.ai.formrecognizer.aio
+  name: 'begin_recognize_custom_forms_from_url(model_id: str, form_url: str, **kwargs:
+    typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
+  namewithoutparameters: begin_recognize_custom_forms_from_url
+  summary: 'Analyze a custom form with a model trained with or without labels. The
+    form
+
+    to analyze should be of the same type as the forms that were used to train the
+    model.
+
+    The input document must be the location (Url) of the document to be analyzed.'
+  syntax:
+    content: 'begin_recognize_custom_forms_from_url(model_id: str, form_url: str,
+      **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
+    parameters:
+    - description: Custom model identifier.
+      id: model_id
+      isRequired: true
+      type:
+      - str
+    - description: 'The url of the form to analyze. The input must be a valid, encoded
+        url
+
+        of one of the supported formats: JPEG, PNG, PDF and TIFF.'
+      id: form_url
+      isRequired: true
+      type:
+      - str
+    return:
+      description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
+
+        object to return a list[<xref:azure.ai.formrecognizer.RecognizedForm>].'
+      type:
+      - azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedForm]
+  type: method
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms_from_url
+- class: azure.ai.formrecognizer.aio.FormRecognizerClient
+  example:
+  - "Recognize US sales receipt fields.<!--[!code-python[Main](les\\async_samples\\\
+    sample_recognize_receipts_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\\
+    samples\\\\async_samples\\\\sample_recognize_receipts_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_KEY\"]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint,\
+    \ credential=AzureKeyCredential(key)\n   ) as form_recognizer_client:\n\n    \
+    \   with open(path_to_sample_forms, \"rb\") as f:\n           poller = await form_recognizer_client.begin_recognize_receipts(receipt=f)\n\
+    \n       receipts = await poller.result()\n\n       for idx, receipt in enumerate(receipts):\n\
+    \           print(\"--------Recognizing receipt #{}--------\".format(idx))\n \
+    \          receipt_type = receipt.fields.get(\"ReceiptType\")\n           if receipt_type:\n\
+    \               print(\"Receipt Type: {} has confidence: {}\".format(receipt_type.value,\
+    \ receipt_type.confidence))\n           merchant_name = receipt.fields.get(\"\
+    MerchantName\")\n           if merchant_name:\n               print(\"Merchant\
+    \ Name: {} has confidence: {}\".format(merchant_name.value, merchant_name.confidence))\n\
+    \           transaction_date = receipt.fields.get(\"TransactionDate\")\n     \
+    \      if transaction_date:\n               print(\"Transaction Date: {} has confidence:\
+    \ {}\".format(transaction_date.value, transaction_date.confidence))\n        \
+    \   print(\"Receipt items:\")\n           for idx, item in enumerate(receipt.fields.get(\"\
+    Items\").value):\n               print(\"...Item #{}\".format(idx))\n        \
+    \       item_name = item.value.get(\"Name\")\n               if item_name:\n \
+    \                  print(\"......Item Name: {} has confidence: {}\".format(item_name.value,\
+    \ item_name.confidence))\n               item_quantity = item.value.get(\"Quantity\"\
+    )\n               if item_quantity:\n                   print(\"......Item Quantity:\
+    \ {} has confidence: {}\".format(item_quantity.value, item_quantity.confidence))\n\
+    \               item_price = item.value.get(\"Price\")\n               if item_price:\n\
+    \                   print(\"......Individual Item Price: {} has confidence: {}\"\
+    .format(item_price.value, item_price.confidence))\n               item_total_price\
+    \ = item.value.get(\"TotalPrice\")\n               if item_total_price:\n    \
+    \               print(\"......Total Item Price: {} has confidence: {}\".format(item_total_price.value,\
+    \ item_total_price.confidence))\n           subtotal = receipt.fields.get(\"Subtotal\"\
+    )\n           if subtotal:\n               print(\"Subtotal: {} has confidence:\
+    \ {}\".format(subtotal.value, subtotal.confidence))\n           tax = receipt.fields.get(\"\
+    Tax\")\n           if tax:\n               print(\"Tax: {} has confidence: {}\"\
+    .format(tax.value, tax.confidence))\n           tip = receipt.fields.get(\"Tip\"\
+    )\n           if tip:\n               print(\"Tip: {} has confidence: {}\".format(tip.value,\
+    \ tip.confidence))\n           total = receipt.fields.get(\"Total\")\n       \
+    \    if total:\n               print(\"Total: {} has confidence: {}\".format(total.value,\
+    \ total.confidence))\n           print(\"--------------------------------------\"\
+    )\n\n   ````\n"
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts
+  langs:
+  - python
+  module: azure.ai.formrecognizer.aio
+  name: 'begin_recognize_receipts(receipt: typing.Union[bytes, typing.IO[bytes]],
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedReceipt]]'
+  namewithoutparameters: begin_recognize_receipts
+  summary: 'Extract field text and semantic values from a given US sales receipt.
+
+    The input document must be of one of the supported content types - ''application/pdf'',
+
+    ''image/jpeg'', ''image/png'' or ''image/tiff''.'
+  syntax:
+    content: 'begin_recognize_receipts(receipt: typing.Union[bytes, typing.IO[bytes]],
+      **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedReceipt]]'
+    parameters:
+    - description: 'JPEG, PNG, PDF and TIFF type file stream or bytes.
+
+        Currently only supports US sales receipts.'
+      id: receipt
+      isRequired: true
+      type:
+      - bytes
+      - IO[bytes]
+    return:
+      description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
+
+        object to return a list[<xref:azure.ai.formrecognizer.RecognizedReceipt>].'
+      type:
+      - azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedReceipt]]
+  type: method
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts
+- class: azure.ai.formrecognizer.aio.FormRecognizerClient
+  example:
+  - "Recognize US sales receipt fields from a URL.<!--[!code-python[Main](les\\async_samples\\\
+    sample_recognize_receipts_from_url_async.py )]-->\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\\
+    samples\\\\async_samples\\\\sample_recognize_receipts_from_url_async.py\", \"\
+    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_KEY\"]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint,\
+    \ credential=AzureKeyCredential(key)\n   ) as form_recognizer_client:\n      \
+    \ url = \"https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/formrecognizer/azure-ai-formrecognizer/tests/sample_forms/receipt/contoso-receipt.png\"\
+    \n       poller = await form_recognizer_client.begin_recognize_receipts_from_url(receipt_url=url)\n\
+    \       receipts = await poller.result()\n\n       for idx, receipt in enumerate(receipts):\n\
+    \           print(\"--------Recognizing receipt #{}--------\".format(idx))\n \
+    \          receipt_type = receipt.fields.get(\"ReceiptType\")\n           if receipt_type:\n\
+    \               print(\"Receipt Type: {} has confidence: {}\".format(receipt_type.value,\
+    \ receipt_type.confidence))\n           merchant_name = receipt.fields.get(\"\
+    MerchantName\")\n           if merchant_name:\n               print(\"Merchant\
+    \ Name: {} has confidence: {}\".format(merchant_name.value, merchant_name.confidence))\n\
+    \           transaction_date = receipt.fields.get(\"TransactionDate\")\n     \
+    \      if transaction_date:\n               print(\"Transaction Date: {} has confidence:\
+    \ {}\".format(transaction_date.value, transaction_date.confidence))\n        \
+    \   print(\"Receipt items:\")\n           for idx, item in enumerate(receipt.fields.get(\"\
+    Items\").value):\n               print(\"...Item #{}\".format(idx))\n        \
+    \       item_name = item.value.get(\"Name\")\n               if item_name:\n \
+    \                  print(\"......Item Name: {} has confidence: {}\".format(item_name.value,\
+    \ item_name.confidence))\n               item_quantity = item.value.get(\"Quantity\"\
+    )\n               if item_quantity:\n                   print(\"......Item Quantity:\
+    \ {} has confidence: {}\".format(item_quantity.value, item_quantity.confidence))\n\
+    \               item_price = item.value.get(\"Price\")\n               if item_price:\n\
+    \                   print(\"......Individual Item Price: {} has confidence: {}\"\
+    .format(item_price.value, item_price.confidence))\n               item_total_price\
+    \ = item.value.get(\"TotalPrice\")\n               if item_total_price:\n    \
+    \               print(\"......Total Item Price: {} has confidence: {}\".format(item_total_price.value,\
+    \ item_total_price.confidence))\n           subtotal = receipt.fields.get(\"Subtotal\"\
+    )\n           if subtotal:\n               print(\"Subtotal: {} has confidence:\
+    \ {}\".format(subtotal.value, subtotal.confidence))\n           tax = receipt.fields.get(\"\
+    Tax\")\n           if tax:\n               print(\"Tax: {} has confidence: {}\"\
+    .format(tax.value, tax.confidence))\n           tip = receipt.fields.get(\"Tip\"\
+    )\n           if tip:\n               print(\"Tip: {} has confidence: {}\".format(tip.value,\
+    \ tip.confidence))\n           total = receipt.fields.get(\"Total\")\n       \
+    \    if total:\n               print(\"Total: {} has confidence: {}\".format(total.value,\
+    \ total.confidence))\n           print(\"--------------------------------------\"\
+    )\n\n   ````\n"
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts_from_url
+  langs:
+  - python
+  module: azure.ai.formrecognizer.aio
+  name: 'begin_recognize_receipts_from_url(receipt_url: str, **kwargs: typing.Any)
+    -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedReceipt]]'
+  namewithoutparameters: begin_recognize_receipts_from_url
+  summary: 'Extract field text and semantic values from a given US sales receipt.
+
+    The input document must be the location (Url) of the receipt to be analyzed.'
+  syntax:
+    content: 'begin_recognize_receipts_from_url(receipt_url: str, **kwargs: typing.Any)
+      -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedReceipt]]'
+    parameters:
+    - description: 'The url of the receipt to analyze. The input must be a valid,
+        encoded url
+
+        of one of the supported formats: JPEG, PNG, PDF and TIFF. Currently only supports
+
+        US sales receipts.'
+      id: receipt_url
+      isRequired: true
+      type:
+      - str
+    return:
+      description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
+
+        object to return a list[<xref:azure.ai.formrecognizer.RecognizedReceipt>].'
+      type:
+      - azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedReceipt]]
+  type: method
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts_from_url
 - class: azure.ai.formrecognizer.aio.FormRecognizerClient
   fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.close
   langs:
@@ -66,362 +453,70 @@ items:
     content: close() -> None
   type: method
   uid: azure.ai.formrecognizer.aio.FormRecognizerClient.close
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.get_form_training_client
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: 'get_form_training_client(**kwargs: typing.Any) -> azure.ai.formrecognizer.aio._form_training_client_async.FormTrainingClient'
-  namewithoutparameters: get_form_training_client
-  summary: Get an instance of a FormTrainingClient from FormRecognizerClient.
-  syntax:
-    content: 'get_form_training_client(**kwargs: typing.Any) -> azure.ai.formrecognizer.aio._form_training_client_async.FormTrainingClient'
-    return:
-      description: A FormTrainingClient
-      type:
-      - azure.ai.formrecognizer.aio.FormTrainingClient
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.get_form_training_client
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  example:
-  - "Recognize text and content/layout information from a form.<!--[!code-python[Main](les\\\
-    async_samples\\sample_recognize_content_async.py )]-->\n\n<!-- literal_block {\"\
-    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\12\\\\azure-ai-formrecognizer-1.0.0b2\\\
-    \\samples\\\\async_samples\\\\sample_recognize_content_async.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
-    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-    \   async with FormRecognizerClient(\n       endpoint=self.endpoint, credential=AzureKeyCredential(self.key)\n\
-    \   ) as form_recognizer_client:\n\n       with open(path_to_sample_forms, \"\
-    rb\") as f:\n           contents = await form_recognizer_client.recognize_content(stream=f.read())\n\
-    \n       for idx, content in enumerate(contents):\n           print(\"----Recognizing\
-    \ content from page #{}----\".format(idx))\n           print(\"Has width: {} and\
-    \ height: {}, measured with unit: {}\".format(\n               content.width,\n\
-    \               content.height,\n               content.unit\n           ))\n\
-    \           for table_idx, table in enumerate(content.tables):\n             \
-    \  print(\"Table # {} has {} rows and {} columns\".format(table_idx, table.row_count,\
-    \ table.column_count))\n               for cell in table.cells:\n            \
-    \       print(\"...Cell[{}][{}] has text '{}' within bounding box '{}'\".format(\n\
-    \                       cell.row_index,\n                       cell.column_index,\n\
-    \                       cell.text,\n                       format_bounding_box(cell.bounding_box)\n\
-    \                   ))\n\n   ````\n"
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: recognize_content
-  namewithoutparameters: recognize_content
-  summary: 'Extract text and content/layout information from a given document.
-
-    The input document must be of one of the supported content types - ''application/pdf'',
-
-    ''image/jpeg'', ''image/png'' or ''image/tiff''.'
-  syntax:
-    parameters:
-    - description: .pdf, .jpg, .png or .tiff type file stream.
-      id: stream
-      isRequired: true
-      type:
-      - stream
-    return:
-      description: A list of FormPage.
-      type:
-      - list[azure.ai.formrecognizer.FormPage]
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content_from_url
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: recognize_content_from_url
-  namewithoutparameters: recognize_content_from_url
-  summary: 'Extract text and layout information from a given document.
-
-    The input document must be the location (Url) of the document to be analyzed.'
-  syntax:
-    parameters:
-    - description: The url of the document.
-      id: url
-      isRequired: true
-      type:
-      - str
-    return:
-      description: A list of FormPage.
-      type:
-      - list[azure.ai.formrecognizer.FormPage]
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content_from_url
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  example:
-  - "Recognize fields and values from a custom form.<!--[!code-python[Main](les\\\
-    async_samples\\sample_recognize_custom_forms_async.py )]-->\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\12\\\\azure-ai-formrecognizer-1.0.0b2\\\
-    \\samples\\\\async_samples\\\\sample_recognize_custom_forms_async.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
-    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-    \   async with FormRecognizerClient(\n       endpoint=self.endpoint, credential=AzureKeyCredential(self.key)\n\
-    \   ) as form_recognizer_client:\n\n       # Make sure your form's type is included\
-    \ in the list of form types the custom model can recognize\n       with open(path_to_sample_forms,\
-    \ \"rb\") as f:\n           forms = await form_recognizer_client.recognize_custom_forms(\n\
-    \               model_id=self.model_id, stream=f.read()\n           )\n\n    \
-    \   for idx, form in enumerate(forms):\n           print(\"--------Recognizing\
-    \ Form #{}--------\".format(idx))\n           print(\"Form {} has type {}\".format(idx,\
-    \ form.form_type))\n           for name, field in form.fields.items():\n     \
-    \          # each field is of type FormField\n               # The value of the\
-    \ field can also be a FormField, or a list of FormFields\n               # In\
-    \ our sample, it is just a FormField.\n               print(\"...Field '{}' has\
-    \ value '{}' with a confidence score of {}\".format(\n                   name,\
-    \ field.value, field.confidence\n               ))\n               # label data\
-    \ is populated if you are using a model trained with unlabeled data, since the\
-    \ service needs to make predictions for\n               # labels if not explicitly\
-    \ given to it.\n               if field.label_data:\n                   print(\"\
-    ...Field '{}' has label '{}' with a confidence score of {}\".format(\n       \
-    \                name,\n                       field.label_data.text,\n      \
-    \                 field.confidence\n                   ))\n           print(\"\
-    -----------------------------------\")\n\n   ````\n"
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: recognize_custom_forms
-  namewithoutparameters: recognize_custom_forms
-  summary: 'Analyze a custom form with a model trained with or without labels. The
-    form
-
-    to analyze should be of the same type as the forms that were used to train the
-    model.
-
-    The input document must be of one of the supported content types - ''application/pdf'',
-
-    ''image/jpeg'', ''image/png'' or ''image/tiff''.'
-  syntax:
-    parameters:
-    - description: Custom model identifier.
-      id: model_id
-      isRequired: true
-      type:
-      - str
-    - description: .pdf, .jpg, .png or .tiff type file stream.
-      id: stream
-      isRequired: true
-      type:
-      - stream
-    return:
-      description: A list of RecognizedForm.
-      type:
-      - list[azure.ai.formrecognizer.RecognizedForm]
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms_from_url
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: recognize_custom_forms_from_url
-  namewithoutparameters: recognize_custom_forms_from_url
-  summary: 'Analyze a custom form with a model trained with or without labels. The
-    form
-
-    to analyze should be of the same type as the forms that were used to train the
-    model.
-
-    The input document must be the location (Url) of the document to be analyzed.'
-  syntax:
-    parameters:
-    - description: Custom model identifier.
-      id: model_id
-      isRequired: true
-      type:
-      - str
-    - description: The url of the document.
-      id: url
-      isRequired: true
-      type:
-      - str
-    return:
-      description: A list of RecognizedForm.
-      type:
-      - list[azure.ai.formrecognizer.RecognizedForm]
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms_from_url
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  example:
-  - "Recognize US sales receipt fields.<!--[!code-python[Main](les\\async_samples\\\
-    sample_recognize_receipts_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
-    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\12\\\\azure-ai-formrecognizer-1.0.0b2\\\\\
-    samples\\\\async_samples\\\\sample_recognize_receipts_async.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
-    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-    \   async with FormRecognizerClient(\n       endpoint=self.endpoint, credential=AzureKeyCredential(self.key)\n\
-    \   ) as form_recognizer_client:\n\n       with open(path_to_sample_forms, \"\
-    rb\") as f:\n           receipts = await form_recognizer_client.recognize_receipts(stream=f.read())\n\
-    \n       for idx, receipt in enumerate(receipts):\n           print(\"--------Recognizing\
-    \ receipt #{}--------\".format(idx))\n           print(\"Receipt Type: {} has\
-    \ confidence: {}\".format(receipt.receipt_type.type, receipt.receipt_type.confidence))\n\
-    \           print(\"Merchant Name: {} has confidence: {}\".format(receipt.merchant_name.value,\
-    \ receipt.merchant_name.confidence))\n           print(\"Transaction Date: {}\
-    \ has confidence: {}\".format(receipt.transaction_date.value, receipt.transaction_date.confidence))\n\
-    \           print(\"Receipt items:\")\n           for item in receipt.receipt_items:\n\
-    \               print(\"...Item Name: {} has confidence: {}\".format(item.name.value,\
-    \ item.name.confidence))\n               print(\"...Item Quantity: {} has confidence:\
-    \ {}\".format(item.quantity.value, item.quantity.confidence))\n              \
-    \ print(\"...Individual Item Price: {} has confidence: {}\".format(item.price.value,\
-    \ item.price.confidence))\n               print(\"...Total Item Price: {} has\
-    \ confidence: {}\".format(item.total_price.value, item.total_price.confidence))\n\
-    \           print(\"Subtotal: {} has confidence: {}\".format(receipt.subtotal.value,\
-    \ receipt.subtotal.confidence))\n           print(\"Tax: {} has confidence: {}\"\
-    .format(receipt.tax.value, receipt.tax.confidence))\n           print(\"Tip: {}\
-    \ has confidence: {}\".format(receipt.tip.value, receipt.tip.confidence))\n  \
-    \         print(\"Total: {} has confidence: {}\".format(receipt.total.value, receipt.total.confidence))\n\
-    \           print(\"--------------------------------------\")\n\n   ````\n"
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: recognize_receipts
-  namewithoutparameters: recognize_receipts
-  summary: 'Extract field text and semantic values from a given US sales receipt.
-
-    The input document must be of one of the supported content types - ''application/pdf'',
-
-    ''image/jpeg'', ''image/png'' or ''image/tiff''.'
-  syntax:
-    parameters:
-    - description: '.pdf, .jpg, .png or .tiff type file stream.
-
-        Currently only supports US sales receipts.'
-      id: stream
-      isRequired: true
-      type:
-      - stream
-    return:
-      description: A list of USReceipt.
-      type:
-      - list[azure.ai.formrecognizer.USReceipt]
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts
-- class: azure.ai.formrecognizer.aio.FormRecognizerClient
-  example:
-  - "Recognize US sales receipt fields from a URL.<!--[!code-python[Main](les\\async_samples\\\
-    sample_recognize_receipts_from_url_async.py )]-->\n\n<!-- literal_block {\"ids\"\
-    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\12\\\\azure-ai-formrecognizer-1.0.0b2\\\\\
-    samples\\\\async_samples\\\\sample_recognize_receipts_from_url_async.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
-    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-    \   async with FormRecognizerClient(\n       endpoint=self.endpoint, credential=AzureKeyCredential(self.key)\n\
-    \   ) as form_recognizer_client:\n       url = \"https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/formrecognizer/azure-ai-formrecognizer/tests/sample_forms/receipt/contoso-receipt.png\"\
-    \n       receipts = await form_recognizer_client.recognize_receipts_from_url(url=url)\n\
-    \n       for idx, receipt in enumerate(receipts):\n           print(\"--------Recognizing\
-    \ receipt #{}--------\".format(idx))\n           print(\"Receipt Type: {} has\
-    \ confidence: {}\".format(receipt.receipt_type.type, receipt.receipt_type.confidence))\n\
-    \           print(\"Merchant Name: {} has confidence: {}\".format(receipt.merchant_name.value,\
-    \ receipt.merchant_name.confidence))\n           print(\"Transaction Date: {}\
-    \ has confidence: {}\".format(receipt.transaction_date.value, receipt.transaction_date.confidence))\n\
-    \           print(\"Receipt items:\")\n           for item in receipt.receipt_items:\n\
-    \               print(\"...Item Name: {} has confidence: {}\".format(item.name.value,\
-    \ item.name.confidence))\n               print(\"...Item Quantity: {} has confidence:\
-    \ {}\".format(item.quantity.value, item.quantity.confidence))\n              \
-    \ print(\"...Individual Item Price: {} has confidence: {}\".format(item.price.value,\
-    \ item.price.confidence))\n               print(\"...Total Item Price: {} has\
-    \ confidence: {}\".format(item.total_price.value, item.total_price.confidence))\n\
-    \           print(\"Subtotal: {} has confidence: {}\".format(receipt.subtotal.value,\
-    \ receipt.subtotal.confidence))\n           print(\"Tax: {} has confidence: {}\"\
-    .format(receipt.tax.value, receipt.tax.confidence))\n           print(\"Tip: {}\
-    \ has confidence: {}\".format(receipt.tip.value, receipt.tip.confidence))\n  \
-    \         print(\"Total: {} has confidence: {}\".format(receipt.total.value, receipt.total.confidence))\n\
-    \           print(\"--------------------------------------\")\n\n   ````\n"
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts_from_url
-  langs:
-  - python
-  module: azure.ai.formrecognizer.aio
-  name: recognize_receipts_from_url
-  namewithoutparameters: recognize_receipts_from_url
-  summary: 'Extract field text and semantic values from a given US sales receipt.
-
-    The input document must be the location (Url) of the receipt to be analyzed.'
-  syntax:
-    parameters:
-    - description: The url of the receipt. Currently only supports US sales receipts.
-      id: url
-      isRequired: true
-      type:
-      - str
-    return:
-      description: A list of USReceipt.
-      type:
-      - list[azure.ai.formrecognizer.USReceipt]
-  type: method
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts_from_url
 references:
+- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content
+  isExternal: false
+  name: 'begin_recognize_content(form: typing.Union[bytes, typing.IO[bytes]], **kwargs:
+    typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
+  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content
+- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content_from_url
+  isExternal: false
+  name: 'begin_recognize_content_from_url(form_url: str, **kwargs: typing.Any) ->
+    azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
+  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content_from_url
+- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms
+  isExternal: false
+  name: 'begin_recognize_custom_forms(model_id: str, form: typing.Union[bytes, typing.IO[bytes]],
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
+  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms
+- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms_from_url
+  isExternal: false
+  name: 'begin_recognize_custom_forms_from_url(model_id: str, form_url: str, **kwargs:
+    typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
+  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms_from_url
+- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts
+  isExternal: false
+  name: 'begin_recognize_receipts(receipt: typing.Union[bytes, typing.IO[bytes]],
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedReceipt]]'
+  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts
+- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts_from_url
+  isExternal: false
+  name: 'begin_recognize_receipts_from_url(receipt_url: str, **kwargs: typing.Any)
+    -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedReceipt]]'
+  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
+  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts_from_url
 - fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.close
   isExternal: false
   name: close() -> None
   parent: azure.ai.formrecognizer.aio.FormRecognizerClient
   uid: azure.ai.formrecognizer.aio.FormRecognizerClient.close
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.get_form_training_client
-  isExternal: false
-  name: 'get_form_training_client(**kwargs: typing.Any) -> azure.ai.formrecognizer.aio._form_training_client_async.FormTrainingClient'
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.get_form_training_client
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content
-  isExternal: false
-  name: recognize_content
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content_from_url
-  isExternal: false
-  name: recognize_content_from_url
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_content_from_url
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms
-  isExternal: false
-  name: recognize_custom_forms
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms_from_url
-  isExternal: false
-  name: recognize_custom_forms_from_url
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_custom_forms_from_url
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts
-  isExternal: false
-  name: recognize_receipts
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts
-- fullName: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts_from_url
-  isExternal: false
-  name: recognize_receipts_from_url
-  parent: azure.ai.formrecognizer.aio.FormRecognizerClient
-  uid: azure.ai.formrecognizer.aio.FormRecognizerClient.recognize_receipts_from_url
-- fullName: list[azure.ai.formrecognizer.FormPage]
-  name: list[FormPage]
+- fullName: IO[bytes]
+  name: IO[bytes]
   spec.python:
+  - fullName: IO
+    name: IO
+    uid: IO
+  - fullName: '['
+    name: '['
+  - fullName: bytes
+    name: bytes
+    uid: bytes
+  - fullName: ']'
+    name: ']'
+  uid: IO[bytes]
+- fullName: azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.FormPage]]
+  name: AsyncLROPoller[list[FormPage]]
+  spec.python:
+  - fullName: azure.core.polling.AsyncLROPoller
+    name: AsyncLROPoller
+    uid: azure.core.polling.AsyncLROPoller
+  - fullName: '['
+    name: '['
   - fullName: list
     name: list
     uid: list
@@ -432,10 +527,17 @@ references:
     uid: azure.ai.formrecognizer.FormPage
   - fullName: ']'
     name: ']'
-  uid: list[azure.ai.formrecognizer.FormPage]
-- fullName: list[azure.ai.formrecognizer.RecognizedForm]
-  name: list[RecognizedForm]
+  - fullName: ']'
+    name: ']'
+  uid: azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.FormPage]]
+- fullName: azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedForm]
+  name: AsyncLROPoller[list[RecognizedForm]
   spec.python:
+  - fullName: azure.core.polling.AsyncLROPoller
+    name: AsyncLROPoller
+    uid: azure.core.polling.AsyncLROPoller
+  - fullName: '['
+    name: '['
   - fullName: list
     name: list
     uid: list
@@ -446,18 +548,25 @@ references:
     uid: azure.ai.formrecognizer.RecognizedForm
   - fullName: ']'
     name: ']'
-  uid: list[azure.ai.formrecognizer.RecognizedForm]
-- fullName: list[azure.ai.formrecognizer.USReceipt]
-  name: list[USReceipt]
+  uid: azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedForm]
+- fullName: azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedReceipt]]
+  name: AsyncLROPoller[list[RecognizedReceipt]]
   spec.python:
+  - fullName: azure.core.polling.AsyncLROPoller
+    name: AsyncLROPoller
+    uid: azure.core.polling.AsyncLROPoller
+  - fullName: '['
+    name: '['
   - fullName: list
     name: list
     uid: list
   - fullName: '['
     name: '['
-  - fullName: azure.ai.formrecognizer.USReceipt
-    name: USReceipt
-    uid: azure.ai.formrecognizer.USReceipt
+  - fullName: azure.ai.formrecognizer.RecognizedReceipt
+    name: RecognizedReceipt
+    uid: azure.ai.formrecognizer.RecognizedReceipt
   - fullName: ']'
     name: ']'
-  uid: list[azure.ai.formrecognizer.USReceipt]
+  - fullName: ']'
+    name: ']'
+  uid: azure.core.polling.AsyncLROPoller[list[azure.ai.formrecognizer.RecognizedReceipt]]
