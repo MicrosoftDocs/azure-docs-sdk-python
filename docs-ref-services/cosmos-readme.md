@@ -3,7 +3,7 @@ title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, azure-cosmos
 author: maggiepint
 ms.author: magpint
-ms.date: 05/27/2020
+ms.date: 05/28/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
