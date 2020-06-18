@@ -4,9 +4,11 @@ items:
 - children:
   - azure.servicebus.aio.ServiceBusClient.close
   - azure.servicebus.aio.ServiceBusClient.from_connection_string
+  - azure.servicebus.aio.ServiceBusClient.get_queue_deadletter_receiver
   - azure.servicebus.aio.ServiceBusClient.get_queue_receiver
   - azure.servicebus.aio.ServiceBusClient.get_queue_sender
   - azure.servicebus.aio.ServiceBusClient.get_queue_session_receiver
+  - azure.servicebus.aio.ServiceBusClient.get_subscription_deadletter_receiver
   - azure.servicebus.aio.ServiceBusClient.get_subscription_receiver
   - azure.servicebus.aio.ServiceBusClient.get_subscription_session_receiver
   - azure.servicebus.aio.ServiceBusClient.get_topic_sender
@@ -15,7 +17,7 @@ items:
   - "Create a new instance of the ServiceBusClient.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\\samples\\\\async_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\\samples\\\\async_samples\\\
     \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   import os\n   from azure.servicebus.aio import ServiceBusClient,\
@@ -84,7 +86,7 @@ items:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
@@ -108,25 +110,54 @@ items:
       isRequired: true
     return:
       type:
-      - azure.servicebus.ServiceBusClient
+      - azure.servicebus.aio.ServiceBusClient
   type: method
   uid: azure.servicebus.aio.ServiceBusClient.from_connection_string
+- class: azure.servicebus.aio.ServiceBusClient
+  example:
+  - "Create a new instance of the ServiceBusReceiver for Dead Letter Queue from ServiceBusClient.<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\\samples\\\
+    \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
+    language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n\n   ````\n"
+  fullName: azure.servicebus.aio.ServiceBusClient.get_queue_deadletter_receiver
+  langs:
+  - python
+  module: azure.servicebus.aio
+  name: get_queue_deadletter_receiver(queue_name, **kwargs)
+  namewithoutparameters: get_queue_deadletter_receiver
+  summary: "Get ServiceBusReceiver for the dead-letter queue which is the secondary\
+    \ subqueue provided by\n   the specific Queue, it holds messages that can't be\
+    \ delivered to any receiver or messages that can't\n   be processed."
+  syntax:
+    content: get_queue_deadletter_receiver(queue_name, **kwargs)
+    parameters:
+    - description: The path of specific Service Bus Queue the client connects to.
+      id: queue_name
+      isRequired: true
+      type:
+      - str
+    return:
+      type:
+      - azure.servicebus.aio.ServiceBusReceiver
+  type: method
+  uid: azure.servicebus.aio.ServiceBusClient.get_queue_deadletter_receiver
 - class: azure.servicebus.aio.ServiceBusClient
   example:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
     \ import ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICE_BUS_CONNECTION_STR']\n\
     \   queue_name = os.environ['SERVICE_BUS_QUEUE_NAME']\n   servicebus_client =\
     \ ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
-    \   async with servicebus_client:\n       queue_sender = servicebus_client.get_queue_sender(queue_name=queue_name)\n\
+    \   async with servicebus_client:\n       queue_receiver = servicebus_client.get_queue_receiver(queue_name=queue_name)\n\
     \n   ````\n"
-  exceptions:
-  - type: ServiceBusConnectionError
   fullName: azure.servicebus.aio.ServiceBusClient.get_queue_receiver
   langs:
   - python
@@ -152,15 +183,15 @@ items:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
     \ import ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICE_BUS_CONNECTION_STR']\n\
-    \   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \   queue_name = os.environ['SERVICE_BUS_QUEUE_NAME']\n   servicebus_client =\
+    \ ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \   async with servicebus_client:\n       queue_sender = servicebus_client.get_queue_sender(queue_name=queue_name)\n\
     \n   ````\n"
-  exceptions:
-  - type: ServiceBusConnectionError
   fullName: azure.servicebus.aio.ServiceBusClient.get_queue_sender
   langs:
   - python
@@ -186,7 +217,7 @@ items:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
@@ -195,8 +226,6 @@ items:
     \ ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       queue_sender = servicebus_client.get_queue_sender(queue_name=queue_name)\n\
     \n   ````\n"
-  exceptions:
-  - type: ServiceBusConnectionError
   fullName: azure.servicebus.aio.ServiceBusClient.get_queue_session_receiver
   langs:
   - python
@@ -230,10 +259,54 @@ items:
   uid: azure.servicebus.aio.ServiceBusClient.get_queue_session_receiver
 - class: azure.servicebus.aio.ServiceBusClient
   example:
+  - "Create a new instance of the ServiceBusReceiver for Dead Letter Queue from ServiceBusClient.<!--[!code-python[Main](les\\\
+    async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
+    \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus\
+    \ import ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICE_BUS_CONNECTION_STR']\n\
+    \   topic_name = os.environ[\"SERVICE_BUS_TOPIC_NAME\"]\n   subscription_name\
+    \ = os.environ[\"SERVICE_BUS_SUBSCRIPTION_NAME\"]\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \   async with servicebus_client:\n       subscription_receiver = servicebus_client.get_subscription_deadletter_receiver(\n\
+    \           topic_name=topic_name,\n           subscription_name=subscription_name,\n\
+    \       )\n\n   ````\n"
+  fullName: azure.servicebus.aio.ServiceBusClient.get_subscription_deadletter_receiver
+  langs:
+  - python
+  module: azure.servicebus.aio
+  name: get_subscription_deadletter_receiver(topic_name, subscription_name, **kwargs)
+  namewithoutparameters: get_subscription_deadletter_receiver
+  summary: "Get ServiceBusReceiver for the dead-letter queue which is the secondary\
+    \ subqueue provided by\n   the specific topic subscription, it holds messages\
+    \ that can't be delivered to any receiver or messages that\n   can't be processed."
+  syntax:
+    content: get_subscription_deadletter_receiver(topic_name, subscription_name, **kwargs)
+    parameters:
+    - description: The name of specific Service Bus Topic the client connects to.
+      id: topic_name
+      isRequired: true
+      type:
+      - str
+    - description: 'The name of specific Service Bus Subscription
+
+        under the given Service Bus Topic.'
+      id: subscription_name
+      isRequired: true
+      type:
+      - str
+    return:
+      type:
+      - azure.servicebus.aio.ServiceBusReceiver
+  type: method
+  uid: azure.servicebus.aio.ServiceBusClient.get_subscription_deadletter_receiver
+- class: azure.servicebus.aio.ServiceBusClient
+  example:
   - "Create a new instance of the ServiceBusReceiver from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus\
@@ -267,7 +340,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.ServiceBusReceiver
+      - azure.servicebus.aio.ServiceBusReceiver
   type: method
   uid: azure.servicebus.aio.ServiceBusClient.get_subscription_receiver
 - class: azure.servicebus.aio.ServiceBusClient
@@ -275,7 +348,7 @@ items:
   - "Create a new instance of the ServiceBusReceiver from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus\
@@ -322,7 +395,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.ServiceBusReceiver
+      - azure.servicebus.aio.ServiceBusSessionReceiver
   type: method
   uid: azure.servicebus.aio.ServiceBusClient.get_subscription_session_receiver
 - class: azure.servicebus.aio.ServiceBusClient
@@ -330,7 +403,7 @@ items:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-servicebus-7.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-servicebus-7.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus\
@@ -370,6 +443,11 @@ references:
   name: from_connection_string(conn_str, **kwargs)
   parent: azure.servicebus.aio.ServiceBusClient
   uid: azure.servicebus.aio.ServiceBusClient.from_connection_string
+- fullName: azure.servicebus.aio.ServiceBusClient.get_queue_deadletter_receiver
+  isExternal: false
+  name: get_queue_deadletter_receiver(queue_name, **kwargs)
+  parent: azure.servicebus.aio.ServiceBusClient
+  uid: azure.servicebus.aio.ServiceBusClient.get_queue_deadletter_receiver
 - fullName: azure.servicebus.aio.ServiceBusClient.get_queue_receiver
   isExternal: false
   name: get_queue_receiver(queue_name, **kwargs)
@@ -385,6 +463,11 @@ references:
   name: get_queue_session_receiver(queue_name, session_id=None, **kwargs)
   parent: azure.servicebus.aio.ServiceBusClient
   uid: azure.servicebus.aio.ServiceBusClient.get_queue_session_receiver
+- fullName: azure.servicebus.aio.ServiceBusClient.get_subscription_deadletter_receiver
+  isExternal: false
+  name: get_subscription_deadletter_receiver(topic_name, subscription_name, **kwargs)
+  parent: azure.servicebus.aio.ServiceBusClient
+  uid: azure.servicebus.aio.ServiceBusClient.get_subscription_deadletter_receiver
 - fullName: azure.servicebus.aio.ServiceBusClient.get_subscription_receiver
   isExternal: false
   name: get_subscription_receiver(topic_name, subscription_name, **kwargs)
