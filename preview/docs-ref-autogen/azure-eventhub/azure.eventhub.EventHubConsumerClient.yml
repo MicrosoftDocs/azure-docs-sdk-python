@@ -1,0 +1,440 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- children:
+  - azure.eventhub.EventHubConsumerClient.close
+  - azure.eventhub.EventHubConsumerClient.from_connection_string
+  - azure.eventhub.EventHubConsumerClient.get_eventhub_properties
+  - azure.eventhub.EventHubConsumerClient.get_partition_ids
+  - azure.eventhub.EventHubConsumerClient.get_partition_properties
+  - azure.eventhub.EventHubConsumerClient.receive
+  - azure.eventhub.EventHubConsumerClient.receive_batch
+  class: azure.eventhub.EventHubConsumerClient
+  example:
+  - "Create a new instance of the EventHubConsumerClient.<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\
+    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+    \n````python\n\n   import os\n   from azure.eventhub import EventHubConsumerClient,\
+    \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n\
+    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
+    \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   credential = EventHubSharedKeyCredential(shared_access_policy,\
+    \ shared_access_key)\n   consumer = EventHubConsumerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+    \       eventhub_name=eventhub_name,\n       consumer_group='$Default',\n    \
+    \   credential=credential)\n\n   ````\n"
+  fullName: azure.eventhub.EventHubConsumerClient
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: azure.eventhub._client_base.ClientBase
+  langs:
+  - python
+  module: azure.eventhub
+  name: EventHubConsumerClient
+  summary: 'The EventHubConsumerClient class defines a high level interface for
+
+    receiving events from the Azure Event Hubs service.
+
+
+    The main goal of *EventHubConsumerClient* is to receive events from all partitions
+    of an EventHub with
+
+    load-balancing and checkpointing.
+
+
+    When multiple *EventHubConsumerClient* instances are running against the same
+    event hub, consumer group and
+
+    checkpointing location, the partitions will be evenly distributed among them.
+
+
+    To enable load-balancing and persisted checkpoints, checkpoint_store must be set
+    when creating the
+
+    *EventHubConsumerClient*.
+
+    If a checkpoint store is not provided, the checkpoint will be maintained internally
+    in memory.
+
+
+    An *EventHubConsumerClient* can also receive from a specific partition when you
+    call its method *receive()*
+
+    and specify the partition_id.
+
+    Load-balancing won''t work in single-partition mode. But users can still save
+    checkpoints if the checkpoint_store
+
+    is set.'
+  syntax:
+    content: EventHubConsumerClient(fully_qualified_namespace, eventhub_name, consumer_group,
+      credential, **kwargs)
+    parameters:
+    - description: 'The fully qualified host name for the Event Hubs namespace.
+
+        The namespace format is: *<yournamespace>.servicebus.windows.net*.'
+      id: fully_qualified_namespace
+      type:
+      - str
+    - description: The path of the specific Event Hub to connect the client to.
+      id: eventhub_name
+      type:
+      - str
+    - description: Receive events from the event hub for this consumer group.
+      id: consumer_group
+      type:
+      - str
+    - description: 'The credential object used for authentication which
+
+        implements a particular interface for getting tokens. It accepts
+
+        <xref:azure.eventhub.EventHubSharedKeyCredential>, or credential objects generated
+
+        by the azure-identity library and objects that implement the *get_token(self,
+        *scopes)* method.'
+      id: credential
+      type:
+      - azure.core.credentials.TokenCredential
+  type: class
+  uid: azure.eventhub.EventHubConsumerClient
+- class: azure.eventhub.EventHubConsumerClient
+  example:
+  - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
+    \\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n  \
+    \ import threading\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
+    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n\n   from azure.eventhub import\
+    \ EventHubConsumerClient\n   consumer = EventHubConsumerClient.from_connection_string(\n\
+    \       conn_str=event_hub_connection_str,\n       consumer_group=\"$Default\"\
+    ,\n       eventhub_name=eventhub_name  # EventHub name should be specified if\
+    \ it doesn't show up in connection string.\n   )\n\n   logger = logging.getLogger(\"\
+    azure.eventhub\")\n\n   def on_event(partition_context, event):\n       # Put\
+    \ your code here.\n       # If the operation is i/o intensive, multi-thread will\
+    \ have better performance.\n       logger.info(\"Received event from partition:\
+    \ {}\".format(partition_context.partition_id))\n\n   # The 'receive' method is\
+    \ a blocking call, it can be executed in a thread for\n   # non-blocking behavior,\
+    \ and combined with the 'close' method.\n\n   worker = threading.Thread(\n   \
+    \    target=consumer.receive,\n       kwargs={\n           \"on_event\": on_event,\n\
+    \           \"starting_position\": \"-1\",  # \"-1\" is from the beginning of\
+    \ the partition.\n       }\n   )\n   worker.start()\n   time.sleep(10)  # Keep\
+    \ receiving for 10s then close.\n   # Close down the consumer handler explicitly.\n\
+    \   consumer.close()\n\n   ````\n"
+  fullName: azure.eventhub.EventHubConsumerClient.close
+  langs:
+  - python
+  module: azure.eventhub
+  name: close()
+  namewithoutparameters: close
+  summary: Stop retrieving events from the Event Hub and close the underlying AMQP
+    connection and links.
+  syntax:
+    content: close()
+    parameters: []
+    return:
+      type:
+      - None
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.close
+- class: azure.eventhub.EventHubConsumerClient
+  example:
+  - "Create a new instance of the EventHubConsumerClient from connection string.<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\
+    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+    \n````python\n\n   import os\n   from azure.eventhub import EventHubConsumerClient\n\
+    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
+    \ = os.environ['EVENT_HUB_NAME']\n   consumer = EventHubConsumerClient.from_connection_string(\n\
+    \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
+    \       eventhub_name=eventhub_name  # EventHub name should be specified if it\
+    \ doesn't show up in connection string.\n   )\n\n   ````\n"
+  fullName: azure.eventhub.EventHubConsumerClient.from_connection_string
+  langs:
+  - python
+  module: azure.eventhub
+  name: from_connection_string(conn_str, consumer_group, **kwargs)
+  namewithoutparameters: from_connection_string
+  summary: Create an EventHubConsumerClient from a connection string.
+  syntax:
+    content: from_connection_string(conn_str, consumer_group, **kwargs)
+    parameters:
+    - description: The connection string of an Event Hub.
+      id: conn_str
+      isRequired: true
+      type:
+      - str
+    - description: Receive events from the Event Hub for this consumer group.
+      id: consumer_group
+      isRequired: true
+      type:
+      - str
+    - id: consumer_group
+      isRequired: true
+    return:
+      type:
+      - azure.eventhub.EventHubConsumerClient
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.from_connection_string
+- class: azure.eventhub.EventHubConsumerClient
+  fullName: azure.eventhub.EventHubConsumerClient.get_eventhub_properties
+  langs:
+  - python
+  module: azure.eventhub
+  name: get_eventhub_properties()
+  namewithoutparameters: get_eventhub_properties
+  summary: "Get properties of the Event Hub.\n\nKeys in the returned dictionary include:\n\
+    \n   * *eventhub_name* (str) \n\n   * *created_at* (UTC datetime.datetime) \n\n\
+    \   * *partition_ids* (list[str])"
+  syntax:
+    content: get_eventhub_properties()
+    parameters: []
+    return:
+      type:
+      - dict
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.get_eventhub_properties
+- class: azure.eventhub.EventHubConsumerClient
+  fullName: azure.eventhub.EventHubConsumerClient.get_partition_ids
+  langs:
+  - python
+  module: azure.eventhub
+  name: get_partition_ids()
+  namewithoutparameters: get_partition_ids
+  summary: Get partition IDs of the Event Hub.
+  syntax:
+    content: get_partition_ids()
+    parameters: []
+    return:
+      type:
+      - list[str]
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.get_partition_ids
+- class: azure.eventhub.EventHubConsumerClient
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
+  fullName: azure.eventhub.EventHubConsumerClient.get_partition_properties
+  langs:
+  - python
+  module: azure.eventhub
+  name: get_partition_properties(partition_id)
+  namewithoutparameters: get_partition_properties
+  summary: "Get properties of the specified partition.\n\nKeys in the properties dictionary\
+    \ include:\n\n   * *eventhub_name* (str) \n\n   * *id* (str) \n\n   * *beginning_sequence_number*\
+    \ (int) \n\n   * *last_enqueued_sequence_number* (int) \n\n   * *last_enqueued_offset*\
+    \ (str) \n\n   * *last_enqueued_time_utc* (UTC datetime.datetime) \n\n   * *is_empty*\
+    \ (bool)"
+  syntax:
+    content: get_partition_properties(partition_id)
+    parameters:
+    - description: The target partition ID.
+      id: partition_id
+      isRequired: true
+      type:
+      - str
+    return:
+      type:
+      - dict
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.get_partition_properties
+- class: azure.eventhub.EventHubConsumerClient
+  example:
+  - "Receive events from the EventHub.<!--[!code-python[Main](les\\sync_samples\\\
+    sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\\sync_samples\\\
+    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
+    \n       logger = logging.getLogger(\"azure.eventhub\")\n\n       def on_event(partition_context,\
+    \ event):\n           # Put your code here.\n           # If the operation is\
+    \ i/o intensive, multi-thread will have better performance.\n           logger.info(\"\
+    Received event from partition: {}\".format(partition_context.partition_id))\n\n\
+    \       with consumer:\n           consumer.receive(on_event=on_event)\n\n   ````\n"
+  fullName: azure.eventhub.EventHubConsumerClient.receive
+  langs:
+  - python
+  module: azure.eventhub
+  name: receive(on_event, **kwargs)
+  namewithoutparameters: receive
+  summary: Receive events from partition(s), with optional load-balancing and checkpointing.
+  syntax:
+    content: receive(on_event, **kwargs)
+    parameters:
+    - description: 'The callback function for handling a received event. The callback
+        takes two
+
+        parameters: *partition_context* which contains partition context and *event*
+        which is the received event.
+
+        The callback function should be defined like: *on_event(partition_context,
+        event)*.
+
+        For detailed partition context information, please refer to
+
+        <xref:azure.eventhub.PartitionContext>.'
+      id: on_event
+      isRequired: true
+      type:
+      - Callable[azure.eventhub.PartitionContext, Optional[azure.eventhub.EventData]]
+    return:
+      type:
+      - None
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.receive
+- class: azure.eventhub.EventHubConsumerClient
+  example:
+  - "Receive events in batches from the EventHub.<!--[!code-python[Main](les\\sync_samples\\\
+    sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\\sync_samples\\\
+    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
+    \n       logger = logging.getLogger(\"azure.eventhub\")\n\n       def on_event_batch(partition_context,\
+    \ event_batch):\n           # Put your code here.\n           # If the operation\
+    \ is i/o intensive, multi-thread will have better performance.\n           logger.info(\"\
+    Received events from partition: {}\".format(partition_context.partition_id))\n\
+    \n       with consumer:\n           consumer.receive_batch(on_event_batch=on_event_batch)\n\
+    \n   ````\n"
+  fullName: azure.eventhub.EventHubConsumerClient.receive_batch
+  langs:
+  - python
+  module: azure.eventhub
+  name: receive_batch(on_event_batch, **kwargs)
+  namewithoutparameters: receive_batch
+  summary: Receive events from partition(s), with optional load-balancing and checkpointing.
+  syntax:
+    content: receive_batch(on_event_batch, **kwargs)
+    parameters:
+    - description: 'The callback function for handling a batch of received events.
+        The callback takes two
+
+        parameters: *partition_context* which contains partition context and *event_batch*,
+        which is the received
+
+        events. The callback function should be defined like: *on_event_batch(partition_context,
+        event_batch)*.
+
+        *event_batch* could be an empty list if *max_wait_time* is not None nor 0
+        and no event is received
+
+        after *max_wait_time*.
+
+        For detailed partition context information, please refer to
+
+        <xref:azure.eventhub.PartitionContext>.'
+      id: on_event_batch
+      isRequired: true
+      type:
+      - Callable[azure.eventhub.PartitionContext, List[azure.eventhub.EventData]]
+    return:
+      type:
+      - None
+  type: method
+  uid: azure.eventhub.EventHubConsumerClient.receive_batch
+references:
+- fullName: azure.eventhub.EventHubConsumerClient.close
+  isExternal: false
+  name: close()
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.close
+- fullName: azure.eventhub.EventHubConsumerClient.from_connection_string
+  isExternal: false
+  name: from_connection_string(conn_str, consumer_group, **kwargs)
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.from_connection_string
+- fullName: azure.eventhub.EventHubConsumerClient.get_eventhub_properties
+  isExternal: false
+  name: get_eventhub_properties()
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.get_eventhub_properties
+- fullName: azure.eventhub.EventHubConsumerClient.get_partition_ids
+  isExternal: false
+  name: get_partition_ids()
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.get_partition_ids
+- fullName: azure.eventhub.EventHubConsumerClient.get_partition_properties
+  isExternal: false
+  name: get_partition_properties(partition_id)
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.get_partition_properties
+- fullName: azure.eventhub.EventHubConsumerClient.receive
+  isExternal: false
+  name: receive(on_event, **kwargs)
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.receive
+- fullName: azure.eventhub.EventHubConsumerClient.receive_batch
+  isExternal: false
+  name: receive_batch(on_event_batch, **kwargs)
+  parent: azure.eventhub.EventHubConsumerClient
+  uid: azure.eventhub.EventHubConsumerClient.receive_batch
+- fullName: list[str]
+  name: list[str]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: list[str]
+- fullName: Callable[azure.eventhub.PartitionContext, Optional[azure.eventhub.EventData]]
+  name: Callable[PartitionContext, Optional[EventData]]
+  spec.python:
+  - fullName: Callable
+    name: Callable
+    uid: Callable
+  - fullName: '['
+    name: '['
+  - fullName: azure.eventhub.PartitionContext
+    name: PartitionContext
+    uid: azure.eventhub.PartitionContext
+  - fullName: ', '
+    name: ', '
+  - fullName: Optional
+    name: Optional
+    uid: Optional
+  - fullName: '['
+    name: '['
+  - fullName: azure.eventhub.EventData
+    name: EventData
+    uid: azure.eventhub.EventData
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: Callable[azure.eventhub.PartitionContext, Optional[azure.eventhub.EventData]]
+- fullName: Callable[azure.eventhub.PartitionContext, List[azure.eventhub.EventData]]
+  name: Callable[PartitionContext, List[EventData]]
+  spec.python:
+  - fullName: Callable
+    name: Callable
+    uid: Callable
+  - fullName: '['
+    name: '['
+  - fullName: azure.eventhub.PartitionContext
+    name: PartitionContext
+    uid: azure.eventhub.PartitionContext
+  - fullName: ', '
+    name: ', '
+  - fullName: List
+    name: List
+    uid: List
+  - fullName: '['
+    name: '['
+  - fullName: azure.eventhub.EventData
+    name: EventData
+    uid: azure.eventhub.EventData
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: Callable[azure.eventhub.PartitionContext, List[azure.eventhub.EventData]]

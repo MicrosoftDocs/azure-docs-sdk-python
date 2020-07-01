@@ -8,8 +8,10 @@ items:
   - azure.mgmt.security.operations.AlertsOperations.list_by_resource_group
   - azure.mgmt.security.operations.AlertsOperations.list_resource_group_level_alerts_by_region
   - azure.mgmt.security.operations.AlertsOperations.list_subscription_level_alerts_by_region
-  - azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state
-  - azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state
+  - azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_dismiss
+  - azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_reactivate
+  - azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_dismiss
+  - azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_reactivate
   - azure.mgmt.security.operations.AlertsOperations.models
   class: azure.mgmt.security.operations.AlertsOperations
   fullName: azure.mgmt.security.operations.AlertsOperations
@@ -49,6 +51,7 @@ items:
   module: azure.mgmt.security.operations
   name: get_resource_group_level_alerts(alert_name, resource_group_name, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_resource_group_level_alerts
   summary: 'Get an alert that is associated a resource group or a resource in a
 
     resource group.'
@@ -58,12 +61,14 @@ items:
     parameters:
     - description: Name of the alert object
       id: alert_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -82,6 +87,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: Alert or ClientRawResponse if raw=true
       type:
@@ -97,6 +103,7 @@ items:
   - python
   module: azure.mgmt.security.operations
   name: get_subscription_level_alert(alert_name, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: get_subscription_level_alert
   summary: Get an alert that is associated with a subscription.
   syntax:
     content: get_subscription_level_alert(alert_name, custom_headers=None, raw=False,
@@ -104,6 +111,7 @@ items:
     parameters:
     - description: Name of the alert object
       id: alert_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -122,6 +130,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: Alert or ClientRawResponse if raw=true
       type:
@@ -136,12 +145,13 @@ items:
   langs:
   - python
   module: azure.mgmt.security.operations
-  name: list(filter=None, select=None, expand=None, custom_headers=None, raw=False,
-    **operation_config)
+  name: list(filter=None, select=None, expand=None, auto_dismiss_rule_name=None, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: list
   summary: List all the alerts that are associated with the subscription.
   syntax:
-    content: list(filter=None, select=None, expand=None, custom_headers=None, raw=False,
-      **operation_config)
+    content: list(filter=None, select=None, expand=None, auto_dismiss_rule_name=None,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - defaultValue: None
       description: OData filter. Optional.
@@ -156,6 +166,17 @@ items:
     - defaultValue: None
       description: OData expand. Optional.
       id: expand
+      type:
+      - str
+    - defaultValue: None
+      description: 'The name of an existing auto dismiss
+
+        rule. Use it to simulate the rule on existing alerts and get the
+
+        alerts that would have been dismissed if the rule was enabled when the
+
+        alert was created'
+      id: auto_dismiss_rule_name
       type:
       - str
     - defaultValue: None
@@ -174,6 +195,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: An iterator like instance of Alert
       type:
@@ -188,16 +210,18 @@ items:
   - python
   module: azure.mgmt.security.operations
   name: list_by_resource_group(resource_group_name, filter=None, select=None, expand=None,
-    custom_headers=None, raw=False, **operation_config)
+    auto_dismiss_rule_name=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: list_by_resource_group
   summary: List all the alerts that are associated with the resource group.
   syntax:
     content: list_by_resource_group(resource_group_name, filter=None, select=None,
-      expand=None, custom_headers=None, raw=False, **operation_config)
+      expand=None, auto_dismiss_rule_name=None, custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -216,6 +240,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'The name of an existing auto dismiss
+
+        rule. Use it to simulate the rule on existing alerts and get the
+
+        alerts that would have been dismissed if the rule was enabled when the
+
+        alert was created'
+      id: auto_dismiss_rule_name
+      type:
+      - str
+    - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
       type:
@@ -231,6 +266,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: An iterator like instance of Alert
       type:
@@ -245,18 +281,22 @@ items:
   - python
   module: azure.mgmt.security.operations
   name: list_resource_group_level_alerts_by_region(resource_group_name, filter=None,
-    select=None, expand=None, custom_headers=None, raw=False, **operation_config)
+    select=None, expand=None, auto_dismiss_rule_name=None, custom_headers=None, raw=False,
+    **operation_config)
+  namewithoutparameters: list_resource_group_level_alerts_by_region
   summary: 'List all the alerts that are associated with the resource group that
 
     are stored in a specific location.'
   syntax:
     content: list_resource_group_level_alerts_by_region(resource_group_name, filter=None,
-      select=None, expand=None, custom_headers=None, raw=False, **operation_config)
+      select=None, expand=None, auto_dismiss_rule_name=None, custom_headers=None,
+      raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -275,6 +315,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'The name of an existing auto dismiss
+
+        rule. Use it to simulate the rule on existing alerts and get the
+
+        alerts that would have been dismissed if the rule was enabled when the
+
+        alert was created'
+      id: auto_dismiss_rule_name
+      type:
+      - str
+    - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
       type:
@@ -290,6 +341,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: An iterator like instance of Alert
       type:
@@ -304,13 +356,14 @@ items:
   - python
   module: azure.mgmt.security.operations
   name: list_subscription_level_alerts_by_region(filter=None, select=None, expand=None,
-    custom_headers=None, raw=False, **operation_config)
+    auto_dismiss_rule_name=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: list_subscription_level_alerts_by_region
   summary: 'List all the alerts that are associated with the subscription that are
 
     stored in a specific location.'
   syntax:
     content: list_subscription_level_alerts_by_region(filter=None, select=None, expand=None,
-      custom_headers=None, raw=False, **operation_config)
+      auto_dismiss_rule_name=None, custom_headers=None, raw=False, **operation_config)
     parameters:
     - defaultValue: None
       description: OData filter. Optional.
@@ -328,6 +381,17 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'The name of an existing auto dismiss
+
+        rule. Use it to simulate the rule on existing alerts and get the
+
+        alerts that would have been dismissed if the rule was enabled when the
+
+        alert was created'
+      id: auto_dismiss_rule_name
+      type:
+      - str
+    - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
       type:
@@ -343,6 +407,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: An iterator like instance of Alert
       type:
@@ -352,31 +417,28 @@ items:
 - class: azure.mgmt.security.operations.AlertsOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state
+  fullName: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_dismiss
   langs:
   - python
   module: azure.mgmt.security.operations
-  name: update_resource_group_level_alert_state(alert_name, alert_update_action_type,
-    resource_group_name, custom_headers=None, raw=False, **operation_config)
+  name: update_resource_group_level_alert_state_to_dismiss(alert_name, resource_group_name,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_resource_group_level_alert_state_to_dismiss
   summary: Update the alert's state.
   syntax:
-    content: update_resource_group_level_alert_state(alert_name, alert_update_action_type,
-      resource_group_name, custom_headers=None, raw=False, **operation_config)
+    content: update_resource_group_level_alert_state_to_dismiss(alert_name, resource_group_name,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: Name of the alert object
       id: alert_name
-      type:
-      - str
-    - description: 'Type of the action to do on the
-
-        alert. Possible values include: ''Dismiss'', ''Reactivate'''
-      id: alert_update_action_type
+      isRequired: true
       type:
       - str
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -395,35 +457,39 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: None or ClientRawResponse if raw=true
       type:
       - None
       - msrest.pipeline.ClientRawResponse
   type: method
-  uid: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state
+  uid: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_dismiss
 - class: azure.mgmt.security.operations.AlertsOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state
+  fullName: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_reactivate
   langs:
   - python
   module: azure.mgmt.security.operations
-  name: update_subscription_level_alert_state(alert_name, alert_update_action_type,
+  name: update_resource_group_level_alert_state_to_reactivate(alert_name, resource_group_name,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_resource_group_level_alert_state_to_reactivate
   summary: Update the alert's state.
   syntax:
-    content: update_subscription_level_alert_state(alert_name, alert_update_action_type,
+    content: update_resource_group_level_alert_state_to_reactivate(alert_name, resource_group_name,
       custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: Name of the alert object
       id: alert_name
+      isRequired: true
       type:
       - str
-    - description: 'Type of the action to do on the
+    - description: 'The name of the resource group within the
 
-        alert. Possible values include: ''Dismiss'', ''Reactivate'''
-      id: alert_update_action_type
+        user''s subscription. The name is case insensitive.'
+      id: resource_group_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -442,13 +508,102 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: None or ClientRawResponse if raw=true
       type:
       - None
       - msrest.pipeline.ClientRawResponse
   type: method
-  uid: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state
+  uid: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_reactivate
+- class: azure.mgmt.security.operations.AlertsOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_dismiss
+  langs:
+  - python
+  module: azure.mgmt.security.operations
+  name: update_subscription_level_alert_state_to_dismiss(alert_name, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: update_subscription_level_alert_state_to_dismiss
+  summary: Update the alert's state.
+  syntax:
+    content: update_subscription_level_alert_state_to_dismiss(alert_name, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: Name of the alert object
+      id: alert_name
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: None or ClientRawResponse if raw=true
+      type:
+      - None
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_dismiss
+- class: azure.mgmt.security.operations.AlertsOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_reactivate
+  langs:
+  - python
+  module: azure.mgmt.security.operations
+  name: update_subscription_level_alert_state_to_reactivate(alert_name, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: update_subscription_level_alert_state_to_reactivate
+  summary: Update the alert's state.
+  syntax:
+    content: update_subscription_level_alert_state_to_reactivate(alert_name, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: Name of the alert object
+      id: alert_name
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: None or ClientRawResponse if raw=true
+      type:
+      - None
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_reactivate
 - class: azure.mgmt.security.operations.AlertsOperations
   fullName: azure.mgmt.security.operations.AlertsOperations.models
   langs:
@@ -473,40 +628,53 @@ references:
   uid: azure.mgmt.security.operations.AlertsOperations.get_subscription_level_alert
 - fullName: azure.mgmt.security.operations.AlertsOperations.list
   isExternal: false
-  name: list(filter=None, select=None, expand=None, custom_headers=None, raw=False,
-    **operation_config)
+  name: list(filter=None, select=None, expand=None, auto_dismiss_rule_name=None, custom_headers=None,
+    raw=False, **operation_config)
   parent: azure.mgmt.security.operations.AlertsOperations
   uid: azure.mgmt.security.operations.AlertsOperations.list
 - fullName: azure.mgmt.security.operations.AlertsOperations.list_by_resource_group
   isExternal: false
   name: list_by_resource_group(resource_group_name, filter=None, select=None, expand=None,
-    custom_headers=None, raw=False, **operation_config)
+    auto_dismiss_rule_name=None, custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.security.operations.AlertsOperations
   uid: azure.mgmt.security.operations.AlertsOperations.list_by_resource_group
 - fullName: azure.mgmt.security.operations.AlertsOperations.list_resource_group_level_alerts_by_region
   isExternal: false
   name: list_resource_group_level_alerts_by_region(resource_group_name, filter=None,
-    select=None, expand=None, custom_headers=None, raw=False, **operation_config)
+    select=None, expand=None, auto_dismiss_rule_name=None, custom_headers=None, raw=False,
+    **operation_config)
   parent: azure.mgmt.security.operations.AlertsOperations
   uid: azure.mgmt.security.operations.AlertsOperations.list_resource_group_level_alerts_by_region
 - fullName: azure.mgmt.security.operations.AlertsOperations.list_subscription_level_alerts_by_region
   isExternal: false
   name: list_subscription_level_alerts_by_region(filter=None, select=None, expand=None,
-    custom_headers=None, raw=False, **operation_config)
+    auto_dismiss_rule_name=None, custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.security.operations.AlertsOperations
   uid: azure.mgmt.security.operations.AlertsOperations.list_subscription_level_alerts_by_region
-- fullName: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state
+- fullName: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_dismiss
   isExternal: false
-  name: update_resource_group_level_alert_state(alert_name, alert_update_action_type,
-    resource_group_name, custom_headers=None, raw=False, **operation_config)
-  parent: azure.mgmt.security.operations.AlertsOperations
-  uid: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state
-- fullName: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state
-  isExternal: false
-  name: update_subscription_level_alert_state(alert_name, alert_update_action_type,
+  name: update_resource_group_level_alert_state_to_dismiss(alert_name, resource_group_name,
     custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.security.operations.AlertsOperations
-  uid: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state
+  uid: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_dismiss
+- fullName: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_reactivate
+  isExternal: false
+  name: update_resource_group_level_alert_state_to_reactivate(alert_name, resource_group_name,
+    custom_headers=None, raw=False, **operation_config)
+  parent: azure.mgmt.security.operations.AlertsOperations
+  uid: azure.mgmt.security.operations.AlertsOperations.update_resource_group_level_alert_state_to_reactivate
+- fullName: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_dismiss
+  isExternal: false
+  name: update_subscription_level_alert_state_to_dismiss(alert_name, custom_headers=None,
+    raw=False, **operation_config)
+  parent: azure.mgmt.security.operations.AlertsOperations
+  uid: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_dismiss
+- fullName: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_reactivate
+  isExternal: false
+  name: update_subscription_level_alert_state_to_reactivate(alert_name, custom_headers=None,
+    raw=False, **operation_config)
+  parent: azure.mgmt.security.operations.AlertsOperations
+  uid: azure.mgmt.security.operations.AlertsOperations.update_subscription_level_alert_state_to_reactivate
 - fullName: azure.mgmt.security.operations.AlertsOperations.models
   isExternal: false
   name: models

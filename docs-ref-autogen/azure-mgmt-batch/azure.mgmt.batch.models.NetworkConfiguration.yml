@@ -15,55 +15,49 @@ items:
   summary: The network configuration for a pool.
   syntax:
     content: 'NetworkConfiguration(*, subnet_id: str = None, endpoint_configuration=None,
-      public_ips=None, **kwargs) -> None'
+      public_ip_address_configuration=None, **kwargs) -> None'
     parameters:
-    - description: 'The ARM resource identifier of the virtual network
+    - description: 'The virtual network must be in the same region and
 
-        subnet which the compute nodes of the pool will join. This is of the form
+        subscription as the Azure Batch account. The specified subnet should have
 
-        /subscriptions/{subscription}/resourceGroups/{group}/providers/{provider}/virtualNetworks/{network}/subnets/{subnet}.
+        enough free IP addresses to accommodate the number of nodes in the pool.
 
-        The virtual network must be in the same region and subscription as the
+        If the subnet doesn''t have enough free IP addresses, the pool will
 
-        Azure Batch account. The specified subnet should have enough free IP
+        partially allocate compute nodes and a resize error will occur. The
 
-        addresses to accommodate the number of nodes in the pool. If the subnet
+        ''MicrosoftAzureBatch'' service principal must have the ''Classic Virtual
 
-        doesn''t have enough free IP addresses, the pool will partially allocate
+        Machine Contributor'' Role-Based Access Control (RBAC) role for the
 
-        compute nodes, and a resize error will occur. The ''MicrosoftAzureBatch''
+        specified VNet. The specified subnet must allow communication from the
 
-        service principal must have the ''Classic Virtual Machine Contributor''
+        Azure Batch service to be able to schedule tasks on the compute nodes.
 
-        Role-Based Access Control (RBAC) role for the specified VNet. The
+        This can be verified by checking if the specified VNet has any associated
 
-        specified subnet must allow communication from the Azure Batch service to
+        Network Security Groups (NSG). If communication to the compute nodes in
 
-        be able to schedule tasks on the compute nodes. This can be verified by
+        the specified subnet is denied by an NSG, then the Batch service will set
 
-        checking if the specified VNet has any associated Network Security Groups
+        the state of the compute nodes to unusable. If the specified VNet has any
 
-        (NSG). If communication to the compute nodes in the specified subnet is
+        associated Network Security Groups (NSG), then a few reserved system ports
 
-        denied by an NSG, then the Batch service will set the state of the compute
+        must be enabled for inbound communication. For pools created with a
 
-        nodes to unusable. For pools created via virtualMachineConfiguration the
+        virtual machine configuration, enable ports 29876 and 29877, as well as
 
-        Batch account must have poolAllocationMode userSubscription in order to
+        port 22 for Linux and port 3389 for Windows. For pools created with a
 
-        use a VNet. If the specified VNet has any associated Network Security
+        cloud service configuration, enable ports 10100, 20100, and 30100. Also
 
-        Groups (NSG), then a few reserved system ports must be enabled for inbound
+        enable outbound connections to Azure Storage on port 443. For
 
-        communication. For pools created with a virtual machine configuration,
+        cloudServiceConfiguration pools, only ''classic'' VNETs are supported. For
 
-        enable ports 29876 and 29877, as well as port 22 for Linux and port 3389
-
-        for Windows. For pools created with a cloud service configuration, enable
-
-        ports 10100, 20100, and 30100. Also enable outbound connections to Azure
-
-        Storage on port 443. For more details see:
+        more details see:
 
         [https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration](https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration)'
       id: subnet_id
@@ -77,36 +71,14 @@ items:
       id: endpoint_configuration
       type:
       - azure.mgmt.batch.models.PoolEndpointConfiguration
-    - description: 'The list of public IPs which the Batch service will use
+    - description: 'The Public IPAddress configuration
 
-        when provisioning Compute Nodes. The number of IPs specified here limits
+        for Compute Nodes in the Batch Pool. This property is only supported on
 
-        the maximum size of the Pool - 50 dedicated nodes or 20 low-priority nodes
-
-        can be allocated for each public IP. For example, a pool needing 150
-
-        dedicated VMs would need at least 3 public IPs specified. Each element of
-
-        this collection is of the form:
-
-        /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.'
-      id: public_ips
+        Pools with the virtualMachineConfiguration property.'
+      id: public_ip_address_configuration
       type:
-      - list[str]
+      - azure.mgmt.batch.models.PublicIPAddressConfiguration
   type: class
   uid: azure.mgmt.batch.models.NetworkConfiguration
-references:
-- fullName: list[str]
-  name: list[str]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: list[str]
+references: []
