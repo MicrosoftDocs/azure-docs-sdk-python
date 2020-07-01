@@ -10,7 +10,8 @@ ms.technology: azure
 ms.devlang: Python
 ms.service: identity
 ---
- # Azure Identity client library for Python - Version 1.3.1 
+
+# Azure Identity client library for Python - Version 1.3.1 
 
 Azure Identity authenticating with Azure Active Directory for Azure SDK
 libraries. It provides credentials Azure SDK clients can use to authenticate

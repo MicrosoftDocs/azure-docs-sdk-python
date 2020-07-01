@@ -10,8 +10,8 @@ ms.technology: azure
 ms.devlang: Python
 ms.service: keyvault
 ---
- 
-# Azure Key Vault Keys client library for Python - Version 4.1.0 
+
+# Azure Key Vault Keys client library for Python - Version 4.2.0b1
 
 Azure Key Vault helps solve the following problems:
 - Cryptographic key management (this library) - create, store, and control

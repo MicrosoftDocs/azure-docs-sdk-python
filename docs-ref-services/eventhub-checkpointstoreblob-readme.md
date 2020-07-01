@@ -10,8 +10,8 @@ ms.technology: azure
 ms.devlang: Python
 ms.service: eventhub
 ---
- # Azure EventHubs Checkpoint Store client library for Python - Version 1.1.0 
- using Storage Blobs
+
+# Azure EventHubs Checkpoint Store client library for Python - Version 1.1.0 
 
 Azure EventHubs Checkpoint Store is used for storing checkpoints while processing events from Azure Event Hubs.
 This Checkpoint Store package works as a plug-in package to `EventHubConsumerClient`. It uses Azure Storage Blob as the persistent store for maintaining checkpoints and partition ownership information.
