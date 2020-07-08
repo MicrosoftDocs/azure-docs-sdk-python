@@ -10,7 +10,8 @@ ms.technology: azure
 ms.devlang: Python
 ms.service: servicebus
 ---
- # Azure Service Bus client library for Python - Version 0.50.2 
+
+# Azure Service Bus client library for Python - Version 0.50.3 
 
 
 Azure Service Bus is a high performance cloud-managed messaging service for providing real-time and fault-tolerant communication between distributed senders and receivers.
