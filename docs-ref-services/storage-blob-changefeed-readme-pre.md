@@ -1,6 +1,6 @@
 ---
 title: Azure Storage Blob ChangeFeed client library for Python
-keywords: Azure, python, SDK, API, azure-storage-blob-changefeed, 
+keywords: Azure, python, SDK, API, azure-storage-blob-changefeed, storage
 author: maggiepint
 ms.author: magpint
 ms.date: 07/08/2020
@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: storage
 ---
 
 # Azure Storage Blob ChangeFeed client library for Python - Version 12.0.0b1 
