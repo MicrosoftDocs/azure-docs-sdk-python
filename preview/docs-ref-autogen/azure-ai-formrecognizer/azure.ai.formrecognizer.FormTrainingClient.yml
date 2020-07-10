@@ -16,8 +16,8 @@ items:
   - "Creating the FormTrainingClient with an endpoint and API key.<!--[!code-python[Main](les\\\
     sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\
-    \\sample_authentication.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    sample_authentication.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.formrecognizer\
     \ import FormTrainingClient\n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"\
@@ -26,8 +26,8 @@ items:
     \ the FormTrainingClient with a token credential.<!--[!code-python[Main](les\\\
     sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\
-    \\sample_authentication.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    sample_authentication.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   \"\"\"DefaultAzureCredential will use the values from these environment\n\
     \   variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET\n   \"\"\"\
@@ -44,11 +44,11 @@ items:
   name: FormTrainingClient
   summary: 'FormTrainingClient is the Form Recognizer interface to use for creating,
 
-    and managing custom models. It provides methods for training models on forms
+    and managing custom models. It provides methods for training models on the forms
 
-    you provide and methods for viewing and deleting models, as well as
+    you provide, as well as methods for viewing and deleting models, accessing
 
-    accessing account properties.'
+    account properties, and copying a model to another Form Recognizer resource.'
   syntax:
     content: FormTrainingClient(endpoint, credential, **kwargs)
     parameters:
@@ -74,14 +74,14 @@ items:
   - "Copy a model from the source resource to the target resource<!--[!code-python[Main](les\\\
     sample_copy_model.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\\sample_copy_model.py\"\
+    1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_copy_model.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   source_client\
     \ = FormTrainingClient(endpoint=source_endpoint, credential=AzureKeyCredential(source_key))\n\
     \n   poller = source_client.begin_copy_model(\n       model_id=source_model_id,\n\
-    \       target=target\n   )\n   copied_over_model = poller.result()\n\n   print(\"\
-    Model ID: {}\".format(copied_over_model.model_id))\n   print(\"Status: {}\".format(copied_over_model.status))\n\
-    \n   ````\n"
+    \       target=target  # output from target client's call to get_copy_authorization()\n\
+    \   )\n   copied_over_model = poller.result()\n\n   print(\"Model ID: {}\".format(copied_over_model.model_id))\n\
+    \   print(\"Status: {}\".format(copied_over_model.status))\n\n   ````\n"
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError
@@ -130,7 +130,7 @@ items:
   - "Training a model with your custom forms.<!--[!code-python[Main](les\\sample_train_model_without_labels.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\\sample_train_model_without_labels.py\"\
+    \\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_train_model_without_labels.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.formrecognizer\
     \ import FormTrainingClient\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -140,13 +140,14 @@ items:
     \   poller = form_training_client.begin_training(container_sas_url, use_training_labels=False)\n\
     \   model = poller.result()\n\n   # Custom model information\n   print(\"Model\
     \ ID: {}\".format(model.model_id))\n   print(\"Status: {}\".format(model.status))\n\
-    \   print(\"Requested on: {}\".format(model.requested_on))\n   print(\"Completed\
-    \ on: {}\".format(model.completed_on))\n\n   print(\"Recognized fields:\")\n \
-    \  # Looping through the submodels, which contains the fields they were trained\
-    \ on\n   for submodel in model.submodels:\n       print(\"...The submodel has\
-    \ form type '{}'\".format(submodel.form_type))\n       for name, field in submodel.fields.items():\n\
-    \           print(\"...The model found field '{}' to have label '{}'\".format(\n\
-    \               name, field.label\n           ))\n\n   ````\n"
+    \   print(\"Training started on: {}\".format(model.training_started_on))\n   print(\"\
+    Training completed on: {}\".format(model.training_completed_on))\n\n   print(\"\
+    Recognized fields:\")\n   # Looping through the submodels, which contains the\
+    \ fields they were trained on\n   for submodel in model.submodels:\n       print(\"\
+    ...The submodel has form type '{}'\".format(submodel.form_type))\n       for name,\
+    \ field in submodel.fields.items():\n           print(\"...The model found field\
+    \ '{}' to have label '{}'\".format(\n               name, field.label\n      \
+    \     ))\n\n   ````\n"
   exceptions:
   - description: 'Note that if the training fails, the exception is raised, but a
       model with an
@@ -162,8 +163,10 @@ items:
   summary: 'Create and train a custom model. The request must include a *training_files_url*
     parameter that is an
 
-    externally accessible Azure storage blob container Uri (preferably a Shared Access
-    Signature Uri).
+    externally accessible Azure storage blob container URI (preferably a Shared Access
+    Signature URI). Note that
+
+    a container URI is accepted only when the container is public.
 
     Models are trained using documents that are of the following content type - ''application/pdf'',
 
@@ -172,7 +175,10 @@ items:
   syntax:
     content: begin_training(training_files_url, use_training_labels, **kwargs)
     parameters:
-    - description: An Azure Storage blob container's SAS URI.
+    - description: 'An Azure Storage blob container''s SAS URI. A container URI can
+        be used if the
+
+        container is public.'
       id: training_files_url
       isRequired: true
       type:
@@ -211,7 +217,7 @@ items:
   - "Delete a custom model.<!--[!code-python[Main](les\\sample_manage_custom_models.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\\sample_manage_custom_models.py\"\
+    \\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_manage_custom_models.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   form_training_client.delete_model(model_id=custom_model.model_id)\n\
     \n   try:\n       form_training_client.get_custom_model(model_id=custom_model.model_id)\n\
@@ -247,10 +253,10 @@ items:
   - "Get properties for the form recognizer account.<!--[!code-python[Main](les\\\
     sample_manage_custom_models.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\
-    \\sample_manage_custom_models.py\", \"xml:space\": \"preserve\", \"language\"\
-    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-    \n````python\n\n   from azure.core.credentials import AzureKeyCredential\n   from\
+    a\\\\1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    sample_manage_custom_models.py\", \"xml:space\": \"preserve\", \"language\": \"\
+    python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
+    ````python\n\n   from azure.core.credentials import AzureKeyCredential\n   from\
     \ azure.core.exceptions import ResourceNotFoundError\n   from azure.ai.formrecognizer\
     \ import FormTrainingClient\n\n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"\
     ]\n   key = os.environ[\"AZURE_FORM_RECOGNIZER_KEY\"]\n\n   form_training_client\
@@ -285,12 +291,14 @@ items:
   - "Authorize the target resource to receive the copied model<!--[!code-python[Main](les\\\
     sample_copy_model.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\\sample_copy_model.py\"\
+    1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_copy_model.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   target_client\
     \ = FormTrainingClient(endpoint=target_endpoint, credential=AzureKeyCredential(target_key))\n\
     \n   target = target_client.get_copy_authorization(\n       resource_region=target_region,\n\
-    \       resource_id=target_resource_id\n   )\n\n   ````\n"
+    \       resource_id=target_resource_id\n   )\n   # model ID that target client\
+    \ will use to access the model once copy is complete\n   print(\"Model ID: {}\"\
+    .format(target[\"modelId\"]))\n\n   ````\n"
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError
@@ -318,7 +326,12 @@ items:
       - str
     - description: 'Location of the target Form Recognizer resource. A valid Azure
 
-        region name supported by Cognitive Services.'
+        region name supported by Cognitive Services. For example, ''westus'', ''eastus''
+        etc.
+
+        See [https://azure.microsoft.com/global-infrastructure/services/?products=cognitive-services](https://azure.microsoft.com/global-infrastructure/services/?products=cognitive-services)
+
+        for the regional availability of Cognitive Services'
       id: resource_region
       isRequired: true
       type:
@@ -336,13 +349,14 @@ items:
   - "Get a custom model with a model ID.<!--[!code-python[Main](les\\sample_manage_custom_models.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\\sample_manage_custom_models.py\"\
+    \\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_manage_custom_models.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   custom_model =\
     \ form_training_client.get_custom_model(model_id=first_model.model_id)\n   print(\"\
     Model ID: {}\".format(custom_model.model_id))\n   print(\"Status: {}\".format(custom_model.status))\n\
-    \   print(\"Requested on: {}\".format(custom_model.requested_on))\n   print(\"\
-    Completed on: {}\".format(custom_model.completed_on))\n\n   ````\n"
+    \   print(\"Training started on: {}\".format(custom_model.training_started_on))\n\
+    \   print(\"Training completed on: {}\".format(custom_model.training_completed_on))\n\
+    \n   ````\n"
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError or ~azure.core.exceptions.ResourceNotFoundError
@@ -391,12 +405,12 @@ items:
   - "List model information for each model on the account.<!--[!code-python[Main](les\\\
     sample_manage_custom_models.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-formrecognizer-1.0.0b3\\\\samples\\\
-    \\sample_manage_custom_models.py\", \"xml:space\": \"preserve\", \"language\"\
-    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-    \n````python\n\n   custom_models = form_training_client.list_custom_models()\n\
-    \n   print(\"We have models with the following ids:\")\n\n   # Let's pull out\
-    \ the first model\n   first_model = next(custom_models)\n   print(first_model.model_id)\n\
+    a\\\\1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    sample_manage_custom_models.py\", \"xml:space\": \"preserve\", \"language\": \"\
+    python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
+    ````python\n\n   custom_models = form_training_client.list_custom_models()\n\n\
+    \   print(\"We have models with the following ids:\")\n\n   # Let's pull out the\
+    \ first model\n   first_model = next(custom_models)\n   print(first_model.model_id)\n\
     \   for model in custom_models:\n       print(model.model_id)\n\n   ````\n"
   exceptions:
   - description: ''
