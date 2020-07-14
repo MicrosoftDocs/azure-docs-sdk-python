@@ -14,7 +14,7 @@ items:
   - "Create a new instance of the EventHubProducerClient.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\21\\\\azure-eventhub-5.2.0b1\\\\samples\\\
     \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient,\
@@ -68,8 +68,8 @@ items:
   example:
   - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\21\\\\azure-eventhub-5.2.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n  \
     \ from azure.eventhub import EventHubProducerClient, EventData\n\n   event_hub_connection_str\
@@ -103,7 +103,7 @@ items:
   - "Create EventDataBatch object within limited size<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\21\\\\azure-eventhub-5.2.0b1\\\\samples\\\
     \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n       event_data_batch = producer.create_batch()\n       while\
@@ -122,8 +122,8 @@ items:
     constrained by max_size_in_bytes.
 
 
-    The max_size should be no greater than the max allowed message size defined by
-    the service.'
+    The max_size_in_bytes should be no greater than the max allowed message size defined
+    by the service.'
   syntax:
     content: create_batch(**kwargs)
     parameters: []
@@ -137,7 +137,7 @@ items:
   - "Create a new instance of the EventHubProducerClient from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\21\\\\azure-eventhub-5.2.0b1\\\\samples\\\
     \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient\n\
@@ -233,8 +233,8 @@ items:
   example:
   - "Sends event data<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\9\\\\azure-eventhub-5.1.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\21\\\\azure-eventhub-5.2.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n       with producer:\n\
     \           event_data_batch = producer.create_batch()\n\n           while True:\n\
@@ -251,16 +251,31 @@ items:
   module: azure.eventhub
   name: send_batch(event_data_batch, **kwargs)
   namewithoutparameters: send_batch
-  summary: Sends event data and blocks until acknowledgement is received or operation
+  summary: 'Sends event data and blocks until acknowledgement is received or operation
     times out.
+
+
+    If you''re sending a finite list of *EventData* and you know it''s within the
+    event hub
+
+    frame size limit, you can send them with a *send_batch* call. Otherwise, use <xref:azure.eventhub.EventHubProducerClient.create_batch>
+
+    to create *EventDataBatch* and add *EventData* into the batch one by one until
+    the size limit,
+
+    and then call this method to send out the batch.'
   syntax:
     content: send_batch(event_data_batch, **kwargs)
     parameters:
-    - description: The EventDataBatch object to be sent.
+    - description: 'The *EventDataBatch* object to be sent or a list of *EventData*
+        to be sent
+
+        in a batch. All *EventData* in the list or *EventDataBatch* will land on the
+        same partition.'
       id: event_data_batch
       isRequired: true
       type:
-      - azure.eventhub.EventDataBatch
+      - Union[azure.eventhub.EventDataBatch, List[azure.eventhub.EventData]]
     return:
       type:
       - None
@@ -316,3 +331,29 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[str]
+- fullName: Union[azure.eventhub.EventDataBatch, List[azure.eventhub.EventData]]
+  name: Union[EventDataBatch, List[EventData]]
+  spec.python:
+  - fullName: Union
+    name: Union
+    uid: Union
+  - fullName: '['
+    name: '['
+  - fullName: azure.eventhub.EventDataBatch
+    name: EventDataBatch
+    uid: azure.eventhub.EventDataBatch
+  - fullName: ', '
+    name: ', '
+  - fullName: List
+    name: List
+    uid: List
+  - fullName: '['
+    name: '['
+  - fullName: azure.eventhub.EventData
+    name: EventData
+    uid: azure.eventhub.EventData
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: Union[azure.eventhub.EventDataBatch, List[azure.eventhub.EventData]]
