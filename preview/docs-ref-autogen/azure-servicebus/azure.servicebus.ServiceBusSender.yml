@@ -5,14 +5,14 @@ items:
   - azure.servicebus.ServiceBusSender.cancel_scheduled_messages
   - azure.servicebus.ServiceBusSender.create_batch
   - azure.servicebus.ServiceBusSender.from_connection_string
-  - azure.servicebus.ServiceBusSender.schedule
-  - azure.servicebus.ServiceBusSender.send
+  - azure.servicebus.ServiceBusSender.schedule_messages
+  - azure.servicebus.ServiceBusSender.send_messages
   class: azure.servicebus.ServiceBusSender
   example:
   - "Create a new instance of the ServiceBusSender.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   import os\n   from azure.servicebus import ServiceBusSender, ServiceBusSharedKeyCredential\n\
@@ -58,6 +58,41 @@ items:
       id: credential
       type:
       - azure.core.credentials.TokenCredential
+    - description: The path of specific Service Bus Queue the client connects to.
+      id: queue_name
+      type:
+      - str
+    - description: The path of specific Service Bus Topic the client connects to.
+      id: topic_name
+      type:
+      - str
+    - description: Whether to output network trace logs to the logger. Default is
+        *False*.
+      id: logging_enable
+      type:
+      - bool
+    - description: 'The total number of attempts to redo a failed operation when an
+        error occurs.
+
+        Default value is 3.'
+      id: retry_total
+      type:
+      - int
+    - description: 'The type of transport protocol that will be used for communicating
+        with
+
+        the Service Bus service. Default is *TransportType.Amqp*.'
+      id: transport_type
+      type:
+      - azure.servicebus.TransportType
+    - description: 'HTTP proxy settings. This must be a dictionary with the following
+
+        keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+        Additionally the following keys may also be present: *''username'', ''password''*.'
+      id: http_proxy
+      type:
+      - dict
     variables:
     - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -76,7 +111,7 @@ items:
   - "Cancelling messages scheduled to be sent in future<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_sender:\n       servicebus_sender.cancel_scheduled_messages(sequence_nums)\n\
@@ -108,7 +143,7 @@ items:
   - "Create BatchMessage object within limited size<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_sender:\n       batch_message = servicebus_sender.create_batch()\n\
@@ -145,7 +180,7 @@ items:
   - "Create a new instance of the ServiceBusSender from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus import ServiceBusSender\n\
@@ -166,8 +201,51 @@ items:
     - description: The connection string of a Service Bus.
       id: conn_str
       isRequired: true
-    - id: conn_str
+    - description: 'The path of specific Service Bus Queue the client connects to.
+
+        Only one of queue_name or topic_name can be provided.'
+      id: queue_name
       isRequired: true
+      type:
+      - str
+    - description: 'The path of specific Service Bus Topic the client connects to.
+
+        Only one of queue_name or topic_name can be provided.'
+      id: topic_name
+      isRequired: true
+      type:
+      - str
+    - description: Whether to output network trace logs to the logger. Default is
+        *False*.
+      id: logging_enable
+      isRequired: true
+      type:
+      - bool
+    - description: 'The total number of attempts to redo a failed operation when an
+        error occurs.
+
+        Default value is 3.'
+      id: retry_total
+      isRequired: true
+      type:
+      - int
+    - description: 'The type of transport protocol that will be used for communicating
+        with
+
+        the Service Bus service. Default is *TransportType.Amqp*.'
+      id: transport_type
+      isRequired: true
+      type:
+      - azure.servicebus.TransportType
+    - description: 'HTTP proxy settings. This must be a dictionary with the following
+
+        keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+        Additionally the following keys may also be present: *''username'', ''password''*.'
+      id: http_proxy
+      isRequired: true
+      type:
+      - dict
     return:
       type:
       - azure.servicebus.ServiceBusSenderClient
@@ -178,19 +256,19 @@ items:
   - "Schedule a message to be sent in future<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_sender:\n       scheduled_time_utc = datetime.datetime.utcnow()\
     \ + datetime.timedelta(seconds=30)\n       scheduled_messages = [Message(\"Scheduled\
-    \ message\") for _ in range(10)]\n       sequence_nums = servicebus_sender.schedule(scheduled_messages,\
+    \ message\") for _ in range(10)]\n       sequence_nums = servicebus_sender.schedule_messages(scheduled_messages,\
     \ scheduled_time_utc)\n\n   ````\n"
-  fullName: azure.servicebus.ServiceBusSender.schedule
+  fullName: azure.servicebus.ServiceBusSender.schedule_messages
   langs:
   - python
   module: azure.servicebus
-  name: schedule(messages, schedule_time_utc)
-  namewithoutparameters: schedule
+  name: schedule_messages(messages, schedule_time_utc)
+  namewithoutparameters: schedule_messages
   summary: 'Send Message or multiple Messages to be enqueued at a specific time.
 
     Returns a list of the sequence numbers of the enqueued messages.
@@ -205,30 +283,30 @@ items:
 
     :rtype: list[int]'
   syntax:
-    content: schedule(messages, schedule_time_utc)
+    content: schedule_messages(messages, schedule_time_utc)
     parameters:
     - id: messages
       isRequired: true
     - id: schedule_time_utc
       isRequired: true
   type: method
-  uid: azure.servicebus.ServiceBusSender.schedule
+  uid: azure.servicebus.ServiceBusSender.schedule_messages
 - class: azure.servicebus.ServiceBusSender
   example:
   - "Send message.<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    \\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   with servicebus_sender:\n\
-    \       message = Message(\"Hello World\")\n       servicebus_sender.send(message)\n\
+    \       message = Message(\"Hello World\")\n       servicebus_sender.send_messages(message)\n\
     \n   ````\n"
-  fullName: azure.servicebus.ServiceBusSender.send
+  fullName: azure.servicebus.ServiceBusSender.send_messages
   langs:
   - python
   module: azure.servicebus
-  name: send(message)
-  namewithoutparameters: send
+  name: send_messages(message)
+  namewithoutparameters: send_messages
   summary: 'Sends message and blocks until acknowledgement is received or operation
     times out.
 
@@ -238,7 +316,7 @@ items:
 
     *ValueError* if they cannot fit in a single batch.'
   syntax:
-    content: send(message)
+    content: send_messages(message)
     parameters:
     - description: The ServiceBus message to be sent.
       id: message
@@ -251,7 +329,7 @@ items:
       type:
       - None
   type: method
-  uid: azure.servicebus.ServiceBusSender.send
+  uid: azure.servicebus.ServiceBusSender.send_messages
 references:
 - fullName: azure.servicebus.ServiceBusSender.cancel_scheduled_messages
   isExternal: false
@@ -268,16 +346,16 @@ references:
   name: from_connection_string(conn_str, **kwargs)
   parent: azure.servicebus.ServiceBusSender
   uid: azure.servicebus.ServiceBusSender.from_connection_string
-- fullName: azure.servicebus.ServiceBusSender.schedule
+- fullName: azure.servicebus.ServiceBusSender.schedule_messages
   isExternal: false
-  name: schedule(messages, schedule_time_utc)
+  name: schedule_messages(messages, schedule_time_utc)
   parent: azure.servicebus.ServiceBusSender
-  uid: azure.servicebus.ServiceBusSender.schedule
-- fullName: azure.servicebus.ServiceBusSender.send
+  uid: azure.servicebus.ServiceBusSender.schedule_messages
+- fullName: azure.servicebus.ServiceBusSender.send_messages
   isExternal: false
-  name: send(message)
+  name: send_messages(message)
   parent: azure.servicebus.ServiceBusSender
-  uid: azure.servicebus.ServiceBusSender.send
+  uid: azure.servicebus.ServiceBusSender.send_messages
 - fullName: list[int]
   name: list[int]
   spec.python:

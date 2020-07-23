@@ -31,10 +31,23 @@ items:
       id: credential
       type:
       - azure.AppConfigConnectionStringCredential
+    - description: If omitted, the standard pipeline is used.
+      id: pipeline
+      type:
+      - Pipeline
+    - description: If omitted, the standard pipeline is used.
+      id: transport
+      type:
+      - HttpTransport
+    - description: If omitted, the standard pipeline is used.
+      id: policies
+      type:
+      - list[HTTPPolicy]
   type: class
   uid: azure.appconfiguration.AzureAppConfigurationClient
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.add_configuration_setting
   langs:
@@ -58,6 +71,12 @@ items:
       isRequired: true
       type:
       - azure.appconfiguration.ConfigurationSetting
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request header
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: The ConfigurationSetting object returned from the App Configuration
         service
@@ -67,6 +86,7 @@ items:
   uid: azure.appconfiguration.AzureAppConfigurationClient.add_configuration_setting
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.delete_configuration_setting
   langs:
@@ -92,6 +112,23 @@ items:
       isRequired: true
       type:
       - str
+    - description: check if the ConfigurationSetting is changed. Set None to skip
+        checking etag
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: the match condition to use upon the etag
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: The deleted ConfigurationSetting returned from the service, or
         None if it doesn't exist.
@@ -126,6 +163,7 @@ items:
   uid: azure.appconfiguration.AzureAppConfigurationClient.from_connection_string
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.get_configuration_setting
   langs:
@@ -166,6 +204,18 @@ items:
       isRequired: true
       type:
       - azure.core.MatchConditions
+    - description: the retrieved ConfigurationSetting that created no later than this
+        datetime
+      id: accept_datetime
+      isRequired: true
+      type:
+      - datetime
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request header
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: The matched ConfigurationSetting object
       type:
@@ -174,6 +224,7 @@ items:
   uid: azure.appconfiguration.AzureAppConfigurationClient.get_configuration_setting
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.list_configuration_settings
   langs:
@@ -208,6 +259,23 @@ items:
       isRequired: true
       type:
       - str
+    - description: filter out ConfigurationSetting created after this datetime
+      id: accept_datetime
+      isRequired: true
+      type:
+      - datetime
+    - description: specify which fields to include in the results. Leave None to include
+        all fields
+      id: fields
+      isRequired: true
+      type:
+      - list[str]
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request header
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
       type:
@@ -216,6 +284,7 @@ items:
   uid: azure.appconfiguration.AzureAppConfigurationClient.list_configuration_settings
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.list_revisions
   langs:
@@ -249,6 +318,23 @@ items:
       isRequired: true
       type:
       - str
+    - description: filter out ConfigurationSetting created after this datetime
+      id: accept_datetime
+      isRequired: true
+      type:
+      - datetime
+    - description: specify which fields to include in the results. Leave None to include
+        all fields
+      id: fields
+      isRequired: true
+      type:
+      - list[str]
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request header
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
       type:
@@ -257,6 +343,7 @@ items:
   uid: azure.appconfiguration.AzureAppConfigurationClient.list_revisions
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.set_configuration_setting
   langs:
@@ -289,6 +376,12 @@ items:
       isRequired: true
       type:
       - azure.core.MatchConditions
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request header
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: The ConfigurationSetting returned from the service
       type:
@@ -297,6 +390,7 @@ items:
   uid: azure.appconfiguration.AzureAppConfigurationClient.set_configuration_setting
 - class: azure.appconfiguration.AzureAppConfigurationClient
   exceptions:
+  - type: HttpResponseError
   - type: HttpResponseError
   fullName: azure.appconfiguration.AzureAppConfigurationClient.set_read_only
   langs:
@@ -324,6 +418,12 @@ items:
       isRequired: true
       type:
       - bool
+    - description: if "headers" exists, its value (a dict) will be added to the http
+        request header
+      id: headers
+      isRequired: true
+      type:
+      - dict
     return:
       description: The ConfigurationSetting returned from the service
       type:
@@ -373,6 +473,34 @@ references:
   name: set_read_only(configuration_setting, read_only=True, **kwargs)
   parent: azure.appconfiguration.AzureAppConfigurationClient
   uid: azure.appconfiguration.AzureAppConfigurationClient.set_read_only
+- fullName: list[HTTPPolicy]
+  name: list[HTTPPolicy]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: HTTPPolicy
+    name: HTTPPolicy
+    uid: HTTPPolicy
+  - fullName: ']'
+    name: ']'
+  uid: list[HTTPPolicy]
+- fullName: list[str]
+  name: list[str]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: list[str]
 - fullName: azure.core.paging.ItemPaged[ConfigurationSetting]
   name: ItemPaged[ConfigurationSetting]
   spec.python:
