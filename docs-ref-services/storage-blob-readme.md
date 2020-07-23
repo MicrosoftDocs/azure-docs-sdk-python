@@ -1,6 +1,6 @@
 ---
 title: Azure Storage Blob client library for Python
-keywords: Azure, python, SDK, API, azure-storage-blob, azure-storage-blob
+keywords: Azure, python, SDK, API, azure-storage-blob, storage
 author: maggiepint
 ms.author: magpint
 ms.date: 07/22/2020
@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: azure-storage-blob
+ms.service: storage
 ---
 
 # Azure Storage Blobs client library for Python - Version 12.3.2 
