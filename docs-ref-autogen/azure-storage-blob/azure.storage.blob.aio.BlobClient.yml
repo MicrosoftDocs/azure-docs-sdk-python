@@ -106,6 +106,64 @@ items:
         If the URL already has a SAS token, specifying an explicit credential will
         take priority.'
       id: credential
+    - description: 'The Storage API version to use for requests. Default value is
+        ''2019-07-07''.
+
+        Setting to an older version may result in reduced feature compatibility.
+
+
+        New in version 12.2.0.'
+      id: api_version
+      type:
+      - str
+    - description: The hostname of the secondary endpoint.
+      id: secondary_hostname
+      type:
+      - str
+    - description: 'The maximum chunk size for uploading a block blob in chunks.
+
+        Defaults to 4*1024*1024, or 4MB.'
+      id: max_block_size
+      type:
+      - int
+    - description: 'If the blob size is less than max_single_put_size, then the blob
+        will be
+
+        uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
+
+        the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
+      id: max_single_put_size
+      type:
+      - int
+    - description: 'The minimum chunk size required to use the memory efficient
+
+        algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
+      id: min_large_block_upload_threshold
+      type:
+      - int
+    - description: Use a byte buffer for block blob uploads. Defaults to False.
+      id: use_byte_buffer
+      type:
+      - bool
+    - description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
+        or 4MB.
+      id: max_page_size
+      type:
+      - int
+    - description: 'The maximum size for a blob to be downloaded in a single call,
+
+        the exceeded part will be downloaded in chunks (could be parallel). Defaults
+        to 32*1024*1024, or 32MB.'
+      id: max_single_get_size
+      type:
+      - int
+    - description: 'The maximum chunk size used for downloading a blob. Defaults to
+        4*1024*1024,
+
+        or 4MB.'
+      id: max_chunk_get_size
+      type:
+      - int
   type: class
   uid: azure.storage.blob.aio.BlobClient
 - class: azure.storage.blob.aio.BlobClient
@@ -194,6 +252,52 @@ items:
       isRequired: true
       type:
       - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: A BlobLeaseClient object.
       type:
@@ -216,6 +320,137 @@ items:
       isRequired: true
     - description: Size of the block in bytes.
       id: length
+      isRequired: true
+      type:
+      - int
+    - description: 'If true, calculates an MD5 hash of the block content. The storage
+
+        service checks the hash of the content that has arrived
+
+        with the hash that was sent. This is primarily valuable for detecting
+
+        bitflips on the wire if using http instead of https, as https (the default),
+
+        will already validate. Note that this MD5 hash is not stored with the
+
+        blob.'
+      id: validate_content
+      isRequired: true
+      type:
+      - bool
+    - description: 'Optional conditional header. The max length in bytes permitted
+        for
+
+        the append blob. If the Append Block operation would cause the blob
+
+        to exceed that limit or if the blob size is already greater than the
+
+        value specified in this header, the request will fail with
+
+        MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
+      id: maxsize_condition
+      isRequired: true
+      type:
+      - int
+    - description: 'Optional conditional header, used only for the Append Block operation.
+
+        A number indicating the byte offset to compare. Append Block will
+
+        succeed only if the append position is equal to this number. If it
+
+        is not, the request will fail with the AppendPositionConditionNotMet error
+
+        (HTTP status code 412 - Precondition Failed).'
+      id: appendpos_condition
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: Defaults to UTF-8.
+      id: encoding
+      isRequired: true
+      type:
+      - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
       isRequired: true
       type:
       - int
@@ -260,6 +495,166 @@ items:
       isRequired: true
       type:
       - int
+    - description: If given, the service will calculate the MD5 hash of the block
+        content and compare against this value.
+      id: source_content_md5
+      isRequired: true
+      type:
+      - bytearray
+    - description: 'Optional conditional header. The max length in bytes permitted
+        for
+
+        the append blob. If the Append Block operation would cause the blob
+
+        to exceed that limit or if the blob size is already greater than the
+
+        value specified in this header, the request will fail with
+
+        MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
+      id: maxsize_condition
+      isRequired: true
+      type:
+      - int
+    - description: 'Optional conditional header, used only for the Append Block operation.
+
+        A number indicating the byte offset to compare. Append Block will
+
+        succeed only if the append position is equal to this number. If it
+
+        is not, the request will fail with the
+
+        AppendPositionConditionNotMet error
+
+        (HTTP status code 412 - Precondition Failed).'
+      id: appendpos_condition
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The destination ETag value, or the wildcard character (*). Used
+        to check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The destination match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the source resource has been modified since the specified time.'
+      id: source_if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the source resource has not been modified since the specified date/time.'
+      id: source_if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The source ETag value, or the wildcard character (*). Used to
+        check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: source_etag
+      isRequired: true
+      type:
+      - str
+    - description: The source match condition to use upon the etag.
+      id: source_match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
   type: method
   uid: azure.storage.blob.aio.BlobClient.append_block_from_url
 - class: azure.storage.blob.aio.BlobClient
@@ -292,6 +687,93 @@ items:
 
         512.'
       id: length
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'If the blob''s sequence number is less than or equal to
+
+        the specified value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lte
+      isRequired: true
+      type:
+      - int
+    - description: 'If the blob''s sequence number is less than the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lt
+      isRequired: true
+      type:
+      - int
+    - description: 'If the blob''s sequence number is equal to the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_eq
+      isRequired: true
+      type:
+      - int
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
       isRequired: true
       type:
       - int
@@ -332,6 +814,113 @@ items:
       isRequired: true
       type:
       - dict[str, str]
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'If true, calculates an MD5 hash of the page content. The storage
+
+        service checks the hash of the content that has arrived
+
+        with the hash that was sent. This is primarily valuable for detecting
+
+        bitflips on the wire if using http instead of https, as https (the default),
+
+        will already validate. Note that this MD5 hash is not stored with the
+
+        blob.'
+      id: validate_content
+      isRequired: true
+      type:
+      - bool
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      isRequired: true
+      type:
+      - azure.storage.blob.StandardBlobTier
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified).
       type:
@@ -362,6 +951,90 @@ items:
       isRequired: true
       type:
       - dict(str, str)
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified).
       type:
@@ -411,6 +1084,100 @@ items:
       isRequired: true
       type:
       - azure.storage.blob.PremiumPageBlobTier
+    - description: 'Only for Page blobs. The sequence number is a user-controlled
+        value that you can use to
+
+        track requests. The value of the sequence number must be between 0
+
+        and 2^63 - 1.The default value is 0.'
+      id: sequence_number
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified).
       type:
@@ -458,6 +1225,90 @@ items:
       isRequired: true
       type:
       - dict(str, str)
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Snapshot ID, Etag, and last modified).
       type:
@@ -514,6 +1365,64 @@ items:
       isRequired: true
       type:
       - str
+    - description: 'Required if the blob has an active lease. If specified, delete_blob
+        only
+
+        succeeds if the blob''s lease is active and matches this ID. Value can be
+        a
+
+        BlobLeaseClient object or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - None
@@ -556,6 +1465,111 @@ items:
 
         should be supplied for optimal performance.'
       id: length
+      isRequired: true
+      type:
+      - int
+    - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https, as https (the default), will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob. Also note that if enabled, the memory-efficient upload algorithm
+
+        will not be used because computing the MD5 hash requires buffering
+
+        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+      id: validate_content
+      isRequired: true
+      type:
+      - bool
+    - description: 'Required if the blob has an active lease. If specified, download_blob
+        only
+
+        succeeds if the blob''s lease is active and matches this ID. Value can be
+        a
+
+        BlobLeaseClient object or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: The number of parallel connections with which to download.
+      id: max_concurrency
+      isRequired: true
+      type:
+      - int
+    - description: Encoding to decode the downloaded bytes. Default is None, i.e.
+        no decoding.
+      id: encoding
+      isRequired: true
+      type:
+      - str
+    - description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.'
+      id: timeout
       isRequired: true
       type:
       - int
@@ -607,6 +1621,73 @@ items:
     system properties for the blob. It does not return the content of the blob.'
   syntax:
     content: get_blob_properties(**kwargs)
+    parameters:
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: BlobProperties
       type:
@@ -635,6 +1716,20 @@ items:
       isRequired: true
       type:
       - str
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: A tuple of two lists - committed and uncommitted blocks
       type:
@@ -703,6 +1798,61 @@ items:
       isRequired: true
       type:
       - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: 'A tuple of two lists of page ranges as dictionaries with ''start''
         and ''end'' keys.
@@ -767,6 +1917,61 @@ items:
       isRequired: true
       type:
       - str
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: 'A tuple of two lists of page ranges as dictionaries with ''start''
         and ''end'' keys.
@@ -801,6 +2006,71 @@ items:
       isRequired: true
       type:
       - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'A page blob tier value to set the blob to. The tier correlates
+        to the size of the
+
+        blob and number of allowed IOPS. This is only applicable to page blobs on
+
+        premium storage accounts.'
+      id: premium_page_blob_tier
+      isRequired: true
+      type:
+      - azure.storage.blob.PremiumPageBlobTier
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified).
       type:
@@ -827,6 +2097,90 @@ items:
       isRequired: true
       type:
       - dict(str, str)
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified)
   type: method
@@ -853,6 +2207,61 @@ items:
       isRequired: true
       type:
       - azure.storage.blob.ContentSettings
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified)
       type:
@@ -881,6 +2290,25 @@ items:
       isRequired: true
       type:
       - azure.storage.blob.PremiumPageBlobTier
+    - description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.'
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
     return:
       type:
       - None
@@ -915,6 +2343,61 @@ items:
       isRequired: true
       type:
       - str
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified).
       type:
@@ -954,6 +2437,25 @@ items:
       type:
       - str
       - azure.storage.blob.StandardBlobTier
+    - description: Indicates the priority with which to rehydrate an archived blob
+      id: rehydrate_priority
+      isRequired: true
+      type:
+      - azure.storage.blob.RehydratePriority
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
     return:
       type:
       - None
@@ -986,6 +2488,74 @@ items:
       isRequired: true
     - description: Size of the block.
       id: length
+      isRequired: true
+      type:
+      - int
+    - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https, as https (the default), will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob. Also note that if enabled, the memory-efficient upload algorithm
+
+        will not be used because computing the MD5 hash requires buffering
+
+        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+      id: validate_content
+      isRequired: true
+      type:
+      - bool
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: Defaults to UTF-8.
+      id: encoding
+      isRequired: true
+      type:
+      - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
       isRequired: true
       type:
       - int
@@ -1044,6 +2614,49 @@ items:
       isRequired: true
       type:
       - bytearray
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - None
@@ -1175,6 +2788,149 @@ items:
       isRequired: true
       type:
       - bool
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this conditional header to copy the blob only if the source
+
+        blob has been modified since the specified date/time.'
+      id: source_if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this conditional header to copy the blob only if the source blob
+
+        has not been modified since the specified date/time.'
+      id: source_if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The source ETag value, or the wildcard character (*). Used to
+        check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: source_etag
+      isRequired: true
+      type:
+      - str
+    - description: The source match condition to use upon the etag.
+      id: source_match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this conditional header to copy the blob only
+
+        if the destination blob has been modified since the specified date/time.
+
+        If the destination blob has not been modified, the Blob service returns
+
+        status code 412 (Precondition Failed).'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this conditional header to copy the blob only
+
+        if the destination blob has not been modified since the specified
+
+        date/time. If the destination blob has been modified, the Blob service
+
+        returns status code 412 (Precondition Failed).'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The destination ETag value, or the wildcard character (*). Used
+        to check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The destination match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'The lease ID specified for this header must match the lease ID
+        of the
+
+        destination blob. If the request does not include the lease ID or it is not
+
+        valid, the operation fails with status code 412 (Precondition Failed).'
+      id: destination_lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'Specify this to perform the Copy Blob operation only if
+
+        the lease ID given matches the active lease ID of the source blob.'
+      id: source_lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    - description: 'A page blob tier value to set the blob to. The tier correlates
+        to the size of the
+
+        blob and number of allowed IOPS. This is only applicable to page blobs on
+
+        premium storage accounts.'
+      id: premium_page_blob_tier
+      isRequired: true
+      type:
+      - azure.storage.blob.PremiumPageBlobTier
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      isRequired: true
+      type:
+      - azure.storage.blob.StandardBlobTier
+    - description: Indicates the priority with which to rehydrate an archived blob
+      id: rehydrate_priority
+      isRequired: true
+      type:
+      - azure.storage.blob.RehydratePriority
+    - description: Enforces that the service will not return a response until the
+        copy is complete.
+      id: requires_sync
+      isRequired: true
+      type:
+      - bool
     return:
       description: A dictionary of copy properties (etag, last_modified, copy_id,
         copy_status).
@@ -1206,6 +2962,12 @@ items:
     set in the delete retention policy.'
   syntax:
     content: undelete_blob(**kwargs)
+    parameters:
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - None
@@ -1255,6 +3017,184 @@ items:
       isRequired: true
       type:
       - dict(str, str)
+    - description: 'Whether the blob to be uploaded should overwrite the current data.
+
+        If True, upload_blob will overwrite the existing data. If set to False, the
+
+        operation will fail with ResourceExistsError. The exception to the above is
+        with Append
+
+        blob types: if set to False and the data already exists, an error will not
+        be raised
+
+        and the data will be appended to the existing blob. If set overwrite=True,
+        then the existing
+
+        append blob will be deleted, and a new one created. Defaults to False.'
+      id: overwrite
+      isRequired: true
+      type:
+      - bool
+    - description: 'ContentSettings object used to set blob properties. Used to set
+        content type, encoding,
+
+        language, disposition, md5, and cache control.'
+      id: content_settings
+      isRequired: true
+      type:
+      - azure.storage.blob.ContentSettings
+    - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+        storage
+
+        service checks the hash of the content that has arrived with the hash
+
+        that was sent. This is primarily valuable for detecting bitflips on
+
+        the wire if using http instead of https, as https (the default), will
+
+        already validate. Note that this MD5 hash is not stored with the
+
+        blob. Also note that if enabled, the memory-efficient upload algorithm
+
+        will not be used because computing the MD5 hash requires buffering
+
+        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+      id: validate_content
+      isRequired: true
+      type:
+      - bool
+    - description: 'If specified, upload_blob only succeeds if the
+
+        blob''s lease is active and matches this ID.
+
+        Required if the blob has an active lease.'
+      id: lease
+      isRequired: true
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'A page blob tier value to set the blob to. The tier correlates
+        to the size of the
+
+        blob and number of allowed IOPS. This is only applicable to page blobs on
+
+        premium storage accounts.'
+      id: premium_page_blob_tier
+      isRequired: true
+      type:
+      - azure.storage.blob.PremiumPageBlobTier
+    - description: 'A standard blob tier value to set the blob to. For this version
+        of the library,
+
+        this is only applicable to block blobs on standard storage accounts.'
+      id: standard_blob_tier
+      isRequired: true
+      type:
+      - azure.storage.blob.StandardBlobTier
+    - description: 'Optional conditional header. The max length in bytes permitted
+        for
+
+        the append blob. If the Append Block operation would cause the blob
+
+        to exceed that limit or if the blob size is already greater than the
+
+        value specified in this header, the request will fail with
+
+        MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
+      id: maxsize_condition
+      isRequired: true
+      type:
+      - int
+    - description: 'Maximum number of parallel connections to use when the blob size
+        exceeds
+
+        64MB.'
+      id: max_concurrency
+      isRequired: true
+      type:
+      - int
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: Defaults to UTF-8.
+      id: encoding
+      isRequired: true
+      type:
+      - str
+    - description: 'The timeout parameter is expressed in seconds. This method may
+        make
+
+        multiple calls to the Azure service and the timeout will apply to
+
+        each call individually.'
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: Blob-updated property dict (Etag and last modified)
       type:
@@ -1296,6 +3236,131 @@ items:
 
         512.'
       id: length
+      isRequired: true
+      type:
+      - int
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'If true, calculates an MD5 hash of the page content. The storage
+
+        service checks the hash of the content that has arrived
+
+        with the hash that was sent. This is primarily valuable for detecting
+
+        bitflips on the wire if using http instead of https, as https (the default),
+
+        will already validate. Note that this MD5 hash is not stored with the
+
+        blob.'
+      id: validate_content
+      isRequired: true
+      type:
+      - bool
+    - description: 'If the blob''s sequence number is less than or equal to
+
+        the specified value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lte
+      isRequired: true
+      type:
+      - int
+    - description: 'If the blob''s sequence number is less than the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lt
+      isRequired: true
+      type:
+      - int
+    - description: 'If the blob''s sequence number is equal to the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_eq
+      isRequired: true
+      type:
+      - int
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: Defaults to UTF-8.
+      id: encoding
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
       isRequired: true
       type:
       - int
@@ -1353,6 +3418,158 @@ items:
 
         The service will read the same number of bytes as the destination range (length-offset).'
       id: source_offset
+      isRequired: true
+      type:
+      - int
+    - description: If given, the service will calculate the MD5 hash of the block
+        content and compare against this value.
+      id: source_content_md5
+      isRequired: true
+      type:
+      - bytes
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the source resource has been modified since the specified time.'
+      id: source_if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the source resource has not been modified since the specified date/time.'
+      id: source_if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The source ETag value, or the wildcard character (*). Used to
+        check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: source_etag
+      isRequired: true
+      type:
+      - str
+    - description: The source match condition to use upon the etag.
+      id: source_match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.blob.aio.BlobLeaseClient
+      - str
+    - description: 'If the blob''s sequence number is less than or equal to
+
+        the specified value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lte
+      isRequired: true
+      type:
+      - int
+    - description: 'If the blob''s sequence number is less than the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_lt
+      isRequired: true
+      type:
+      - int
+    - description: 'If the blob''s sequence number is equal to the specified
+
+        value, the request proceeds; otherwise it fails.'
+      id: if_sequence_number_eq
+      isRequired: true
+      type:
+      - int
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The destination ETag value, or the wildcard character (*). Used
+        to check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The destination match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: 'A predefined encryption scope used to encrypt the data on the
+        service. An encryption
+
+        scope can be created using the Management API and referenced here by name.
+        If a default
+
+        encryption scope has been defined at the container, this value will override
+        it if the
+
+        container-level scope is configured to allow overrides. Otherwise an error
+        will be raised.
+
+
+        New in version 12.2.0.'
+      id: encryption_scope
+      isRequired: true
+      type:
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
       isRequired: true
       type:
       - int
