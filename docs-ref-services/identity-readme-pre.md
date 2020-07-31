@@ -3,7 +3,7 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: maggiepint
 ms.author: magpint
-ms.date: 07/07/2020
+ms.date: 07/22/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.4.0b6 
+# Azure Identity client library for Python - Version 1.4.0b7 
 
 Azure Identity authenticating with Azure Active Directory for Azure SDK
 libraries. It provides credentials Azure SDK clients can use to authenticate
@@ -22,7 +22,7 @@ This library currently supports:
   - [Managed identity authentication](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
   - User authentication
 
-  [Source code](https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/identity/azure-identity)
+  [Source code](https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/identity/azure-identity)
   | [Package (PyPI)](https://pypi.org/project/azure-identity/)
   | [API reference documentation][ref_docs]
   | [Azure Active Directory documentation](https://docs.microsoft.com/en-us/azure/active-directory/)
@@ -151,6 +151,15 @@ Configuration is attempted in the above order. For example, if values for a
 client secret and certificate are both present, the client secret will be used.
 
 # Examples
+
+The following examples are provided below:
+
+* [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential "Authenticating with DefaultAzureCredential")
+* [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret "Authenticating a service principal with a client secret")
+* [Authenticating a service principal with a certificate](#authenticating-a-service-principal-with-a-certificate "Authenticating a service principal with a certificate")
+* [Chaining credentials](#chaining-credentials "Chaining credentials")
+* [Async credentials](#async-credentials "Async credentials")
+
 ## Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `BlobServiceClient` from the
 [azure-storage-blob][azure_storage_blob] library using
@@ -231,7 +240,7 @@ client = EventHubClient(host, event_hub_path, credential_chain)
 This library includes an async API supported on Python 3.5+. To use the async
 credentials in [azure.identity.aio][ref_docs_aio], you must first install an
 async transport, such as [aiohttp](https://pypi.org/project/aiohttp/). See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/core/azure-core/README.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/core/azure-core/README.md#transport)
 for more information.
 
 Async credentials should be closed when they're no longer needed. Each async
@@ -290,13 +299,13 @@ Azure Active Directory
 This is an incomplete list of client libraries accepting Azure Identity
 credentials. You can learn more about these libraries, and find additional
 documentation of them, at the links below.
-- [azure-appconfiguration](https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/appconfiguration/azure-appconfiguration)
+- [azure-appconfiguration](https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/appconfiguration/azure-appconfiguration)
 - [azure-eventhub][azure_eventhub]
-- [azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/keyvault/azure-keyvault-certificates)
+- [azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/keyvault/azure-keyvault-certificates)
 - [azure-keyvault-keys][azure_keyvault_keys]
 - [azure-keyvault-secrets][azure_keyvault_secrets]
 - [azure-storage-blob][azure_storage_blob]
-- [azure-storage-queue](https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/storage/azure-storage-queue)
+- [azure-storage-queue](https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/storage/azure-storage-queue)
 
 ## Provide Feedback
 If you encounter bugs or have suggestions, please
@@ -321,10 +330,10 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/eventhub/azure-eventhub
-[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/keyvault/azure-keyvault-keys
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/tree/0daf769a708b957ce38f89344dd5bee9aea5a752/sdk/storage/azure-storage-blob
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/eventhub/azure-eventhub
+[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/keyvault/azure-keyvault-keys
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/tree/550caa8e4471026dbe39aaedd78c057ad22d9072/sdk/storage/azure-storage-blob
 
 [ref_docs]: https://aka.ms/azsdk-python-identity-docs
 [ref_docs_aio]: https://aka.ms/azsdk-python-identity-aio-docs

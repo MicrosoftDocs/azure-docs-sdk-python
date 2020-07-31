@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-keyvault, keyvault
+keywords: Azure, python, SDK, API, azure-cognitiveservices-anomalydetector, 
 author: maggiepint
 ms.author: magpint
 ms.date: 07/23/2020
@@ -8,19 +8,19 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: keyvault
+ms.service: 
 ---
 
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure MyService Management Client Library.
+This is the Microsoft Azure Cognitive Services Anomaly Detector Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
 For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
 
 
 # Usage
 
-For code examples, see [MyService Management](https://docs.microsoft.com/python/api/overview/azure/?view=azure-python-preview)
+For code examples, see [Cognitive Services Anomaly Detector](https://docs.microsoft.com/python/api/overview/azure/cognitive-services)
 on docs.microsoft.com.
 
 
@@ -31,5 +31,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-keyvault%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-cognitiveservices-anomalydetector%2FREADME.png)
 
