@@ -16,18 +16,18 @@ items:
   - "Checking the properties on a received message.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
-    \n       messages = servicebus_receiver.receive(max_wait_time=5)\n       for message\
-    \ in messages:\n           print(\"Receiving: {}\".format(message))\n        \
-    \   print(\"Time to live: {}\".format(message.time_to_live))\n           print(\"\
-    Sequence number: {}\".format(message.sequence_number))\n           print(\"Enqueue\
-    \ Sequence numger: {}\".format(message.enqueue_sequence_number))\n           print(\"\
-    Partition ID: {}\".format(message.partition_id))\n           print(\"Partition\
-    \ Key: {}\".format(message.partition_key))\n           print(\"User Properties:\
-    \ {}\".format(message.user_properties))\n           print(\"Annotations: {}\"\
-    .format(message.annotations))\n           print(\"Delivery count: {}\".format(message.header.delivery_count))\n\
+    \n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n  \
+    \     for message in messages:\n           print(\"Receiving: {}\".format(message))\n\
+    \           print(\"Time to live: {}\".format(message.time_to_live))\n       \
+    \    print(\"Sequence number: {}\".format(message.sequence_number))\n        \
+    \   print(\"Enqueue Sequence numger: {}\".format(message.enqueue_sequence_number))\n\
+    \           print(\"Partition ID: {}\".format(message.partition_id))\n       \
+    \    print(\"Partition Key: {}\".format(message.partition_key))\n           print(\"\
+    User Properties: {}\".format(message.user_properties))\n           print(\"Annotations:\
+    \ {}\".format(message.annotations))\n           print(\"Delivery count: {}\".format(message.header.delivery_count))\n\
     \           print(\"Message ID: {}\".format(message.properties.message_id))\n\
     \           print(\"Locked until: {}\".format(message.locked_until_utc))\n   \
     \        print(\"Lock Token: {}\".format(message.lock_token))\n           print(\"\
@@ -57,6 +57,15 @@ items:
   type: class
   uid: azure.servicebus.ReceivedMessage
 - class: azure.servicebus.ReceivedMessage
+  example:
+  - "Abandoning a received message to return it immediately to the queue.<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
+    language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n       messages = servicebus_receiver.receive(max_wait_time=5)\n\
+    \       for message in messages:\n           message.abandon()\n\n   ````\n"
   fullName: azure.servicebus.ReceivedMessage.abandon
   langs:
   - python
@@ -76,6 +85,16 @@ items:
   type: method
   uid: azure.servicebus.ReceivedMessage.abandon
 - class: azure.servicebus.ReceivedMessage
+  example:
+  - "Completing a received message to remove it from the queue.<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
+    language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   with servicebus_receiver:\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    \       for message in messages:\n           print(message)\n           message.complete()\n\
+    \n   ````\n"
   fullName: azure.servicebus.ReceivedMessage.complete
   langs:
   - python
@@ -95,6 +114,22 @@ items:
   type: method
   uid: azure.servicebus.ReceivedMessage.complete
 - class: azure.servicebus.ReceivedMessage
+  example:
+  - "Dead letter a message to remove it from the queue by sending it to the dead letter\
+    \ subqueue,\nand receiving it from there.<!--[!code-python[Main](les\\sync_samples\\\
+    sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
+    \n       with servicebus_client.get_queue_receiver(queue_name) as servicebus_receiver:\n\
+    \           messages = servicebus_receiver.receive(max_wait_time=5)\n        \
+    \   for message in messages:\n               message.dead_letter(reason='reason\
+    \ for dead lettering', description='description for dead lettering')\n\n     \
+    \  with servicebus_client.get_queue_deadletter_receiver(queue_name) as servicebus_deadletter_receiver:\n\
+    \           messages = servicebus_deadletter_receiver.receive(max_wait_time=5)\n\
+    \           for message in messages:\n               message.complete()\n\n  \
+    \ ````\n"
   fullName: azure.servicebus.ReceivedMessage.dead_letter
   langs:
   - python
@@ -130,6 +165,21 @@ items:
   type: method
   uid: azure.servicebus.ReceivedMessage.dead_letter
 - class: azure.servicebus.ReceivedMessage
+  example:
+  - "Deferring a received message sets it aside such that it can only be received\n\
+    by calling receive_deffered_messages with its sequence number<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
+    language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   with servicebus_receiver:\n       deferred_sequenced_numbers\
+    \ = []\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    \       for message in messages:\n           deferred_sequenced_numbers.append(message.sequence_number)\n\
+    \           print(message)\n           message.defer()\n\n       received_deferred_msg\
+    \ = servicebus_receiver.receive_deferred_messages(\n           sequence_numbers=deferred_sequenced_numbers\n\
+    \       )\n\n       for msg in received_deferred_msg:\n           msg.complete()\n\
+    \n   ````\n"
   fullName: azure.servicebus.ReceivedMessage.defer
   langs:
   - python
@@ -190,21 +240,27 @@ items:
   summary: 'Renew the message lock.
 
 
-    This will maintain the lock on the message to ensure
+    This will maintain the lock on the message to ensure it is not returned to the
+    queue
 
-    it is not returned to the queue to be reprocessed. In order to complete (or otherwise
-    settle)
+    to be reprocessed.
 
-    the message, the lock must be maintained. Messages received via ReceiveAndDelete
-    mode are not
 
-    locked, and therefore cannot be renewed. This operation can also be performed
-    as a threaded
+    In order to complete (or otherwise settle) the message, the lock must be maintained,
 
-    background task by registering the message with an *azure.servicebus.AutoLockRenew*
-    instance.
+    and cannot already have expired; an expired lock cannot be renewed.
 
-    This operation is only available for non-sessionful messages.'
+
+    Messages received via ReceiveAndDelete mode are not locked, and therefore cannot
+    be renewed.
+
+    This operation is only available for non-sessionful messages as well.
+
+
+    Lock renewal can be performed as a background task by registering the message
+    with an
+
+    *azure.servicebus.AutoLockRenew* instance.'
   syntax:
     content: renew_lock()
     parameters: []

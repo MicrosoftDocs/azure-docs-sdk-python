@@ -4,15 +4,15 @@ items:
 - children:
   - azure.servicebus.ServiceBusReceiver.from_connection_string
   - azure.servicebus.ServiceBusReceiver.next
-  - azure.servicebus.ServiceBusReceiver.peek
-  - azure.servicebus.ServiceBusReceiver.receive
+  - azure.servicebus.ServiceBusReceiver.peek_messages
   - azure.servicebus.ServiceBusReceiver.receive_deferred_messages
+  - azure.servicebus.ServiceBusReceiver.receive_messages
   class: azure.servicebus.ServiceBusReceiver
   example:
   - "Create a new instance of the ServiceBusReceiver.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus import ServiceBusReceiver,\
@@ -37,7 +37,14 @@ items:
   name: ServiceBusReceiver
   summary: 'The ServiceBusReceiver class defines a high level interface for
 
-    receiving messages from the Azure Service Bus Queue or Topic Subscription.'
+    receiving messages from the Azure Service Bus Queue or Topic Subscription.
+
+
+    The two primary channels for message receipt are *receive()* to make a single
+    request for messages,
+
+    and *for message in receiver:* to continuously receive incoming messages in an
+    ongoing fashion.'
   syntax:
     content: ServiceBusReceiver(fully_qualified_namespace, credential, **kwargs)
     parameters:
@@ -58,6 +65,95 @@ items:
       id: credential
       type:
       - azure.core.credentials.TokenCredential
+    - description: The path of specific Service Bus Queue the client connects to.
+      id: queue_name
+      type:
+      - str
+    - description: 'The path of specific Service Bus Topic which contains the Subscription
+
+        the client connects to.'
+      id: topic_name
+      type:
+      - str
+    - description: 'The path of specific Service Bus Subscription under the
+
+        specified Topic the client connects to.'
+      id: subscription_name
+      type:
+      - str
+    - description: 'The timeout in seconds between received messages after which the
+        receiver will
+
+        automatically shutdown. The default value is 0, meaning no timeout.'
+      id: idle_timeout
+      type:
+      - float
+    - description: 'The mode with which messages will be retrieved from the entity.
+        The two options
+
+        are PeekLock and ReceiveAndDelete. Messages received with PeekLock must be
+        settled within a given
+
+        lock period before they will be removed from the queue. Messages received
+        with ReceiveAndDelete
+
+        will be immediately removed from the queue, and cannot be subsequently abandoned
+        or re-received
+
+        if the client fails to process the message.
+
+        The default mode is PeekLock.'
+      id: mode
+      type:
+      - azure.servicebus.ReceiveSettleMode
+    - description: Whether to output network trace logs to the logger. Default is
+        *False*.
+      id: logging_enable
+      type:
+      - bool
+    - description: 'The total number of attempts to redo a failed operation when an
+        error occurs.
+
+        Default value is 3.'
+      id: retry_total
+      type:
+      - int
+    - description: 'The type of transport protocol that will be used for communicating
+        with
+
+        the Service Bus service. Default is *TransportType.Amqp*.'
+      id: transport_type
+      type:
+      - azure.servicebus.TransportType
+    - description: 'HTTP proxy settings. This must be a dictionary with the following
+
+        keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+        Additionally the following keys may also be present: *''username'', ''password''*.'
+      id: http_proxy
+      type:
+      - dict
+    - description: 'The maximum number of messages to cache with each request to the
+        service.
+
+        This setting is only for advanced performance tuning. Increasing this value
+        will improve message throughput
+
+        performance but increase the chance that messages will expire while they are
+        cached if they''re not
+
+        processed fast enough.
+
+        The default value is 0, meaning messages will be received from the service
+        and processed one at a time.
+
+        In the case of prefetch being 0, *ServiceBusReceiver.receive* would try to
+        cache *max_batch_size* (if provided)
+
+        within its request to the service.'
+      id: prefetch
+      type:
+      - int
     variables:
     - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -76,7 +172,7 @@ items:
   - "Create a new instance of the ServiceBusReceiver from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus import ServiceBusReceiver\n\
@@ -97,8 +193,105 @@ items:
     - description: The connection string of a Service Bus.
       id: conn_str
       isRequired: true
-    - id: conn_str
+    - description: The path of specific Service Bus Queue the client connects to.
+      id: queue_name
       isRequired: true
+      type:
+      - str
+    - description: 'The path of specific Service Bus Topic which contains the Subscription
+
+        the client connects to.'
+      id: topic_name
+      isRequired: true
+      type:
+      - str
+    - description: 'The path of specific Service Bus Subscription under the
+
+        specified Topic the client connects to.'
+      id: subscription_name
+      isRequired: true
+      type:
+      - str
+    - description: 'The mode with which messages will be retrieved from the entity.
+        The two options
+
+        are PeekLock and ReceiveAndDelete. Messages received with PeekLock must be
+        settled within a given
+
+        lock period before they will be removed from the queue. Messages received
+        with ReceiveAndDelete
+
+        will be immediately removed from the queue, and cannot be subsequently abandoned
+        or re-received
+
+        if the client fails to process the message.
+
+        The default mode is PeekLock.'
+      id: mode
+      isRequired: true
+      type:
+      - azure.servicebus.ReceiveSettleMode
+    - description: 'The timeout in seconds between received messages after which the
+        receiver will
+
+        automatically shutdown. The default value is 0, meaning no timeout.'
+      id: idle_timeout
+      isRequired: true
+      type:
+      - float
+    - description: Whether to output network trace logs to the logger. Default is
+        *False*.
+      id: logging_enable
+      isRequired: true
+      type:
+      - bool
+    - description: 'The total number of attempts to redo a failed operation when an
+        error occurs.
+
+        Default value is 3.'
+      id: retry_total
+      isRequired: true
+      type:
+      - int
+    - description: 'The type of transport protocol that will be used for communicating
+        with
+
+        the Service Bus service. Default is *TransportType.Amqp*.'
+      id: transport_type
+      isRequired: true
+      type:
+      - azure.servicebus.TransportType
+    - description: 'HTTP proxy settings. This must be a dictionary with the following
+
+        keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+        Additionally the following keys may also be present: *''username'', ''password''*.'
+      id: http_proxy
+      isRequired: true
+      type:
+      - dict
+    - description: 'The maximum number of messages to cache with each request to the
+        service.
+
+        This setting is only for advanced performance tuning. Increasing this value
+        will improve message throughput
+
+        performance but increase the chance that messages will expire while they are
+        cached if they''re not
+
+        processed fast enough.
+
+        The default value is 0, meaning messages will be received from the service
+        and processed one at a time.
+
+        In the case of prefetch being 0, *ServiceBusReceiver.receive* would try to
+        cache *max_batch_size* (if provided)
+
+        within its request to the service.'
+      id: prefetch
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - azure.servicebus.ServiceBusReceiver
@@ -121,17 +314,17 @@ items:
   - "Look at pending messages in the queue.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
-    \n   with servicebus_receiver:\n       messages = servicebus_receiver.peek()\n\
+    \n   with servicebus_receiver:\n       messages = servicebus_receiver.peek_messages()\n\
     \       for message in messages:\n           print(message)\n\n   ````\n"
-  fullName: azure.servicebus.ServiceBusReceiver.peek
+  fullName: azure.servicebus.ServiceBusReceiver.peek_messages
   langs:
   - python
   module: azure.servicebus
-  name: peek(message_count=1, sequence_number=None)
-  namewithoutparameters: peek
+  name: peek_messages(message_count=1, sequence_number=None)
+  namewithoutparameters: peek_messages
   summary: 'Browse messages currently pending in the queue.
 
 
@@ -140,7 +333,7 @@ items:
 
     deferred or dead-lettered.'
   syntax:
-    content: peek(message_count=1, sequence_number=None)
+    content: peek_messages(message_count=1, sequence_number=None)
     parameters:
     - defaultValue: '1'
       description: 'The maximum number of messages to try and peek. The default
@@ -158,78 +351,18 @@ items:
       type:
       - list[azure.servicebus.PeekMessage]
   type: method
-  uid: azure.servicebus.ServiceBusReceiver.peek
-- class: azure.servicebus.ServiceBusReceiver
-  example:
-  - "Receive messages from ServiceBus.<!--[!code-python[Main](les\\sync_samples\\\
-    sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
-    \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
-    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
-    \n   with servicebus_receiver:\n       messages = servicebus_receiver.receive(max_wait_time=5)\n\
-    \       for message in messages:\n           print(message)\n           message.complete()\n\
-    \n   ````\n"
-  fullName: azure.servicebus.ServiceBusReceiver.receive
-  langs:
-  - python
-  module: azure.servicebus
-  name: receive(max_batch_size=None, max_wait_time=None)
-  namewithoutparameters: receive
-  summary: 'Receive a batch of messages at once.
-
-
-    This approach it optimal if you wish to process multiple messages simultaneously.
-    Note that the
-
-    number of messages retrieved in a single batch will be dependent on
-
-    whether *prefetch* was set for the receiver. This call will prioritize returning
-
-    quickly over meeting a specified batch size, and so will return as soon as at
-    least
-
-    one message is received and there is a gap in incoming messages regardless
-
-    of the specified batch size.'
-  syntax:
-    content: receive(max_batch_size=None, max_wait_time=None)
-    parameters:
-    - defaultValue: None
-      description: 'Maximum number of messages in the batch. Actual number
-
-        returned will depend on prefetch size and incoming stream rate.'
-      id: max_batch_size
-      type:
-      - int
-    - defaultValue: None
-      description: 'Maximum time to wait in seconds for the first message to arrive.
-
-        If no messages arrive, and no timeout is specified, this call will not return
-
-        until the connection is closed. If specified, an no messages arrive within
-        the
-
-        timeout period, an empty list will be returned.'
-      id: max_wait_time
-      type:
-      - float
-    return:
-      type:
-      - list[azure.servicebus.Message]
-  type: method
-  uid: azure.servicebus.ServiceBusReceiver.receive
+  uid: azure.servicebus.ServiceBusReceiver.peek_messages
 - class: azure.servicebus.ServiceBusReceiver
   example:
   - "Receive deferred messages from ServiceBus.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b3\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_receiver:\n       deferred_sequenced_numbers = []\n     \
-    \  messages = servicebus_receiver.receive(max_wait_time=5)\n       for message\
-    \ in messages:\n           deferred_sequenced_numbers.append(message.sequence_number)\n\
+    \  messages = servicebus_receiver.receive_messages(max_wait_time=5)\n       for\
+    \ message in messages:\n           deferred_sequenced_numbers.append(message.sequence_number)\n\
     \           print(message)\n           message.defer()\n\n       received_deferred_msg\
     \ = servicebus_receiver.receive_deferred_messages(\n           sequence_numbers=deferred_sequenced_numbers\n\
     \       )\n\n       for msg in received_deferred_msg:\n           msg.complete()\n\
@@ -261,6 +394,75 @@ items:
       - list[azure.servicebus.ReceivedMessage]
   type: method
   uid: azure.servicebus.ServiceBusReceiver.receive_deferred_messages
+- class: azure.servicebus.ServiceBusReceiver
+  example:
+  - "Receive messages from ServiceBus.<!--[!code-python[Main](les\\sync_samples\\\
+    sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
+    \n   with servicebus_receiver:\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    \       for message in messages:\n           print(message)\n           message.complete()\n\
+    \n   ````\n"
+  fullName: azure.servicebus.ServiceBusReceiver.receive_messages
+  langs:
+  - python
+  module: azure.servicebus
+  name: receive_messages(max_batch_size=None, max_wait_time=None)
+  namewithoutparameters: receive_messages
+  summary: 'Receive a batch of messages at once.
+
+
+    This approach is optimal if you wish to process multiple messages simultaneously,
+    or
+
+    perform an ad-hoc receive as a single call.
+
+
+    Note that the number of messages retrieved in a single batch will be dependent
+    on
+
+    whether *prefetch* was set for the receiver. If *prefetch* is not set for the
+    receiver, the receiver would
+
+    try to cache max_batch_size (if provided) messages within the request to the service.
+
+
+    This call will prioritize returning quickly over meeting a specified batch size,
+    and so will
+
+    return as soon as at least one message is received and there is a gap in incoming
+    messages regardless
+
+    of the specified batch size.'
+  syntax:
+    content: receive_messages(max_batch_size=None, max_wait_time=None)
+    parameters:
+    - defaultValue: None
+      description: 'Maximum number of messages in the batch. Actual number
+
+        returned will depend on prefetch size and incoming stream rate.'
+      id: max_batch_size
+      type:
+      - int
+    - defaultValue: None
+      description: 'Maximum time to wait in seconds for the first message to arrive.
+
+        If no messages arrive, and no timeout is specified, this call will not return
+
+        until the connection is closed. If specified, an no messages arrive within
+        the
+
+        timeout period, an empty list will be returned.'
+      id: max_wait_time
+      type:
+      - float
+    return:
+      type:
+      - list[azure.servicebus.ReceivedMessage]
+  type: method
+  uid: azure.servicebus.ServiceBusReceiver.receive_messages
 references:
 - fullName: azure.servicebus.ServiceBusReceiver.from_connection_string
   isExternal: false
@@ -272,21 +474,21 @@ references:
   name: next()
   parent: azure.servicebus.ServiceBusReceiver
   uid: azure.servicebus.ServiceBusReceiver.next
-- fullName: azure.servicebus.ServiceBusReceiver.peek
+- fullName: azure.servicebus.ServiceBusReceiver.peek_messages
   isExternal: false
-  name: peek(message_count=1, sequence_number=None)
+  name: peek_messages(message_count=1, sequence_number=None)
   parent: azure.servicebus.ServiceBusReceiver
-  uid: azure.servicebus.ServiceBusReceiver.peek
-- fullName: azure.servicebus.ServiceBusReceiver.receive
-  isExternal: false
-  name: receive(max_batch_size=None, max_wait_time=None)
-  parent: azure.servicebus.ServiceBusReceiver
-  uid: azure.servicebus.ServiceBusReceiver.receive
+  uid: azure.servicebus.ServiceBusReceiver.peek_messages
 - fullName: azure.servicebus.ServiceBusReceiver.receive_deferred_messages
   isExternal: false
   name: receive_deferred_messages(sequence_numbers)
   parent: azure.servicebus.ServiceBusReceiver
   uid: azure.servicebus.ServiceBusReceiver.receive_deferred_messages
+- fullName: azure.servicebus.ServiceBusReceiver.receive_messages
+  isExternal: false
+  name: receive_messages(max_batch_size=None, max_wait_time=None)
+  parent: azure.servicebus.ServiceBusReceiver
+  uid: azure.servicebus.ServiceBusReceiver.receive_messages
 - fullName: list[azure.servicebus.PeekMessage]
   name: list[PeekMessage]
   spec.python:
@@ -301,20 +503,6 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[azure.servicebus.PeekMessage]
-- fullName: list[azure.servicebus.Message]
-  name: list[Message]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.servicebus.Message
-    name: Message
-    uid: azure.servicebus.Message
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.servicebus.Message]
 - fullName: list[int]
   name: list[int]
   spec.python:
