@@ -84,6 +84,8 @@ connection_str = os.environ['SB_CONN_STR']
 sb_client = ServiceBusClient.from_connection_string(connection_str)
 ```
 
+For more examples of asynchronous operations, please explore [Service Bus samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus/samples/async_samples) at the azure-sdk-for-python repository.
+
 ## Service Bus queues
 
 Service Bus queues are an alternative to Storage queues that might be useful in scenarios where more advanced messaging features are needed (larger message sizes, message ordering, single-operation destructive reads, scheduled delivery) using push-style delivery (using long polling).
