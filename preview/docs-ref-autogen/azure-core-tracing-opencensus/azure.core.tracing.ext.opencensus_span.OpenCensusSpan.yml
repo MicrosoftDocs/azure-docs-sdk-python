@@ -3,6 +3,7 @@ api_name: []
 items:
 - children:
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.add_attribute
+  - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.change_context
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.finish
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.get_current_span
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.get_current_tracer
@@ -12,7 +13,6 @@ items:
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link_from_headers
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_current_span
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_current_tracer
-  - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_http_attributes
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.span
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.span_instance
   - azure.core.tracing.ext.opencensus_span.OpenCensusSpan.start
@@ -21,6 +21,9 @@ items:
   class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: azure.core.tracing._abstract_span.HttpSpanMixin
   - type: builtins.object
   langs:
   - python
@@ -37,26 +40,47 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: add_attribute(key, value)
+  namewithoutparameters: add_attribute
   summary: Add attribute (key value pair) to the current span.
   syntax:
     content: add_attribute(key, value)
     parameters:
     - description: The key of the key value pair
       id: key
+      isRequired: true
       type:
       - str
     - description: The value of the key value pair
       id: value
+      isRequired: true
       type:
       - str
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.add_attribute
+- class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
+  fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.change_context
+  langs:
+  - python
+  module: azure.core.tracing.ext.opencensus_span
+  name: change_context(span)
+  namewithoutparameters: change_context
+  summary: Change the context for the life of this context manager.
+  syntax:
+    content: change_context(span)
+    parameters:
+    - id: cls
+      isRequired: true
+    - id: span
+      isRequired: true
+  type: method
+  uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.change_context
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.finish
   langs:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: finish()
+  namewithoutparameters: finish
   summary: Set the end time for a span.
   syntax:
     content: finish()
@@ -69,11 +93,13 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: get_current_span()
+  namewithoutparameters: get_current_span
   summary: Get the current span from the execution context. Return None otherwise.
   syntax:
     content: get_current_span()
     parameters:
     - id: cls
+      isRequired: true
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.get_current_span
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
@@ -82,11 +108,13 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: get_current_tracer()
+  namewithoutparameters: get_current_tracer
   summary: Get the current tracer from the execution context. Return None otherwise.
   syntax:
     content: get_current_tracer()
     parameters:
     - id: cls
+      isRequired: true
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.get_current_tracer
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
@@ -95,6 +123,7 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: get_trace_parent()
+  namewithoutparameters: get_trace_parent
   summary: 'Return traceparent string as defined in W3C trace context specification.
 
 
@@ -133,16 +162,21 @@ items:
   langs:
   - python
   module: azure.core.tracing.ext.opencensus_span
-  name: link(traceparent)
+  name: link(traceparent, attributes=None)
+  namewithoutparameters: link
   summary: Links the context to the current tracer.
   syntax:
-    content: link(traceparent)
+    content: link(traceparent, attributes=None)
     parameters:
     - description: A complete traceparent
       id: traceparent
+      isRequired: true
       type:
       - str
     - id: traceparent
+      isRequired: true
+    - defaultValue: None
+      id: attributes
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
@@ -150,17 +184,22 @@ items:
   langs:
   - python
   module: azure.core.tracing.ext.opencensus_span
-  name: link_from_headers(headers)
+  name: link_from_headers(headers, attributes=None)
+  namewithoutparameters: link_from_headers
   summary: Given a dictionary, extracts the context and links the context to the current
     tracer.
   syntax:
-    content: link_from_headers(headers)
+    content: link_from_headers(headers, attributes=None)
     parameters:
     - description: A key value pair dictionary
       id: headers
+      isRequired: true
       type:
       - dict
     - id: headers
+      isRequired: true
+    - defaultValue: None
+      id: attributes
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link_from_headers
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
@@ -169,13 +208,16 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: set_current_span(span)
+  namewithoutparameters: set_current_span
   summary: Set the given span as the current span in the execution context.
   syntax:
     content: set_current_span(span)
     parameters:
     - description: The span to set the current span as
       id: span
+      isRequired: true
     - id: span
+      isRequired: true
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_current_span
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
@@ -184,6 +226,7 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: set_current_tracer(tracer)
+  namewithoutparameters: set_current_tracer
   summary: 'Set the given tracer as the current tracer in the execution context.
 
     :param tracer: The tracer to set the current tracer as
@@ -193,36 +236,18 @@ items:
     content: set_current_tracer(tracer)
     parameters:
     - id: cls
+      isRequired: true
     - id: tracer
+      isRequired: true
   type: method
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_current_tracer
-- class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
-  fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_http_attributes
-  langs:
-  - python
-  module: azure.core.tracing.ext.opencensus_span
-  name: set_http_attributes(request, response=None)
-  summary: Add correct attributes for a http client span.
-  syntax:
-    content: set_http_attributes(request, response=None)
-    parameters:
-    - description: The request made
-      id: request
-      type:
-      - HttpRequest
-    - defaultValue: None
-      description: The response received by the server. Is None if no response received.
-      id: response
-      type:
-      - HttpResponse
-  type: method
-  uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_http_attributes
 - class: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.span
   langs:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: span(name='span')
+  namewithoutparameters: span
   summary: 'Create a child span for the current span and append it to the child spans
     list in the span instance.
 
@@ -254,6 +279,7 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: start()
+  namewithoutparameters: start
   summary: Set the start time for a span.
   syntax:
     content: start()
@@ -266,6 +292,7 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: to_header()
+  namewithoutparameters: to_header
   summary: 'Returns a dictionary with the header labels and values.
 
     :return: A key value pair dictionary'
@@ -280,13 +307,16 @@ items:
   - python
   module: azure.core.tracing.ext.opencensus_span
   name: with_current_context(func)
+  namewithoutparameters: with_current_context
   summary: Passes the current spans to the new context the function will be run in.
   syntax:
     content: with_current_context(func)
     parameters:
     - description: The function that will be run in the new context
       id: func
+      isRequired: true
     - id: func
+      isRequired: true
     return:
       description: The target the pass in instead of the function
   type: method
@@ -297,6 +327,11 @@ references:
   name: add_attribute(key, value)
   parent: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.add_attribute
+- fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.change_context
+  isExternal: false
+  name: change_context(span)
+  parent: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
+  uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.change_context
 - fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.finish
   isExternal: false
   name: finish()
@@ -324,12 +359,12 @@ references:
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.kind
 - fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link
   isExternal: false
-  name: link(traceparent)
+  name: link(traceparent, attributes=None)
   parent: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link
 - fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link_from_headers
   isExternal: false
-  name: link_from_headers(headers)
+  name: link_from_headers(headers, attributes=None)
   parent: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.link_from_headers
 - fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_current_span
@@ -342,11 +377,6 @@ references:
   name: set_current_tracer(tracer)
   parent: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
   uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_current_tracer
-- fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_http_attributes
-  isExternal: false
-  name: set_http_attributes(request, response=None)
-  parent: azure.core.tracing.ext.opencensus_span.OpenCensusSpan
-  uid: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.set_http_attributes
 - fullName: azure.core.tracing.ext.opencensus_span.OpenCensusSpan.span
   isExternal: false
   name: span(name='span')

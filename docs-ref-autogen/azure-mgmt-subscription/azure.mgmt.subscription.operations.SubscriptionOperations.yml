@@ -2,7 +2,12 @@
 api_name: []
 items:
 - children:
-  - azure.mgmt.subscription.operations.SubscriptionOperations.list
+  - azure.mgmt.subscription.operations.SubscriptionOperations.cancel
+  - azure.mgmt.subscription.operations.SubscriptionOperations.create_csp_subscription
+  - azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription
+  - azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription_in_enrollment_account
+  - azure.mgmt.subscription.operations.SubscriptionOperations.enable
+  - azure.mgmt.subscription.operations.SubscriptionOperations.rename
   - azure.mgmt.subscription.operations.SubscriptionOperations.models
   class: azure.mgmt.subscription.operations.SubscriptionOperations
   fullName: azure.mgmt.subscription.operations.SubscriptionOperations
@@ -30,24 +35,28 @@ items:
       id: deserializer
     variables:
     - description: 'Version of the API to be used with the client request. Current
-        version is 2015-06-01. Constant value: "2018-03-01-preview".'
+        version is 2019-10-01-preview. Constant value: "2019-10-01-preview".'
       id: api_version
   type: class
   uid: azure.mgmt.subscription.operations.SubscriptionOperations
 - class: azure.mgmt.subscription.operations.SubscriptionOperations
   exceptions:
   - type: azure.mgmt.subscription.models.ErrorResponseException
-  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.list
+  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.cancel
   langs:
   - python
   module: azure.mgmt.subscription.operations
-  name: list(custom_headers=None, raw=False, **operation_config)
-  summary: 'Lists all of the available pending Microsoft.Subscription API
-
-    operations.'
+  name: cancel(subscription_id, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: cancel
+  summary: The operation to cancel a subscription.
   syntax:
-    content: list(custom_headers=None, raw=False, **operation_config)
+    content: cancel(subscription_id, custom_headers=None, raw=False, **operation_config)
     parameters:
+    - description: Subscription Id.
+      id: subscription_id
+      isRequired: true
+      type:
+      - str
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -64,15 +73,293 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
-      description: 'SubscriptionOperationListResult or ClientRawResponse if
-
-        raw=true'
+      description: CanceledSubscriptionId or ClientRawResponse if raw=true
       type:
-      - azure.mgmt.subscription.models.SubscriptionOperationListResult
+      - azure.mgmt.subscription.models.CanceledSubscriptionId
       - msrest.pipeline.ClientRawResponse
   type: method
-  uid: azure.mgmt.subscription.operations.SubscriptionOperations.list
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.cancel
+- class: azure.mgmt.subscription.operations.SubscriptionOperations
+  exceptions:
+  - type: azure.mgmt.subscription.models.ErrorResponseException
+  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.create_csp_subscription
+  langs:
+  - python
+  module: azure.mgmt.subscription.operations
+  name: create_csp_subscription(billing_account_name, customer_name, body, custom_headers=None,
+    raw=False, polling=True, **operation_config)
+  namewithoutparameters: create_csp_subscription
+  summary: The operation to create a new CSP subscription.
+  syntax:
+    content: create_csp_subscription(billing_account_name, customer_name, body, custom_headers=None,
+      raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the Microsoft Customer
+
+        Agreement billing account for which you want to create the
+
+        subscription.'
+      id: billing_account_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the customer.
+      id: customer_name
+      isRequired: true
+      type:
+      - str
+    - description: The subscription creation parameters.
+      id: body
+      isRequired: true
+      type:
+      - azure.mgmt.subscription.models.ModernCspSubscriptionCreationParameters
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns
+
+        SubscriptionCreationResult or
+
+        ClientRawResponse<SubscriptionCreationResult> if raw==True'
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.subscription.models.SubscriptionCreationResult]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.subscription.models.SubscriptionCreationResult]]
+  type: method
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.create_csp_subscription
+- class: azure.mgmt.subscription.operations.SubscriptionOperations
+  exceptions:
+  - type: azure.mgmt.subscription.models.ErrorResponseException
+  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription
+  langs:
+  - python
+  module: azure.mgmt.subscription.operations
+  name: create_subscription(billing_account_name, billing_profile_name, invoice_section_name,
+    body, custom_headers=None, raw=False, polling=True, **operation_config)
+  namewithoutparameters: create_subscription
+  summary: The operation to create a new WebDirect or EA Azure subscription.
+  syntax:
+    content: create_subscription(billing_account_name, billing_profile_name, invoice_section_name,
+      body, custom_headers=None, raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the Microsoft Customer
+
+        Agreement billing account for which you want to create the
+
+        subscription.'
+      id: billing_account_name
+      isRequired: true
+      type:
+      - str
+    - description: 'The name of the billing profile in the
+
+        billing account for which you want to create the subscription.'
+      id: billing_profile_name
+      isRequired: true
+      type:
+      - str
+    - description: 'The name of the invoice section in the
+
+        billing account for which you want to create the subscription.'
+      id: invoice_section_name
+      isRequired: true
+      type:
+      - str
+    - description: The subscription creation parameters.
+      id: body
+      isRequired: true
+      type:
+      - azure.mgmt.subscription.models.ModernSubscriptionCreationParameters
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns
+
+        SubscriptionCreationResult or
+
+        ClientRawResponse<SubscriptionCreationResult> if raw==True'
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.subscription.models.SubscriptionCreationResult]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.subscription.models.SubscriptionCreationResult]]
+  type: method
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription
+- class: azure.mgmt.subscription.operations.SubscriptionOperations
+  exceptions:
+  - type: azure.mgmt.subscription.models.ErrorResponseException
+  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription_in_enrollment_account
+  langs:
+  - python
+  module: azure.mgmt.subscription.operations
+  name: create_subscription_in_enrollment_account(enrollment_account_name, body, custom_headers=None,
+    raw=False, polling=True, **operation_config)
+  namewithoutparameters: create_subscription_in_enrollment_account
+  summary: Creates an Azure subscription.
+  syntax:
+    content: create_subscription_in_enrollment_account(enrollment_account_name, body,
+      custom_headers=None, raw=False, polling=True, **operation_config)
+    parameters:
+    - description: 'The name of the enrollment account to
+
+        which the subscription will be billed.'
+      id: enrollment_account_name
+      isRequired: true
+      type:
+      - str
+    - description: The subscription creation parameters.
+      id: body
+      isRequired: true
+      type:
+      - azure.mgmt.subscription.models.SubscriptionCreationParameters
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns
+
+        SubscriptionCreationResult or
+
+        ClientRawResponse<SubscriptionCreationResult> if raw==True'
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.subscription.models.SubscriptionCreationResult]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.subscription.models.SubscriptionCreationResult]]
+  type: method
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription_in_enrollment_account
+- class: azure.mgmt.subscription.operations.SubscriptionOperations
+  exceptions:
+  - type: azure.mgmt.subscription.models.ErrorResponseException
+  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.enable
+  langs:
+  - python
+  module: azure.mgmt.subscription.operations
+  name: enable(subscription_id, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: enable
+  summary: The operation to enable a subscription.
+  syntax:
+    content: enable(subscription_id, custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: Subscription Id.
+      id: subscription_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: EnabledSubscriptionId or ClientRawResponse if raw=true
+      type:
+      - azure.mgmt.subscription.models.EnabledSubscriptionId
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.enable
+- class: azure.mgmt.subscription.operations.SubscriptionOperations
+  exceptions:
+  - type: azure.mgmt.subscription.models.ErrorResponseException
+  fullName: azure.mgmt.subscription.operations.SubscriptionOperations.rename
+  langs:
+  - python
+  module: azure.mgmt.subscription.operations
+  name: rename(subscription_id, subscription_name=None, custom_headers=None, raw=False,
+    **operation_config)
+  namewithoutparameters: rename
+  summary: The operation to rename a subscription.
+  syntax:
+    content: rename(subscription_id, subscription_name=None, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: Subscription Id.
+      id: subscription_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: New subscription name
+      id: subscription_name
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: RenamedSubscriptionId or ClientRawResponse if raw=true
+      type:
+      - azure.mgmt.subscription.models.RenamedSubscriptionId
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.rename
 - class: azure.mgmt.subscription.operations.SubscriptionOperations
   fullName: azure.mgmt.subscription.operations.SubscriptionOperations.models
   langs:
@@ -84,13 +371,77 @@ items:
   type: attribute
   uid: azure.mgmt.subscription.operations.SubscriptionOperations.models
 references:
-- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.list
+- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.cancel
   isExternal: false
-  name: list(custom_headers=None, raw=False, **operation_config)
+  name: cancel(subscription_id, custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.subscription.operations.SubscriptionOperations
-  uid: azure.mgmt.subscription.operations.SubscriptionOperations.list
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.cancel
+- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.create_csp_subscription
+  isExternal: false
+  name: create_csp_subscription(billing_account_name, customer_name, body, custom_headers=None,
+    raw=False, polling=True, **operation_config)
+  parent: azure.mgmt.subscription.operations.SubscriptionOperations
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.create_csp_subscription
+- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription
+  isExternal: false
+  name: create_subscription(billing_account_name, billing_profile_name, invoice_section_name,
+    body, custom_headers=None, raw=False, polling=True, **operation_config)
+  parent: azure.mgmt.subscription.operations.SubscriptionOperations
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription
+- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription_in_enrollment_account
+  isExternal: false
+  name: create_subscription_in_enrollment_account(enrollment_account_name, body, custom_headers=None,
+    raw=False, polling=True, **operation_config)
+  parent: azure.mgmt.subscription.operations.SubscriptionOperations
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.create_subscription_in_enrollment_account
+- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.enable
+  isExternal: false
+  name: enable(subscription_id, custom_headers=None, raw=False, **operation_config)
+  parent: azure.mgmt.subscription.operations.SubscriptionOperations
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.enable
+- fullName: azure.mgmt.subscription.operations.SubscriptionOperations.rename
+  isExternal: false
+  name: rename(subscription_id, subscription_name=None, custom_headers=None, raw=False,
+    **operation_config)
+  parent: azure.mgmt.subscription.operations.SubscriptionOperations
+  uid: azure.mgmt.subscription.operations.SubscriptionOperations.rename
 - fullName: azure.mgmt.subscription.operations.SubscriptionOperations.models
   isExternal: false
   name: models
   parent: azure.mgmt.subscription.operations.SubscriptionOperations
   uid: azure.mgmt.subscription.operations.SubscriptionOperations.models
+- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.subscription.models.SubscriptionCreationResult]
+  name: AzureOperationPoller[SubscriptionCreationResult]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.subscription.models.SubscriptionCreationResult
+    name: SubscriptionCreationResult
+    uid: azure.mgmt.subscription.models.SubscriptionCreationResult
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.subscription.models.SubscriptionCreationResult]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.subscription.models.SubscriptionCreationResult]]
+  name: AzureOperationPoller[ClientRawResponse[SubscriptionCreationResult]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.subscription.models.SubscriptionCreationResult
+    name: SubscriptionCreationResult
+    uid: azure.mgmt.subscription.models.SubscriptionCreationResult
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.subscription.models.SubscriptionCreationResult]]

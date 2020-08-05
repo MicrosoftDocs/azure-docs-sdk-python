@@ -58,6 +58,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: clear_legal_hold(resource_group_name, account_name, container_name, tags,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: clear_legal_hold
   summary: 'Clears legal hold tags. Clearing the same or non-existent tag results
 
     in an idempotent operation. ClearLegalHold clears out only the
@@ -71,6 +72,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -79,6 +81,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -91,12 +94,14 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - description: 'Each tag should be 3 to 23 alphanumeric characters and is
 
         normalized to lower case at SRP.'
       id: tags
+      isRequired: true
       type:
       - list[str]
     - defaultValue: None
@@ -115,6 +120,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: LegalHold or ClientRawResponse if raw=true
       type:
@@ -129,8 +135,9 @@ items:
   langs:
   - python
   module: azure.mgmt.storage.v2019_06_01.operations
-  name: create(resource_group_name, account_name, container_name, public_access=None,
-    metadata=None, custom_headers=None, raw=False, **operation_config)
+  name: create(resource_group_name, account_name, container_name, blob_container,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: create
   summary: 'Creates a new container under the specified account as described by
 
     request body. The container resource includes metadata and properties
@@ -139,13 +146,14 @@ items:
 
     by the container. .'
   syntax:
-    content: create(resource_group_name, account_name, container_name, public_access=None,
-      metadata=None, custom_headers=None, raw=False, **operation_config)
+    content: create(resource_group_name, account_name, container_name, blob_container,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -154,6 +162,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -166,25 +175,14 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: 'Specifies whether data in the container may be
-
-        accessed publicly and the level of access. Possible values include:
-
-        ''Container'', ''Blob'', ''None'''
-      id: public_access
+    - description: Properties of the blob container to create.
+      id: blob_container
+      isRequired: true
       type:
-      - str
-      - azure.mgmt.storage.v2019_06_01.models.PublicAccess
-    - defaultValue: None
-      description: 'A name-value pair to associate with the container as
-
-        metadata.'
-      id: metadata
-      type:
-      - dict[str, str]
+      - azure.mgmt.storage.v2019_06_01.models.BlobContainer
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -201,6 +199,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: BlobContainer or ClientRawResponse if raw=true
       type:
@@ -216,20 +215,22 @@ items:
   - python
   module: azure.mgmt.storage.v2019_06_01.operations
   name: create_or_update_immutability_policy(resource_group_name, account_name, container_name,
-    immutability_period_since_creation_in_days, if_match=None, custom_headers=None,
-    raw=False, **operation_config)
+    if_match=None, immutability_period_since_creation_in_days=None, allow_protected_append_writes=None,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: create_or_update_immutability_policy
   summary: 'Creates or updates an unlocked immutability policy. ETag in If-Match is
 
     honored if given but not required for this operation.'
   syntax:
     content: create_or_update_immutability_policy(resource_group_name, account_name,
-      container_name, immutability_period_since_creation_in_days, if_match=None, custom_headers=None,
-      raw=False, **operation_config)
+      container_name, if_match=None, immutability_period_since_creation_in_days=None,
+      allow_protected_append_writes=None, custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -238,6 +239,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -250,16 +252,9 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
-    - description: 'The immutability
-
-        period for the blobs in the container since the policy creation, in
-
-        days.'
-      id: immutability_period_since_creation_in_days
-      type:
-      - int
     - defaultValue: None
       description: 'The entity state (ETag) version of the immutability
 
@@ -271,6 +266,30 @@ items:
       id: if_match
       type:
       - str
+    - defaultValue: None
+      description: 'The immutability
+
+        period for the blobs in the container since the policy creation, in
+
+        days.'
+      id: immutability_period_since_creation_in_days
+      type:
+      - int
+    - defaultValue: None
+      description: 'This property can only be
+
+        changed for unlocked time-based retention policies. When enabled, new
+
+        blocks can be written to an append blob while maintaining immutability
+
+        protection and compliance. Only new blocks can be added and any
+
+        existing blocks cannot be modified or deleted. This property cannot be
+
+        changed with ExtendImmutabilityPolicy API'
+      id: allow_protected_append_writes
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -287,6 +306,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ImmutabilityPolicy or ClientRawResponse if raw=true
       type:
@@ -303,6 +323,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: delete(resource_group_name, account_name, container_name, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete
   summary: Deletes specified container under its account.
   syntax:
     content: delete(resource_group_name, account_name, container_name, custom_headers=None,
@@ -312,6 +333,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -320,6 +342,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -332,6 +355,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -350,6 +374,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: None or ClientRawResponse if raw=true
       type:
@@ -366,6 +391,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: delete_immutability_policy(resource_group_name, account_name, container_name,
     if_match, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: delete_immutability_policy
   summary: 'Aborts an unlocked immutability policy. The response of delete has
 
     immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is
@@ -383,6 +409,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -391,6 +418,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -403,6 +431,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - description: 'The entity state (ETag) version of the immutability
@@ -413,6 +442,7 @@ items:
 
         operation will always be applied.'
       id: if_match
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -431,6 +461,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ImmutabilityPolicy or ClientRawResponse if raw=true
       type:
@@ -446,8 +477,9 @@ items:
   - python
   module: azure.mgmt.storage.v2019_06_01.operations
   name: extend_immutability_policy(resource_group_name, account_name, container_name,
-    if_match, immutability_period_since_creation_in_days, custom_headers=None, raw=False,
-    **operation_config)
+    if_match, immutability_period_since_creation_in_days=None, allow_protected_append_writes=None,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: extend_immutability_policy
   summary: 'Extends the immutabilityPeriodSinceCreationInDays of a locked
 
     immutabilityPolicy. The only action allowed on a Locked policy will be
@@ -455,13 +487,14 @@ items:
     this action. ETag in If-Match is required for this operation.'
   syntax:
     content: extend_immutability_policy(resource_group_name, account_name, container_name,
-      if_match, immutability_period_since_creation_in_days, custom_headers=None, raw=False,
-      **operation_config)
+      if_match, immutability_period_since_creation_in_days=None, allow_protected_append_writes=None,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -470,6 +503,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -482,6 +516,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - description: 'The entity state (ETag) version of the immutability
@@ -492,9 +527,11 @@ items:
 
         operation will always be applied.'
       id: if_match
+      isRequired: true
       type:
       - str
-    - description: 'The immutability
+    - defaultValue: None
+      description: 'The immutability
 
         period for the blobs in the container since the policy creation, in
 
@@ -502,6 +539,21 @@ items:
       id: immutability_period_since_creation_in_days
       type:
       - int
+    - defaultValue: None
+      description: 'This property can only be
+
+        changed for unlocked time-based retention policies. When enabled, new
+
+        blocks can be written to an append blob while maintaining immutability
+
+        protection and compliance. Only new blocks can be added and any
+
+        existing blocks cannot be modified or deleted. This property cannot be
+
+        changed with ExtendImmutabilityPolicy API'
+      id: allow_protected_append_writes
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -518,6 +570,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ImmutabilityPolicy or ClientRawResponse if raw=true
       type:
@@ -534,6 +587,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: get(resource_group_name, account_name, container_name, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get
   summary: Gets properties of a specified container. .
   syntax:
     content: get(resource_group_name, account_name, container_name, custom_headers=None,
@@ -543,6 +597,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -551,6 +606,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -563,6 +619,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -581,6 +638,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: BlobContainer or ClientRawResponse if raw=true
       type:
@@ -597,6 +655,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: get_immutability_policy(resource_group_name, account_name, container_name,
     if_match=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: get_immutability_policy
   summary: 'Gets the existing immutability policy along with the corresponding ETag
 
     in response headers and body.'
@@ -608,6 +667,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -616,6 +676,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -628,6 +689,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -657,6 +719,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ImmutabilityPolicy or ClientRawResponse if raw=true
       type:
@@ -673,6 +736,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: lease(resource_group_name, account_name, container_name, parameters=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: lease
   summary: 'The Lease Container operation establishes and manages a lock on a
 
     container for delete operations. The lock duration can be 15 to 60
@@ -686,6 +750,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -694,6 +759,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -706,6 +772,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -729,6 +796,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: LeaseContainerResponse or ClientRawResponse if raw=true
       type:
@@ -743,19 +811,21 @@ items:
   langs:
   - python
   module: azure.mgmt.storage.v2019_06_01.operations
-  name: list(resource_group_name, account_name, maxpagesize=None, filter=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: list(resource_group_name, account_name, maxpagesize=None, filter=None, include=None,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: list
   summary: 'Lists all containers and does not support a prefix like data plane.
 
     Also SRP today does not return continuation token.'
   syntax:
     content: list(resource_group_name, account_name, maxpagesize=None, filter=None,
-      custom_headers=None, raw=False, **operation_config)
+      include=None, custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -764,6 +834,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -781,6 +852,14 @@ items:
       type:
       - str
     - defaultValue: None
+      description: 'Optional, used to include the properties for soft
+
+        deleted blob containers. Possible values include: ''deleted'''
+      id: include
+      type:
+      - str
+      - azure.mgmt.storage.v2019_06_01.models.ListContainersInclude
+    - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
       type:
@@ -796,6 +875,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: An iterator like instance of ListContainerItem
       type:
@@ -811,6 +891,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: lock_immutability_policy(resource_group_name, account_name, container_name,
     if_match, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: lock_immutability_policy
   summary: 'Sets the ImmutabilityPolicy to Locked state. The only action allowed on
 
     a Locked policy is ExtendImmutabilityPolicy action. ETag in If-Match is
@@ -824,6 +905,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -832,6 +914,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -844,6 +927,7 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - description: 'The entity state (ETag) version of the immutability
@@ -854,6 +938,7 @@ items:
 
         operation will always be applied.'
       id: if_match
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -872,6 +957,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ImmutabilityPolicy or ClientRawResponse if raw=true
       type:
@@ -888,6 +974,7 @@ items:
   module: azure.mgmt.storage.v2019_06_01.operations
   name: set_legal_hold(resource_group_name, account_name, container_name, tags, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: set_legal_hold
   summary: 'Sets legal hold tags. Setting the same tag results in an idempotent
 
     operation. SetLegalHold follows an append pattern and does not clear
@@ -901,6 +988,7 @@ items:
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -909,6 +997,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -921,12 +1010,14 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
     - description: 'Each tag should be 3 to 23 alphanumeric characters and is
 
         normalized to lower case at SRP.'
       id: tags
+      isRequired: true
       type:
       - list[str]
     - defaultValue: None
@@ -945,6 +1036,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: LegalHold or ClientRawResponse if raw=true
       type:
@@ -959,21 +1051,23 @@ items:
   langs:
   - python
   module: azure.mgmt.storage.v2019_06_01.operations
-  name: update(resource_group_name, account_name, container_name, public_access=None,
-    metadata=None, custom_headers=None, raw=False, **operation_config)
+  name: update(resource_group_name, account_name, container_name, blob_container,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update
   summary: 'Updates container properties as specified in request body. Properties
 
     not mentioned in the request will be unchanged. Update fails if the
 
     specified container doesn''t already exist. .'
   syntax:
-    content: update(resource_group_name, account_name, container_name, public_access=None,
-      metadata=None, custom_headers=None, raw=False, **operation_config)
+    content: update(resource_group_name, account_name, container_name, blob_container,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: 'The name of the resource group within the
 
         user''s subscription. The name is case insensitive.'
       id: resource_group_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the storage account within the
@@ -982,6 +1076,7 @@ items:
 
         24 characters in length and use numbers and lower-case letters only.'
       id: account_name
+      isRequired: true
       type:
       - str
     - description: 'The name of the blob container within the
@@ -994,25 +1089,14 @@ items:
 
         followed by a letter or number.'
       id: container_name
+      isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: 'Specifies whether data in the container may be
-
-        accessed publicly and the level of access. Possible values include:
-
-        ''Container'', ''Blob'', ''None'''
-      id: public_access
+    - description: Properties to update for the blob container.
+      id: blob_container
+      isRequired: true
       type:
-      - str
-      - azure.mgmt.storage.v2019_06_01.models.PublicAccess
-    - defaultValue: None
-      description: 'A name-value pair to associate with the container as
-
-        metadata.'
-      id: metadata
-      type:
-      - dict[str, str]
+      - azure.mgmt.storage.v2019_06_01.models.BlobContainer
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -1029,6 +1113,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: BlobContainer or ClientRawResponse if raw=true
       type:
@@ -1055,15 +1140,15 @@ references:
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.clear_legal_hold
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.create
   isExternal: false
-  name: create(resource_group_name, account_name, container_name, public_access=None,
-    metadata=None, custom_headers=None, raw=False, **operation_config)
+  name: create(resource_group_name, account_name, container_name, blob_container,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.create
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.create_or_update_immutability_policy
   isExternal: false
   name: create_or_update_immutability_policy(resource_group_name, account_name, container_name,
-    immutability_period_since_creation_in_days, if_match=None, custom_headers=None,
-    raw=False, **operation_config)
+    if_match=None, immutability_period_since_creation_in_days=None, allow_protected_append_writes=None,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.create_or_update_immutability_policy
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.delete
@@ -1081,8 +1166,8 @@ references:
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.extend_immutability_policy
   isExternal: false
   name: extend_immutability_policy(resource_group_name, account_name, container_name,
-    if_match, immutability_period_since_creation_in_days, custom_headers=None, raw=False,
-    **operation_config)
+    if_match, immutability_period_since_creation_in_days=None, allow_protected_append_writes=None,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.extend_immutability_policy
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.get
@@ -1105,8 +1190,8 @@ references:
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.lease
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.list
   isExternal: false
-  name: list(resource_group_name, account_name, maxpagesize=None, filter=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: list(resource_group_name, account_name, maxpagesize=None, filter=None, include=None,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.list
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.lock_immutability_policy
@@ -1123,8 +1208,8 @@ references:
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.set_legal_hold
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.update
   isExternal: false
-  name: update(resource_group_name, account_name, container_name, public_access=None,
-    metadata=None, custom_headers=None, raw=False, **operation_config)
+  name: update(resource_group_name, account_name, container_name, blob_container,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations
   uid: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.update
 - fullName: azure.mgmt.storage.v2019_06_01.operations.BlobContainersOperations.models
@@ -1146,25 +1231,6 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[str]
-- fullName: dict[str, str]
-  name: dict[str, str]
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: dict[str, str]
 - fullName: azure.mgmt.storage.v2019_06_01.models.ListContainerItemPaged[azure.mgmt.storage.v2019_06_01.models.ListContainerItem]
   name: ListContainerItemPaged[ListContainerItem]
   spec.python:

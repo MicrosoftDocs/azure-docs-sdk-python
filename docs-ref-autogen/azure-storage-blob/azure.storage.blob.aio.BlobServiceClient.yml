@@ -17,7 +17,7 @@ items:
   - "Creating the BlobServiceClient with account url and credential.<!--[!code-python[Main](les\\\
     blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\
     \\blob_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   from azure.storage.blob.aio import BlobServiceClient\n   blob_service_client\
@@ -25,7 +25,7 @@ items:
     \n   ````\n\nCreating the BlobServiceClient with Azure Identity credentials.<!--[!code-python[Main](les\\\
     blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\
     \\blob_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   # Get a token credential for authentication\n   from azure.identity.aio\
@@ -82,14 +82,72 @@ items:
         If the URL already has a SAS token, specifying an explicit credential will
         take priority.'
       id: credential
+    - description: 'The Storage API version to use for requests. Default value is
+        ''2019-07-07''.
+
+        Setting to an older version may result in reduced feature compatibility.
+
+
+        New in version 12.2.0.'
+      id: api_version
+      type:
+      - str
+    - description: The hostname of the secondary endpoint.
+      id: secondary_hostname
+      type:
+      - str
+    - description: 'The maximum chunk size for uploading a block blob in chunks.
+
+        Defaults to 4*1024*1024, or 4MB.'
+      id: max_block_size
+      type:
+      - int
+    - description: 'If the blob size is less than max_single_put_size, then the blob
+        will be
+
+        uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
+
+        the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
+      id: max_single_put_size
+      type:
+      - int
+    - description: 'The minimum chunk size required to use the memory efficient
+
+        algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
+      id: min_large_block_upload_threshold
+      type:
+      - int
+    - description: Use a byte buffer for block blob uploads. Defaults to False.
+      id: use_byte_buffer
+      type:
+      - bool
+    - description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
+        or 4MB.
+      id: max_page_size
+      type:
+      - int
+    - description: 'The maximum size for a blob to be downloaded in a single call,
+
+        the exceeded part will be downloaded in chunks (could be parallel). Defaults
+        to 32*1024*1024, or 32MB.'
+      id: max_single_get_size
+      type:
+      - int
+    - description: 'The maximum chunk size used for downloading a blob. Defaults to
+        4*1024*1024,
+
+        or 4MB.'
+      id: max_chunk_get_size
+      type:
+      - int
   type: class
   uid: azure.storage.blob.aio.BlobServiceClient
 - class: azure.storage.blob.aio.BlobServiceClient
   example:
   - "Creating a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   try:\n       new_container\
     \ = await blob_service_client.create_container(\"containerfromblobserviceasync\"\
@@ -100,6 +158,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: create_container(name, metadata=None, public_access=None, **kwargs)
+  namewithoutparameters: create_container
   summary: 'Creates a new container under the specified account.
 
 
@@ -113,19 +172,39 @@ items:
     parameters:
     - description: The name of the container to create.
       id: name
+      isRequired: true
       type:
       - str
     - description: 'A dict with name-value pairs to associate with the
 
         container as metadata. Example: *{''Category'':''test''}*'
       id: metadata
+      isRequired: true
       type:
       - dict(str, str)
     - description: 'Possible values include: ''container'', ''blob''.'
       id: public_access
+      isRequired: true
       type:
       - str
       - azure.storage.blob.PublicAccess
+    - description: 'Specifies the default encryption scope to set on the container
+        and use for
+
+        all future writes.
+
+
+        New in version 12.2.0.'
+      id: container_encryption_scope
+      isRequired: true
+      type:
+      - dict
+      - azure.storage.blob.ContainerEncryptionScope
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - azure.storage.blob.aio.ContainerClient
@@ -135,8 +214,8 @@ items:
   example:
   - "Deleting a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Delete container\
     \ if it exists\n   try:\n       await blob_service_client.delete_container(\"\
@@ -147,6 +226,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: delete_container(container, lease=None, **kwargs)
+  namewithoutparameters: delete_container
   summary: 'Marks the specified container for deletion.
 
 
@@ -161,6 +241,7 @@ items:
 
         or an instance of ContainerProperties.'
       id: container
+      isRequired: true
       type:
       - str
       - azure.storage.blob.ContainerProperties
@@ -170,6 +251,53 @@ items:
 
         Required if the container has an active lease.'
       id: lease
+      isRequired: true
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - None
@@ -180,7 +308,7 @@ items:
   - "Getting account information for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   account_info =\
     \ await blob_service_client.get_account_information()\n   print('Using Storage\
@@ -190,6 +318,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: get_account_information(**kwargs)
+  namewithoutparameters: get_account_information
   summary: 'Gets information related to the storage account.
 
 
@@ -210,7 +339,7 @@ items:
   - "Getting the blob client to interact with a specific blob.<!--[!code-python[Main](les\\\
     blob_samples_service_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   blob_client =\
     \ blob_service_client.get_blob_client(container=\"containertestasync\", blob=\"\
@@ -221,6 +350,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: get_blob_client(container, blob, snapshot=None)
+  namewithoutparameters: get_blob_client
   summary: 'Get a client to interact with the specified blob.
 
 
@@ -233,6 +363,7 @@ items:
 
         or an instance of ContainerProperties.'
       id: container
+      isRequired: true
       type:
       - str
       - azure.storage.blob.ContainerProperties
@@ -241,6 +372,7 @@ items:
 
         or an instance of BlobProperties.'
       id: blob
+      isRequired: true
       type:
       - str
       - azure.storage.blob.BlobProperties
@@ -266,7 +398,7 @@ items:
   - "Getting the container client to interact with a specific container.<!--[!code-python[Main](les\\\
     blob_samples_service_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Get a client\
     \ to interact with a specific container - though it may not yet exist\n   container_client\
@@ -280,6 +412,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: get_container_client(container)
+  namewithoutparameters: get_container_client
   summary: 'Get a client to interact with the specified container.
 
 
@@ -291,6 +424,7 @@ items:
 
         or an instance of ContainerProperties.'
       id: container
+      isRequired: true
       type:
       - str
       - azure.storage.blob.ContainerProperties
@@ -305,7 +439,7 @@ items:
   - "Getting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   properties = await\
     \ blob_service_client.get_service_properties()\n\n   ````\n"
@@ -314,11 +448,18 @@ items:
   - python
   module: azure.storage.blob.aio
   name: get_service_properties(**kwargs)
+  namewithoutparameters: get_service_properties
   summary: 'Gets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics.'
   syntax:
     content: get_service_properties(**kwargs)
+    parameters:
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: 'An object containing blob service properties such as
 
@@ -331,8 +472,8 @@ items:
   example:
   - "Getting service stats for the blob service.<!--[!code-python[Main](les\\blob_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   stats = await\
     \ blob_service_client.get_service_stats()\n\n   ````\n"
@@ -341,6 +482,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: get_service_stats(**kwargs)
+  namewithoutparameters: get_service_stats
   summary: 'Retrieves statistics related to replication for the Blob service.
 
 
@@ -374,6 +516,12 @@ items:
     replication is enabled for your storage account.'
   syntax:
     content: get_service_stats(**kwargs)
+    parameters:
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: The blob service stats.
       type:
@@ -386,6 +534,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: get_user_delegation_key(key_start_time, key_expiry_time, **kwargs)
+  namewithoutparameters: get_user_delegation_key
   summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
 
     A token credential must be present on the service object for this request to succeed.'
@@ -394,12 +543,19 @@ items:
     parameters:
     - description: A DateTime value. Indicates when the key becomes valid.
       id: key_start_time
+      isRequired: true
       type:
       - datetime.datetime
     - description: A DateTime value. Indicates when the key stops being valid.
       id: key_expiry_time
+      isRequired: true
       type:
       - datetime.datetime
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: The user delegation key.
       type:
@@ -410,8 +566,8 @@ items:
   example:
   - "Listing the containers in the blob service.<!--[!code-python[Main](les\\blob_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # List all containers\n\
     \   all_containers = []\n   async for container in blob_service_client.list_containers(include_metadata=True):\n\
@@ -425,6 +581,7 @@ items:
   - python
   module: azure.storage.blob.aio
   name: list_containers(name_starts_with=None, include_metadata=False, **kwargs)
+  namewithoutparameters: list_containers
   summary: 'Returns a generator to list the containers under the specified account.
 
 
@@ -438,14 +595,28 @@ items:
 
         begin with the specified prefix.'
       id: name_starts_with
+      isRequired: true
       type:
       - str
     - description: 'Specifies that container metadata to be returned in the response.
 
         The default value is *False*.'
       id: include_metadata
+      isRequired: true
       type:
       - bool
+    - description: 'The maximum number of container names to retrieve per API
+
+        call. If the request does not specify the server will return up to 5,000 items.'
+      id: results_per_page
+      isRequired: true
+      type:
+      - int
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: An iterable (auto-paging) of ContainerProperties.
       type:
@@ -457,7 +628,7 @@ items:
   - "Setting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\source_code\\\\91\\\\azure-storage-blob-12.1.0\\\\samples\\\\blob_samples_service_async.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create service\
     \ properties\n   from azure.storage.blob import BlobAnalyticsLogging, Metrics,\
@@ -477,6 +648,7 @@ items:
   name: set_service_properties(analytics_logging=None, hour_metrics=None, minute_metrics=None,
     cors=None, target_version=None, delete_retention_policy=None, static_website=None,
     **kwargs)
+  namewithoutparameters: set_service_properties
   summary: 'Sets the properties of a storage account''s Blob service, including
 
     Azure Storage Analytics.
@@ -492,18 +664,21 @@ items:
     parameters:
     - description: Groups the Azure Analytics Logging settings.
       id: analytics_logging
+      isRequired: true
       type:
       - azure.storage.blob.BlobAnalyticsLogging
     - description: 'The hour metrics settings provide a summary of request
 
         statistics grouped by API in hourly aggregates for blobs.'
       id: hour_metrics
+      isRequired: true
       type:
       - azure.storage.blob.Metrics
     - description: 'The minute metrics settings provide request statistics
 
         for each minute for blobs.'
       id: minute_metrics
+      isRequired: true
       type:
       - azure.storage.blob.Metrics
     - description: 'You can include up to five CorsRule elements in the
@@ -512,12 +687,14 @@ items:
 
         and CORS will be disabled for the service.'
       id: cors
+      isRequired: true
       type:
       - list[azure.storage.blob.CorsRule]
     - description: 'Indicates the default version to use for requests if an incoming
 
         request''s version is not specified.'
       id: target_version
+      isRequired: true
       type:
       - str
     - description: 'The delete retention policy specifies whether to retain deleted
@@ -525,14 +702,21 @@ items:
 
         It also specifies the number of days and versions of blob to keep.'
       id: delete_retention_policy
+      isRequired: true
       type:
       - azure.storage.blob.RetentionPolicy
     - description: 'Specifies whether the static website feature is enabled,
 
         and if yes, indicates the index document and 404 error document to use.'
       id: static_website
+      isRequired: true
       type:
       - azure.storage.blob.StaticWebsite
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - None

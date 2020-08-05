@@ -30,7 +30,7 @@ items:
       = None, storage_endpoint: str = None, storage_account_access_key: str = None,
       retention_days: int = None, audit_actions_and_groups=None, storage_account_subscription_id:
       str = None, is_storage_secondary_key_in_use: bool = None, is_azure_monitor_target_enabled:
-      bool = None, **kwargs) -> None'
+      bool = None, queue_delay_ms: int = None, **kwargs) -> None'
     parameters:
     - description: 'Specifies condition of where clause when
 
@@ -52,15 +52,33 @@ items:
         [https://MyAccount.blob.core.windows.net](https://MyAccount.blob.core.windows.net)).
         If state is Enabled,
 
-        storageEndpoint is required.'
+        storageEndpoint or isAzureMonitorTargetEnabled is required.'
       id: storage_endpoint
       type:
       - str
     - description: 'Specifies the identifier key of the
 
-        auditing storage account. If state is Enabled and storageEndpoint is
+        auditing storage account.
 
-        specified, storageAccountAccessKey is required.'
+        If state is Enabled and storageEndpoint is specified, not specifying the
+
+        storageAccountAccessKey will use SQL server system-assigned managed
+
+        identity to access the storage.
+
+        Prerequisites for using managed identity authentication:
+
+        1. Assign SQL Server a system-assigned managed identity in Azure Active
+
+        Directory (AAD).
+
+        2. Grant SQL Server identity access to the storage account by adding
+
+        ''Storage Blob Data Contributor'' RBAC role to the server identity.
+
+        For more information, see [Auditing to storage using Managed Identity
+
+        authentication]([https://go.microsoft.com/fwlink/?linkid=2114355](https://go.microsoft.com/fwlink/?linkid=2114355))'
       id: storage_account_access_key
       type:
       - str
@@ -238,6 +256,16 @@ items:
       id: is_azure_monitor_target_enabled
       type:
       - bool
+    - description: 'Specifies the amount of time in milliseconds that
+
+        can elapse before audit actions are forced to be processed.
+
+        The default minimum value is 1000 (1 second). The maximum is
+
+        2,147,483,647.'
+      id: queue_delay_ms
+      type:
+      - int
     variables:
     - description: Resource ID.
       id: id

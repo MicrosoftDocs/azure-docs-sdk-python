@@ -3,15 +3,13 @@ api_name: []
 items:
 - children:
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_closed_list
-  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity_child
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_custom_prebuilt_domain
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_custom_prebuilt_entity
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_custom_prebuilt_intent
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity_child
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_explicit_list_item
-  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity
-  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity_child
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_intent
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_prebuilt
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_sub_list
@@ -33,12 +31,14 @@ items:
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_custom_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_custom_prebuilt_domain
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_feature
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_explicit_list_item
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_hierarchical_entity
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_hierarchical_entity_child
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_hierarchical_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent_feature
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_pattern_any_entity_model
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_pattern_any_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_prebuilt
@@ -53,6 +53,7 @@ items:
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_composite_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_custom_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_features
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_explicit_list
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_explicit_list_item
@@ -60,6 +61,7 @@ items:
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_hierarchical_entity_child
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_hierarchical_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent_features
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_pattern_any_entity_info
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_pattern_any_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_prebuilt
@@ -90,12 +92,14 @@ items:
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_regex_entity_infos
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_regex_entity_roles
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.patch_closed_list
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_entity_features
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_intent_features
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_closed_list
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_closed_list_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_composite_entity
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_composite_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_custom_prebuilt_entity_role
-  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity
+  - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_child
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_role
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_explicit_list_item
   - azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity
@@ -144,6 +148,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_closed_list(app_id, version_id, sub_lists=None, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: add_closed_list
   summary: Adds a list entity model to a version of the application.
   syntax:
     content: add_closed_list(app_id, version_id, sub_lists=None, name=None, custom_headers=None,
@@ -151,10 +156,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -183,6 +190,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -193,67 +201,13 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity
-  langs:
-  - python
-  module: azure.cognitiveservices.language.luis.authoring.operations
-  name: add_composite_entity(app_id, version_id, children=None, name=None, custom_headers=None,
-    raw=False, **operation_config)
-  summary: Adds a composite entity extractor to a version of the application.
-  syntax:
-    content: add_composite_entity(app_id, version_id, children=None, name=None, custom_headers=None,
-      raw=False, **operation_config)
-    parameters:
-    - description: The application ID.
-      id: app_id
-      type:
-      - str
-    - description: The version ID.
-      id: version_id
-      type:
-      - str
-    - defaultValue: None
-      description: Child entities.
-      id: children
-      type:
-      - list[str]
-    - defaultValue: None
-      description: Entity name.
-      id: name
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
-    return:
-      description: str or ClientRawResponse if raw=true
-      type:
-      - str
-      - msrest.pipeline.ClientRawResponse
-  type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity
-- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  exceptions:
-  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
   fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity_child
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_composite_entity_child(app_id, version_id, c_entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: add_composite_entity_child
   summary: 'Creates a single child in an existing composite entity model in a
 
     version of the application.'
@@ -263,14 +217,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -294,6 +251,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -310,6 +268,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_custom_prebuilt_domain(app_id, version_id, domain_name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: add_custom_prebuilt_domain
   summary: 'Adds a customizable prebuilt domain along with all of its intent and
 
     entity models in a version of the application.'
@@ -319,10 +278,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -346,6 +307,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -362,6 +324,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_custom_prebuilt_entity(app_id, version_id, domain_name=None, model_name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: add_custom_prebuilt_entity
   summary: Adds a prebuilt entity model to a version of the application.
   syntax:
     content: add_custom_prebuilt_entity(app_id, version_id, domain_name=None, model_name=None,
@@ -369,10 +332,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -401,6 +366,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -417,6 +383,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_custom_prebuilt_intent(app_id, version_id, domain_name=None, model_name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: add_custom_prebuilt_intent
   summary: 'Adds a customizable prebuilt intent model to a version of the
 
     application.'
@@ -426,10 +393,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -458,6 +427,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -472,23 +442,31 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: add_entity(app_id, version_id, name=None, custom_headers=None, raw=False,
-    **operation_config)
-  summary: Adds a simple entity extractor to a version of the application.
+  name: add_entity(app_id, version_id, children=None, name=None, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: add_entity
+  summary: Adds an entity extractor to a version of the application.
   syntax:
-    content: add_entity(app_id, version_id, name=None, custom_headers=None, raw=False,
-      **operation_config)
+    content: add_entity(app_id, version_id, children=None, name=None, custom_headers=None,
+      raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
-      description: Name of the new entity extractor.
+      description: Child entities.
+      id: children
+      type:
+      - list[azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject]
+    - defaultValue: None
+      description: Entity name.
       id: name
       type:
       - str
@@ -508,6 +486,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -518,12 +497,76 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity_child
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: add_entity_child(app_id, version_id, entity_id, child_entity_model_create_object,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: add_entity_child
+  summary: 'Creates a single child in an existing entity model hierarchy in a
+
+    version of the application.'
+  syntax:
+    content: add_entity_child(app_id, version_id, entity_id, child_entity_model_create_object,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The entity extractor ID.
+      id: entity_id
+      isRequired: true
+      type:
+      - str
+    - description: 'A model object containing the
+
+        name of the new child model and its children.'
+      id: child_entity_model_create_object
+      isRequired: true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: str or ClientRawResponse if raw=true
+      type:
+      - str
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity_child
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
   fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_explicit_list_item
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_explicit_list_item(app_id, version_id, entity_id, explicit_list_item=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: add_explicit_list_item
   summary: 'Add a new exception to the explicit list for the Pattern.Any entity in
 
     a version of the application.'
@@ -533,14 +576,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The Pattern.Any entity extractor ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -564,6 +610,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: int or ClientRawResponse if raw=true
       type:
@@ -574,123 +621,13 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity
-  langs:
-  - python
-  module: azure.cognitiveservices.language.luis.authoring.operations
-  name: add_hierarchical_entity(app_id, version_id, children=None, name=None, custom_headers=None,
-    raw=False, **operation_config)
-  summary: Adds a hierarchical entity extractor to a version of the application.
-  syntax:
-    content: add_hierarchical_entity(app_id, version_id, children=None, name=None,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: The application ID.
-      id: app_id
-      type:
-      - str
-    - description: The version ID.
-      id: version_id
-      type:
-      - str
-    - defaultValue: None
-      description: Child entities.
-      id: children
-      type:
-      - list[str]
-    - defaultValue: None
-      description: Entity name.
-      id: name
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
-    return:
-      description: str or ClientRawResponse if raw=true
-      type:
-      - str
-      - msrest.pipeline.ClientRawResponse
-  type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity
-- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  exceptions:
-  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity_child
-  langs:
-  - python
-  module: azure.cognitiveservices.language.luis.authoring.operations
-  name: add_hierarchical_entity_child(app_id, version_id, h_entity_id, name=None,
-    custom_headers=None, raw=False, **operation_config)
-  summary: 'Creates a single child in an existing hierarchical entity model in a
-
-    version of the application.'
-  syntax:
-    content: add_hierarchical_entity_child(app_id, version_id, h_entity_id, name=None,
-      custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: The application ID.
-      id: app_id
-      type:
-      - str
-    - description: The version ID.
-      id: version_id
-      type:
-      - str
-    - description: The hierarchical entity extractor ID.
-      id: h_entity_id
-      type:
-      - str
-    - defaultValue: None
-      description: ''
-      id: name
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
-    return:
-      description: str or ClientRawResponse if raw=true
-      type:
-      - str
-      - msrest.pipeline.ClientRawResponse
-  type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity_child
-- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  exceptions:
-  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
   fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_intent
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_intent(app_id, version_id, name=None, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: add_intent
   summary: Adds an intent to a version of the application.
   syntax:
     content: add_intent(app_id, version_id, name=None, custom_headers=None, raw=False,
@@ -698,10 +635,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -725,6 +664,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -741,6 +681,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_prebuilt(app_id, version_id, prebuilt_extractor_names, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: add_prebuilt
   summary: Adds a list of prebuilt entities to a version of the application.
   syntax:
     content: add_prebuilt(app_id, version_id, prebuilt_extractor_names, custom_headers=None,
@@ -748,16 +689,19 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: 'An array of prebuilt entity extractor
 
         names.'
       id: prebuilt_extractor_names
+      isRequired: true
       type:
       - list[str]
     - defaultValue: None
@@ -776,6 +720,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -792,6 +737,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: add_sub_list(app_id, version_id, cl_entity_id, canonical_form=None, list=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: add_sub_list
   summary: 'Adds a sublist to an existing list entity in a version of the
 
     application.'
@@ -801,14 +747,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list entity extractor ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -837,6 +786,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: long or ClientRawResponse if raw=true
       type:
@@ -853,6 +803,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_closed_list_entity_role(app_id, version_id, entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: create_closed_list_entity_role
   summary: Create a role for a list entity in a version of the application.
   syntax:
     content: create_closed_list_entity_role(app_id, version_id, entity_id, name=None,
@@ -860,14 +811,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity model ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -891,6 +845,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -907,6 +862,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_composite_entity_role(app_id, version_id, c_entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: create_composite_entity_role
   summary: Create a role for a composite entity in a version of the application.
   syntax:
     content: create_composite_entity_role(app_id, version_id, c_entity_id, name=None,
@@ -914,14 +870,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -945,6 +904,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -961,6 +921,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_custom_prebuilt_entity_role(app_id, version_id, entity_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: create_custom_prebuilt_entity_role
   summary: Create a role for a prebuilt entity in a version of the application.
   syntax:
     content: create_custom_prebuilt_entity_role(app_id, version_id, entity_id, name=None,
@@ -968,14 +929,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity model ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -999,6 +963,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1015,6 +980,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_entity_role(app_id, version_id, entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: create_entity_role
   summary: Create an entity role in a version of the application.
   syntax:
     content: create_entity_role(app_id, version_id, entity_id, name=None, custom_headers=None,
@@ -1022,14 +988,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity model ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1053,6 +1022,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1069,6 +1039,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_hierarchical_entity_role(app_id, version_id, h_entity_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: create_hierarchical_entity_role
   summary: 'Create a role for an hierarchical entity in a version of the
 
     application.'
@@ -1078,14 +1049,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1109,6 +1083,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1125,6 +1100,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_pattern_any_entity_model(app_id, version_id, name=None, explicit_list=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: create_pattern_any_entity_model
   summary: Adds a pattern.any entity extractor to a version of the application.
   syntax:
     content: create_pattern_any_entity_model(app_id, version_id, name=None, explicit_list=None,
@@ -1132,10 +1108,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1164,6 +1142,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1180,6 +1159,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_pattern_any_entity_role(app_id, version_id, entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: create_pattern_any_entity_role
   summary: 'Create a role for an Pattern.any entity in a version of the
 
     application.'
@@ -1189,14 +1169,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity model ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1220,6 +1203,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1236,6 +1220,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_prebuilt_entity_role(app_id, version_id, entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: create_prebuilt_entity_role
   summary: Create a role for a prebuilt entity in a version of the application.
   syntax:
     content: create_prebuilt_entity_role(app_id, version_id, entity_id, name=None,
@@ -1243,14 +1228,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity model ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1274,6 +1262,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1290,6 +1279,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_regex_entity_model(app_id, version_id, regex_pattern=None, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: create_regex_entity_model
   summary: Adds a regular expression entity model to a version of the application.
   syntax:
     content: create_regex_entity_model(app_id, version_id, regex_pattern=None, name=None,
@@ -1297,10 +1287,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1329,6 +1321,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1345,6 +1338,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: create_regex_entity_role(app_id, version_id, entity_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: create_regex_entity_role
   summary: 'Create a role for an regular expression entity in a version of the
 
     application.'
@@ -1354,14 +1348,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity model ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1385,6 +1382,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: str or ClientRawResponse if raw=true
       type:
@@ -1401,6 +1399,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_closed_list(app_id, version_id, cl_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_closed_list
   summary: Deletes a list entity model from a version of the application.
   syntax:
     content: delete_closed_list(app_id, version_id, cl_entity_id, custom_headers=None,
@@ -1408,14 +1407,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list entity model ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1434,6 +1436,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1450,6 +1453,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_closed_list_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_closed_list_entity_role
   summary: Delete a role for a given list entity in a version of the application.
   syntax:
     content: delete_closed_list_entity_role(app_id, version_id, entity_id, role_id,
@@ -1457,18 +1461,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1487,6 +1495,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1503,6 +1512,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_composite_entity(app_id, version_id, c_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_composite_entity
   summary: Deletes a composite entity from a version of the application.
   syntax:
     content: delete_composite_entity(app_id, version_id, c_entity_id, custom_headers=None,
@@ -1510,14 +1520,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1536,6 +1549,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1552,6 +1566,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_composite_entity_child(app_id, version_id, c_entity_id, c_child_id,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: delete_composite_entity_child
   summary: 'Deletes a composite entity extractor child from a version of the
 
     application.'
@@ -1561,18 +1576,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor child ID.
       id: c_child_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1591,6 +1610,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1607,6 +1627,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_composite_entity_role(app_id, version_id, c_entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_composite_entity_role
   summary: 'Delete a role for a given composite entity in a version of the
 
     application.'
@@ -1616,18 +1637,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1646,6 +1671,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1662,6 +1688,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_custom_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_custom_entity_role
   summary: 'Delete a role for a given prebuilt entity in a version of the
 
     application.'
@@ -1671,18 +1698,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1701,6 +1732,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1717,6 +1749,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_custom_prebuilt_domain(app_id, version_id, domain_name, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_custom_prebuilt_domain
   summary: Deletes a prebuilt domain's models in a version of the application.
   syntax:
     content: delete_custom_prebuilt_domain(app_id, version_id, domain_name, custom_headers=None,
@@ -1724,14 +1757,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: Domain name.
       id: domain_name
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1750,6 +1786,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1766,21 +1803,27 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_entity(app_id, version_id, entity_id, custom_headers=None, raw=False,
     **operation_config)
-  summary: Deletes an entity from a version of the application.
+  namewithoutparameters: delete_entity
+  summary: Deletes an entity or a child from a version of the application.
   syntax:
     content: delete_entity(app_id, version_id, entity_id, custom_headers=None, raw=False,
       **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
-    - description: The entity extractor ID.
+    - description: 'The entity extractor or the child entity extractor
+
+        ID.'
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1799,6 +1842,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1809,12 +1853,76 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_feature
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: delete_entity_feature(app_id, version_id, entity_id, feature_relation_delete_object,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: delete_entity_feature
+  summary: 'Deletes a relation from the feature relations used by the entity in a
+
+    version of the application.'
+  syntax:
+    content: delete_entity_feature(app_id, version_id, entity_id, feature_relation_delete_object,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The entity extractor ID.
+      id: entity_id
+      isRequired: true
+      type:
+      - str
+    - description: 'A feature information object
+
+        containing the feature relation to delete.'
+      id: feature_relation_delete_object
+      isRequired: true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_feature
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
   fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_role
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_entity_role
   summary: Delete an entity role in a version of the application.
   syntax:
     content: delete_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
@@ -1822,18 +1930,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1852,6 +1964,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1868,6 +1981,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_explicit_list_item(app_id, version_id, entity_id, item_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_explicit_list_item
   summary: 'Delete an item from the explicit (exception) list for a Pattern.any
 
     entity in a version of the application.'
@@ -1877,18 +1991,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The pattern.any entity id.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The explicit list item which will be deleted.
       id: item_id
+      isRequired: true
       type:
       - long
     - defaultValue: None
@@ -1907,6 +2025,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1923,6 +2042,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_hierarchical_entity(app_id, version_id, h_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_hierarchical_entity
   summary: Deletes a hierarchical entity from a version of the application.
   syntax:
     content: delete_hierarchical_entity(app_id, version_id, h_entity_id, custom_headers=None,
@@ -1930,14 +2050,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -1956,6 +2079,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -1972,6 +2096,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_hierarchical_entity_child(app_id, version_id, h_entity_id, h_child_id,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: delete_hierarchical_entity_child
   summary: 'Deletes a hierarchical entity extractor child in a version of the
 
     application.'
@@ -1981,18 +2106,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor child ID.
       id: h_child_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2011,6 +2140,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2027,6 +2157,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_hierarchical_entity_role(app_id, version_id, h_entity_id, role_id,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: delete_hierarchical_entity_role
   summary: 'Delete a role for a given hierarchical role in a version of the
 
     application.'
@@ -2036,18 +2167,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2066,6 +2201,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2082,6 +2218,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_intent(app_id, version_id, intent_id, delete_utterances=False, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_intent
   summary: Deletes an intent from a version of the application.
   syntax:
     content: delete_intent(app_id, version_id, intent_id, delete_utterances=False,
@@ -2089,14 +2226,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The intent classifier ID.
       id: intent_id
+      isRequired: true
       type:
       - str
     - defaultValue: 'False'
@@ -2124,6 +2264,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2134,12 +2275,76 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent_feature
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: delete_intent_feature(app_id, version_id, intent_id, feature_relation_delete_object,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: delete_intent_feature
+  summary: 'Deletes a relation from the feature relations used by the intent in a
+
+    version of the application.'
+  syntax:
+    content: delete_intent_feature(app_id, version_id, intent_id, feature_relation_delete_object,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The intent classifier ID.
+      id: intent_id
+      isRequired: true
+      type:
+      - str
+    - description: 'A feature information object
+
+        containing the feature relation to delete.'
+      id: feature_relation_delete_object
+      isRequired: true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent_feature
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
   fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_pattern_any_entity_model
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_pattern_any_entity_model(app_id, version_id, entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_pattern_any_entity_model
   summary: 'Deletes a Pattern.Any entity extractor from a version of the
 
     application.'
@@ -2149,14 +2354,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The Pattern.Any entity extractor ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2175,6 +2383,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2191,6 +2400,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_pattern_any_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_pattern_any_entity_role
   summary: 'Delete a role for a given Pattern.any entity in a version of the
 
     application.'
@@ -2200,18 +2410,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2230,6 +2444,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2246,6 +2461,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_prebuilt(app_id, version_id, prebuilt_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: delete_prebuilt
   summary: Deletes a prebuilt entity extractor from a version of the application.
   syntax:
     content: delete_prebuilt(app_id, version_id, prebuilt_id, custom_headers=None,
@@ -2253,14 +2469,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The prebuilt entity extractor ID.
       id: prebuilt_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2279,6 +2498,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2295,6 +2515,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_prebuilt_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_prebuilt_entity_role
   summary: Delete a role in a prebuilt entity in a version of the application.
   syntax:
     content: delete_prebuilt_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
@@ -2302,18 +2523,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2332,6 +2557,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2348,6 +2574,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_regex_entity_model(app_id, version_id, regex_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_regex_entity_model
   summary: Deletes a regular expression entity from a version of the application.
   syntax:
     content: delete_regex_entity_model(app_id, version_id, regex_entity_id, custom_headers=None,
@@ -2355,14 +2582,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The regular expression entity extractor ID.
       id: regex_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2381,6 +2611,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2397,6 +2628,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_regex_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_regex_entity_role
   summary: 'Delete a role for a given regular expression in a version of the
 
     application.'
@@ -2406,18 +2638,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role Id.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2436,6 +2672,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2452,6 +2689,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: delete_sub_list(app_id, version_id, cl_entity_id, sub_list_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: delete_sub_list
   summary: 'Deletes a sublist of a specific list entity model from a version of the
 
     application.'
@@ -2461,18 +2699,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list entity extractor ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - description: The sublist ID.
       id: sub_list_id
+      isRequired: true
       type:
       - long
     - defaultValue: None
@@ -2491,6 +2733,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -2507,6 +2750,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: examples_method(app_id, version_id, model_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: examples_method
   summary: 'Gets the example utterances for the given intent or entity model in a
 
     version of the application.'
@@ -2516,14 +2760,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The ID (GUID) of the model.
       id: model_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -2554,6 +2801,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -2570,6 +2818,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_closed_list(app_id, version_id, cl_entity_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: get_closed_list
   summary: Gets information about a list entity in a version of the application.
   syntax:
     content: get_closed_list(app_id, version_id, cl_entity_id, custom_headers=None,
@@ -2577,14 +2826,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list model ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2603,6 +2855,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ClosedListEntityExtractor or ClientRawResponse if raw=true
       type:
@@ -2619,6 +2872,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_closed_list_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_closed_list_entity_role
   summary: Get one role for a given list entity in a version of the application.
   syntax:
     content: get_closed_list_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
@@ -2626,18 +2880,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2656,6 +2914,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -2672,6 +2931,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_composite_entity(app_id, version_id, c_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_composite_entity
   summary: 'Gets information about a composite entity in a version of the
 
     application.'
@@ -2681,14 +2941,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2707,6 +2970,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: CompositeEntityExtractor or ClientRawResponse if raw=true
       type:
@@ -2723,6 +2987,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_composite_entity_role(app_id, version_id, c_entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_composite_entity_role
   summary: 'Get one role for a given composite entity in a version of the
 
     application.'
@@ -2732,18 +2997,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2762,6 +3031,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -2778,6 +3048,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_custom_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_custom_entity_role
   summary: 'Get one role for a given prebuilt entity in a version of the
 
     application.'
@@ -2787,18 +3058,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2817,6 +3092,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -2833,6 +3109,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_entity(app_id, version_id, entity_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: get_entity
   summary: Gets information about an entity model in a version of the application.
   syntax:
     content: get_entity(app_id, version_id, entity_id, custom_headers=None, raw=False,
@@ -2840,14 +3117,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity extractor ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2866,13 +3146,70 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
-      description: EntityExtractor or ClientRawResponse if raw=true
+      description: NDepthEntityExtractor or ClientRawResponse if raw=true
       type:
-      - azure.cognitiveservices.language.luis.authoring.models.EntityExtractor
+      - azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor
       - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_features
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: get_entity_features(app_id, version_id, entity_id, custom_headers=None, raw=False,
+    **operation_config)
+  namewithoutparameters: get_entity_features
+  summary: 'Gets the information of the features used by the entity in a version of
+
+    the application.'
+  syntax:
+    content: get_entity_features(app_id, version_id, entity_id, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The entity extractor ID.
+      id: entity_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: list or ClientRawResponse if raw=true
+      type:
+      - list[azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation]
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_features
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
@@ -2882,6 +3219,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_entity_role
   summary: Get one role for a given entity in a version of the application.
   syntax:
     content: get_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
@@ -2889,18 +3227,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2919,6 +3261,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -2935,6 +3278,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_explicit_list(app_id, version_id, entity_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: get_explicit_list
   summary: 'Get the explicit (exception) list of the pattern.any entity in a
 
     version of the application.'
@@ -2944,14 +3288,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The Pattern.Any entity id.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -2970,6 +3317,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -2986,6 +3334,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_explicit_list_item(app_id, version_id, entity_id, item_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_explicit_list_item
   summary: 'Get the explicit (exception) list of the pattern.any entity in a
 
     version of the application.'
@@ -2995,18 +3344,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The Pattern.Any entity Id.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The explicit list item Id.
       id: item_id
+      isRequired: true
       type:
       - long
     - defaultValue: None
@@ -3025,6 +3378,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: ExplicitListItem or ClientRawResponse if raw=true
       type:
@@ -3041,6 +3395,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_hierarchical_entity(app_id, version_id, h_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_hierarchical_entity
   summary: 'Gets information about a hierarchical entity in a version of the
 
     application.'
@@ -3050,14 +3405,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3076,6 +3434,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: HierarchicalEntityExtractor or ClientRawResponse if raw=true
       type:
@@ -3092,6 +3451,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_hierarchical_entity_child(app_id, version_id, h_entity_id, h_child_id,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: get_hierarchical_entity_child
   summary: 'Gets information about the child''s model contained in an hierarchical
 
     entity child model in a version of the application.'
@@ -3101,18 +3461,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor child ID.
       id: h_child_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3131,6 +3495,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: HierarchicalChildEntity or ClientRawResponse if raw=true
       type:
@@ -3147,6 +3512,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_hierarchical_entity_role(app_id, version_id, h_entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_hierarchical_entity_role
   summary: 'Get one role for a given hierarchical entity in a version of the
 
     application.'
@@ -3156,18 +3522,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3186,6 +3556,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -3202,6 +3573,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_intent(app_id, version_id, intent_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: get_intent
   summary: 'Gets information about the intent model in a version of the
 
     application.'
@@ -3211,14 +3583,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The intent classifier ID.
       id: intent_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3237,6 +3612,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: IntentClassifier or ClientRawResponse if raw=true
       type:
@@ -3247,29 +3623,33 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_pattern_any_entity_info
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent_features
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: get_pattern_any_entity_info(app_id, version_id, entity_id, custom_headers=None,
-    raw=False, **operation_config)
-  summary: 'Gets information about the Pattern.Any model in a version of the
+  name: get_intent_features(app_id, version_id, intent_id, custom_headers=None, raw=False,
+    **operation_config)
+  namewithoutparameters: get_intent_features
+  summary: 'Gets the information of the features used by the intent in a version of
 
-    application.'
+    the application.'
   syntax:
-    content: get_pattern_any_entity_info(app_id, version_id, entity_id, custom_headers=None,
+    content: get_intent_features(app_id, version_id, intent_id, custom_headers=None,
       raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
-    - description: The entity extractor ID.
-      id: entity_id
+    - description: The intent classifier ID.
+      id: intent_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3288,6 +3668,63 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
+    return:
+      description: list or ClientRawResponse if raw=true
+      type:
+      - list[azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation]
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent_features
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_pattern_any_entity_info
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: get_pattern_any_entity_info(app_id, version_id, entity_id, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: get_pattern_any_entity_info
+  summary: 'Gets information about the Pattern.Any model in a version of the
+
+    application.'
+  syntax:
+    content: get_pattern_any_entity_info(app_id, version_id, entity_id, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The entity extractor ID.
+      id: entity_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
     return:
       description: PatternAnyEntityExtractor or ClientRawResponse if raw=true
       type:
@@ -3304,6 +3741,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_pattern_any_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_pattern_any_entity_role
   summary: 'Get one role for a given Pattern.any entity in a version of the
 
     application.'
@@ -3313,18 +3751,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3343,6 +3785,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -3359,6 +3802,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_prebuilt(app_id, version_id, prebuilt_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: get_prebuilt
   summary: 'Gets information about a prebuilt entity model in a version of the
 
     application.'
@@ -3368,14 +3812,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The prebuilt entity extractor ID.
       id: prebuilt_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3394,6 +3841,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: PrebuiltEntityExtractor or ClientRawResponse if raw=true
       type:
@@ -3410,6 +3858,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_prebuilt_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_prebuilt_entity_role
   summary: 'Get one role for a given prebuilt entity in a version of the
 
     application.'
@@ -3419,18 +3868,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3449,6 +3902,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -3465,6 +3919,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_regex_entity_entity_info(app_id, version_id, regex_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_regex_entity_entity_info
   summary: 'Gets information about a regular expression entity in a version of the
 
     application.'
@@ -3474,14 +3929,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The regular expression entity model ID.
       id: regex_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3500,6 +3958,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: RegexEntityExtractor or ClientRawResponse if raw=true
       type:
@@ -3516,6 +3975,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: get_regex_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: get_regex_entity_role
   summary: 'Get one role for a given regular expression entity in a version of the
 
     application.'
@@ -3525,18 +3985,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3555,6 +4019,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: EntityRole or ClientRawResponse if raw=true
       type:
@@ -3571,6 +4036,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_closed_list_entity_roles(app_id, version_id, entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_closed_list_entity_roles
   summary: Get all roles for a list entity in a version of the application.
   syntax:
     content: list_closed_list_entity_roles(app_id, version_id, entity_id, custom_headers=None,
@@ -3578,14 +4044,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity Id
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3604,6 +4073,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3620,6 +4090,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_closed_lists(app_id, version_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_closed_lists
   summary: 'Gets information about all the list entity models in a version of the
 
     application.'
@@ -3629,10 +4100,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -3663,6 +4136,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3679,6 +4153,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_composite_entities(app_id, version_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_composite_entities
   summary: 'Gets information about all the composite entity models in a version of
 
     the application.'
@@ -3688,10 +4163,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -3722,6 +4199,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3738,6 +4216,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_composite_entity_roles(app_id, version_id, c_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_composite_entity_roles
   summary: Get all roles for a composite entity in a version of the application.
   syntax:
     content: list_composite_entity_roles(app_id, version_id, c_entity_id, custom_headers=None,
@@ -3745,14 +4224,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3771,6 +4253,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3787,6 +4270,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_custom_prebuilt_entities(app_id, version_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_custom_prebuilt_entities
   summary: Gets all prebuilt entities used in a version of the application.
   syntax:
     content: list_custom_prebuilt_entities(app_id, version_id, custom_headers=None,
@@ -3794,10 +4278,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3816,6 +4302,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3832,6 +4319,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_custom_prebuilt_entity_roles(app_id, version_id, entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_custom_prebuilt_entity_roles
   summary: Get all roles for a prebuilt entity in a version of the application.
   syntax:
     content: list_custom_prebuilt_entity_roles(app_id, version_id, entity_id, custom_headers=None,
@@ -3839,14 +4327,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity Id
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3865,6 +4356,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3881,6 +4373,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_custom_prebuilt_intents(app_id, version_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_custom_prebuilt_intents
   summary: 'Gets information about customizable prebuilt intents added to a version
 
     of the application.'
@@ -3890,10 +4383,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3912,6 +4407,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3928,6 +4424,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_custom_prebuilt_models(app_id, version_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_custom_prebuilt_models
   summary: 'Gets all prebuilt intent and entity model information used in a version
 
     of this application.'
@@ -3937,10 +4434,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -3959,6 +4458,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -3975,6 +4475,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_entities(app_id, version_id, skip=0, take=100, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_entities
   summary: 'Gets information about all the simple entity models in a version of the
 
     application.'
@@ -3984,10 +4485,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4018,10 +4521,11 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
-      - list[azure.cognitiveservices.language.luis.authoring.models.EntityExtractor]
+      - list[azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor]
       - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_entities
@@ -4034,6 +4538,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_entity_roles(app_id, version_id, entity_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_entity_roles
   summary: Get all roles for an entity in a version of the application.
   syntax:
     content: list_entity_roles(app_id, version_id, entity_id, custom_headers=None,
@@ -4041,14 +4546,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity Id
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4067,6 +4575,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4081,25 +4590,29 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: list_entity_suggestions(app_id, version_id, entity_id, take=100, custom_headers=None,
-    raw=False, **operation_config)
+  name: list_entity_suggestions(app_id, version_id, entity_id, take=100, enable_nested_children=False,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: list_entity_suggestions
   summary: 'Get suggested example utterances that would improve the accuracy of the
 
     entity model in a version of the application.'
   syntax:
-    content: list_entity_suggestions(app_id, version_id, entity_id, take=100, custom_headers=None,
-      raw=False, **operation_config)
+    content: list_entity_suggestions(app_id, version_id, entity_id, take=100, enable_nested_children=False,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The target entity extractor model to enhance.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: '100'
@@ -4109,6 +4622,11 @@ items:
       id: take
       type:
       - int
+    - defaultValue: 'False'
+      description: Toggles nested/flat format
+      id: enable_nested_children
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -4125,6 +4643,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4141,6 +4660,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_hierarchical_entities(app_id, version_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_hierarchical_entities
   summary: 'Gets information about all the hierarchical entity models in a version
 
     of the application.'
@@ -4150,10 +4670,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4184,6 +4706,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4200,6 +4723,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_hierarchical_entity_roles(app_id, version_id, h_entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_hierarchical_entity_roles
   summary: 'Get all roles for a hierarchical entity in a version of the
 
     application.'
@@ -4209,14 +4733,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4235,6 +4762,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4249,25 +4777,29 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: list_intent_suggestions(app_id, version_id, intent_id, take=100, custom_headers=None,
-    raw=False, **operation_config)
+  name: list_intent_suggestions(app_id, version_id, intent_id, take=100, enable_nested_children=False,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: list_intent_suggestions
   summary: 'Suggests example utterances that would improve the accuracy of the
 
     intent model in a version of the application.'
   syntax:
-    content: list_intent_suggestions(app_id, version_id, intent_id, take=100, custom_headers=None,
-      raw=False, **operation_config)
+    content: list_intent_suggestions(app_id, version_id, intent_id, take=100, enable_nested_children=False,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The intent classifier ID.
       id: intent_id
+      isRequired: true
       type:
       - str
     - defaultValue: '100'
@@ -4277,6 +4809,11 @@ items:
       id: take
       type:
       - int
+    - defaultValue: 'False'
+      description: Toggles nested/flat format
+      id: enable_nested_children
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -4293,6 +4830,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4309,6 +4847,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_intents(app_id, version_id, skip=0, take=100, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_intents
   summary: 'Gets information about the intent models in a version of the
 
     application.'
@@ -4318,10 +4857,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4352,6 +4893,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4368,6 +4910,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_models(app_id, version_id, skip=0, take=100, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_models
   summary: 'Gets information about all the intent and entity models in a version of
 
     the application.'
@@ -4377,10 +4920,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4411,6 +4956,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4427,6 +4973,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_pattern_any_entity_infos(app_id, version_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_pattern_any_entity_infos
   summary: 'Get information about the Pattern.Any entity models in a version of the
 
     application.'
@@ -4436,10 +4983,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4470,6 +5019,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4486,6 +5036,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_pattern_any_entity_roles(app_id, version_id, entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_pattern_any_entity_roles
   summary: Get all roles for a Pattern.any entity in a version of the application.
   syntax:
     content: list_pattern_any_entity_roles(app_id, version_id, entity_id, custom_headers=None,
@@ -4493,14 +5044,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity Id
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4519,6 +5073,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4535,6 +5090,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_prebuilt_entities(app_id, version_id, custom_headers=None, raw=False,
     **operation_config)
+  namewithoutparameters: list_prebuilt_entities
   summary: 'Gets all the available prebuilt entities in a version of the
 
     application.'
@@ -4544,10 +5100,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4566,6 +5124,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4582,6 +5141,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_prebuilt_entity_roles(app_id, version_id, entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_prebuilt_entity_roles
   summary: Get a prebuilt entity's roles in a version of the application.
   syntax:
     content: list_prebuilt_entity_roles(app_id, version_id, entity_id, custom_headers=None,
@@ -4589,14 +5149,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity Id
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4615,6 +5178,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4631,6 +5195,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_prebuilts(app_id, version_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_prebuilts
   summary: 'Gets information about all the prebuilt entities in a version of the
 
     application.'
@@ -4640,10 +5205,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4674,6 +5241,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4690,6 +5258,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_regex_entity_infos(app_id, version_id, skip=0, take=100, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_regex_entity_infos
   summary: 'Gets information about the regular expression entity models in a
 
     version of the application.'
@@ -4699,10 +5268,12 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - defaultValue: '0'
@@ -4733,6 +5304,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4749,6 +5321,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: list_regex_entity_roles(app_id, version_id, entity_id, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: list_regex_entity_roles
   summary: 'Get all roles for a regular expression entity in a version of the
 
     application.'
@@ -4758,14 +5331,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: entity Id
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4784,6 +5360,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: list or ClientRawResponse if raw=true
       type:
@@ -4800,6 +5377,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: patch_closed_list(app_id, version_id, cl_entity_id, sub_lists=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: patch_closed_list
   summary: 'Adds a batch of sublists to an existing list entity in a version of the
 
     application.'
@@ -4809,14 +5387,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list entity model ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4840,6 +5421,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -4850,12 +5432,139 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_entity_features
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: replace_entity_features(app_id, version_id, entity_id, feature_relations_update_object,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: replace_entity_features
+  summary: 'Updates the information of the features used by the entity in a version
+
+    of the application.'
+  syntax:
+    content: replace_entity_features(app_id, version_id, entity_id, feature_relations_update_object,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The entity extractor ID.
+      id: entity_id
+      isRequired: true
+      type:
+      - str
+    - description: 'A list of feature information
+
+        objects containing the new feature relations.'
+      id: feature_relations_update_object
+      isRequired: true
+      type:
+      - list[azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation]
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_entity_features
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_intent_features
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: replace_intent_features(app_id, version_id, intent_id, feature_relations_update_object,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: replace_intent_features
+  summary: 'Updates the information of the features used by the intent in a version
+
+    of the application.'
+  syntax:
+    content: replace_intent_features(app_id, version_id, intent_id, feature_relations_update_object,
+      custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The intent classifier ID.
+      id: intent_id
+      isRequired: true
+      type:
+      - str
+    - description: 'A list of feature information
+
+        objects containing the new feature relations.'
+      id: feature_relations_update_object
+      isRequired: true
+      type:
+      - list[azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation]
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_intent_features
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
   fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_closed_list
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_closed_list(app_id, version_id, cl_entity_id, sub_lists=None, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_closed_list
   summary: Updates the list entity in a version of the application.
   syntax:
     content: update_closed_list(app_id, version_id, cl_entity_id, sub_lists=None,
@@ -4863,14 +5572,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list model ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4899,6 +5611,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -4915,6 +5628,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_closed_list_entity_role(app_id, version_id, entity_id, role_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_closed_list_entity_role
   summary: Update a role for a given list entity in a version of the application.
   syntax:
     content: update_closed_list_entity_role(app_id, version_id, entity_id, role_id,
@@ -4922,18 +5636,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -4957,6 +5675,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -4973,6 +5692,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_composite_entity(app_id, version_id, c_entity_id, children=None, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_composite_entity
   summary: Updates a composite entity in a version of the application.
   syntax:
     content: update_composite_entity(app_id, version_id, c_entity_id, children=None,
@@ -4980,14 +5700,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5016,6 +5739,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5032,6 +5756,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_composite_entity_role(app_id, version_id, c_entity_id, role_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_composite_entity_role
   summary: 'Update a role for a given composite entity in a version of the
 
     application.'
@@ -5041,18 +5766,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The composite entity extractor ID.
       id: c_entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5076,6 +5805,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5092,6 +5822,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_custom_prebuilt_entity_role(app_id, version_id, entity_id, role_id,
     name=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_custom_prebuilt_entity_role
   summary: 'Update a role for a given prebuilt entity in a version of the
 
     application.'
@@ -5101,18 +5832,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5136,6 +5871,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5146,32 +5882,45 @@ items:
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_child
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: update_entity(app_id, version_id, entity_id, name=None, custom_headers=None,
-    raw=False, **operation_config)
-  summary: Updates the name of an entity in a version of the application.
+  name: update_entity_child(app_id, version_id, entity_id, name=None, instance_of=None,
+    custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_entity_child
+  summary: 'Updates the name of an entity extractor or the name and instanceOf
+
+    model of a child entity extractor.'
   syntax:
-    content: update_entity(app_id, version_id, entity_id, name=None, custom_headers=None,
-      raw=False, **operation_config)
+    content: update_entity_child(app_id, version_id, entity_id, name=None, instance_of=None,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
-    - description: The entity extractor ID.
+    - description: 'The entity extractor or the child entity extractor
+
+        ID.'
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
-      description: The entity's new name.
+      description: Entity name.
       id: name
+      type:
+      - str
+    - defaultValue: None
+      description: The instance of model name
+      id: instance_of
       type:
       - str
     - defaultValue: None
@@ -5190,13 +5939,14 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
       - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
       - msrest.pipeline.ClientRawResponse
   type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_child
 - class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   exceptions:
   - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
@@ -5206,6 +5956,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_entity_role(app_id, version_id, entity_id, role_id, name=None, custom_headers=None,
     raw=False, **operation_config)
+  namewithoutparameters: update_entity_role
   summary: Update a role for a given entity in a version of the application.
   syntax:
     content: update_entity_role(app_id, version_id, entity_id, role_id, name=None,
@@ -5213,18 +5964,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5248,6 +6003,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5264,6 +6020,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_explicit_list_item(app_id, version_id, entity_id, item_id, explicit_list_item=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_explicit_list_item
   summary: 'Updates an explicit (exception) list item for a Pattern.Any entity in
     a
 
@@ -5274,18 +6031,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The Pattern.Any entity extractor ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The explicit list item ID.
       id: item_id
+      isRequired: true
       type:
       - long
     - defaultValue: None
@@ -5309,6 +6070,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5323,204 +6085,29 @@ items:
   langs:
   - python
   module: azure.cognitiveservices.language.luis.authoring.operations
-  name: update_hierarchical_entity(app_id, version_id, h_entity_id, children=None,
-    name=None, custom_headers=None, raw=False, **operation_config)
-  summary: 'Updates the name and children of a hierarchical entity model in a
-
-    version of the application.'
-  syntax:
-    content: update_hierarchical_entity(app_id, version_id, h_entity_id, children=None,
-      name=None, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: The application ID.
-      id: app_id
-      type:
-      - str
-    - description: The version ID.
-      id: version_id
-      type:
-      - str
-    - description: The hierarchical entity extractor ID.
-      id: h_entity_id
-      type:
-      - str
-    - defaultValue: None
-      description: Child entities.
-      id: children
-      type:
-      - list[str]
-    - defaultValue: None
-      description: Entity name.
-      id: name
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
-    return:
-      description: OperationStatus or ClientRawResponse if raw=true
-      type:
-      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
-      - msrest.pipeline.ClientRawResponse
-  type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity
-- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  exceptions:
-  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_child
-  langs:
-  - python
-  module: azure.cognitiveservices.language.luis.authoring.operations
-  name: update_hierarchical_entity_child(app_id, version_id, h_entity_id, h_child_id,
-    name=None, custom_headers=None, raw=False, **operation_config)
-  summary: 'Renames a single child in an existing hierarchical entity model in a
-
-    version of the application.'
-  syntax:
-    content: update_hierarchical_entity_child(app_id, version_id, h_entity_id, h_child_id,
-      name=None, custom_headers=None, raw=False, **operation_config)
-    parameters:
-    - description: The application ID.
-      id: app_id
-      type:
-      - str
-    - description: The version ID.
-      id: version_id
-      type:
-      - str
-    - description: The hierarchical entity extractor ID.
-      id: h_entity_id
-      type:
-      - str
-    - description: The hierarchical entity extractor child ID.
-      id: h_child_id
-      type:
-      - str
-    - defaultValue: None
-      description: ''
-      id: name
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
-    return:
-      description: OperationStatus or ClientRawResponse if raw=true
-      type:
-      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
-      - msrest.pipeline.ClientRawResponse
-  type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_child
-- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  exceptions:
-  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_role
-  langs:
-  - python
-  module: azure.cognitiveservices.language.luis.authoring.operations
-  name: update_hierarchical_entity_role(app_id, version_id, h_entity_id, role_id,
-    name=None, custom_headers=None, raw=False, **operation_config)
-  summary: 'Update a role for a given hierarchical entity in a version of the
+  name: update_hierarchical_entity(app_id, version_id, h_entity_id, name=None, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: update_hierarchical_entity
+  summary: 'Updates the name of a hierarchical entity model in a version of the
 
     application.'
   syntax:
-    content: update_hierarchical_entity_role(app_id, version_id, h_entity_id, role_id,
-      name=None, custom_headers=None, raw=False, **operation_config)
+    content: update_hierarchical_entity(app_id, version_id, h_entity_id, name=None,
+      custom_headers=None, raw=False, **operation_config)
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The hierarchical entity extractor ID.
       id: h_entity_id
-      type:
-      - str
-    - description: The entity role ID.
-      id: role_id
-      type:
-      - str
-    - defaultValue: None
-      description: The entity role name.
-      id: name
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
-    return:
-      description: OperationStatus or ClientRawResponse if raw=true
-      type:
-      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
-      - msrest.pipeline.ClientRawResponse
-  type: method
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_role
-- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  exceptions:
-  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
-  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_intent
-  langs:
-  - python
-  module: azure.cognitiveservices.language.luis.authoring.operations
-  name: update_intent(app_id, version_id, intent_id, name=None, custom_headers=None,
-    raw=False, **operation_config)
-  summary: Updates the name of an intent in a version of the application.
-  syntax:
-    content: update_intent(app_id, version_id, intent_id, name=None, custom_headers=None,
-      raw=False, **operation_config)
-    parameters:
-    - description: The application ID.
-      id: app_id
-      type:
-      - str
-    - description: The version ID.
-      id: version_id
-      type:
-      - str
-    - description: The intent classifier ID.
-      id: intent_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5544,6 +6131,198 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_child
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: update_hierarchical_entity_child(app_id, version_id, h_entity_id, h_child_id,
+    name=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_hierarchical_entity_child
+  summary: 'Renames a single child in an existing hierarchical entity model in a
+
+    version of the application.'
+  syntax:
+    content: update_hierarchical_entity_child(app_id, version_id, h_entity_id, h_child_id,
+      name=None, custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The hierarchical entity extractor ID.
+      id: h_entity_id
+      isRequired: true
+      type:
+      - str
+    - description: The hierarchical entity extractor child ID.
+      id: h_child_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: ''
+      id: name
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_child
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_role
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: update_hierarchical_entity_role(app_id, version_id, h_entity_id, role_id,
+    name=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_hierarchical_entity_role
+  summary: 'Update a role for a given hierarchical entity in a version of the
+
+    application.'
+  syntax:
+    content: update_hierarchical_entity_role(app_id, version_id, h_entity_id, role_id,
+      name=None, custom_headers=None, raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The hierarchical entity extractor ID.
+      id: h_entity_id
+      isRequired: true
+      type:
+      - str
+    - description: The entity role ID.
+      id: role_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: The entity role name.
+      id: name
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: OperationStatus or ClientRawResponse if raw=true
+      type:
+      - azure.cognitiveservices.language.luis.authoring.models.OperationStatus
+      - msrest.pipeline.ClientRawResponse
+  type: method
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_role
+- class: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  exceptions:
+  - type: azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException
+  fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_intent
+  langs:
+  - python
+  module: azure.cognitiveservices.language.luis.authoring.operations
+  name: update_intent(app_id, version_id, intent_id, name=None, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: update_intent
+  summary: Updates the name of an intent in a version of the application.
+  syntax:
+    content: update_intent(app_id, version_id, intent_id, name=None, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: The application ID.
+      id: app_id
+      isRequired: true
+      type:
+      - str
+    - description: The version ID.
+      id: version_id
+      isRequired: true
+      type:
+      - str
+    - description: The intent classifier ID.
+      id: intent_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: The entity's new name.
+      id: name
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5560,6 +6339,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_pattern_any_entity_model(app_id, version_id, entity_id, name=None,
     explicit_list=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_pattern_any_entity_model
   summary: 'Updates the name and explicit (exception) list of a Pattern.Any entity
 
     model in a version of the application.'
@@ -5569,14 +6349,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The Pattern.Any entity extractor ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5605,6 +6388,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5621,6 +6405,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_pattern_any_entity_role(app_id, version_id, entity_id, role_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_pattern_any_entity_role
   summary: 'Update a role for a given Pattern.any entity in a version of the
 
     application.'
@@ -5630,18 +6415,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5665,6 +6454,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5681,6 +6471,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_prebuilt_entity_role(app_id, version_id, entity_id, role_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_prebuilt_entity_role
   summary: 'Update a role for a given prebuilt entity in a version of the
 
     application.'
@@ -5690,18 +6481,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5725,6 +6520,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5741,6 +6537,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_regex_entity_model(app_id, version_id, regex_entity_id, regex_pattern=None,
     name=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_regex_entity_model
   summary: Updates the regular expression entity in a version of the application.
   syntax:
     content: update_regex_entity_model(app_id, version_id, regex_entity_id, regex_pattern=None,
@@ -5748,14 +6545,17 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The regular expression entity extractor ID.
       id: regex_entity_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5784,6 +6584,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5800,6 +6601,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_regex_entity_role(app_id, version_id, entity_id, role_id, name=None,
     custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_regex_entity_role
   summary: 'Update a role for a given regular expression entity in a version of the
 
     application.'
@@ -5809,18 +6611,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The entity ID.
       id: entity_id
+      isRequired: true
       type:
       - str
     - description: The entity role ID.
       id: role_id
+      isRequired: true
       type:
       - str
     - defaultValue: None
@@ -5844,6 +6650,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5860,6 +6667,7 @@ items:
   module: azure.cognitiveservices.language.luis.authoring.operations
   name: update_sub_list(app_id, version_id, cl_entity_id, sub_list_id, canonical_form=None,
     list=None, custom_headers=None, raw=False, **operation_config)
+  namewithoutparameters: update_sub_list
   summary: 'Updates one of the list entity''s sublists in a version of the
 
     application.'
@@ -5869,18 +6677,22 @@ items:
     parameters:
     - description: The application ID.
       id: app_id
+      isRequired: true
       type:
       - str
     - description: The version ID.
       id: version_id
+      isRequired: true
       type:
       - str
     - description: The list entity extractor ID.
       id: cl_entity_id
+      isRequired: true
       type:
       - str
     - description: The sublist ID.
       id: sub_list_id
+      isRequired: true
       type:
       - long
     - defaultValue: None
@@ -5909,6 +6721,7 @@ items:
 
         overrides*.'
       id: operation_config
+      isRequired: true
     return:
       description: OperationStatus or ClientRawResponse if raw=true
       type:
@@ -5934,12 +6747,6 @@ references:
     raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_closed_list
-- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity
-  isExternal: false
-  name: add_composite_entity(app_id, version_id, children=None, name=None, custom_headers=None,
-    raw=False, **operation_config)
-  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_composite_entity_child
   isExternal: false
   name: add_composite_entity_child(app_id, version_id, c_entity_id, name=None, custom_headers=None,
@@ -5966,28 +6773,22 @@ references:
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_custom_prebuilt_intent
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity
   isExternal: false
-  name: add_entity(app_id, version_id, name=None, custom_headers=None, raw=False,
-    **operation_config)
+  name: add_entity(app_id, version_id, children=None, name=None, custom_headers=None,
+    raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity_child
+  isExternal: false
+  name: add_entity_child(app_id, version_id, entity_id, child_entity_model_create_object,
+    custom_headers=None, raw=False, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_entity_child
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_explicit_list_item
   isExternal: false
   name: add_explicit_list_item(app_id, version_id, entity_id, explicit_list_item=None,
     custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_explicit_list_item
-- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity
-  isExternal: false
-  name: add_hierarchical_entity(app_id, version_id, children=None, name=None, custom_headers=None,
-    raw=False, **operation_config)
-  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity
-- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity_child
-  isExternal: false
-  name: add_hierarchical_entity_child(app_id, version_id, h_entity_id, name=None,
-    custom_headers=None, raw=False, **operation_config)
-  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_hierarchical_entity_child
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.add_intent
   isExternal: false
   name: add_intent(app_id, version_id, name=None, custom_headers=None, raw=False,
@@ -6114,6 +6915,12 @@ references:
     **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_feature
+  isExternal: false
+  name: delete_entity_feature(app_id, version_id, entity_id, feature_relation_delete_object,
+    custom_headers=None, raw=False, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_feature
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_entity_role
   isExternal: false
   name: delete_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
@@ -6150,6 +6957,12 @@ references:
     raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent_feature
+  isExternal: false
+  name: delete_intent_feature(app_id, version_id, intent_id, feature_relation_delete_object,
+    custom_headers=None, raw=False, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_intent_feature
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.delete_pattern_any_entity_model
   isExternal: false
   name: delete_pattern_any_entity_model(app_id, version_id, entity_id, custom_headers=None,
@@ -6234,6 +7047,12 @@ references:
     **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_features
+  isExternal: false
+  name: get_entity_features(app_id, version_id, entity_id, custom_headers=None, raw=False,
+    **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_features
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_entity_role
   isExternal: false
   name: get_entity_role(app_id, version_id, entity_id, role_id, custom_headers=None,
@@ -6276,6 +7095,12 @@ references:
     **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent_features
+  isExternal: false
+  name: get_intent_features(app_id, version_id, intent_id, custom_headers=None, raw=False,
+    **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_intent_features
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.get_pattern_any_entity_info
   isExternal: false
   name: get_pattern_any_entity_info(app_id, version_id, entity_id, custom_headers=None,
@@ -6374,8 +7199,8 @@ references:
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_entity_roles
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_entity_suggestions
   isExternal: false
-  name: list_entity_suggestions(app_id, version_id, entity_id, take=100, custom_headers=None,
-    raw=False, **operation_config)
+  name: list_entity_suggestions(app_id, version_id, entity_id, take=100, enable_nested_children=False,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_entity_suggestions
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_hierarchical_entities
@@ -6392,8 +7217,8 @@ references:
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_hierarchical_entity_roles
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_intent_suggestions
   isExternal: false
-  name: list_intent_suggestions(app_id, version_id, intent_id, take=100, custom_headers=None,
-    raw=False, **operation_config)
+  name: list_intent_suggestions(app_id, version_id, intent_id, take=100, enable_nested_children=False,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_intent_suggestions
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.list_intents
@@ -6456,6 +7281,18 @@ references:
     raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.patch_closed_list
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_entity_features
+  isExternal: false
+  name: replace_entity_features(app_id, version_id, entity_id, feature_relations_update_object,
+    custom_headers=None, raw=False, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_entity_features
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_intent_features
+  isExternal: false
+  name: replace_intent_features(app_id, version_id, intent_id, feature_relations_update_object,
+    custom_headers=None, raw=False, **operation_config)
+  parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.replace_intent_features
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_closed_list
   isExternal: false
   name: update_closed_list(app_id, version_id, cl_entity_id, sub_lists=None, name=None,
@@ -6486,12 +7323,12 @@ references:
     name=None, custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_custom_prebuilt_entity_role
-- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity
+- fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_child
   isExternal: false
-  name: update_entity(app_id, version_id, entity_id, name=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: update_entity_child(app_id, version_id, entity_id, name=None, instance_of=None,
+    custom_headers=None, raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
-  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity
+  uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_child
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_entity_role
   isExternal: false
   name: update_entity_role(app_id, version_id, entity_id, role_id, name=None, custom_headers=None,
@@ -6506,8 +7343,8 @@ references:
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_explicit_list_item
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity
   isExternal: false
-  name: update_hierarchical_entity(app_id, version_id, h_entity_id, children=None,
-    name=None, custom_headers=None, raw=False, **operation_config)
+  name: update_hierarchical_entity(app_id, version_id, h_entity_id, name=None, custom_headers=None,
+    raw=False, **operation_config)
   parent: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations
   uid: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity
 - fullName: azure.cognitiveservices.language.luis.authoring.operations.ModelOperations.update_hierarchical_entity_child
@@ -6597,6 +7434,20 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[str]
+- fullName: list[azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject]
+  name: list[ChildEntityModelCreateObject]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject
+    name: ChildEntityModelCreateObject
+    uid: azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject]
 - fullName: list[azure.cognitiveservices.language.luis.authoring.models.PrebuiltEntityExtractor]
   name: list[PrebuiltEntityExtractor]
   spec.python:
@@ -6625,6 +7476,20 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[azure.cognitiveservices.language.luis.authoring.models.LabelTextObject]
+- fullName: list[azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation]
+  name: list[ModelFeatureInformation]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation
+    name: ModelFeatureInformation
+    uid: azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation]
 - fullName: list[azure.cognitiveservices.language.luis.authoring.models.ExplicitListItem]
   name: list[ExplicitListItem]
   spec.python:
@@ -6723,6 +7588,20 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[azure.cognitiveservices.language.luis.authoring.models.CustomPrebuiltModel]
+- fullName: list[azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor]
+  name: list[NDepthEntityExtractor]
+  spec.python:
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: '['
+    name: '['
+  - fullName: azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor
+    name: NDepthEntityExtractor
+    uid: azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor
+  - fullName: ']'
+    name: ']'
+  uid: list[azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor]
 - fullName: list[azure.cognitiveservices.language.luis.authoring.models.EntitiesSuggestionExample]
   name: list[EntitiesSuggestionExample]
   spec.python:

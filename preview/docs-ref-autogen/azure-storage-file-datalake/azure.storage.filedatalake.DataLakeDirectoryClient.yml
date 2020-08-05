@@ -13,6 +13,16 @@ items:
   - azure.storage.filedatalake.DataLakeDirectoryClient.get_sub_directory_client
   - azure.storage.filedatalake.DataLakeDirectoryClient.rename_directory
   class: azure.storage.filedatalake.DataLakeDirectoryClient
+  example:
+  - "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
+    datalake_samples_instantiate_client.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\19\\\\azure-storage-file-datalake-12.1.0b1\\\
+    \\samples\\\\datalake_samples_instantiate_client.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   from azure.storage.filedatalake import DataLakeDirectoryClient\n\
+    \   DataLakeDirectoryClient.from_connection_string(connection_string, \"myfilesystem\"\
+    , \"mydirectory\")\n\n   ````\n"
   fullName: azure.storage.filedatalake.DataLakeDirectoryClient
   inheritance:
   - inheritance:
@@ -78,25 +88,126 @@ items:
   type: class
   uid: azure.storage.filedatalake.DataLakeDirectoryClient
 - class: azure.storage.filedatalake.DataLakeDirectoryClient
+  example:
+  - "Create directory.<!--[!code-python[Main](les\\datalake_samples_directory.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\19\\\\\
+    azure-storage-file-datalake-12.1.0b1\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   directory_client.create_directory()\n\
+    \n   ````\n"
   fullName: azure.storage.filedatalake.DataLakeDirectoryClient.create_directory
   langs:
   - python
   module: azure.storage.filedatalake
-  name: create_directory(content_settings=None, metadata=None, **kwargs)
+  name: create_directory(metadata=None, **kwargs)
+  namewithoutparameters: create_directory
   summary: Create a new directory.
   syntax:
-    content: create_directory(content_settings=None, metadata=None, **kwargs)
+    content: create_directory(metadata=None, **kwargs)
     parameters:
     - defaultValue: None
-      description: ContentSettings object used to set path properties.
-      id: content_settings
-      type:
-      - azure.storage.filedatalake.ContentSettings
-    - defaultValue: None
-      description: Name-value pairs associated with the blob as metadata.
+      description: Name-value pairs associated with the file as metadata.
       id: metadata
       type:
       - dict(str, str)
+    - description: ContentSettings object used to set path properties.
+      id: content_settings
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.ContentSettings
+    - description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'Optional and only valid if Hierarchical Namespace is enabled for
+        the account.
+
+        When creating a file or directory and the parent folder does not have a default
+        ACL,
+
+        the umask restricts the permissions of the file or directory to be created.
+
+        The resulting permission is given by p & ^u, where p is the permission and
+        u is the umask.
+
+        For example, if p is 0777 and u is 0057, then the resulting permission is
+        0720.
+
+        The default permission is 0777 for a directory and 0666 for a file. The default
+        umask is 0027.
+
+        The umask must be specified in 4-digit octal notation (e.g. 0766).'
+      id: umask
+      isRequired: true
+      type:
+      - str
+    - description: 'Optional and only valid if Hierarchical Namespace
+
+        is enabled for the account. Sets POSIX access permissions for the file
+
+        owner, the file owning group, and others. Each class may be granted
+
+        read, write, or execute permission.  The sticky bit is also supported.
+
+        Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are
+
+        supported.'
+      id: permissions
+      isRequired: true
+      type:
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: response dict (Etag and last modified).
   type: method
@@ -107,6 +218,7 @@ items:
   - python
   module: azure.storage.filedatalake
   name: create_file(file, **kwargs)
+  namewithoutparameters: create_file
   summary: Create a new file and return the file client to be interacted with.
   syntax:
     content: create_file(file, **kwargs)
@@ -116,9 +228,110 @@ items:
 
         or an instance of FileProperties.'
       id: file
+      isRequired: true
       type:
       - str
       - azure.storage.filedatalake.FileProperties
+    - description: ContentSettings object used to set path properties.
+      id: content_settings
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.ContentSettings
+    - description: Name-value pairs associated with the file as metadata.
+      id: metadata
+      isRequired: true
+    - description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'Optional and only valid if Hierarchical Namespace is enabled for
+        the account.
+
+        When creating a file or directory and the parent folder does not have a default
+        ACL,
+
+        the umask restricts the permissions of the file or directory to be created.
+
+        The resulting permission is given by p & ^u, where p is the permission and
+        u is the umask.
+
+        For example, if p is 0777 and u is 0057, then the resulting permission is
+        0720.
+
+        The default permission is 0777 for a directory and 0666 for a file. The default
+        umask is 0027.
+
+        The umask must be specified in 4-digit octal notation (e.g. 0766).'
+      id: umask
+      isRequired: true
+      type:
+      - str
+    - description: 'Optional and only valid if Hierarchical Namespace
+
+        is enabled for the account. Sets POSIX access permissions for the file
+
+        owner, the file owning group, and others. Each class may be granted
+
+        read, write, or execute permission.  The sticky bit is also supported.
+
+        Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are
+
+        supported.'
+      id: permissions
+      isRequired: true
+      type:
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: DataLakeFileClient
   type: method
@@ -128,46 +341,202 @@ items:
   langs:
   - python
   module: azure.storage.filedatalake
-  name: create_sub_directory(sub_directory, content_settings=None, metadata=None,
-    **kwargs)
+  name: create_sub_directory(sub_directory, metadata=None, **kwargs)
+  namewithoutparameters: create_sub_directory
   summary: Create a subdirectory and return the subdirectory client to be interacted
     with.
   syntax:
-    content: create_sub_directory(sub_directory, content_settings=None, metadata=None,
-      **kwargs)
+    content: create_sub_directory(sub_directory, metadata=None, **kwargs)
     parameters:
     - description: 'The directory with which to interact. This can either be the name
         of the directory,
 
         or an instance of DirectoryProperties.'
       id: sub_directory
+      isRequired: true
       type:
       - str
       - azure.storage.filedatalake.DirectoryProperties
     - defaultValue: None
-      description: ContentSettings object used to set path properties.
-      id: content_settings
-      type:
-      - azure.storage.filedatalake.ContentSettings
-    - defaultValue: None
-      description: Name-value pairs associated with the blob as metadata.
+      description: Name-value pairs associated with the file as metadata.
       id: metadata
       type:
       - dict(str, str)
+    - description: ContentSettings object used to set path properties.
+      id: content_settings
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.ContentSettings
+    - description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'Optional and only valid if Hierarchical Namespace is enabled for
+        the account.
+
+        When creating a file or directory and the parent folder does not have a default
+        ACL,
+
+        the umask restricts the permissions of the file or directory to be created.
+
+        The resulting permission is given by p & ^u, where p is the permission and
+        u is the umask.
+
+        For example, if p is 0777 and u is 0057, then the resulting permission is
+        0720.
+
+        The default permission is 0777 for a directory and 0666 for a file. The default
+        umask is 0027.
+
+        The umask must be specified in 4-digit octal notation (e.g. 0766).'
+      id: umask
+      isRequired: true
+      type:
+      - str
+    - description: 'Optional and only valid if Hierarchical Namespace
+
+        is enabled for the account. Sets POSIX access permissions for the file
+
+        owner, the file owning group, and others. Each class may be granted
+
+        read, write, or execute permission.  The sticky bit is also supported.
+
+        Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are
+
+        supported.'
+      id: permissions
+      isRequired: true
+      type:
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: DataLakeDirectoryClient for the subdirectory.
   type: method
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_sub_directory
 - class: azure.storage.filedatalake.DataLakeDirectoryClient
+  example:
+  - "Delete directory.<!--[!code-python[Main](les\\datalake_samples_directory.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\19\\\\\
+    azure-storage-file-datalake-12.1.0b1\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   new_directory.delete_directory()\n\
+    \n   ````\n"
   fullName: azure.storage.filedatalake.DataLakeDirectoryClient.delete_directory
   langs:
   - python
   module: azure.storage.filedatalake
   name: delete_directory(**kwargs)
+  namewithoutparameters: delete_directory
   summary: Marks the specified directory for deletion.
   syntax:
     content: delete_directory(**kwargs)
-    parameters: []
+    parameters:
+    - description: 'Required if the file has an active lease. Value can be a LeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: None
   type: method
@@ -178,6 +547,7 @@ items:
   - python
   module: azure.storage.filedatalake
   name: delete_sub_directory(sub_directory, **kwargs)
+  namewithoutparameters: delete_sub_directory
   summary: Marks the specified subdirectory for deletion.
   syntax:
     content: delete_sub_directory(sub_directory, **kwargs)
@@ -187,9 +557,65 @@ items:
 
         or an instance of DirectoryProperties.'
       id: sub_directory
+      isRequired: true
       type:
       - str
       - azure.storage.filedatalake.DirectoryProperties
+    - description: 'Required if the file has an active lease. Value can be a LeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: DataLakeDirectoryClient for the subdirectory
   type: method
@@ -201,6 +627,7 @@ items:
   module: azure.storage.filedatalake
   name: from_connection_string(conn_str, file_system_name, directory_name, credential=None,
     **kwargs)
+  namewithoutparameters: from_connection_string
   summary: 'Create DataLakeDirectoryClient from a Connection String.
 
 
@@ -214,15 +641,18 @@ items:
     parameters:
     - description: A connection string to an Azure Storage account.
       id: conn_str
+      isRequired: true
       type:
       - str
     - description: The name of file system to interact with.
       id: file_system_name
+      isRequired: true
       type:
       - str
     - description: The name of directory to interact with. The directory is under
         file system.
       id: directory_name
+      isRequired: true
       type:
       - str
     - description: 'The credentials with which to authenticate. This is optional if
@@ -239,22 +669,87 @@ items:
         Credentials provided here will take precedence over those in the connection
         string.'
       id: credential
+      isRequired: true
     - defaultValue: None
       id: credential
   type: method
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.from_connection_string
 - class: azure.storage.filedatalake.DataLakeDirectoryClient
+  example:
+  - "Getting the properties for a file/directory.<!--[!code-python[Main](les\\datalake_samples_directory.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\19\\\\azure-storage-file-datalake-12.1.0b1\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   props = new_directory.get_directory_properties()\n\
+    \n   ````\n"
   fullName: azure.storage.filedatalake.DataLakeDirectoryClient.get_directory_properties
   langs:
   - python
   module: azure.storage.filedatalake
   name: get_directory_properties(**kwargs)
+  namewithoutparameters: get_directory_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the directory. It does not return the content of the directory.'
   syntax:
     content: get_directory_properties(**kwargs)
-    parameters: []
+    parameters:
+    - description: 'Required if the directory or file has an active lease. Value can
+        be a DataLakeLeaseClient object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       type:
       - DirectoryProperties
@@ -266,6 +761,7 @@ items:
   - python
   module: azure.storage.filedatalake
   name: get_file_client(file)
+  namewithoutparameters: get_file_client
   summary: 'Get a client to interact with the specified file.
 
 
@@ -278,6 +774,7 @@ items:
 
         or an instance of FileProperties. eg. directory/subdirectory/file'
       id: file
+      isRequired: true
       type:
       - str
       - azure.storage.filedatalake.FileProperties
@@ -293,6 +790,7 @@ items:
   - python
   module: azure.storage.filedatalake
   name: get_sub_directory_client(sub_directory)
+  namewithoutparameters: get_sub_directory_client
   summary: 'Get a client to interact with the specified subdirectory of the current
     directory.
 
@@ -306,6 +804,7 @@ items:
 
         or an instance of DirectoryProperties.'
       id: sub_directory
+      isRequired: true
       type:
       - str
       - azure.storage.filedatalake.DirectoryProperties
@@ -316,25 +815,139 @@ items:
   type: method
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.get_sub_directory_client
 - class: azure.storage.filedatalake.DataLakeDirectoryClient
+  example:
+  - "Rename the source directory.<!--[!code-python[Main](les\\datalake_samples_directory.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\19\\\\azure-storage-file-datalake-12.1.0b1\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   new_dir_name =\
+    \ \"testdir2\"\n   print(\"Renaming the directory named '{}' to '{}'.\".format(dir_name,\
+    \ new_dir_name))\n   new_directory = directory_client\\\n       .rename_directory(new_name=directory_client.file_system_name\
+    \ + '/' + new_dir_name)\n\n   ````\n"
   fullName: azure.storage.filedatalake.DataLakeDirectoryClient.rename_directory
   langs:
   - python
   module: azure.storage.filedatalake
-  name: rename_directory(rename_destination, **kwargs)
+  name: rename_directory(new_name, **kwargs)
+  namewithoutparameters: rename_directory
   summary: Rename the source directory.
   syntax:
-    content: rename_directory(rename_destination, **kwargs)
+    content: rename_directory(new_name, **kwargs)
     parameters:
     - description: 'the new directory name the user want to rename to.
 
         The value must have the following format: "{filesystem}/{directory}/{subdirectory}".'
-      id: rename_destination
+      id: new_name
+      isRequired: true
       type:
       - str
-    - description: ContentSettings object used to set path properties.
-      id: content_settings
+    - description: 'A lease ID for the source path. If specified,
+
+        the source path must have an active lease and the leaase ID must
+
+        match.'
+      id: source_lease
+      isRequired: true
       type:
-      - azure.storage.filedatalake.ContentSettings
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'Required if the file/directory has an active lease. Value can
+        be a LeaseClient object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.filedatalake.DataLakeLeaseClient
+      - str
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'An ETag value, or the wildcard character (*). Used to check if
+        the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: etag
+      isRequired: true
+      type:
+      - str
+    - description: The match condition to use upon the etag.
+      id: match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only
+
+        if the resource has been modified since the specified time.'
+      id: source_if_modified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'A DateTime value. Azure expects the date value passed in to be
+        UTC.
+
+        If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+        If a date is passed in without timezone info, it is assumed to be UTC.
+
+        Specify this header to perform the operation only if
+
+        the resource has not been modified since the specified date/time.'
+      id: source_if_unmodified_since
+      isRequired: true
+      type:
+      - datetime.datetime
+    - description: 'The source ETag value, or the wildcard character (*). Used to
+        check if the resource has changed,
+
+        and act according to the condition specified by the *match_condition* parameter.'
+      id: source_etag
+      isRequired: true
+      type:
+      - str
+    - description: The source match condition to use upon the etag.
+      id: source_match_condition
+      isRequired: true
+      type:
+      - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
     return:
       description: DataLakeDirectoryClient
   type: method
@@ -342,7 +955,7 @@ items:
 references:
 - fullName: azure.storage.filedatalake.DataLakeDirectoryClient.create_directory
   isExternal: false
-  name: create_directory(content_settings=None, metadata=None, **kwargs)
+  name: create_directory(metadata=None, **kwargs)
   parent: azure.storage.filedatalake.DataLakeDirectoryClient
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_directory
 - fullName: azure.storage.filedatalake.DataLakeDirectoryClient.create_file
@@ -352,8 +965,7 @@ references:
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_file
 - fullName: azure.storage.filedatalake.DataLakeDirectoryClient.create_sub_directory
   isExternal: false
-  name: create_sub_directory(sub_directory, content_settings=None, metadata=None,
-    **kwargs)
+  name: create_sub_directory(sub_directory, metadata=None, **kwargs)
   parent: azure.storage.filedatalake.DataLakeDirectoryClient
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_sub_directory
 - fullName: azure.storage.filedatalake.DataLakeDirectoryClient.delete_directory
@@ -389,7 +1001,7 @@ references:
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.get_sub_directory_client
 - fullName: azure.storage.filedatalake.DataLakeDirectoryClient.rename_directory
   isExternal: false
-  name: rename_directory(rename_destination, **kwargs)
+  name: rename_directory(new_name, **kwargs)
   parent: azure.storage.filedatalake.DataLakeDirectoryClient
   uid: azure.storage.filedatalake.DataLakeDirectoryClient.rename_directory
 - fullName: dict(str, str)
