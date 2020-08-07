@@ -5,7 +5,7 @@ import fnmatch
 import re
 import yaml
 import glob
-import shutil
+from distutils.dir_util import copy_tree
 
 
 LEGACY_SOURCE_FOLDER = "workaround"
@@ -47,5 +47,6 @@ if __name__ == "__main__":
     with open(target_toc_loc, "a", encoding="utf-8") as stable_toc:
       stable_toc.write(appended_content)
 
-  for folder in files_for_move:
-    shutil.copy(folder, os.path.join(root_dir, TARGET_SOURCE_FOLDER))
+  print(target_folder)
+  for folder in folders_for_move:
+    copy_tree(folder, target_folder)
