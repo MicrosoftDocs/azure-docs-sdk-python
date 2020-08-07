@@ -50,5 +50,6 @@ if __name__ == "__main__":
       stable_toc.write(appended_content)
 
     for folder in folders_for_move:
-      print("copying {} to {}".format(folder, os.path.join(target_folder, os.path.basename(folder)))
-      copy_tree(folder, os.path.join(target_folder, os.path.basename(folder)))
+      target = os.path.join(target_folder, os.path.basename(folder))
+      print("copying {} to {}".format(folder, target))
+      copy_tree(folder, target)
