@@ -25,6 +25,8 @@ if __name__ == "__main__":
     source_toc_loc = os.path.join(root_dir, LEGACY_SOURCE_FOLDER, "docs-ref-autogen", "toc.yml")
     selected_targets = config_item[list(config_item.keys())[0]]
 
+    print("target folder {} has selected_targets {}".format(target_folder, selected_targets))
+
     # get the source yaml
     with open(source_toc_loc, "r", encoding="utf-8") as source_yml:
       source_yml = yaml.safe_load(source_yml)
@@ -43,10 +45,10 @@ if __name__ == "__main__":
 
     appended_content = yaml.dump(toc_items, default_flow_style=False)
 
-    # write the toc
-    with open(target_toc_loc, "a", encoding="utf-8") as stable_toc:
-      stable_toc.write(appended_content)
+    # # write the toc
+    # with open(target_toc_loc, "a", encoding="utf-8") as stable_toc:
+    stable_toc.write(appended_content)
 
-  print(target_folder)
-  for folder in folders_for_move:
-    copy_tree(folder, target_folder)
+    for folder in folders_for_move:
+      print("copying {} to {}".format(folder, target_folder))
+      copy_tree(folder, target_folder)
