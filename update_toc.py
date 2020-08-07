@@ -45,9 +45,9 @@ if __name__ == "__main__":
 
     appended_content = yaml.dump(toc_items, default_flow_style=False)
 
-    # # write the toc
-    # with open(target_toc_loc, "a", encoding="utf-8") as stable_toc:
-    stable_toc.write(appended_content)
+    # write the toc
+    with open(target_toc_loc, "a", encoding="utf-8") as stable_toc:
+      stable_toc.write(appended_content)
 
     for folder in folders_for_move:
       print("copying {} to {}".format(folder, target_folder))
