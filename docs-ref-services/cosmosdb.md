@@ -29,7 +29,7 @@ pip install azure-cosmos
 pip install azure-mgmt-cosmosdb
 ```
 
-### Examples
+### Key Examples
 
 * [Common Tasks](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/examples.py):
     * Create Database
@@ -49,10 +49,7 @@ pip install azure-mgmt-cosmosdb
     * Manage Container Provisioned Throughput
     * List all Container resources in a Database
 
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/cosmosdb/management)
-
-## Samples
+## Develop Python Applications
 
 * [Develop a Python app to access and manage data stored in Azure Cosmos DB SQL API account](https://github.com/Azure-Samples/azure-cosmos-db-python-getting-started.git)
 
