@@ -1,4 +1,18 @@
-# Azure Cosmos DB SQL API client library for Python
+---
+title: Azure Cosmos DB SQL API client library for Python
+keywords: Azure, python, SDK, API, azure-cosmos, azure-cosmos
+author: maggiepint
+ms.author: magpint
+ms.date: 05/28/2020
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: cosmos-db
+---
+
+# Azure Cosmos DB SQL API client library for Python - Version 4.x.x 
+
 
 Azure Cosmos DB is a globally distributed, multi-model database service that supports document, key-value, wide-column, and graph databases.
 
@@ -245,7 +259,6 @@ The container name must be unique within the database.""")
 
 ```
 ### Logging
-
 This library uses the standard
 [logging](https://docs.python.org/3.5/library/logging.html) library for logging.
 Basic information about HTTP sessions (URLs, headers, etc.) is logged at INFO
@@ -315,7 +328,7 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
 
-## Contributing
+# Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
@@ -328,3 +341,4 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
