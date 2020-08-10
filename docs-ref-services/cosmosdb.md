@@ -2,10 +2,10 @@
 title: Azure Cosmos DB libraries for Python
 description: Reference documentation for the Python client libraries for Azure Cosmos DB
 keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL 
-author: lisawong19
-ms.author: routlaw
+author: Rodrigossz
+ms.author: rosouz
 manager: douge
-ms.date: 03/20/2018
+ms.date: 08/08/2020
 ms.topic: article
 ms.devlang: python
 ms.service: cosmos-db
@@ -19,65 +19,37 @@ Use Azure Cosmos DB in your Python applications to store and query JSON document
 
 Learn more about [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction).
 
-## Client library
+## Client library - For Applications Development and Data Exploration
  ```bash
-pip install pydocumentdb
+pip install azure-cosmos
  ```
 
-## Management library
+## Management library - For Account Level Management Operations
 ```bash
 pip install azure-mgmt-cosmosdb
 ```
 
-### Example
+### Key Examples
 
-Find matching documents in Azure CosmosDB using a SQL-like query interface:
+* [Common Tasks](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/examples.py):
+    * Create Database
+    * Create Container
+    * CRUD operations on Items in Container 
+    * Query a Container for Items
+    * Create a Database user
 
-```python
-import pydocumentdb
-import pydocumentdb.document_client as document_client
+* [Database Management](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/database_management.py):
+    * Basic CRUD operations on a Database resource
+    * Query for Database
+    * List all Database resources on an account
+    
+* [Container Management](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/container_management.py):
+    * Basic CRUD operations on a Container resource
+    * Query for Container
+    * Manage Container Provisioned Throughput
+    * List all Container resources in a Database
 
-# Initialize the Python Azure Cosmos DB client
-client = document_client.DocumentClient(config['ENDPOINT'], {'masterKey': config['MASTERKEY']})
-# Create a database
-db = client.CreateDatabase({ 'id': config['DOCUMENTDB_DATABASE'] })
-
-# Create collection options
-options = {
-    'offerEnableRUPerMinuteThroughput': True,
-    'offerVersion': "V2",
-    'offerThroughput': 400
-}
-
-# Create a collection
-collection = client.CreateCollection(db['_self'], { 'id': config['DOCUMENTDB_COLLECTION'] }, options)
-
-# Create some documents
-document1 = client.CreateDocument(collection['_self'],
-    { 
-        'id': 'server1',
-        'Web Site': 0,
-        'Cloud Service': 0,
-        'Virtual Machine': 0,
-        'name': 'some' 
-    })
-
-# Query them in SQL
-query = { 'query': 'SELECT * FROM server s' }    
-
-options = {} 
-options['enableCrossPartitionQuery'] = True
-options['maxItemCount'] = 2
-
-result_iterable = client.QueryDocuments(collection['_self'], query, options)
-results = list(result_iterable)
-
-print(results)
-```
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/cosmosdb/management)
-
-## Samples
+## Develop Python Applications
 
 * [Develop a Python app to access and manage data stored in Azure Cosmos DB SQL API account](https://github.com/Azure-Samples/azure-cosmos-db-python-getting-started.git)
 
