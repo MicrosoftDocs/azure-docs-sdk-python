@@ -71,27 +71,120 @@ items:
   langs:
   - python
   module: azure.servicebus.management
-  name: create_queue(queue, **kwargs)
+  name: create_queue(name, **kwargs)
   namewithoutparameters: create_queue
   summary: Create a queue.
   syntax:
-    content: create_queue(queue, **kwargs)
+    content: create_queue(name, **kwargs)
     parameters:
-    - description: 'The queue name or a *QueueDescription* instance. When it''s a
-        str, it will be the name
-
-        of the created queue. Other properties of the created queue will have default
-        values as defined by the
-
-        service. Use a *QueueDescription* if you want to set queue properties other
-        than the queue name.'
-      id: queue
+    - description: Name of the queue.
+      id: name
       isRequired: true
       type:
-      - Union[str, azure.servicebus.management.QueueDescription]
+      - str
+    - description: Authorization rules for resource.
+      id: authorization_rules
+      isRequired: true
+    - description: 'ISO 8601 timeSpan idle interval after which the queue is
+
+        automatically deleted. The minimum duration is 5 minutes.'
+      id: auto_delete_on_idle
+      isRequired: true
+    - description: 'A value that indicates whether this queue has dead
+
+        letter support when a message expires.'
+      id: dead_lettering_on_message_expiration
+      isRequired: true
+    - description: 'ISO 8601 default message timespan to live value. This is
+
+        the duration after which the message expires, starting from when the message
+        is sent to Service
+
+        Bus. This is the default value used when TimeToLive is not set on a message
+        itself.'
+      id: default_message_time_to_live
+      isRequired: true
+    - description: 'ISO 8601 timeSpan structure that defines the
+
+        duration of the duplicate detection history. The default value is 10 minutes.'
+      id: duplicate_detection_history_time_window
+      isRequired: true
+    - description: 'Value that indicates whether server-side batched operations
+
+        are enabled.'
+      id: enable_batched_operations
+      isRequired: true
+    - description: 'A value that indicates whether Express Entities are enabled. An
+        express
+
+        queue holds a message in memory temporarily before writing it to persistent
+        storage.'
+      id: enable_express
+      isRequired: true
+    - description: 'A value that indicates whether the queue is to be partitioned
+
+        across multiple message brokers.'
+      id: enable_partitioning
+      isRequired: true
+    - description: 'A value indicating if the resource can be accessed without
+
+        authorization.'
+      id: is_anonymous_accessible
+      isRequired: true
+    - description: 'ISO 8601 timespan duration of a peek-lock; that is, the amount
+        of time
+
+        that the message is locked for other receivers. The maximum value for LockDuration
+        is 5
+
+        minutes; the default value is 1 minute.'
+      id: lock_duration
+      isRequired: true
+    - description: 'The maximum delivery count. A message is automatically deadlettered
+
+        after this number of deliveries. Default value is 10.'
+      id: max_delivery_count
+      isRequired: true
+    - description: 'The maximum size of the queue in megabytes, which is the size
+        of
+
+        memory allocated for the queue.'
+      id: max_size_in_megabytes
+      isRequired: true
+    - description: 'A value indicating if this queue requires duplicate
+
+        detection.'
+      id: requires_duplicate_detection
+      isRequired: true
+    - description: 'A value that indicates whether the queue supports the concept
+        of
+
+        sessions.'
+      id: requires_session
+      isRequired: true
+    - description: 'The name of the recipient entity to which all the messages sent
+        to the queue
+
+        are forwarded to.'
+      id: forward_to
+      isRequired: true
+    - description: 'Custom metdata that user can associate with the description. Max
+        length
+
+        is 1024 chars.'
+      id: user_metadata
+      isRequired: true
+    - description: A value that indicates whether the queue supports ordering.
+      id: support_ordering
+      isRequired: true
+    - description: 'The name of the recipient entity to which all the
+
+        dead-lettered messages of this subscription are forwarded to.'
+      id: forward_dead_lettered_messages_to
+      isRequired: true
     return:
       type:
-      - azure.servicebus.management.QueueDescription
+      - azure.servicebus.management.QueueProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.create_queue
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -99,34 +192,40 @@ items:
   langs:
   - python
   module: azure.servicebus.management
-  name: create_rule(topic, subscription, rule, **kwargs)
+  name: create_rule(topic, subscription, name, **kwargs)
   namewithoutparameters: create_rule
   summary: Create a rule for a topic subscription.
   syntax:
-    content: create_rule(topic, subscription, rule, **kwargs)
+    content: create_rule(topic, subscription, name, **kwargs)
     parameters:
     - description: 'The topic that will own the
 
         to-be-created subscription rule.'
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     - description: 'The subscription that
 
         will own the to-be-created rule.'
-      id: ~azure.servicebus.management.SubscriptionDescription] subscription
+      id: ~azure.servicebus.management.SubscriptionProperties] subscription
       isRequired: true
       type:
       - Union[str,
-    - description: The rule to be created.
-      id: rule
+    - description: Name of the rule.
+      id: name
       isRequired: true
       type:
-      - azure.servicebus.management.RuleDescription
+      - str
+    - description: The filter of the rule.
+      id: filter
+      isRequired: true
+    - description: The action of the rule.
+      id: action
+      isRequired: true
     return:
       type:
-      - azure.servicebus.management.RuleDescription
+      - azure.servicebus.management.RuleProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.create_rule
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -134,22 +233,92 @@ items:
   langs:
   - python
   module: azure.servicebus.management
-  name: create_subscription(topic, subscription, **kwargs)
+  name: create_subscription(topic, name, **kwargs)
   namewithoutparameters: create_subscription
-  summary: "Create a topic subscription.\n\n\n*SubscriptionDescription* instance.\
-    \ When it's a str, it will be the name of the created subscription.\n   Other\
-    \ properties of the created subscription will have default values as defined by\
-    \ the service."
+  summary: Create a topic subscription.
   syntax:
-    content: create_subscription(topic, subscription, **kwargs)
+    content: create_subscription(topic, name, **kwargs)
     parameters:
-    - id: topic
+    - description: 'The topic that will own the
+
+        to-be-created subscription.'
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
-    - id: subscription
+      type:
+      - Union[str,
+    - description: Name of the subscription.
+      id: name
+      isRequired: true
+      type:
+      - str
+    - description: 'ISO 8601 timespan duration of a peek-lock; that is, the amount
+        of time
+
+        that the message is locked for other receivers. The maximum value for LockDuration
+        is 5
+
+        minutes; the default value is 1 minute.'
+      id: lock_duration
+      isRequired: true
+    - description: 'A value that indicates whether the queue supports the concept
+        of
+
+        sessions.'
+      id: requires_session
+      isRequired: true
+    - description: 'ISO 8601 default message timespan to live value. This is
+
+        the duration after which the message expires, starting from when the message
+        is sent to Service
+
+        Bus. This is the default value used when TimeToLive is not set on a message
+        itself.'
+      id: default_message_time_to_live
+      isRequired: true
+    - description: 'A value that indicates whether this subscription
+
+        has dead letter support when a message expires.'
+      id: dead_lettering_on_message_expiration
+      isRequired: true
+    - description: 'A value that indicates whether this
+
+        subscription has dead letter support when a message expires.'
+      id: dead_lettering_on_filter_evaluation_exceptions
+      isRequired: true
+    - description: 'The maximum delivery count. A message is automatically deadlettered
+
+        after this number of deliveries. Default value is 10.'
+      id: max_delivery_count
+      isRequired: true
+    - description: 'Value that indicates whether server-side batched operations
+
+        are enabled.'
+      id: enable_batched_operations
+      isRequired: true
+    - description: 'The name of the recipient entity to which all the messages sent
+        to the
+
+        subscription are forwarded to.'
+      id: forward_to
+      isRequired: true
+    - description: 'Metadata associated with the subscription. Maximum number of characters
+
+        is 1024.'
+      id: user_metadata
+      isRequired: true
+    - description: 'The name of the recipient entity to which all the
+
+        messages sent to the subscription are forwarded to.'
+      id: forward_dead_lettered_messages_to
+      isRequired: true
+    - description: 'ISO 8601 timeSpan idle interval after which the subscription is
+
+        automatically deleted. The minimum duration is 5 minutes.'
+      id: auto_delete_on_idle
       isRequired: true
     return:
       type:
-      - azure.servicebus.management.SubscriptionDescription
+      - azure.servicebus.management.SubscriptionProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.create_subscription
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -157,28 +326,92 @@ items:
   langs:
   - python
   module: azure.servicebus.management
-  name: create_topic(topic, **kwargs)
+  name: create_topic(name, **kwargs)
   namewithoutparameters: create_topic
   summary: Create a topic.
   syntax:
-    content: create_topic(topic, **kwargs)
+    content: create_topic(name, **kwargs)
     parameters:
-    - description: 'The topic name or a *TopicDescription*
-
-        instance. When it''s a str, it will be the name of the created topic. Other
-        properties of the created topic
-
-        will have default values as defined by the service.
-
-        Use a *TopicDescription* if you want to set queue properties other than the
-        queue name.'
-      id: ~azure.servicebus.management.TopicDescription] topic
+    - description: Name of the topic.
+      id: name
       isRequired: true
       type:
-      - Union[str,
+      - str
+    - description: 'ISO 8601 default message timespan to live value. This is
+
+        the duration after which the message expires, starting from when the message
+        is sent to Service
+
+        Bus. This is the default value used when TimeToLive is not set on a message
+        itself.'
+      id: default_message_time_to_live
+      isRequired: true
+    - description: 'The maximum size of the topic in megabytes, which is the size
+        of
+
+        memory allocated for the topic.'
+      id: max_size_in_megabytes
+      isRequired: true
+    - description: 'A value indicating if this topic requires duplicate
+
+        detection.'
+      id: requires_duplicate_detection
+      isRequired: true
+    - description: 'ISO 8601 timeSpan structure that defines the
+
+        duration of the duplicate detection history. The default value is 10 minutes.'
+      id: duplicate_detection_history_time_window
+      isRequired: true
+    - description: 'Value that indicates whether server-side batched operations
+
+        are enabled.'
+      id: enable_batched_operations
+      isRequired: true
+    - description: The size of the topic, in bytes.
+      id: size_in_bytes
+      isRequired: true
+    - description: Filter messages before publishing.
+      id: filtering_messages_before_publishing
+      isRequired: true
+    - description: 'A value indicating if the resource can be accessed without
+
+        authorization.'
+      id: is_anonymous_accessible
+      isRequired: true
+    - description: Authorization rules for resource.
+      id: authorization_rules
+      isRequired: true
+    - description: A value that indicates whether the topic supports ordering.
+      id: support_ordering
+      isRequired: true
+    - description: 'ISO 8601 timeSpan idle interval after which the topic is
+
+        automatically deleted. The minimum duration is 5 minutes.'
+      id: auto_delete_on_idle
+      isRequired: true
+    - description: 'A value that indicates whether the topic is to be partitioned
+
+        across multiple message brokers.'
+      id: enable_partitioning
+      isRequired: true
+    - description: 'A value that indicates whether the topic''s
+
+        subscription is to be partitioned.'
+      id: enable_subscription_partitioning
+      isRequired: true
+    - description: 'A value that indicates whether Express Entities are enabled. An
+        express
+
+        queue holds a message in memory temporarily before writing it to persistent
+        storage.'
+      id: enable_express
+      isRequired: true
+    - description: Metadata associated with the topic.
+      id: user_metadata
+      isRequired: true
     return:
       type:
-      - azure.servicebus.management.TopicDescription
+      - azure.servicebus.management.TopicProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.create_topic
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -194,8 +427,8 @@ items:
     parameters:
     - description: 'The name of the queue or
 
-        a *QueueDescription* with name.'
-      id: azure.servicebus.management.QueueDescription] queue
+        a *QueueProperties* with name.'
+      id: azure.servicebus.management.QueueProperties] queue
       isRequired: true
       type:
       - Union[str,
@@ -216,19 +449,19 @@ items:
     content: delete_rule(topic, subscription, rule, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     - description: 'The subscription that
 
         owns the topic.'
-      id: ~azure.servicebus.management.SubscriptionDescription] subscription
+      id: ~azure.servicebus.management.SubscriptionProperties] subscription
       isRequired: true
       type:
       - Union[str,
     - description: The to-be-deleted rule.
-      id: ~azure.servicebus.management.RuleDescription] rule
+      id: ~azure.servicebus.management.RuleProperties] rule
       isRequired: true
       type:
       - Union[str,
@@ -249,14 +482,14 @@ items:
     content: delete_subscription(topic, subscription, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     - description: 'The subscription to
 
         be deleted.'
-      id: ~azure.servicebus.management.SubscriptionDescription] subscription
+      id: ~azure.servicebus.management.SubscriptionProperties] subscription
       isRequired: true
       type:
       - Union[str,
@@ -277,7 +510,7 @@ items:
     content: delete_topic(topic, **kwargs)
     parameters:
     - description: The topic to be deleted.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
@@ -343,7 +576,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.QueueDescription
+      - azure.servicebus.management.QueueProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_queue
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -364,7 +597,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.QueueRuntimeInfo
+      - azure.servicebus.management.QueueRuntimeProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_queue_runtime_info
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -379,14 +612,14 @@ items:
     content: get_rule(topic, subscription, rule_name, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     - description: 'The subscription that
 
         owns the rule.'
-      id: ~azure.servicebus.management.SubscriptionDescription] subscription
+      id: ~azure.servicebus.management.SubscriptionProperties] subscription
       isRequired: true
       type:
       - Union[str,
@@ -397,7 +630,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.RuleDescription
+      - azure.servicebus.management.RuleProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_rule
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -412,7 +645,7 @@ items:
     content: get_subscription(topic, subscription_name, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
@@ -423,7 +656,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.SubscriptionDescription
+      - azure.servicebus.management.SubscriptionProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_subscription
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -438,7 +671,7 @@ items:
     content: get_subscription_runtime_info(topic, subscription_name, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
@@ -449,7 +682,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.SubscriptionRuntimeInfo
+      - azure.servicebus.management.SubscriptionRuntimeProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_subscription_runtime_info
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -470,7 +703,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.TopicDescription
+      - azure.servicebus.management.TopicProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_topic
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -491,7 +724,7 @@ items:
       - str
     return:
       type:
-      - azure.servicebus.management.TopicRuntimeInfo
+      - azure.servicebus.management.TopicRuntimeProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.get_topic_runtime_info
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -506,9 +739,9 @@ items:
     content: list_queues(**kwargs)
     parameters: []
     return:
-      description: An iterable (auto-paging) response of QueueDescription.
+      description: An iterable (auto-paging) response of QueueProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.QueueDescription]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.QueueProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_queues
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -523,9 +756,9 @@ items:
     content: list_queues_runtime_info(**kwargs)
     parameters: []
     return:
-      description: An iterable (auto-paging) response of QueueRuntimeInfo.
+      description: An iterable (auto-paging) response of QueueRuntimeProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.QueueRuntimeInfo]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.QueueRuntimeProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_queues_runtime_info
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -540,21 +773,21 @@ items:
     content: list_rules(topic, subscription, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     - description: 'The subscription that
 
         owns the rules.'
-      id: ~azure.servicebus.management.SubscriptionDescription] subscription
+      id: ~azure.servicebus.management.SubscriptionProperties] subscription
       isRequired: true
       type:
       - Union[str,
     return:
-      description: An iterable (auto-paging) response of RuleDescription.
+      description: An iterable (auto-paging) response of RuleProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.RuleDescription]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.RuleProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_rules
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -569,14 +802,14 @@ items:
     content: list_subscriptions(topic, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     return:
-      description: An iterable (auto-paging) response of SubscriptionDescription.
+      description: An iterable (auto-paging) response of SubscriptionProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionDescription]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_subscriptions
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -591,14 +824,14 @@ items:
     content: list_subscriptions_runtime_info(topic, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     return:
-      description: An iterable (auto-paging) response of SubscriptionRuntimeInfo.
+      description: An iterable (auto-paging) response of SubscriptionRuntimeProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionRuntimeInfo]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionRuntimeProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_subscriptions_runtime_info
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -613,9 +846,9 @@ items:
     content: list_topics(**kwargs)
     parameters: []
     return:
-      description: An iterable (auto-paging) response of TopicDescription.
+      description: An iterable (auto-paging) response of TopicProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.TopicDescription]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.TopicProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_topics
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -630,9 +863,9 @@ items:
     content: list_topics_runtime_info(**kwargs)
     parameters: []
     return:
-      description: An iterable (auto-paging) response of TopicRuntimeInfo.
+      description: An iterable (auto-paging) response of TopicRuntimeProperties.
       type:
-      - azure.core.paging.ItemPaged[azure.servicebus.management.TopicRuntimeInfo]
+      - azure.core.paging.ItemPaged[azure.servicebus.management.TopicRuntimeProperties]
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.list_topics_runtime_info
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -645,47 +878,24 @@ items:
   summary: 'Update a queue.
 
 
-    Before calling this method, you should use *get_queue* to get a *QueueDescription*
-    instance, then use the
+    Before calling this method, you should use *get_queue*, *create_queue* or *list_queues*
+    to get a
 
-    keyword arguments to update the properties you want to update.
+    *QueueProperties* instance, then update the properties. Only a portion of properties
+    can
 
-    Only a portion of properties can be updated.
-
-    Refer to [https://docs.microsoft.com/en-us/rest/api/servicebus/update-queue](https://docs.microsoft.com/en-us/rest/api/servicebus/update-queue).'
+    be updated. Refer to [https://docs.microsoft.com/en-us/rest/api/servicebus/update-queue](https://docs.microsoft.com/en-us/rest/api/servicebus/update-queue).'
   syntax:
     content: update_queue(queue, **kwargs)
     parameters:
-    - description: The queue to be updated.
+    - description: 'The queue that is returned from *get_queue*, *create_queue* or
+        *list_queues* and
+
+        has the updated properties.'
       id: queue
       isRequired: true
       type:
-      - azure.servicebus.management.QueueDescription
-    - description: The value you want to update to.
-      id: default_message_time_to_live
-      isRequired: true
-      type:
-      - timedelta
-    - description: The value you want to update to.
-      id: lock_duration
-      isRequired: true
-      type:
-      - timedelta
-    - description: The value you want to update to.
-      id: dead_lettering_on_message_expiration
-      isRequired: true
-      type:
-      - bool
-    - description: The value you want to update to.
-      id: duplicate_detection_history_time_window
-      isRequired: true
-      type:
-      - timedelta
-    - description: The value you want to update to.
-      id: max_delivery_count
-      isRequired: true
-      type:
-      - int
+      - azure.servicebus.management.QueueProperties
     return:
       type:
       - None
@@ -701,35 +911,36 @@ items:
   summary: 'Update a rule.
 
 
-    Before calling this method, you should use *get_rule* to get a *RuleDescription*
-    instance,
+    Before calling this method, you should use *get_rule*, *create_rule* or *list_rules*
+    to get a *RuleProperties*
 
-    then update the related attributes and call this method.
+    instance, then update the properties.
 
-    Only a portion of properties can be updated.'
+
+
+    *create_rule*, or *list_rules* and has the updated properties.
+
+    :rtype: None'
   syntax:
     content: update_rule(topic, subscription, rule, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
     - description: 'The subscription that
 
         owns this rule.'
-      id: ~azure.servicebus.management.SubscriptionDescription] subscription
+      id: ~azure.servicebus.management.SubscriptionProperties] subscription
       isRequired: true
       type:
       - Union[str,
-    - description: The rule to be updated.
+    - description: The rule that is returned from *get_rule*,
       id: rule
       isRequired: true
       type:
-      - azure.servicebus.management.RuleDescription
-    return:
-      type:
-      - None
+      - azure.servicebus.management.RuleProperties
   type: method
   uid: azure.servicebus.management.ServiceBusManagementClient.update_rule
 - class: azure.servicebus.management.ServiceBusManagementClient
@@ -742,25 +953,26 @@ items:
   summary: 'Update a subscription.
 
 
-    Before calling this method, you should use *get_subscription* to get a *SubscriptionDescription*
-    instance,
+    Before calling this method, you should use *get_subscription*, *update_subscription*
+    or *list_subscription*
 
-    then update the related attributes and call this method.
-
-    Only a portion of properties can be updated.'
+    to get a *SubscriptionProperties* instance, then update the properties.'
   syntax:
     content: update_subscription(topic, subscription, **kwargs)
     parameters:
     - description: The topic that owns the subscription.
-      id: ~azure.servicebus.management.TopicDescription] topic
+      id: ~azure.servicebus.management.TopicProperties] topic
       isRequired: true
       type:
       - Union[str,
-    - description: The subscription to be updated.
+    - description: 'The subscription that is returned
+
+        from *get_subscription*, *update_subscription* or *list_subscription* and
+        has the updated properties.'
       id: subscription
       isRequired: true
       type:
-      - azure.servicebus.management.SubscriptionDescription
+      - azure.servicebus.management.SubscriptionProperties
     return:
       type:
       - None
@@ -776,32 +988,24 @@ items:
   summary: 'Update a topic.
 
 
-    Before calling this method, you should use *get_topic* to get a *TopicDescription*
-    instance, then use the
+    Before calling this method, you should use *get_topic*, *create_topic* or *list_topics*
+    to get a
 
-    keyword arguments to update the properties you want to update.
-
-    Only a portion of properties can be updated.
+    *TopicProperties* instance, then update the properties. Only a portion of properties
+    can be updated.
 
     Refer to [https://docs.microsoft.com/en-us/rest/api/servicebus/update-topic](https://docs.microsoft.com/en-us/rest/api/servicebus/update-topic).'
   syntax:
     content: update_topic(topic, **kwargs)
     parameters:
-    - description: The topic to be updated.
+    - description: 'The topic that is returned from *get_topic*, *create_topic*, or
+        *list_topics*
+
+        and has the updated properties.'
       id: topic
       isRequired: true
       type:
-      - azure.servicebus.management.TopicDescription
-    - description: The value you want to update to.
-      id: default_message_time_to_live
-      isRequired: true
-      type:
-      - timedelta
-    - description: The value you want to update to.
-      id: duplicate_detection_history_time_window
-      isRequired: true
-      type:
-      - timedelta
+      - azure.servicebus.management.TopicProperties
     return:
       type:
       - None
@@ -815,22 +1019,22 @@ references:
   uid: azure.servicebus.management.ServiceBusManagementClient.close
 - fullName: azure.servicebus.management.ServiceBusManagementClient.create_queue
   isExternal: false
-  name: create_queue(queue, **kwargs)
+  name: create_queue(name, **kwargs)
   parent: azure.servicebus.management.ServiceBusManagementClient
   uid: azure.servicebus.management.ServiceBusManagementClient.create_queue
 - fullName: azure.servicebus.management.ServiceBusManagementClient.create_rule
   isExternal: false
-  name: create_rule(topic, subscription, rule, **kwargs)
+  name: create_rule(topic, subscription, name, **kwargs)
   parent: azure.servicebus.management.ServiceBusManagementClient
   uid: azure.servicebus.management.ServiceBusManagementClient.create_rule
 - fullName: azure.servicebus.management.ServiceBusManagementClient.create_subscription
   isExternal: false
-  name: create_subscription(topic, subscription, **kwargs)
+  name: create_subscription(topic, name, **kwargs)
   parent: azure.servicebus.management.ServiceBusManagementClient
   uid: azure.servicebus.management.ServiceBusManagementClient.create_subscription
 - fullName: azure.servicebus.management.ServiceBusManagementClient.create_topic
   isExternal: false
-  name: create_topic(topic, **kwargs)
+  name: create_topic(name, **kwargs)
   parent: azure.servicebus.management.ServiceBusManagementClient
   uid: azure.servicebus.management.ServiceBusManagementClient.create_topic
 - fullName: azure.servicebus.management.ServiceBusManagementClient.delete_queue
@@ -972,25 +1176,6 @@ references:
   - fullName: ']'
     name: ']'
   uid: Union[TokenCredential, azure.servicebus.ServiceBusSharedKeyCredential]
-- fullName: Union[str, azure.servicebus.management.QueueDescription]
-  name: Union[str, QueueDescription]
-  spec.python:
-  - fullName: Union
-    name: Union
-    uid: Union
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: azure.servicebus.management.QueueDescription
-    name: QueueDescription
-    uid: azure.servicebus.management.QueueDescription
-  - fullName: ']'
-    name: ']'
-  uid: Union[str, azure.servicebus.management.QueueDescription]
 - fullName: Union[str,
   name: Union[str,
   spec.python:
@@ -1003,101 +1188,101 @@ references:
     name: str,
     uid: str,
   uid: Union[str,
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.QueueDescription]
-  name: ItemPaged[QueueDescription]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.QueueProperties]
+  name: ItemPaged[QueueProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.QueueDescription
-    name: QueueDescription
-    uid: azure.servicebus.management.QueueDescription
+  - fullName: azure.servicebus.management.QueueProperties
+    name: QueueProperties
+    uid: azure.servicebus.management.QueueProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.QueueDescription]
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.QueueRuntimeInfo]
-  name: ItemPaged[QueueRuntimeInfo]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.QueueProperties]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.QueueRuntimeProperties]
+  name: ItemPaged[QueueRuntimeProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.QueueRuntimeInfo
-    name: QueueRuntimeInfo
-    uid: azure.servicebus.management.QueueRuntimeInfo
+  - fullName: azure.servicebus.management.QueueRuntimeProperties
+    name: QueueRuntimeProperties
+    uid: azure.servicebus.management.QueueRuntimeProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.QueueRuntimeInfo]
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.RuleDescription]
-  name: ItemPaged[RuleDescription]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.QueueRuntimeProperties]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.RuleProperties]
+  name: ItemPaged[RuleProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.RuleDescription
-    name: RuleDescription
-    uid: azure.servicebus.management.RuleDescription
+  - fullName: azure.servicebus.management.RuleProperties
+    name: RuleProperties
+    uid: azure.servicebus.management.RuleProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.RuleDescription]
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionDescription]
-  name: ItemPaged[SubscriptionDescription]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.RuleProperties]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionProperties]
+  name: ItemPaged[SubscriptionProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.SubscriptionDescription
-    name: SubscriptionDescription
-    uid: azure.servicebus.management.SubscriptionDescription
+  - fullName: azure.servicebus.management.SubscriptionProperties
+    name: SubscriptionProperties
+    uid: azure.servicebus.management.SubscriptionProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionDescription]
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionRuntimeInfo]
-  name: ItemPaged[SubscriptionRuntimeInfo]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionProperties]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionRuntimeProperties]
+  name: ItemPaged[SubscriptionRuntimeProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.SubscriptionRuntimeInfo
-    name: SubscriptionRuntimeInfo
-    uid: azure.servicebus.management.SubscriptionRuntimeInfo
+  - fullName: azure.servicebus.management.SubscriptionRuntimeProperties
+    name: SubscriptionRuntimeProperties
+    uid: azure.servicebus.management.SubscriptionRuntimeProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionRuntimeInfo]
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.TopicDescription]
-  name: ItemPaged[TopicDescription]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.SubscriptionRuntimeProperties]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.TopicProperties]
+  name: ItemPaged[TopicProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.TopicDescription
-    name: TopicDescription
-    uid: azure.servicebus.management.TopicDescription
+  - fullName: azure.servicebus.management.TopicProperties
+    name: TopicProperties
+    uid: azure.servicebus.management.TopicProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.TopicDescription]
-- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.TopicRuntimeInfo]
-  name: ItemPaged[TopicRuntimeInfo]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.TopicProperties]
+- fullName: azure.core.paging.ItemPaged[azure.servicebus.management.TopicRuntimeProperties]
+  name: ItemPaged[TopicRuntimeProperties]
   spec.python:
   - fullName: azure.core.paging.ItemPaged
     name: ItemPaged
     uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.servicebus.management.TopicRuntimeInfo
-    name: TopicRuntimeInfo
-    uid: azure.servicebus.management.TopicRuntimeInfo
+  - fullName: azure.servicebus.management.TopicRuntimeProperties
+    name: TopicRuntimeProperties
+    uid: azure.servicebus.management.TopicRuntimeProperties
   - fullName: ']'
     name: ']'
-  uid: azure.core.paging.ItemPaged[azure.servicebus.management.TopicRuntimeInfo]
+  uid: azure.core.paging.ItemPaged[azure.servicebus.management.TopicRuntimeProperties]

@@ -2,14 +2,14 @@
 api_name: []
 items:
 - children:
+  - azure.servicebus.AutoLockRenew.close
   - azure.servicebus.AutoLockRenew.register
-  - azure.servicebus.AutoLockRenew.shutdown
   class: azure.servicebus.AutoLockRenew
   example:
   - "Automatically renew a message lock<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   from azure.servicebus import AutoLockRenew\n   lock_renewal = AutoLockRenew(max_workers=4)\n\
@@ -19,7 +19,7 @@ items:
     \n   ````\n\nAutomatically renew a session lock<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n       from azure.servicebus import AutoLockRenew\n\n       lock_renewal = AutoLockRenew(max_workers=4)\n\
@@ -56,41 +56,16 @@ items:
   type: class
   uid: azure.servicebus.AutoLockRenew
 - class: azure.servicebus.AutoLockRenew
-  fullName: azure.servicebus.AutoLockRenew.register
+  fullName: azure.servicebus.AutoLockRenew.close
   langs:
   - python
   module: azure.servicebus
-  name: register(renewable, timeout=300)
-  namewithoutparameters: register
-  summary: Register a renewable entity for automatic lock renewal.
+  name: close(wait=True)
+  namewithoutparameters: close
+  summary: Cease autorenewal by shutting down the thread pool to clean up any remaining
+    lock renewal threads.
   syntax:
-    content: register(renewable, timeout=300)
-    parameters:
-    - description: A locked entity that needs to be renewed.
-      id: renewable
-      isRequired: true
-      type:
-      - azure.servicebus.ReceivedMessage
-      - azure.servicebus.Session
-    - defaultValue: '300'
-      description: 'A time in seconds that the lock should be maintained for.
-
-        Default value is 300 (5 minutes).'
-      id: timeout
-      type:
-      - float
-  type: method
-  uid: azure.servicebus.AutoLockRenew.register
-- class: azure.servicebus.AutoLockRenew
-  fullName: azure.servicebus.AutoLockRenew.shutdown
-  langs:
-  - python
-  module: azure.servicebus
-  name: shutdown(wait=True)
-  namewithoutparameters: shutdown
-  summary: Shutdown the thread pool to clean up any remaining lock renewal threads.
-  syntax:
-    content: shutdown(wait=True)
+    content: close(wait=True)
     parameters:
     - defaultValue: 'True'
       description: Whether to block until thread pool has shutdown. Default is *True*.
@@ -98,15 +73,63 @@ items:
       type:
       - bool
   type: method
-  uid: azure.servicebus.AutoLockRenew.shutdown
+  uid: azure.servicebus.AutoLockRenew.close
+- class: azure.servicebus.AutoLockRenew
+  fullName: azure.servicebus.AutoLockRenew.register
+  langs:
+  - python
+  module: azure.servicebus
+  name: register(renewable, timeout=300, on_lock_renew_failure=None)
+  namewithoutparameters: register
+  summary: Register a renewable entity for automatic lock renewal.
+  syntax:
+    content: register(renewable, timeout=300, on_lock_renew_failure=None)
+    parameters:
+    - description: A locked entity that needs to be renewed.
+      id: renewable
+      isRequired: true
+      type:
+      - azure.servicebus.ReceivedMessage
+      - azure.servicebus.ServiceBusSession
+    - defaultValue: '300'
+      description: 'A time in seconds that the lock should be maintained for.
+
+        Default value is 300 (5 minutes).'
+      id: timeout
+      type:
+      - float
+    - defaultValue: None
+      description: 'A callback may be specified to be called when the lock is lost
+        on the renewable that is being registered.
+
+        Default value is None (no callback).'
+      id: on_lock_renew_failure
+      type:
+      - Optional[LockRenewFailureCallback]
+  type: method
+  uid: azure.servicebus.AutoLockRenew.register
 references:
+- fullName: azure.servicebus.AutoLockRenew.close
+  isExternal: false
+  name: close(wait=True)
+  parent: azure.servicebus.AutoLockRenew
+  uid: azure.servicebus.AutoLockRenew.close
 - fullName: azure.servicebus.AutoLockRenew.register
   isExternal: false
-  name: register(renewable, timeout=300)
+  name: register(renewable, timeout=300, on_lock_renew_failure=None)
   parent: azure.servicebus.AutoLockRenew
   uid: azure.servicebus.AutoLockRenew.register
-- fullName: azure.servicebus.AutoLockRenew.shutdown
-  isExternal: false
-  name: shutdown(wait=True)
-  parent: azure.servicebus.AutoLockRenew
-  uid: azure.servicebus.AutoLockRenew.shutdown
+- fullName: Optional[LockRenewFailureCallback]
+  name: Optional[LockRenewFailureCallback]
+  spec.python:
+  - fullName: Optional
+    name: Optional
+    uid: Optional
+  - fullName: '['
+    name: '['
+  - fullName: LockRenewFailureCallback
+    name: LockRenewFailureCallback
+    uid: LockRenewFailureCallback
+  - fullName: ']'
+    name: ']'
+  uid: Optional[LockRenewFailureCallback]

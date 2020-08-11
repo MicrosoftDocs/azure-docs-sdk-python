@@ -2,7 +2,9 @@
 api_name: []
 items:
 - children:
+  - azure.servicebus.ServiceBusReceiver.close
   - azure.servicebus.ServiceBusReceiver.from_connection_string
+  - azure.servicebus.ServiceBusReceiver.get_streaming_message_iter
   - azure.servicebus.ServiceBusReceiver.next
   - azure.servicebus.ServiceBusReceiver.peek_messages
   - azure.servicebus.ServiceBusReceiver.receive_deferred_messages
@@ -12,7 +14,7 @@ items:
   - "Create a new instance of the ServiceBusReceiver.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus import ServiceBusReceiver,\
@@ -85,7 +87,7 @@ items:
         receiver will
 
         automatically shutdown. The default value is 0, meaning no timeout.'
-      id: idle_timeout
+      id: max_wait_time
       type:
       - float
     - description: 'The mode with which messages will be retrieved from the entity.
@@ -133,6 +135,11 @@ items:
       id: http_proxy
       type:
       - dict
+    - description: If specified, this will be added in front of the built-in user
+        agent string.
+      id: user_agent
+      type:
+      - str
     - description: 'The maximum number of messages to cache with each request to the
         service.
 
@@ -168,11 +175,23 @@ items:
   type: class
   uid: azure.servicebus.ServiceBusReceiver
 - class: azure.servicebus.ServiceBusReceiver
+  fullName: azure.servicebus.ServiceBusReceiver.close
+  langs:
+  - python
+  module: azure.servicebus
+  name: close()
+  namewithoutparameters: close
+  syntax:
+    content: close()
+    parameters: []
+  type: method
+  uid: azure.servicebus.ServiceBusReceiver.close
+- class: azure.servicebus.ServiceBusReceiver
   example:
   - "Create a new instance of the ServiceBusReceiver from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus import ServiceBusReceiver\n\
@@ -235,7 +254,7 @@ items:
         receiver will
 
         automatically shutdown. The default value is 0, meaning no timeout.'
-      id: idle_timeout
+      id: max_wait_time
       isRequired: true
       type:
       - float
@@ -270,6 +289,12 @@ items:
       isRequired: true
       type:
       - dict
+    - description: If specified, this will be added in front of the built-in user
+        agent string.
+      id: user_agent
+      isRequired: true
+      type:
+      - str
     - description: 'The maximum number of messages to cache with each request to the
         service.
 
@@ -298,6 +323,36 @@ items:
   type: method
   uid: azure.servicebus.ServiceBusReceiver.from_connection_string
 - class: azure.servicebus.ServiceBusReceiver
+  fullName: azure.servicebus.ServiceBusReceiver.get_streaming_message_iter
+  langs:
+  - python
+  module: azure.servicebus
+  name: get_streaming_message_iter(max_wait_time=None)
+  namewithoutparameters: get_streaming_message_iter
+  summary: 'Receive messages from an iterator indefinitely, or if a max_wait_time
+    is specified, until
+
+    such a timeout occurs.'
+  syntax:
+    content: get_streaming_message_iter(max_wait_time=None)
+    parameters:
+    - defaultValue: None
+      description: 'Maximum time to wait in seconds for the next message to arrive.
+
+        If no messages arrive, and no timeout is specified, this call will not return
+
+        until the connection is closed. If specified, and no messages arrive for the
+
+        timeout period, the iterator will stop.
+
+
+        :rtype Iterator[ReceivedMessage]'
+      id: max_wait_time
+      type:
+      - float
+  type: method
+  uid: azure.servicebus.ServiceBusReceiver.get_streaming_message_iter
+- class: azure.servicebus.ServiceBusReceiver
   fullName: azure.servicebus.ServiceBusReceiver.next
   langs:
   - python
@@ -314,11 +369,11 @@ items:
   - "Look at pending messages in the queue.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_receiver:\n       messages = servicebus_receiver.peek_messages()\n\
-    \       for message in messages:\n           print(message)\n\n   ````\n"
+    \       for message in messages:\n           print(str(message))\n\n   ````\n"
   fullName: azure.servicebus.ServiceBusReceiver.peek_messages
   langs:
   - python
@@ -357,13 +412,13 @@ items:
   - "Receive deferred messages from ServiceBus.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_receiver:\n       deferred_sequenced_numbers = []\n     \
     \  messages = servicebus_receiver.receive_messages(max_wait_time=5)\n       for\
     \ message in messages:\n           deferred_sequenced_numbers.append(message.sequence_number)\n\
-    \           print(message)\n           message.defer()\n\n       received_deferred_msg\
+    \           print(str(message))\n           message.defer()\n\n       received_deferred_msg\
     \ = servicebus_receiver.receive_deferred_messages(\n           sequence_numbers=deferred_sequenced_numbers\n\
     \       )\n\n       for msg in received_deferred_msg:\n           msg.complete()\n\
     \n   ````\n"
@@ -399,11 +454,11 @@ items:
   - "Receive messages from ServiceBus.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_receiver:\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
-    \       for message in messages:\n           print(message)\n           message.complete()\n\
+    \       for message in messages:\n           print(str(message))\n           message.complete()\n\
     \n   ````\n"
   fullName: azure.servicebus.ServiceBusReceiver.receive_messages
   langs:
@@ -464,11 +519,21 @@ items:
   type: method
   uid: azure.servicebus.ServiceBusReceiver.receive_messages
 references:
+- fullName: azure.servicebus.ServiceBusReceiver.close
+  isExternal: false
+  name: close()
+  parent: azure.servicebus.ServiceBusReceiver
+  uid: azure.servicebus.ServiceBusReceiver.close
 - fullName: azure.servicebus.ServiceBusReceiver.from_connection_string
   isExternal: false
   name: from_connection_string(conn_str, **kwargs)
   parent: azure.servicebus.ServiceBusReceiver
   uid: azure.servicebus.ServiceBusReceiver.from_connection_string
+- fullName: azure.servicebus.ServiceBusReceiver.get_streaming_message_iter
+  isExternal: false
+  name: get_streaming_message_iter(max_wait_time=None)
+  parent: azure.servicebus.ServiceBusReceiver
+  uid: azure.servicebus.ServiceBusReceiver.get_streaming_message_iter
 - fullName: azure.servicebus.ServiceBusReceiver.next
   isExternal: false
   name: next()

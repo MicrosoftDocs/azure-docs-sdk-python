@@ -6,54 +6,25 @@ items:
   - azure.servicebus.ReceivedMessage.complete
   - azure.servicebus.ReceivedMessage.dead_letter
   - azure.servicebus.ReceivedMessage.defer
-  - azure.servicebus.ReceivedMessage.expired
-  - azure.servicebus.ReceivedMessage.lock_token
-  - azure.servicebus.ReceivedMessage.locked_until_utc
   - azure.servicebus.ReceivedMessage.renew_lock
-  - azure.servicebus.ReceivedMessage.settled
   class: azure.servicebus.ReceivedMessage
-  example:
-  - "Checking the properties on a received message.<!--[!code-python[Main](les\\sync_samples\\\
-    sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
-    \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
-    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
-    \n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n  \
-    \     for message in messages:\n           print(\"Receiving: {}\".format(message))\n\
-    \           print(\"Time to live: {}\".format(message.time_to_live))\n       \
-    \    print(\"Sequence number: {}\".format(message.sequence_number))\n        \
-    \   print(\"Enqueue Sequence numger: {}\".format(message.enqueue_sequence_number))\n\
-    \           print(\"Partition ID: {}\".format(message.partition_id))\n       \
-    \    print(\"Partition Key: {}\".format(message.partition_key))\n           print(\"\
-    User Properties: {}\".format(message.user_properties))\n           print(\"Annotations:\
-    \ {}\".format(message.annotations))\n           print(\"Delivery count: {}\".format(message.header.delivery_count))\n\
-    \           print(\"Message ID: {}\".format(message.properties.message_id))\n\
-    \           print(\"Locked until: {}\".format(message.locked_until_utc))\n   \
-    \        print(\"Lock Token: {}\".format(message.lock_token))\n           print(\"\
-    Enqueued time: {}\".format(message.enqueued_time_utc))\n\n   ````\n"
   fullName: azure.servicebus.ReceivedMessage
   inheritance:
   - inheritance:
     - inheritance:
-      - type: builtins.object
-      type: azure.servicebus._common.message.Message
-    type: azure.servicebus._common.message.PeekMessage
+      - inheritance:
+        - type: builtins.object
+        type: azure.servicebus._common.message.Message
+      type: azure.servicebus._common.message.PeekMessage
+    type: azure.servicebus._common.message.ReceivedMessageBase
   langs:
   - python
   module: azure.servicebus
   name: ReceivedMessage
-  summary: A Service Bus Message received from service side.
+  summary: ''
   syntax:
     content: 'ReceivedMessage(message, mode=<ReceiveSettleMode.PeekLock: <ReceiverSettleMode.PeekLock:
       1>>, **kwargs)'
-    variables:
-    - description: Error when AutoLockRenew is used and it fails to renew the message
-        lock.
-      id: auto_renew_error
-      type:
-      - azure.servicebus.AutoLockRenewTimeout
-      - azure.servicebus.AutoLockRenewFailed
   type: class
   uid: azure.servicebus.ReceivedMessage
 - class: azure.servicebus.ReceivedMessage
@@ -61,10 +32,10 @@ items:
   - "Abandoning a received message to return it immediately to the queue.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n       messages = servicebus_receiver.receive(max_wait_time=5)\n\
+    : 1}} -->\n\n````python\n\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
     \       for message in messages:\n           message.abandon()\n\n   ````\n"
   fullName: azure.servicebus.ReceivedMessage.abandon
   langs:
@@ -89,11 +60,11 @@ items:
   - "Completing a received message to remove it from the queue.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_receiver:\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
-    \       for message in messages:\n           print(message)\n           message.complete()\n\
+    \       for message in messages:\n           print(str(message))\n           message.complete()\n\
     \n   ````\n"
   fullName: azure.servicebus.ReceivedMessage.complete
   langs:
@@ -119,15 +90,15 @@ items:
     \ subqueue,\nand receiving it from there.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n       with servicebus_client.get_queue_receiver(queue_name) as servicebus_receiver:\n\
-    \           messages = servicebus_receiver.receive(max_wait_time=5)\n        \
-    \   for message in messages:\n               message.dead_letter(reason='reason\
+    \           messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    \           for message in messages:\n               message.dead_letter(reason='reason\
     \ for dead lettering', description='description for dead lettering')\n\n     \
     \  with servicebus_client.get_queue_deadletter_receiver(queue_name) as servicebus_deadletter_receiver:\n\
-    \           messages = servicebus_deadletter_receiver.receive(max_wait_time=5)\n\
+    \           messages = servicebus_deadletter_receiver.receive_messages(max_wait_time=5)\n\
     \           for message in messages:\n               message.complete()\n\n  \
     \ ````\n"
   fullName: azure.servicebus.ReceivedMessage.dead_letter
@@ -170,13 +141,13 @@ items:
     by calling receive_deffered_messages with its sequence number<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b4\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\7\\\\azure-servicebus-7.0.0b5\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_receiver:\n       deferred_sequenced_numbers\
     \ = []\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
     \       for message in messages:\n           deferred_sequenced_numbers.append(message.sequence_number)\n\
-    \           print(message)\n           message.defer()\n\n       received_deferred_msg\
+    \           print(str(message))\n           message.defer()\n\n       received_deferred_msg\
     \ = servicebus_receiver.receive_deferred_messages(\n           sequence_numbers=deferred_sequenced_numbers\n\
     \       )\n\n       for msg in received_deferred_msg:\n           msg.complete()\n\
     \n   ````\n"
@@ -200,36 +171,6 @@ items:
       - None
   type: method
   uid: azure.servicebus.ReceivedMessage.defer
-- class: azure.servicebus.ReceivedMessage
-  fullName: azure.servicebus.ReceivedMessage.expired
-  langs:
-  - python
-  module: azure.servicebus
-  name: expired
-  summary: '*rtype* -- bool'
-  syntax: {}
-  type: attribute
-  uid: azure.servicebus.ReceivedMessage.expired
-- class: azure.servicebus.ReceivedMessage
-  fullName: azure.servicebus.ReceivedMessage.lock_token
-  langs:
-  - python
-  module: azure.servicebus
-  name: lock_token
-  summary: '*rtype* -- ~uuid.UUID or str'
-  syntax: {}
-  type: attribute
-  uid: azure.servicebus.ReceivedMessage.lock_token
-- class: azure.servicebus.ReceivedMessage
-  fullName: azure.servicebus.ReceivedMessage.locked_until_utc
-  langs:
-  - python
-  module: azure.servicebus
-  name: locked_until_utc
-  summary: '*rtype* -- datetime.datetime'
-  syntax: {}
-  type: attribute
-  uid: azure.servicebus.ReceivedMessage.locked_until_utc
 - class: azure.servicebus.ReceivedMessage
   fullName: azure.servicebus.ReceivedMessage.renew_lock
   langs:
@@ -269,24 +210,6 @@ items:
       - None
   type: method
   uid: azure.servicebus.ReceivedMessage.renew_lock
-- class: azure.servicebus.ReceivedMessage
-  fullName: azure.servicebus.ReceivedMessage.settled
-  langs:
-  - python
-  module: azure.servicebus
-  name: settled
-  summary: 'Whether the message has been settled.
-
-
-    This will aways be *True* for a message received using ReceiveAndDelete mode,
-
-    otherwise it will be *False* until the message is completed or otherwise settled.'
-  syntax:
-    return:
-      type:
-      - bool
-  type: attribute
-  uid: azure.servicebus.ReceivedMessage.settled
 references:
 - fullName: azure.servicebus.ReceivedMessage.abandon
   isExternal: false
@@ -308,28 +231,8 @@ references:
   name: defer()
   parent: azure.servicebus.ReceivedMessage
   uid: azure.servicebus.ReceivedMessage.defer
-- fullName: azure.servicebus.ReceivedMessage.expired
-  isExternal: false
-  name: expired
-  parent: azure.servicebus.ReceivedMessage
-  uid: azure.servicebus.ReceivedMessage.expired
-- fullName: azure.servicebus.ReceivedMessage.lock_token
-  isExternal: false
-  name: lock_token
-  parent: azure.servicebus.ReceivedMessage
-  uid: azure.servicebus.ReceivedMessage.lock_token
-- fullName: azure.servicebus.ReceivedMessage.locked_until_utc
-  isExternal: false
-  name: locked_until_utc
-  parent: azure.servicebus.ReceivedMessage
-  uid: azure.servicebus.ReceivedMessage.locked_until_utc
 - fullName: azure.servicebus.ReceivedMessage.renew_lock
   isExternal: false
   name: renew_lock()
   parent: azure.servicebus.ReceivedMessage
   uid: azure.servicebus.ReceivedMessage.renew_lock
-- fullName: azure.servicebus.ReceivedMessage.settled
-  isExternal: false
-  name: settled
-  parent: azure.servicebus.ReceivedMessage
-  uid: azure.servicebus.ReceivedMessage.settled
