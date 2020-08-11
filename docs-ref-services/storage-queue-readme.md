@@ -49,8 +49,7 @@ you to access the storage account:
 
 ```python
 from azure.storage.queue import QueueServiceClient
-
-service = QueueServiceClient(account_url="https://<my-storage-account-name>.queue.core.windows.net/", credential=new DefaultAzureCredential())
+service = QueueServiceClient(account_url="https://<my-storage-account-name>.queue.core.windows.net/", credential=DefaultAzureCredential())
 ```
 
 *Notes:* If you have created a service principal following the [configure your local environment documentation](https://docs.microsoft.com/azure/developer/python/configure-local-development-environment?tabs=bash), `Default Azure Credential` works without additional parameters. For additional configuration options see [Authorizing access to data in Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth?toc=/azure/storage/queues/toc.json).
