@@ -14,7 +14,7 @@ items:
   - "Creating the FormRecognizerClient with an endpoint and API key.<!--[!code-python[Main](les\\\
     sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-3.0.0b1\\\\samples\\\\\
     sample_authentication.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.formrecognizer\
@@ -24,7 +24,7 @@ items:
     \ the FormRecognizerClient with a token credential.<!--[!code-python[Main](les\\\
     sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-3.0.0b1\\\\samples\\\\\
     sample_authentication.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   \"\"\"DefaultAzureCredential will use the values from these environment\n\
@@ -67,6 +67,13 @@ items:
       type:
       - azure.core.credentials.AzureKeyCredential
       - azure.core.credentials.TokenCredential
+    - description: 'The API version of the service to use for requests. It defaults
+        to the latest service version.
+
+        Setting to an older version may result in reduced feature compatibility.'
+      id: api_version
+      type:
+      - str
   type: class
   uid: azure.ai.formrecognizer.FormRecognizerClient
 - class: azure.ai.formrecognizer.FormRecognizerClient
@@ -74,7 +81,7 @@ items:
   - "Recognize text and content/layout information from a form.<!--[!code-python[Main](les\\\
     sample_recognize_content.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-3.0.0b1\\\\samples\\\\\
     sample_recognize_content.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.formrecognizer\
@@ -82,9 +89,9 @@ items:
     ]\n   key = os.environ[\"AZURE_FORM_RECOGNIZER_KEY\"]\n\n   form_recognizer_client\
     \ = FormRecognizerClient(endpoint=endpoint, credential=AzureKeyCredential(key))\n\
     \   with open(path_to_sample_forms, \"rb\") as f:\n       poller = form_recognizer_client.begin_recognize_content(form=f)\n\
-    \   contents = poller.result()\n\n   for idx, content in enumerate(contents):\n\
-    \       print(\"----Recognizing content from page #{}----\".format(idx))\n   \
-    \    print(\"Has width: {} and height: {}, measured with unit: {}\".format(\n\
+    \   form_pages = poller.result()\n\n   for idx, content in enumerate(form_pages):\n\
+    \       print(\"----Recognizing content from page #{}----\".format(idx+1))\n \
+    \      print(\"Page has width: {} and height: {}, measured with unit: {}\".format(\n\
     \           content.width,\n           content.height,\n           content.unit\n\
     \       ))\n       for table_idx, table in enumerate(content.tables):\n      \
     \     print(\"Table # {} has {} rows and {} columns\".format(table_idx, table.row_count,\
@@ -196,7 +203,7 @@ items:
   - "Recognize fields and values from a custom form.<!--[!code-python[Main](les\\\
     sample_recognize_custom_forms.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-1.0.0b4\\\\\
+    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-ai-formrecognizer-3.0.0b1\\\\\
     samples\\\\sample_recognize_custom_forms.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -209,18 +216,18 @@ items:
     \ f:\n       poller = form_recognizer_client.begin_recognize_custom_forms(\n \
     \          model_id=model_id, form=f\n       )\n   forms = poller.result()\n\n\
     \   for idx, form in enumerate(forms):\n       print(\"--------Recognizing Form\
-    \ #{}--------\".format(idx))\n       print(\"Form {} has type {}\".format(idx,\
-    \ form.form_type))\n       for name, field in form.fields.items():\n         \
-    \  # each field is of type FormField\n           # The value of the field can\
-    \ also be a FormField, or a list of FormFields\n           # In our sample, it\
-    \ is just a FormField.\n           print(\"...Field '{}' has value '{}' with a\
-    \ confidence score of {}\".format(\n               name, field.value, field.confidence\n\
-    \           ))\n           # label data is populated if you are using a model\
-    \ trained with unlabeled data, since the service needs to make predictions for\n\
-    \           # labels if not explicitly given to it.\n           if field.label_data:\n\
+    \ #{}--------\".format(idx+1))\n       print(\"Form has type {}\".format(form.form_type))\n\
+    \       for name, field in form.fields.items():\n           # each field is of\
+    \ type FormField\n           # label_data is populated if you are using a model\
+    \ trained without labels,\n           # since the service needs to make predictions\
+    \ for labels if not explicitly given to it.\n           if field.label_data:\n\
     \               print(\"...Field '{}' has label '{}' with a confidence score of\
     \ {}\".format(\n                   name,\n                   field.label_data.text,\n\
-    \                   field.confidence\n               ))\n       print(\"-----------------------------------\"\
+    \                   field.confidence\n               ))\n           # The value\
+    \ of the field can also be a Dict[str, FormField], or a List[FormField] - in our\
+    \ sample, it is not.\n           print(\"...Label '{}' has value '{}' with a confidence\
+    \ score of {}\".format(\n               field.label_data.text if field.label_data\
+    \ else name, field.value, field.confidence\n           ))\n\n       print(\"-----------------------------------\"\
     )\n\n   ````\n"
   exceptions:
   - description: ''
@@ -355,7 +362,7 @@ items:
   - "Recognize US sales receipt fields.<!--[!code-python[Main](les\\sample_recognize_receipts.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\8\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_recognize_receipts.py\"\
+    \\8\\\\azure-ai-formrecognizer-3.0.0b1\\\\samples\\\\sample_recognize_receipts.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.formrecognizer import FormRecognizerClient\n\
@@ -364,8 +371,8 @@ items:
     \       endpoint=endpoint, credential=AzureKeyCredential(key)\n   )\n   with open(path_to_sample_forms,\
     \ \"rb\") as f:\n       poller = form_recognizer_client.begin_recognize_receipts(receipt=f)\n\
     \   receipts = poller.result()\n\n   for idx, receipt in enumerate(receipts):\n\
-    \       print(\"--------Recognizing receipt #{}--------\".format(idx))\n     \
-    \  receipt_type = receipt.fields.get(\"ReceiptType\")\n       if receipt_type:\n\
+    \       print(\"--------Recognizing receipt #{}--------\".format(idx+1))\n   \
+    \    receipt_type = receipt.fields.get(\"ReceiptType\")\n       if receipt_type:\n\
     \           print(\"Receipt Type: {} has confidence: {}\".format(receipt_type.value,\
     \ receipt_type.confidence))\n       merchant_name = receipt.fields.get(\"MerchantName\"\
     )\n       if merchant_name:\n           print(\"Merchant Name: {} has confidence:\
@@ -374,7 +381,7 @@ items:
     \        print(\"Transaction Date: {} has confidence: {}\".format(transaction_date.value,\
     \ transaction_date.confidence))\n       print(\"Receipt items:\")\n       for\
     \ idx, item in enumerate(receipt.fields.get(\"Items\").value):\n           print(\"\
-    ...Item #{}\".format(idx))\n           item_name = item.value.get(\"Name\")\n\
+    ...Item #{}\".format(idx+1))\n           item_name = item.value.get(\"Name\")\n\
     \           if item_name:\n               print(\"......Item Name: {} has confidence:\
     \ {}\".format(item_name.value, item_name.confidence))\n           item_quantity\
     \ = item.value.get(\"Quantity\")\n           if item_quantity:\n             \
@@ -411,7 +418,7 @@ items:
 
     See fields found on a receipt here:
 
-    [https://aka.ms/azsdk/python/formrecognizer/receiptfields](https://aka.ms/azsdk/python/formrecognizer/receiptfields)'
+    [https://aka.ms/formrecognizer/receiptfields](https://aka.ms/formrecognizer/receiptfields)'
   syntax:
     content: begin_recognize_receipts(receipt, **kwargs)
     parameters:
@@ -465,7 +472,7 @@ items:
   - "Recognize US sales receipt fields from a URL.<!--[!code-python[Main](les\\sample_recognize_receipts_from_url.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\8\\\\azure-ai-formrecognizer-1.0.0b4\\\\samples\\\\sample_recognize_receipts_from_url.py\"\
+    \\8\\\\azure-ai-formrecognizer-3.0.0b1\\\\samples\\\\sample_recognize_receipts_from_url.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.formrecognizer import FormRecognizerClient\n\
@@ -475,8 +482,8 @@ items:
     \ \"https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/formrecognizer/azure-ai-formrecognizer/tests/sample_forms/receipt/contoso-receipt.png\"\
     \n   poller = form_recognizer_client.begin_recognize_receipts_from_url(receipt_url=url)\n\
     \   receipts = poller.result()\n\n   for idx, receipt in enumerate(receipts):\n\
-    \       print(\"--------Recognizing receipt #{}--------\".format(idx))\n     \
-    \  receipt_type = receipt.fields.get(\"ReceiptType\")\n       if receipt_type:\n\
+    \       print(\"--------Recognizing receipt #{}--------\".format(idx+1))\n   \
+    \    receipt_type = receipt.fields.get(\"ReceiptType\")\n       if receipt_type:\n\
     \           print(\"Receipt Type: {} has confidence: {}\".format(receipt_type.value,\
     \ receipt_type.confidence))\n       merchant_name = receipt.fields.get(\"MerchantName\"\
     )\n       if merchant_name:\n           print(\"Merchant Name: {} has confidence:\
@@ -485,7 +492,7 @@ items:
     \        print(\"Transaction Date: {} has confidence: {}\".format(transaction_date.value,\
     \ transaction_date.confidence))\n       print(\"Receipt items:\")\n       for\
     \ idx, item in enumerate(receipt.fields.get(\"Items\").value):\n           print(\"\
-    ...Item #{}\".format(idx))\n           item_name = item.value.get(\"Name\")\n\
+    ...Item #{}\".format(idx+1))\n           item_name = item.value.get(\"Name\")\n\
     \           if item_name:\n               print(\"......Item Name: {} has confidence:\
     \ {}\".format(item_name.value, item_name.confidence))\n           item_quantity\
     \ = item.value.get(\"Quantity\")\n           if item_quantity:\n             \
@@ -520,7 +527,7 @@ items:
 
     See fields found on a receipt here:
 
-    [https://aka.ms/azsdk/python/formrecognizer/receiptfields](https://aka.ms/azsdk/python/formrecognizer/receiptfields)'
+    [https://aka.ms/formrecognizer/receiptfields](https://aka.ms/formrecognizer/receiptfields)'
   syntax:
     content: begin_recognize_receipts_from_url(receipt_url, **kwargs)
     parameters:
