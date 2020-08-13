@@ -57,7 +57,7 @@ az storage account create -n my-storage-account-name -g my-resource-group
 ```
 
 ### Create the client
-The Azure Storage Blobs client library for Python - Version 12.4.0 
+The Azure Storage Blobs client library for Python
  allows you to interact with three types of resources: the storage
 account itself, blob storage containers, and blobs. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's blob service account URL and a
