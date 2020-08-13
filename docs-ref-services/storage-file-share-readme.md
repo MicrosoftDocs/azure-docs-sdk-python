@@ -54,7 +54,7 @@ az storage account create -n my-storage-account-name -g my-resource-group
 ```
 
 ### Create the client
-The Azure Storage File Share client library for Python - Version 12.2.0 
+The Azure Storage File Share client library for Python
  allows you to interact with four types of resources: the storage
 account itself, file shares, directories, and files. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's file service URL and a
