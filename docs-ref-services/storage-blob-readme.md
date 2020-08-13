@@ -167,7 +167,7 @@ The following components make up the Azure Blob Service:
 * A container within the storage account
 * A blob within a container
 
-The Azure Storage Blobs client library for Python - Version 12.4.0 
+The Azure Storage Blobs client library for Python
  allows you to interact with each of these components through the
 use of a dedicated client object.
 
