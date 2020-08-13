@@ -137,7 +137,7 @@ The following components make up the Azure File Share Service:
 * An optional hierarchy of directories within the file share
 * A file within the file share, which may be up to 1 TiB in size
 
-The Azure Storage File Share client library for Python - Version 12.2.0 
+The Azure Storage File Share client library for Python
  allows you to interact with each of these components through the
 use of a dedicated client object.
 
