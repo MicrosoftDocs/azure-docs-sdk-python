@@ -1,17 +1,18 @@
 ---
 title: Azure DataLake service client library for Python
-keywords: Azure, Python, SDK, API, storage, azure-storage-file-datalake
+keywords: Azure, python, SDK, API, azure-storage-file-datalake, storage
 author: maggiepint
 ms.author: magpint
-ms.date: 04/16/2020
+ms.date: 08/13/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
-ms.devlang: Python
+ms.devlang: python
 ms.service: storage
 ---
 
-# Azure DataLake service client library for Python - Version 12.0.1
+# Azure DataLake service client library for Python - Version 12.1.0 
+
 Overview
 
 This preview package for Python includes ADLS Gen2 specific API support made available in Storage SDK. This includes:
@@ -243,3 +244,4 @@ This project welcomes contributions and suggestions.  Most contributions require
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
