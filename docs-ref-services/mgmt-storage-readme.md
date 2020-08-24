@@ -1,3 +1,15 @@
+---
+title: 
+keywords: Azure, python, SDK, API, azure-mgmt-storage, storage
+author: maggiepint
+ms.author: magpint
+ms.date: 08/24/2020
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: storage
+---
 
 # Microsoft Azure SDK for Python
 
