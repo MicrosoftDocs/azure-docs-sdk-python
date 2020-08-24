@@ -4,6 +4,7 @@ items:
 - children:
   - azure.storage.blob.BlobServiceClient.create_container
   - azure.storage.blob.BlobServiceClient.delete_container
+  - azure.storage.blob.BlobServiceClient.find_blobs_by_tags
   - azure.storage.blob.BlobServiceClient.from_connection_string
   - azure.storage.blob.BlobServiceClient.get_account_information
   - azure.storage.blob.BlobServiceClient.get_blob_client
@@ -18,7 +19,7 @@ items:
   - "Creating the BlobServiceClient with account url and credential.<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_authentication.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.storage.blob\
     \ import BlobServiceClient\n   blob_service_client = BlobServiceClient(account_url=self.url,\
@@ -26,7 +27,7 @@ items:
     \ with Azure Identity credentials.<!--[!code-python[Main](les\\blob_samples_authentication.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_authentication.py\"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Get a token\
     \ credential for authentication\n   from azure.identity import ClientSecretCredential\n\
@@ -97,8 +98,8 @@ items:
       id: max_block_size
       type:
       - int
-    - description: 'If the blob size is less than max_single_put_size, then the blob
-        will be
+    - description: 'If the blob size is less than or equal max_single_put_size, then
+        the blob will be
 
         uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
 
@@ -142,7 +143,7 @@ items:
   - "Creating a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\", \"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\", \"\
     xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   try:\n       new_container = blob_service_client.create_container(\"\
     containerfromblobservice\")\n       properties = new_container.get_container_properties()\n\
@@ -210,7 +211,7 @@ items:
   - "Deleting a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\", \"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\", \"\
     xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # Delete container if it exists\n\
     \   try:\n       blob_service_client.delete_container(\"containerfromblobservice\"\
@@ -299,11 +300,54 @@ items:
   type: method
   uid: azure.storage.blob.BlobServiceClient.delete_container
 - class: azure.storage.blob.BlobServiceClient
+  fullName: azure.storage.blob.BlobServiceClient.find_blobs_by_tags
+  langs:
+  - python
+  module: azure.storage.blob
+  name: find_blobs_by_tags(filter_expression, **kwargs)
+  namewithoutparameters: find_blobs_by_tags
+  summary: 'The Filter Blobs operation enables callers to list blobs across all
+
+    containers whose tags match a given search expression.  Filter blobs
+
+    searches across all containers within a storage account but can be
+
+    scoped within the expression to a single container.'
+  syntax:
+    content: find_blobs_by_tags(filter_expression, **kwargs)
+    parameters:
+    - description: 'The expression to find blobs whose tags matches the specified
+        condition.
+
+        eg. ""yourtagname"=''firsttag'' and "yourtagname2"=''secondtag''"
+
+        To specify a container, eg. "@container=''containerName'' and "Name"=''C''"'
+      id: filter_expression
+      isRequired: true
+      type:
+      - str
+    - description: The max result per page when paginating.
+      id: results_per_page
+      isRequired: true
+      type:
+      - int
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An iterable (auto-paging) response of BlobProperties.
+      type:
+      - azure.core.paging.ItemPaged[azure.storage.blob.FilteredBlob]
+  type: method
+  uid: azure.storage.blob.BlobServiceClient.find_blobs_by_tags
+- class: azure.storage.blob.BlobServiceClient
   example:
   - "Creating the BlobServiceClient from a connection string.<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_authentication.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.storage.blob\
     \ import BlobServiceClient\n   blob_service_client = BlobServiceClient.from_connection_string(self.connection_string)\n\
@@ -351,7 +395,7 @@ items:
   - "Getting account information for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   account_info =\
     \ blob_service_client.get_account_information()\n   print('Using Storage SKU:\
@@ -382,7 +426,7 @@ items:
   - "Getting the blob client to interact with a specific blob.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   blob_client =\
     \ blob_service_client.get_blob_client(container=\"containertest\", blob=\"my_blob\"\
@@ -439,7 +483,7 @@ items:
   - "Getting the container client to interact with a specific container.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Get a client\
     \ to interact with a specific container - though it may not yet exist\n   container_client\
@@ -479,7 +523,7 @@ items:
   - "Getting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   properties = blob_service_client.get_service_properties()\n\
     \n   ````\n"
@@ -513,7 +557,7 @@ items:
   - "Getting service stats for the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\", \"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\", \"\
     xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   stats = blob_service_client.get_service_stats()\n\
     \n   ````\n"
@@ -607,7 +651,7 @@ items:
   - "Listing the containers in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\", \"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\", \"\
     xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # List all containers\n   all_containers\
     \ = blob_service_client.list_containers(include_metadata=True)\n   for container\
@@ -667,7 +711,7 @@ items:
   - "Setting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_service.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create service\
     \ properties\n   from azure.storage.blob import BlobAnalyticsLogging, Metrics,\
@@ -772,6 +816,11 @@ references:
   name: delete_container(container, lease=None, **kwargs)
   parent: azure.storage.blob.BlobServiceClient
   uid: azure.storage.blob.BlobServiceClient.delete_container
+- fullName: azure.storage.blob.BlobServiceClient.find_blobs_by_tags
+  isExternal: false
+  name: find_blobs_by_tags(filter_expression, **kwargs)
+  parent: azure.storage.blob.BlobServiceClient
+  uid: azure.storage.blob.BlobServiceClient.find_blobs_by_tags
 - fullName: azure.storage.blob.BlobServiceClient.from_connection_string
   isExternal: false
   name: from_connection_string(conn_str, credential=None, **kwargs)
@@ -838,6 +887,20 @@ references:
   - fullName: )
     name: )
   uid: dict(str, str)
+- fullName: azure.core.paging.ItemPaged[azure.storage.blob.FilteredBlob]
+  name: ItemPaged[FilteredBlob]
+  spec.python:
+  - fullName: azure.core.paging.ItemPaged
+    name: ItemPaged
+    uid: azure.core.paging.ItemPaged
+  - fullName: '['
+    name: '['
+  - fullName: azure.storage.blob.FilteredBlob
+    name: FilteredBlob
+    uid: azure.storage.blob.FilteredBlob
+  - fullName: ']'
+    name: ']'
+  uid: azure.core.paging.ItemPaged[azure.storage.blob.FilteredBlob]
 - fullName: dict(str, Any)
   name: dict(str, Any)
   spec.python:

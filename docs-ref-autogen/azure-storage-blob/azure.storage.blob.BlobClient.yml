@@ -17,11 +17,15 @@ items:
   - azure.storage.blob.BlobClient.from_connection_string
   - azure.storage.blob.BlobClient.get_account_information
   - azure.storage.blob.BlobClient.get_blob_properties
+  - azure.storage.blob.BlobClient.get_blob_tags
   - azure.storage.blob.BlobClient.get_block_list
   - azure.storage.blob.BlobClient.get_page_range_diff_for_managed_disk
   - azure.storage.blob.BlobClient.get_page_ranges
+  - azure.storage.blob.BlobClient.query_blob
   - azure.storage.blob.BlobClient.resize_blob
+  - azure.storage.blob.BlobClient.seal_append_blob
   - azure.storage.blob.BlobClient.set_blob_metadata
+  - azure.storage.blob.BlobClient.set_blob_tags
   - azure.storage.blob.BlobClient.set_http_headers
   - azure.storage.blob.BlobClient.set_premium_page_blob_tier
   - azure.storage.blob.BlobClient.set_sequence_number
@@ -38,14 +42,14 @@ items:
   - "Creating the BlobClient from a URL to a public blob (no auth needed).<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_authentication.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.storage.blob\
     \ import BlobClient\n   blob_client = BlobClient.from_blob_url(blob_url=\"https://account.blob.core.windows.net/container/blob-name\"\
     )\n\n   ````\n\nCreating the BlobClient from a SAS URL to a blob.<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_authentication.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.storage.blob\
     \ import BlobClient\n\n   sas_url = \"https://account.blob.core.windows.net/container/blob-name?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D\"\
@@ -121,8 +125,8 @@ items:
       id: max_block_size
       type:
       - int
-    - description: 'If the blob size is less than max_single_put_size, then the blob
-        will be
+    - description: 'If the blob size is less than or equal max_single_put_size, then
+        the blob will be
 
         uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
 
@@ -166,7 +170,7 @@ items:
   - "Abort copying a blob from URL.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # Passing in copy id to abort\
     \ copy operation\n   copied_blob.abort_copy(copy_id)\n\n   # check copy status\n\
@@ -206,7 +210,7 @@ items:
   - "Acquiring a lease on a blob.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # Acquire a lease on the blob\n\
     \   lease = blob_client.acquire_lease()\n\n   # Delete blob by passing in the\
@@ -217,76 +221,14 @@ items:
   module: azure.storage.blob
   name: acquire_lease(lease_duration=-1, lease_id=None, **kwargs)
   namewithoutparameters: acquire_lease
-  summary: 'Requests a new lease.
-
-
-    If the blob does not have an active lease, the Blob
-
-    Service creates a lease on the blob and returns a new lease.'
+  summary: "Requests a new lease.\n\nIf the blob does not have an active lease, the\
+    \ Blob\nService creates a lease on the blob and returns a new lease.\n\n\n:keyword\
+    \ str if_tags_match_condition\n   Specify a SQL where clause on blob tags to operate\
+    \ only on blob with a matching value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New\
+    \ in version 12.4.0."
   syntax:
     content: acquire_lease(lease_duration=-1, lease_id=None, **kwargs)
     parameters:
-    - description: 'Specifies the duration of the lease, in seconds, or negative one
-
-        (-1) for a lease that never expires. A non-infinite lease can be
-
-        between 15 and 60 seconds. A lease duration cannot be changed
-
-        using renew or change. Default is -1 (infinite lease).'
-      id: lease_duration
-      isRequired: true
-      type:
-      - int
-    - description: 'Proposed lease ID, in a GUID string format. The Blob Service
-
-        returns 400 (Invalid request) if the proposed lease ID is not
-
-        in the correct format.'
-      id: lease_id
-      isRequired: true
-      type:
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -305,115 +247,13 @@ items:
   module: azure.storage.blob
   name: append_block(data, length=None, **kwargs)
   namewithoutparameters: append_block
-  summary: Commits a new block of data to the end of the existing append blob.
+  summary: "Commits a new block of data to the end of the existing append blob.\n\n\
+    \n:keyword str if_tags_match_condition\n   Specify a SQL where clause on blob\
+    \ tags to operate only on blob with a matching value.\n   eg. \"\"tagname\"='my\
+    \ tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: append_block(data, length=None, **kwargs)
     parameters:
-    - description: Content of the block. This can be bytes, text, an iterable or a
-        file-like object.
-      id: data
-      isRequired: true
-      type:
-      - bytes
-      - str
-      - Iterable
-    - description: Size of the block in bytes.
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: 'If true, calculates an MD5 hash of the block content. The storage
-
-        service checks the hash of the content that has arrived
-
-        with the hash that was sent. This is primarily valuable for detecting
-
-        bitflips on the wire if using http instead of https, as https (the default),
-
-        will already validate. Note that this MD5 hash is not stored with the
-
-        blob.'
-      id: validate_content
-      isRequired: true
-      type:
-      - bool
-    - description: 'Optional conditional header. The max length in bytes permitted
-        for
-
-        the append blob. If the Append Block operation would cause the blob
-
-        to exceed that limit or if the blob size is already greater than the
-
-        value specified in this header, the request will fail with
-
-        MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
-      id: maxsize_condition
-      isRequired: true
-      type:
-      - int
-    - description: 'Optional conditional header, used only for the Append Block operation.
-
-        A number indicating the byte offset to compare. Append Block will
-
-        succeed only if the append position is equal to this number. If it
-
-        is not, the request will fail with the AppendPositionConditionNotMet error
-
-        (HTTP status code 412 - Precondition Failed).'
-      id: appendpos_condition
-      isRequired: true
-      type:
-      - int
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: Defaults to UTF-8.
       id: encoding
       isRequired: true
@@ -468,117 +308,14 @@ items:
   name: append_block_from_url(copy_source_url, source_offset=None, source_length=None,
     **kwargs)
   namewithoutparameters: append_block_from_url
-  summary: Creates a new block to be committed as part of a blob, where the contents
-    are read from a source url.
+  summary: "Creates a new block to be committed as part of a blob, where the contents\
+    \ are read from a source url.\n\n\n:keyword str if_tags_match_condition\n   Specify\
+    \ a SQL where clause on blob tags to operate only on blob with a matching value.\n\
+    \   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: append_block_from_url(copy_source_url, source_offset=None, source_length=None,
       **kwargs)
     parameters:
-    - description: 'The URL of the source data. It can point to any Azure Blob or
-        File, that is either public or has a
-
-        shared access signature attached.'
-      id: copy_source_url
-      isRequired: true
-      type:
-      - str
-    - description: This indicates the start of the range of bytes (inclusive) that
-        has to be taken from the copy source.
-      id: source_offset
-      isRequired: true
-      type:
-      - int
-    - description: This indicates the end of the range of bytes that has to be taken
-        from the copy source.
-      id: source_length
-      isRequired: true
-      type:
-      - int
-    - description: If given, the service will calculate the MD5 hash of the block
-        content and compare against this value.
-      id: source_content_md5
-      isRequired: true
-      type:
-      - bytearray
-    - description: 'Optional conditional header. The max length in bytes permitted
-        for
-
-        the append blob. If the Append Block operation would cause the blob
-
-        to exceed that limit or if the blob size is already greater than the
-
-        value specified in this header, the request will fail with
-
-        MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
-      id: maxsize_condition
-      isRequired: true
-      type:
-      - int
-    - description: 'Optional conditional header, used only for the Append Block operation.
-
-        A number indicating the byte offset to compare. Append Block will
-
-        succeed only if the append position is equal to this number. If it
-
-        is not, the request will fail with the
-
-        AppendPositionConditionNotMet error
-
-        (HTTP status code 412 - Precondition Failed).'
-      id: appendpos_condition
-      isRequired: true
-      type:
-      - int
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'The destination ETag value, or the wildcard character (*). Used
-        to check if the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The destination match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -663,103 +400,12 @@ items:
   module: azure.storage.blob
   name: clear_page(offset, length, **kwargs)
   namewithoutparameters: clear_page
-  summary: Clears a range of pages.
+  summary: "Clears a range of pages.\n\n\n:keyword str if_tags_match_condition\n \
+    \  Specify a SQL where clause on blob tags to operate only on blob with a matching\
+    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: clear_page(offset, length, **kwargs)
     parameters:
-    - description: 'Start of byte range to use for writing to a section of the blob.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length must be a modulus of
-
-        512.'
-      id: offset
-      isRequired: true
-      type:
-      - int
-    - description: 'Number of bytes to use for writing to a section of the blob.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length must be a modulus of
-
-        512.'
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'If the blob''s sequence number is less than or equal to
-
-        the specified value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_lte
-      isRequired: true
-      type:
-      - int
-    - description: 'If the blob''s sequence number is less than the specified
-
-        value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_lt
-      isRequired: true
-      type:
-      - int
-    - description: 'If the blob''s sequence number is equal to the specified
-
-        value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_eq
-      isRequired: true
-      type:
-      - int
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -789,95 +435,13 @@ items:
   module: azure.storage.blob
   name: commit_block_list(block_list, content_settings=None, metadata=None, **kwargs)
   namewithoutparameters: commit_block_list
-  summary: 'The Commit Block List operation writes a blob by specifying the list of
-
-    block IDs that make up the blob.'
+  summary: "The Commit Block List operation writes a blob by specifying the list of\n\
+    block IDs that make up the blob.\n\n\n:keyword str if_tags_match_condition\n \
+    \  Specify a SQL where clause on blob tags to operate only on destination blob\
+    \ with a matching value.\n\n   New in version 12.4.0."
   syntax:
     content: commit_block_list(block_list, content_settings=None, metadata=None, **kwargs)
     parameters:
-    - description: List of Blockblobs.
-      id: block_list
-      isRequired: true
-      type:
-      - list
-    - description: 'ContentSettings object used to set blob properties. Used to set
-        content type, encoding,
-
-        language, disposition, md5, and cache control.'
-      id: content_settings
-      isRequired: true
-      type:
-      - azure.storage.blob.ContentSettings
-    - description: Name-value pairs associated with the blob as metadata.
-      id: metadata
-      isRequired: true
-      type:
-      - dict[str, str]
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'If true, calculates an MD5 hash of the page content. The storage
-
-        service checks the hash of the content that has arrived
-
-        with the hash that was sent. This is primarily valuable for detecting
-
-        bitflips on the wire if using http instead of https, as https (the default),
-
-        will already validate. Note that this MD5 hash is not stored with the
-
-        blob.'
-      id: validate_content
-      isRequired: true
-      type:
-      - bool
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'A standard blob tier value to set the blob to. For this version
         of the library,
 
@@ -947,6 +511,25 @@ items:
       - azure.storage.blob.ContentSettings
     - description: Name-value pairs associated with the blob as metadata.
       id: metadata
+      isRequired: true
+      type:
+      - dict(str, str)
+    - description: 'Name-value pairs associated with the blob as tag. Tags are case-sensitive.
+
+        The tag set may contain at most 10 tags.  Tag keys must be between 1 and 128
+        characters,
+
+        and tag values must be between 0 and 256 characters.
+
+        Valid tag key and value characters include: lowercase and uppercase letters,
+        digits (0-9),
+
+        space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:),
+        equals (=), underscore (_)
+
+
+        New in version 12.4.0.'
+      id: tags
       isRequired: true
       type:
       - dict(str, str)
@@ -1083,6 +666,25 @@ items:
       isRequired: true
       type:
       - azure.storage.blob.PremiumPageBlobTier
+    - description: 'Name-value pairs associated with the blob as tag. Tags are case-sensitive.
+
+        The tag set may contain at most 10 tags.  Tag keys must be between 1 and 128
+        characters,
+
+        and tag values must be between 0 and 256 characters.
+
+        Valid tag key and value characters include: lowercase and uppercase letters,
+        digits (0-9),
+
+        space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:),
+        equals (=), underscore (_)
+
+
+        New in version 12.4.0.'
+      id: tags
+      isRequired: true
+      type:
+      - dict(str, str)
     - description: 'Only for Page blobs. The sequence number is a user-controlled
         value that you can use to
 
@@ -1188,7 +790,7 @@ items:
   - "Create a snapshot of the blob.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # Create a read-only snapshot\
     \ of the blob at this point in time\n   snapshot_blob = blob_client.create_snapshot()\n\
@@ -1199,70 +801,17 @@ items:
   module: azure.storage.blob
   name: create_snapshot(metadata=None, **kwargs)
   namewithoutparameters: create_snapshot
-  summary: 'Creates a snapshot of the blob.
-
-
-    A snapshot is a read-only version of a blob that''s taken at a point in time.
-
-    It can be read, copied, or deleted, but not modified. Snapshots provide a way
-
-    to back up a blob as it appears at a moment in time.
-
-
-    A snapshot of a blob has the same name as the base blob from which the snapshot
-
-    is taken, with a DateTime value appended to indicate the time at which the
-
-    snapshot was taken.'
+  summary: "Creates a snapshot of the blob.\n\nA snapshot is a read-only version of\
+    \ a blob that's taken at a point in time.\nIt can be read, copied, or deleted,\
+    \ but not modified. Snapshots provide a way\nto back up a blob as it appears at\
+    \ a moment in time.\n\nA snapshot of a blob has the same name as the base blob\
+    \ from which the snapshot\nis taken, with a DateTime value appended to indicate\
+    \ the time at which the\nsnapshot was taken.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on destination blob\
+    \ with a matching value.\n\n   New in version 12.4.0."
   syntax:
     content: create_snapshot(metadata=None, **kwargs)
     parameters:
-    - description: Name-value pairs associated with the blob as metadata.
-      id: metadata
-      isRequired: true
-      type:
-      - dict(str, str)
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
         object
 
@@ -1317,7 +866,7 @@ items:
   - "Delete a blob.<!--[!code-python[Main](les\\blob_samples_hello_world.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\90\\\\\
-    azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_hello_world.py\", \"xml:space\"\
+    azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_hello_world.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   blob_client.delete_blob()\n\n\
     \   ````\n"
@@ -1327,94 +876,21 @@ items:
   module: azure.storage.blob
   name: delete_blob(delete_snapshots=False, **kwargs)
   namewithoutparameters: delete_blob
-  summary: 'Marks the specified blob for deletion.
-
-
-    The blob is later deleted during garbage collection.
-
-    Note that in order to delete a blob, you must delete all of its
-
-    snapshots. You can delete both at the same time with the delete_blob()
-
-    operation.
-
-
-    If a delete retention policy is enabled for the service, then this operation soft
-    deletes the blob
-
-    and retains the blob for a specified number of days.
-
-    After the specified number of days, the blob''s data is removed from the service
-    during garbage collection.
-
-    Soft deleted blob is accessible through <xref:azure.storage.blob.ContainerClient.list_blobs>
-    specifying *include=[''deleted'']*
-
-    option. Soft-deleted blob can be restored using <xref:azure.storage.blob.undelete>
-    operation.'
+  summary: "Marks the specified blob for deletion.\n\nThe blob is later deleted during\
+    \ garbage collection.\nNote that in order to delete a blob, you must delete all\
+    \ of its\nsnapshots. You can delete both at the same time with the delete_blob()\n\
+    operation.\n\nIf a delete retention policy is enabled for the service, then this\
+    \ operation soft deletes the blob\nand retains the blob for a specified number\
+    \ of days.\nAfter the specified number of days, the blob's data is removed from\
+    \ the service during garbage collection.\nSoft deleted blob is accessible through\
+    \ <xref:azure.storage.blob.ContainerClient.list_blobs> specifying *include=['deleted']*\n\
+    option. Soft-deleted blob can be restored using <xref:azure.storage.blob.undelete>\
+    \ operation.\n\n\n:keyword str if_tags_match_condition\n   Specify a SQL where\
+    \ clause on blob tags to operate only on blob with a matching value.\n   eg. \"\
+    \"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: delete_blob(delete_snapshots=False, **kwargs)
     parameters:
-    - description: "Required if the blob has associated snapshots. Values include:\n\
-        \   * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
-        \ the blob along with all snapshots."
-      id: delete_snapshots
-      isRequired: true
-      type:
-      - str
-    - description: 'Required if the blob has an active lease. If specified, delete_blob
-        only
-
-        succeeds if the blob''s lease is active and matches this ID. Value can be
-        a
-
-        BlobLeaseClient object or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -1430,7 +906,7 @@ items:
   - "Download a blob.<!--[!code-python[Main](les\\blob_samples_hello_world.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\90\\\\\
-    azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_hello_world.py\", \"xml:space\"\
+    azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_hello_world.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   with open(DEST_FILE, \"wb\") as\
     \ my_blob:\n       download_stream = blob_client.download_blob()\n       my_blob.write(download_stream.readall())\n\
@@ -1441,103 +917,14 @@ items:
   module: azure.storage.blob
   name: download_blob(offset=None, length=None, **kwargs)
   namewithoutparameters: download_blob
-  summary: 'Downloads a blob to the StorageStreamDownloader. The readall() method
-    must
-
-    be used to read all the content or readinto() must be used to download the blob
-    into
-
-    a stream.'
+  summary: "Downloads a blob to the StorageStreamDownloader. The readall() method\
+    \ must\nbe used to read all the content or readinto() must be used to download\
+    \ the blob into\na stream.\n\n\n:keyword str if_tags_match_condition\n   Specify\
+    \ a SQL where clause on blob tags to operate only on blob with a matching value.\n\
+    \   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: download_blob(offset=None, length=None, **kwargs)
     parameters:
-    - description: 'Start of byte range to use for downloading a section of the blob.
-
-        Must be set if length is provided.'
-      id: offset
-      isRequired: true
-      type:
-      - int
-    - description: 'Number of bytes to read from the stream. This is optional, but
-
-        should be supplied for optimal performance.'
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
-        storage
-
-        service checks the hash of the content that has arrived with the hash
-
-        that was sent. This is primarily valuable for detecting bitflips on
-
-        the wire if using http instead of https, as https (the default), will
-
-        already validate. Note that this MD5 hash is not stored with the
-
-        blob. Also note that if enabled, the memory-efficient upload algorithm
-
-        will not be used because computing the MD5 hash requires buffering
-
-        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
-      id: validate_content
-      isRequired: true
-      type:
-      - bool
-    - description: 'Required if the blob has an active lease. If specified, download_blob
-        only
-
-        succeeds if the blob''s lease is active and matches this ID. Value can be
-        a
-
-        BlobLeaseClient object or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -1583,7 +970,8 @@ items:
   module: azure.storage.blob
   name: from_blob_url(blob_url, credential=None, snapshot=None, **kwargs)
   namewithoutparameters: from_blob_url
-  summary: Create BlobClient from a blob url.
+  summary: Create BlobClient from a blob url. This doesn't support customized blob
+    url with '/' in blob name.
   syntax:
     content: from_blob_url(blob_url, credential=None, snapshot=None, **kwargs)
     parameters:
@@ -1635,7 +1023,7 @@ items:
   - "Creating the BlobClient from a connection string.<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_authentication.py\"\
+    a\\\\1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.storage.blob\
     \ import BlobClient\n   blob_client = BlobClient.from_connection_string(\n   \
@@ -1726,7 +1114,7 @@ items:
   - "Getting the properties for a blob.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   properties = blob_client.get_blob_properties()\n\
     \n   ````\n"
@@ -1736,62 +1124,14 @@ items:
   module: azure.storage.blob
   name: get_blob_properties(**kwargs)
   namewithoutparameters: get_blob_properties
-  summary: 'Returns all user-defined metadata, standard HTTP properties, and
-
-    system properties for the blob. It does not return the content of the blob.'
+  summary: "Returns all user-defined metadata, standard HTTP properties, and\nsystem\
+    \ properties for the blob. It does not return the content of the blob.\n\n\n:keyword\
+    \ str if_tags_match_condition\n   Specify a SQL where clause on blob tags to operate\
+    \ only on blob with a matching value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New\
+    \ in version 12.4.0."
   syntax:
     content: get_blob_properties(**kwargs)
     parameters:
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -1815,36 +1155,45 @@ items:
   type: method
   uid: azure.storage.blob.BlobClient.get_blob_properties
 - class: azure.storage.blob.BlobClient
+  fullName: azure.storage.blob.BlobClient.get_blob_tags
+  langs:
+  - python
+  module: azure.storage.blob
+  name: get_blob_tags(**kwargs)
+  namewithoutparameters: get_blob_tags
+  summary: "The Get Tags operation enables users to get tags on a blob or specific\
+    \ blob version, or snapshot.\n\nNew in version 12.4.0: This operation was introduced\
+    \ in API version '2019-12-12'.\n\n\n:keyword str if_tags_match_condition\n   Specify\
+    \ a SQL where clause on blob tags to operate only on destination blob with a matching\
+    \ value."
+  syntax:
+    content: get_blob_tags(**kwargs)
+    parameters:
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: Key value pairs of blob tags.
+      type:
+      - Dict[str, str]
+  type: method
+  uid: azure.storage.blob.BlobClient.get_blob_tags
+- class: azure.storage.blob.BlobClient
   fullName: azure.storage.blob.BlobClient.get_block_list
   langs:
   - python
   module: azure.storage.blob
   name: get_block_list(block_list_type='committed', **kwargs)
   namewithoutparameters: get_block_list
-  summary: 'The Get Block List operation retrieves the list of blocks that have
-
-    been uploaded as part of a block blob.'
+  summary: "The Get Block List operation retrieves the list of blocks that have\n\
+    been uploaded as part of a block blob.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on destination blob\
+    \ with a matching value.\n\n   New in version 12.4.0."
   syntax:
     content: get_block_list(block_list_type='committed', **kwargs)
     parameters:
-    - description: 'Specifies whether to return the list of committed
-
-        blocks, the list of uncommitted blocks, or both lists together.
-
-        Possible values include: ''committed'', ''uncommitted'', ''all'''
-      id: block_list_type
-      isRequired: true
-      type:
-      - str
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -1990,103 +1339,14 @@ items:
   module: azure.storage.blob
   name: get_page_ranges(offset=None, length=None, previous_snapshot_diff=None, **kwargs)
   namewithoutparameters: get_page_ranges
-  summary: 'Returns the list of valid page ranges for a Page Blob or snapshot
-
-    of a page blob.'
+  summary: "Returns the list of valid page ranges for a Page Blob or snapshot\nof\
+    \ a page blob.\n\n\n:keyword str if_tags_match_condition\n   Specify a SQL where\
+    \ clause on blob tags to operate only on blob with a matching value.\n   eg. \"\
+    \"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: get_page_ranges(offset=None, length=None, previous_snapshot_diff=None,
       **kwargs)
     parameters:
-    - description: 'Start of byte range to use for getting valid page ranges.
-
-        If no length is given, all bytes after the offset will be searched.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length must be a modulus of
-
-        512.'
-      id: offset
-      isRequired: true
-      type:
-      - int
-    - description: 'Number of bytes to use for getting valid page ranges.
-
-        If length is given, offset must be provided.
-
-        This range will return valid page ranges from the offset start up to
-
-        the specified length.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length must be a modulus of
-
-        512.'
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: 'The snapshot diff parameter that contains an opaque DateTime value
-        that
-
-        specifies a previous blob snapshot to be compared
-
-        against a more recent snapshot or the current blob.'
-      id: previous_snapshot_diff
-      isRequired: true
-      type:
-      - str
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -2103,79 +1363,73 @@ items:
   type: method
   uid: azure.storage.blob.BlobClient.get_page_ranges
 - class: azure.storage.blob.BlobClient
+  example:
+  - "select/project on blob/or blob snapshot data by providing simple query expressions.<!--[!code-python[Main](les\\\
+    blob_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    1\\\\s\\\\dist_temp\\\\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_query.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   errors = []\n\
+    \   def on_error(error):\n       errors.append(error)\n\n   # upload the csv file\n\
+    \   blob_client = blob_service_client.get_blob_client(container_name, \"csvfile\"\
+    )\n   with open(\"./sample-blobs/quick_query.csv\", \"rb\") as stream:\n     \
+    \  blob_client.upload_blob(stream, overwrite=True)\n\n   # select the second column\
+    \ of the csv file\n   query_expression = \"SELECT _2 from BlobStorage\"\n   input_format\
+    \ = DelimitedTextDialect(delimiter=',', quotechar='\"', lineterminator='\\n',\
+    \ escapechar=\"\", has_header=False)\n   output_format = DelimitedJsonDialect(delimiter='\\\
+    n')\n   reader = blob_client.query_blob(query_expression, on_error=on_error, blob_format=input_format,\
+    \ output_format=output_format)\n   content = reader.readall()\n\n   ````\n"
+  fullName: azure.storage.blob.BlobClient.query_blob
+  langs:
+  - python
+  module: azure.storage.blob
+  name: query_blob(query_expression, **kwargs)
+  namewithoutparameters: query_blob
+  summary: "Enables users to select/project on blob/or blob snapshot data by providing\
+    \ simple query expressions.\nThis operations returns a BlobQueryReader, users\
+    \ need to use readall() or readinto() to get query data.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on blob with a matching\
+    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
+  syntax:
+    content: query_blob(query_expression, **kwargs)
+    parameters:
+    - description: 'Encrypts the data on the service-side with the given key.
+
+        Use of customer-provided keys must be done over HTTPS.
+
+        As the encryption key itself is provided in the request,
+
+        a secure connection must be established to transfer the key.'
+      id: cpk
+      isRequired: true
+      type:
+      - azure.storage.blob.CustomerProvidedEncryptionKey
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: A streaming object (BlobQueryReader)
+      type:
+      - azure.storage.blob.BlobQueryReader
+  type: method
+  uid: azure.storage.blob.BlobClient.query_blob
+- class: azure.storage.blob.BlobClient
   fullName: azure.storage.blob.BlobClient.resize_blob
   langs:
   - python
   module: azure.storage.blob
   name: resize_blob(size, **kwargs)
   namewithoutparameters: resize_blob
-  summary: 'Resizes a page blob to the specified size.
-
-
-    If the specified value is less than the current size of the blob,
-
-    then all pages above the specified value are cleared.'
+  summary: "Resizes a page blob to the specified size.\n\nIf the specified value is\
+    \ less than the current size of the blob,\nthen all pages above the specified\
+    \ value are cleared.\n\n\n:keyword str if_tags_match_condition\n   Specify a SQL\
+    \ where clause on blob tags to operate only on blob with a matching value.\n \
+    \  eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: resize_blob(size, **kwargs)
     parameters:
-    - description: 'Size used to resize blob. Maximum size for a page blob is up to
-        1 TB.
-
-        The page blob size must be aligned to a 512-byte boundary.'
-      id: size
-      isRequired: true
-      type:
-      - int
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'A page blob tier value to set the blob to. The tier correlates
         to the size of the
 
@@ -2198,25 +1452,30 @@ items:
   type: method
   uid: azure.storage.blob.BlobClient.resize_blob
 - class: azure.storage.blob.BlobClient
-  fullName: azure.storage.blob.BlobClient.set_blob_metadata
+  fullName: azure.storage.blob.BlobClient.seal_append_blob
   langs:
   - python
   module: azure.storage.blob
-  name: set_blob_metadata(metadata=None, **kwargs)
-  namewithoutparameters: set_blob_metadata
-  summary: Sets user-defined metadata for the blob as one or more name-value pairs.
+  name: seal_append_blob(**kwargs)
+  namewithoutparameters: seal_append_blob
+  summary: "The Seal operation seals the Append Blob to make it read-only.\n\n   New\
+    \ in version 12.4.0."
   syntax:
-    content: set_blob_metadata(metadata=None, **kwargs)
+    content: seal_append_blob(**kwargs)
     parameters:
-    - description: 'Dict containing name and value pairs. Each call to this operation
+    - description: 'Optional conditional header, used only for the Append Block operation.
 
-        replaces all existing metadata attached to the blob. To remove all
+        A number indicating the byte offset to compare. Append Block will
 
-        metadata from the blob, call this operation with no metadata headers.'
-      id: metadata
+        succeed only if the append position is equal to this number. If it
+
+        is not, the request will fail with the AppendPositionConditionNotMet error
+
+        (HTTP status code 412 - Precondition Failed).'
+      id: appendpos_condition
       isRequired: true
       type:
-      - dict(str, str)
+      - int
     - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
         object
 
@@ -2267,6 +1526,32 @@ items:
       isRequired: true
       type:
       - azure.core.MatchConditions
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: Blob-updated property dict (Etag, last modified, append offset,
+        committed block count).
+      type:
+      - dict(str, Any)
+  type: method
+  uid: azure.storage.blob.BlobClient.seal_append_blob
+- class: azure.storage.blob.BlobClient
+  fullName: azure.storage.blob.BlobClient.set_blob_metadata
+  langs:
+  - python
+  module: azure.storage.blob
+  name: set_blob_metadata(metadata=None, **kwargs)
+  namewithoutparameters: set_blob_metadata
+  summary: "Sets user-defined metadata for the blob as one or more name-value pairs.\n\
+    \n\n:keyword str if_tags_match_condition\n   Specify a SQL where clause on blob\
+    \ tags to operate only on blob with a matching value.\n   eg. \"\"tagname\"='my\
+    \ tag'\"\n\n   New in version 12.4.0."
+  syntax:
+    content: set_blob_metadata(metadata=None, **kwargs)
+    parameters:
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -2306,77 +1591,47 @@ items:
   type: method
   uid: azure.storage.blob.BlobClient.set_blob_metadata
 - class: azure.storage.blob.BlobClient
+  fullName: azure.storage.blob.BlobClient.set_blob_tags
+  langs:
+  - python
+  module: azure.storage.blob
+  name: set_blob_tags(tags=None, **kwargs)
+  namewithoutparameters: set_blob_tags
+  summary: "The Set Tags operation enables users to set tags on a blob or specific\
+    \ blob version, but not snapshot.\n   Each call to this operation replaces all\
+    \ existing tags attached to the blob. To remove all\n   tags from the blob, call\
+    \ this operation with no tags set.\n\nNew in version 12.4.0: This operation was\
+    \ introduced in API version '2019-12-12'.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on destination blob\
+    \ with a matching value."
+  syntax:
+    content: set_blob_tags(tags=None, **kwargs)
+    parameters:
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: Blob-updated property dict (Etag and last modified)
+      type:
+      - Dict[str, Any]
+  type: method
+  uid: azure.storage.blob.BlobClient.set_blob_tags
+- class: azure.storage.blob.BlobClient
   fullName: azure.storage.blob.BlobClient.set_http_headers
   langs:
   - python
   module: azure.storage.blob
   name: set_http_headers(content_settings=None, **kwargs)
   namewithoutparameters: set_http_headers
-  summary: 'Sets system properties on the blob.
-
-
-    If one property is set for the content_settings, all properties will be overridden.'
+  summary: "Sets system properties on the blob.\n\nIf one property is set for the\
+    \ content_settings, all properties will be overridden.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on blob with a matching\
+    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: set_http_headers(content_settings=None, **kwargs)
     parameters:
-    - description: 'ContentSettings object used to set blob properties. Used to set
-        content type, encoding,
-
-        language, disposition, md5, and cache control.'
-      id: content_settings
-      isRequired: true
-      type:
-      - azure.storage.blob.ContentSettings
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -2395,21 +1650,13 @@ items:
   module: azure.storage.blob
   name: set_premium_page_blob_tier(premium_page_blob_tier, **kwargs)
   namewithoutparameters: set_premium_page_blob_tier
-  summary: Sets the page blob tiers on the blob. This API is only supported for page
-    blobs on premium accounts.
+  summary: "Sets the page blob tiers on the blob. This API is only supported for page\
+    \ blobs on premium accounts.\n\n\n:keyword str if_tags_match_condition\n   Specify\
+    \ a SQL where clause on blob tags to operate only on blob with a matching value.\n\
+    \   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: set_premium_page_blob_tier(premium_page_blob_tier, **kwargs)
     parameters:
-    - description: 'A page blob tier value to set the blob to. The tier correlates
-        to the size of the
-
-        blob and number of allowed IOPS. This is only applicable to page blobs on
-
-        premium storage accounts.'
-      id: premium_page_blob_tier
-      isRequired: true
-      type:
-      - azure.storage.blob.PremiumPageBlobTier
     - description: 'The timeout parameter is expressed in seconds. This method may
         make
 
@@ -2441,78 +1688,12 @@ items:
   module: azure.storage.blob
   name: set_sequence_number(sequence_number_action, sequence_number=None, **kwargs)
   namewithoutparameters: set_sequence_number
-  summary: Sets the blob sequence number.
+  summary: "Sets the blob sequence number.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on blob with a matching\
+    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: set_sequence_number(sequence_number_action, sequence_number=None, **kwargs)
     parameters:
-    - description: 'This property indicates how the service should modify the blob''s
-        sequence
-
-        number. See <xref:azure.storage.blob.SequenceNumberAction> for more information.'
-      id: sequence_number_action
-      isRequired: true
-      type:
-      - str
-    - description: 'This property sets the blob''s sequence number. The sequence number
-        is a
-
-        user-controlled property that you can use to track requests and manage
-
-        concurrency issues.'
-      id: sequence_number
-      isRequired: true
-      type:
-      - str
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -2531,37 +1712,14 @@ items:
   module: azure.storage.blob
   name: set_standard_blob_tier(standard_blob_tier, **kwargs)
   namewithoutparameters: set_standard_blob_tier
-  summary: 'This operation sets the tier on a block blob.
-
-
-    A block blob''s tier determines Hot/Cool/Archive storage type.
-
-    This operation does not update the blob''s ETag.'
+  summary: "This operation sets the tier on a block blob.\n\nA block blob's tier determines\
+    \ Hot/Cool/Archive storage type.\nThis operation does not update the blob's ETag.\n\
+    \n\n:keyword str if_tags_match_condition\n   Specify a SQL where clause on blob\
+    \ tags to operate only on blob with a matching value.\n   eg. \"\"tagname\"='my\
+    \ tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: set_standard_blob_tier(standard_blob_tier, **kwargs)
     parameters:
-    - description: 'Indicates the tier to be set on the blob. Options include ''Hot'',
-        ''Cool'',
-
-        ''Archive''. The hot tier is optimized for storing data that is accessed
-
-        frequently. The cool storage tier is optimized for storing data that
-
-        is infrequently accessed and stored for at least a month. The archive
-
-        tier is optimized for storing data that is rarely accessed and stored
-
-        for at least six months with flexible latency requirements.'
-      id: standard_blob_tier
-      isRequired: true
-      type:
-      - str
-      - azure.storage.blob.StandardBlobTier
-    - description: Indicates the priority with which to rehydrate an archived blob
-      id: rehydrate_priority
-      isRequired: true
-      type:
-      - azure.storage.blob.RehydratePriority
     - description: The timeout parameter is expressed in seconds.
       id: timeout
       isRequired: true
@@ -2789,7 +1947,7 @@ items:
   - "Copy a blob from a URL.<!--[!code-python[Main](les\\blob_samples_common.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\90\\\\\
-    azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
+    azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # Get the blob client with the\
     \ source blob\n   source_blob = \"http://www.gutenberg.org/files/59466/59466-0.txt\"\
@@ -2910,6 +2068,25 @@ items:
       isRequired: true
       type:
       - bool
+    - description: 'Name-value pairs associated with the blob as tag. Tags are case-sensitive.
+
+        The tag set may contain at most 10 tags.  Tag keys must be between 1 and 128
+        characters,
+
+        and tag values must be between 0 and 256 characters.
+
+        Valid tag key and value characters include: lowercase and uppercase letters,
+        digits (0-9),
+
+        space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:),
+        equals (=), underscore (_)
+
+
+        New in version 12.4.0.'
+      id: tags
+      isRequired: true
+      type:
+      - dict(str, str)
     - description: 'A DateTime value. Azure expects the date value passed in to be
         UTC.
 
@@ -3047,6 +2224,15 @@ items:
       isRequired: true
       type:
       - azure.storage.blob.RehydratePriority
+    - description: 'Seal the destination append blob. This operation is only for append
+        blob.
+
+
+        New in version 12.4.0.'
+      id: seal_destination_blob
+      isRequired: true
+      type:
+      - bool
     - description: Enforces that the service will not return a response until the
         copy is complete.
       id: requires_sync
@@ -3066,7 +2252,7 @@ items:
   - "Undeleting a blob.<!--[!code-python[Main](les\\blob_samples_common.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\90\\\\\
-    azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
+    azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_common.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   # Undelete the blob before the\
     \ retention policy expires\n   blob_client.undelete_blob()\n\n   ````\n"
@@ -3100,7 +2286,7 @@ items:
   - "Upload a blob to the container.<!--[!code-python[Main](les\\blob_samples_hello_world.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\90\\\\azure-storage-blob-12.3.2\\\\samples\\\\blob_samples_hello_world.py\"\
+    \\90\\\\azure-storage-blob-12.4.0\\\\samples\\\\blob_samples_hello_world.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Upload content\
     \ to block blob\n   with open(SOURCE_FILE, \"rb\") as data:\n       blob_client.upload_blob(data,\
@@ -3112,132 +2298,14 @@ items:
   name: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, length=None,
     metadata=None, **kwargs)'
   namewithoutparameters: upload_blob
-  summary: Creates a new blob from a data source with automatic chunking.
+  summary: "Creates a new blob from a data source with automatic chunking.\n\n\n:keyword\
+    \ str if_tags_match_condition\n   Specify a SQL where clause on blob tags to operate\
+    \ only on blob with a matching value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New\
+    \ in version 12.4.0."
   syntax:
     content: 'upload_blob(data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>, length=None,
       metadata=None, **kwargs)'
     parameters:
-    - description: The blob data to upload.
-      id: data
-      isRequired: true
-    - description: 'The type of the blob. This can be
-
-        either BlockBlob, PageBlob or AppendBlob. The default value is BlockBlob.'
-      id: blob_type
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobType
-    - description: 'Number of bytes to read from the stream. This is optional, but
-
-        should be supplied for optimal performance.'
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: Name-value pairs associated with the blob as metadata.
-      id: metadata
-      isRequired: true
-      type:
-      - dict(str, str)
-    - description: 'Whether the blob to be uploaded should overwrite the current data.
-
-        If True, upload_blob will overwrite the existing data. If set to False, the
-
-        operation will fail with ResourceExistsError. The exception to the above is
-        with Append
-
-        blob types: if set to False and the data already exists, an error will not
-        be raised
-
-        and the data will be appended to the existing blob. If set overwrite=True,
-        then the existing
-
-        append blob will be deleted, and a new one created. Defaults to False.'
-      id: overwrite
-      isRequired: true
-      type:
-      - bool
-    - description: 'ContentSettings object used to set blob properties. Used to set
-        content type, encoding,
-
-        language, disposition, md5, and cache control.'
-      id: content_settings
-      isRequired: true
-      type:
-      - azure.storage.blob.ContentSettings
-    - description: 'If true, calculates an MD5 hash for each chunk of the blob. The
-        storage
-
-        service checks the hash of the content that has arrived with the hash
-
-        that was sent. This is primarily valuable for detecting bitflips on
-
-        the wire if using http instead of https, as https (the default), will
-
-        already validate. Note that this MD5 hash is not stored with the
-
-        blob. Also note that if enabled, the memory-efficient upload algorithm
-
-        will not be used because computing the MD5 hash requires buffering
-
-        entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
-      id: validate_content
-      isRequired: true
-      type:
-      - bool
-    - description: 'Required if the blob has an active lease. If specified, upload_blob
-        only succeeds if the
-
-        blob''s lease is active and matches this ID. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'A page blob tier value to set the blob to. The tier correlates
         to the size of the
 
@@ -3335,123 +2403,13 @@ items:
   module: azure.storage.blob
   name: upload_page(page, offset, length, **kwargs)
   namewithoutparameters: upload_page
-  summary: The Upload Pages operation writes a range of pages to a page blob.
+  summary: "The Upload Pages operation writes a range of pages to a page blob.\n\n\
+    \n:keyword str if_tags_match_condition\n   Specify a SQL where clause on blob\
+    \ tags to operate only on blob with a matching value.\n   eg. \"\"tagname\"='my\
+    \ tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: upload_page(page, offset, length, **kwargs)
     parameters:
-    - description: Content of the page.
-      id: page
-      isRequired: true
-      type:
-      - bytes
-    - description: 'Start of byte range to use for writing to a section of the blob.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length  must be a modulus of
-
-        512.'
-      id: offset
-      isRequired: true
-      type:
-      - int
-    - description: 'Number of bytes to use for writing to a section of the blob.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length must be a modulus of
-
-        512.'
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'If true, calculates an MD5 hash of the page content. The storage
-
-        service checks the hash of the content that has arrived
-
-        with the hash that was sent. This is primarily valuable for detecting
-
-        bitflips on the wire if using http instead of https, as https (the default),
-
-        will already validate. Note that this MD5 hash is not stored with the
-
-        blob.'
-      id: validate_content
-      isRequired: true
-      type:
-      - bool
-    - description: 'If the blob''s sequence number is less than or equal to
-
-        the specified value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_lte
-      isRequired: true
-      type:
-      - int
-    - description: 'If the blob''s sequence number is less than the specified
-
-        value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_lt
-      isRequired: true
-      type:
-      - int
-    - description: 'If the blob''s sequence number is equal to the specified
-
-        value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_eq
-      isRequired: true
-      type:
-      - int
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'An ETag value, or the wildcard character (*). Used to check if
-        the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -3504,168 +2462,13 @@ items:
   module: azure.storage.blob
   name: upload_pages_from_url(source_url, offset, length, source_offset, **kwargs)
   namewithoutparameters: upload_pages_from_url
-  summary: 'The Upload Pages operation writes a range of pages to a page blob where
-
-    the contents are read from a URL.'
+  summary: "The Upload Pages operation writes a range of pages to a page blob where\n\
+    the contents are read from a URL.\n\n\n:keyword str if_tags_match_condition\n\
+    \   Specify a SQL where clause on blob tags to operate only on blob with a matching\
+    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
   syntax:
     content: upload_pages_from_url(source_url, offset, length, source_offset, **kwargs)
     parameters:
-    - description: 'The URL of the source data. It can point to any Azure Blob or
-        File, that is either public or has a
-
-        shared access signature attached.'
-      id: source_url
-      isRequired: true
-      type:
-      - str
-    - description: 'Start of byte range to use for writing to a section of the blob.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length  must be a modulus of
-
-        512.'
-      id: offset
-      isRequired: true
-      type:
-      - int
-    - description: 'Number of bytes to use for writing to a section of the blob.
-
-        Pages must be aligned with 512-byte boundaries, the start offset
-
-        must be a modulus of 512 and the length must be a modulus of
-
-        512.'
-      id: length
-      isRequired: true
-      type:
-      - int
-    - description: 'This indicates the start of the range of bytes(inclusive) that
-        has to be taken from the copy source.
-
-        The service will read the same number of bytes as the destination range (length-offset).'
-      id: source_offset
-      isRequired: true
-      type:
-      - int
-    - description: If given, the service will calculate the MD5 hash of the block
-        content and compare against this value.
-      id: source_content_md5
-      isRequired: true
-      type:
-      - bytes
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the source resource has been modified since the specified time.'
-      id: source_if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the source resource has not been modified since the specified date/time.'
-      id: source_if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'The source ETag value, or the wildcard character (*). Used to
-        check if the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: source_etag
-      isRequired: true
-      type:
-      - str
-    - description: The source match condition to use upon the etag.
-      id: source_match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
-    - description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-        object
-
-        or the lease ID as a string.'
-      id: lease
-      isRequired: true
-      type:
-      - azure.storage.blob.BlobLeaseClient
-      - str
-    - description: 'If the blob''s sequence number is less than or equal to
-
-        the specified value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_lte
-      isRequired: true
-      type:
-      - int
-    - description: 'If the blob''s sequence number is less than the specified
-
-        value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_lt
-      isRequired: true
-      type:
-      - int
-    - description: 'If the blob''s sequence number is equal to the specified
-
-        value, the request proceeds; otherwise it fails.'
-      id: if_sequence_number_eq
-      isRequired: true
-      type:
-      - int
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only
-
-        if the resource has been modified since the specified time.'
-      id: if_modified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'A DateTime value. Azure expects the date value passed in to be
-        UTC.
-
-        If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-        If a date is passed in without timezone info, it is assumed to be UTC.
-
-        Specify this header to perform the operation only if
-
-        the resource has not been modified since the specified date/time.'
-      id: if_unmodified_since
-      isRequired: true
-      type:
-      - datetime.datetime
-    - description: 'The destination ETag value, or the wildcard character (*). Used
-        to check if the resource has changed,
-
-        and act according to the condition specified by the *match_condition* parameter.'
-      id: etag
-      isRequired: true
-      type:
-      - str
-    - description: The destination match condition to use upon the etag.
-      id: match_condition
-      isRequired: true
-      type:
-      - azure.core.MatchConditions
     - description: 'Encrypts the data on the service-side with the given key.
 
         Use of customer-provided keys must be done over HTTPS.
@@ -3781,6 +2584,11 @@ references:
   name: get_blob_properties(**kwargs)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.get_blob_properties
+- fullName: azure.storage.blob.BlobClient.get_blob_tags
+  isExternal: false
+  name: get_blob_tags(**kwargs)
+  parent: azure.storage.blob.BlobClient
+  uid: azure.storage.blob.BlobClient.get_blob_tags
 - fullName: azure.storage.blob.BlobClient.get_block_list
   isExternal: false
   name: get_block_list(block_list_type='committed', **kwargs)
@@ -3797,16 +2605,31 @@ references:
   name: get_page_ranges(offset=None, length=None, previous_snapshot_diff=None, **kwargs)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.get_page_ranges
+- fullName: azure.storage.blob.BlobClient.query_blob
+  isExternal: false
+  name: query_blob(query_expression, **kwargs)
+  parent: azure.storage.blob.BlobClient
+  uid: azure.storage.blob.BlobClient.query_blob
 - fullName: azure.storage.blob.BlobClient.resize_blob
   isExternal: false
   name: resize_blob(size, **kwargs)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.resize_blob
+- fullName: azure.storage.blob.BlobClient.seal_append_blob
+  isExternal: false
+  name: seal_append_blob(**kwargs)
+  parent: azure.storage.blob.BlobClient
+  uid: azure.storage.blob.BlobClient.seal_append_blob
 - fullName: azure.storage.blob.BlobClient.set_blob_metadata
   isExternal: false
   name: set_blob_metadata(metadata=None, **kwargs)
   parent: azure.storage.blob.BlobClient
   uid: azure.storage.blob.BlobClient.set_blob_metadata
+- fullName: azure.storage.blob.BlobClient.set_blob_tags
+  isExternal: false
+  name: set_blob_tags(tags=None, **kwargs)
+  parent: azure.storage.blob.BlobClient
+  uid: azure.storage.blob.BlobClient.set_blob_tags
 - fullName: azure.storage.blob.BlobClient.set_http_headers
   isExternal: false
   name: set_http_headers(content_settings=None, **kwargs)
@@ -3883,25 +2706,6 @@ references:
   - fullName: )
     name: )
   uid: dict(str, Any)
-- fullName: dict[str, str]
-  name: dict[str, str]
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: dict[str, str]
 - fullName: dict(str, str)
   name: dict(str, str)
   spec.python:
@@ -3940,6 +2744,25 @@ references:
   - fullName: ']'
     name: ']'
   uid: dict[str, Any]
+- fullName: Dict[str, str]
+  name: Dict[str, str]
+  spec.python:
+  - fullName: Dict
+    name: Dict
+    uid: Dict
+  - fullName: '['
+    name: '['
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ']'
+    name: ']'
+  uid: Dict[str, str]
 - fullName: tuple(list(azure.storage.blob.BlobBlock), list(azure.storage.blob.BlobBlock))
   name: tuple(list(BlobBlock), list(BlobBlock))
   spec.python:

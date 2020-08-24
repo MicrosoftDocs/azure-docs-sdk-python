@@ -1,3 +1,15 @@
+---
+title: 
+keywords: Azure, python, SDK, API, azure-mgmt-keyvault, keyvault
+author: maggiepint
+ms.author: magpint
+ms.date: 07/23/2020
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: keyvault
+---
 
 # Microsoft Azure SDK for Python
 
