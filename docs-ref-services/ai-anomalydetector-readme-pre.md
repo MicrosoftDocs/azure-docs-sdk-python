@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-ai-anomalydetector, 
+keywords: Azure, python, SDK, API, azure-ai-anomalydetector, anomalydetector
 author: maggiepint
 ms.author: magpint
-ms.date: 08/17/2020
+ms.date: 08/27/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: anomalydetector
 ---
 
 # Microsoft Azure SDK for Python
