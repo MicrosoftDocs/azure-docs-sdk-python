@@ -30,7 +30,7 @@ items:
   syntax:
     content: ClientApplication(client_id, client_credential=None, authority=None,
       validate_authority=True, token_cache=None, http_client=None, verify=True, proxies=None,
-      timeout=None, client_claims=None, app_name=None, app_version=None)
+      timeout=None, client_claims=None, app_name=None, app_version=None, client_capabilities=None)
   type: class
   uid: msal.application.ClientApplication
 - class: msal.application.ClientApplication
@@ -39,12 +39,12 @@ items:
   - python
   module: msal.application
   name: acquire_token_by_authorization_code(code, scopes, redirect_uri=None, nonce=None,
-    **kwargs)
+    claims_challenge=None, **kwargs)
   namewithoutparameters: acquire_token_by_authorization_code
   summary: The second half of the Authorization Code Grant.
   syntax:
     content: acquire_token_by_authorization_code(code, scopes, redirect_uri=None,
-      nonce=None, **kwargs)
+      nonce=None, claims_challenge=None, **kwargs)
     parameters:
     - description: The authorization code returned from Authorization Server.
       id: code
@@ -88,7 +88,19 @@ items:
         An exception will be raised if the nonce in id token mismatches.'
       id: nonce
     - defaultValue: None
-      id: nonce
+      description: 'The claims_challenge parameter requests specific claims requested
+        by the resource provider
+
+        in the form of a claims_challenge directive in the www-authenticate header
+        to be
+
+        returned from the UserInfo Endpoint and/or in the ID Token and/or Access Token.
+
+        It is a string of a JSON object which contains lists of claims being requested
+        from these locations.'
+      id: claims_challenge
+    - defaultValue: None
+      id: claims_challenge
     return:
       description: "A dict representing the json response from AAD:\n\n* A successful\
         \ response would contain \"access_token\" key, \n\n* an error response would\
@@ -147,7 +159,7 @@ items:
   - python
   module: msal.application
   name: acquire_token_silent(scopes, account, authority=None, force_refresh=False,
-    **kwargs)
+    claims_challenge=None, **kwargs)
   namewithoutparameters: acquire_token_silent
   summary: 'Acquire an access token for given account, without user interaction.
 
@@ -171,9 +183,19 @@ items:
     Internally, this method calls <xref:msal.application.acquire_token_silent_with_error>.'
   syntax:
     content: acquire_token_silent(scopes, account, authority=None, force_refresh=False,
-      **kwargs)
+      claims_challenge=None, **kwargs)
     parameters:
-    - id: scopes
+    - description: 'The claims_challenge parameter requests specific claims requested
+        by the resource provider
+
+        in the form of a claims_challenge directive in the www-authenticate header
+        to be
+
+        returned from the UserInfo Endpoint and/or in the ID Token and/or Access Token.
+
+        It is a string of a JSON object which contains lists of claims being requested
+        from these locations.'
+      id: claims_challenge
       isRequired: true
     - id: account
       isRequired: true
@@ -181,6 +203,8 @@ items:
       id: authority
     - defaultValue: 'False'
       id: force_refresh
+    - defaultValue: None
+      id: claims_challenge
     return:
       description: "* A dict containing no \"error\" key, and typically contains an\
         \ \"access_token\" key, if cache lookup succeeded. \n\n* None when cache lookup\
@@ -193,7 +217,7 @@ items:
   - python
   module: msal.application
   name: acquire_token_silent_with_error(scopes, account, authority=None, force_refresh=False,
-    **kwargs)
+    claims_challenge=None, **kwargs)
   namewithoutparameters: acquire_token_silent_with_error
   summary: 'Acquire an access token for given account, without user interaction.
 
@@ -215,7 +239,7 @@ items:
     is recommended.'
   syntax:
     content: acquire_token_silent_with_error(scopes, account, authority=None, force_refresh=False,
-      **kwargs)
+      claims_challenge=None, **kwargs)
     parameters:
     - description: '(Required)
 
@@ -235,7 +259,19 @@ items:
         and try to find a Refresh Token to obtain a new Access Token.'
       id: force_refresh
     - defaultValue: 'False'
-      id: force_refresh
+      description: 'The claims_challenge parameter requests specific claims requested
+        by the resource provider
+
+        in the form of a claims_challenge directive in the www-authenticate header
+        to be
+
+        returned from the UserInfo Endpoint and/or in the ID Token and/or Access Token.
+
+        It is a string of a JSON object which contains lists of claims being requested
+        from these locations.'
+      id: claims_challenge
+    - defaultValue: None
+      id: claims_challenge
     return:
       description: "* A dict containing no \"error\" key, and typically contains an\
         \ \"access_token\" key, if cache lookup succeeded. \n\n* None when there is\
@@ -278,12 +314,14 @@ items:
   - python
   module: msal.application
   name: get_authorization_request_url(scopes, login_hint=None, state=None, redirect_uri=None,
-    response_type='code', prompt=None, nonce=None, domain_hint=None, **kwargs)
+    response_type='code', prompt=None, nonce=None, domain_hint=None, claims_challenge=None,
+    **kwargs)
   namewithoutparameters: get_authorization_request_url
   summary: Constructs a URL for you to start a Authorization Code Grant.
   syntax:
     content: get_authorization_request_url(scopes, login_hint=None, state=None, redirect_uri=None,
-      response_type='code', prompt=None, nonce=None, domain_hint=None, **kwargs)
+      response_type='code', prompt=None, nonce=None, domain_hint=None, claims_challenge=None,
+      **kwargs)
     parameters:
     - description: '(Required)
 
@@ -346,6 +384,18 @@ items:
 
         [here](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oapx/86fb452d-e34a-494e-ac61-e526e263b6d8).'
       id: domain_hint
+    - defaultValue: None
+      description: 'The claims_challenge parameter requests specific claims requested
+        by the resource provider
+
+        in the form of a claims_challenge directive in the www-authenticate header
+        to be
+
+        returned from the UserInfo Endpoint and/or in the ID Token and/or Access Token.
+
+        It is a string of a JSON object which contains lists of claims being requested
+        from these locations.'
+      id: claims_challenge
     return:
       description: The authorization url as a string.
   type: method
@@ -459,7 +509,7 @@ references:
 - fullName: msal.application.ClientApplication.acquire_token_by_authorization_code
   isExternal: false
   name: acquire_token_by_authorization_code(code, scopes, redirect_uri=None, nonce=None,
-    **kwargs)
+    claims_challenge=None, **kwargs)
   parent: msal.application.ClientApplication
   uid: msal.application.ClientApplication.acquire_token_by_authorization_code
 - fullName: msal.application.ClientApplication.acquire_token_by_refresh_token
@@ -470,13 +520,13 @@ references:
 - fullName: msal.application.ClientApplication.acquire_token_silent
   isExternal: false
   name: acquire_token_silent(scopes, account, authority=None, force_refresh=False,
-    **kwargs)
+    claims_challenge=None, **kwargs)
   parent: msal.application.ClientApplication
   uid: msal.application.ClientApplication.acquire_token_silent
 - fullName: msal.application.ClientApplication.acquire_token_silent_with_error
   isExternal: false
   name: acquire_token_silent_with_error(scopes, account, authority=None, force_refresh=False,
-    **kwargs)
+    claims_challenge=None, **kwargs)
   parent: msal.application.ClientApplication
   uid: msal.application.ClientApplication.acquire_token_silent_with_error
 - fullName: msal.application.ClientApplication.get_accounts
@@ -487,7 +537,8 @@ references:
 - fullName: msal.application.ClientApplication.get_authorization_request_url
   isExternal: false
   name: get_authorization_request_url(scopes, login_hint=None, state=None, redirect_uri=None,
-    response_type='code', prompt=None, nonce=None, domain_hint=None, **kwargs)
+    response_type='code', prompt=None, nonce=None, domain_hint=None, claims_challenge=None,
+    **kwargs)
   parent: msal.application.ClientApplication
   uid: msal.application.ClientApplication.get_authorization_request_url
 - fullName: msal.application.ClientApplication.remove_account
