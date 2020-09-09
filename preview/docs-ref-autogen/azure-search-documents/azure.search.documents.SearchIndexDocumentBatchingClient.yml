@@ -8,12 +8,15 @@ items:
   - azure.search.documents.SearchIndexDocumentBatchingClient.add_merge_or_upload_actions
   - azure.search.documents.SearchIndexDocumentBatchingClient.add_upload_actions
   - azure.search.documents.SearchIndexDocumentBatchingClient.close
-  - azure.search.documents.SearchIndexDocumentBatchingClient.failed_actions
   - azure.search.documents.SearchIndexDocumentBatchingClient.flush
-  - azure.search.documents.SearchIndexDocumentBatchingClient.succeeded_actions
   class: azure.search.documents.SearchIndexDocumentBatchingClient
   fullName: azure.search.documents.SearchIndexDocumentBatchingClient
   inheritance:
+  - inheritance:
+    - inheritance:
+      - type: builtins.object
+      type: azure.search.documents._headers_mixin.HeadersMixin
+    type: azure.search.documents._internal._search_index_document_batching_client_base.SearchIndexDocumentBatchingClientBase
   - inheritance:
     - type: builtins.object
     type: azure.search.documents._headers_mixin.HeadersMixin
@@ -37,22 +40,21 @@ items:
       id: credential
       type:
       - azure.core.credentials.AzureKeyCredential
+    - description: if the auto flush mode is on. Default to True.
+      id: auto_flush
+      type:
+      - bool
     - description: 'how many seconds if there is no changes that triggers auto flush.
 
-        if window is less or equal than 0, it will disable auto flush'
+        Default to 60 seconds'
       id: window
       type:
       - int
-    - description: batch size. Default to 1000. It only takes affect when auto_flush
-        is on
-      id: batch_size
+    - description: hook. If it is set, the client will call corresponding methods
+        when status changes
+      id: hook
       type:
-      - int
-    - description: persistence hook. If it is set, the batch client will dump actions
-        queue when it changes
-      id: persistence
-      type:
-      - PersistenceBase
+      - IndexingHook
     - description: The Search API version to use for requests.
       id: api_version
       type:
@@ -151,58 +153,34 @@ items:
   module: azure.search.documents
   name: close()
   namewithoutparameters: close
-  summary: Close the <xref:azure.search.SearchClient> session.
+  summary: Close the <xref:azure.search.documents.SearchClient> session.
   syntax:
     content: close()
     parameters: []
   type: method
   uid: azure.search.documents.SearchIndexDocumentBatchingClient.close
 - class: azure.search.documents.SearchIndexDocumentBatchingClient
-  fullName: azure.search.documents.SearchIndexDocumentBatchingClient.failed_actions
-  langs:
-  - python
-  module: azure.search.documents
-  name: failed_actions
-  summary: The list of currently failed index actions in queue.
-  syntax:
-    return:
-      type:
-      - List[IndexAction]
-  type: attribute
-  uid: azure.search.documents.SearchIndexDocumentBatchingClient.failed_actions
-- class: azure.search.documents.SearchIndexDocumentBatchingClient
   fullName: azure.search.documents.SearchIndexDocumentBatchingClient.flush
   langs:
   - python
   module: azure.search.documents
-  name: flush(raise_error=False)
+  name: flush(timeout=86400, **kwargs)
   namewithoutparameters: flush
   summary: Flush the batch.
   syntax:
-    content: flush(raise_error=False)
+    content: flush(timeout=86400, **kwargs)
     parameters:
-    - defaultValue: 'False'
-      description: 'raise error if there are failures during flushing
-
-        Default to False which re-queue the failed tasks and retry on next flush.'
-      id: raise_error
+    - description: time out setting. Default is 86400s (one day)
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: True if there are errors. Else False
       type:
       - bool
   type: method
   uid: azure.search.documents.SearchIndexDocumentBatchingClient.flush
-- class: azure.search.documents.SearchIndexDocumentBatchingClient
-  fullName: azure.search.documents.SearchIndexDocumentBatchingClient.succeeded_actions
-  langs:
-  - python
-  module: azure.search.documents
-  name: succeeded_actions
-  summary: The list of currently succeeded index actions in queue.
-  syntax:
-    return:
-      type:
-      - List[IndexAction]
-  type: attribute
-  uid: azure.search.documents.SearchIndexDocumentBatchingClient.succeeded_actions
 references:
 - fullName: azure.search.documents.SearchIndexDocumentBatchingClient.actions
   isExternal: false
@@ -234,21 +212,11 @@ references:
   name: close()
   parent: azure.search.documents.SearchIndexDocumentBatchingClient
   uid: azure.search.documents.SearchIndexDocumentBatchingClient.close
-- fullName: azure.search.documents.SearchIndexDocumentBatchingClient.failed_actions
-  isExternal: false
-  name: failed_actions
-  parent: azure.search.documents.SearchIndexDocumentBatchingClient
-  uid: azure.search.documents.SearchIndexDocumentBatchingClient.failed_actions
 - fullName: azure.search.documents.SearchIndexDocumentBatchingClient.flush
   isExternal: false
-  name: flush(raise_error=False)
+  name: flush(timeout=86400, **kwargs)
   parent: azure.search.documents.SearchIndexDocumentBatchingClient
   uid: azure.search.documents.SearchIndexDocumentBatchingClient.flush
-- fullName: azure.search.documents.SearchIndexDocumentBatchingClient.succeeded_actions
-  isExternal: false
-  name: succeeded_actions
-  parent: azure.search.documents.SearchIndexDocumentBatchingClient
-  uid: azure.search.documents.SearchIndexDocumentBatchingClient.succeeded_actions
 - fullName: List[IndexAction]
   name: List[IndexAction]
   spec.python:
