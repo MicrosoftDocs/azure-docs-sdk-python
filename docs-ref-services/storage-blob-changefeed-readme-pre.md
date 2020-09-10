@@ -28,7 +28,7 @@ This preview package for Python enables users to get blob change feed events. Th
 [Azure storage account](https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-quickstart-create-account) to use this package.
 
 ### Install the package
-Install the Azure Storage Blob ChangeFeed client library for Python - Version 12.0.0b2 
+Install the Azure Storage Blob ChangeFeed client library for Python
  with [pip](https://pypi.org/project/pip/):
 
 ```bash
