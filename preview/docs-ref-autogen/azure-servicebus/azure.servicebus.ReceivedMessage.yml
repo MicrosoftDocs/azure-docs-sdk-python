@@ -15,7 +15,7 @@ items:
       - inheritance:
         - type: builtins.object
         type: azure.servicebus._common.message.Message
-      type: azure.servicebus._common.message.PeekMessage
+      type: azure.servicebus._common.message.PeekedMessage
     type: azure.servicebus._common.message.ReceivedMessageBase
   langs:
   - python
@@ -23,7 +23,7 @@ items:
   name: ReceivedMessage
   summary: ''
   syntax:
-    content: 'ReceivedMessage(message, mode=<ReceiveSettleMode.PeekLock: <ReceiverSettleMode.PeekLock:
+    content: 'ReceivedMessage(message, receive_mode=<ReceiveMode.PeekLock: <ReceiverSettleMode.PeekLock:
       1>>, **kwargs)'
   type: class
   uid: azure.servicebus.ReceivedMessage
@@ -32,7 +32,7 @@ items:
   - "Abandoning a received message to return it immediately to the queue.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b5\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b6\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -60,7 +60,7 @@ items:
   - "Completing a received message to remove it from the queue.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b5\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b6\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_receiver:\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -90,7 +90,7 @@ items:
     \ subqueue,\nand receiving it from there.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b5\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b6\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n       with servicebus_client.get_queue_receiver(queue_name) as servicebus_receiver:\n\
@@ -105,7 +105,7 @@ items:
   langs:
   - python
   module: azure.servicebus
-  name: dead_letter(reason=None, description=None)
+  name: dead_letter(reason=None, error_description=None)
   namewithoutparameters: dead_letter
   summary: 'Move the message to the Dead Letter queue.
 
@@ -118,7 +118,7 @@ items:
     or processing. The queue can also be configured to send expired messages to the
     Dead Letter queue.'
   syntax:
-    content: dead_letter(reason=None, description=None)
+    content: dead_letter(reason=None, error_description=None)
     parameters:
     - defaultValue: None
       description: The reason for dead-lettering the message.
@@ -126,8 +126,8 @@ items:
       type:
       - str
     - defaultValue: None
-      description: The detailed description for dead-lettering the message.
-      id: description
+      description: The detailed error description for dead-lettering the message.
+      id: error_description
       type:
       - str
     return:
@@ -141,7 +141,7 @@ items:
     by calling receive_deffered_messages with its sequence number<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b5\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\8\\\\azure-servicebus-7.0.0b6\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_receiver:\n       deferred_sequenced_numbers\
@@ -206,8 +206,9 @@ items:
     content: renew_lock()
     parameters: []
     return:
+      description: The utc datetime the lock is set to expire at.
       type:
-      - None
+      - datetime.datetime
   type: method
   uid: azure.servicebus.ReceivedMessage.renew_lock
 references:
@@ -223,7 +224,7 @@ references:
   uid: azure.servicebus.ReceivedMessage.complete
 - fullName: azure.servicebus.ReceivedMessage.dead_letter
   isExternal: false
-  name: dead_letter(reason=None, description=None)
+  name: dead_letter(reason=None, error_description=None)
   parent: azure.servicebus.ReceivedMessage
   uid: azure.servicebus.ReceivedMessage.dead_letter
 - fullName: azure.servicebus.ReceivedMessage.defer
