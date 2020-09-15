@@ -63,7 +63,7 @@ Install the Azure Cognitive Search client library for Python - Version 11.1.0b2
  with [pip](https://pypi.org/project/pip/):
 
 ```bash
-pip install azure-search-documents
+pip install azure-search-documents --pre
 ```
 
 ### Prerequisites
