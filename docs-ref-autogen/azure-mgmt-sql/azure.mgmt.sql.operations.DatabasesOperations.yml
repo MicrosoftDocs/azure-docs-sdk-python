@@ -2,15 +2,14 @@
 api_name: []
 items:
 - children:
-  - azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
   - azure.mgmt.sql.operations.DatabasesOperations.create_or_update
   - azure.mgmt.sql.operations.DatabasesOperations.delete
   - azure.mgmt.sql.operations.DatabasesOperations.export
   - azure.mgmt.sql.operations.DatabasesOperations.failover
   - azure.mgmt.sql.operations.DatabasesOperations.get
-  - azure.mgmt.sql.operations.DatabasesOperations.import_method
   - azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
   - azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+  - azure.mgmt.sql.operations.DatabasesOperations.list_inaccessible_by_server
   - azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
   - azure.mgmt.sql.operations.DatabasesOperations.list_metrics
   - azure.mgmt.sql.operations.DatabasesOperations.pause
@@ -43,80 +42,8 @@ items:
       id: serializer
     - description: An object model deserializer.
       id: deserializer
-    variables:
-    - description: 'The name of the operation to perform. Constant value: "import".'
-      id: extension_name
   type: class
   uid: azure.mgmt.sql.operations.DatabasesOperations
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: create_import_operation(resource_group_name, server_name, database_name, parameters,
-    custom_headers=None, raw=False, polling=True, **operation_config)
-  namewithoutparameters: create_import_operation
-  summary: 'Creates an import operation that imports a bacpac into an existing
-
-    database. The existing database must be empty.'
-  syntax:
-    content: create_import_operation(resource_group_name, server_name, database_name,
-      parameters, custom_headers=None, raw=False, polling=True, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.'
-      id: resource_group_name
-      isRequired: true
-      type:
-      - str
-    - description: The name of the server.
-      id: server_name
-      isRequired: true
-      type:
-      - str
-    - description: The name of the database to import into
-      id: database_name
-      isRequired: true
-      type:
-      - str
-    - description: 'The required parameters for importing a Bacpac into
-
-        a database.'
-      id: parameters
-      isRequired: true
-      type:
-      - azure.mgmt.sql.models.ImportExtensionRequest
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
-      type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
-
-        polling object for personal polling strategy'
-      id: polling
-    return:
-      description: 'An instance of LROPoller that returns ImportExportResponse or
-
-        ClientRawResponse<ImportExportResponse> if raw==True'
-      type:
-      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -252,7 +179,7 @@ items:
   name: export(resource_group_name, server_name, database_name, parameters, custom_headers=None,
     raw=False, polling=True, **operation_config)
   namewithoutparameters: export
-  summary: Exports a database to a bacpac.
+  summary: Exports a database.
   syntax:
     content: export(resource_group_name, server_name, database_name, parameters, custom_headers=None,
       raw=False, polling=True, **operation_config)
@@ -271,16 +198,16 @@ items:
       isRequired: true
       type:
       - str
-    - description: The name of the database to be exported.
+    - description: The name of the database.
       id: database_name
       isRequired: true
       type:
       - str
-    - description: The required parameters for exporting a database.
+    - description: The database export request parameters.
       id: parameters
       isRequired: true
       type:
-      - azure.mgmt.sql.models.ExportRequest
+      - azure.mgmt.sql.models.ExportDatabaseDefinition
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -299,12 +226,14 @@ items:
         polling object for personal polling strategy'
       id: polling
     return:
-      description: 'An instance of LROPoller that returns ImportExportResponse or
+      description: 'An instance of LROPoller that returns
 
-        ClientRawResponse<ImportExportResponse> if raw==True'
+        ImportExportOperationResult or
+
+        ClientRawResponse<ImportExportOperationResult> if raw==True'
       type:
-      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
+      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportOperationResult]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportOperationResult]]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.export
 - class: azure.mgmt.sql.operations.DatabasesOperations
@@ -436,68 +365,6 @@ items:
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.sql.operations.DatabasesOperations.import_method
-  langs:
-  - python
-  module: azure.mgmt.sql.operations
-  name: import_method(resource_group_name, server_name, parameters, custom_headers=None,
-    raw=False, polling=True, **operation_config)
-  namewithoutparameters: import_method
-  summary: Imports a bacpac into a new database. .
-  syntax:
-    content: import_method(resource_group_name, server_name, parameters, custom_headers=None,
-      raw=False, polling=True, **operation_config)
-    parameters:
-    - description: 'The name of the resource group that
-
-        contains the resource. You can obtain this value from the Azure
-
-        Resource Manager API or the portal.'
-      id: resource_group_name
-      isRequired: true
-      type:
-      - str
-    - description: The name of the server.
-      id: server_name
-      isRequired: true
-      type:
-      - str
-    - description: 'The required parameters for importing a Bacpac into
-
-        a database.'
-      id: parameters
-      isRequired: true
-      type:
-      - azure.mgmt.sql.models.ImportRequest
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
-      type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
-
-        polling object for personal polling strategy'
-      id: polling
-    return:
-      description: 'An instance of LROPoller that returns ImportExportResponse or
-
-        ClientRawResponse<ImportExportResponse> if raw==True'
-      type:
-      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
-  type: method
-  uid: azure.mgmt.sql.operations.DatabasesOperations.import_method
-- class: azure.mgmt.sql.operations.DatabasesOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
   langs:
   - python
@@ -604,6 +471,58 @@ items:
       - azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
   type: method
   uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+- class: azure.mgmt.sql.operations.DatabasesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.sql.operations.DatabasesOperations.list_inaccessible_by_server
+  langs:
+  - python
+  module: azure.mgmt.sql.operations
+  name: list_inaccessible_by_server(resource_group_name, server_name, custom_headers=None,
+    raw=False, **operation_config)
+  namewithoutparameters: list_inaccessible_by_server
+  summary: Gets a list of inaccessible databases in a logical server.
+  syntax:
+    content: list_inaccessible_by_server(resource_group_name, server_name, custom_headers=None,
+      raw=False, **operation_config)
+    parameters:
+    - description: 'The name of the resource group that
+
+        contains the resource. You can obtain this value from the Azure
+
+        Resource Manager API or the portal.'
+      id: resource_group_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the server.
+      id: server_name
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'returns the direct response alongside the
+
+        deserialized response'
+      id: raw
+      type:
+      - bool
+    - description: '*Operation configuration
+
+        overrides*.'
+      id: operation_config
+      isRequired: true
+    return:
+      description: An iterator like instance of Database
+      type:
+      - azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
+  type: method
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_inaccessible_by_server
 - class: azure.mgmt.sql.operations.DatabasesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
@@ -1044,12 +963,6 @@ items:
   type: attribute
   uid: azure.mgmt.sql.operations.DatabasesOperations.models
 references:
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
-  isExternal: false
-  name: create_import_operation(resource_group_name, server_name, database_name, parameters,
-    custom_headers=None, raw=False, polling=True, **operation_config)
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.create_import_operation
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.create_or_update
   isExternal: false
   name: create_or_update(resource_group_name, server_name, database_name, parameters,
@@ -1080,12 +993,6 @@ references:
     raw=False, **operation_config)
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.get
-- fullName: azure.mgmt.sql.operations.DatabasesOperations.import_method
-  isExternal: false
-  name: import_method(resource_group_name, server_name, parameters, custom_headers=None,
-    raw=False, polling=True, **operation_config)
-  parent: azure.mgmt.sql.operations.DatabasesOperations
-  uid: azure.mgmt.sql.operations.DatabasesOperations.import_method
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.list_by_elastic_pool
   isExternal: false
   name: list_by_elastic_pool(resource_group_name, server_name, elastic_pool_name,
@@ -1098,6 +1005,12 @@ references:
     **operation_config)
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
+- fullName: azure.mgmt.sql.operations.DatabasesOperations.list_inaccessible_by_server
+  isExternal: false
+  name: list_inaccessible_by_server(resource_group_name, server_name, custom_headers=None,
+    raw=False, **operation_config)
+  parent: azure.mgmt.sql.operations.DatabasesOperations
+  uid: azure.mgmt.sql.operations.DatabasesOperations.list_inaccessible_by_server
 - fullName: azure.mgmt.sql.operations.DatabasesOperations.list_metric_definitions
   isExternal: false
   name: list_metric_definitions(resource_group_name, server_name, database_name, custom_headers=None,
@@ -1145,41 +1058,6 @@ references:
   name: models
   parent: azure.mgmt.sql.operations.DatabasesOperations
   uid: azure.mgmt.sql.operations.DatabasesOperations.models
-- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
-  name: AzureOperationPoller[ImportExportResponse]
-  spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.sql.models.ImportExportResponse
-    name: ImportExportResponse
-    uid: azure.mgmt.sql.models.ImportExportResponse
-  - fullName: ']'
-    name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportResponse]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
-  name: AzureOperationPoller[ClientRawResponse[ImportExportResponse]]
-  spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
-  - fullName: '['
-    name: '['
-  - fullName: msrest.pipeline.ClientRawResponse
-    name: ClientRawResponse
-    uid: msrest.pipeline.ClientRawResponse
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.sql.models.ImportExportResponse
-    name: ImportExportResponse
-    uid: azure.mgmt.sql.models.ImportExportResponse
-  - fullName: ']'
-    name: ']'
-  - fullName: ']'
-    name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportResponse]]
 - fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.Database]
   name: AzureOperationPoller[Database]
   spec.python:
@@ -1250,6 +1128,41 @@ references:
   - fullName: ']'
     name: ']'
   uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportOperationResult]
+  name: AzureOperationPoller[ImportExportOperationResult]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ImportExportOperationResult
+    name: ImportExportOperationResult
+    uid: azure.mgmt.sql.models.ImportExportOperationResult
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.sql.models.ImportExportOperationResult]
+- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportOperationResult]]
+  name: AzureOperationPoller[ClientRawResponse[ImportExportOperationResult]]
+  spec.python:
+  - fullName: msrestazure.azure_operation.AzureOperationPoller
+    name: AzureOperationPoller
+    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: '['
+    name: '['
+  - fullName: msrest.pipeline.ClientRawResponse
+    name: ClientRawResponse
+    uid: msrest.pipeline.ClientRawResponse
+  - fullName: '['
+    name: '['
+  - fullName: azure.mgmt.sql.models.ImportExportOperationResult
+    name: ImportExportOperationResult
+    uid: azure.mgmt.sql.models.ImportExportOperationResult
+  - fullName: ']'
+    name: ']'
+  - fullName: ']'
+    name: ']'
+  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.sql.models.ImportExportOperationResult]]
 - fullName: azure.mgmt.sql.models.DatabasePaged[azure.mgmt.sql.models.Database]
   name: DatabasePaged[Database]
   spec.python:

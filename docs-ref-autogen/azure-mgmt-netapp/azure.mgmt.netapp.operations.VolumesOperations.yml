@@ -9,6 +9,8 @@ items:
   - azure.mgmt.netapp.operations.VolumesOperations.delete_replication
   - azure.mgmt.netapp.operations.VolumesOperations.get
   - azure.mgmt.netapp.operations.VolumesOperations.list
+  - azure.mgmt.netapp.operations.VolumesOperations.pool_change
+  - azure.mgmt.netapp.operations.VolumesOperations.re_initialize_replication
   - azure.mgmt.netapp.operations.VolumesOperations.replication_status_method
   - azure.mgmt.netapp.operations.VolumesOperations.resync_replication
   - azure.mgmt.netapp.operations.VolumesOperations.revert
@@ -40,7 +42,7 @@ items:
       id: deserializer
     variables:
     - description: 'Version of the API to be used with the client request. Constant
-        value: "2020-02-01".'
+        value: "2020-06-01".'
       id: api_version
   type: class
   uid: azure.mgmt.netapp.operations.VolumesOperations
@@ -123,7 +125,7 @@ items:
   - python
   module: azure.mgmt.netapp.operations
   name: break_replication(resource_group_name, account_name, pool_name, volume_name,
-    custom_headers=None, raw=False, polling=True, **operation_config)
+    force_break_replication=None, custom_headers=None, raw=False, polling=True, **operation_config)
   namewithoutparameters: break_replication
   summary: 'Break volume replication.
 
@@ -131,7 +133,8 @@ items:
     Break the replication connection on the destination volume.'
   syntax:
     content: break_replication(resource_group_name, account_name, pool_name, volume_name,
-      custom_headers=None, raw=False, polling=True, **operation_config)
+      force_break_replication=None, custom_headers=None, raw=False, polling=True,
+      **operation_config)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -153,6 +156,13 @@ items:
       isRequired: true
       type:
       - str
+    - defaultValue: None
+      description: 'If replication is in status
+
+        transferring and you want to force break the replication, set to true'
+      id: force_break_replication
+      type:
+      - bool
     - defaultValue: None
       description: headers that will be added to the request
       id: custom_headers
@@ -499,6 +509,139 @@ items:
 - class: azure.mgmt.netapp.operations.VolumesOperations
   exceptions:
   - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.netapp.operations.VolumesOperations.pool_change
+  langs:
+  - python
+  module: azure.mgmt.netapp.operations
+  name: pool_change(resource_group_name, account_name, pool_name, volume_name, new_pool_resource_id,
+    custom_headers=None, raw=False, polling=True, **operation_config)
+  namewithoutparameters: pool_change
+  summary: 'Change pool for volume.
+
+
+    Moves volume to another pool.'
+  syntax:
+    content: pool_change(resource_group_name, account_name, pool_name, volume_name,
+      new_pool_resource_id, custom_headers=None, raw=False, polling=True, **operation_config)
+    parameters:
+    - description: The name of the resource group.
+      id: resource_group_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the NetApp account
+      id: account_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the capacity pool
+      id: pool_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the volume
+      id: volume_name
+      isRequired: true
+      type:
+      - str
+    - description: Resource id of the pool to move volume to
+      id: new_pool_resource_id
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns None or
+
+        ClientRawResponse<None> if raw==True'
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[None]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+  type: method
+  uid: azure.mgmt.netapp.operations.VolumesOperations.pool_change
+- class: azure.mgmt.netapp.operations.VolumesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
+  fullName: azure.mgmt.netapp.operations.VolumesOperations.re_initialize_replication
+  langs:
+  - python
+  module: azure.mgmt.netapp.operations
+  name: re_initialize_replication(resource_group_name, account_name, pool_name, volume_name,
+    custom_headers=None, raw=False, polling=True, **operation_config)
+  namewithoutparameters: re_initialize_replication
+  summary: 'ReInitialize volume replication.
+
+
+    Re-Initializes the replication connection on the destination volume.'
+  syntax:
+    content: re_initialize_replication(resource_group_name, account_name, pool_name,
+      volume_name, custom_headers=None, raw=False, polling=True, **operation_config)
+    parameters:
+    - description: The name of the resource group.
+      id: resource_group_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the NetApp account
+      id: account_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the capacity pool
+      id: pool_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the volume
+      id: volume_name
+      isRequired: true
+      type:
+      - str
+    - defaultValue: None
+      description: headers that will be added to the request
+      id: custom_headers
+      type:
+      - dict
+    - defaultValue: 'False'
+      description: 'The poller return type is ClientRawResponse, the
+
+        direct response alongside the deserialized response'
+      id: raw
+      type:
+      - bool
+    - defaultValue: 'True'
+      description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+    return:
+      description: 'An instance of LROPoller that returns None or
+
+        ClientRawResponse<None> if raw==True'
+      type:
+      - msrestazure.azure_operation.AzureOperationPoller[None]
+      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+  type: method
+  uid: azure.mgmt.netapp.operations.VolumesOperations.re_initialize_replication
+- class: azure.mgmt.netapp.operations.VolumesOperations
+  exceptions:
+  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.netapp.operations.VolumesOperations.replication_status_method
   langs:
   - python
@@ -785,7 +928,7 @@ references:
 - fullName: azure.mgmt.netapp.operations.VolumesOperations.break_replication
   isExternal: false
   name: break_replication(resource_group_name, account_name, pool_name, volume_name,
-    custom_headers=None, raw=False, polling=True, **operation_config)
+    force_break_replication=None, custom_headers=None, raw=False, polling=True, **operation_config)
   parent: azure.mgmt.netapp.operations.VolumesOperations
   uid: azure.mgmt.netapp.operations.VolumesOperations.break_replication
 - fullName: azure.mgmt.netapp.operations.VolumesOperations.create_or_update
@@ -818,6 +961,18 @@ references:
     **operation_config)
   parent: azure.mgmt.netapp.operations.VolumesOperations
   uid: azure.mgmt.netapp.operations.VolumesOperations.list
+- fullName: azure.mgmt.netapp.operations.VolumesOperations.pool_change
+  isExternal: false
+  name: pool_change(resource_group_name, account_name, pool_name, volume_name, new_pool_resource_id,
+    custom_headers=None, raw=False, polling=True, **operation_config)
+  parent: azure.mgmt.netapp.operations.VolumesOperations
+  uid: azure.mgmt.netapp.operations.VolumesOperations.pool_change
+- fullName: azure.mgmt.netapp.operations.VolumesOperations.re_initialize_replication
+  isExternal: false
+  name: re_initialize_replication(resource_group_name, account_name, pool_name, volume_name,
+    custom_headers=None, raw=False, polling=True, **operation_config)
+  parent: azure.mgmt.netapp.operations.VolumesOperations
+  uid: azure.mgmt.netapp.operations.VolumesOperations.re_initialize_replication
 - fullName: azure.mgmt.netapp.operations.VolumesOperations.replication_status_method
   isExternal: false
   name: replication_status_method(resource_group_name, account_name, pool_name, volume_name,

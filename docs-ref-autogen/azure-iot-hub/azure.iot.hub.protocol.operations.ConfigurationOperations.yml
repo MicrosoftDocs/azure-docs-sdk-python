@@ -30,7 +30,7 @@ items:
     - description: An object model deserializer.
       id: deserializer
     variables:
-    - description: 'Version of the Api. Constant value: "2020-03-01".'
+    - description: 'The API version to use for the request. Constant value: "2020-05-31-preview".'
       id: api_version
   type: class
   uid: azure.iot.hub.protocol.operations.ConfigurationOperations
@@ -43,23 +43,16 @@ items:
   module: azure.iot.hub.protocol.operations
   name: apply_on_edge_device(id, content, custom_headers=None, raw=False, **operation_config)
   namewithoutparameters: apply_on_edge_device
-  summary: 'Applies the provided configuration content to the specified edge
-
-    device.
-
-
-    Applies the provided configuration content to the specified edge
-
-    device. Configuration content must have modules content.'
+  summary: Applies the configuration content to an edge device.
   syntax:
     content: apply_on_edge_device(id, content, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: Device ID.
+    - description: The unique identifier of the edge device.
       id: id
       isRequired: true
       type:
       - str
-    - description: Configuration Content.
+    - description: The configuration content.
       id: content
       isRequired: true
       type:
@@ -82,9 +75,9 @@ items:
       id: operation_config
       isRequired: true
     return:
-      description: object or ClientRawResponse if raw=true
+      description: None or ClientRawResponse if raw=true
       type:
-      - object
+      - None
       - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.iot.hub.protocol.operations.ConfigurationOperations.apply_on_edge_device
@@ -98,29 +91,31 @@ items:
   name: create_or_update(id, configuration, if_match=None, custom_headers=None, raw=False,
     **operation_config)
   namewithoutparameters: create_or_update
-  summary: 'Create or update the configuration for devices or modules of an IoT
+  summary: 'Creates or updates a configuration on the IoT Hub for automatic
 
-    hub. An ETag must not be specified for the create operation. An ETag
+    device/module management. Configuration identifier and Content cannot
 
-    must be specified for the update operation. Note that configuration Id
-
-    and Content cannot be updated by the user.'
+    be updated.'
   syntax:
     content: create_or_update(id, configuration, if_match=None, custom_headers=None,
       raw=False, **operation_config)
     parameters:
-    - description: ''
+    - description: The unique identifier of the configuration.
       id: id
       isRequired: true
       type:
       - str
-    - description: ''
+    - description: The configuration to be created or updated.
       id: configuration
       isRequired: true
       type:
       - protocol.models.Configuration
     - defaultValue: None
-      description: ''
+      description: 'The string representing a weak ETag for the
+
+        configuration, as per RFC7232. This should not be set when creating a
+
+        configuration, but may be set when updating a configuration.'
       id: if_match
       type:
       - str
@@ -157,33 +152,29 @@ items:
   module: azure.iot.hub.protocol.operations
   name: delete(id, if_match=None, custom_headers=None, raw=False, **operation_config)
   namewithoutparameters: delete
-  summary: 'Delete the configuration for devices or modules of an IoT hub. This
+  summary: 'Deletes a configuration on the IoT Hub for automatic device/module
 
-    request requires the If-Match header. The client may specify the ETag
-
-    for the device identity on the request in order to compare to the ETag
-
-    maintained by the service for the purpose of optimistic concurrency.
-
-    The delete operation is performed only if the ETag sent by the client
-
-    matches the value maintained by the server, indicating that the device
-
-    identity has not been modified since it was retrieved by the client. To
-
-    force an unconditional delete, set If-Match to the wildcard character
-
-    (*).'
+    management.'
   syntax:
     content: delete(id, if_match=None, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: ''
+    - description: The unique identifier of the configuration.
       id: id
       isRequired: true
       type:
       - str
     - defaultValue: None
-      description: ''
+      description: 'The string representing a weak ETag for the
+
+        configuration, as per RFC7232. The delete operation is performed only
+
+        if this ETag matches the value maintained by the server, indicating
+
+        that the configuration has not been modified since it was last
+
+        retrieved. To force an unconditional delete, set If-Match to the
+
+        wildcard character (*).'
       id: if_match
       type:
       - str
@@ -220,13 +211,13 @@ items:
   module: azure.iot.hub.protocol.operations
   name: get(id, custom_headers=None, raw=False, **operation_config)
   namewithoutparameters: get
-  summary: 'Retrieve a configuration for Iot Hub devices and modules by it
+  summary: 'Gets a configuration on the IoT Hub for automatic device/module
 
-    identifier.'
+    management.'
   syntax:
     content: get(id, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: ''
+    - description: The unique identifier of the configuration.
       id: id
       isRequired: true
       type:
@@ -264,16 +255,18 @@ items:
   module: azure.iot.hub.protocol.operations
   name: get_configurations(top=None, custom_headers=None, raw=False, **operation_config)
   namewithoutparameters: get_configurations
-  summary: 'Get multiple configurations for devices or modules of an IoT Hub.
+  summary: 'Gets configurations on the IoT Hub for automatic device/module
 
-    Returns the specified number of configurations for Iot Hub. Pagination
-
-    is not supported.'
+    management. Pagination is not supported.'
   syntax:
     content: get_configurations(top=None, custom_headers=None, raw=False, **operation_config)
     parameters:
     - defaultValue: None
-      description: ''
+      description: 'The number of configurations to retrieve. Value will be
+
+        overridden if greater than the maximum deployment count for the IoT
+
+        Hub.'
       id: top
       type:
       - int
@@ -310,18 +303,15 @@ items:
   module: azure.iot.hub.protocol.operations
   name: test_queries(input, custom_headers=None, raw=False, **operation_config)
   namewithoutparameters: test_queries
-  summary: 'Validates the target condition query and custom metric queries for a
+  summary: 'Validates target condition and custom metric queries for a
 
-    configuration.
-
-
-    Validates the target condition query and custom metric queries for a
-
-    configuration.'
+    configuration on the IoT Hub.'
   syntax:
     content: test_queries(input, custom_headers=None, raw=False, **operation_config)
     parameters:
-    - description: ''
+    - description: 'The configuration for target condition and custom metric
+
+        queries.'
       id: input
       isRequired: true
       type:
