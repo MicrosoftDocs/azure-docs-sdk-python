@@ -34,7 +34,7 @@ Blob storage is ideal for:
 [Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) to use this package.
 
 ### Install the package
-Install the Azure Storage Blobs client library for Python - Version 12.5.0 
+Install the Azure Storage Blobs client library for Python
  with [pip](https://pypi.org/project/pip/):
 
 ```bash
@@ -57,7 +57,7 @@ az storage account create -n my-storage-account-name -g my-resource-group
 ```
 
 ### Create the client
-The Azure Storage Blobs client library for Python - Version 12.5.0 
+The Azure Storage Blobs client library for Python
  allows you to interact with three types of resources: the storage
 account itself, blob storage containers, and blobs. Interaction with these resources starts with an instance of a
 [client](#clients). To create a client object, you will need the storage account's blob service account URL and a
@@ -167,7 +167,7 @@ The following components make up the Azure Blob Service:
 * A container within the storage account
 * A blob within a container
 
-The Azure Storage Blobs client library for Python - Version 12.5.0 
+The Azure Storage Blobs client library for Python
  allows you to interact with each of these components through the
 use of a dedicated client object.
 
@@ -454,4 +454,3 @@ This project welcomes contributions and suggestions.  Most contributions require
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
