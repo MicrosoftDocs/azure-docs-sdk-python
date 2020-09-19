@@ -3,7 +3,7 @@ title: Azure Storage Blob ChangeFeed client library for Python
 keywords: Azure, python, SDK, API, azure-storage-blob-changefeed, storage
 author: maggiepint
 ms.author: magpint
-ms.date: 07/08/2020
+ms.date: 09/10/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,13 +11,13 @@ ms.devlang: python
 ms.service: storage
 ---
 
-# Azure Storage Blob ChangeFeed client library for Python - Version 12.0.0b1 
+# Azure Storage Blob ChangeFeed client library for Python - Version 12.0.0b2 
 
 
 This preview package for Python enables users to get blob change feed events. These events can be lazily generated, iterated by page, retrieved for a specific time interval, or iterated from a specific continuation token.
 
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob-changefeed/azure/storage/blobchangefeed) | [Package (PyPi)](https://pypi.org/project/azure-storage-blob-changefeed/) | [API reference documentation](https://aka.ms/azsdk-python-storage-blob-changefeed-ref) | [Product documentation](https://docs.microsoft.com/azure/storage/) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob-changefeed/samples)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b2/sdk/storage/azure-storage-blob-changefeed/azure/storage/blob/changefeed) | [Package (PyPi)](https://pypi.org/project/azure-storage-blob-changefeed/) | [API reference documentation](https://aka.ms/azsdk-python-storage-blob-changefeed-ref) | [Product documentation](https://docs.microsoft.com/azure/storage/) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b2/sdk/storage/azure-storage-blob-changefeed/samples)
 
 
 ## Getting started
@@ -25,10 +25,10 @@ This preview package for Python enables users to get blob change feed events. Th
 ### Prerequisites
 * Python 2.7, or 3.5 or later is required to use this package.
 * You must have an [Azure subscription](https://azure.microsoft.com/free/) and an
-[Azure storage account](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-quickstart-create-account) to use this package.
+[Azure storage account](https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-quickstart-create-account) to use this package.
 
 ### Install the package
-Install the Azure Storage Blob ChangeFeed client library for Python - Version 12.0.0b1 
+Install the Azure Storage Blob ChangeFeed client library for Python
  with [pip](https://pypi.org/project/pip/):
 
 ```bash
@@ -37,9 +37,9 @@ pip install azure-storage-blob-changefeed --pre
 
 ### Create a storage account
 If you wish to create a new storage account, you can use the
-[Azure Portal](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-quickstart-create-account#create-an-account-using-the-azure-portal),
-[Azure PowerShell](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-quickstart-create-account#create-an-account-using-powershell),
-or [Azure CLI](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-quickstart-create-account#create-an-account-using-azure-cli):
+[Azure Portal](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal),
+[Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
+or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
 ```bash
 # Create a new resource group to hold the storage account -
@@ -47,8 +47,13 @@ or [Azure CLI](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-st
 az group create --name my-resource-group --location westus2
 
 # Create the storage account
-az storage account create -n my-storage-account-name -g my-resource-group --hierarchical-namespace true
+az storage account create -n my-storage-account-name -g my-resource-group
 ```
+
+To enable changefeed you can use:
+[Azure Portal](https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal#enable-and-disable-the-change-feed)
+[Azure PowerShell](https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-powershell#enable-and-disable-the-change-feed)
+or [Template](https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=template#enable-and-disable-the-change-feed)
 
 ### Authenticate the client
 
@@ -59,7 +64,7 @@ Interaction with Blob ChangeFeed client starts with an instance of the ChangeFee
 To authenticate the client you have a few options:
 1. Use a SAS token string 
 2. Use an account shared access key
-3. Use a token credential from [azure.identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity)
+3. Use a token credential from [azure.identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b2/sdk/identity/azure-identity)
 
 Alternatively, you can authenticate with a storage connection string using the `from_connection_string` method. See example: [Client creation with a connection string](#client-creation-with-a-connection-string).
 
@@ -181,11 +186,11 @@ service_client = ChangeFeedClient.from_connection_string("your_connection_string
 
 ### More sample code
 
-Get started with our [Azure Blob ChangeFeed samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob-changefeed/samples).
+Get started with our [Azure Blob ChangeFeed samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b2/sdk/storage/azure-storage-blob-changefeed/samples).
 
 Several Storage Blob ChangeFeed Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Blob ChangeFeed:
 
-* [change_feed_samples.py](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-blob-changefeed/samples/change_feed_samples.py) - Examples for authenticating and operating on the client:
+* [change_feed_samples.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b2/sdk/storage/azure-storage-blob-changefeed/samples/change_feed_samples.py) - Examples for authenticating and operating on the client:
     * list events by page
     * list all events
     * list events in a time range
@@ -198,4 +203,3 @@ This project welcomes contributions and suggestions.  Most contributions require
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
