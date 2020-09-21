@@ -2,10 +2,12 @@
 api_name: []
 items:
 - children:
-  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health
-  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health_on_demand
-  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.create_or_update
-  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.delete
+  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health
+  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health_on_demand
+  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_create_or_update
+  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_delete
+  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_start
+  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_stop
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get_ssl_predefined_policy
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list
@@ -16,8 +18,6 @@ items:
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_options
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_predefined_policies
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_waf_rule_sets
-  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.start
-  - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.stop
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.update_tags
   - azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.models
   class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
@@ -31,8 +31,10 @@ items:
   summary: 'ApplicationGatewaysOperations operations.
 
 
-    You should not instantiate directly this class, but create a Client instance that
-    will create it for you and attach it as attribute.'
+    You should not instantiate this class directly. Instead, you should create a Client
+    instance that
+
+    instantiates it for you and attaches it as an attribute.'
   syntax:
     content: ApplicationGatewaysOperations(client, config, serializer, deserializer)
     parameters:
@@ -45,26 +47,26 @@ items:
     - description: An object model deserializer.
       id: deserializer
     variables:
-    - description: 'Client API version. Constant value: "2019-12-01".'
-      id: api_version
+    - description: Alias to model classes used in this operation group.
+      id: models
   type: class
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: backend_health(resource_group_name, application_gateway_name, expand=None,
-    custom_headers=None, raw=False, polling=True, **operation_config)
-  namewithoutparameters: backend_health
-  summary: 'Gets the backend health of the specified application gateway in a
-
-    resource group.'
+  name: begin_backend_health(resource_group_name, application_gateway_name, expand=None,
+    **kwargs)
+  namewithoutparameters: begin_backend_health
+  summary: Gets the backend health of the specified application gateway in a resource
+    group.
   syntax:
-    content: backend_health(resource_group_name, application_gateway_name, expand=None,
-      custom_headers=None, raw=False, polling=True, **operation_config)
+    content: begin_backend_health(resource_group_name, application_gateway_name, expand=None,
+      **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -77,56 +79,60 @@ items:
       type:
       - str
     - defaultValue: None
-      description: 'Expands BackendAddressPool and BackendHttpSettings
-
-        referenced in backend health.'
+      description: Expands BackendAddressPool and BackendHttpSettings referenced in
+        backend health.
       id: expand
       type:
       - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
       type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
+      - callable
+    - description: A continuation token to restart a poller from a saved state.
+      id: continuation_token
+      isRequired: true
       type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
+      - str
+    - description: 'True for ARMPolling, False for no polling, or a
 
         polling object for personal polling strategy'
       id: polling
-    return:
-      description: 'An instance of LROPoller that returns
-
-        ApplicationGatewayBackendHealth or
-
-        ClientRawResponse<ApplicationGatewayBackendHealth> if raw==True'
+      isRequired: true
       type:
-      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]]
+      - bool
+      - azure.core.polling.PollingMethod
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An instance of LROPoller that returns either ApplicationGatewayBackendHealth
+        or the result of cls(response)
+      type:
+      - azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]
   type: method
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health_on_demand
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health_on_demand
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: backend_health_on_demand(resource_group_name, application_gateway_name, probe_request,
-    expand=None, custom_headers=None, raw=False, polling=True, **operation_config)
-  namewithoutparameters: backend_health_on_demand
+  name: begin_backend_health_on_demand(resource_group_name, application_gateway_name,
+    probe_request, expand=None, **kwargs)
+  namewithoutparameters: begin_backend_health_on_demand
   summary: 'Gets the backend health for given combination of backend pool and http
+    setting of the specified
 
-    setting of the specified application gateway in a resource group.'
+    application gateway in a resource group.'
   syntax:
-    content: backend_health_on_demand(resource_group_name, application_gateway_name,
-      probe_request, expand=None, custom_headers=None, raw=False, polling=True, **operation_config)
+    content: begin_backend_health_on_demand(resource_group_name, application_gateway_name,
+      probe_request, expand=None, **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -144,56 +150,57 @@ items:
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGatewayOnDemandProbe
     - defaultValue: None
-      description: 'Expands BackendAddressPool and BackendHttpSettings
-
-        referenced in backend health.'
+      description: Expands BackendAddressPool and BackendHttpSettings referenced in
+        backend health.
       id: expand
       type:
       - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
       type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
+      - callable
+    - description: A continuation token to restart a poller from a saved state.
+      id: continuation_token
+      isRequired: true
       type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
+      - str
+    - description: 'True for ARMPolling, False for no polling, or a
 
         polling object for personal polling strategy'
       id: polling
-    return:
-      description: 'An instance of LROPoller that returns
-
-        ApplicationGatewayBackendHealthOnDemand or
-
-        ClientRawResponse<ApplicationGatewayBackendHealthOnDemand> if
-
-        raw==True'
+      isRequired: true
       type:
-      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]]
+      - bool
+      - azure.core.polling.PollingMethod
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An instance of LROPoller that returns either ApplicationGatewayBackendHealthOnDemand
+        or the result of cls(response)
+      type:
+      - azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]
   type: method
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health_on_demand
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health_on_demand
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.create_or_update
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_create_or_update
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: create_or_update(resource_group_name, application_gateway_name, parameters,
-    custom_headers=None, raw=False, polling=True, **operation_config)
-  namewithoutparameters: create_or_update
+  name: begin_create_or_update(resource_group_name, application_gateway_name, parameters,
+    **kwargs)
+  namewithoutparameters: begin_create_or_update
   summary: Creates or updates the specified application gateway.
   syntax:
-    content: create_or_update(resource_group_name, application_gateway_name, parameters,
-      custom_headers=None, raw=False, polling=True, **operation_config)
+    content: begin_create_or_update(resource_group_name, application_gateway_name,
+      parameters, **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -205,53 +212,56 @@ items:
       isRequired: true
       type:
       - str
-    - description: 'Parameters supplied to the create or update
-
-        application gateway operation.'
+    - description: Parameters supplied to the create or update application gateway
+        operation.
       id: parameters
       isRequired: true
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
       type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
+      - callable
+    - description: A continuation token to restart a poller from a saved state.
+      id: continuation_token
+      isRequired: true
       type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
+      - str
+    - description: 'True for ARMPolling, False for no polling, or a
 
         polling object for personal polling strategy'
       id: polling
-    return:
-      description: 'An instance of LROPoller that returns ApplicationGateway or
-
-        ClientRawResponse<ApplicationGateway> if raw==True'
+      isRequired: true
       type:
-      - msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]]
+      - bool
+      - azure.core.polling.PollingMethod
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An instance of LROPoller that returns either ApplicationGateway
+        or the result of cls(response)
+      type:
+      - azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
   type: method
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.create_or_update
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_create_or_update
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.delete
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_delete
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: delete(resource_group_name, application_gateway_name, custom_headers=None,
-    raw=False, polling=True, **operation_config)
-  namewithoutparameters: delete
+  name: begin_delete(resource_group_name, application_gateway_name, **kwargs)
+  namewithoutparameters: begin_delete
   summary: Deletes the specified application gateway.
   syntax:
-    content: delete(resource_group_name, application_gateway_name, custom_headers=None,
-      raw=False, polling=True, **operation_config)
+    content: begin_delete(resource_group_name, application_gateway_name, **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -263,46 +273,157 @@ items:
       isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
       type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
+      - callable
+    - description: A continuation token to restart a poller from a saved state.
+      id: continuation_token
+      isRequired: true
       type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
+      - str
+    - description: 'True for ARMPolling, False for no polling, or a
 
         polling object for personal polling strategy'
       id: polling
-    return:
-      description: 'An instance of LROPoller that returns None or
-
-        ClientRawResponse<None> if raw==True'
+      isRequired: true
       type:
-      - msrestazure.azure_operation.AzureOperationPoller[None]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
+      - bool
+      - azure.core.polling.PollingMethod
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An instance of LROPoller that returns either None or the result
+        of cls(response)
+      type:
+      - azure.core.polling.LROPoller[None]
   type: method
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.delete
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_delete
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_start
+  langs:
+  - python
+  module: azure.mgmt.network.v2019_12_01.operations
+  name: begin_start(resource_group_name, application_gateway_name, **kwargs)
+  namewithoutparameters: begin_start
+  summary: Starts the specified application gateway.
+  syntax:
+    content: begin_start(resource_group_name, application_gateway_name, **kwargs)
+    parameters:
+    - description: The name of the resource group.
+      id: resource_group_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the application gateway.
+      id: application_gateway_name
+      isRequired: true
+      type:
+      - str
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
+      type:
+      - callable
+    - description: A continuation token to restart a poller from a saved state.
+      id: continuation_token
+      isRequired: true
+      type:
+      - str
+    - description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+      isRequired: true
+      type:
+      - bool
+      - azure.core.polling.PollingMethod
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An instance of LROPoller that returns either None or the result
+        of cls(response)
+      type:
+      - azure.core.polling.LROPoller[None]
+  type: method
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_start
+- class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_stop
+  langs:
+  - python
+  module: azure.mgmt.network.v2019_12_01.operations
+  name: begin_stop(resource_group_name, application_gateway_name, **kwargs)
+  namewithoutparameters: begin_stop
+  summary: Stops the specified application gateway in a resource group.
+  syntax:
+    content: begin_stop(resource_group_name, application_gateway_name, **kwargs)
+    parameters:
+    - description: The name of the resource group.
+      id: resource_group_name
+      isRequired: true
+      type:
+      - str
+    - description: The name of the application gateway.
+      id: application_gateway_name
+      isRequired: true
+      type:
+      - str
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
+      type:
+      - callable
+    - description: A continuation token to restart a poller from a saved state.
+      id: continuation_token
+      isRequired: true
+      type:
+      - str
+    - description: 'True for ARMPolling, False for no polling, or a
+
+        polling object for personal polling strategy'
+      id: polling
+      isRequired: true
+      type:
+      - bool
+      - azure.core.polling.PollingMethod
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
+      isRequired: true
+      type:
+      - int
+    return:
+      description: An instance of LROPoller that returns either None or the result
+        of cls(response)
+      type:
+      - azure.core.polling.LROPoller[None]
+  type: method
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_stop
+- class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: get(resource_group_name, application_gateway_name, custom_headers=None, raw=False,
-    **operation_config)
+  name: get(resource_group_name, application_gateway_name, **kwargs)
   namewithoutparameters: get
   summary: Gets the specified application gateway.
   syntax:
-    content: get(resource_group_name, application_gateway_name, custom_headers=None,
-      raw=False, **operation_config)
+    content: get(resource_group_name, application_gateway_name, **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -314,497 +435,240 @@ items:
       isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: ApplicationGateway or ClientRawResponse if raw=true
+      description: ApplicationGateway, or the result of cls(response)
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get_ssl_predefined_policy
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: get_ssl_predefined_policy(predefined_policy_name, custom_headers=None, raw=False,
-    **operation_config)
+  name: get_ssl_predefined_policy(predefined_policy_name, **kwargs)
   namewithoutparameters: get_ssl_predefined_policy
   summary: Gets Ssl predefined policy with the specified policy name.
   syntax:
-    content: get_ssl_predefined_policy(predefined_policy_name, custom_headers=None,
-      raw=False, **operation_config)
+    content: get_ssl_predefined_policy(predefined_policy_name, **kwargs)
     parameters:
     - description: Name of Ssl predefined policy.
       id: predefined_policy_name
       isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: 'ApplicationGatewaySslPredefinedPolicy or ClientRawResponse if
-
-        raw=true'
+      description: ApplicationGatewaySslPredefinedPolicy, or the result of cls(response)
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicy
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get_ssl_predefined_policy
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list(resource_group_name, custom_headers=None, raw=False, **operation_config)
+  name: list(resource_group_name, **kwargs)
   namewithoutparameters: list
   summary: Lists all application gateways in a resource group.
   syntax:
-    content: list(resource_group_name, custom_headers=None, raw=False, **operation_config)
+    content: list(resource_group_name, **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
       isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
-    return:
-      description: An iterator like instance of ApplicationGateway
       type:
-      - azure.mgmt.network.v2019_12_01.models.ApplicationGatewayPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
+      - callable
+    return:
+      description: An iterator like instance of either ApplicationGatewayListResult
+        or the result of cls(response)
+      type:
+      - azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayListResult]
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_all
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_all(custom_headers=None, raw=False, **operation_config)
+  name: list_all(**kwargs)
   namewithoutparameters: list_all
   summary: Gets all the application gateways in a subscription.
   syntax:
-    content: list_all(custom_headers=None, raw=False, **operation_config)
+    content: list_all(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
-    return:
-      description: An iterator like instance of ApplicationGateway
       type:
-      - azure.mgmt.network.v2019_12_01.models.ApplicationGatewayPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
+      - callable
+    return:
+      description: An iterator like instance of either ApplicationGatewayListResult
+        or the result of cls(response)
+      type:
+      - azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayListResult]
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_all
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: azure.mgmt.network.v2019_12_01.models.ErrorException
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_request_headers
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_available_request_headers(custom_headers=None, raw=False, **operation_config)
+  name: list_available_request_headers(**kwargs)
   namewithoutparameters: list_available_request_headers
   summary: Lists all available request headers.
   syntax:
-    content: list_available_request_headers(custom_headers=None, raw=False, **operation_config)
+    content: list_available_request_headers(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: list or ClientRawResponse if raw=true
+      description: list of str, or the result of cls(response)
       type:
       - list[str]
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_request_headers
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: azure.mgmt.network.v2019_12_01.models.ErrorException
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_response_headers
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_available_response_headers(custom_headers=None, raw=False, **operation_config)
+  name: list_available_response_headers(**kwargs)
   namewithoutparameters: list_available_response_headers
   summary: Lists all available response headers.
   syntax:
-    content: list_available_response_headers(custom_headers=None, raw=False, **operation_config)
+    content: list_available_response_headers(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: list or ClientRawResponse if raw=true
+      description: list of str, or the result of cls(response)
       type:
       - list[str]
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_response_headers
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: azure.mgmt.network.v2019_12_01.models.ErrorException
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_server_variables
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_available_server_variables(custom_headers=None, raw=False, **operation_config)
+  name: list_available_server_variables(**kwargs)
   namewithoutparameters: list_available_server_variables
   summary: Lists all available server variables.
   syntax:
-    content: list_available_server_variables(custom_headers=None, raw=False, **operation_config)
+    content: list_available_server_variables(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: list or ClientRawResponse if raw=true
+      description: list of str, or the result of cls(response)
       type:
       - list[str]
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_server_variables
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_options
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_available_ssl_options(custom_headers=None, raw=False, **operation_config)
+  name: list_available_ssl_options(**kwargs)
   namewithoutparameters: list_available_ssl_options
   summary: Lists available Ssl options for configuring Ssl policy.
   syntax:
-    content: list_available_ssl_options(custom_headers=None, raw=False, **operation_config)
+    content: list_available_ssl_options(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: 'ApplicationGatewayAvailableSslOptions or ClientRawResponse if
-
-        raw=true'
+      description: ApplicationGatewayAvailableSslOptions, or the result of cls(response)
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableSslOptions
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_options
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_predefined_policies
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_available_ssl_predefined_policies(custom_headers=None, raw=False, **operation_config)
+  name: list_available_ssl_predefined_policies(**kwargs)
   namewithoutparameters: list_available_ssl_predefined_policies
   summary: Lists all SSL predefined policies for configuring Ssl policy.
   syntax:
-    content: list_available_ssl_predefined_policies(custom_headers=None, raw=False,
-      **operation_config)
+    content: list_available_ssl_predefined_policies(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
-    return:
-      description: 'An iterator like instance of
-
-        ApplicationGatewaySslPredefinedPolicy'
       type:
-      - azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicyPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicy]
+      - callable
+    return:
+      description: An iterator like instance of either ApplicationGatewayAvailableSslPredefinedPolicies
+        or the result of cls(response)
+      type:
+      - azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableSslPredefinedPolicies]
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_predefined_policies
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_waf_rule_sets
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: list_available_waf_rule_sets(custom_headers=None, raw=False, **operation_config)
+  name: list_available_waf_rule_sets(**kwargs)
   namewithoutparameters: list_available_waf_rule_sets
   summary: Lists all available web application firewall rule sets.
   syntax:
-    content: list_available_waf_rule_sets(custom_headers=None, raw=False, **operation_config)
+    content: list_available_waf_rule_sets(**kwargs)
     parameters:
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: A custom type or function that will be passed the direct response
+      id: cls
       isRequired: true
+      type:
+      - callable
     return:
-      description: 'ApplicationGatewayAvailableWafRuleSetsResult or
-
-        ClientRawResponse if raw=true'
+      description: ApplicationGatewayAvailableWafRuleSetsResult, or the result of
+        cls(response)
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableWafRuleSetsResult
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_waf_rule_sets
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.start
-  langs:
-  - python
-  module: azure.mgmt.network.v2019_12_01.operations
-  name: start(resource_group_name, application_gateway_name, custom_headers=None,
-    raw=False, polling=True, **operation_config)
-  namewithoutparameters: start
-  summary: Starts the specified application gateway.
-  syntax:
-    content: start(resource_group_name, application_gateway_name, custom_headers=None,
-      raw=False, polling=True, **operation_config)
-    parameters:
-    - description: The name of the resource group.
-      id: resource_group_name
-      isRequired: true
-      type:
-      - str
-    - description: The name of the application gateway.
-      id: application_gateway_name
-      isRequired: true
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
-      type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
-
-        polling object for personal polling strategy'
-      id: polling
-    return:
-      description: 'An instance of LROPoller that returns None or
-
-        ClientRawResponse<None> if raw==True'
-      type:
-      - msrestazure.azure_operation.AzureOperationPoller[None]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
-  type: method
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.start
-- class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
-  fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.stop
-  langs:
-  - python
-  module: azure.mgmt.network.v2019_12_01.operations
-  name: stop(resource_group_name, application_gateway_name, custom_headers=None, raw=False,
-    polling=True, **operation_config)
-  namewithoutparameters: stop
-  summary: Stops the specified application gateway in a resource group.
-  syntax:
-    content: stop(resource_group_name, application_gateway_name, custom_headers=None,
-      raw=False, polling=True, **operation_config)
-    parameters:
-    - description: The name of the resource group.
-      id: resource_group_name
-      isRequired: true
-      type:
-      - str
-    - description: The name of the application gateway.
-      id: application_gateway_name
-      isRequired: true
-      type:
-      - str
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'The poller return type is ClientRawResponse, the
-
-        direct response alongside the deserialized response'
-      id: raw
-      type:
-      - bool
-    - defaultValue: 'True'
-      description: 'True for ARMPolling, False for no polling, or a
-
-        polling object for personal polling strategy'
-      id: polling
-    return:
-      description: 'An instance of LROPoller that returns None or
-
-        ClientRawResponse<None> if raw==True'
-      type:
-      - msrestazure.azure_operation.AzureOperationPoller[None]
-      - msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
-  type: method
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.stop
-- class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  exceptions:
-  - type: msrestazure.azure_exceptions.CloudError
   fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.update_tags
   langs:
   - python
   module: azure.mgmt.network.v2019_12_01.operations
-  name: update_tags(resource_group_name, application_gateway_name, tags=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: update_tags(resource_group_name, application_gateway_name, parameters, **kwargs)
   namewithoutparameters: update_tags
   summary: Updates the specified application gateway tags.
   syntax:
-    content: update_tags(resource_group_name, application_gateway_name, tags=None,
-      custom_headers=None, raw=False, **operation_config)
+    content: update_tags(resource_group_name, application_gateway_name, parameters,
+      **kwargs)
     parameters:
     - description: The name of the resource group.
       id: resource_group_name
@@ -816,33 +680,20 @@ items:
       isRequired: true
       type:
       - str
-    - defaultValue: None
-      description: Resource tags.
-      id: tags
-      type:
-      - dict[str, str]
-    - defaultValue: None
-      description: headers that will be added to the request
-      id: custom_headers
-      type:
-      - dict
-    - defaultValue: 'False'
-      description: 'returns the direct response alongside the
-
-        deserialized response'
-      id: raw
-      type:
-      - bool
-    - description: '*Operation configuration
-
-        overrides*.'
-      id: operation_config
+    - description: Parameters supplied to update application gateway tags.
+      id: parameters
       isRequired: true
+      type:
+      - azure.mgmt.network.v2019_12_01.models.TagsObject
+    - description: A custom type or function that will be passed the direct response
+      id: cls
+      isRequired: true
+      type:
+      - callable
     return:
-      description: ApplicationGateway or ClientRawResponse if raw=true
+      description: ApplicationGateway, or the result of cls(response)
       type:
       - azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-      - msrest.pipeline.ClientRawResponse
   type: method
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.update_tags
 - class: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
@@ -852,102 +703,96 @@ items:
   module: azure.mgmt.network.v2019_12_01.operations
   name: models
   syntax:
-    content: models = <module 'azure.mgmt.network.v2019_12_01.models' from 'c:\\hostedtoolcache\\windows\\python\\3.6.8\\x64\\lib\\site-packages\\azure\\mgmt\\network\\v2019_12_01\\models\\__init__.py'>
+    content: models = <module 'azure.mgmt.network.v2019_12_01.models' from 'c:\\repo\\venv\\lib\\site-packages\\azure\\mgmt\\network\\v2019_12_01\\models\\__init__.py'>
   type: attribute
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.models
 references:
-- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health
+- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health
   isExternal: false
-  name: backend_health(resource_group_name, application_gateway_name, expand=None,
-    custom_headers=None, raw=False, polling=True, **operation_config)
+  name: begin_backend_health(resource_group_name, application_gateway_name, expand=None,
+    **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health
-- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health_on_demand
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health
+- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health_on_demand
   isExternal: false
-  name: backend_health_on_demand(resource_group_name, application_gateway_name, probe_request,
-    expand=None, custom_headers=None, raw=False, polling=True, **operation_config)
+  name: begin_backend_health_on_demand(resource_group_name, application_gateway_name,
+    probe_request, expand=None, **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.backend_health_on_demand
-- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.create_or_update
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_backend_health_on_demand
+- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_create_or_update
   isExternal: false
-  name: create_or_update(resource_group_name, application_gateway_name, parameters,
-    custom_headers=None, raw=False, polling=True, **operation_config)
+  name: begin_create_or_update(resource_group_name, application_gateway_name, parameters,
+    **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.create_or_update
-- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.delete
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_create_or_update
+- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_delete
   isExternal: false
-  name: delete(resource_group_name, application_gateway_name, custom_headers=None,
-    raw=False, polling=True, **operation_config)
+  name: begin_delete(resource_group_name, application_gateway_name, **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.delete
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_delete
+- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_start
+  isExternal: false
+  name: begin_start(resource_group_name, application_gateway_name, **kwargs)
+  parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_start
+- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_stop
+  isExternal: false
+  name: begin_stop(resource_group_name, application_gateway_name, **kwargs)
+  parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
+  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.begin_stop
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get
   isExternal: false
-  name: get(resource_group_name, application_gateway_name, custom_headers=None, raw=False,
-    **operation_config)
+  name: get(resource_group_name, application_gateway_name, **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get_ssl_predefined_policy
   isExternal: false
-  name: get_ssl_predefined_policy(predefined_policy_name, custom_headers=None, raw=False,
-    **operation_config)
+  name: get_ssl_predefined_policy(predefined_policy_name, **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.get_ssl_predefined_policy
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list
   isExternal: false
-  name: list(resource_group_name, custom_headers=None, raw=False, **operation_config)
+  name: list(resource_group_name, **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_all
   isExternal: false
-  name: list_all(custom_headers=None, raw=False, **operation_config)
+  name: list_all(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_all
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_request_headers
   isExternal: false
-  name: list_available_request_headers(custom_headers=None, raw=False, **operation_config)
+  name: list_available_request_headers(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_request_headers
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_response_headers
   isExternal: false
-  name: list_available_response_headers(custom_headers=None, raw=False, **operation_config)
+  name: list_available_response_headers(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_response_headers
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_server_variables
   isExternal: false
-  name: list_available_server_variables(custom_headers=None, raw=False, **operation_config)
+  name: list_available_server_variables(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_server_variables
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_options
   isExternal: false
-  name: list_available_ssl_options(custom_headers=None, raw=False, **operation_config)
+  name: list_available_ssl_options(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_options
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_predefined_policies
   isExternal: false
-  name: list_available_ssl_predefined_policies(custom_headers=None, raw=False, **operation_config)
+  name: list_available_ssl_predefined_policies(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_ssl_predefined_policies
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_waf_rule_sets
   isExternal: false
-  name: list_available_waf_rule_sets(custom_headers=None, raw=False, **operation_config)
+  name: list_available_waf_rule_sets(**kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.list_available_waf_rule_sets
-- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.start
-  isExternal: false
-  name: start(resource_group_name, application_gateway_name, custom_headers=None,
-    raw=False, polling=True, **operation_config)
-  parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.start
-- fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.stop
-  isExternal: false
-  name: stop(resource_group_name, application_gateway_name, custom_headers=None, raw=False,
-    polling=True, **operation_config)
-  parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
-  uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.stop
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.update_tags
   isExternal: false
-  name: update_tags(resource_group_name, application_gateway_name, tags=None, custom_headers=None,
-    raw=False, **operation_config)
+  name: update_tags(resource_group_name, application_gateway_name, parameters, **kwargs)
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.update_tags
 - fullName: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.models
@@ -955,12 +800,12 @@ references:
   name: models
   parent: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations
   uid: azure.mgmt.network.v2019_12_01.operations.ApplicationGatewaysOperations.models
-- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]
-  name: AzureOperationPoller[ApplicationGatewayBackendHealth]
+- fullName: azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]
+  name: LROPoller[ApplicationGatewayBackendHealth]
   spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: azure.core.polling.LROPoller
+    name: LROPoller
+    uid: azure.core.polling.LROPoller
   - fullName: '['
     name: '['
   - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth
@@ -968,34 +813,13 @@ references:
     uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth
   - fullName: ']'
     name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]]
-  name: AzureOperationPoller[ClientRawResponse[ApplicationGatewayBackendHealth]]
+  uid: azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]
+- fullName: azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]
+  name: LROPoller[ApplicationGatewayBackendHealthOnDemand]
   spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
-  - fullName: '['
-    name: '['
-  - fullName: msrest.pipeline.ClientRawResponse
-    name: ClientRawResponse
-    uid: msrest.pipeline.ClientRawResponse
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth
-    name: ApplicationGatewayBackendHealth
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth
-  - fullName: ']'
-    name: ']'
-  - fullName: ']'
-    name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealth]]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]
-  name: AzureOperationPoller[ApplicationGatewayBackendHealthOnDemand]
-  spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: azure.core.polling.LROPoller
+    name: LROPoller
+    uid: azure.core.polling.LROPoller
   - fullName: '['
     name: '['
   - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand
@@ -1003,34 +827,13 @@ references:
     uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand
   - fullName: ']'
     name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]]
-  name: AzureOperationPoller[ClientRawResponse[ApplicationGatewayBackendHealthOnDemand]]
+  uid: azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]
+- fullName: azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
+  name: LROPoller[ApplicationGateway]
   spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
-  - fullName: '['
-    name: '['
-  - fullName: msrest.pipeline.ClientRawResponse
-    name: ClientRawResponse
-    uid: msrest.pipeline.ClientRawResponse
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand
-    name: ApplicationGatewayBackendHealthOnDemand
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand
-  - fullName: ']'
-    name: ']'
-  - fullName: ']'
-    name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayBackendHealthOnDemand]]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
-  name: AzureOperationPoller[ApplicationGateway]
-  spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: azure.core.polling.LROPoller
+    name: LROPoller
+    uid: azure.core.polling.LROPoller
   - fullName: '['
     name: '['
   - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGateway
@@ -1038,34 +841,13 @@ references:
     uid: azure.mgmt.network.v2019_12_01.models.ApplicationGateway
   - fullName: ']'
     name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]]
-  name: AzureOperationPoller[ClientRawResponse[ApplicationGateway]]
+  uid: azure.core.polling.LROPoller[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
+- fullName: azure.core.polling.LROPoller[None]
+  name: LROPoller[None]
   spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
-  - fullName: '['
-    name: '['
-  - fullName: msrest.pipeline.ClientRawResponse
-    name: ClientRawResponse
-    uid: msrest.pipeline.ClientRawResponse
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-    name: ApplicationGateway
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-  - fullName: ']'
-    name: ']'
-  - fullName: ']'
-    name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[None]
-  name: AzureOperationPoller[None]
-  spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: azure.core.polling.LROPoller
+    name: LROPoller
+    uid: azure.core.polling.LROPoller
   - fullName: '['
     name: '['
   - fullName: None
@@ -1073,42 +855,21 @@ references:
     uid: None
   - fullName: ']'
     name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[None]
-- fullName: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
-  name: AzureOperationPoller[ClientRawResponse[None]]
+  uid: azure.core.polling.LROPoller[None]
+- fullName: azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayListResult]
+  name: ItemPaged[ApplicationGatewayListResult]
   spec.python:
-  - fullName: msrestazure.azure_operation.AzureOperationPoller
-    name: AzureOperationPoller
-    uid: msrestazure.azure_operation.AzureOperationPoller
+  - fullName: azure.core.paging.ItemPaged
+    name: ItemPaged
+    uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: msrest.pipeline.ClientRawResponse
-    name: ClientRawResponse
-    uid: msrest.pipeline.ClientRawResponse
-  - fullName: '['
-    name: '['
-  - fullName: None
-    name: None
-    uid: None
+  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayListResult
+    name: ApplicationGatewayListResult
+    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayListResult
   - fullName: ']'
     name: ']'
-  - fullName: ']'
-    name: ']'
-  uid: msrestazure.azure_operation.AzureOperationPoller[msrest.pipeline.ClientRawResponse[None]]
-- fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
-  name: ApplicationGatewayPaged[ApplicationGateway]
-  spec.python:
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayPaged
-    name: ApplicationGatewayPaged
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayPaged
-  - fullName: '['
-    name: '['
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-    name: ApplicationGateway
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGateway
-  - fullName: ']'
-    name: ']'
-  uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGateway]
+  uid: azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayListResult]
 - fullName: list[str]
   name: list[str]
   spec.python:
@@ -1123,36 +884,17 @@ references:
   - fullName: ']'
     name: ']'
   uid: list[str]
-- fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicyPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicy]
-  name: ApplicationGatewaySslPredefinedPolicyPaged[ApplicationGatewaySslPredefinedPolicy]
+- fullName: azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableSslPredefinedPolicies]
+  name: ItemPaged[ApplicationGatewayAvailableSslPredefinedPolicies]
   spec.python:
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicyPaged
-    name: ApplicationGatewaySslPredefinedPolicyPaged
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicyPaged
+  - fullName: azure.core.paging.ItemPaged
+    name: ItemPaged
+    uid: azure.core.paging.ItemPaged
   - fullName: '['
     name: '['
-  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicy
-    name: ApplicationGatewaySslPredefinedPolicy
-    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicy
+  - fullName: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableSslPredefinedPolicies
+    name: ApplicationGatewayAvailableSslPredefinedPolicies
+    uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableSslPredefinedPolicies
   - fullName: ']'
     name: ']'
-  uid: azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicyPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewaySslPredefinedPolicy]
-- fullName: dict[str, str]
-  name: dict[str, str]
-  spec.python:
-  - fullName: dict
-    name: dict
-    uid: dict
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ', '
-    name: ', '
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: dict[str, str]
+  uid: azure.core.paging.ItemPaged[azure.mgmt.network.v2019_12_01.models.ApplicationGatewayAvailableSslPredefinedPolicies]
