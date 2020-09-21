@@ -1,14 +1,26 @@
+---
+title: 
+keywords: Azure, python, SDK, API, azure-mgmt-eventhub, eventhub
+author: maggiepint
+ms.author: magpint
+ms.date: 09/18/2020
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: eventhub
+---
 
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure EventHub Management Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
-For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
+For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
 # Usage
 
-For code examples, see [EventHub Management](https://docs.microsoft.com/python/api/overview/azure/event-hub)
+For code examples, see [EventHub Management](https://docs.microsoft.com/python/api/overview/azure/event-hub?view=azure-python-preview)
 on docs.microsoft.com.
 
 
