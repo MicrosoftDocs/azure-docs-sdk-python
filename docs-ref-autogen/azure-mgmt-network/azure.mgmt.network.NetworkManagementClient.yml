@@ -15,6 +15,7 @@ items:
   - azure.mgmt.network.NetworkManagementClient.azure_firewalls
   - azure.mgmt.network.NetworkManagementClient.bastion_hosts
   - azure.mgmt.network.NetworkManagementClient.bgp_service_communities
+  - azure.mgmt.network.NetworkManagementClient.close
   - azure.mgmt.network.NetworkManagementClient.connection_monitors
   - azure.mgmt.network.NetworkManagementClient.custom_ip_prefixes
   - azure.mgmt.network.NetworkManagementClient.ddos_custom_policies
@@ -63,8 +64,8 @@ items:
   - azure.mgmt.network.NetworkManagementClient.network_virtual_appliances
   - azure.mgmt.network.NetworkManagementClient.network_watchers
   - azure.mgmt.network.NetworkManagementClient.operations
-  - azure.mgmt.network.NetworkManagementClient.p2s_vpn_gateways
-  - azure.mgmt.network.NetworkManagementClient.p2s_vpn_server_configurations
+  - azure.mgmt.network.NetworkManagementClient.p2_svpn_gateways
+  - azure.mgmt.network.NetworkManagementClient.p2_svpn_server_configurations
   - azure.mgmt.network.NetworkManagementClient.packet_captures
   - azure.mgmt.network.NetworkManagementClient.peer_express_route_circuit_connections
   - azure.mgmt.network.NetworkManagementClient.private_dns_zone_groups
@@ -90,7 +91,7 @@ items:
   - azure.mgmt.network.NetworkManagementClient.virtual_hub_bgp_connection
   - azure.mgmt.network.NetworkManagementClient.virtual_hub_bgp_connections
   - azure.mgmt.network.NetworkManagementClient.virtual_hub_ip_configuration
-  - azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2s
+  - azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2_s
   - azure.mgmt.network.NetworkManagementClient.virtual_hubs
   - azure.mgmt.network.NetworkManagementClient.virtual_network_gateway_connections
   - azure.mgmt.network.NetworkManagementClient.virtual_network_gateways
@@ -99,7 +100,6 @@ items:
   - azure.mgmt.network.NetworkManagementClient.virtual_networks
   - azure.mgmt.network.NetworkManagementClient.virtual_router_peerings
   - azure.mgmt.network.NetworkManagementClient.virtual_routers
-  - azure.mgmt.network.NetworkManagementClient.virtual_wa_ns
   - azure.mgmt.network.NetworkManagementClient.virtual_wans
   - azure.mgmt.network.NetworkManagementClient.vpn_connections
   - azure.mgmt.network.NetworkManagementClient.vpn_gateways
@@ -124,41 +124,40 @@ items:
     type: azure.profiles.multiapiclient.MultiApiClientMixin
   - inheritance:
     - type: builtins.object
-    type: msrest.service_client.SDKClient
+    type: azure.mgmt.network._network_management_client._SDKClient
   langs:
   - python
   module: azure.mgmt.network
   name: NetworkManagementClient
-  summary: 'Network Client
+  summary: 'Network Client.
 
 
-    This ready contains multiple API versions, to help you deal with all Azure clouds
+    This ready contains multiple API versions, to help you deal with all of the Azure
+    clouds
 
     (Azure Stack, Azure Government, Azure China, etc.).
 
-    By default, uses latest API version available on public Azure.
+    By default, it uses the latest API version available on public Azure.
 
-    For production, you should stick a particular api-version and/or profile.
+    For production, you should stick to a particular api-version and/or profile.
 
-    The profile sets a mapping between the operation group and an API version.
+    The profile sets a mapping between an operation group and its API version.
 
     The api-version parameter sets the default API version if the operation
 
     group is not described in the profile.'
   syntax:
-    content: 'NetworkManagementClient(credentials, subscription_id, api_version=None,
+    content: 'NetworkManagementClient(credential, subscription_id, api_version=None,
       base_url=None, profile=<KnownProfiles.default: <azure.profiles.DefaultProfile
-      object>>)'
+      object>>, **kwargs)'
     parameters:
-    - description: Credentials needed for the client to connect to Azure.
-      id: credentials
+    - description: Credential needed for the client to connect to Azure.
+      id: credential
       type:
-      - msrestazure.azure_active_directory
-    - description: 'Subscription credentials which uniquely identify
-
-        Microsoft Azure subscription. The subscription ID forms part of the URI
-
-        for every service call.'
+      - azure.core.credentials.TokenCredential
+    - description: The subscription credentials which uniquely identify the Microsoft
+        Azure subscription. The subscription ID forms part of the URI for every service
+        call.
       id: subscription_id
       type:
       - str
@@ -176,11 +175,11 @@ items:
       id: profile
       type:
       - azure.profiles.KnownProfiles
-    variables:
-    - description: Configuration for client.
-      id: config
+    - description: Default waiting time between two polls for LRO operations if no
+        Retry-After header is present.
+      id: polling_interval
       type:
-      - NetworkManagementClientConfiguration
+      - int
   type: class
   uid: azure.mgmt.network.NetworkManagementClient
 - class: azure.mgmt.network.NetworkManagementClient
@@ -509,6 +508,18 @@ items:
   syntax: {}
   type: attribute
   uid: azure.mgmt.network.NetworkManagementClient.bgp_service_communities
+- class: azure.mgmt.network.NetworkManagementClient
+  fullName: azure.mgmt.network.NetworkManagementClient.close
+  langs:
+  - python
+  module: azure.mgmt.network
+  name: close()
+  namewithoutparameters: close
+  syntax:
+    content: close()
+    parameters: []
+  type: method
+  uid: azure.mgmt.network.NetworkManagementClient.close
 - class: azure.mgmt.network.NetworkManagementClient
   fullName: azure.mgmt.network.NetworkManagementClient.connection_monitors
   langs:
@@ -1835,47 +1846,47 @@ items:
   type: attribute
   uid: azure.mgmt.network.NetworkManagementClient.operations
 - class: azure.mgmt.network.NetworkManagementClient
-  fullName: azure.mgmt.network.NetworkManagementClient.p2s_vpn_gateways
+  fullName: azure.mgmt.network.NetworkManagementClient.p2_svpn_gateways
   langs:
   - python
   module: azure.mgmt.network
-  name: p2s_vpn_gateways
-  summary: "*Instance depends on the API version* --\n\n* 2018-08-01: <xref:azure.mgmt.network.v2018_08_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2018-10-01: <xref:azure.mgmt.network.v2018_10_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2018-11-01: <xref:azure.mgmt.network.v2018_11_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2018-12-01: <xref:azure.mgmt.network.v2018_12_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-02-01: <xref:azure.mgmt.network.v2019_02_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-04-01: <xref:azure.mgmt.network.v2019_04_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-06-01: <xref:azure.mgmt.network.v2019_06_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-07-01: <xref:azure.mgmt.network.v2019_07_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-08-01: <xref:azure.mgmt.network.v2019_08_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-09-01: <xref:azure.mgmt.network.v2019_09_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-11-01: <xref:azure.mgmt.network.v2019_11_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2019-12-01: <xref:azure.mgmt.network.v2019_12_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2020-03-01: <xref:azure.mgmt.network.v2020_03_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2020-04-01: <xref:azure.mgmt.network.v2020_04_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2020-05-01: <xref:azure.mgmt.network.v2020_05_01.operations.P2sVpnGatewaysOperations>\
-    \ \n\n* 2020-06-01: <xref:azure.mgmt.network.v2020_06_01.operations.P2sVpnGatewaysOperations>"
+  name: p2_svpn_gateways
+  summary: "*Instance depends on the API version* --\n\n* 2018-08-01: <xref:azure.mgmt.network.v2018_08_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2018-10-01: <xref:azure.mgmt.network.v2018_10_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2018-11-01: <xref:azure.mgmt.network.v2018_11_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2018-12-01: <xref:azure.mgmt.network.v2018_12_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-02-01: <xref:azure.mgmt.network.v2019_02_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-04-01: <xref:azure.mgmt.network.v2019_04_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-06-01: <xref:azure.mgmt.network.v2019_06_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-07-01: <xref:azure.mgmt.network.v2019_07_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-08-01: <xref:azure.mgmt.network.v2019_08_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-09-01: <xref:azure.mgmt.network.v2019_09_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-11-01: <xref:azure.mgmt.network.v2019_11_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2019-12-01: <xref:azure.mgmt.network.v2019_12_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2020-03-01: <xref:azure.mgmt.network.v2020_03_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2020-04-01: <xref:azure.mgmt.network.v2020_04_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2020-05-01: <xref:azure.mgmt.network.v2020_05_01.operations.P2SVpnGatewaysOperations>\
+    \ \n\n* 2020-06-01: <xref:azure.mgmt.network.v2020_06_01.operations.P2SVpnGatewaysOperations>"
   syntax: {}
   type: attribute
-  uid: azure.mgmt.network.NetworkManagementClient.p2s_vpn_gateways
+  uid: azure.mgmt.network.NetworkManagementClient.p2_svpn_gateways
 - class: azure.mgmt.network.NetworkManagementClient
-  fullName: azure.mgmt.network.NetworkManagementClient.p2s_vpn_server_configurations
+  fullName: azure.mgmt.network.NetworkManagementClient.p2_svpn_server_configurations
   langs:
   - python
   module: azure.mgmt.network
-  name: p2s_vpn_server_configurations
-  summary: "*Instance depends on the API version* --\n\n* 2018-08-01: <xref:azure.mgmt.network.v2018_08_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2018-10-01: <xref:azure.mgmt.network.v2018_10_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2018-11-01: <xref:azure.mgmt.network.v2018_11_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2018-12-01: <xref:azure.mgmt.network.v2018_12_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2019-02-01: <xref:azure.mgmt.network.v2019_02_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2019-04-01: <xref:azure.mgmt.network.v2019_04_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2019-06-01: <xref:azure.mgmt.network.v2019_06_01.operations.P2sVpnServerConfigurationsOperations>\
-    \ \n\n* 2019-07-01: <xref:azure.mgmt.network.v2019_07_01.operations.P2sVpnServerConfigurationsOperations>"
+  name: p2_svpn_server_configurations
+  summary: "*Instance depends on the API version* --\n\n* 2018-08-01: <xref:azure.mgmt.network.v2018_08_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2018-10-01: <xref:azure.mgmt.network.v2018_10_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2018-11-01: <xref:azure.mgmt.network.v2018_11_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2018-12-01: <xref:azure.mgmt.network.v2018_12_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2019-02-01: <xref:azure.mgmt.network.v2019_02_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2019-04-01: <xref:azure.mgmt.network.v2019_04_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2019-06-01: <xref:azure.mgmt.network.v2019_06_01.operations.P2SVpnServerConfigurationsOperations>\
+    \ \n\n* 2019-07-01: <xref:azure.mgmt.network.v2019_07_01.operations.P2SVpnServerConfigurationsOperations>"
   syntax: {}
   type: attribute
-  uid: azure.mgmt.network.NetworkManagementClient.p2s_vpn_server_configurations
+  uid: azure.mgmt.network.NetworkManagementClient.p2_svpn_server_configurations
 - class: azure.mgmt.network.NetworkManagementClient
   fullName: azure.mgmt.network.NetworkManagementClient.packet_captures
   langs:
@@ -2506,21 +2517,21 @@ items:
   type: attribute
   uid: azure.mgmt.network.NetworkManagementClient.virtual_hub_ip_configuration
 - class: azure.mgmt.network.NetworkManagementClient
-  fullName: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2s
+  fullName: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2_s
   langs:
   - python
   module: azure.mgmt.network
-  name: virtual_hub_route_table_v2s
-  summary: "*Instance depends on the API version* --\n\n* 2019-09-01: <xref:azure.mgmt.network.v2019_09_01.operations.VirtualHubRouteTableV2sOperations>\
-    \ \n\n* 2019-11-01: <xref:azure.mgmt.network.v2019_11_01.operations.VirtualHubRouteTableV2sOperations>\
-    \ \n\n* 2019-12-01: <xref:azure.mgmt.network.v2019_12_01.operations.VirtualHubRouteTableV2sOperations>\
-    \ \n\n* 2020-03-01: <xref:azure.mgmt.network.v2020_03_01.operations.VirtualHubRouteTableV2sOperations>\
-    \ \n\n* 2020-04-01: <xref:azure.mgmt.network.v2020_04_01.operations.VirtualHubRouteTableV2sOperations>\
-    \ \n\n* 2020-05-01: <xref:azure.mgmt.network.v2020_05_01.operations.VirtualHubRouteTableV2sOperations>\
-    \ \n\n* 2020-06-01: <xref:azure.mgmt.network.v2020_06_01.operations.VirtualHubRouteTableV2sOperations>"
+  name: virtual_hub_route_table_v2_s
+  summary: "*Instance depends on the API version* --\n\n* 2019-09-01: <xref:azure.mgmt.network.v2019_09_01.operations.VirtualHubRouteTableV2SOperations>\
+    \ \n\n* 2019-11-01: <xref:azure.mgmt.network.v2019_11_01.operations.VirtualHubRouteTableV2SOperations>\
+    \ \n\n* 2019-12-01: <xref:azure.mgmt.network.v2019_12_01.operations.VirtualHubRouteTableV2SOperations>\
+    \ \n\n* 2020-03-01: <xref:azure.mgmt.network.v2020_03_01.operations.VirtualHubRouteTableV2SOperations>\
+    \ \n\n* 2020-04-01: <xref:azure.mgmt.network.v2020_04_01.operations.VirtualHubRouteTableV2SOperations>\
+    \ \n\n* 2020-05-01: <xref:azure.mgmt.network.v2020_05_01.operations.VirtualHubRouteTableV2SOperations>\
+    \ \n\n* 2020-06-01: <xref:azure.mgmt.network.v2020_06_01.operations.VirtualHubRouteTableV2SOperations>"
   syntax: {}
   type: attribute
-  uid: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2s
+  uid: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2_s
 - class: azure.mgmt.network.NetworkManagementClient
   fullName: azure.mgmt.network.NetworkManagementClient.virtual_hubs
   langs:
@@ -2766,24 +2777,15 @@ items:
   type: attribute
   uid: azure.mgmt.network.NetworkManagementClient.virtual_routers
 - class: azure.mgmt.network.NetworkManagementClient
-  fullName: azure.mgmt.network.NetworkManagementClient.virtual_wa_ns
-  langs:
-  - python
-  module: azure.mgmt.network
-  name: virtual_wa_ns
-  summary: "*Instance depends on the API version* --\n\n* 2018-04-01: <xref:azure.mgmt.network.v2018_04_01.operations.VirtualWANsOperations>\
-    \ \n\n* 2018-06-01: <xref:azure.mgmt.network.v2018_06_01.operations.VirtualWANsOperations>\
-    \ \n\n* 2018-07-01: <xref:azure.mgmt.network.v2018_07_01.operations.VirtualWANsOperations>"
-  syntax: {}
-  type: attribute
-  uid: azure.mgmt.network.NetworkManagementClient.virtual_wa_ns
-- class: azure.mgmt.network.NetworkManagementClient
   fullName: azure.mgmt.network.NetworkManagementClient.virtual_wans
   langs:
   - python
   module: azure.mgmt.network
   name: virtual_wans
-  summary: "*Instance depends on the API version* --\n\n* 2018-08-01: <xref:azure.mgmt.network.v2018_08_01.operations.VirtualWansOperations>\
+  summary: "*Instance depends on the API version* --\n\n* 2018-04-01: <xref:azure.mgmt.network.v2018_04_01.operations.VirtualWANsOperations>\
+    \ \n\n* 2018-06-01: <xref:azure.mgmt.network.v2018_06_01.operations.VirtualWANsOperations>\
+    \ \n\n* 2018-07-01: <xref:azure.mgmt.network.v2018_07_01.operations.VirtualWANsOperations>\
+    \ \n\n* 2018-08-01: <xref:azure.mgmt.network.v2018_08_01.operations.VirtualWansOperations>\
     \ \n\n* 2018-10-01: <xref:azure.mgmt.network.v2018_10_01.operations.VirtualWansOperations>\
     \ \n\n* 2018-11-01: <xref:azure.mgmt.network.v2018_11_01.operations.VirtualWansOperations>\
     \ \n\n* 2018-12-01: <xref:azure.mgmt.network.v2018_12_01.operations.VirtualWansOperations>\
@@ -3022,6 +3024,7 @@ items:
     \ \n\n* 2019-12-01: <xref:azure.mgmt.network.v2019_12_01.operations.WebApplicationFirewallPoliciesOperations>\
     \ \n\n* 2020-03-01: <xref:azure.mgmt.network.v2020_03_01.operations.WebApplicationFirewallPoliciesOperations>\
     \ \n\n* 2020-04-01: <xref:azure.mgmt.network.v2020_04_01.operations.WebApplicationFirewallPoliciesOperations>\
+    \ \n\n* 2020-05-01: <xref:azure.mgmt.network.v2020_05_01.operations.WebApplicationFirewallPoliciesOperations>\
     \ \n\n* 2020-06-01: <xref:azure.mgmt.network.v2020_06_01.operations.WebApplicationFirewallPoliciesOperations>"
   syntax: {}
   type: attribute
@@ -3112,6 +3115,11 @@ references:
   name: bgp_service_communities
   parent: azure.mgmt.network.NetworkManagementClient
   uid: azure.mgmt.network.NetworkManagementClient.bgp_service_communities
+- fullName: azure.mgmt.network.NetworkManagementClient.close
+  isExternal: false
+  name: close()
+  parent: azure.mgmt.network.NetworkManagementClient
+  uid: azure.mgmt.network.NetworkManagementClient.close
 - fullName: azure.mgmt.network.NetworkManagementClient.connection_monitors
   isExternal: false
   name: connection_monitors
@@ -3352,16 +3360,16 @@ references:
   name: operations
   parent: azure.mgmt.network.NetworkManagementClient
   uid: azure.mgmt.network.NetworkManagementClient.operations
-- fullName: azure.mgmt.network.NetworkManagementClient.p2s_vpn_gateways
+- fullName: azure.mgmt.network.NetworkManagementClient.p2_svpn_gateways
   isExternal: false
-  name: p2s_vpn_gateways
+  name: p2_svpn_gateways
   parent: azure.mgmt.network.NetworkManagementClient
-  uid: azure.mgmt.network.NetworkManagementClient.p2s_vpn_gateways
-- fullName: azure.mgmt.network.NetworkManagementClient.p2s_vpn_server_configurations
+  uid: azure.mgmt.network.NetworkManagementClient.p2_svpn_gateways
+- fullName: azure.mgmt.network.NetworkManagementClient.p2_svpn_server_configurations
   isExternal: false
-  name: p2s_vpn_server_configurations
+  name: p2_svpn_server_configurations
   parent: azure.mgmt.network.NetworkManagementClient
-  uid: azure.mgmt.network.NetworkManagementClient.p2s_vpn_server_configurations
+  uid: azure.mgmt.network.NetworkManagementClient.p2_svpn_server_configurations
 - fullName: azure.mgmt.network.NetworkManagementClient.packet_captures
   isExternal: false
   name: packet_captures
@@ -3487,11 +3495,11 @@ references:
   name: virtual_hub_ip_configuration
   parent: azure.mgmt.network.NetworkManagementClient
   uid: azure.mgmt.network.NetworkManagementClient.virtual_hub_ip_configuration
-- fullName: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2s
+- fullName: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2_s
   isExternal: false
-  name: virtual_hub_route_table_v2s
+  name: virtual_hub_route_table_v2_s
   parent: azure.mgmt.network.NetworkManagementClient
-  uid: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2s
+  uid: azure.mgmt.network.NetworkManagementClient.virtual_hub_route_table_v2_s
 - fullName: azure.mgmt.network.NetworkManagementClient.virtual_hubs
   isExternal: false
   name: virtual_hubs
@@ -3532,11 +3540,6 @@ references:
   name: virtual_routers
   parent: azure.mgmt.network.NetworkManagementClient
   uid: azure.mgmt.network.NetworkManagementClient.virtual_routers
-- fullName: azure.mgmt.network.NetworkManagementClient.virtual_wa_ns
-  isExternal: false
-  name: virtual_wa_ns
-  parent: azure.mgmt.network.NetworkManagementClient
-  uid: azure.mgmt.network.NetworkManagementClient.virtual_wa_ns
 - fullName: azure.mgmt.network.NetworkManagementClient.virtual_wans
   isExternal: false
   name: virtual_wans
