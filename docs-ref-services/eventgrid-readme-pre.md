@@ -3,7 +3,7 @@ title: Azure Event Grid client library for Python
 keywords: Azure, python, SDK, API, azure-eventgrid, eventgrid
 author: maggiepint
 ms.author: magpint
-ms.date: 09/08/2020
+ms.date: 09/24/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: eventgrid
 ---
 
-# Azure Event Grid client library for Python - Version 2.0.0b1 
+# Azure Event Grid client library for Python - Version 2.0.0b2 
 
 
 Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.
@@ -25,8 +25,7 @@ Azure Event Grid is a fully-managed intelligent event routing service that allow
 * You must have an [Azure subscription][azure_subscription] and an Event Grid Topic resource to use this package.
 
 ### Install the package
-Install the Azure Event Grid client library for Python - Version 2.0.0b1 
- with [pip][pip]:
+Install the Azure Event Grid client library for Python with [pip][pip]:
 
 ```bash
 pip install azure-eventgrid
@@ -232,12 +231,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python-eg-src]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/
+[python-eg-src]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/
 [python-eg-pypi]: https://pypi.org/project/azure-eventgrid
-[python-eg-product-docs]: https://docs.microsoft.com/en-us/azure/event-grid/overview
+[python-eg-product-docs]: https://docs.microsoft.com/azure/event-grid/overview
 [python-eg-ref-docs]: https://aka.ms/azsdk/python/eventgrid/docs
-[python-eg-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples
-[python-eg-changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/CHANGELOG.md
+[python-eg-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples
+[python-eg-changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/CHANGELOG.md
 
 [azure_portal_create_EG_resource]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.EventGrid%2Ftopics
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
@@ -246,13 +245,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_ref_docs]: https://aka.ms/azsdk/python/core/docs
 [azure_subscription]: https://azure.microsoft.com/free/
 
-[python-eg-sample-customevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs1_publish_custom_events_to_a_topic.py
-[python-eg-sample-customevent-to-domain]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs2_publish_custom_events_to_a_domain_topic.py
-[python-eg-sample-consume-systemevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs3_consume_system_events.py
-[python-eg-sample-consume-customevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs4_consume_custom_events.py
-[python-eg-sample-send-cloudevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs5_publish_events_using_cloud_events_1.0_schema.py
-[python-eg-sample-consume-cloudevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b1/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs6_consume_events_using_cloud_events_1.0_schema.py
-[publisher-service-doc]: https://docs.microsoft.com/en-us/azure/event-grid/concepts
+[python-eg-sample-customevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs1_publish_custom_events_to_a_topic.py
+[python-eg-sample-customevent-to-domain]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs2_publish_custom_events_to_a_domain_topic.py
+[python-eg-sample-consume-systemevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs3_consume_system_events.py
+[python-eg-sample-consume-customevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs4_consume_custom_events.py
+[python-eg-sample-send-cloudevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs5_publish_events_using_cloud_events_1.0_schema.py
+[python-eg-sample-consume-cloudevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_2.0.0b2/sdk/eventgrid/azure-eventgrid/samples/champion_scenarios/cs6_consume_events_using_cloud_events_1.0_schema.py
+[publisher-service-doc]: https://docs.microsoft.com/azure/event-grid/concepts
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
