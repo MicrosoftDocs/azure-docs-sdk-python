@@ -11,8 +11,6 @@ ms.devlang: python
 ms.service: 
 ---
 
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
-
 # Azure Communication Chat Package client library for Python - Version 1.0.0b1 
 
 
