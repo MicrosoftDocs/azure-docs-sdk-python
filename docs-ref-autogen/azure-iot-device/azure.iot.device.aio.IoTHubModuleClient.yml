@@ -7,10 +7,9 @@ items:
   - azure.iot.device.aio.IoTHubModuleClient.create_from_edge_environment
   - azure.iot.device.aio.IoTHubModuleClient.create_from_x509_certificate
   - azure.iot.device.aio.IoTHubModuleClient.disconnect
-  - azure.iot.device.aio.IoTHubModuleClient.get_storage_info_for_blob
   - azure.iot.device.aio.IoTHubModuleClient.get_twin
   - azure.iot.device.aio.IoTHubModuleClient.invoke_method
-  - azure.iot.device.aio.IoTHubModuleClient.notify_blob_upload_status
+  - azure.iot.device.aio.IoTHubModuleClient.on_message_received
   - azure.iot.device.aio.IoTHubModuleClient.patch_twin_reported_properties
   - azure.iot.device.aio.IoTHubModuleClient.receive_message_on_input
   - azure.iot.device.aio.IoTHubModuleClient.receive_method_request
@@ -166,39 +165,18 @@ items:
   module: azure.iot.device.aio
   name: disconnect()
   namewithoutparameters: disconnect
-  summary: Disconnect the client from the Azure IoT Hub or Azure IoT Edge Hub instance.
+  summary: 'Disconnect the client from the Azure IoT Hub or Azure IoT Edge Hub instance.
+
+
+    It is recommended that you make sure to call this coroutine when you are completely
+    done
+
+    with the your client instance.'
   syntax:
     content: disconnect()
     parameters: []
   type: method
   uid: azure.iot.device.aio.IoTHubModuleClient.disconnect
-- class: azure.iot.device.aio.IoTHubModuleClient
-  fullName: azure.iot.device.aio.IoTHubModuleClient.get_storage_info_for_blob
-  langs:
-  - python
-  module: azure.iot.device.aio
-  name: get_storage_info_for_blob(blob_name)
-  namewithoutparameters: get_storage_info_for_blob
-  summary: Sends a POST request over HTTP to an IoTHub endpoint that will return information
-    for uploading via the Azure Storage Account linked to the IoTHub your device is
-    connected to.
-  syntax:
-    content: get_storage_info_for_blob(blob_name)
-    parameters:
-    - description: The name in string format of the blob that will be uploaded using
-        the storage API. This name will be used to generate the proper credentials
-        for Storage, and needs to match what will be used with the Azure Storage SDK
-        to perform the blob upload.
-      id: blob_name
-      isRequired: true
-      type:
-      - str
-    return:
-      description: 'A JSON-like (dictionary) object from IoT Hub that will contain
-        relevant information including: correlationId, hostName, containerName, blobName,
-        sasToken.'
-  type: method
-  uid: azure.iot.device.aio.IoTHubModuleClient.get_storage_info_for_blob
 - class: azure.iot.device.aio.IoTHubModuleClient
   fullName: azure.iot.device.aio.IoTHubModuleClient.get_twin
   langs:
@@ -229,8 +207,9 @@ items:
   syntax:
     content: invoke_method(method_params, device_id, module_id=None)
     parameters:
-    - description: Should contain a method_name, payload, connect_timeout_in_seconds,
-        response_timeout_in_seconds.
+    - description: 'Should contain a methodName (str), payload (str),
+
+        connectTimeoutInSeconds (int), responseTimeoutInSeconds (int).'
       id: method_params
       isRequired: true
       type:
@@ -253,41 +232,21 @@ items:
   type: method
   uid: azure.iot.device.aio.IoTHubModuleClient.invoke_method
 - class: azure.iot.device.aio.IoTHubModuleClient
-  fullName: azure.iot.device.aio.IoTHubModuleClient.notify_blob_upload_status
+  fullName: azure.iot.device.aio.IoTHubModuleClient.on_message_received
   langs:
   - python
   module: azure.iot.device.aio
-  name: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
-  namewithoutparameters: notify_blob_upload_status
-  summary: When the upload is complete, the device sends a POST request to the IoT
-    Hub endpoint with information on the status of an upload to blob attempt. This
-    is used by IoT Hub to notify listening clients.
-  syntax:
-    content: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
-    parameters:
-    - description: Provided by IoT Hub on get_storage_info_for_blob request.
-      id: correlation_id
-      isRequired: true
-      type:
-      - str
-    - description: A boolean that indicates whether the file was uploaded successfully.
-      id: is_success
-      isRequired: true
-      type:
-      - bool
-    - description: A numeric status code that is the status for the upload of the
-        fiel to storage.
-      id: status_code
-      isRequired: true
-      type:
-      - int
-    - description: A description that corresponds to the status_code.
-      id: status_description
-      isRequired: true
-      type:
-      - str
-  type: method
-  uid: azure.iot.device.aio.IoTHubModuleClient.notify_blob_upload_status
+  name: on_message_received
+  summary: 'The handler function or coroutine that will be called when an input message
+    is received.
+
+
+    The function definitionor coroutine should take one positional argument (the
+
+    <xref:azure.iot.device.Message> object)'
+  syntax: {}
+  type: attribute
+  uid: azure.iot.device.aio.IoTHubModuleClient.on_message_received
 - class: azure.iot.device.aio.IoTHubModuleClient
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
@@ -372,7 +331,7 @@ items:
     return:
       description: MethodRequest object representing the received method request.
       type:
-      - '*azure.iot.device.MethodRequest*'
+      - azure.iot.device.MethodRequest
   type: method
   uid: azure.iot.device.aio.IoTHubModuleClient.receive_method_request
 - class: azure.iot.device.aio.IoTHubModuleClient
@@ -527,11 +486,6 @@ references:
   name: disconnect()
   parent: azure.iot.device.aio.IoTHubModuleClient
   uid: azure.iot.device.aio.IoTHubModuleClient.disconnect
-- fullName: azure.iot.device.aio.IoTHubModuleClient.get_storage_info_for_blob
-  isExternal: false
-  name: get_storage_info_for_blob(blob_name)
-  parent: azure.iot.device.aio.IoTHubModuleClient
-  uid: azure.iot.device.aio.IoTHubModuleClient.get_storage_info_for_blob
 - fullName: azure.iot.device.aio.IoTHubModuleClient.get_twin
   isExternal: false
   name: get_twin()
@@ -542,11 +496,11 @@ references:
   name: invoke_method(method_params, device_id, module_id=None)
   parent: azure.iot.device.aio.IoTHubModuleClient
   uid: azure.iot.device.aio.IoTHubModuleClient.invoke_method
-- fullName: azure.iot.device.aio.IoTHubModuleClient.notify_blob_upload_status
+- fullName: azure.iot.device.aio.IoTHubModuleClient.on_message_received
   isExternal: false
-  name: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
+  name: on_message_received
   parent: azure.iot.device.aio.IoTHubModuleClient
-  uid: azure.iot.device.aio.IoTHubModuleClient.notify_blob_upload_status
+  uid: azure.iot.device.aio.IoTHubModuleClient.on_message_received
 - fullName: azure.iot.device.aio.IoTHubModuleClient.patch_twin_reported_properties
   isExternal: false
   name: patch_twin_reported_properties(reported_properties_patch)
