@@ -51,13 +51,13 @@ You can create the resource using
 **Option 2:** [Azure CLI][azure_cli_create_FR_resource].
 Below is an example of how you can create a Form Recognizer resource using the CLI:
 
-```bash
+```azurecli
 # Create a new resource group to hold the form recognizer resource -
 # if using an existing resource group, skip this step
 az group create --name my-resource-group --location westus2
 ```
 
-```bash
+```azurecli
 # Create form recognizer
 az cognitiveservices account create \
     --name form-recognizer-resource \
@@ -78,7 +78,7 @@ You can find the endpoint for your Form Recognizer resource using the
 [Azure Portal][azure_portal_get_endpoint]
 or [Azure CLI][azure_cli_endpoint_lookup]:
 
-```bash
+```azurecli
 # Get the endpoint for the form recognizer resource
 az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
 ```
@@ -87,7 +87,9 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 
 The API key can be found in the Azure Portal or by running the following Azure CLI command:
 
-```az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
+```azurecli
+az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
+```
 
 #### Create the client with AzureKeyCredential
 

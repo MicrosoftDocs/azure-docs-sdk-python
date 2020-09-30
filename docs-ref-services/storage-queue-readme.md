@@ -44,7 +44,7 @@ If you wish to create a new storage account, you can use the
 [Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
 or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
-```bash
+```azurecli
 # Create a new resource group to hold the storage account -
 # if using an existing resource group, skip this step
 az group create --name my-resource-group --location westus2
@@ -72,7 +72,7 @@ You can find the storage account's queue service URL using the
 [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.storage/get-azstorageaccount),
 or [Azure CLI](https://docs.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show):
 
-```bash
+```azurecli
 # Get the queue service URL for the storage account
 az storage account show -n my-storage-account-name -g my-resource-group --query "primaryEndpoints.queue"
 ```
@@ -104,8 +104,10 @@ The `credential` parameter may be provided in a number of different forms, depen
    (aka account key or access key), provide the key as a string. This can be found in the Azure Portal under the "Access Keys" 
    section or by running the following Azure CLI command:
 
-    ```az storage account keys list -g MyResourceGroup -n MyStorageAccount```
-
+    ```azurecli
+    az storage account keys list -g MyResourceGroup -n MyStorageAccount```
+    ```
+    
     Use the key as the credential parameter to authenticate the client:
     ```python
     from azure.storage.queue import QueueServiceClient
@@ -151,7 +153,7 @@ service = QueueServiceClient.from_connection_string(conn_str=connection_string)
 
 The connection string to your storage account can be found in the Azure Portal under the "Access Keys" section or by running the following CLI command:
 
-```bash
+```azurecli
 az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
 ```
 

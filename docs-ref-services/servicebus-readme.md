@@ -50,7 +50,7 @@ To use this package, you must have:
 If you need an Azure service bus namespace, you can create it via the [Azure Portal][azure_namespace_creation].
 If you do not wish to use the graphical portal UI, you can use the Azure CLI via [Cloud Shell][cloud_shell_bash], or Azure CLI run locally, to create one with this Azure CLI command:
 
-```Bash
+```azurecli
 az servicebus namespace create --resource-group <resource-group-name> --name <servicebus-namespace-name> --location <servicebus-namespace-location>
 ```
 
@@ -62,7 +62,7 @@ Interaction with Service Bus starts with an instance of the `ServiceBusClient` c
 
 Use the [Azure CLI][azure_cli] snippet below to populate an environment variable with the service bus connection string (you can also find these values in the [Azure portal][azure_portal]. The snippet is formatted for the Bash shell.
 
-```Bash
+```azurecli
 RES_GROUP=<resource-group-name>
 NAMESPACE_NAME=<servicebus-namespace-name>
 

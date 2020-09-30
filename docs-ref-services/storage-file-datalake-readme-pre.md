@@ -43,7 +43,7 @@ If you wish to create a new storage account, you can use the
 [Azure PowerShell](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-quickstart-create-account#create-an-account-using-powershell),
 or [Azure CLI](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-quickstart-create-account#create-an-account-using-azure-cli):
 
-```bash
+```azurecli
 # Create a new resource group to hold the storage account -
 # if using an existing resource group, skip this step
 az group create --name my-resource-group --location westus2

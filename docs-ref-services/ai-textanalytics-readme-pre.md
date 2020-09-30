@@ -42,13 +42,13 @@ You can create the resource using
 **Option 2:** [Azure CLI][azure_cli_create_TA_resource].
 Below is an example of how you can create a Text Analytics resource using the CLI:
 
-```bash
+```azurecli
 # Create a new resource group to hold the text analytics resource -
 # if using an existing resource group, skip this step
 az group create --name my-resource-group --location westus2
 ```
 
-```bash
+```azurecli
 # Create text analytics
 az cognitiveservices account create \
     --name text-analytics-resource \
@@ -95,7 +95,7 @@ You can find the endpoint for your text analytics resource using the
 [Azure Portal][azure_portal_get_endpoint]
 or [Azure CLI][azure_cli_endpoint_lookup]:
 
-```bash
+```azurecli
 # Get the endpoint for the text analytics resource
 az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
 ```
@@ -104,7 +104,9 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 You can get the [API key][cognitive_authentication_api_key] from the Cognitive Services or Text Analytics resource in the [Azure Portal][azure_portal_get_endpoint].
 Alternatively, you can use [Azure CLI][azure_cli_endpoint_lookup] snippet below to get the API key of your resource.
 
-```az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
+```azurecli
+az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
+```
 
 #### Create a TextAnalyticsClient with an API Key Credential
 Once you have the value for the API key, you can pass it as a string into an instance of [AzureKeyCredential][azure-key-credential]. Use the key as the credential parameter

@@ -48,7 +48,7 @@ pip install azure-servicebus
 
 Use the Azure CLI snippet below to populate an environment variable with the Service Bus connection string (you can also find this value in the Azure portal). The snippet is formatted for the Bash shell.
 
-```Bash
+```azurecli
 RES_GROUP=<resource-group-name>
 NAMESPACE=<servicebus-namespace>
 

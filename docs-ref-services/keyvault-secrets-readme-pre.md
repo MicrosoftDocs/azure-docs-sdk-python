@@ -45,12 +45,12 @@ authentication as demonstrated below.
 names):
 
   (Optional) if you want a new resource group to hold the Key Vault:
-  ```sh
+  ```azurecli
   az group create --name my-resource-group --location westus2
   ```
 
   Create the Key Vault:
-  ```Bash
+  ```azurecli
   az keyvault create --resource-group my-resource-group --name my-key-vault
   ```
 
@@ -95,7 +95,7 @@ new service principal. Before using it, replace "your-application-name" with
 a more appropriate name for your service principal.
 
 Create a service principal:
-```Bash
+```azurecli
 az ad sp create-for-rbac --name http://my-application --skip-assignment
 ```
 
@@ -120,7 +120,7 @@ export AZURE_TENANT_ID="tenant id"
 ```
 
 Authorize the service principal to perform key operations in your Key Vault:
-```Bash
+```azurecli
 az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --secret-permissions get set list delete backup recover restore purge
 ```
 > Possible permissions:

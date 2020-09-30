@@ -33,7 +33,7 @@ The Azure Data Tables can be accessed using an Azure Storage or a CosmosDB accou
 If you wish to create a new storage account, you can use [Azure Portal][azure_portal_create_account],
 [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account]:
 
-```bash
+```azurecli
 # Create a new resource group to hold the storage account -
 # if using an existing resource group, skip this step
 az group create --name MyResourceGroup --location westus2
@@ -44,7 +44,7 @@ az storage account create -n MyStorageAccount -g MyResourceGroup
 #### Creating a Cosmos DB
 If you wish to create a new cosmos storage account, you can use [Azure Cosmos DB][azure_create_cosmos].
 Create a Cosmos DB account `MyCosmosDBDatabaseAccount` in resource group `MyResourceGroup` in the subscription `MySubscription` and a table named `MyTableName` in the account.
-```bash
+```azurecli
 az cosmosdb create --name MyCosmosDBDatabaseAccount --resource-group MyResourceGroup --subscription MySubscription
 az cosmosdb table create --name MyTableName --resource-group MyResourceGroup --acount-name MyCosmosDBDatabaseAccount
 ```
@@ -71,7 +71,7 @@ from azure.data.tables import TableServiceClient
 service = TableServiceClient(account_url="https://<myaccount>.table.core.windows.net/", credential=credential)
 ```
 
-```bash
+```azurecli
 # Get the table service URL for the account
 az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.table"
 ```
@@ -101,7 +101,9 @@ To use a [shared access signature (SAS) token][azure_sas_token], provide the tok
 ##### Creating the client from a shared key
 To use an account [shared key][azure_shared_key] (aka account key or access key), provide the key as a string. This can be found in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
-```az storage account keys list -g MyResourceGroup -n MyStorageAccount```
+```azurecli
+az storage account keys list -g MyResourceGroup -n MyStorageAccount```
+```
 
 Use the key as the credential parameter to authenticate the client:
 ```python
@@ -122,7 +124,7 @@ connection string to the client's `from_connection_string` class method:
 
 The connection string to your account can be found in the Azure Portal under the "Access Keys" section or by running the following CLI command:
 
-```bash
+```azurecli
 az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
 ```
 
@@ -132,7 +134,7 @@ You can find the account's table service URL using the
 [Azure PowerShell][azure_powershell_account_url],
 or [Azure CLI][azure_cli_account_url]:
 
-```bash
+```azurecli
 # Get the table service URL for the account
 az storage account show -n MyStorageAccount -g MyResourceGroup --query "primaryEndpoints.table"
 ```

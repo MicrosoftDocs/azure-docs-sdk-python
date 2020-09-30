@@ -41,7 +41,7 @@ If you wish to create a new storage account, you can use the
 [Azure PowerShell](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell),
 or [Azure CLI](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli):
 
-```bash
+```azurecli
 # Create a new resource group to hold the storage account -
 # if using an existing resource group, skip this step
 az group create --name my-resource-group --location westus2

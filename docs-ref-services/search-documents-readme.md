@@ -74,7 +74,7 @@ pip install azure-search-documents --pre
 
 To create a new search service, you can use the [Azure portal][create_search_service_docs], [Azure PowerShell][create_search_service_ps], or the [Azure CLI][create_search_service_cli].
 
-```Powershell
+```azurecli
 az search service create --name <mysearch> --resource-group <mysearch-rg> --sku free --location westus
 ```
 
@@ -89,7 +89,7 @@ your search service endpoint.](https://docs.microsoft.com/azure/search/search-se
 You can obtain your api-key from the
 [Azure portal](https://portal.azure.com/) or via the Azure CLI:
 
-```Powershell
+```azurecli
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
 ```
 

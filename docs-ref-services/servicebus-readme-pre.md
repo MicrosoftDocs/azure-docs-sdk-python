@@ -55,7 +55,7 @@ To use this package, you must have:
 If you need an Azure service bus namespace, you can create it via the [Azure Portal][azure_namespace_creation].
 If you do not wish to use the graphical portal UI, you can use the Azure CLI via [Cloud Shell][cloud_shell_bash], or Azure CLI run locally, to create one with this Azure CLI command:
 
-```Bash
+```azurecli
 az servicebus namespace create --resource-group <resource-group-name> --name <servicebus-namespace-name> --location <servicebus-namespace-location>
 ```
 

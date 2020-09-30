@@ -34,7 +34,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 If you need a Cosmos DB SQL API account, you can create one with this [Azure CLI][azure_cli] command:
 
-```Bash
+```azurecli
 az cosmosdb create --resource-group <resource-group-name> --name <cosmos-account-name>
 ```
 
@@ -58,7 +58,7 @@ Interaction with Cosmos DB starts with an instance of the [CosmosClient][ref_cos
 
 Use the Azure CLI snippet below to populate two environment variables with the database account URI and its primary master key (you can also find these values in the Azure portal). The snippet is formatted for the Bash shell.
 
-```Bash
+```azurecli
 RES_GROUP=<resource-group-name>
 ACCT_NAME=<cosmos-db-account-name>
 

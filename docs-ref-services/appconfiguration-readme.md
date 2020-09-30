@@ -42,7 +42,7 @@ To create a Configuration Store, you can use the Azure Portal or [Azure CLI][azu
 
 After that, create the Configuration Store:
 
-```Powershell
+```azurecli
 az appconfig create --name <config-store-name> --resource-group <resource-group-name> --location eastus
 ```
 
@@ -58,7 +58,7 @@ you can either use the connection string of the Configuration Store or use an AA
 
 Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
 
-```Powershell
+```azurecli
 az appconfig credential list --name <config-store-name>
 ```
 
@@ -89,7 +89,7 @@ new service principal. Before using it, replace "your-application-name" with
 the appropriate name for your service principal.
 
 Create a service principal:
-```Bash
+```azurecli
 az ad sp create-for-rbac --name http://my-application --skip-assignment
 ```
 

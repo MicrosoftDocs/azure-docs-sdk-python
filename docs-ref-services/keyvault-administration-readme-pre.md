@@ -53,7 +53,7 @@ new service principal. Before using it, replace "your-application-name" with
 a more appropriate name for your service principal.
 
 * Create a service principal:
-    ```Bash
+    ```azurecli
     az ad sp create-for-rbac --name http://your-application-name --skip-assignment
     ```
 
@@ -69,7 +69,7 @@ a more appropriate name for your service principal.
     > ```
 
 * Take note of the service principal objectId
-    ```Bash
+    ```azurecli
     az ad sp show --id <appId> --query objectId
     ```
 
@@ -89,12 +89,12 @@ a more appropriate name for your service principal.
     ```
 
 * Create the Key Vault and grant the above mentioned application authorization to perform administrative operations on the Azure Key Vault (replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names and `<your-service-principal-object-id>` with the value from above):
-    ```Bash
+    ```azurecli
     az keyvault create --hsm-name <your-key-vault-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
     ```
 
 * Use the above mentioned Azure Key Vault name to retrieve details of your Vault which also contains your Azure Key Vault URL:
-    ```Bash
+    ```azurecli
     az keyvault show --hsm-name <your-key-vault-name>
     ```
 
