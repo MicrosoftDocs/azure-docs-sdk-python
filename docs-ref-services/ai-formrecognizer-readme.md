@@ -89,9 +89,8 @@ The API key can be found in the Azure Portal or by running the following Azure C
 
 ```azurecli
 az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
-```dotnetcli
-
 ```
+
 #### Create the client with AzureKeyCredential
 
 To use an [API key][cognitive_authentication_api_key] as the `credential` parameter,
