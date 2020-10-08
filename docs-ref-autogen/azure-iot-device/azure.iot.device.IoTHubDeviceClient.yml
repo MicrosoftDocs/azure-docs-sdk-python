@@ -10,6 +10,7 @@ items:
   - azure.iot.device.IoTHubDeviceClient.get_storage_info_for_blob
   - azure.iot.device.IoTHubDeviceClient.get_twin
   - azure.iot.device.IoTHubDeviceClient.notify_blob_upload_status
+  - azure.iot.device.IoTHubDeviceClient.on_message_received
   - azure.iot.device.IoTHubDeviceClient.patch_twin_reported_properties
   - azure.iot.device.IoTHubDeviceClient.receive_message
   - azure.iot.device.IoTHubDeviceClient.receive_method_request
@@ -167,6 +168,12 @@ items:
   summary: 'Disconnect the client from the Azure IoT Hub or Azure IoT Edge Hub instance.
 
 
+    It is recommended that you make sure to call this function when you are completely
+    done
+
+    with the your client instance.
+
+
     This is a synchronous call, meaning that this function will not return until the
     connection
 
@@ -264,6 +271,21 @@ items:
   type: method
   uid: azure.iot.device.IoTHubDeviceClient.notify_blob_upload_status
 - class: azure.iot.device.IoTHubDeviceClient
+  fullName: azure.iot.device.IoTHubDeviceClient.on_message_received
+  langs:
+  - python
+  module: azure.iot.device
+  name: on_message_received
+  summary: 'The handler function that will be called when a message is received.
+
+
+    The function definition should take one positional argument (the
+
+    <xref:azure.iot.device.Message> object)'
+  syntax: {}
+  type: attribute
+  uid: azure.iot.device.IoTHubDeviceClient.on_message_received
+- class: azure.iot.device.IoTHubDeviceClient
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
   - type: azure.iot.device.exceptions.ConnectionFailedError
@@ -306,18 +328,22 @@ items:
   module: azure.iot.device
   name: receive_message(block=True, timeout=None)
   namewithoutparameters: receive_message
-  summary: Receive a message that has been sent from the Azure IoT Hub.
+  summary: 'Receive a message that has been sent from the Azure IoT Hub.
+
+
+    Deprecated since version 2.3.0: We recommend that you use the .on_message_received
+    property to set a handler instead'
   syntax:
     content: receive_message(block=True, timeout=None)
     parameters:
-    - defaultValue: 'True'
-      description: Indicates if the operation should block until a message is received.
+    - description: Indicates if the operation should block until a message is received.
       id: block
+      isRequired: true
       type:
       - bool
-    - defaultValue: None
-      description: Optionally provide a number of seconds until blocking times out.
+    - description: Optionally provide a number of seconds until blocking times out.
       id: timeout
+      isRequired: true
       type:
       - int
     return:
@@ -336,7 +362,11 @@ items:
   module: azure.iot.device
   name: receive_method_request(method_name=None, block=True, timeout=None)
   namewithoutparameters: receive_method_request
-  summary: Receive a method request via the Azure IoT Hub or Azure IoT Edge Hub.
+  summary: 'Receive a method request via the Azure IoT Hub or Azure IoT Edge Hub.
+
+
+    Deprecated since version 2.3.0: We recommend that you use the .on_method_request_received
+    property to set a handler instead'
   syntax:
     content: receive_method_request(method_name=None, block=True, timeout=None)
     parameters:
@@ -383,7 +413,9 @@ items:
     \ will raise a InboxEmpty exception \n\n\n2. If block=False, this function will\
     \ return any desired property patches which may have been received by the pipeline,\
     \ but not yet returned to the application.  If no desired property patches have\
-    \ been received by the pipeline, this function will raise an InboxEmpty exception"
+    \ been received by the pipeline, this function will raise an InboxEmpty exception\
+    \ \n\n\nDeprecated since version 2.3.0: We recommend that you use the .on_twin_desired_properties_patch_received\
+    \ property to set a handler instead"
   syntax:
     content: receive_twin_desired_properties_patch(block=True, timeout=None)
     parameters:
@@ -524,6 +556,11 @@ references:
   name: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
   parent: azure.iot.device.IoTHubDeviceClient
   uid: azure.iot.device.IoTHubDeviceClient.notify_blob_upload_status
+- fullName: azure.iot.device.IoTHubDeviceClient.on_message_received
+  isExternal: false
+  name: on_message_received
+  parent: azure.iot.device.IoTHubDeviceClient
+  uid: azure.iot.device.IoTHubDeviceClient.on_message_received
 - fullName: azure.iot.device.IoTHubDeviceClient.patch_twin_reported_properties
   isExternal: false
   name: patch_twin_reported_properties(reported_properties_patch)

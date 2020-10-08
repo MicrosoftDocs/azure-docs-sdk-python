@@ -3,7 +3,7 @@ title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
 author: maggiepint
 ms.author: magpint
-ms.date: 09/08/2020
+ms.date: 10/05/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -12,15 +12,15 @@ ms.service: core
 ---
 
 
-# Azure Core shared client library for Python - Version 1.8.1 
+# Azure Core shared client library for Python - Version 1.8.2 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries. 
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python_introduction.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.8.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.8.2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code]() | [Package (Pypi)][package] | [API reference documentation]()
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.8.2/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.8.2/sdk/core/azure-core/)
 
 ## Getting started
 
