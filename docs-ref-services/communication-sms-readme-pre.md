@@ -1,17 +1,19 @@
 ---
 title: Azure SMS client library for Python
-keywords: Azure, python, SDK, API, azure-communication-sms, 
+keywords: Azure, python, SDK, API, azure-communication-sms, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 09/22/2020
+ms.date: 10/09/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: communication
 ---
 
-# Azure SMS client library for Python - Version 1.0.0b1 
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
+
+# Azure SMS client library for Python - Version 1.0.0b3 
 
 
 Azure Communication SMS client package is intended to be used to send SMS using an Azure Resource. 
