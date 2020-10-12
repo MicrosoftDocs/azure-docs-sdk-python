@@ -1,17 +1,18 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
-keywords: Azure, python, SDK, API, azure-cosmos, azure-cosmos
+keywords: Azure, python, SDK, API, azure-cosmos, cosmos
 author: maggiepint
 ms.author: magpint
-ms.date: 05/28/2020
+ms.date: 10/09/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: cosmos-db
+ms.service: cosmos
 ---
 
-# Azure Cosmos DB SQL API client library for Python - Version 4.1.0
+# Azure Cosmos DB SQL API client library for Python - Version 4.2.0 
+
 
 Azure Cosmos DB is a globally distributed, multi-model database service that supports document, key-value, wide-column, and graph databases.
 
@@ -24,13 +25,15 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 [SDK source code][source_code] | [Package (PyPI)][cosmos_pypi] | [API reference documentation][ref_cosmos_sdk] | [Product documentation][cosmos_docs] | [Samples][cosmos_samples]
 
+> This SDK is used for the [SQL API](https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started). For all other APIs, please check the [Azure Cosmos DB documentation](https://docs.microsoft.com/azure/cosmos-db/introduction) to evaluate the best SDK for your project.
 
 ## Getting started
+
 ### Prerequisites
+
 * Azure subscription - [Create a free account][azure_sub]
 * Azure [Cosmos DB account][cosmos_account] - SQL API
 * [Python 2.7 or 3.5.3+][python]
-
 
 If you need a Cosmos DB SQL API account, you can create one with this [Azure CLI][azure_cli] command:
 
@@ -52,6 +55,7 @@ Although not required, you can keep your base system and Azure SDK environments 
 python3 -m venv azure-cosmosdb-sdk-environment
 source azure-cosmosdb-sdk-environment/bin/activate
 ```
+
 ### Authenticate the client
 
 Interaction with Cosmos DB starts with an instance of the [CosmosClient][ref_cosmosclient] class. You need an **account**, its **URI**, and one of its **account keys** to instantiate the client object.
@@ -65,6 +69,7 @@ ACCT_NAME=<cosmos-db-account-name>
 export ACCOUNT_URI=$(az cosmosdb show --resource-group $RES_GROUP --name $ACCT_NAME --query documentEndpoint --output tsv)
 export ACCOUNT_KEY=$(az cosmosdb list-keys --resource-group $RES_GROUP --name $ACCT_NAME --query primaryMasterKey --output tsv)
 ```
+
 ### Create the client
 
 Once you've populated the `ACCOUNT_URI` and `ACCOUNT_KEY` environment variables, you can create the [CosmosClient][ref_cosmosclient].
@@ -90,12 +95,26 @@ Once you've initialized a [CosmosClient][ref_cosmosclient], you can interact wit
 
 For more information about these resources, see [Working with Azure Cosmos databases, containers and items][cosmos_resources].
 
+## Limitations
+
+As of August 2020 the features below are not yet supported.
+
+* Bulk/Batch processing
+* Group By queries
+* Direct TCP Mode access
+* Language Native async i/o
+
+## Limitations Workaround
+
+If you want to use Python SDK to perform bulk inserts to Cosmos DB, the best alternative is to use [stored procedures](https://docs.microsoft.com/azure/cosmos-db/how-to-write-stored-procedures-triggers-udfs) to write multiple items with the same partition key.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Cosmos DB tasks, including:
 
 * [Create a database](#create-a-database "Create a database")
 * [Create a container](#create-a-container "Create a container")
+* [Create an analytical store enabled container](#create-an-analytical-store-enabled-container "Create a container")
 * [Get an existing container](#get-an-existing-container "Get an existing container")
 * [Insert data](#insert-data "Insert data")
 * [Delete data](#delete-data "Delete data")
@@ -143,6 +162,29 @@ except exceptions.CosmosResourceExistsError:
 except exceptions.CosmosHttpResponseError:
     raise
 ```
+
+### Create an analytical store enabled container
+
+This example creates a container with [Analytical Store](https://docs.microsoft.com/azure/cosmos-db/analytical-store-introduction) enabled, for reporting, BI, AI, and Advanced Analytics with [Azure Synapse Link](https://docs.microsoft.com/azure/cosmos-db/synapse-link).
+
+The options for analytical_storage_ttl are:
+
++ 0 or Null or not informed: Not enabled.
++ -1: The data will be stored infinitely.
++ Any other number: the actual ttl, in seconds.
+
+
+```Python
+container_name = 'products'
+try:
+    container = database.create_container(id=container_name, partition_key=PartitionKey(path="/productName"),analytical_storage_ttl=-1)
+except exceptions.CosmosResourceExistsError:
+    container = database.get_container_client(container_name)
+except exceptions.CosmosHttpResponseError:
+    raise
+```
+
+The preceding snippet also handles the [CosmosHttpResponseError][ref_httpfailure] exception if the container creation failed. For more information on error handling and troubleshooting, see the [Troubleshooting](#troubleshooting "Troubleshooting") section.
 
 The preceding snippet also handles the [CosmosHttpResponseError][ref_httpfailure] exception if the container creation failed. For more information on error handling and troubleshooting, see the [Troubleshooting](#troubleshooting "Troubleshooting") section.
 
@@ -371,7 +413,7 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: https://docs.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: https://docs.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.2.0/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: https://docs.microsoft.com/rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: https://docs.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-items
@@ -389,10 +431,10 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.2.0/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.2.0/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.2.0/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.2.0/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
 
@@ -409,3 +451,4 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
