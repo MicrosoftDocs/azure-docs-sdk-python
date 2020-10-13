@@ -14,6 +14,7 @@ items:
   - azure.storage.fileshare.ShareFileClient.from_file_url
   - azure.storage.fileshare.ShareFileClient.get_file_properties
   - azure.storage.fileshare.ShareFileClient.get_ranges
+  - azure.storage.fileshare.ShareFileClient.get_ranges_diff
   - azure.storage.fileshare.ShareFileClient.list_handles
   - azure.storage.fileshare.ShareFileClient.resize_file
   - azure.storage.fileshare.ShareFileClient.set_file_metadata
@@ -139,6 +140,15 @@ items:
   type: method
   uid: azure.storage.fileshare.ShareFileClient.abort_copy
 - class: azure.storage.fileshare.ShareFileClient
+  example:
+  - "Acquiring a lease on a file.<!--[!code-python[Main](les\\file_samples_client.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_client.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   source_file.create_file(1024)\n\
+    \   lease = source_file.acquire_lease()\n   source_file.upload_file(b'hello world',\
+    \ lease=lease)\n\n   lease.release()\n\n   ````\n"
   fullName: azure.storage.fileshare.ShareFileClient.acquire_lease
   langs:
   - python
@@ -287,7 +297,7 @@ items:
   example:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\20\\\\azure-storage-file-share-12.2.0\\\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\16\\\\azure-storage-file-share-12.3.0b1\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   # Create and allocate bytes for the file (no content added\
@@ -407,7 +417,7 @@ items:
   example:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\20\\\\azure-storage-file-share-12.2.0\\\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\16\\\\azure-storage-file-share-12.3.0b1\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   my_file.delete_file()\n\n   ````\n"
@@ -449,8 +459,8 @@ items:
   example:
   - "Download a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\20\\\\\
-    azure-storage-file-share-12.2.0\\\\samples\\\\file_samples_client.py\", \"xml:space\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\16\\\\\
+    azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_client.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   with open(DEST_FILE, \"wb\") as\
     \ data:\n       stream = my_file.download_file()\n       data.write(stream.readall())\n\
@@ -530,7 +540,7 @@ items:
   - "Creates the file client with connection string.<!--[!code-python[Main](les\\\
     file_samples_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\20\\\\azure-storage-file-share-12.2.0\\\\samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\
     \\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"language\": \"\
     python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
     ````python\n\n   from azure.storage.fileshare import ShareFileClient\n   file\
@@ -673,7 +683,9 @@ items:
   module: azure.storage.fileshare
   name: get_ranges(offset=None, length=None, **kwargs)
   namewithoutparameters: get_ranges
-  summary: Returns the list of valid ranges of a file.
+  summary: 'Returns the list of valid page ranges for a file or snapshot
+
+    of a file.'
   syntax:
     content: get_ranges(offset=None, length=None, **kwargs)
     parameters:
@@ -710,6 +722,66 @@ items:
       - List[dict[str, int]]
   type: method
   uid: azure.storage.fileshare.ShareFileClient.get_ranges
+- class: azure.storage.fileshare.ShareFileClient
+  fullName: azure.storage.fileshare.ShareFileClient.get_ranges_diff
+  langs:
+  - python
+  module: azure.storage.fileshare
+  name: get_ranges_diff(previous_sharesnapshot, offset=None, length=None, **kwargs)
+  namewithoutparameters: get_ranges_diff
+  summary: 'Returns the list of valid page ranges for a file or snapshot
+
+    of a file.
+
+
+    New in version 12.6.0.'
+  syntax:
+    content: get_ranges_diff(previous_sharesnapshot, offset=None, length=None, **kwargs)
+    parameters:
+    - description: Specifies the start offset of bytes over which to get ranges.
+      id: offset
+      isRequired: true
+      type:
+      - int
+    - defaultValue: None
+      description: Number of bytes to use over which to get ranges.
+      id: length
+      type:
+      - int
+    - defaultValue: None
+      description: 'The snapshot diff parameter that contains an opaque DateTime value
+        that
+
+        specifies a previous file snapshot to be compared
+
+        against a more recent snapshot or the current file.'
+      id: previous_sharesnapshot
+      type:
+      - str
+    - description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+        object
+
+        or the lease ID as a string.'
+      id: lease
+      isRequired: true
+      type:
+      - azure.storage.fileshare.ShareLeaseClient
+      - str
+    - description: The timeout parameter is expressed in seconds.
+      id: timeout
+      isRequired: true
+      type:
+      - int
+    return:
+      description: 'A tuple of two lists of file ranges as dictionaries with ''start''
+        and ''end'' keys.
+
+        The first element are filled file ranges, the 2nd element is cleared file
+        ranges.'
+      type:
+      - tuple(list(dict(str, str), list(dict(str, str))
+  type: method
+  uid: azure.storage.fileshare.ShareFileClient.get_ranges_diff
 - class: azure.storage.fileshare.ShareFileClient
   fullName: azure.storage.fileshare.ShareFileClient.list_handles
   langs:
@@ -918,8 +990,8 @@ items:
   example:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\20\\\\\
-    azure-storage-file-share-12.2.0\\\\samples\\\\file_samples_client.py\", \"xml:space\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\16\\\\\
+    azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_client.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   destination_file.start_copy_from_url(source_url=source_url)\n\
     \n   ````\n"
@@ -1087,7 +1159,7 @@ items:
   example:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\20\\\\azure-storage-file-share-12.2.0\\\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\16\\\\azure-storage-file-share-12.3.0b1\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   with open(SOURCE_FILE, \"rb\") as source:\n       my_file.upload_file(source)\n\
@@ -1480,6 +1552,11 @@ references:
   name: get_ranges(offset=None, length=None, **kwargs)
   parent: azure.storage.fileshare.ShareFileClient
   uid: azure.storage.fileshare.ShareFileClient.get_ranges
+- fullName: azure.storage.fileshare.ShareFileClient.get_ranges_diff
+  isExternal: false
+  name: get_ranges_diff(previous_sharesnapshot, offset=None, length=None, **kwargs)
+  parent: azure.storage.fileshare.ShareFileClient
+  uid: azure.storage.fileshare.ShareFileClient.get_ranges_diff
 - fullName: azure.storage.fileshare.ShareFileClient.list_handles
   isExternal: false
   name: list_handles(**kwargs)
@@ -1619,6 +1696,59 @@ references:
   - fullName: ']'
     name: ']'
   uid: List[dict[str, int]]
+- fullName: tuple(list(dict(str, str), list(dict(str, str))
+  name: tuple(list(dict(str, str), list(dict(str, str))
+  spec.python:
+  - fullName: tuple
+    name: tuple
+    uid: tuple
+  - fullName: (
+    name: (
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: )
+    name: )
+  - fullName: ', '
+    name: ', '
+  - fullName: list
+    name: list
+    uid: list
+  - fullName: (
+    name: (
+  - fullName: dict
+    name: dict
+    uid: dict
+  - fullName: (
+    name: (
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: ', '
+    name: ', '
+  - fullName: str
+    name: str
+    uid: str
+  - fullName: )
+    name: )
+  - fullName: )
+    name: )
+  uid: tuple(list(dict(str, str), list(dict(str, str))
 - fullName: azure.core.paging.ItemPaged[azure.storage.fileshare.HandleItem]
   name: ItemPaged[HandleItem]
   spec.python:

@@ -1,28 +1,28 @@
 ---
 title: Azure KeyVault Administration client library for Python
-keywords: Azure, python, SDK, API, azure-keyvault-administration, 
+keywords: Azure, python, SDK, API, azure-keyvault-administration, keyvault
 author: maggiepint
 ms.author: magpint
-ms.date: 09/09/2020
+ms.date: 10/07/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: keyvault
 ---
 
-# Azure KeyVault Administration client library for Python - Version 4.0.0b1 
+# Azure KeyVault Administration client library for Python - Version 4.0.0b2 
 
 Azure Key Vault helps solve the following problems:
 - Vault administration (this library) - role-based access control (RBAC), and vault-level backup and restore options
-- Cryptographic key management ([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b1/sdk/keyvault/azure-keyvault-keys)) - create, store, and control
+- Cryptographic key management ([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b2/sdk/keyvault/azure-keyvault-keys)) - create, store, and control
 access to the keys used to encrypt your data
 - Secrets management
-([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b1/sdk/keyvault/azure-keyvault-secrets)) -
+([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b2/sdk/keyvault/azure-keyvault-secrets)) -
 securely store and control access to tokens, passwords, certificates, API keys,
 and other secrets
 - Certificate management
-([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b1/sdk/keyvault/azure-keyvault-certificates)) -
+([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b2/sdk/keyvault/azure-keyvault-certificates)) -
 create, manage, and deploy public and private SSL/TLS certificates
 
 ## Getting started
@@ -160,7 +160,7 @@ List the role definitions available for assignment.
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.keyvault.administration import KeyVaultAccessControlClient
+from azure.keyvault.administration import KeyVaultAccessControlClient, KeyVaultRoleScope
 
 credential = DefaultAzureCredential()
 
@@ -180,7 +180,7 @@ Before creating a new role assignment in the [next snippet](#create-get-and-dele
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.keyvault.administration import KeyVaultAccessControlClient
+from azure.keyvault.administration import KeyVaultAccessControlClient, KeyVaultRoleScope
 
 credential = DefaultAzureCredential()
 
@@ -234,8 +234,8 @@ print(role_assignment.role_definition_id)
 ### Perform a full key backup
 Back up your entire collection of keys. The backing store for full key backups is a blob storage container using Shared Access Signature authentication.
 
-For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.0.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
-Alternatively, it is possible to [generate a SAS token in Storage Explorer](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer)
+For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.0.0b2/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
+Alternatively, it is possible to [generate a SAS token in Storage Explorer](https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer)
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -264,8 +264,8 @@ print(azure_storage_blob_container_uri)
 Restore your entire collection of keys from a backup. The data source for a full key restore is a storage blob accessed using Shared Access Signature authentication.
 You will also need the `azure_storage_blob_container_uri` from the [above snippet](#perform-a-full-key-backup).
 
-For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.0.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
-Alternatively, it is possible to [generate a SAS token in Storage Explorer](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer)
+For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.0.0b2/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
+Alternatively, it is possible to [generate a SAS token in Storage Explorer](https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer)
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -328,15 +328,15 @@ you need to provide a CLA and decorate the PR appropriately (e.g., label,
 comment). Simply follow the instructions provided by the bot. You will only
 need to do this once across all repos using our CLA.
 
-This project has adopted the
-[Microsoft Open Source Code of Conduct][code_of_conduct]. For more information,
-see the Code of Conduct FAQ or contact opencode@microsoft.com with any
-additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct].
+For more information, see the
+[Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
 [azure_cloud_shell]: https://shell.azure.com/bash
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b1/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b1/sdk/identity/azure-identity
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b2/sdk/core/azure-core#azure-core-library-exceptions
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.0.0b2/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_sub]: https://azure.microsoft.com/free/
 [default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
