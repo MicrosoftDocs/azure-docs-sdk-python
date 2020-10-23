@@ -1,28 +1,30 @@
 ---
 title: Azure Communication Chat Package client library for Python
-keywords: Azure, python, SDK, API, azure-communication-chat, 
+keywords: Azure, python, SDK, API, azure-communication-chat, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 09/22/2020
+ms.date: 10/05/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: communication
 ---
 
-# Azure Communication Chat Package client library for Python - Version 1.0.0b1 
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
+
+# Azure Communication Chat Package client library for Python - Version 1.0.0b2 
 
 
 This package contains a Python SDK for Azure Communication Services for Chat.
-<!--Read more about Azure Communication Services [here](https://docs.microsoft.com/azure/project-spool/overview)-->
+Read more about Azure Communication Services [here](https://docs.microsoft.com/azure/communication-services/overview)
 
 # Getting started
 
 ## Prerequisites
 
 - Python 2.7, or 3.5 or later is required to use this package.
-<!-- An Azure Communication Resource, learn how to create one from [Create an Azure Communication Resource](https://docs.microsoft.com/azure/project-spool/quickstarts/create-a-communication-resource)-->
+- An Azure Communication Resource, learn how to create one from [Create an Azure Communication Resource](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource)
 
 ## Install the package
 
