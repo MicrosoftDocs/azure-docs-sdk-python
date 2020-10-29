@@ -1,5 +1,5 @@
 ---
-title: Bing Spell Check 
+title: Bing Custom Image Search 
 author: PatrickFarley
 ms.author: pafarley
 ms.date: 10/26/2020
@@ -10,7 +10,7 @@ ms.devlang: python
 ms.service: bing-search-services
 ---
 
-# Bing Spell Check
+# Bing Custom Image Search
 
 > [!WARNING]
 > Bing Search APIs are moving from Cognitive Services to Bing Search Services. Starting **October 30, 2020**, any new instances of Bing Search need to be provisioned following the process documented [here](https://aka.ms/cogsvcs/bingmove).
