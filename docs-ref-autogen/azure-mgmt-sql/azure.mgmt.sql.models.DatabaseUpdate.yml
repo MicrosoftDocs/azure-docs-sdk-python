@@ -17,9 +17,10 @@ constructor:
     str = None, restore_point_in_time=None, source_database_deletion_date=None, recovery_services_recovery_point_id:
     str = None, long_term_retention_backup_resource_id: str = None, recoverable_database_id:
     str = None, restorable_dropped_database_id: str = None, catalog_collation=None,
-    zone_redundant: bool = None, license_type=None, read_scale=None, read_replica_count:
-    int = None, auto_pause_delay: int = None, storage_account_type=None, min_capacity:
-    float = None, tags=None, **kwargs) -> None'
+    zone_redundant: bool = None, license_type=None, read_scale=None, high_availability_replica_count:
+    int = None, secondary_type=None, auto_pause_delay: int = None, storage_account_type=None,
+    min_capacity: float = None, maintenance_configuration_id: str = None, tags=None,
+    **kwargs) -> None'
   parameters:
   - name: sku
     description: The name and tier of the SKU.
@@ -192,12 +193,21 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.DatabaseReadScale>
-  - name: read_replica_count
-    description: 'The number of readonly secondary replicas
+  - name: high_availability_replica_count
+    description: 'The number of secondary replicas
 
-      associated with the database.'
+      associated with the database that are used to provide high availability.'
     types:
     - <xref:int>
+  - name: secondary_type
+    description: 'The secondary type of the database if it is a
+
+      secondary.  Valid values are Geo and Named. Possible values include:
+
+      ''Geo'', ''Named'''
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.SecondaryType>
   - name: auto_pause_delay
     description: 'Time in minutes after which database is
 
@@ -207,7 +217,9 @@ constructor:
   - name: storage_account_type
     description: 'The storage account type used to store
 
-      backups for this database. Possible values include: ''GRS'', ''LRS'', ''ZRS'''
+      backups for this database. Currently the only supported option is GRS
+
+      (GeoRedundantStorage). Possible values include: ''GRS'', ''LRS'', ''ZRS'''
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.StorageAccountType>
@@ -217,6 +229,14 @@ constructor:
       allocated, if not paused'
     types:
     - <xref:float>
+  - name: maintenance_configuration_id
+    description: 'Maintenance configuration id assigned
+
+      to the database. This configuration defines the period when the
+
+      maintenance updates will be rolled out.'
+    types:
+    - <xref:str>
   - name: tags
     description: Resource tags.
     types:
