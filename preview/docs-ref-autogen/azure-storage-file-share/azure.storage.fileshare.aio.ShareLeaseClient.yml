@@ -8,15 +8,14 @@ inheritances:
 summary: 'Creates a new ShareLeaseClient.
 
 
-  This client provides lease operations on a ShareClient or ShareFileClient.'
+  This client provides lease operations on a ShareFileClient.'
 constructor:
   syntax: ShareLeaseClient(client, lease_id=None)
   parameters:
   - name: client
-    description: The client of the file or share to lease.
+    description: The client of the file to lease.
     types:
     - <xref:azure.storage.fileshare.ShareFileClient>
-    - <xref:azure.storage.fileshare.ShareClient>
   - name: lease_id
     description: 'A string representing the lease ID of an existing lease. This value
       does not
@@ -51,33 +50,18 @@ methods:
   summary: 'Requests a new lease. This operation establishes and manages a lock on
     a
 
-    file or share for write and delete operations. If the file or share does not have
-    an active lease,
+    file for write and delete operations. If the file does not have an active lease,
 
-    the File or Share service creates a lease on the file or share. If the file has
-    an active lease,
+    the File service creates a lease on the file. If the file has an active lease,
 
     you can only request a new lease using the active lease ID.
 
 
-    If the file or share does not have an active lease, the File or Share service
-    creates a
+    If the file does not have an active lease, the File service creates a
 
     lease on the file and returns a new lease ID.'
   signature: acquire(**kwargs)
   parameters:
-  - name: lease_duration
-    description: 'Specifies the duration of the lease, in seconds, or negative one
-
-      (-1) for a lease that never expires. File leases never expire. A non-infinite
-      share lease can be
-
-      between 15 and 60 seconds. A share lease duration cannot be changed
-
-      using renew or change. Default is -1 (infinite share lease).'
-    isRequired: true
-    types:
-    - <xref:int>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     isRequired: true
@@ -88,7 +72,7 @@ methods:
     - <xref:None>
 - uid: azure.storage.fileshare.aio.ShareLeaseClient.break_lease
   name: break_lease
-  summary: 'Force breaks the lease if the file or share has an active lease. Any authorized
+  summary: 'Force breaks the lease if the file has an active lease. Any authorized
     request can break the lease;
 
     the request is not required to specify a matching lease ID. An infinite lease
@@ -105,30 +89,6 @@ methods:
     in seconds until a new lease can be acquired.'
   signature: break_lease(**kwargs)
   parameters:
-  - name: lease_break_period
-    description: 'This is the proposed duration of seconds that the share lease
-
-      should continue before it is broken, between 0 and 60 seconds. This
-
-      break period is only used if it is shorter than the time remaining
-
-      on the share lease. If longer, the time remaining on the share lease is used.
-
-      A new share lease will not be available before the break period has
-
-      expired, but the share lease may be held for longer than the break
-
-      period. If this header does not appear with a break
-
-      operation, a fixed-duration share lease breaks after the remaining share lease
-
-      period elapses, and an infinite share lease breaks immediately.
-
-
-      New in version 12.6.0.'
-    isRequired: true
-    types:
-    - <xref:int>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     isRequired: true
@@ -147,8 +107,8 @@ methods:
   signature: change(proposed_lease_id, **kwargs)
   parameters:
   - name: proposed_lease_id
-    description: 'Proposed lease ID, in a GUID string format. The File or Share service
-      raises an error
+    description: 'Proposed lease ID, in a GUID string format. The File service raises
+      an error
 
       (Invalid request) if the proposed lease ID is not in the correct format.'
     isRequired: true
@@ -166,37 +126,11 @@ methods:
   summary: 'Releases the lease. The lease may be released if the lease ID specified
     on the request matches
 
-    that associated with the share or file. Releasing the lease allows another client
-    to immediately acquire
+    that associated with the file. Releasing the lease allows another client to immediately
+    acquire
 
-    the lease for the share or file as soon as the release is complete.'
+    the lease for the file as soon as the release is complete.'
   signature: release(**kwargs)
-  parameters:
-  - name: timeout
-    description: The timeout parameter is expressed in seconds.
-    isRequired: true
-    types:
-    - <xref:int>
-  return:
-    description: None
-- uid: azure.storage.fileshare.aio.ShareLeaseClient.renew
-  name: renew
-  summary: 'Renews the share lease.
-
-
-    The share lease can be renewed if the lease ID specified in the
-
-    lease client matches that associated with the share. Note that
-
-    the lease may be renewed even if it has expired as long as the share
-
-    has not been leased again since the expiration of that lease. When you
-
-    renew a lease, the lease duration clock resets.
-
-
-    New in version 12.6.0.'
-  signature: renew(**kwargs)
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
