@@ -3,7 +3,7 @@ title: Azure Identity client library for Python
 keywords: Azure, Python, SDK, API, identity, azure-identity
 author: maggiepint
 ms.author: magpint
-ms.date: 08/10/2020
+ms.date: 10/07/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: Python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.4.0
+# Azure Identity client library for Python - Version 1.4.1
 
 The Azure Identity library provides a set of credential classes for use with
 Azure SDK clients which support Azure Active Directory (AAD) token authentication.
