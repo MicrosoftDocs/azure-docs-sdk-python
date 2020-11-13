@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-avs, avs
+keywords: Azure, python, SDK, API, azure-mgmt-policyinsights, policyinsights
 author: maggiepint
 ms.author: magpint
 ms.date: 11/11/2020
@@ -8,19 +8,19 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: avs
+ms.service: policyinsights
 ---
 
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure VMware Solution Management Client Library.
+This is the Microsoft Azure Policy Insights Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
 # Usage
 
-For code examples, see [VMware Solution Management](https://docs.microsoft.com/python/api/overview/azure/)
+For code examples, see [Policy Insights](https://docs.microsoft.com/python/api/overview/azure/)
 on docs.microsoft.com.
 
 
@@ -31,5 +31,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-avs%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-policyinsights%2FREADME.png)
 
