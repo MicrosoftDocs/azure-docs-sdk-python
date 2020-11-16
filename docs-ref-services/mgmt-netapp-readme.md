@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-netapp, netapp
 author: maggiepint
 ms.author: magpint
-ms.date: 09/14/2020
+ms.date: 11/16/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
