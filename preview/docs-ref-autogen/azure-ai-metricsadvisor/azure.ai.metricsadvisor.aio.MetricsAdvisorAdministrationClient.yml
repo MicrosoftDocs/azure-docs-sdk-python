@@ -26,7 +26,7 @@ examples:
 - "Authenticate MetricsAdvisorAdministrationClient with a MetricsAdvisorKeyCredential<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
   samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"\
   preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"\
   linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
@@ -42,11 +42,10 @@ methods:
   summary: Close the <xref:azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient>
     session.
   signature: close() -> None
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.create_anomaly_alert_configuration
-  name: create_anomaly_alert_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.create_alert_configuration
+  name: create_alert_configuration
   summary: Create an anomaly alert configuration.
-  signature: 'create_anomaly_alert_configuration(name: str, metric_alert_configurations:
-    typing.List[azure.ai.metricsadvisor.models._models.MetricAlertConfiguration],
+  signature: 'create_alert_configuration(name: str, metric_alert_configurations: typing.List[azure.ai.metricsadvisor.models._models.MetricAlertConfiguration],
     hook_ids: typing.List[str], **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration'
   parameters:
   - name: name
@@ -87,32 +86,31 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Create an anomaly alert configuration<!--[!code-python[Main](les\\async_samples\\\
-    sample_anomaly_alert_configuration_async.py )]-->\n\n<!-- literal_block {\"ids\"\
-    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\\
-    samples\\\\async_samples\\\\sample_anomaly_alert_configuration_async.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    sample_alert_configuration_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
+    samples\\\\async_samples\\\\sample_alert_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
     \   from azure.ai.metricsadvisor.models import (\n       MetricAlertConfiguration,\n\
     \       MetricAnomalyAlertScope,\n       TopNGroupScope,\n       MetricAnomalyAlertConditions,\n\
-    \       SeverityCondition,\n       MetricBoundaryCondition,\n       MetricAnomalyAlertSnoozeCondition\n\
+    \       SeverityCondition,\n       MetricBoundaryCondition,\n       MetricAnomalyAlertSnoozeCondition,\n\
     \   )\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
     \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
-    METRICS_ADVISOR_API_KEY\")\n   anomaly_detection_configuration_id = os.getenv(\"\
-    METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\")\n   hook_id = os.getenv(\"METRICS_ADVISOR_HOOK_ID\"\
-    )\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n      \
-    \                           MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
-    \n   async with client:\n       alert_config = await client.create_anomaly_alert_configuration(\n\
+    METRICS_ADVISOR_API_KEY\")\n   detection_configuration_id = os.getenv(\"METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\"\
+    )\n   hook_id = os.getenv(\"METRICS_ADVISOR_HOOK_ID\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   async with client:\n       alert_config = await client.create_alert_configuration(\n\
     \           name=\"my alert config\",\n           description=\"alert config description\"\
     ,\n           cross_metrics_operator=\"AND\",\n           metric_alert_configurations=[\n\
-    \               MetricAlertConfiguration(\n                   detection_configuration_id=anomaly_detection_configuration_id,\n\
+    \               MetricAlertConfiguration(\n                   detection_configuration_id=detection_configuration_id,\n\
     \                   alert_scope=MetricAnomalyAlertScope(\n                   \
     \    scope_type=\"WholeSeries\"\n                   ),\n                   alert_conditions=MetricAnomalyAlertConditions(\n\
     \                       severity_condition=SeverityCondition(\n              \
     \             min_alert_severity=\"Low\",\n                           max_alert_severity=\"\
     High\"\n                       )\n                   )\n               ),\n  \
-    \             MetricAlertConfiguration(\n                   detection_configuration_id=anomaly_detection_configuration_id,\n\
+    \             MetricAlertConfiguration(\n                   detection_configuration_id=detection_configuration_id,\n\
     \                   alert_scope=MetricAnomalyAlertScope(\n                   \
     \    scope_type=\"TopN\",\n                       top_n_group_in_scope=TopNGroupScope(\n\
     \                           top=10,\n                           period=5,\n  \
@@ -192,84 +190,43 @@ methods:
   - "Create a data feed<!--[!code-python[Main](les\\async_samples\\sample_data_feeds_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
+    \\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
     \ MetricsAdvisorAdministrationClient\n   from azure.ai.metricsadvisor.models import\
-    \ (\n       SQLServerDataFeed,\n       DataFeedSchema,\n       Metric,\n     \
-    \  Dimension,\n       DataFeedOptions,\n       DataFeedRollupSettings,\n     \
-    \  DataFeedMissingDataPointFillSettings\n   )\n\n   service_endpoint = os.getenv(\"\
+    \ (\n       SQLServerDataFeed,\n       DataFeedSchema,\n       DataFeedMetric,\n\
+    \       DataFeedDimension,\n       DataFeedOptions,\n       DataFeedRollupSettings,\n\
+    \       DataFeedMissingDataPointFillSettings,\n   )\n\n   service_endpoint = os.getenv(\"\
     METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\"\
     )\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n   sql_server_connection_string\
     \ = os.getenv(\"METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING\")\n   query = os.getenv(\"\
     METRICS_ADVISOR_SQL_SERVER_QUERY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       data_feed = await client.create_data_feed(\n\
+    \ api_key))\n   async with client:\n       data_feed = await client.create_data_feed(\n\
     \           name=\"My data feed\",\n           source=SQLServerDataFeed(\n   \
     \            connection_string=sql_server_connection_string,\n               query=query,\n\
     \           ),\n           granularity=\"Daily\",\n           schema=DataFeedSchema(\n\
-    \               metrics=[\n                   Metric(name=\"cost\", display_name=\"\
-    Cost\"),\n                   Metric(name=\"revenue\", display_name=\"Revenue\"\
-    )\n               ],\n               dimensions=[\n                   Dimension(name=\"\
-    category\", display_name=\"Category\"),\n                   Dimension(name=\"\
-    city\", display_name=\"City\")\n               ],\n               timestamp_column=\"\
-    Timestamp\"\n           ),\n           ingestion_settings=datetime.datetime(2019,\
-    \ 10, 1),\n           options=DataFeedOptions(\n               data_feed_description=\"\
-    cost/revenue data feed\",\n               rollup_settings=DataFeedRollupSettings(\n\
-    \                   rollup_type=\"AutoRollup\",\n                   rollup_method=\"\
-    Sum\",\n                   rollup_identification_value=\"__CUSTOM_SUM__\"\n  \
-    \             ),\n               missing_data_point_fill_settings=DataFeedMissingDataPointFillSettings(\n\
+    \               metrics=[\n                   DataFeedMetric(name=\"cost\", display_name=\"\
+    Cost\"),\n                   DataFeedMetric(name=\"revenue\", display_name=\"\
+    Revenue\")\n               ],\n               dimensions=[\n                 \
+    \  DataFeedDimension(name=\"category\", display_name=\"Category\"),\n        \
+    \           DataFeedDimension(name=\"city\", display_name=\"City\")\n        \
+    \       ],\n               timestamp_column=\"Timestamp\"\n           ),\n   \
+    \        ingestion_settings=datetime.datetime(2019, 10, 1),\n           options=DataFeedOptions(\n\
+    \               data_feed_description=\"cost/revenue data feed\",\n          \
+    \     rollup_settings=DataFeedRollupSettings(\n                   rollup_type=\"\
+    AutoRollup\",\n                   rollup_method=\"Sum\",\n                   rollup_identification_value=\"\
+    __CUSTOM_SUM__\"\n               ),\n               missing_data_point_fill_settings=DataFeedMissingDataPointFillSettings(\n\
     \                   fill_type=\"SmartFilling\"\n               ),\n          \
     \     access_mode=\"Private\"\n           )\n       )\n\n       return data_feed\n\
     \n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.create_hook
-  name: create_hook
-  summary: Create a new email or web hook.
-  signature: 'create_hook(name: str, hook: typing.Union[azure.ai.metricsadvisor.models._models.EmailHook,
-    azure.ai.metricsadvisor.models._models.WebHook], **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.Hook'
-  parameters:
-  - name: name
-    description: The name for the hook.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: hook
-    description: An email or web hook
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.EmailHook>, <xref:azure.ai.metricsadvisor.models.WebHook>]
-  return:
-    description: EmailHook or WebHook
-    types:
-    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.Hook>, <xref:azure.ai.metricsadvisor.models.EmailHook,azure.ai.metricsadvisor.models.WebHook>]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  examples:
-  - "Create a hook<!--[!code-python[Main](les\\async_samples\\sample_hooks_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_hooks_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n   from azure.ai.metricsadvisor.models import\
-    \ EmailHook\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n\
-    \   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
-    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       hook = await client.create_hook(\n\
-    \           name=\"email hook\",\n           hook=EmailHook(\n               description=\"\
-    my email hook\",\n               emails_to_alert=[\"alertme@alertme.com\"],\n\
-    \               external_link=\"https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html\"\
-    \n           )\n       )\n\n       return hook\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.create_metric_anomaly_detection_configuration
-  name: create_metric_anomaly_detection_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.create_detection_configuration
+  name: create_detection_configuration
   summary: Create anomaly detection configuration.
-  signature: 'create_metric_anomaly_detection_configuration(name: str, metric_id:
-    str, whole_series_detection_condition: azure.ai.metricsadvisor.models._models.MetricDetectionCondition,
-    **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration'
+  signature: 'create_detection_configuration(name: str, metric_id: str, whole_series_detection_condition:
+    azure.ai.metricsadvisor.models._models.MetricDetectionCondition, **kwargs: typing.Any)
+    -> azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration'
   parameters:
   - name: name
     description: The name for the anomaly detection configuration
@@ -312,42 +269,79 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Create an anomaly detection configuration<!--[!code-python[Main](les\\async_samples\\\
-    sample_anomaly_detection_configuration_async.py )]-->\n\n<!-- literal_block {\"\
-    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_detection_configuration_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n   from azure.ai.metricsadvisor.models import\
-    \ (\n       ChangeThresholdCondition,\n       HardThresholdCondition,\n      \
-    \ SmartDetectionCondition,\n       SuppressCondition,\n       MetricDetectionCondition,\n\
-    \   )\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
-    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
-    METRICS_ADVISOR_API_KEY\")\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\"\
-    )\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n      \
-    \                           MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
-    \n   change_threshold_condition = ChangeThresholdCondition(\n       anomaly_detector_direction=\"\
-    Both\",\n       change_percentage=20,\n       shift_point=10,\n       within_range=True,\n\
-    \       suppress_condition=SuppressCondition(\n           min_number=5,\n    \
-    \       min_ratio=2\n       )\n   )\n   hard_threshold_condition = HardThresholdCondition(\n\
-    \       anomaly_detector_direction=\"Up\",\n       upper_bound=100,\n       suppress_condition=SuppressCondition(\n\
-    \           min_number=2,\n           min_ratio=2\n       )\n   )\n   smart_detection_condition\
+    sample_detection_configuration_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
+    samples\\\\async_samples\\\\sample_detection_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
+    \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
+    \   from azure.ai.metricsadvisor.models import (\n       ChangeThresholdCondition,\n\
+    \       HardThresholdCondition,\n       SmartDetectionCondition,\n       SuppressCondition,\n\
+    \       MetricDetectionCondition,\n   )\n\n   service_endpoint = os.getenv(\"\
+    METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\"\
+    )\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n   metric_id = os.getenv(\"\
+    METRICS_ADVISOR_METRIC_ID\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   change_threshold_condition = ChangeThresholdCondition(\n   \
+    \    anomaly_detector_direction=\"Both\",\n       change_percentage=20,\n    \
+    \   shift_point=10,\n       within_range=True,\n       suppress_condition=SuppressCondition(\n\
+    \           min_number=5,\n           min_ratio=2\n       )\n   )\n   hard_threshold_condition\
+    \ = HardThresholdCondition(\n       anomaly_detector_direction=\"Up\",\n     \
+    \  upper_bound=100,\n       suppress_condition=SuppressCondition(\n          \
+    \ min_number=2,\n           min_ratio=2\n       )\n   )\n   smart_detection_condition\
     \ = SmartDetectionCondition(\n       anomaly_detector_direction=\"Up\",\n    \
     \   sensitivity=10,\n       suppress_condition=SuppressCondition(\n          \
-    \ min_number=2,\n           min_ratio=2\n       )\n   )\n   async with client:\n\
-    \       detection_config = await client.create_metric_anomaly_detection_configuration(\n\
-    \           name=\"my_detection_config\",\n           metric_id=metric_id,\n \
-    \          description=\"anomaly detection config for metric\",\n           whole_series_detection_condition=MetricDetectionCondition(\n\
+    \ min_number=2,\n           min_ratio=2\n       )\n   )\n\n   async with client:\n\
+    \       detection_config = await client.create_detection_configuration(\n    \
+    \       name=\"my_detection_config\",\n           metric_id=metric_id,\n     \
+    \      description=\"anomaly detection config for metric\",\n           whole_series_detection_condition=MetricDetectionCondition(\n\
     \               cross_conditions_operator=\"OR\",\n               change_threshold_condition=change_threshold_condition,\n\
     \               hard_threshold_condition=hard_threshold_condition,\n         \
     \      smart_detection_condition=smart_detection_condition\n           )\n   \
     \    )\n\n       return detection_config\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.delete_anomaly_alert_configuration
-  name: delete_anomaly_alert_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.create_hook
+  name: create_hook
+  summary: Create a new email or web hook.
+  signature: 'create_hook(hook: typing.Union[azure.ai.metricsadvisor.models._models.EmailNotificationHook,
+    azure.ai.metricsadvisor.models._models.WebNotificationHook], **kwargs: typing.Any)
+    -> azure.ai.metricsadvisor.models._models.NotificationHook'
+  parameters:
+  - name: hook
+    description: An email or web hook to create
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.EmailNotificationHook,azure.ai.metricsadvisor.models.WebNotificationHook>]
+  return:
+    description: EmailNotificationHook or WebNotificationHook
+    types:
+    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.NotificationHook,azure.ai.metricsadvisor.models.EmailNotificationHook,azure.ai.metricsadvisor.models.WebNotificationHook>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  examples:
+  - "Create a notification hook<!--[!code-python[Main](les\\async_samples\\sample_hooks_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\\sample_hooks_async.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
+    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
+    \ MetricsAdvisorAdministrationClient\n   from azure.ai.metricsadvisor.models import\
+    \ EmailNotificationHook\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
+    )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
+    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   async with client:\n       hook = await client.create_hook(\n\
+    \           hook=EmailNotificationHook(\n               name=\"email hook\",\n\
+    \               description=\"my email hook\",\n               emails_to_alert=[\"\
+    alertme@alertme.com\"],\n               external_link=\"https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html\"\
+    \n           )\n       )\n\n       return hook\n\n   ````\n"
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.delete_alert_configuration
+  name: delete_alert_configuration
   summary: Delete an anomaly alert configuration by its ID.
-  signature: 'delete_anomaly_alert_configuration(alert_configuration_id: str, **kwargs:
-    typing.Any) -> None'
+  signature: 'delete_alert_configuration(alert_configuration_id: str, **kwargs: typing.Any)
+    -> None'
   parameters:
   - name: alert_configuration_id
     description: anomaly alert configuration unique id.
@@ -363,11 +357,11 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Delete an anomaly alert configuration by its ID<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_alert_configuration_async.py )]-->\n\n<!-- literal_block\
+    async_samples\\sample_alert_configuration_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_alert_configuration_async.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_alert_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.exceptions import\
     \ ResourceNotFoundError\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
     \   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
@@ -375,8 +369,8 @@ methods:
     \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
     METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       await client.delete_anomaly_alert_configuration(alert_config_id)\n\
-    \n       try:\n           await client.get_anomaly_alert_configuration(alert_config_id)\n\
+    \ api_key))\n\n   async with client:\n       await client.delete_alert_configuration(alert_config_id)\n\
+    \n       try:\n           await client.get_alert_configuration(alert_config_id)\n\
     \       except ResourceNotFoundError:\n           print(\"Alert configuration\
     \ successfully deleted.\")\n\n   ````\n"
 - uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.delete_data_feed
@@ -400,7 +394,7 @@ methods:
   - "Delete a data feed by its ID<!--[!code-python[Main](les\\async_samples\\sample_data_feeds_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
+    \\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.exceptions\
     \ import ResourceNotFoundError\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
@@ -413,6 +407,42 @@ methods:
     \n       try:\n           await client.get_data_feed(data_feed_id)\n       except\
     \ ResourceNotFoundError:\n           print(\"Data feed successfully deleted.\"\
     )\n\n\n   ````\n"
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.delete_detection_configuration
+  name: delete_detection_configuration
+  summary: Delete an anomaly detection configuration by its ID.
+  signature: 'delete_detection_configuration(detection_configuration_id: str, **kwargs:
+    typing.Any) -> None'
+  parameters:
+  - name: detection_configuration_id
+    description: anomaly detection configuration unique id.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  examples:
+  - "Delete an anomaly detection configuration by its ID<!--[!code-python[Main](les\\\
+    async_samples\\sample_detection_configuration_async.py )]-->\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_detection_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.exceptions import\
+    \ ResourceNotFoundError\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
+    \   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
+    \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
+    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
+    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   async with client:\n       await client.delete_detection_configuration(detection_config_id)\n\
+    \n       try:\n           await client.get_detection_configuration(detection_config_id)\n\
+    \       except ResourceNotFoundError:\n           print(\"Detection configuration\
+    \ successfully deleted.\")\n\n   ````\n"
 - uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.delete_hook
   name: delete_hook
   summary: Delete a web or email hook by its ID.
@@ -434,7 +464,7 @@ methods:
   - "Delete a hook by its ID<!--[!code-python[Main](les\\async_samples\\sample_hooks_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_hooks_async.py\"\
+    \\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\\sample_hooks_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.exceptions\
     \ import ResourceNotFoundError\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
@@ -446,47 +476,11 @@ methods:
     \ api_key))\n\n   async with client:\n       await client.delete_hook(hook_id)\n\
     \n       try:\n           await client.get_hook(hook_id)\n       except ResourceNotFoundError:\n\
     \           print(\"Hook successfully deleted.\")\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.delete_metric_anomaly_detection_configuration
-  name: delete_metric_anomaly_detection_configuration
-  summary: Delete an anomaly detection configuration by its ID.
-  signature: 'delete_metric_anomaly_detection_configuration(detection_configuration_id:
-    str, **kwargs: typing.Any) -> None'
-  parameters:
-  - name: detection_configuration_id
-    description: anomaly detection configuration unique id.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  examples:
-  - "Delete an anomaly detection configuration by its ID<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_detection_configuration_async.py )]-->\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_detection_configuration_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.exceptions\
-    \ import ResourceNotFoundError\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
-    \   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
-    \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
-    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
-    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       await client.delete_metric_anomaly_detection_configuration(detection_config_id)\n\
-    \n       try:\n           await client.get_metric_anomaly_detection_configuration(detection_config_id)\n\
-    \       except ResourceNotFoundError:\n           print(\"Detection configuration\
-    \ successfully deleted.\")\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.get_anomaly_alert_configuration
-  name: get_anomaly_alert_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.get_alert_configuration
+  name: get_alert_configuration
   summary: Get a single anomaly alert configuration.
-  signature: 'get_anomaly_alert_configuration(alert_configuration_id: str, **kwargs:
-    typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration'
+  signature: 'get_alert_configuration(alert_configuration_id: str, **kwargs: typing.Any)
+    -> azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration'
   parameters:
   - name: alert_configuration_id
     description: anomaly alert configuration unique id.
@@ -502,18 +496,18 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Get a single anomaly alert configuration by its ID<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_alert_configuration_async.py )]-->\n\n<!-- literal_block\
+    async_samples\\sample_alert_configuration_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_alert_configuration_async.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_alert_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
     \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
     \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
     METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       config = await client.get_anomaly_alert_configuration(alert_config_id)\n\
+    \ api_key))\n\n   async with client:\n       config = await client.get_alert_configuration(alert_config_id)\n\
     \n       print(\"Alert config ID: {}\".format(config.id))\n       print(\"Alert\
     \ config name: {}\".format(config.name))\n       print(\"Description: {}\".format(config.description))\n\
     \       print(\"Ids of hooks associated with alert: {}\".format(config.hook_ids))\n\
@@ -560,7 +554,7 @@ methods:
   - "Get a data feed by its ID<!--[!code-python[Main](les\\async_samples\\sample_data_feeds_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
+    \\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
@@ -609,7 +603,7 @@ methods:
   - "Get the progress of data feed ingestion<!--[!code-python[Main](les\\async_samples\\\
     sample_ingestion_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\
     \\async_samples\\\\sample_ingestion_async.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
@@ -623,45 +617,11 @@ methods:
     \n       print(\"Lastest active timestamp: {}\".format(progress.latest_active_timestamp))\n\
     \       print(\"Latest successful timestamp: {}\".format(progress.latest_success_timestamp))\n\
     \n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.get_hook
-  name: get_hook
-  summary: Get a web or email hook by its id.
-  signature: 'get_hook(hook_id: str, **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.Hook'
-  parameters:
-  - name: hook_id
-    description: Hook unique ID.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: EmailHook or Webhook
-    types:
-    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.Hook>, <xref:azure.ai.metricsadvisor.models.EmailHook,azure.ai.metricsadvisor.models.WebHook>]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  examples:
-  - "Get a hook by its ID<!--[!code-python[Main](les\\async_samples\\sample_hooks_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_hooks_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
-    )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
-    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n   async with client:\n       hook = await client.get_hook(hook_id)\n\
-    \n       print(\"Hook name: {}\".format(hook.name))\n       print(\"Description:\
-    \ {}\".format(hook.description))\n       print(\"Emails to alert: {}\".format(hook.emails_to_alert))\n\
-    \       print(\"External link: {}\".format(hook.external_link))\n       print(\"\
-    Admins: {}\".format(hook.admins))\n\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.get_metric_anomaly_detection_configuration
-  name: get_metric_anomaly_detection_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.get_detection_configuration
+  name: get_detection_configuration
   summary: Get a single anomaly detection configuration.
-  signature: 'get_metric_anomaly_detection_configuration(detection_configuration_id:
-    str, **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration'
+  signature: 'get_detection_configuration(detection_configuration_id: str, **kwargs:
+    typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration'
   parameters:
   - name: detection_configuration_id
     description: anomaly detection configuration unique id.
@@ -677,18 +637,18 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Get a single anomaly detection configuration by its ID<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_detection_configuration_async.py )]-->\n\n<!-- literal_block\
+    async_samples\\sample_detection_configuration_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_detection_configuration_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
-    )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
-    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_detection_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
+    \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
+    \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
+    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
+    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       config = await client.get_metric_anomaly_detection_configuration(detection_config_id)\n\
+    \ api_key))\n\n   async with client:\n       config = await client.get_detection_configuration(detection_config_id)\n\
     \n       print(\"Detection config name: {}\".format(config.name))\n       print(\"\
     Description: {}\".format(config.description))\n       print(\"Metric ID: {}\"\
     .format(config.metric_id))\n\n       print(\"\\nDetection conditions specified\
@@ -717,10 +677,45 @@ methods:
     .format(\n           conditions.smart_detection_condition.suppress_condition.min_number,\n\
     \           conditions.smart_detection_condition.suppress_condition.min_ratio\n\
     \       ))\n\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.list_anomaly_alert_configurations
-  name: list_anomaly_alert_configurations
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.get_hook
+  name: get_hook
+  summary: Get a web or email hook by its id.
+  signature: 'get_hook(hook_id: str, **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.NotificationHook'
+  parameters:
+  - name: hook_id
+    description: Hook unique ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: EmailNotificationHook or WebNotificationHook
+    types:
+    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.NotificationHook,azure.ai.metricsadvisor.models.EmailNotificationHook,azure.ai.metricsadvisor.models.WebNotificationHook>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  examples:
+  - "Get a notification hook by its ID<!--[!code-python[Main](les\\async_samples\\\
+    sample_hooks_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\
+    \\sample_hooks_async.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
+    \n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n   from\
+    \ azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\n  \
+    \ service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
+    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
+    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n   async with client:\n       hook = await client.get_hook(hook_id)\n\
+    \n       print(\"Hook name: {}\".format(hook.name))\n       print(\"Description:\
+    \ {}\".format(hook.description))\n       print(\"Emails to alert: {}\".format(hook.emails_to_alert))\n\
+    \       print(\"External link: {}\".format(hook.external_link))\n       print(\"\
+    Admins: {}\".format(hook.admin_emails))\n\n\n   ````\n"
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.list_alert_configurations
+  name: list_alert_configurations
   summary: Query all anomaly alert configurations for specific anomaly detection configuration.
-  signature: 'list_anomaly_alert_configurations(detection_configuration_id: str, **kwargs:
+  signature: 'list_alert_configurations(detection_configuration_id: str, **kwargs:
     typing.Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration]'
   parameters:
   - name: detection_configuration_id
@@ -737,19 +732,19 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "List all anomaly alert configurations for specific anomaly detection configuration<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_alert_configuration_async.py )]-->\n\n<!-- literal_block\
+    async_samples\\sample_alert_configuration_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_alert_configuration_async.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_alert_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
     \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
     \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
-    METRICS_ADVISOR_API_KEY\")\n   anomaly_detection_configuration_id = os.getenv(\"\
-    METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       configs = client.list_anomaly_alert_configurations(anomaly_detection_configuration_id)\n\
+    METRICS_ADVISOR_API_KEY\")\n   detection_configuration_id = os.getenv(\"METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\"\
+    )\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n      \
+    \                           MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
+    \n   async with client:\n       configs = client.list_alert_configurations(detection_configuration_id)\n\
     \       async for config in configs:\n           print(\"Alert config name: {}\"\
     .format(config.name))\n           print(\"Alert description: {}\".format(config.description))\n\
     \           print(\"Ids of hooks associated with alert: {}\\n\".format(config.hook_ids))\n\
@@ -768,12 +763,12 @@ methods:
     description: Required. the start point of time range to query data ingestion status.
     isRequired: true
     types:
-    - <xref:datetime.datetime>
+    - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
   - name: end_time
     description: Required. the end point of time range to query data ingestion status.
     isRequired: true
     types:
-    - <xref:datetime.datetime>
+    - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
   - name: skip
     isRequired: true
     types:
@@ -789,7 +784,7 @@ methods:
   - "List the data feed ingestion statuses by data feed ID<!--[!code-python[Main](les\\\
     async_samples\\sample_ingestion_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
     samples\\\\async_samples\\\\sample_ingestion_async.py\", \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
@@ -853,7 +848,7 @@ methods:
   - "List data feeds under an account.<!--[!code-python[Main](les\\async_samples\\\
     sample_data_feeds_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\
     \\async_samples\\\\sample_data_feeds_async.py\", \"xml:space\": \"preserve\",\
     \ \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
@@ -872,50 +867,11 @@ methods:
     \               print(metric.name)\n\n           print(\"\\nFeed dimensions:\"\
     )\n           for dimension in feed.schema.dimensions:\n               print(dimension.name)\n\
     \n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.list_hooks
-  name: list_hooks
-  summary: List all hooks.
-  signature: 'list_hooks(**kwargs: typing.Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.metricsadvisor.models._models.Hook]'
-  parameters:
-  - name: hook_name
-    description: filter hook by its name.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: skip
-    isRequired: true
-    types:
-    - <xref:int>
-  return:
-    description: Pageable containing EmailHook and WebHook
-    types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:Union>[<xref:azure.ai.metricsadvisor.models.Hook,azure.ai.metricsadvisor.models.EmailHook>,
-      <xref:azure.ai.metricsadvisor.models.WebHook>]]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  examples:
-  - "List all the hooks under an account<!--[!code-python[Main](les\\async_samples\\\
-    sample_hooks_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
-    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\
-    \\sample_hooks_async.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
-    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
-    \n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n   from\
-    \ azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\n  \
-    \ service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
-    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
-    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   async with client:\n       hooks = client.list_hooks()\n   \
-    \    async for hook in hooks:\n           print(\"Hook type: {}\".format(hook.hook_type))\n\
-    \           print(\"Hook name: {}\".format(hook.name))\n           print(\"Description:\
-    \ {}\\n\".format(hook.description))\n\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.list_metric_anomaly_detection_configurations
-  name: list_metric_anomaly_detection_configurations
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.list_detection_configurations
+  name: list_detection_configurations
   summary: Query all anomaly detection configurations for specific metric.
-  signature: 'list_metric_anomaly_detection_configurations(metric_id: str, **kwargs:
-    typing.Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration]'
+  signature: 'list_detection_configurations(metric_id: str, **kwargs: typing.Any)
+    -> azure.core.async_paging.AsyncItemPaged[azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration]'
   parameters:
   - name: metric_id
     description: metric unique id.
@@ -931,27 +887,67 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "List all anomaly detection configurations for a specific metric<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_detection_configuration_async.py )]-->\n\n<!-- literal_block\
+    async_samples\\sample_detection_configuration_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_detection_configuration_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
-    )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
-    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\"\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_detection_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
+    \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
+    \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
+    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
+    METRICS_ADVISOR_API_KEY\")\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\"\
     )\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n      \
     \                           MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
-    \n   async with client:\n       configs = client.list_metric_anomaly_detection_configurations(metric_id=metric_id)\n\
+    \n   async with client:\n       configs = client.list_detection_configurations(metric_id=metric_id)\n\
     \       async for config in configs:\n           print(\"Detection config name:\
     \ {}\".format(config.name))\n           print(\"Description: {}\".format(config.description))\n\
     \           print(\"Metric ID: {}\\n\".format(config.metric_id))\n\n\n   ````\n"
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.list_hooks
+  name: list_hooks
+  summary: List all hooks.
+  signature: 'list_hooks(**kwargs: typing.Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.metricsadvisor.models._models.NotificationHook]'
+  parameters:
+  - name: hook_name
+    description: filter hook by its name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: skip
+    isRequired: true
+    types:
+    - <xref:int>
+  return:
+    description: Pageable containing EmailNotificationHook and WebNotificationHook
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:Union>[<xref:azure.ai.metricsadvisor.models.NotificationHook,azure.ai.metricsadvisor.models.EmailNotificationHook>,
+      <xref:azure.ai.metricsadvisor.models.WebNotificationHook>]]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  examples:
+  - "List all the notification hooks under an account<!--[!code-python[Main](les\\\
+    async_samples\\sample_hooks_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
+    samples\\\\async_samples\\\\sample_hooks_async.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n\
+    \   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
+    \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
+    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
+    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   async with client:\n       hooks = client.list_hooks()\n   \
+    \    async for hook in hooks:\n           print(\"Hook type: {}\".format(hook.hook_type))\n\
+    \           print(\"Hook name: {}\".format(hook.name))\n           print(\"Description:\
+    \ {}\\n\".format(hook.description))\n\n\n   ````\n"
 - uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.refresh_data_feed_ingestion
   name: refresh_data_feed_ingestion
   summary: Refreshes data ingestion by data feed to backfill data.
-  signature: 'refresh_data_feed_ingestion(data_feed_id: str, start_time: datetime.datetime,
-    end_time: datetime.datetime, **kwargs: typing.Any) -> None'
+  signature: 'refresh_data_feed_ingestion(data_feed_id: str, start_time: typing.Union[str,
+    datetime.datetime], end_time: typing.Union[str, datetime.datetime], **kwargs:
+    typing.Any) -> None'
   parameters:
   - name: data_feed_id
     description: The data feed unique id.
@@ -962,12 +958,12 @@ methods:
     description: The start point of time range to refresh data ingestion.
     isRequired: true
     types:
-    - <xref:datetime.datetime>
+    - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
   - name: end_time
     description: The end point of time range to refresh data ingestion.
     isRequired: true
     types:
-    - <xref:datetime.datetime>
+    - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
   return:
     description: None
     types:
@@ -979,7 +975,7 @@ methods:
   - "Refresh data feed ingestion over a period of time<!--[!code-python[Main](les\\\
     async_samples\\sample_ingestion_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
     samples\\\\async_samples\\\\sample_ingestion_async.py\", \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
@@ -992,8 +988,8 @@ methods:
     \n   async with client:\n       await client.refresh_data_feed_ingestion(\n  \
     \         data_feed_id,\n           datetime.datetime(2020, 9, 20),\n        \
     \   datetime.datetime(2020, 9, 25)\n       )\n\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.update_anomaly_alert_configuration
-  name: update_anomaly_alert_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.update_alert_configuration
+  name: update_alert_configuration
   summary: 'Update anomaly alerting configuration. Either pass the entire AnomalyAlertConfiguration
     object
 
@@ -1004,9 +1000,8 @@ methods:
     keyword arguments
 
     will take precedence.'
-  signature: 'update_anomaly_alert_configuration(alert_configuration: typing.Union[str,
-    azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration], **kwargs: typing.Any)
-    -> azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration'
+  signature: 'update_alert_configuration(alert_configuration: typing.Union[str, azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration],
+    **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyAlertConfiguration'
   parameters:
   - name: alert_configuration
     description: AnomalyAlertConfiguration object or the ID to the alert configuration.
@@ -1052,31 +1047,31 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Update an existing anomaly alert configuration<!--[!code-python[Main](les\\async_samples\\\
-    sample_anomaly_alert_configuration_async.py )]-->\n\n<!-- literal_block {\"ids\"\
-    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\\
-    samples\\\\async_samples\\\\sample_anomaly_alert_configuration_async.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    sample_alert_configuration_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\\
+    samples\\\\async_samples\\\\sample_alert_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
     \   from azure.ai.metricsadvisor.models import (\n       MetricAlertConfiguration,\n\
     \       MetricAnomalyAlertScope,\n       MetricAnomalyAlertConditions,\n     \
     \  MetricBoundaryCondition\n   )\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
     )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
-    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n   anomaly_detection_configuration_id\
-    \ = os.getenv(\"METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n   detection_configuration_id = os.getenv(\"\
+    METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
     \ api_key))\n\n   alert_config.name = \"updated config name\"\n   additional_alert\
-    \ = MetricAlertConfiguration(\n       detection_configuration_id=anomaly_detection_configuration_id,\n\
+    \ = MetricAlertConfiguration(\n       detection_configuration_id=detection_configuration_id,\n\
     \       alert_scope=MetricAnomalyAlertScope(\n           scope_type=\"SeriesGroup\"\
     ,\n           series_group_in_scope={'city': 'Shenzhen'}\n       ),\n       alert_conditions=MetricAnomalyAlertConditions(\n\
     \           metric_boundary_condition=MetricBoundaryCondition(\n             \
     \  direction=\"Down\",\n               lower=5\n           )\n       )\n   )\n\
     \   alert_config.metric_alert_configurations.append(additional_alert)\n\n   async\
-    \ with client:\n       updated = await client.update_anomaly_alert_configuration(\n\
-    \           alert_config,\n           cross_metrics_operator=\"OR\",\n       \
-    \    description=\"updated alert config\"\n       )\n\n       print(\"Updated\
-    \ alert name: {}\".format(updated.name))\n       print(\"Updated alert description:\
+    \ with client:\n       updated = await client.update_alert_configuration(\n  \
+    \         alert_config,\n           cross_metrics_operator=\"OR\",\n         \
+    \  description=\"updated alert config\"\n       )\n\n       print(\"Updated alert\
+    \ name: {}\".format(updated.name))\n       print(\"Updated alert description:\
     \ {}\".format(updated.description))\n       print(\"Updated cross metrics operator:\
     \ {}\".format(updated.cross_metrics_operator))\n       print(\"Updated alert condition\
     \ configuration scope type: {}\".format(\n           updated.metric_alert_configurations[2].alert_scope.scope_type\n\
@@ -1186,8 +1181,8 @@ methods:
     isRequired: true
     types:
     - <xref:float>
-  - name: admins
-    description: Data feed administrators.
+  - name: admin_emails
+    description: Data feed administrator emails.
     isRequired: true
     types:
     - <xref:list>[<xref:str>]
@@ -1196,8 +1191,8 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: viewers
-    description: Data feed viewer.
+  - name: viewer_emails
+    description: Data feed viewer emails.
     isRequired: true
     types:
     - <xref:list>[<xref:str>]
@@ -1239,7 +1234,7 @@ methods:
   - "Update an existing data feed<!--[!code-python[Main](les\\async_samples\\sample_data_feeds_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
+    \\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\\sample_data_feeds_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
@@ -1258,106 +1253,8 @@ methods:
     \       print(\"Updated fill setting, value: {}, {}\".format(\n           updated_data_feed.options.missing_data_point_fill_settings.fill_type,\n\
     \           updated_data_feed.options.missing_data_point_fill_settings.custom_fill_value,\n\
     \       ))\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.update_hook
-  name: update_hook
-  summary: 'Update a hook. Either pass the entire EmailHook or WebHook object with
-    the chosen updates, or the
-
-    ID to your hook configuration with the updates passed via keyword arguments.
-
-    If you pass both the hook object and keyword arguments, the keyword arguments
-    will take precedence.'
-  signature: 'update_hook(hook: typing.Union[str, azure.ai.metricsadvisor.models._models.EmailHook,
-    azure.ai.metricsadvisor.models._models.WebHook], **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.Hook'
-  parameters:
-  - name: hook
-    description: An email or web hook or the ID to the hook. If an ID is passed, you
-      must pass *hook_type*.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:str>, <xref:azure.ai.metricsadvisor.models.EmailHook>, <xref:azure.ai.metricsadvisor.models.WebHook>]
-  - name: hook_type
-    description: 'The hook type. Possible values are "Email" or "Web". Must be passed
-      if only the
-
-      hook ID is provided.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: name
-    description: Hook unique name.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: description
-    description: Hook description.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: external_link
-    description: Hook external link.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: emails_to_alert
-    description: 'Email TO: list. Only should be passed to update EmailHook.'
-    isRequired: true
-    types:
-    - <xref:list>[<xref:str>]
-  - name: endpoint
-    description: 'API address, will be called when alert is triggered, only support
-
-      POST method via SSL. Only should be passed to update WebHook.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: username
-    description: basic authentication. Only should be passed to update WebHook.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: password
-    description: basic authentication. Only should be passed to update WebHook.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: certificate_key
-    description: client certificate. Only should be passed to update WebHook.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: certificate_password
-    description: client certificate password. Only should be passed to update WebHook.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: EmailHook or WebHook
-    types:
-    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.Hook>, <xref:azure.ai.metricsadvisor.models.EmailHook,azure.ai.metricsadvisor.models.WebHook>]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  examples:
-  - "Update an existing hook<!--[!code-python[Main](les\\async_samples\\sample_hooks_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\\samples\\\\async_samples\\\\sample_hooks_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
-    )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
-    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   hook.name = \"updated hook name\"\n   hook.description = \"\
-    updated hook description\"\n\n   async with client:\n       updated = await client.update_hook(\n\
-    \           hook,\n           emails_to_alert=[\"newemail@alertme.com\"]\n   \
-    \    )\n       print(\"Updated name: {}\".format(updated.name))\n       print(\"\
-    Updated description: {}\".format(updated.description))\n       print(\"Updated\
-    \ emails: {}\".format(updated.emails_to_alert))\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.update_metric_anomaly_detection_configuration
-  name: update_metric_anomaly_detection_configuration
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.update_detection_configuration
+  name: update_detection_configuration
   summary: 'Update anomaly metric detection configuration. Either pass the entire
     AnomalyDetectionConfiguration object
 
@@ -1368,9 +1265,9 @@ methods:
     the keyword arguments
 
     will take precedence.'
-  signature: 'update_metric_anomaly_detection_configuration(detection_configuration:
-    typing.Union[str, azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration],
-    **kwargs: typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration'
+  signature: 'update_detection_configuration(detection_configuration: typing.Union[str,
+    azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration], **kwargs:
+    typing.Any) -> azure.ai.metricsadvisor.models._models.AnomalyDetectionConfiguration'
   parameters:
   - name: detection_configuration
     description: 'AnomalyDetectionConfiguration object or the ID to the detection
@@ -1421,26 +1318,25 @@ methods:
     type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Update an existing anomaly detection configuration<!--[!code-python[Main](les\\\
-    async_samples\\sample_anomaly_detection_configuration_async.py )]-->\n\n<!-- literal_block\
+    async_samples\\sample_detection_configuration_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b1\\\
-    \\samples\\\\async_samples\\\\sample_anomaly_detection_configuration_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import\
-    \ MetricsAdvisorAdministrationClient\n   from azure.ai.metricsadvisor.models import\
-    \ (\n       MetricSeriesGroupDetectionCondition,\n       MetricSingleSeriesDetectionCondition,\n\
-    \       SmartDetectionCondition,\n       SuppressCondition\n   )\n\n   service_endpoint\
-    \ = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"\
-    METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\"\
-    )\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n      \
-    \                           MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
-    \n   detection_config.name = \"updated config name\"\n   detection_config.description\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\
+    \\samples\\\\async_samples\\\\sample_detection_configuration_async.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
+    \ MetricsAdvisorKeyCredential\n   from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\
+    \   from azure.ai.metricsadvisor.models import (\n       MetricSeriesGroupDetectionCondition,\n\
+    \       MetricSingleSeriesDetectionCondition,\n       SmartDetectionCondition,\n\
+    \       SuppressCondition\n   )\n\n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\"\
+    )\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key\
+    \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   detection_config.name = \"updated config name\"\n   detection_config.description\
     \ = \"updated with more detection conditions\"\n   smart_detection_condition =\
     \ SmartDetectionCondition(\n       anomaly_detector_direction=\"Up\",\n      \
     \ sensitivity=10,\n       suppress_condition=SuppressCondition(\n           min_number=2,\n\
     \           min_ratio=2\n       )\n   )\n\n   async with client:\n       updated\
-    \ = await client.update_metric_anomaly_detection_configuration(\n           detection_config,\n\
+    \ = await client.update_detection_configuration(\n           detection_config,\n\
     \           series_group_detection_conditions=[\n               MetricSeriesGroupDetectionCondition(\n\
     \                   series_group_key={\"city\": \"Seoul\"},\n                \
     \   smart_detection_condition=smart_detection_condition\n               )\n  \
@@ -1454,3 +1350,106 @@ methods:
     \       ))\n       print(\"Updated detection condition for series: {}\".format(\n\
     \           updated.series_detection_conditions[0].series_key\n       ))\n\n\n\
     \   ````\n"
+- uid: azure.ai.metricsadvisor.aio.MetricsAdvisorAdministrationClient.update_hook
+  name: update_hook
+  summary: 'Update a hook. Either pass the entire EmailNotificationHook or WebNotificationHook
+    object with the
+
+    chosen updates, or the ID to your hook configuration with the updates passed via
+    keyword arguments.
+
+    If you pass both the hook object and keyword arguments, the keyword arguments
+    will take precedence.'
+  signature: 'update_hook(hook: typing.Union[str, azure.ai.metricsadvisor.models._models.EmailNotificationHook,
+    azure.ai.metricsadvisor.models._models.WebNotificationHook], **kwargs: typing.Any)
+    -> azure.ai.metricsadvisor.models._models.NotificationHook'
+  parameters:
+  - name: hook
+    description: An email or web hook or the ID to the hook. If an ID is passed, you
+      must pass *hook_type*.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:azure.ai.metricsadvisor.models.EmailNotificationHook,azure.ai.metricsadvisor.models.WebNotificationHook>]
+  - name: hook_type
+    description: 'The hook type. Possible values are "Email" or "Web". Must be passed
+      if only the
+
+      hook ID is provided.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: name
+    description: Hook unique name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: description
+    description: Hook description.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: external_link
+    description: Hook external link.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: emails_to_alert
+    description: 'Email TO: list. Only should be passed to update EmailNotificationHook.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  - name: endpoint
+    description: 'API address, will be called when alert is triggered, only support
+
+      POST method via SSL. Only should be passed to update WebNotificationHook.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: username
+    description: basic authentication. Only should be passed to update WebNotificationHook.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: password
+    description: basic authentication. Only should be passed to update WebNotificationHook.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: certificate_key
+    description: client certificate. Only should be passed to update WebNotificationHook.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: certificate_password
+    description: 'client certificate password. Only should be passed to update
+
+      WebNotificationHook.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: EmailNotificationHook or WebNotificationHook
+    types:
+    - <xref:Union>[<xref:azure.ai.metricsadvisor.models.NotificationHook,azure.ai.metricsadvisor.models.EmailNotificationHook,azure.ai.metricsadvisor.models.WebNotificationHook>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  examples:
+  - "Update an existing notification hook<!--[!code-python[Main](les\\async_samples\\\
+    sample_hooks_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    1\\\\s\\\\dist_temp\\\\29\\\\azure-ai-metricsadvisor-1.0.0b2\\\\samples\\\\async_samples\\\
+    \\sample_hooks_async.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
+    , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
+    \n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential\n   from\
+    \ azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient\n\n  \
+    \ service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
+    \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
+    METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorAdministrationClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   hook.name = \"updated hook name\"\n   hook.description = \"\
+    updated hook description\"\n\n   async with client:\n       updated = await client.update_hook(\n\
+    \           hook,\n           emails_to_alert=[\"newemail@alertme.com\"]\n   \
+    \    )\n       print(\"Updated name: {}\".format(updated.name))\n       print(\"\
+    Updated description: {}\".format(updated.description))\n       print(\"Updated\
+    \ emails: {}\".format(updated.emails_to_alert))\n\n   ````\n"
