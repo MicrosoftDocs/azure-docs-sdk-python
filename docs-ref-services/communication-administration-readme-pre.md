@@ -3,7 +3,7 @@ title: Azure Communication Administration Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-administration, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 10/05/2020
+ms.date: 11/17/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -13,7 +13,7 @@ ms.service: communication
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Communication Administration Package client library for Python - Version 1.0.0b2 
+# Azure Communication Administration Package client library for Python - Version 1.0.0b3 
 
 
 Azure Communication Administration client package is intended to be used to setup the basics for opening a way to use Azure Communication Service offerings. This package helps to create identities user tokens to be used by other client packages such as chat, calling, sms. 
@@ -184,7 +184,7 @@ The Azure Communication Service Identity client will raise exceptions defined in
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-administration_1.0.0b2/sdk/communication/azure-communication-administration/samples) directory for detailed examples of how to use this library to manage identities and tokens.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-administration_1.0.0b3/sdk/communication/azure-communication-administration/samples) directory for detailed examples of how to use this library to manage identities and tokens.
 
 ## Provide Feedback
 
@@ -201,6 +201,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[identitysamples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-administration_1.0.0b2/sdk/communication/azure-communication-administration/samples/identity_samples.py
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-administration_1.0.0b2/sdk/core/azure-core/README.md
+[identitysamples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-administration_1.0.0b3/sdk/communication/azure-communication-administration/samples/identity_samples.py
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-administration_1.0.0b3/sdk/core/azure-core/README.md
 
