@@ -63,55 +63,6 @@ constructor:
     types:
     - <xref:int>
 methods:
-- uid: azure.storage.fileshare.aio.ShareClient.acquire_lease
-  name: acquire_lease
-  summary: 'Requests a new lease.
-
-
-    If the share does not have an active lease, the Share
-
-    Service creates a lease on the share and returns a new lease.
-
-
-    New in version 12.6.0.'
-  signature: acquire_lease(lease_duration=-1, lease_id=None, **kwargs)
-  parameters:
-  - name: lease_duration
-    description: 'Specifies the duration of the lease, in seconds, or negative one
-
-      (-1) for a lease that never expires. A non-infinite lease can be
-
-      between 15 and 60 seconds. A lease duration cannot be changed
-
-      using renew or change. Default is -1 (infinite lease).'
-    isRequired: true
-    types:
-    - <xref:int>
-  - name: lease_id
-    description: 'Proposed lease ID, in a GUID string format. The Share Service
-
-      returns 400 (Invalid request) if the proposed lease ID is not
-
-      in the correct format.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: timeout
-    description: The timeout parameter is expressed in seconds.
-    isRequired: true
-    types:
-    - <xref:int>
-  return:
-    description: A ShareLeaseClient object.
-    types:
-    - <xref:azure.storage.fileshare.ShareLeaseClient>
-  examples:
-  - "Acquiring a lease on a share.<!--[!code-python[Main](les\\file_samples_share.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareClient.create_directory
   name: create_directory
   summary: 'Creates a directory in the share and returns a client to interact
@@ -181,6 +132,11 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: access_tier
+    description: 'Specifies the access tier of the share.
+
+      Possible values: ''TransactionOptimized'', ''Hot'', ''Cool'''
+    isRequired: true
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     isRequired: true
@@ -194,10 +150,11 @@ methods:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   await share.create_share()\n\
-    \n   ````\n"
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create share\
+    \ with Access Tier set to Hot\n   await share.create_share(access_tier=ShareAccessTier(\"\
+    Hot\"))\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareClient.create_snapshot
   name: create_snapshot
   summary: 'Creates a snapshot of the share.
@@ -235,7 +192,7 @@ methods:
   - "Creates a snapshot of the file share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   await share.create_snapshot()\n\
     \n   ````\n"
@@ -276,23 +233,11 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   examples:
   - "Deletes the share and any snapshots.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   await share.delete_share(delete_snapshots=True)\n\
     \n   ````\n"
@@ -362,18 +307,6 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   return:
     description: Access policy information in a dict.
     types:
@@ -392,18 +325,6 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   return:
     description: The share properties.
     types:
@@ -412,7 +333,7 @@ methods:
   - "Gets the share properties.<!--[!code-python[Main](les\\file_samples_hello_world_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_hello_world_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   properties = await\
     \ share.get_share_properties()\n\n   ````\n"
@@ -431,18 +352,6 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   return:
     description: The approximate size of the data (in bytes) stored on the share.
     types:
@@ -485,7 +394,7 @@ methods:
   - "List directories and files in the share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create a directory\
     \ in the share\n   dir_client = await share.create_directory(\"mydir\")\n\n  \
@@ -516,18 +425,6 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   return:
     description: 'Share-updated property dict (Etag and last modified).'
     types:
@@ -554,18 +451,6 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   return:
     description: 'Share-updated property dict (Etag and last modified).'
     types:
@@ -574,10 +459,56 @@ methods:
   - "Sets the share metadata.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   data = {'category':\
     \ 'test'}\n   await share.set_share_metadata(metadata=data)\n\n   ````\n"
+- uid: azure.storage.fileshare.aio.ShareClient.set_share_properties
+  name: set_share_properties
+  summary: 'Sets the share properties.
+
+
+    New in version 12.6.0.'
+  signature: set_share_properties(**kwargs)
+  parameters:
+  - name: access_tier
+    description: 'Specifies the access tier of the share.
+
+      Possible values: ''TransactionOptimized'', ''Hot'', and ''Cool'''
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.models.ShareAccessTier>
+  - name: quota
+    description: 'Specifies the maximum size of the share, in gigabytes.
+
+      Must be greater than 0, and less than or equal to 5TB.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    isRequired: true
+    types:
+    - <xref:int>
+  return:
+    description: 'Share-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
+  examples:
+  - "Sets the share properties.<!--[!code-python[Main](les\\file_samples_share_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Set the tier\
+    \ for the first share to Hot\n   await share1.set_share_properties(access_tier=\"\
+    Hot\")\n   # Set the quota for the first share to 3\n   await share1.set_share_properties(quota=3)\n\
+    \   # Set the tier for the second share to Cool and quota to 2\n   await share2.set_share_properties(access_tier=ShareAccessTier(\"\
+    Cool\"), quota=2)\n\n   # Get the shares' properties\n   props1 = await share1.get_share_properties()\n\
+    \   props2 = await share2.get_share_properties()\n   print(props1.access_tier)\n\
+    \   print(props1.quota)\n   print(props2.access_tier)\n   print(props2.quota)\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareClient.set_share_quota
   name: set_share_quota
   summary: Sets the quota for the share.
@@ -595,18 +526,6 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: lease
-    description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
-      object
-
-      or the lease ID as a string.
-
-
-      New in version 12.6.0.
-
-
-      This keyword argument was introduced in API version ''2020-02-02''.'
-    isRequired: true
   return:
     description: 'Share-updated property dict (Etag and last modified).'
     types:
@@ -615,7 +534,7 @@ methods:
   - "Sets the share quota.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\16\\\\azure-storage-file-share-12.3.0b1\\\\samples\\\\file_samples_share_async.py\"\
+    \\16\\\\azure-storage-file-share-12.3.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Set the quota\
     \ for the share to 1GB\n   await share.set_share_quota(quota=1)\n\n   ````\n"

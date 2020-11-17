@@ -38,6 +38,18 @@ constructor:
       shared access key.'
     types:
     - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string or an account shared
+      access
+
+      key.'
+    types:
+    - <xref:str>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
@@ -66,6 +78,9 @@ methods:
     types:
     - <xref:azure.data.tables.TableClient>
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.data.tables.aio.TableServiceClient.create_table_if_not_exists
   name: create_table_if_not_exists
   summary: 'Creates a new table if it does not currently exist.
@@ -86,7 +101,7 @@ methods:
     - <xref:azure.data.tables.aio.TableClient>
 - uid: azure.data.tables.aio.TableServiceClient.delete_table
   name: delete_table
-  summary: Creates a new table under the given account.
+  summary: Deletes the table under the current account
   signature: delete_table(table_name, **kwargs)
   parameters:
   - name: table_name
@@ -98,6 +113,9 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.data.tables.aio.TableServiceClient.from_connection_string
   name: from_connection_string
   summary: Create TableServiceClient from a Connection String.
@@ -130,15 +148,30 @@ methods:
     description: TableServiceProperties, or the result of cls(response)
     types:
     - <xref:azure.data.tables.models.TableServiceProperties>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableServiceClient.get_service_stats
   name: get_service_stats
-  summary: "Retrieves statistics related to replication for the Table service. It\
-    \ is only available on the secondary\nlocation endpoint when read-access geo-redundant\
-    \ replication is enabled for the account.\n\n   keyword callable cls:\n      A\
-    \ custom type or function that will be passed the direct response\n\n   return:\n\
-    \      TableServiceStats, or the result of cls(response)\n\n   rtype:\n      ~azure.data.tables.models.TableServiceStats\n\
-    \n   raises:\n      ~azure.core.exceptions.HttpResponseError"
+  summary: 'Retrieves statistics related to replication for the Table service. It
+    is only available on the secondary
+
+    location endpoint when read-access geo-redundant replication is enabled for the
+    account.'
   signature: get_service_stats(**kwargs)
+  parameters:
+  - name: cls
+    description: A custom type or function that will be passed the direct response
+    isRequired: true
+    types:
+    - <xref:callable>
+  return:
+    description: Dictionary of service stats
+    types:
+    - <xref:azure.data.tables.models.TableServiceStats>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableServiceClient.get_table_client
   name: get_table_client
   summary: 'Get a client to interact with the specified table.
@@ -169,37 +202,52 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: list(str)] select
+  - name: select
     description: Specify desired properties of a table to return certain tables
     isRequired: true
     types:
-    - <xref:Union>[<xref:str,>
+    - <xref:str>
+    - <xref:list>[<xref:str>]
   return:
     description: AsyncItemPaged
     types:
-    - <xref:AsyncItemPaged>[<xref:TableItem>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.data.tables.TableItem>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableServiceClient.query_tables
   name: query_tables
-  summary: 'Queries tables under the given account.
-
-    :param filter: Specify a filter to return certain tables
-
-    :type filter: str
-
-    :keyword int results_per_page: Number of tables per page in return ItemPaged
-
-    :keyword Union[str, list(str)] select: Specify desired properties of a table to
-    return certain tables
-
-    :keyword dict parameters: Dictionary for formatting query with additional, user
-    defined parameters
-
-    :return: A query of tables
-
-    :rtype: AsyncItemPaged[TableItem]
-
-    :raises: ~azure.core.exceptions.HttpResponseError'
+  summary: Queries tables under the given account.
   signature: query_tables(filter, **kwargs)
+  parameters:
+  - name: filter
+    description: Specify a filter to return certain tables.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: results_per_page
+    description: Number of tables per page in return ItemPaged
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: select
+    description: Specify desired properties of a table to return certain tables
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:list>[<xref:str>]
+  - name: parameters
+    description: Dictionary for formatting query with additional, user defined parameters
+    isRequired: true
+    types:
+    - <xref:dict>[<xref:str,str>]
+  return:
+    description: An ItemPaged of tables
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.data.tables.TableItem>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableServiceClient.set_service_properties
   name: set_service_properties
   summary: "Sets properties for an account's Table service endpoint,\n   including\
@@ -231,3 +279,6 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError

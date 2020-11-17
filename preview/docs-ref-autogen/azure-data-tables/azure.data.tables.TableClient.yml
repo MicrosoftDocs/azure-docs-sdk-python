@@ -13,6 +13,13 @@ variables:
   types:
   - <xref:str>
 methods:
+- uid: azure.data.tables.TableClient.create_batch
+  name: create_batch
+  summary: Create a Batching object from a Table Client
+  signature: create_batch(**kwargs)
+  exceptions:
+  - description: ''
+    type: None
 - uid: azure.data.tables.TableClient.create_entity
   name: create_entity
   summary: Insert entity in a table.
@@ -22,11 +29,15 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Union>[<xref:TableEntity>, <xref:dict>[<xref:str,str>]]
+    - <xref:TableEntity>
+    - <xref:dict>[<xref:str,str>]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
     - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: If the entity already exists
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.data.tables.TableClient.create_table
   name: create_table
   summary: Creates a new table under the current account.
@@ -35,6 +46,9 @@ methods:
     description: Dictionary of operation metadata returned from service
     types:
     - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: If the table already exists
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.data.tables.TableClient.delete_entity
   name: delete_entity
   summary: Deletes the specified entity in a table.
@@ -64,6 +78,9 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: If the entity does not exist
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.data.tables.TableClient.delete_table
   name: delete_table
   summary: Deletes the table under the current account.
@@ -72,6 +89,9 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: If the table does not exist
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.data.tables.TableClient.from_connection_string
   name: from_connection_string
   summary: Create TableClient from a Connection String.
@@ -122,7 +142,7 @@ methods:
     - <xref:azure.data.tables.TableClient>
 - uid: azure.data.tables.TableClient.get_entity
   name: get_entity
-  summary: Queries entities in a table.
+  summary: Get a single entity in a table.
   signature: get_entity(partition_key, row_key, **kwargs)
   parameters:
   - name: partition_key
@@ -138,7 +158,10 @@ methods:
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:azure.data.tables.TableEntity>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.get_table_access_policy
   name: get_table_access_policy
   summary: 'Retrieves details about any stored access policies specified on the table
@@ -150,6 +173,9 @@ methods:
     description: Dictionary of SignedIdentifiers
     types:
     - <xref:dict>[<xref:str,AccessPolicy>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
@@ -160,15 +186,19 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: list(str)] select
+  - name: select
     description: Specify desired properties of an entity to return certain entities
     isRequired: true
     types:
-    - <xref:Union>[<xref:str,>
+    - <xref:str>
+    - <xref:list>[<xref:str>]
   return:
     description: Query of table entities
     types:
-    - <xref:ItemPaged>[<xref:TableEntity>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.data.tables.TableEntity>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.query_entities
   name: query_entities
   summary: Lists entities in a table.
@@ -184,11 +214,12 @@ methods:
     isRequired: true
     types:
     - <xref:int>
-  - name: list[str]] select
+  - name: select
     description: Specify desired properties of an entity to return certain entities
     isRequired: true
     types:
-    - <xref:Union>[<xref:str,>
+    - <xref:str>
+    - <xref:list>[<xref:str>]
   - name: parameters
     description: Dictionary for formatting query with additional, user defined parameters
     isRequired: true
@@ -197,7 +228,24 @@ methods:
   return:
     description: Query of table entities
     types:
-    - <xref:ItemPaged>[<xref:TableEntity>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.data.tables.TableEntity>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+- uid: azure.data.tables.TableClient.send_batch
+  name: send_batch
+  summary: Commit a TableBatchOperations to send requests to the server
+  signature: send_batch(batch, **kwargs)
+  parameters:
+  - name: batch
+    isRequired: true
+  return:
+    description: Object containing requests and responses
+    types:
+    - <xref:azure.data.tables.BatchTransactionResult>
+  exceptions:
+  - description: ''
+    type: ~azure.data.tables.BatchErrorException
 - uid: azure.data.tables.TableClient.set_table_access_policy
   name: set_table_access_policy
   summary: Sets stored access policies for the table that may be used with Shared
@@ -212,6 +260,9 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.update_entity
   name: update_entity
   summary: Update entity in a table.
@@ -221,7 +272,8 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Union>[<xref:TableEntity>, <xref:dict>[<xref:str,str>]]
+    - <xref:TableEntity>
+    - <xref:dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
@@ -251,6 +303,9 @@ methods:
     description: Dictionary mapping operation metadata returned from the service
     types:
     - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.upsert_entity
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
@@ -260,7 +315,8 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Union>[<xref:TableEntity>, <xref:dict>[<xref:str,str>]]
+    - <xref:TableEntity>
+    - <xref:dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace and Insert on fail
     isRequired: true
@@ -270,3 +326,6 @@ methods:
     description: Dictionary mapping operation metadata returned from the service
     types:
     - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
