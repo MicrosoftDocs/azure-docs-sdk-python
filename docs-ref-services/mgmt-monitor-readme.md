@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
 author: maggiepint
 ms.author: magpint
-ms.date: 09/18/2020
+ms.date: 11/17/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -20,7 +20,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 # Usage
 
-For code examples, see [Monitor](https://docs.microsoft.com/python/api/overview/azure/monitoring?view=azure-python-preview)
+For code examples, see [Monitor](https://docs.microsoft.com/python/api/overview/azure/monitoring)
 on docs.microsoft.com.
 
 
