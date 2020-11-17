@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-communication, 
+keywords: Azure, python, SDK, API, azure-mgmt-communication, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 09/22/2020
+ms.date: 11/17/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: communication
 ---
 
 # Microsoft Azure SDK for Python
