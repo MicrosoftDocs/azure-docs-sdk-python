@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-containerservice, containerservice
 author: maggiepint
 ms.author: magpint
-ms.date: 09/02/2020
+ms.date: 11/18/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
