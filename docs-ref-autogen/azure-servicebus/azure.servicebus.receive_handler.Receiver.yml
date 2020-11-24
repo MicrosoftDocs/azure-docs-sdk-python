@@ -1,0 +1,231 @@
+### YamlMime:PythonClass
+uid: azure.servicebus.receive_handler.Receiver
+name: Receiver
+fullName: azure.servicebus.receive_handler.Receiver
+module: azure.servicebus.receive_handler
+inheritances:
+- azure.servicebus.base_handler.BaseHandler
+summary: 'A message receiver.
+
+
+  This receive handler acts as an iterable message stream for retrieving
+
+  messages for a Service Bus entity. It operates a single connection that must be
+  opened and
+
+  closed on completion. The service connection will remain open for the entirety of
+  the iterator.
+
+  If you find yourself only partially iterating the message stream, you should run
+  the receiver
+
+  in a *with* statement to ensure the connection is closed.
+
+  The Receiver should not be instantiated directly, and should be accessed from a
+  *QueueClient* or
+
+  *SubscriptionClient* using the *get_receiver()* method.
+
+
+
+  > [!NOTE]
+
+  > This object is not thread-safe.
+
+  >'
+constructor:
+  syntax: 'Receiver(handler_id, source, auth_config, connection=None, mode=<ReceiveSettleMode.PeekLock:
+    <ReceiverSettleMode.PeekLock: 1>>, encoding=''UTF-8'', debug=False, **kwargs)'
+  parameters:
+  - name: handler_id
+    description: The ID used as the connection name for the Receiver.
+    types:
+    - <xref:str>
+  - name: source
+    description: The endpoint from which to receive messages.
+    types:
+    - <xref:uamqp.Source>
+  - name: auth_config
+    description: The SASL auth credentials.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: connection
+    description: A shared connection [not yet supported].
+    types:
+    - <xref:uamqp.Connection>
+  - name: mode
+    description: The receive connection mode. Value must be either PeekLock or ReceiveAndDelete.
+    types:
+    - <xref:azure.servicebus.common.constants.ReceiveSettleMode>
+  - name: encoding
+    description: The encoding used for string properties. Default is 'UTF-8'.
+    types:
+    - <xref:str>
+  - name: debug
+    description: Whether to enable network trace debug logs.
+    types:
+    - <xref:bool>
+methods:
+- uid: azure.servicebus.receive_handler.Receiver.close
+  name: close
+  summary: 'Close down the receiver connection.
+
+
+    If the receiver has already closed, this operation will do nothing. An optional
+    exception can be passed in to
+
+    indicate that the handler was shutdown due to error.
+
+    It is recommended to open a handler within a context manager as
+
+    opposed to calling the method directly.
+
+    The receiver will be implicitly closed on completion of the message iterator,
+
+    however this method will need to be called explicitly if the message iterator
+    is not run
+
+    to completion.
+
+
+
+    > [!NOTE]
+
+    > This operation is not thread-safe.
+
+    >'
+  signature: close(exception=None)
+  parameters:
+  - name: exception
+    description: 'An optional exception if the handler is closing
+
+      due to an error.'
+    defaultValue: None
+    types:
+    - <xref:Exception>
+- uid: azure.servicebus.receive_handler.Receiver.fetch_next
+  name: fetch_next
+  summary: 'Receive a batch of messages at once.
+
+
+    This approach it optimal if you wish to process multiple messages simultaneously.
+    Note that the
+
+    number of messages retrieved in a single batch will be dependent on
+
+    whether *prefetch* was set for the receiver. This call will prioritize returning
+
+    quickly over meeting a specified batch size, and so will return as soon as at
+    least
+
+    one message is received and there is a gap in incoming messages regardless
+
+    of the specified batch size.'
+  signature: fetch_next(max_batch_size=None, timeout=None)
+  parameters:
+  - name: max_batch_size
+    description: 'Maximum number of messages in the batch. Actual number
+
+      returned will depend on prefetch size and incoming stream rate.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The time to wait in seconds for the first message to arrive.
+
+      If no messages arrive, and no timeout is specified, this call will not return
+
+      until the connection is closed. If specified, an no messages arrive within the
+
+      timeout period, an empty list will be returned.'
+    defaultValue: None
+  return:
+    types:
+    - <xref:list>[<xref:azure.servicebus.common.message.Message>]
+- uid: azure.servicebus.receive_handler.Receiver.next
+  name: next
+  signature: next()
+- uid: azure.servicebus.receive_handler.Receiver.open
+  name: open
+  summary: 'Open receiver connection and authenticate session.
+
+
+    If the receiver is already open, this operation will do nothing.
+
+    This method will be called automatically when one starts to iterate
+
+    messages in the receiver, so there should be no need to call it directly.
+
+    A receiver opened with this method must be explicitly closed.
+
+    It is recommended to open a handler within a context manager as
+
+    opposed to calling the method directly.
+
+
+
+    > [!NOTE]
+
+    > This operation is not thread-safe.
+
+    >'
+  signature: open()
+- uid: azure.servicebus.receive_handler.Receiver.peek
+  name: peek
+  summary: 'Browse messages currently pending in the queue.
+
+
+    Peeked messages are not removed from queue, nor are they locked. They cannot be
+    completed,
+
+    deferred or dead-lettered.'
+  signature: peek(count=1, start_from=None)
+  parameters:
+  - name: count
+    description: 'The maximum number of messages to try and peek. The default
+
+      value is 1.'
+    defaultValue: '1'
+    types:
+    - <xref:int>
+  - name: start_from
+    description: A message sequence number from which to start browsing messages.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:list>[<xref:azure.servicebus.common.message.PeekMessage>]
+- uid: azure.servicebus.receive_handler.Receiver.receive_deferred_messages
+  name: receive_deferred_messages
+  summary: 'Receive messages that have previously been deferred.
+
+
+    When receiving deferred messages from a partitioned entity, all of the supplied
+
+    sequence numbers must be messages from the same partition.'
+  signature: 'receive_deferred_messages(sequence_numbers, mode=<ReceiveSettleMode.PeekLock:
+    <ReceiverSettleMode.PeekLock: 1>>)'
+  parameters:
+  - name: sequence_numbers
+    description: 'A list of the sequence numbers of messages that have been
+
+      deferred.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:int>]
+  - name: mode
+    description: The receive mode, default value is PeekLock.
+    defaultValue: ReceiveSettleMode.PeekLock
+    types:
+    - <xref:azure.servicebus.common.constants.ReceiveSettleMode>
+  return:
+    types:
+    - <xref:list>[<xref:azure.servicebus.common.message.DeferredMessage>]
+attributes:
+- uid: azure.servicebus.receive_handler.Receiver.queue_size
+  name: queue_size
+  summary: The current size of the unprocessed message queue.
+  return:
+    types:
+    - <xref:int>
