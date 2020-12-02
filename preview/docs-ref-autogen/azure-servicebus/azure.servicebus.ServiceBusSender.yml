@@ -8,7 +8,13 @@ inheritances:
 - azure.servicebus._servicebus_sender.SenderMixin
 summary: 'The ServiceBusSender class defines a high level interface for
 
-  sending messages to the Azure Service Bus Queue or Topic.'
+  sending messages to the Azure Service Bus Queue or Topic.
+
+
+  **Please use the `get_<queue/topic>_sender` method of ~azure.servicebus.ServiceBusClient
+  to create a
+
+  ServiceBusSender instance.**'
 constructor:
   syntax: ServiceBusSender(fully_qualified_namespace, credential, **kwargs)
   parameters:
@@ -72,21 +78,6 @@ variables:
   name: entity_name
   types:
   - <xref:str>
-examples:
-- "Create a new instance of the ServiceBusSender.<!--[!code-python[Main](les\\sync_samples\\\
-  sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\\samples\\\\sync_samples\\\
-  \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
-  , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
-  \n   import os\n   from azure.servicebus import ServiceBusSender, ServiceBusSharedKeyCredential\n\
-  \   fully_qualified_namespace = os.environ['SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE']\n\
-  \   shared_access_policy = os.environ['SERVICE_BUS_SAS_POLICY']\n   shared_access_key\
-  \ = os.environ['SERVICE_BUS_SAS_KEY']\n   queue_name = os.environ['SERVICE_BUS_QUEUE_NAME']\n\
-  \   queue_sender = ServiceBusSender(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
-  \       credential=ServiceBusSharedKeyCredential(\n           shared_access_policy,\n\
-  \           shared_access_key\n       ),\n       queue_name=queue_name\n   )\n\n\
-  \   ````\n"
 methods:
 - uid: azure.servicebus.ServiceBusSender.cancel_scheduled_messages
   name: cancel_scheduled_messages
@@ -115,7 +106,7 @@ methods:
   - "Cancelling messages scheduled to be sent in future<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_sender:\n       servicebus_sender.cancel_scheduled_messages(sequence_nums)\n\
@@ -131,12 +122,12 @@ methods:
   parameters:
   - name: max_size_in_bytes
     description: 'The maximum size of bytes data that a ServiceBusMessageBatch object
-      can hold. By
+      can
 
-      default, the value is determined by your Service Bus tier.'
+      hold. By default, the value is determined by your Service Bus tier.'
     defaultValue: None
     types:
-    - <xref:int>
+    - <xref:Optional>[<xref:int>]
   return:
     types:
     - <xref:azure.servicebus.ServiceBusMessageBatch>
@@ -144,7 +135,7 @@ methods:
   - "Create ServiceBusMessageBatch object within limited size<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\\samples\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   with servicebus_sender:\n       batch_message =\
@@ -152,20 +143,29 @@ methods:
     Single message inside batch\"))\n\n   ````\n"
 - uid: azure.servicebus.ServiceBusSender.schedule_messages
   name: schedule_messages
-  summary: "Send Message or multiple Messages to be enqueued at a specific time.\n\
-    Returns a list of the sequence numbers of the enqueued messages.\n:param messages:\
-    \ The message or list of messages to schedule.\n:type messages: Union[~azure.servicebus.ServiceBusMessage,\
-    \ List[~azure.servicebus.ServiceBusMessage]]\n:param schedule_time_utc: The utc\
-    \ date and time to enqueue the messages.\n:type schedule_time_utc: ~datetime.datetime\n\
-    :keyword float timeout: The total operation timeout in seconds including all the\
-    \ retries. The value must be\n\n\n   greater than 0 if specified. The default\
-    \ value is None, meaning no timeout."
+  summary: 'Send Message or multiple Messages to be enqueued at a specific time.
+
+    Returns a list of the sequence numbers of the enqueued messages.'
   signature: schedule_messages(messages, schedule_time_utc, **kwargs)
   parameters:
   - name: messages
+    description: The message or list of messages to schedule.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:azure.servicebus.ServiceBusMessage>, <xref:List>[<xref:azure.servicebus.ServiceBusMessage>]]
   - name: schedule_time_utc
+    description: The utc date and time to enqueue the messages.
     isRequired: true
+    types:
+    - <xref:datetime.datetime>
+  - name: timeout
+    description: 'The total operation timeout in seconds including all the retries.
+      The value must be
+
+      greater than 0 if specified. The default value is None, meaning no timeout.'
+    isRequired: true
+    types:
+    - <xref:float>
   return:
     types:
     - <xref:List>[<xref:int>]
@@ -173,7 +173,7 @@ methods:
   - "Schedule a message to be sent in future<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\\samples\\\\sync_samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n   with servicebus_sender:\n       scheduled_time_utc = datetime.datetime.utcnow()\
@@ -199,12 +199,12 @@ methods:
     - <xref:Union>[<xref:azure.servicebus.ServiceBusMessage,azure.servicebus.ServiceBusMessageBatch,list>[<xref:azure.servicebus.ServiceBusMessage>]]
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
-      The value must be
 
-      greater than 0 if specified. The default value is None, meaning no timeout.'
+      The value must be greater than 0 if specified. The default value is None, meaning
+      no timeout.'
     isRequired: true
     types:
-    - <xref:float>
+    - <xref:Optional>[<xref:float>]
   return:
     types:
     - <xref:None>
@@ -212,7 +212,7 @@ methods:
   - "Send message.<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\5\\\\azure-servicebus-7.0.0b8\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    \\5\\\\azure-servicebus-7.0.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   with servicebus_sender:\n\
     \       message = ServiceBusMessage(\"Hello World\")\n       servicebus_sender.send_messages(message)\n\

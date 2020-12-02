@@ -80,16 +80,14 @@ examples:
 - "Create a new instance of the ServiceBusClient.<!--[!code-python[Main](les\\async_samples\\\
   sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\\samples\\\\async_samples\\\
+  \\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\\samples\\\\async_samples\\\
   \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"language\":\
   \ \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-  \n````python\n\n   import os\n   from azure.servicebus.aio import ServiceBusClient,\
-  \ ServiceBusSharedKeyCredential\n   fully_qualified_namespace = os.environ['SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE']\n\
-  \   shared_access_policy = os.environ['SERVICE_BUS_SAS_POLICY']\n   shared_access_key\
-  \ = os.environ['SERVICE_BUS_SAS_KEY']\n   servicebus_client = ServiceBusClient(\n\
-  \       fully_qualified_namespace=fully_qualified_namespace,\n       credential=ServiceBusSharedKeyCredential(\n\
-  \           shared_access_policy,\n           shared_access_key\n       )\n   )\n\
-  \n   ````\n"
+  \n````python\n\n   import os\n   from azure.identity.aio import DefaultAzureCredential\n\
+  \   from azure.servicebus.aio import ServiceBusClient\n   fully_qualified_namespace\
+  \ = os.environ['SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE']\n   servicebus_client =\
+  \ ServiceBusClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+  \       credential=DefaultAzureCredential()\n   )\n\n   ````\n"
 methods:
 - uid: azure.servicebus.aio.ServiceBusClient.close
   name: close
@@ -165,7 +163,7 @@ methods:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
@@ -193,34 +191,40 @@ methods:
     isRequired: true
     types:
     - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
-  - name: sub_queue
-    description: 'If specified, the subqueue this receiver will connect to.
+  - name: str]] sub_queue
+    description: 'If specified, the subqueue this receiver will
 
-      This includes the DeadLetter and TransferDeadLetter queues, holds messages that
-      can''t be delivered to any
+      connect to.
 
-      receiver or messages that can''t be processed.  The default is None, meaning
-      connect to the primary queue.'
+      This includes the DEAD_LETTER and TRANSFER_DEAD_LETTER queues, holds messages
+      that can''t be delivered to any
+
+      receiver or messages that can''t be processed.
+
+      The default is None, meaning connect to the primary queue.  Can be assigned
+      values from *ServiceBusSubQueue*
+
+      enum or equivalent string values "deadletter" and "transferdeadletter".'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:SubQueue>]
+    - <xref:Optional>[<xref:Union>[<xref:ServiceBusSubQueue,>
   - name: receive_mode
     description: 'The mode with which messages will be retrieved from the entity.
       The two options
 
-      are PeekLock and ReceiveAndDelete. Messages received with PeekLock must be settled
-      within a given
+      are PEEK_LOCK and RECEIVE_AND_DELETE. Messages received with PEEK_LOCK must
+      be settled within a given
 
       lock period before they will be removed from the queue. Messages received with
-      ReceiveAndDelete
+      RECEIVE_AND_DELETE
 
       will be immediately removed from the queue, and cannot be subsequently rejected
       or re-received if
 
-      the client fails to process the message. The default mode is PeekLock.'
+      the client fails to process the message. The default mode is PEEK_LOCK.'
     isRequired: true
     types:
-    - <xref:azure.servicebus.ReceiveMode>
+    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
   - name: max_wait_time
     description: 'The timeout in seconds between received messages after which the
 
@@ -235,7 +239,7 @@ methods:
       ~azure.servicebus.aio.AutoLockRenewer can be provided such that messages are
       automatically registered on
 
-      receipt.  If the receiver is a session receiver, it will apply to the session
+      receipt. If the receiver is a session receiver, it will apply to the session
       instead.'
     isRequired: true
     types:
@@ -269,7 +273,7 @@ methods:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
@@ -295,7 +299,7 @@ methods:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
@@ -333,34 +337,40 @@ methods:
     isRequired: true
     types:
     - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
-  - name: sub_queue
-    description: 'If specified, the subqueue this receiver will connect to.
+  - name: str]] sub_queue
+    description: 'If specified, the subqueue this receiver will
 
-      This includes the DeadLetter and TransferDeadLetter queues, holds messages that
-      can''t be delivered to any
+      connect to.
 
-      receiver or messages that can''t be processed.  The default is None, meaning
-      connect to the primary queue.'
+      This includes the DEAD_LETTER and TRANSFER_DEAD_LETTER queues, holds messages
+      that can''t be delivered to any
+
+      receiver or messages that can''t be processed.
+
+      The default is None, meaning connect to the primary queue.  Can be assigned
+      values from *ServiceBusSubQueue*
+
+      enum or equivalent string values "deadletter" and "transferdeadletter".'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:SubQueue>]
+    - <xref:Optional>[<xref:Union>[<xref:ServiceBusSubQueue,>
   - name: receive_mode
     description: 'The mode with which messages will be retrieved from the entity.
       The two options
 
-      are PeekLock and ReceiveAndDelete. Messages received with PeekLock must be settled
-      within a given
+      are PEEK_LOCK and RECEIVE_AND_DELETE. Messages received with PEEK_LOCK must
+      be settled within a given
 
       lock period before they will be removed from the subscription. Messages received
-      with ReceiveAndDelete
+      with RECEIVE_AND_DELETE
 
       will be immediately removed from the subscription, and cannot be subsequently
       rejected or re-received if
 
-      the client fails to process the message. The default mode is PeekLock.'
+      the client fails to process the message. The default mode is PEEK_LOCK.'
     isRequired: true
     types:
-    - <xref:azure.servicebus.ReceiveMode>
+    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
   - name: max_wait_time
     description: 'The timeout in seconds between received messages after which the
 
@@ -375,7 +385,7 @@ methods:
       ~azure.servicebus.aio.AutoLockRenewer can be provided such that messages are
       automatically registered on
 
-      receipt.  If the receiver is a session receiver, it will apply to the session
+      receipt. If the receiver is a session receiver, it will apply to the session
       instead.'
     isRequired: true
     types:
@@ -409,10 +419,10 @@ methods:
   - "Create a new instance of the ServiceBusReceiver from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
     \ import ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICE_BUS_CONNECTION_STR']\n\
     \   topic_name = os.environ[\"SERVICE_BUS_TOPIC_NAME\"]\n   subscription_name\
     \ = os.environ[\"SERVICE_BUS_SUBSCRIPTION_NAME\"]\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
@@ -436,10 +446,10 @@ methods:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0b8\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-servicebus-7.0.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.servicebus.aio\
     \ import ServiceBusClient\n   servicebus_connection_str = os.environ['SERVICE_BUS_CONNECTION_STR']\n\
     \   topic_name = os.environ['SERVICE_BUS_TOPIC_NAME']\n   servicebus_client =\
     \ ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
