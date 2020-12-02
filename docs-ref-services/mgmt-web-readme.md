@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-web, appservice
 author: maggiepint
 ms.author: magpint
-ms.date: 09/29/2020
+ms.date: 11/25/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -15,13 +15,19 @@ ms.service: appservice
 
 This is the Microsoft Azure Web Apps Management Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
-For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
+For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
 # Usage
 
-For code examples, see [Web Apps Management](https://docs.microsoft.com/python/api/overview/azure/webapps)
-on docs.microsoft.com.
+
+To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
+
+
+
+For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
+Code samples for this package can be found at [App Service Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 # Provide Feedback
