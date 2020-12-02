@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-synapse, synapse
+keywords: Azure, python, SDK, API, azure-mgmt-synapse, synapseanalytics
 author: maggiepint
 ms.author: magpint
-ms.date: 09/27/2020
+ms.date: 11/24/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: synapse
+ms.service: synapseanalytics
 ---
 
 # Microsoft Azure SDK for Python

@@ -1,26 +1,26 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
+keywords: Azure, python, SDK, API, azure-mgmt-attestation, attestation
 author: maggiepint
 ms.author: magpint
-ms.date: 11/17/2020
+ms.date: 11/18/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: monitor
+ms.service: attestation
 ---
 
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Monitor Client Library.
+This is the Microsoft Azure Attestation Management Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
 # Usage
 
-For code examples, see [Monitor](https://docs.microsoft.com/python/api/overview/azure/monitoring)
+For code examples, see [Attestation Management](https://docs.microsoft.com/python/api/overview/azure/)
 on docs.microsoft.com.
 
 
@@ -31,5 +31,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-monitor%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-attestation%2FREADME.png)
 
