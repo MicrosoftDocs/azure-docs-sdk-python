@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-network, network
+keywords: Azure, python, SDK, API, azure-mgmt-network, virtualnetwork
 author: maggiepint
 ms.author: magpint
-ms.date: 09/18/2020
+ms.date: 12/04/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: network
+ms.service: virtualnetwork
 ---
 
 # Microsoft Azure SDK for Python
