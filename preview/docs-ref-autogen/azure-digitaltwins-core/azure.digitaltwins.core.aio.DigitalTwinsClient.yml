@@ -5,18 +5,17 @@ fullName: azure.digitaltwins.core.aio.DigitalTwinsClient
 module: azure.digitaltwins.core.aio
 inheritances:
 - builtins.object
-summary: Creates an instance of AzureDigitalTwinsAPI.
+summary: Creates an instance of the Digital Twins client.
 constructor:
-  syntax: DigitalTwinsClient(endpoint, credential, **kwargs)
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
     types:
     - <xref:str>
   - name: credential
-    description: A credential to authenticate requests to the service
+    description: A credential to authenticate requests to the service.
     types:
-    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
 methods:
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.close
   name: close
@@ -24,35 +23,33 @@ methods:
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.create_models
   name: create_models
   summary: Create one or more models. When any error occurs, no models are uploaded.
-  signature: create_models(model_list=None, **kwargs)
+  signature: 'create_models(dtdl_models: typing.List[object], **kwargs) -> typing.List[azure.digitaltwins.core._generated.models._models_py3.DigitalTwinsModelData]'
   parameters:
   - name: model_list
-    description: The set of models to create. Each string corresponds to exactly one
-      model.
+    description: 'The set of models to create.
+
+      Each dict corresponds to exactly one model.'
     isRequired: true
     types:
     - <xref:List>[<xref:object>]
   return:
-    description: The list of ModelData
+    description: The list of created models
     types:
-    - <xref:List>[<xref:azure.digitaltwins.models.ModelData>]
+    - <xref:List>[<xref:azure.digitaltwins.core.DigitalTwinsModelData>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: One or more of
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'One or more of
 
       the provided models already exist.'
-    type: :class
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.decommission_model
   name: decommission_model
   summary: Decommissions a model.
-  signature: decommission_model(model_id, **kwargs)
+  signature: 'decommission_model(model_id: str, **kwargs) -> None'
   parameters:
   - name: model_id
-    description: The id for the model. The id is globally unique and case sensitive.
+    description: The ID for the model. The ID is globally unique and case sensitive.
     isRequired: true
     types:
     - <xref:str>
@@ -61,59 +58,51 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: There is no model
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'There is no model
 
-      with the provided id.'
-    type: :class
+      with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.delete_digital_twin
   name: delete_digital_twin
   summary: Delete a digital twin.
-  signature: delete_digital_twin(digital_twin_id, **kwargs)
+  signature: 'delete_digital_twin(digital_twin_id: str, **kwargs) -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: etag
-    description: 'Only perform the operation if the entity''s etag matches one of
-
-      the etags provided or * is provided.'
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   - name: match_condition
-    description: the match condition to use upon the etag
+    description: The condition under which to perform the operation.
     isRequired: true
     types:
     - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*:
-
-      If the request is invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*:
-
-      If there is no digital twin with the provided id.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: If there is no digital twin with the provided ID.
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.delete_event_route
   name: delete_event_route
   summary: Delete an event route.
-  signature: delete_event_route(event_route_id, **kwargs)
+  signature: 'delete_event_route(event_route_id: str, **kwargs) -> None'
   parameters:
   - name: event_route_id
-    description: The Id of the event route to delete.
+    description: The ID of the event route to delete.
     isRequired: true
     types:
     - <xref:str>
@@ -122,19 +111,19 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: There is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'There is no
 
-      event route with the provided id.'
-    type: :class
+      event route with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.delete_model
   name: delete_model
-  summary: Decommission a model using a json patch.
-  signature: delete_model(model_id, **kwargs)
+  summary: Delete a model.
+  signature: 'delete_model(model_id: str, **kwargs) -> None'
   parameters:
   - name: model_id
-    description: The Id of the model to decommission.
+    description: The ID of the model to delete.
     isRequired: true
     types:
     - <xref:str>
@@ -143,69 +132,68 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: There is no model
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'There is no model
 
-      with the provided id.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceExistsError*: There are dependencies
+      with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
+  - description: 'There are dependencies
 
       on the model that prevent it from being deleted.'
-    type: :class
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.delete_relationship
   name: delete_relationship
-  summary: Delete a digital twin.
-  signature: delete_relationship(digital_twin_id, relationship_id, **kwargs)
+  summary: Delete a relationship on a digital twin.
+  signature: 'delete_relationship(digital_twin_id: str, relationship_id: str, **kwargs)
+    -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   - name: relationship_id
-    description: The Id of the relationship to delete.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: etag
-    description: 'Only perform the operation if the entity''s etag matches one of
-
-      the etags provided or * is provided.'
+    description: The ID of the relationship to delete.
     isRequired: true
     types:
     - <xref:str>
   - name: match_condition
-    description: The match condition to use upon the etag.
+    description: The condition under which to perform the operation.
     isRequired: true
     types:
     - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is either
-      no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is either no
 
-      digital twin or relationship with the provided id.'
-    type: :class
+      digital twin or relationship with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.get_component
   name: get_component
   summary: Get a component on a digital twin.
-  signature: get_component(digital_twin_id, component_path, **kwargs)
+  signature: 'get_component(digital_twin_id: str, component_name: str, **kwargs) ->
+    typing.Dict[str, object]'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
-  - name: component_path
+  - name: component_name
     description: The component being retrieved.
     isRequired: true
     types:
@@ -215,20 +203,20 @@ methods:
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is either
-      no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is either no
 
-      digital twin with the provided id or the component path is invalid.'
-    type: :class
+      digital twin with the provided ID or the component name is invalid.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.get_digital_twin
   name: get_digital_twin
   summary: Get a digital twin.
-  signature: get_digital_twin(digital_twin_id, **kwargs)
+  signature: 'get_digital_twin(digital_twin_id: str, **kwargs) -> typing.Dict[str,
+    object]'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
@@ -237,73 +225,71 @@ methods:
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*:
-
-      If the digital twin doesn''t exist.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: If the digital twin doesn't exist.
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.get_event_route
   name: get_event_route
   summary: Get an event route.
-  signature: get_event_route(event_route_id, **kwargs)
   parameters:
   - name: event_route_id
-    description: The Id of the event route.
+    description: The ID of the event route.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: The EventRoute object.
+    description: The event route object.
     types:
-    - <xref:azure.digitaltwins.models.EventRoute>
+    - <xref:azure.digitaltwins.core.DigitalTwinsEventRoute>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: There is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'There is no
 
-      event route with the provided id.'
-    type: :class
+      event route with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.get_model
   name: get_model
   summary: Get a model, including the model metadata and the model definition.
-  signature: get_model(model_id, **kwargs)
+  signature: 'get_model(model_id: str, **kwargs) -> azure.digitaltwins.core._generated.models._models_py3.DigitalTwinsModelData'
   parameters:
   - name: model_id
-    description: The Id of the model.
+    description: The ID of the model.
     isRequired: true
     types:
     - <xref:str>
   - name: include_model_definition
-    description: 'When true the model definition
+    description: 'Include the model definition
 
-      will be returned as part of the result.'
+      as part of the result. The default value is False.'
     isRequired: true
     types:
     - <xref:bool>
   return:
-    description: The ModelDate object.
+    description: The model data.
     types:
-    - <xref:azure.digitaltwins.models.ModelData>
+    - <xref:azure.digitaltwins.core.DigitalTwinsModelData>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is no
 
-      model with the provided id.'
-    type: :class
+      model with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.get_relationship
   name: get_relationship
   summary: Get a relationship on a digital twin.
-  signature: get_relationship(digital_twin_id, relationship_id, **kwargs)
+  signature: 'get_relationship(digital_twin_id: str, relationship_id: str, **kwargs)
+    -> typing.Dict[str, object]'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   - name: relationship_id
-    description: The Id of the relationship to retrieve.
+    description: The ID of the relationship to retrieve.
     isRequired: true
     types:
     - <xref:str>
@@ -312,17 +298,15 @@ methods:
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is either
-      no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is either no
 
-      digital twin or relationship with the provided id.'
-    type: :class
+      digital twin or relationship with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.list_event_routes
   name: list_event_routes
   summary: Retrieves all event routes.
-  signature: list_event_routes(**kwargs)
   parameters:
   - name: results_per_page
     description: 'The maximum number of items to retrieve per request.
@@ -332,52 +316,49 @@ methods:
     types:
     - <xref:int>
   return:
-    description: An iterator instance of list of EventRoute.
+    description: An iterator instance of event routes.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.digitaltwins.models.EventRoute>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.digitaltwins.core.DigitalTwinsEventRoute>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: The request is invalid.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.list_incoming_relationships
   name: list_incoming_relationships
   summary: Retrieve all incoming relationships for a digital twin.
-  signature: list_incoming_relationships(digital_twin_id, **kwargs)
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: An iterator like instance of either Relationship.
+    description: An iterator instance of list of incoming relationships.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.digitaltwins.models.IncomingRelationship>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.digitaltwins.core.IncomingRelationship>]
   exceptions:
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is no
 
-      digital twin with the provided id.'
-    type: :class
+      digital twin with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.list_models
   name: list_models
   summary: Get the list of models.
-  signature: list_models(dependencies_for, **kwargs)
+  signature: 'list_models(dependencies_for: typing.Union[typing.List[str], NoneType]
+    = None, **kwargs) -> azure.core.async_paging.AsyncItemPaged[azure.digitaltwins.core._generated.models._models_py3.DigitalTwinsModelData]'
   parameters:
   - name: dependencies_for
-    description: 'The model Ids to have dependencies retrieved.
+    description: 'The model IDs to have dependencies retrieved.
 
       If omitted, all models are retrieved.'
     isRequired: true
     types:
     - <xref:List>[<xref:str>]
   - name: include_model_definition
-    description: 'When true the model definition
+    description: 'Include the model definition
 
-      will be returned as part of the result.'
+      as part of the results. The default value is False.'
     isRequired: true
     types:
     - <xref:bool>
@@ -389,68 +370,67 @@ methods:
     types:
     - <xref:int>
   return:
-    description: An iterator instance of list of ModelData.
+    description: An iterator instance of list of model data.
     types:
-    - <xref:azure.core.paging.AsyncItemPaged>[<xref:azure.digitaltwins.models.ModelData>]
+    - <xref:azure.core.paging.AsyncItemPaged>[<xref:azure.digitaltwins.core.DigitalTwinsModelData>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.list_relationships
   name: list_relationships
   summary: Retrieve relationships for a digital twin.
-  signature: list_relationships(digital_twin_id, relationship_id=None, **kwargs)
+  signature: 'list_relationships(digital_twin_id: str, relationship_id: typing.Union[str,
+    NoneType] = None, **kwargs) -> azure.core.async_paging.AsyncItemPaged[typing.Dict[str,
+    object]]'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   - name: relationship_id
-    description: 'The Id of the relationship to
+    description: 'The ID of the relationship to
 
       get (if None all the relationship will be retrieved).'
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: An iterator instance of list of Relationship
+    description: An iterator instance of list of relationships.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.digitaltwins.models.Relationship>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:Dict>[<xref:str,object>]]
   exceptions:
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is no
 
-      digital twin with the provided id.'
-    type: :class
+      digital twin with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.publish_component_telemetry
   name: publish_component_telemetry
-  summary: "Publish telemetry from a digital twin's component, which is then consumed\
-    \ by\n   one or many destination endpoints (subscribers) defined under."
-  signature: publish_component_telemetry(digital_twin_id, component_path, payload,
-    message_id=None, **kwargs)
+  summary: 'Publish telemetry from a digital twin''s component, which is then consumed
+
+    by one or many destination endpoints (subscribers) defined under.'
+  signature: 'publish_component_telemetry(digital_twin_id: str, component_name: str,
+    telemetry: object, **kwargs) -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
-  - name: component_path
+  - name: component_name
     description: The name of the DTDL component.
     isRequired: true
     types:
     - <xref:str>
-  - name: payload
-    description: The telemetry payload to be sent.
+  - name: telemetry
+    description: The telemetry data to be sent.
     isRequired: true
     types:
     - <xref:object>
   - name: message_id
-    description: The message Id.
+    description: The message ID. If not specified, a UUID will be generated.
     isRequired: true
     types:
     - <xref:str>
@@ -459,31 +439,32 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is no
 
-      digital twin with the provided id or the component path is invalid.'
-    type: :class
+      digital twin with the provided ID or the component name is invalid.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.publish_telemetry
   name: publish_telemetry
-  summary: "Publish telemetry from a digital twin, which is then consumed by\n   one\
-    \ or many destination endpoints (subscribers) defined under."
-  signature: publish_telemetry(digital_twin_id, payload, message_id=None, **kwargs)
+  summary: 'Publish telemetry from a digital twin, which is then consumed by
+
+    one or many destination endpoints (subscribers) defined under.'
+  signature: 'publish_telemetry(digital_twin_id: str, telemetry: object, **kwargs)
+    -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin
+    description: The ID of the digital twin
     isRequired: true
     types:
     - <xref:str>
-  - name: payload
-    description: The telemetry payload to be sent
+  - name: telemetry
+    description: The telemetry data to be sent
     isRequired: true
     types:
     - <xref:object>
   - name: message_id
-    description: The message Id
+    description: The message ID. If not specified, a UUID will be generated.
     isRequired: true
     types:
     - <xref:str>
@@ -492,17 +473,25 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is no
 
-      digital twin with the provided id.'
-    type: :class
+      digital twin with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.query_twins
   name: query_twins
-  summary: Query for digital twins.
-  signature: query_twins(query_expression, **kwargs)
+  summary: 'Query for digital twins.
+
+
+    Note: that there may be a delay between before changes in your instance are reflected
+    in queries.
+
+    For more details on query limitations, see
+
+    [https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations](https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations)'
+  signature: 'query_twins(query_expression: str, **kwargs) -> azure.core.async_paging.AsyncItemPaged[typing.Dict[str,
+    object]]'
   parameters:
   - name: query_expression
     description: The query expression to execute.
@@ -510,70 +499,69 @@ methods:
     types:
     - <xref:str>
   return:
-    description: The QueryResult object.
+    description: An iterable of query results.
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:object>]]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.update_component
   name: update_component
   summary: Update properties of a component on a digital twin using a JSON patch.
-  signature: update_component(digital_twin_id, component_path, json_patch, **kwargs)
+  signature: 'update_component(digital_twin_id: str, component_name: str, json_patch:
+    typing.List[typing.Dict[str, object]], **kwargs) -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
-  - name: component_path
+  - name: component_name
     description: The component being updated.
     isRequired: true
     types:
     - <xref:str>
-  - name: object] json_patch
+  - name: json_patch
     description: An update specification described by JSON Patch.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,>
-  - name: etag
-    description: 'Only perform the operation if the entity''s etag matches one of
-
-      the etags provided or * is provided.'
-    isRequired: true
-    types:
-    - <xref:str>
+    - <xref:List>[<xref:Dict>[<xref:str,object>]]
   - name: match_condition
-    description: the match condition to use upon the etag
+    description: The condition under which to perform the operation.
     isRequired: true
     types:
     - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is either
-      no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is either no
 
-      digital twin with the provided id or the component path is invalid.'
-    type: :class
+      digital twin with the provided ID or the component name is invalid.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.update_digital_twin
   name: update_digital_twin
-  summary: Update a digital twin using a json patch.
-  signature: update_digital_twin(digital_twin_id, json_patch, **kwargs)
+  summary: Update a digital twin using a JSON patch.
+  signature: 'update_digital_twin(digital_twin_id: str, json_patch: typing.List[typing.Dict[str,
+    object]], **kwargs) -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
-  - name: object] json_patch
+  - name: json_patch
     description: 'An update specification described by JSON Patch.
 
       Updates to property values and $model elements may happen in the same request.
@@ -581,122 +569,121 @@ methods:
       Operations are limited to add, replace and remove.'
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,>
-  - name: etag
-    description: 'Only perform the operation if the entity''s etag matches one of
-
-      the etags provided or * is provided.'
-    isRequired: true
-    types:
-    - <xref:str>
+    - <xref:List>[<xref:Dict>[<xref:str,object>]]
   - name: match_condition
-    description: The match condition to use upon the etag
+    description: The condition under which to perform the operation.
     isRequired: true
     types:
     - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*:
-
-      If the request is invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*:
-
-      If there is no digital twin with the provided id.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: If there is no digital twin with the provided ID.
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.update_relationship
   name: update_relationship
   summary: Updates the properties of a relationship on a digital twin using a JSON
     patch.
-  signature: update_relationship(digital_twin_id, relationship_id, json_patch=None,
-    **kwargs)
+  signature: 'update_relationship(digital_twin_id: str, relationship_id: str, json_patch:
+    typing.List[typing.Dict[str, object]], **kwargs) -> None'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   - name: relationship_id
-    description: The Id of the relationship to retrieve.
+    description: The ID of the relationship to retrieve.
     isRequired: true
     types:
     - <xref:str>
-  - name: object] json_patch
+  - name: json_patch
     description: 'JSON Patch description of the update
 
       to the relationship properties.'
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,>
-  - name: etag
-    description: 'Only perform the operation if the entity''s etag matches one of
-
-      the etags provided or * is provided.'
-    isRequired: true
-    types:
-    - <xref:str>
+    - <xref:List>[<xref:Dict>[<xref:str,object>]]
   - name: match_condition
-    description: the match condition to use upon the etag
+    description: The condition under which to perform the operation.
     isRequired: true
     types:
     - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is either
-      no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is either no
 
-      digital twin or relationship with the provided id.'
-    type: :class
+      digital twin or relationship with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.upsert_digital_twin
   name: upsert_digital_twin
   summary: Create or update a digital twin.
-  signature: upsert_digital_twin(digital_twin_id, digital_twin, **kwargs)
+  signature: 'upsert_digital_twin(digital_twin_id: str, digital_twin: typing.Dict[str,
+    object], **kwargs) -> typing.Dict[str, object]'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
-  - name: object] digital_twin
+  - name: digital_twin
     description: Dictionary containing the twin to create or update.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,>
+    - <xref:Dict>[<xref:str,object>]
+  - name: match_condition
+    description: The condition under which to perform the operation.
+    isRequired: true
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: Dictionary containing the created or updated twin.
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*:
-
-      If the request is invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceExistsError*:
-
-      If the digital twin is already exist.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: If the digital twin already exists.
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.upsert_event_route
   name: upsert_event_route
   summary: Create or update an event route.
-  signature: upsert_event_route(event_route_id, event_route, **kwargs)
   parameters:
   - name: event_route_id
-    description: The Id of the event route to create or update.
+    description: The ID of the event route to create or update.
     isRequired: true
     types:
     - <xref:str>
@@ -704,49 +691,56 @@ methods:
     description: The event route data.
     isRequired: true
     types:
-    - <xref:azure.digitaltwins.models.EventRoute>
+    - <xref:azure.digitaltwins.core.DigitalTwinsEventRoute>
   return:
     description: None
     types:
     - <xref:None>
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: The request is invalid.'
-    type: :class
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.digitaltwins.core.aio.DigitalTwinsClient.upsert_relationship
   name: upsert_relationship
   summary: Create or update a relationship on a digital twin.
-  signature: upsert_relationship(digital_twin_id, relationship_id, relationship=None,
-    **kwargs)
+  signature: 'upsert_relationship(digital_twin_id: str, relationship_id: str, relationship:
+    typing.Dict[str, object], **kwargs) -> typing.Dict[str, object]'
   parameters:
   - name: digital_twin_id
-    description: The Id of the digital twin.
+    description: The ID of the digital twin.
     isRequired: true
     types:
     - <xref:str>
   - name: relationship_id
-    description: The Id of the relationship to retrieve.
+    description: The ID of the relationship to retrieve.
     isRequired: true
     types:
     - <xref:str>
-  - name: object] relationship
+  - name: relationship
     description: Dictionary containing the relationship.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,>
+    - <xref:Dict>[<xref:str,object>]
+  - name: match_condition
+    description: The condition under which to perform the operation.
+    isRequired: true
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: etag
+    description: 'Only perform the operation if the entity''s etag matches the value
+      provided
+
+      according to the *match_condition*.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: The created or updated relationship.
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
   exceptions:
-  - description: '*~azure.core.exceptions.HttpResponseError*'
-    type: :class
-  - description: '*~azure.core.exceptions.ServiceRequestError*: If the request is
-      invalid.'
-    type: :class
-  - description: '*~azure.core.exceptions.ResourceNotFoundError*: If there is either
-      no
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  - description: 'If there is either no
 
-      digital twin, target digital twin or relationship with the provided id.'
-    type: :class
+      digital twin, target digital twin or relationship with the provided ID.'
+    type: ~azure.core.exceptions.ResourceNotFoundError
