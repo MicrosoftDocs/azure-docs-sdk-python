@@ -1,3 +1,9 @@
+---
+title: Microsoft Azure Cognitive Services LUIS Client Library.
+ms.topic: reference
+ms.devlang: python
+ms.service: cognitive-services
+---
 
 # Microsoft Azure SDK for Python
 

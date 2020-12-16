@@ -1,14 +1,12 @@
 ---
-title: 
+title: Azure Cognitive Services Computer Vision SDK for Python
 keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-computervision, cognitiveservices
 author: maggiepint
 ms.author: magpint
 ms.date: 10/08/2020
-ms.topic: article
-ms.prod: azure
-ms.technology: azure
+ms.topic: reference
 ms.devlang: python
-ms.service: cognitiveservices
+ms.service: cognitive-services
 ---
 
 # Azure Cognitive Services Computer Vision SDK for Python

@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: servicebus
+ms.service: service-bus
 ---
 
 ## Microsoft Azure SDK for Python
