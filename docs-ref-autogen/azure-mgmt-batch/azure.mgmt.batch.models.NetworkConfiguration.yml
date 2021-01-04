@@ -7,68 +7,70 @@ inheritances:
 - msrest.serialization.Model
 summary: The network configuration for a pool.
 constructor:
-  syntax: 'NetworkConfiguration(*, subnet_id: str = None, endpoint_configuration=None,
-    public_ip_address_configuration=None, **kwargs) -> None'
+  syntax: 'NetworkConfiguration(*, subnet_id: typing.Union[str, NoneType] = None,
+    endpoint_configuration: typing.Union[_ForwardRef(''PoolEndpointConfiguration''),
+    NoneType] = None, public_ip_address_configuration: typing.Union[_ForwardRef(''PublicIPAddressConfiguration''),
+    NoneType] = None, **kwargs)'
   parameters:
   - name: subnet_id
-    description: 'The virtual network must be in the same region and
+    description: 'The virtual network must be in the same region and subscription
+      as the Azure
 
-      subscription as the Azure Batch account. The specified subnet should have
+      Batch account. The specified subnet should have enough free IP addresses to
+      accommodate the
 
-      enough free IP addresses to accommodate the number of nodes in the pool.
+      number of nodes in the pool. If the subnet doesn''t have enough free IP addresses,
+      the pool will
 
-      If the subnet doesn''t have enough free IP addresses, the pool will
+      partially allocate compute nodes and a resize error will occur. The ''MicrosoftAzureBatch''
 
-      partially allocate compute nodes and a resize error will occur. The
+      service principal must have the ''Classic Virtual Machine Contributor'' Role-Based
+      Access Control
 
-      ''MicrosoftAzureBatch'' service principal must have the ''Classic Virtual
+      (RBAC) role for the specified VNet. The specified subnet must allow communication
+      from the
 
-      Machine Contributor'' Role-Based Access Control (RBAC) role for the
+      Azure Batch service to be able to schedule tasks on the compute nodes. This
+      can be verified by
 
-      specified VNet. The specified subnet must allow communication from the
+      checking if the specified VNet has any associated Network Security Groups (NSG).
+      If
 
-      Azure Batch service to be able to schedule tasks on the compute nodes.
+      communication to the compute nodes in the specified subnet is denied by an NSG,
+      then the Batch
 
-      This can be verified by checking if the specified VNet has any associated
+      service will set the state of the compute nodes to unusable. If the specified
+      VNet has any
 
-      Network Security Groups (NSG). If communication to the compute nodes in
+      associated Network Security Groups (NSG), then a few reserved system ports must
+      be enabled for
 
-      the specified subnet is denied by an NSG, then the Batch service will set
+      inbound communication. For pools created with a virtual machine configuration,
+      enable ports
 
-      the state of the compute nodes to unusable. If the specified VNet has any
+      29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. For
+      pools created with
 
-      associated Network Security Groups (NSG), then a few reserved system ports
+      a cloud service configuration, enable ports 10100, 20100, and 30100. Also enable
+      outbound
 
-      must be enabled for inbound communication. For pools created with a
+      connections to Azure Storage on port 443. For cloudServiceConfiguration pools,
+      only ''classic''
 
-      virtual machine configuration, enable ports 29876 and 29877, as well as
+      VNETs are supported. For more details see: [https://docs.microsoft.com/en-us/azure/batch/batch](https://docs.microsoft.com/en-us/azure/batch/batch)-
 
-      port 22 for Linux and port 3389 for Windows. For pools created with a
-
-      cloud service configuration, enable ports 10100, 20100, and 30100. Also
-
-      enable outbound connections to Azure Storage on port 443. For
-
-      cloudServiceConfiguration pools, only ''classic'' VNETs are supported. For
-
-      more details see:
-
-      [https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration](https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration)'
+      api-basics#virtual-network-vnet-and-firewall-configuration.'
     types:
     - <xref:str>
   - name: endpoint_configuration
-    description: 'The configuration for endpoints on compute
+    description: 'Pool endpoint configuration is only supported on pools with the
 
-      nodes in the Batch pool. Pool endpoint configuration is only supported on
-
-      pools with the virtualMachineConfiguration property.'
+      virtualMachineConfiguration property.'
     types:
     - <xref:azure.mgmt.batch.models.PoolEndpointConfiguration>
   - name: public_ip_address_configuration
-    description: 'The Public IPAddress configuration
+    description: 'This property is only supported on Pools with the
 
-      for Compute Nodes in the Batch Pool. This property is only supported on
-
-      Pools with the virtualMachineConfiguration property.'
+      virtualMachineConfiguration property.'
     types:
     - <xref:azure.mgmt.batch.models.PublicIPAddressConfiguration>
