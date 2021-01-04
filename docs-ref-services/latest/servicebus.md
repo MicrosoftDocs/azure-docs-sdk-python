@@ -34,7 +34,7 @@ Use the following version 7.x.x libraries to work with servicebus:
 
 | Library | Reference | Package | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    azure-servicebus   |    [Reference](servicebus-readme)    |    [PyPI](https://pypi.org/project/azure-servicebus/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus)    |
+|    azure-servicebus   |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus-readme?view=azure-python)    |    [PyPI](https://pypi.org/project/azure-servicebus/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus)    |
 
 ### Version 0.50.x
 
@@ -52,7 +52,7 @@ Use the following library to work with the Azure Servicebus resource provider:
 
 |    Library    |    Reference    |    Package    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-|    azure-mgmt-servicebus    |    [Reference](https://docs.microsoft.com/en-us/python/api/overview/azure/servicebus/management?view=azure-python)    |    [PyPI](https://pypi.org/project/azure-mgmt-servicebus/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-mgmt-servicebus)    |
+|    azure-mgmt-servicebus    |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus/management?view=azure-python)    |    [PyPI](https://pypi.org/project/azure-mgmt-servicebus/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-mgmt-servicebus)    |
 
 ## Next Steps
 
