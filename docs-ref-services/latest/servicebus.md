@@ -15,9 +15,6 @@ ms.service: service-bus
 
 Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.
 
-* [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/azure-servicebus)
-* [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/servicebus/client?view=azure-python)
-
 ## Libraries for data access
 
 The latest version of the Azure Servicebus libraries is version 7.x.x. We highly recommend using version 7.x.x for new applications.
