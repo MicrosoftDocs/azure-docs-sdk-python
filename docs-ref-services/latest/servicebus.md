@@ -19,13 +19,13 @@ Microsoft Azure Service Bus supports a set of cloud-based, message-oriented midd
 
 The latest version of the Azure Servicebus libraries is version 7.x.x. We highly recommend using version 7.x.x for new applications.
 
-To update existing applications to version 7.x.x, please follow the [migration guide](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/servicebus/azure-servicebus/migration_guide.md)
+To update existing applications to version 7.x.x, please follow the [migration guide](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/servicebus/azure-servicebus/migration_guide.md).
 
 ### Version 7.x.x
 
-The version 7.x.x client libraries for Python are part of the Azure SDK for Python. The source code for the Azure ServiceBus client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus).
+The version 7.x.x client library for Python is part of the Azure SDK for Python. The source code for the Azure ServiceBus client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus).
 
-Use the following version 7.x.x libraries to manage your Azure Service Bus resources like namespaces, queues, topics, subscriptions and rules via the Azure Resource Manager, you would use the below package:
+Use the following library to manage your Azure Service Bus resources like namespaces, queues, topics, subscriptions and rules via the Azure Resource Manager, you would use the below package:
 
 | Library | Reference | Package | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
