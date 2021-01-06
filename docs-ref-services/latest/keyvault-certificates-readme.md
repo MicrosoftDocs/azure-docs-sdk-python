@@ -277,7 +277,7 @@ for certificate in certificates:
 This library includes a complete async API supported on Python 3.5+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.2.1/sdk/core/azure-core/README.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.2.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
 for more information.
 
 Async clients should be closed when they're no longer needed. Each async
@@ -285,15 +285,18 @@ client is an async context manager and defines an async `close` method. For
 example:
 
 ```py
-from azure.keyvault.certificates import CertificateClient
+from azure.identity.aio import DefaultAzureCredential
+from azure.keyvault.certificates.aio import CertificateClient
+
+credential = DefaultAzureCredential()
 
 # call close when the client is no longer needed
-client = CertificateClient()
+client = CertificateClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 ...
 await client.close()
 
 # alternatively, use the client as an async context manager
-client = CertificateClient()
+client = CertificateClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 async with client:
   ...
 ```
