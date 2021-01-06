@@ -23,13 +23,11 @@ To update existing applications to version 7.x.x, please follow the [migration g
 
 ### Version 7.x.x
 
-The version 7.x.x client library for Python is part of the Azure SDK for Python. The source code for the Azure ServiceBus client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus).
+To send and receive messages from an Azure Service Bus queue, topic or subscription, you would use the latest version of the `azure-servicebus`. This also allows to manage your Azure Service Bus resources like queues, topics, subscriptions and rules, but not the namespace itself.
 
-Use the following library to manage your Azure Service Bus resources like namespaces, queues, topics, subscriptions and rules via the Azure Resource Manager, you would use the below package:
-
-| Library | Reference | Package | Source |
+| Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    azure-servicebus   |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus-readme?view=azure-python)    |    [PyPI](https://pypi.org/project/azure-servicebus/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus)    |
+|    [azure-servicebus](https://pypi.org/project/azure-servicebus/)    |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus-readme?view=azure-python)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus/samples)   |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus)    |
 
 ### Version 0.50.x
 
@@ -37,17 +35,17 @@ The older verson allows you to send and receive messages from an Azure Service B
 
 The source code for the Azure Servicebus client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/).
 
-| Library | Reference | Package | Source |
+| Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    azure-servicebus   |    [Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-servicebus/0.50.3/index.html)    |    [PyPI](https://pypi.org/project/azure-servicebus/0.50.3/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/)    |
+|    [azure-servicebus](https://pypi.org/project/azure-servicebus/0.50.3/)   |    [Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-servicebus/0.50.3/index.html)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/samples)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/)    |
 
 ## Libraries for resource management
 
-Use the following library to work with the Azure Servicebus resource provider:
+To manage your Azure Service Bus resources like namespaces, queues, topics, subscriptions and rules via the Azure Resource Manager, you would use the below package:
 
-|    Library    |    Reference    |    Package    |    Source    |
-|------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-|    azure-mgmt-servicebus    |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus/management?view=azure-python)    |    [PyPI](https://pypi.org/project/azure-mgmt-servicebus/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-mgmt-servicebus)    |
+|    Library    |    Reference    |    Source    |
+|------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+|    [azure-mgmt-servicebus](https://pypi.org/project/azure-mgmt-servicebus/)    |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus/management?view=azure-python)    |   [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-mgmt-servicebus)    |
 
 ## Next Steps
 
