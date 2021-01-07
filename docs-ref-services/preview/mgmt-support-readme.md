@@ -1,19 +1,19 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-recoveryservices, recoveryservices
+keywords: Azure, python, SDK, API, azure-mgmt-support, help+support
 author: maggiepint
 ms.author: magpint
-ms.date: 11/18/2020
+ms.date: 12/08/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: recoveryservices
+ms.service: help+support
 ---
 
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Recovery Services Client Library.
+This is the Microsoft Azure Support Management Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -26,7 +26,7 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
 For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Recovery Services Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Code samples for this package can be found at [Support Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
@@ -37,6 +37,6 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-recoveryservices%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-support%2FREADME.png)
 
 

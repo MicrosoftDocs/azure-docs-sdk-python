@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
 author: maggiepint
 ms.author: magpint
-ms.date: 09/04/2020
+ms.date: 12/10/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -32,4 +32,5 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-datafactory%2FREADME.png)
+
 

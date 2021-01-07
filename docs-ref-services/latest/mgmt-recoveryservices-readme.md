@@ -1,26 +1,26 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-containerregistry, containerregistry
+keywords: Azure, python, SDK, API, azure-mgmt-recoveryservices, siterecovery
 author: maggiepint
 ms.author: magpint
-ms.date: 12/09/2020
+ms.date: 12/14/2020
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerregistry
+ms.service: siterecovery
 ---
 
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Container Registry Client Library.
+This is the Microsoft Azure Recovery Services Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
 # Usage
 
-For code examples, see [Container Registry](https://docs.microsoft.com/python/api/overview/azure/container-registry)
+For code examples, see [Recovery Services](https://docs.microsoft.com/python/api/overview/azure/recoveryservices)
 on docs.microsoft.com.
 
 
@@ -31,6 +31,6 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-containerregistry%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-recoveryservices%2FREADME.png)
 
 
