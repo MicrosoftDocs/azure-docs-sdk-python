@@ -27,17 +27,15 @@ To send and receive messages from an Azure Service Bus queue, topic or subscript
 
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    [azure-servicebus](https://pypi.org/project/azure-servicebus/)    |    [Reference](https://docs.microsoft.com/python/api/overview/azure/servicebus-readme?view=azure-python)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus/samples)   |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus)    |
+|    [azure-servicebus v7](https://pypi.org/project/azure-servicebus/)    |    [API Reference for azure-servicebus v7](https://docs.microsoft.com/python/api/overview/azure/servicebus-readme?view=azure-python)    |    [Samples for azure-servicebus v7](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus/samples)   |    [Source code for azure-servicebus v7](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-servicebus)    |
 
 ### Version 0.50.x
 
 The older verson allows you to send and receive messages from an Azure Service Bus queue, topic or subscription, but it lacks a lot of the new features and performance improvements available in the latest version of the same package.
 
-The source code for the Azure Servicebus client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/).
-
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    [azure-servicebus](https://pypi.org/project/azure-servicebus/0.50.3/)   |    [Reference](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-servicebus/0.50.3/index.html)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/samples)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/)    |
+|    [azure-servicebus v0.50](https://pypi.org/project/azure-servicebus/0.50.3/)   |    [API Reference for azure-servicebus 0.50](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-servicebus/0.50.3/index.html)    |    [Samples for azure-servicebus 0.50](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/samples)    |    [Source code for azure-servicebus 0.50](https://github.com/Azure/azure-sdk-for-python/tree/servicebus_v0.50.3/sdk/servicebus/azure-servicebus/)    |
 
 ## Libraries for resource management
 
