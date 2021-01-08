@@ -16,7 +16,7 @@ ms.service: multiple
 
 # Azure Event Hubs libraries for Python
 
-Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected devices and applications. Once Event Hubs has collected the data, you can retrieve, transform, and store it by using any real-time analytics provider or with batching/storage adapters. If you would like to know more about Azure Event Hubs, you may wish to review: [What is Event Hubs](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-about).
+Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected devices and applications. Once Event Hubs has collected the data, you can retrieve, transform, and store it by using any real-time analytics provider or with batching/storage adapters. If you would like to know more about Azure Event Hubs, you may wish to review: [What is Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-about).
 
 ## Libraries for data access
 
@@ -31,8 +31,8 @@ To send and receive events from an Azure Event Hub instance, you would use the b
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
 |    [azure-eventhub v5](https://pypi.org/project/azure-eventhub/)    |    [API Reference for azure-eventhub v5](https://docs.microsoft.com/python/api/overview/azure/eventhub-readme?view=azure-python)    |    [Samples for azure-eventhub v5](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub/samples)   |    [Source code for azure-eventhub v5](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub)    |
-|    [azure-eventhub-checkpointstoreblob](https://pypi.org/project/azure-eventhub-checkpointstoreblob/)    |    [API Reference](https://docs.microsoft.com/en-us/python/api/overview/azure/eventhub-checkpointstoreblob-readme?view=azure-python)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples)   |    [Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob)    |
-|    [azure-eventhub-checkpointstoreblob-aio](https://pypi.org/project/azure-eventhub-checkpointstoreblob-aio/)    |    [API Reference](https://docs.microsoft.com/en-us/python/api/overview/azure/eventhub-checkpointstoreblob-aio-readme?view=azure-python)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio/samples)   |    [Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio)    |
+|    [azure-eventhub-checkpointstoreblob](https://pypi.org/project/azure-eventhub-checkpointstoreblob/)    |    [API Reference](https://docs.microsoft.com/python/api/overview/azure/eventhub-checkpointstoreblob-readme?view=azure-python)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples)   |    [Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob)    |
+|    [azure-eventhub-checkpointstoreblob-aio](https://pypi.org/project/azure-eventhub-checkpointstoreblob-aio/)    |    [API Reference](https://docs.microsoft.com/python/api/overview/azure/eventhub-checkpointstoreblob-aio-readme?view=azure-python)    |    [Samples](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio/samples)   |    [Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio)    |
 
 ### Version 1.x.x
 
@@ -40,7 +40,7 @@ The older verson allows you to send and receive events from an Azure Event Hub i
 
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    [azure-eventhub v1](https://pypi.org/project/azure-eventhub/1.3.3/)    |    [API Reference for azure-eventhub v1](https://docs.microsoft.com/en-us/python/api/azure-eventhub/?view=azure-python-previous)    |    [Samples for azure-eventhub v1](https://github.com/Azure/azure-sdk-for-python/tree/release/eventhub-v1/sdk/eventhub/azure-eventhubs/examples)   |    [Source code for azure-eventhub v1](https://github.com/Azure/azure-sdk-for-python/tree/release/eventhub-v1/sdk/eventhub/azure-eventhubs)    |
+|    [azure-eventhub v1](https://pypi.org/project/azure-eventhub/1.3.3/)    |    [API Reference for azure-eventhub v1](https://docs.microsoft.com/python/api/azure-eventhub/?view=azure-python-previous)    |    [Samples for azure-eventhub v1](https://github.com/Azure/azure-sdk-for-python/tree/release/eventhub-v1/sdk/eventhub/azure-eventhubs/examples)   |    [Source code for azure-eventhub v1](https://github.com/Azure/azure-sdk-for-python/tree/release/eventhub-v1/sdk/eventhub/azure-eventhubs)    |
 
 ## Libraries for resource management
 
@@ -48,4 +48,4 @@ Use the following library to work with the Azure Event Huns resource provider:
 
 |    Library    |    Reference    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-|    [azure-mgmt-eventhub](https://pypi.org/project/azure-mgmt-eventhub/)    |    [API Reference](https://docs.microsoft.com/en-us/python/api/overview/azure/eventhubs/management?view=azure-python)    |   [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-mgmt-eventhub)    |
+|    [azure-mgmt-eventhub](https://pypi.org/project/azure-mgmt-eventhub/)    |    [API Reference](https://docs.microsoft.com/python/api/overview/azure/eventhubs/management?view=azure-python)    |   [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-mgmt-eventhub)    |
