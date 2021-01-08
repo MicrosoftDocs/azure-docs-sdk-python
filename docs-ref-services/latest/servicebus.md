@@ -11,13 +11,13 @@ ms.devlang: python
 ms.service: service-bus
 ---
 
-# Service Bus libraries for Python
+# Azure Service Bus libraries for Python
 
 Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.
 
 ## Libraries for data access
 
-The latest version of the Azure Servicebus libraries is version 7.x.x. We highly recommend using version 7.x.x for new applications.
+The latest version of the Azure Service Bus library is version 7.x.x. We highly recommend using version 7.x.x for new applications.
 
 To update existing applications to version 7.x.x, please follow the [migration guide](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/servicebus/azure-servicebus/migration_guide.md).
 
