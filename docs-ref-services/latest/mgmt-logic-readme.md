@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-search, search
+keywords: Azure, python, SDK, API, azure-mgmt-logic, logicapps
 author: maggiepint
 ms.author: magpint
 ms.date: 01/04/2021
@@ -8,12 +8,12 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: search
+ms.service: logicapps
 ---
 
 ## Microsoft Azure SDK for Python
-
-This is the Microsoft Azure Search Management Client Library.
+                                    
+This is the Microsoft Azure Logic Apps Management Client Library.
 
 Azure Resource Manager (ARM) is the next generation of management APIs
 that replace the old Azure Service Management (ASM).
@@ -27,17 +27,34 @@ library.
 For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
-## Usage
+## Compatibility
+
+**IMPORTANT**: If you have an earlier version of the azure package
+(version < 1.0), you should uninstall it before installing this
+package.
+
+You can check the version using pip:
+
+``` shell
+pip freeze
+```
+
+If you see azure==0.11.0 (or any version below 1.0), uninstall it first:
+
+``` shell
+pip uninstall azure
+```
+
+# Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
 
 
-
+ 
 For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Search Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Code samples for this package can be found at [Logic Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
-
 
 ## Provide Feedback
 
@@ -45,5 +62,5 @@ If you encounter any bugs or have suggestions, please file an issue in
 the [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
-![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-search%2FREADME.png)
+![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-logic%2FREADME.png)
 

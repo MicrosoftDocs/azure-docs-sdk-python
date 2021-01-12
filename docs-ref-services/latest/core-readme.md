@@ -3,7 +3,7 @@ title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
 author: maggiepint
 ms.author: magpint
-ms.date: 11/09/2020
+ms.date: 01/11/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -12,15 +12,15 @@ ms.service: core
 ---
 
 
-# Azure Core shared client library for Python - Version 1.9.0 
+# Azure Core shared client library for Python - Version 1.10.0 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries. 
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python_introduction.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.9.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.10.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.9.0/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.9.0/sdk/core/azure-core/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.10.0/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.10.0/sdk/core/azure-core/)
 
 ## Getting started
 
@@ -125,6 +125,28 @@ class TooManyRedirectsError(HttpResponseError):
 *args* are any additional args to be included with exception.
 
 *kwargs* are keyword arguments to include with the exception.
+
+### Transport
+
+Some common properties can be configured on transports. They must be passed
+as kwargs arguments while building the transport instance.
+
+#### Transport configurations
+
+| Parameters | Description |
+| --- | --- |
+| connection_timeout | A single float in seconds for the connection timeout. Defaults to 300 seconds. |
+| read_timeout | A single float in seconds for the read timeout. Defaults to 300 seconds. |
+| connection_verify | SSL certificate verification. Enabled by default. Set to False to disable, alternatively can be set to the path to a CA_BUNDLE file or directory with certificates of trusted CAs. |
+| connection_cert | Client-side certificates. You can specify a local cert to use as client side certificate, as a single file (containing the private key and the certificate) or as a tuple of both files' paths. |
+| proxies | Dictionary mapping protocol or protocol and hostname to the URL of the proxy. |
+| cookies | Dict or CookieJar object to send with the `Request`. |
+| stream | whether to immediately download the response content. Defaults to ``False``. |
+| connection_data_block_size | The block size of data sent over the connection. Defaults to 4096 bytes. |
+
+#### Async transport
+
+The async transport is designed to be opt-in. [AioHttp](https://pypi.org/project/aiohttp/) is one of the supported implementations of async transport. It is not installed by default. You need to install it separately.
 
 ### Shared modules
 
