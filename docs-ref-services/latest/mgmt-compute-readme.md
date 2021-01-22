@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
+keywords: Azure, python, SDK, API, azure-mgmt-compute, virtualmachines
 author: maggiepint
 ms.author: magpint
-ms.date: 11/18/2020
+ms.date: 01/22/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: compute
+ms.service: virtualmachines
 ---
 
 # Microsoft Azure SDK for Python
@@ -32,4 +32,14 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-compute%2FREADME.png)
+# Usage
+
+
+To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
+
+
+ 
+For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
+Code samples for this package can be found at [Compute Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
