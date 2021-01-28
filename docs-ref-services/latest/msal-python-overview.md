@@ -11,8 +11,8 @@ ms.subservice: develop
 ms.topic: conceptual
 ms.workload: identity
 ms.date: 01/19/2021
-ms.author: mmacy
-ms.custom: mmacy
+ms.author: marsma
+ms.custom: marsma
 #Customer intent: As an application developer, I want to know how to write a desktop app that calls web APIs by using the Microsoft identity platform.
 ---
 # Microsoft Authentication Library (MSAL) for Python
@@ -29,7 +29,7 @@ Not sure whether this is the SDK you are looking for your app? There are other M
 
 Quick links:
 
-[Getting Started](https://docs.microsoft.com/azure/active-directory/develop/quickstart-v2-python-webapp) | [Docs](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) | [Samples](https://aka.ms/aaddevsamplesv2) | [Support](README.md#community-help-and-support)
+[Getting Started](https://docs.microsoft.com/azure/active-directory/develop/quickstart-v2-python-webapp) | [Docs](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) | [Samples](https://aka.ms/aaddevsamplesv2) | [Support](../../README.md)
 
 
 ## Installation
@@ -145,11 +145,11 @@ Here is the latest Q&A on Stack Overflow for MSAL:
 
 ## Security Reporting
 
-If you find a security issue with our libraries or services please report it to [secure@microsoft.com](mailto:secure@microsoft.com) with as much detail as possible. Your submission may be eligible for a bounty through the [Microsoft Bounty](http://aka.ms/bugbounty) program. Please do not post security issues to GitHub Issues or any other public site. We will contact you shortly upon receiving the information. We encourage you to get notifications of when security incidents occur by visiting [this page](https://technet.microsoft.com/security/dd252948) and subscribing to Security Advisory Alerts.
+If you find a security issue with our libraries or services please report it to [secure@microsoft.com](mailto:secure@microsoft.com) with as much detail as possible. Your submission may be eligible for a bounty through the [Microsoft Bounty](https://aka.ms/bugbounty) program. Please do not post security issues to GitHub Issues or any other public site. We will contact you shortly upon receiving the information. We encourage you to get notifications of when security incidents occur by visiting [this page](https://technet.microsoft.com/security/dd252948) and subscribing to Security Advisory Alerts.
 
 ## Contributing
 
-All code is licensed under the MIT license and we triage actively on GitHub. We enthusiastically welcome contributions and feedback. Please read the [contributing guide](./contributing.md) before starting.
+All code is licensed under the MIT license and we triage actively on GitHub. We enthusiastically welcome contributions and feedback. Please read about [Contributing](../../contributing.md) before starting.
 
 ## We Value and Adhere to the Microsoft Open Source Code of Conduct
 
