@@ -51,7 +51,7 @@ Use the Azure.Search.Documents client library to:
 [Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/search/azure-search-documents) |
 [Package (PyPI)](https://pypi.org/project/azure-search-documents/) |
 [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-search-documents/latest/index.html) |
-[Product documentation](https://docs.microsoft.com/en-us/azure/search/search-what-is-azure-search) |
+[Product documentation](https://docs.microsoft.com/azure/search/search-what-is-azure-search) |
 [Samples](https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/search/azure-search-documents/samples)
 
 
@@ -441,7 +441,7 @@ additional questions or comments.
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
-[search_resource]: https://docs.microsoft.com/en-us/azure/search/search-create-service-portal
+[search_resource]: https://docs.microsoft.com/azure/search/search-create-service-portal
 [azure_portal]: https://portal.azure.com
 
 [create_search_service_docs]: https://docs.microsoft.com/azure/search/search-create-service-portal

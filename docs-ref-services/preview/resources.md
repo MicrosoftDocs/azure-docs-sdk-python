@@ -17,7 +17,7 @@ ms.service: multiple
 # Azure Resources libraries for python
 
 ## Overview 
-Deploy, monitor, and manage resources in groups with [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview).
+Deploy, monitor, and manage resources in groups with [Azure Resource Manager](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-overview).
 
 ## Management API
 Use the management API to create resource groups and deploy resources from templates.

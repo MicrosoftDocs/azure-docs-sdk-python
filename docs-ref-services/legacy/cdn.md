@@ -18,9 +18,9 @@ ms.service: multiple
 
 ## Overview
 
-[Azure Content Delivery Network (CDN)](https://docs.microsoft.com/en-us/azure/cdn/cdn-overview) allows you to provide web content caches to ensure high-bandwidth availability across the globe.
+[Azure Content Delivery Network (CDN)](https://docs.microsoft.com/azure/cdn/cdn-overview) allows you to provide web content caches to ensure high-bandwidth availability across the globe.
 
-To get started with Azure CDN, see [Getting started with Azure CDN](https://docs.microsoft.com/en-us/azure/cdn/cdn-create-new-endpoint).
+To get started with Azure CDN, see [Getting started with Azure CDN](https://docs.microsoft.com/azure/cdn/cdn-create-new-endpoint).
 
 ## Management APIs
 
