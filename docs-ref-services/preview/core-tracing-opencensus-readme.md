@@ -5,10 +5,8 @@ author: maggiepint
 ms.author: magpint
 ms.date: 06/08/2020
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: core
+ms.service: azure
 ---
 
 # Azure Core Tracing OpenTelemetry client library for Python - Version 1.0.0b5 

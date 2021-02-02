@@ -5,10 +5,8 @@ author: maggiepint
 ms.author: magpint
 ms.date: 08/11/2020
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: keyvault
+ms.service: key-vault
 ---
 
 # Azure Key Vault Secret client library for Python - Version 4.2.0 

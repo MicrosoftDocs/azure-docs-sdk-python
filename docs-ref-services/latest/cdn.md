@@ -8,10 +8,8 @@ manager: douge
 
 ms.date: 07/10/2017
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
+ms.service: azure-cdn
 ms.devlang: python
-ms.service: multiple
 ---
 
 # Azure CDN libraries for python

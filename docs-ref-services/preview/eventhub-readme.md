@@ -5,10 +5,8 @@ author: maggiepint
 ms.author: magpint
 ms.date: 07/06/2020
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: eventhubs
+ms.service: event-hubs
 ---
 
 # Azure Event Hubs client library for Python - Version 5.2.0b1 

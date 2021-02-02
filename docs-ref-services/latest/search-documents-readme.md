@@ -5,8 +5,6 @@ author: maggiepint
 ms.author: magpint
 ms.date: 07/07/2020
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: search
 ---
@@ -201,7 +199,7 @@ much more.
 * [Querying](#querying)
 * [Creating an index](#creating-an-index)
 * [Adding documents to your index](#adding-documents-to-your-index)
-* [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
+* [Retrieve a specific document from an index](#retrieve-a-specific-document-from-an-index)
 * [Async APIs](#async-apis)
 
 
@@ -414,9 +412,6 @@ result =  client.search(search_text="spa", logging_enable=True)
 * [Read more about the Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
 
 ## Contributing
-
-See our [Search CONTRIBUTING.md][search_contrib] for details on building,
-testing, and contributing to this library.
 
 This project welcomes contributions and suggestions.  Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have
