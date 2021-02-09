@@ -3,7 +3,7 @@ title: Azure Metrics Advisor client library for Python
 keywords: Azure, python, SDK, API, azure-ai-metricsadvisor, metricsadvisor
 author: maggiepint
 ms.author: magpint
-ms.date: 11/10/2020
+ms.date: 02/09/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: metricsadvisor
 ---
 
-# Azure Metrics Advisor client library for Python - Version 1.0.0b2 
+# Azure Metrics Advisor client library for Python - Version 1.0.0b3 
 
 Metrics Advisor is a scalable real-time time series monitoring, alerting, and root cause analysis platform. Use Metrics Advisor to:
 
@@ -130,6 +130,8 @@ Metrics Advisor lets you create and subscribe to real-time alerts. These alerts 
 Metrics Advisor supports connecting different types of data sources. Here is a sample to ingest data from SQL Server.
 
 ```py
+import os
+import datetime
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 from azure.ai.metricsadvisor.models import (
         SQLServerDataFeed,
@@ -138,6 +140,7 @@ from azure.ai.metricsadvisor.models import (
         DataFeedDimension,
         DataFeedOptions,
         DataFeedRollupSettings,
+        DataFeedMissingDataPointFillSettings
     )
 
 service_endpoint = os.getenv("ENDPOINT")
@@ -424,7 +427,6 @@ for result in results:
 We can also query the root causes of an incident
 
 ```py
-import datetime
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient
 
 service_endpoint = os.getenv("ENDPOINT")
@@ -468,7 +470,7 @@ hook = client.create_hook(
         name="email hook",
         description="my email hook",
         emails_to_alert=["alertme@alertme.com"],
-        external_link="https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html"
+        external_link="https://docs.microsoft.com/en-us/azure/cognitive-services/metrics-advisor/how-tos/alerts"
     )
 )
 ```
@@ -533,7 +535,7 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[src_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-metricsadvisor_1.0.0b2/sdk/metricsadvisor/azure-ai-metricsadvisor
+[src_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-metricsadvisor_1.0.0b3/sdk/metricsadvisor/azure-ai-metricsadvisor
 [reference_documentation]: https://aka.ms/azsdk/python/metricsadvisor/docs
 [ma_docs]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
 [azure_cli]: https://docs.microsoft.com/cli/azure
@@ -542,9 +544,9 @@ additional questions or comments.
 [ma_service]: https://go.microsoft.com/fwlink/?linkid=2142156
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [azure_core]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
-[azure_core_docs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b2/sdk/core/azure-core/README.md#transport
+[azure_core_docs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b3/sdk/core/azure-core/README.md#transport
 [sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
-[samples_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b2/sdk/metricsadvisor/azure-ai-metricsadvisor/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b3/sdk/metricsadvisor/azure-ai-metricsadvisor/samples/README.md
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
