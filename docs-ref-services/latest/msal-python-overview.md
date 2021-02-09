@@ -17,11 +17,6 @@ ms.custom: marsma
 ---
 # Microsoft Authentication Library (MSAL) for Python
 
-
-| `dev` branch | Reference Docs | # of Downloads
-|---------------|---------------|----------------|
- [![Build status](https://api.travis-ci.org/AzureAD/microsoft-authentication-library-for-python.svg?branch=dev)](https://travis-ci.org/AzureAD/microsoft-authentication-library-for-python) | [![Documentation Status](https://readthedocs.org/projects/msal-python/badge/?version=latest)](https://msal-python.readthedocs.io/en/latest/?badge=latest) | [![Download monthly](https://pepy.tech/badge/msal/month)](https://pypistats.org/packages/msal)
-
 The Microsoft Authentication Library for Python enables applications to integrate with the [Microsoft identity platform](https://aka.ms/aaddevv2). It allows you to sign in users or apps with Microsoft identities ([Azure AD](https://azure.microsoft.com/services/active-directory/), [Microsoft Accounts](https://account.microsoft.com) and [Azure AD B2C](https://azure.microsoft.com/services/active-directory-b2c/) accounts) and obtain tokens to call Microsoft APIs such as [Microsoft Graph](https://graph.microsoft.io/) or your own APIs registered with the Microsoft identity platform. It is built using industry standard OAuth2 and OpenID Connect protocols
 
 Not sure whether this is the SDK you are looking for your app? There are other Microsoft Identity SDKs
@@ -95,7 +90,7 @@ There will be some variations for different flows. They are demonstrated in
    ```
 
 3. Either there is no suitable token in the cache, or you chose to skip the previous step,
-   now it is time to actually send a request to AAD to obtain a token.
+   now it is time to actually send a request to Azure AD to obtain a token.
    There are different methods based on your client type and scenario. Here we demonstrate a placeholder flow.
 
    ```python
@@ -112,45 +107,16 @@ There will be some variations for different flows. They are demonstrated in
 
 Refer the [Wiki](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) pages for more details on the MSAL Python functionality and usage.
 
-## Migrating from ADAL
+## Migrate from ADAL to MSAL
 
-If your application is using ADAL Python, we recommend you to update to use MSAL Python. No new feature work will be done in ADAL Python.
+If your application is using ADAL Python, we recommend you to update it to use MSAL Python. No new feature work will be done in ADAL Python.
 
 See the [ADAL to MSAL migration](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki/Migrate-to-MSAL-Python) guide.
 
-## Roadmap
+## Next Steps
 
-You can follow the latest updates and plans for MSAL Python in the [Roadmap](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki/Roadmap) published on our Wiki.
+- [Application types and authentication scenarios](https://docs.microsoft.com/azure/active-directory/develop/authentication-flows-app-scenarios): MSAL Python supports multiple application types and authentication scenarios .
+- [Auth Scenarios](https://docs.microsoft.com/azure/active-directory/develop/authentication-scenarios)
+and [Auth protocols](https://docs.microsoft.com/azure/active-directory/develop/active-directory-v2-protocols): Get more information on authetication scenarios and protocols.
 
-## Samples and Documentation
-
-MSAL Python supports multiple [application types and authentication scenarios](https://docs.microsoft.com/azure/active-directory/develop/authentication-flows-app-scenarios).
-The generic documents on
-[Auth Scenarios](https://docs.microsoft.com/azure/active-directory/develop/authentication-scenarios)
-and
-[Auth protocols](https://docs.microsoft.com/azure/active-directory/develop/active-directory-v2-protocols)
-are recommended reading.
-
-We provide a [full suite of sample applications](https://aka.ms/aaddevsamplesv2) and [documentation](https://aka.ms/aaddevv2) to help you get started with learning the Microsoft identity platform.
-
-## Community Help and Support
-
-We leverage Stack Overflow to work with the community on supporting Azure Active Directory and its SDKs, including this one!
-We highly recommend you ask your questions on Stack Overflow (we're all on there!)
-Also browser existing issues to see if someone has had your question before.
-
-We recommend you use the "msal" tag so we can see it!
-Here is the latest Q&A on Stack Overflow for MSAL:
-[http://stackoverflow.com/questions/tagged/msal](http://stackoverflow.com/questions/tagged/msal)
-
-## Security Reporting
-
-If you find a security issue with our libraries or services please report it to [secure@microsoft.com](mailto:secure@microsoft.com) with as much detail as possible. Your submission may be eligible for a bounty through the [Microsoft Bounty](https://aka.ms/bugbounty) program. Please do not post security issues to GitHub Issues or any other public site. We will contact you shortly upon receiving the information. We encourage you to get notifications of when security incidents occur by visiting [this page](https://technet.microsoft.com/security/dd252948) and subscribing to Security Advisory Alerts.
-
-## Contributing
-
-All code is licensed under the MIT license and we triage actively on GitHub. We enthusiastically welcome contributions and feedback. Please read about [Contributing](../../contributing.md) before starting.
-
-## We Value and Adhere to the Microsoft Open Source Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+- [Sample applications](https://aka.ms/aaddevsamplesv2) and [documentation](https://aka.ms/aaddevv2): Get started with learning the Microsoft identity platform.
