@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-synapse-managedprivateendpoints, 
 author: maggiepint
 ms.author: magpint
-ms.date: 12/08/2020
+ms.date: 02/09/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -34,5 +34,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-synapse-managedprivateendpoints%2FREADME.png)
-
 

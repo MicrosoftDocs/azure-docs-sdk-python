@@ -5,8 +5,6 @@ author: maggiepint
 ms.author: magpint
 ms.date: 07/07/2020
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: search
 ---
@@ -51,7 +49,7 @@ Use the Azure.Search.Documents client library to:
 [Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/search/azure-search-documents) |
 [Package (PyPI)](https://pypi.org/project/azure-search-documents/) |
 [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-search-documents/latest/index.html) |
-[Product documentation](https://docs.microsoft.com/en-us/azure/search/search-what-is-azure-search) |
+[Product documentation](https://docs.microsoft.com/azure/search/search-what-is-azure-search) |
 [Samples](https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/search/azure-search-documents/samples)
 
 
@@ -201,7 +199,7 @@ much more.
 * [Querying](#querying)
 * [Creating an index](#creating-an-index)
 * [Adding documents to your index](#adding-documents-to-your-index)
-* [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
+* [Retrieve a specific document from an index](#retrieve-a-specific-document-from-an-index)
 * [Async APIs](#async-apis)
 
 
@@ -415,9 +413,6 @@ result =  client.search(search_text="spa", logging_enable=True)
 
 ## Contributing
 
-See our [Search CONTRIBUTING.md][search_contrib] for details on building,
-testing, and contributing to this library.
-
 This project welcomes contributions and suggestions.  Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have
 the right to, and actually do, grant us the rights to use your contribution. For
@@ -441,7 +436,7 @@ additional questions or comments.
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
-[search_resource]: https://docs.microsoft.com/en-us/azure/search/search-create-service-portal
+[search_resource]: https://docs.microsoft.com/azure/search/search-create-service-portal
 [azure_portal]: https://portal.azure.com
 
 [create_search_service_docs]: https://docs.microsoft.com/azure/search/search-create-service-portal

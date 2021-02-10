@@ -14,24 +14,27 @@ methods:
   signature: close()
 - uid: msal.oauth2cli.authcode.AuthCodeReceiver.get_auth_response
   name: get_auth_response
-  summary: Wait and return the auth response, or None when timeout.
+  summary: Wait and return the auth response. Raise RuntimeError when timeout.
   signature: get_auth_response(auth_uri=None, timeout=None, state=None, welcome_template=None,
-    success_template=None, error_template=None)
+    success_template=None, error_template=None, auth_uri_callback=None)
   parameters:
   - name: auth_uri
     description: If provided, this function will try to open a local browser.
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
   - name: timeout
     description: In seconds. None means wait indefinitely.
+    isRequired: true
     defaultValue: None
     types:
     - <xref:int>
   - name: state
-    description: 'You may provide the state you used in auth_url,
+    description: 'You may provide the state you used in auth_uri,
 
       then we will use it to validate incoming response.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
@@ -43,6 +46,7 @@ methods:
       [Python Template string syntax](https://docs.python.org/3/library/string.html#template-strings),
 
       and include some of these placeholders: $auth_uri and $abort_uri.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
@@ -52,6 +56,7 @@ methods:
       Placeholders can be any of these:
 
       [https://tools.ietf.org/html/rfc6749#section-5.1](https://tools.ietf.org/html/rfc6749#section-5.1)'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
@@ -61,9 +66,20 @@ methods:
       Placeholders can be any of these:
 
       [https://tools.ietf.org/html/rfc6749#section-5.2](https://tools.ietf.org/html/rfc6749#section-5.2)'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
+  - name: auth_uri_callback
+    description: 'A function with the shape of lambda auth_uri: ...
+
+      When a browser was unable to be launch, this function will be called,
+
+      so that the app could tell user to manually visit the auth_uri.'
+    isRequired: true
+    defaultValue: None
+    types:
+    - <xref:callable>
   return:
     description: 'The auth response of the first leg of Auth Code flow,
 
