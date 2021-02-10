@@ -23,15 +23,16 @@ constructor:
     description: The credentials with which to authenticate.
     isRequired: true
     types:
-    - <xref:CommunicationUserCredential>
+    - <xref:CommunicationTokenCredential>
 examples:
 - "Creating the ChatClient from a URL and token.<!--[!code-python[Main](les\\chat_client_sample.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\
   \\samples\\\\chat_client_sample.py\", \"xml:space\": \"preserve\", \"language\"\
   : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-  \n````python\n\n   from azure.communication.chat import ChatClient, CommunicationUserCredential\n\
-  \   chat_client = ChatClient(self.endpoint, CommunicationUserCredential(self.token))\n\
+  \n````python\n\n   from azure.communication.chat import ChatClient, CommunicationTokenCredential,\
+  \ CommunicationTokenRefreshOptions\n   refresh_options = CommunicationTokenRefreshOptions(self.token)\n\
+  \   chat_client = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
   \n   ````\n"
 methods:
 - uid: azure.communication.chat.ChatClient.close
@@ -40,18 +41,38 @@ methods:
 - uid: azure.communication.chat.ChatClient.create_chat_thread
   name: create_chat_thread
   summary: Creates a chat thread.
-  signature: create_chat_thread(topic, thread_members, **kwargs)
+  signature: create_chat_thread(topic, thread_participants, repeatability_request_id=None,
+    **kwargs)
   parameters:
   - name: topic
     description: Required. The thread topic.
     isRequired: true
     types:
     - <xref:str>
-  - name: thread_members
-    description: Required. Members to be added to the thread.
+  - name: thread_participants
+    description: Required. Participants to be added to the thread.
     isRequired: true
     types:
-    - <xref:list>[<xref:azure.communication.chat.ChatThreadMember>]
+    - <xref:list>[<xref:azure.communication.chat.ChatThreadParticipant>]
+  - name: repeatability_request_id
+    description: 'If specified, the client directs that the request is
+
+      repeatable; that is, that the client can make the request multiple times with
+      the same
+
+      Repeatability-Request-ID and get back an appropriate response without the server
+      executing the
+
+      request multiple times. The value of the Repeatability-Request-ID is an opaque
+      string
+
+      representing a client-generated, globally unique for all time, identifier for
+      the request. If not
+
+      specified, a new unique id would be generated.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: ChatThreadClient
     types:
@@ -60,15 +81,22 @@ methods:
   - "Creating ChatThreadClient by creating a new chat thread.<!--[!code-python[Main](les\\\
     chat_client_sample.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample.py\"\
+    1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from datetime\
     \ import datetime\n   from azure.communication.chat import(\n       ChatClient,\n\
-    \       ChatThreadMember,\n       CommunicationUser,\n       CommunicationUserCredential\n\
-    \   )\n\n   chat_client = ChatClient(self.endpoint, CommunicationUserCredential(self.token))\n\
-    \n   topic = \"test topic\"\n   members = [ChatThreadMember(\n       user=self.user,\n\
-    \       display_name='name',\n       share_history_time=datetime.utcnow()\n  \
-    \ )]\n   chat_thread_client = chat_client.create_chat_thread(topic, members)\n\
+    \       CommunicationUserIdentifier,\n       CommunicationTokenCredential,\n \
+    \      CommunicationTokenRefreshOptions\n       ChatThreadParticipant\n   )\n\n\
+    \   refresh_options = CommunicationTokenRefreshOptions(self.token)\n   chat_client\
+    \ = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
+    \n   topic = \"test topic\"\n   participants = [ChatThreadParticipant(\n     \
+    \  user=self.user,\n       display_name='name',\n       share_history_time=datetime.utcnow()\n\
+    \   )]\n\n   # creates a new chat_thread everytime\n   chat_thread_client = chat_client.create_chat_thread(topic,\
+    \ participants)\n\n   # creates a new chat_thread if not exists\n   repeatability_request_id\
+    \ = 'b66d6031-fdcc-41df-8306-e524c9f226b8' # unique identifier\n   chat_thread_client_w_repeatability_id\
+    \ = chat_client.create_chat_thread(topic,\n                                  \
+    \                                        participants,\n                     \
+    \                                                     repeatability_request_id)\n\
     \n   ````\n"
 - uid: azure.communication.chat.ChatClient.delete_chat_thread
   name: delete_chat_thread
@@ -92,12 +120,13 @@ methods:
   - "deleting chat thread.<!--[!code-python[Main](les\\chat_client_sample.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\\
-    azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample.py\", \"xml:space\"\
+    azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
-    \ import ChatClient, CommunicationUserCredential\n\n   chat_client = ChatClient(self.endpoint,\
-    \ CommunicationUserCredential(self.token))\n   chat_client.delete_chat_thread(self._thread_id)\n\
-    \n   ````\n"
+    \ import ChatClient, CommunicationTokenCredential, CommunicationTokenRefreshOptions\n\
+    \n   refresh_options = CommunicationTokenRefreshOptions(self.token)\n   chat_client\
+    \ = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
+    \   chat_client.delete_chat_thread(self._thread_id)\n\n   ````\n"
 - uid: azure.communication.chat.ChatClient.get_chat_thread
   name: get_chat_thread
   summary: Gets a chat thread.
@@ -120,12 +149,13 @@ methods:
   - "Getting a chat thread by thread id.<!--[!code-python[Main](les\\chat_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
-    \ import ChatClient, CommunicationUserCredential\n\n   chat_client = ChatClient(self.endpoint,\
-    \ CommunicationUserCredential(self.token))\n   chat_thread = chat_client.get_chat_thread(self._thread_id)\n\
-    \n   ````\n"
+    \ import ChatClient, CommunicationTokenCredential, CommunicationTokenRefreshOptions\n\
+    \n   refresh_options = CommunicationTokenRefreshOptions(self.token)\n   chat_client\
+    \ = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
+    \   chat_thread = chat_client.get_chat_thread(self._thread_id)\n\n   ````\n"
 - uid: azure.communication.chat.ChatClient.get_chat_thread_client
   name: get_chat_thread_client
   summary: Get ChatThreadClient by providing a thread_id.
@@ -144,11 +174,13 @@ methods:
   - "Creating the ChatThreadClient from an existing chat thread id.<!--[!code-python[Main](les\\\
     chat_client_sample.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample.py\"\
+    1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
-    \ import ChatClient, CommunicationUserCredential\n\n   chat_client = ChatClient(self.endpoint,\
-    \ CommunicationUserCredential(self.token))\n   chat_thread_client = chat_client.get_chat_thread_client(self._thread_id)\n\
+    \ import ChatClient, CommunicationTokenCredential, CommunicationTokenRefreshOptions\n\
+    \n   refresh_options = CommunicationTokenRefreshOptions(self.token)\n   chat_client\
+    \ = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
+    \   chat_thread_client = chat_client.get_chat_thread_client(self._thread_id)\n\
     \n   ````\n"
 - uid: azure.communication.chat.ChatClient.list_chat_threads
   name: list_chat_threads
@@ -163,25 +195,23 @@ methods:
     description: The earliest point in time to get chat threads up to.
     types:
     - <xref:datetime.datetime>
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
   return:
-    description: ItemPaged[<xref:azure.communication.chat.ChatThreadInfo>]
+    description: An iterator like instance of ChatThreadInfo
     types:
-    - <xref:azure.core.paging.ItemPaged>
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.chat.ChatThreadInfo>]
   examples:
   - "listing chat threads.<!--[!code-python[Main](les\\chat_client_sample.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\\
-    azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample.py\", \"xml:space\"\
+    azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
-    \ import ChatClient, CommunicationUserCredential\n   from datetime import datetime,\
-    \ timedelta\n   import pytz\n\n   chat_client = ChatClient(self.endpoint, CommunicationUserCredential(self.token))\n\
-    \   start_time = datetime.utcnow() - timedelta(days=2)\n   start_time = start_time.replace(tzinfo=pytz.utc)\n\
-    \   chat_thread_infos = chat_client.list_chat_threads(results_per_page=5, start_time=start_time)\n\
+    \ import ChatClient, CommunicationTokenCredential, CommunicationTokenRefreshOptions\n\
+    \   from datetime import datetime, timedelta\n   import pytz\n\n   refresh_options\
+    \ = CommunicationTokenRefreshOptions(self.token)\n   chat_client = ChatClient(self.endpoint,\
+    \ CommunicationTokenCredential(refresh_options))\n   start_time = datetime.utcnow()\
+    \ - timedelta(days=2)\n   start_time = start_time.replace(tzinfo=pytz.utc)\n \
+    \  chat_thread_infos = chat_client.list_chat_threads(results_per_page=5, start_time=start_time)\n\
     \n   print(\"list_threads succeeded with results_per_page is 5, and were created\
     \ since 2 days ago.\")\n   for info in chat_thread_infos:\n       print(\"thread\
     \ id:\", info.id)\n\n   ````\n"
