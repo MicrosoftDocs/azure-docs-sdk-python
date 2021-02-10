@@ -24,27 +24,25 @@ Not sure whether this is the SDK you are looking for your app? There are other M
 
 Quick links:
 
-[Getting Started](https://docs.microsoft.com/azure/active-directory/develop/quickstart-v2-python-webapp) | [Docs](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) | [Samples](https://aka.ms/aaddevsamplesv2) | [Support](../../README.md)
+[Getting Started](/azure/active-directory/develop/quickstart-v2-python-webapp) | [Documentation](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) (GitHub) | [Samples](https://aka.ms/aaddevsamplesv2) |
 
 
 ## Installation
 
 You can find MSAL Python on [Pypi](https://pypi.org/project/msal/).
-1. If you haven't already, [install and/or upgrade the pip](https://pip.pypa.io/en/stable/installing/)
-   of your Python environment to a recent version. We tested with pip 18.1.
-2. As usual, just run `pip install msal`.
+
+1. If you haven't already, install [pip](https://pip.pypa.io/en/stable/installing/).
+2. Execute `pip install msal` to install the package.
 
 ## Versions
 
 This library follows [Semantic Versioning](http://semver.org/).
 
-You can find the changes for each version under
-[Releases](https://github.com/AzureAD/microsoft-authentication-library-for-python/releases).
+You can find the changes for each version under [Releases](https://github.com/AzureAD/microsoft-authentication-library-for-python/releases).
 
 ## Usage
 
-Before using MSAL Python (or any MSAL SDKs, for that matter), you will have to
-[register your application with the Microsoft identity platform](https://docs.microsoft.com/azure/active-directory/develop/quickstart-v2-register-an-app).
+Before using MSAL Python [register your application](/azure/active-directory/develop/quickstart-v2-register-an-app) with the Microsoft identity platform.
 
 Acquiring tokens with MSAL Python follows this 3-step pattern.
 (Note: That is the high level conceptual pattern.
@@ -105,7 +103,7 @@ There will be some variations for different flows. They are demonstrated in
        print(result.get("correlation_id"))  # You may need this when reporting a bug
    ```
 
-Refer the [Wiki](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) pages for more details on the MSAL Python functionality and usage.
+Refer to the [Wiki on GitHub](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) for more details on the MSAL Python functionality and usage.
 
 ## Migrate from ADAL to MSAL
 
