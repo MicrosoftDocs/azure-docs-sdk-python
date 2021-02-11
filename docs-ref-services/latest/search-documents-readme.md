@@ -3,7 +3,7 @@ title: Azure Cognitive Search client library for Python
 keywords: Azure, python, SDK, API, azure-search-documents, search
 author: maggiepint
 ms.author: magpint
-ms.date: 07/07/2020
+ms.date: 02/10/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: search
 ---
 
-# Azure Cognitive Search client library for Python - Version 11.0.0 
+# Azure Cognitive Search client library for Python - Version 11.1.0 
 
 
 [Azure Cognitive Search](https://docs.microsoft.com/azure/search/) is a
@@ -48,22 +48,21 @@ Use the Azure.Search.Documents client library to:
 * Create and manage analyzers for advanced text analysis or multi-lingual content.
 * Optimize results through scoring profiles to factor in business logic or freshness.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/search/azure-search-documents) |
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-search-documents_11.1.0/sdk/search/azure-search-documents) |
 [Package (PyPI)](https://pypi.org/project/azure-search-documents/) |
 [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-search-documents/latest/index.html) |
-[Product documentation](https://docs.microsoft.com/en-us/azure/search/search-what-is-azure-search) |
-[Samples](https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/search/azure-search-documents/samples)
+[Product documentation](https://docs.microsoft.com/azure/search/search-what-is-azure-search) |
+[Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/sdk/search/azure-search-documents/samples)
 
 
 ## Getting started
 
 ### Install the package
 
-Install the Azure Cognitive Search client library for Python - Version 11.0.0 
- with [pip](https://pypi.org/project/pip/):
+Install the Azure Cognitive Search client library for Python with [pip](https://pypi.org/project/pip/):
 
 ```bash
-pip install azure-search-documents --pre
+pip install azure-search-documents
 ```
 
 ### Prerequisites
@@ -109,7 +108,7 @@ import os
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 
-index_name = "nycjobs";
+index_name = "nycjobs"
 # Get the service endpoint and API key from the environment
 endpoint = os.environ["SEARCH_ENDPOINT"]
 key = os.environ["SEARCH_API_KEY"]
@@ -194,7 +193,7 @@ exploring online resources._
 
 The following examples all use a simple [Hotel data set](https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/)
 that you can [import into your own index from the Azure portal.](https://docs.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source)
-These are just a few of the basics - please [check out our Samples](https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/search/azure-search-documents/samples) for
+These are just a few of the basics - please [check out our Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/sdk/search/azure-search-documents/samples) for
 much more.
 
 
@@ -308,19 +307,21 @@ key = os.environ["SEARCH_API_KEY"]
 
 DOCUMENT = {
     'Category': 'Hotel',
-    'HotelId': '1000',
-    'Rating': 4.0,
-    'Rooms': [],
-    'HotelName': 'Azure Inn',
+    'hotelId': '1000',
+    'rating': 4.0,
+    'rooms': [],
+    'hotelName': 'Azure Inn',
 }
 
-result = client.upload_documents(documents=[DOCUMENT])
+search_client = SearchClient(endpoint, index_name, AzureKeyCredential(key))
+
+result = search_client.upload_documents(documents=[DOCUMENT])
 
 print("Upload of new document succeeded: {}".format(result[0].succeeded))
 ```
 
 
-### Retrieve a specific document from an index
+### Retrieving a specific document from your index
 
 In addition to querying for documents using keywords and optional filters,
 you can retrieve a specific document from your index if you already know the
@@ -351,7 +352,7 @@ print("    Category: {}".format(result["Category"]))
 This library includes a complete async API supported on Python 3.5+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/core/azure-core/README.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/sdk/core/azure-core/README.md#transport)
 for more information.
 
 
@@ -365,8 +366,10 @@ async with client:
   results = await client.search(search_text="hotel")
   async for result in results:
     print("{}: {})".format(result["hotelId"], result["hotelName"]))
+
 ...
 
+```
 
 ## Troubleshooting
 
@@ -409,9 +412,9 @@ result =  client.search(search_text="spa", logging_enable=True)
 
 ## Next steps
 
-* [Go further with Azure.Search.Documents and our samples](https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/search/azure-search-documents/samples)
-* [Watch a demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
-* [Read more about the Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
+* Go further with Azure.Search.Documents and our [https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/sdk/search/azure-search-documents/samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/sdk/search/azure-search-documents/samples)
+* Watch a [demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
+* Read more about the [Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
 
 ## Contributing
 
@@ -439,15 +442,15 @@ additional questions or comments.
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fsearch%2Fazure-search-documents%2FREADME.png)
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/tree/7cd31ac01fed9c790cec71de438af9c45cb45821/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
-[search_resource]: https://docs.microsoft.com/en-us/azure/search/search-create-service-portal
+[search_resource]: https://docs.microsoft.com/azure/search/search-create-service-portal
 [azure_portal]: https://portal.azure.com
 
 [create_search_service_docs]: https://docs.microsoft.com/azure/search/search-create-service-portal
 [create_search_service_ps]: https://docs.microsoft.com/azure/search/search-manage-powershell#create-or-delete-a-service
 [create_search_service_cli]: https://docs.microsoft.com/cli/azure/search/service?view=azure-cli-latest#az-search-service-create
-[search_contrib]: ../CONTRIBUTING.md
+[search_contrib]: https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.1.0/CONTRIBUTING.md
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 
 [cla]: https://cla.microsoft.com
