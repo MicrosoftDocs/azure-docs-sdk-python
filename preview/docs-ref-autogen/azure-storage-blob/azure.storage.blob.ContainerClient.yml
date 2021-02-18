@@ -34,13 +34,17 @@ constructor:
     description: 'The credentials with which to authenticate. This is optional if
       the
 
-      account URL already has a SAS token. The value can be a SAS token string, an
-      account
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential from azure.core.credentials, an account
 
       shared access key, or an instance of a TokenCredentials class from azure.identity.
 
-      If the URL already has a SAS token, specifying an explicit credential will take
-      priority.'
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.'
     isRequired: true
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
@@ -245,20 +249,112 @@ methods:
     \n   ````\n"
 - uid: azure.storage.blob.ContainerClient.delete_blob
   name: delete_blob
-  summary: "Marks the specified blob or snapshot for deletion.\n\nThe blob is later\
-    \ deleted during garbage collection.\nNote that in order to delete a blob, you\
-    \ must delete all of its\nsnapshots. You can delete both at the same time with\
-    \ the delete_blob\noperation.\n\nIf a delete retention policy is enabled for the\
-    \ service, then this operation soft deletes the blob or snapshot\nand retains\
-    \ the blob or snapshot for specified number of days.\nAfter specified number of\
-    \ days, blob's data is removed from the service during garbage collection.\nSoft\
-    \ deleted blob or snapshot is accessible through <xref:azure.storage.blob.list_blobs>\
-    \ specifying *include=[\"deleted\"]*\noption. Soft-deleted blob or snapshot can\
-    \ be restored using <xref:BlobClient.undelete>\n\n\n:keyword str if_tags_match_condition\n\
-    \   Specify a SQL where clause on blob tags to operate only on blob with a matching\
-    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
+  summary: 'Marks the specified blob or snapshot for deletion.
+
+
+    The blob is later deleted during garbage collection.
+
+    Note that in order to delete a blob, you must delete all of its
+
+    snapshots. You can delete both at the same time with the delete_blob
+
+    operation.
+
+
+    If a delete retention policy is enabled for the service, then this operation soft
+    deletes the blob or snapshot
+
+    and retains the blob or snapshot for specified number of days.
+
+    After specified number of days, blob''s data is removed from the service during
+    garbage collection.
+
+    Soft deleted blob or snapshot is accessible through <xref:azure.storage.blob.list_blobs>
+    specifying *include=["deleted"]*
+
+    option. Soft-deleted blob or snapshot can be restored using <xref:BlobClient.undelete>'
   signature: delete_blob(blob, delete_snapshots=None, **kwargs)
   parameters:
+  - name: blob
+    description: 'The blob with which to interact. If specified, this value will override
+
+      a blob value specified in the blob URL.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.blob.BlobProperties>
+  - name: delete_snapshots
+    description: "Required if the blob has associated snapshots. Values include:\n\
+      \   * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
+      \ the blob along with all snapshots."
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime
+
+      value that, when present, specifies the version of the blob to delete.
+
+
+      New in version 12.4.0.
+
+
+      This keyword argument was introduced in API version ''2019-12-12''.'
+    types:
+    - <xref:str>
+  - name: lease
+    description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -268,20 +364,89 @@ methods:
     - <xref:None>
 - uid: azure.storage.blob.ContainerClient.delete_blobs
   name: delete_blobs
-  summary: "Marks the specified blobs or snapshots for deletion.\n\nThe blobs are\
-    \ later deleted during garbage collection.\nNote that in order to delete blobs,\
-    \ you must delete all of their\nsnapshots. You can delete both at the same time\
-    \ with the delete_blobs operation.\n\nIf a delete retention policy is enabled\
-    \ for the service, then this operation soft deletes the blobs or snapshots\nand\
-    \ retains the blobs or snapshots for specified number of days.\nAfter specified\
-    \ number of days, blobs' data is removed from the service during garbage collection.\n\
-    Soft deleted blobs or snapshots are accessible through <xref:azure.storage.blob.list_blobs>\
-    \ specifying *include=[\"deleted\"]*\nSoft-deleted blobs or snapshots can be restored\
-    \ using <xref:BlobClient.undelete>\n\n\n:keyword str if_tags_match_condition\n\
-    \   Specify a SQL where clause on blob tags to operate only on blob with a matching\
-    \ value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
+  summary: 'Marks the specified blobs or snapshots for deletion.
+
+
+    The blobs are later deleted during garbage collection.
+
+    Note that in order to delete blobs, you must delete all of their
+
+    snapshots. You can delete both at the same time with the delete_blobs operation.
+
+
+    If a delete retention policy is enabled for the service, then this operation soft
+    deletes the blobs or snapshots
+
+    and retains the blobs or snapshots for specified number of days.
+
+    After specified number of days, blobs'' data is removed from the service during
+    garbage collection.
+
+    Soft deleted blobs or snapshots are accessible through <xref:azure.storage.blob.list_blobs>
+    specifying *include=["deleted"]*
+
+    Soft-deleted blobs or snapshots can be restored using <xref:BlobClient.undelete>'
   signature: delete_blobs(*blobs, **kwargs)
   parameters:
+  - name: blobs
+    description: "The blobs to delete. This can be a single blob, or multiple values\
+      \ can\nbe supplied, where each value is either the name of the blob (str) or\
+      \ BlobProperties.\n\n\n> [!NOTE]\n> When the blob type is dict, here's a list\
+      \ of keys, value rules.\n>\n> \n>\n> blob name:\n>\n> \n>\n> key: 'name', value\
+      \ type: str\n>\n> \n>\n> snapshot you want to delete:\n>\n> \n>\n> key: 'snapshot',\
+      \ value type: str\n>\n> \n>\n> whether to delete snapthots when deleting blob:\n\
+      >\n> \n>\n> key: 'delete_snapshots', value: 'include' or 'only'\n>\n> \n>\n\
+      > if the blob modified or not:\n>\n> \n>\n> key: 'if_modified_since', 'if_unmodified_since',\
+      \ value type: datetime\n>\n> \n>\n> etag:\n>\n> \n>\n> key: 'etag', value type:\
+      \ str\n>\n> \n>\n> match the etag or not:\n>\n> \n>\n> key: 'match_condition',\
+      \ value type: MatchConditions\n>\n> \n>\n> tags match condition:\n>\n> \n>\n\
+      > key: 'if_tags_match_condition', value type: str\n>\n> \n>\n> lease:\n>\n>\
+      \ \n>\n> key: 'lease_id', value type: Union[str, LeaseClient]\n>\n> \n>\n> timeout\
+      \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
+    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+  - name: delete_snapshots
+    description: "Required if a blob has associated snapshots. Values include:\n \
+      \  * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
+      \ the blob along with all snapshots."
+    types:
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
   - name: raise_on_any_failure
     description: 'This is a boolean param which defaults to True. When this is set,
       an exception
@@ -375,13 +540,111 @@ methods:
     \n   ````\n"
 - uid: azure.storage.blob.ContainerClient.download_blob
   name: download_blob
-  summary: "Downloads a blob to the StorageStreamDownloader. The readall() method\
-    \ must\nbe used to read all the content or readinto() must be used to download\
-    \ the blob into\na stream.\n\n\n:keyword str if_tags_match_condition\n   Specify\
-    \ a SQL where clause on blob tags to operate only on blob with a matching value.\n\
-    \   eg. \"\"tagname\"='my tag'\"\n\n   New in version 12.4.0."
+  summary: 'Downloads a blob to the StorageStreamDownloader. The readall() method
+    must
+
+    be used to read all the content or readinto() must be used to download the blob
+    into
+
+    a stream.'
   signature: download_blob(blob, offset=None, length=None, **kwargs)
   parameters:
+  - name: blob
+    description: 'The blob with which to interact. If specified, this value will override
+
+      a blob value specified in the blob URL.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.blob.BlobProperties>
+  - name: offset
+    description: 'Start of byte range to use for downloading a section of the blob.
+
+      Must be set if length is provided.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: length
+    description: 'Number of bytes to read from the stream. This is optional, but
+
+      should be supplied for optimal performance.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https, as https (the default), will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the blob has an active lease. If specified, download_blob
+      only
+
+      succeeds if the blob''s lease is active and matches this ID. Value can be a
+
+      BlobLeaseClient object or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
   - name: cpk
     description: 'Encrypts the data on the service-side with the given key.
 
@@ -434,7 +697,10 @@ methods:
 
       account URL already has a SAS token, or the connection string already has shared
 
-      access key values. The value can be a SAS token string, an account shared access
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential from azure.core.credentials, an account
+      shared access
 
       key, or an instance of a TokenCredentials class from azure.identity.
 
@@ -476,12 +742,18 @@ methods:
 
       account URL already has a SAS token, or the connection string already has shared
 
-      access key values. The value can be a SAS token string, an account shared access
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential from azure.core.credentials, an account
+      shared access
 
       key, or an instance of a TokenCredentials class from azure.identity.
 
-      Credentials provided here will take precedence over those in the connection
-      string.'
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.'
     isRequired: true
   - name: credential
     defaultValue: None
@@ -857,13 +1129,76 @@ methods:
     - <xref:iterator>[<xref:azure.core.pipeline.transport.HttpResponse>]
 - uid: azure.storage.blob.ContainerClient.set_standard_blob_tier_blobs
   name: set_standard_blob_tier_blobs
-  summary: "This operation sets the tier on block blobs.\n\nA block blob's tier determines\
-    \ Hot/Cool/Archive storage type.\nThis operation does not update the blob's ETag.\n\
-    \n\n:keyword str if_tags_match_condition\n   Specify a SQL where clause on blob\
-    \ tags to operate only on blob with a matching value.\n   eg. \"\"tagname\"='my\
-    \ tag'\"\n\n   New in version 12.4.0."
+  summary: 'This operation sets the tier on block blobs.
+
+
+    A block blob''s tier determines Hot/Cool/Archive storage type.
+
+    This operation does not update the blob''s ETag.'
   signature: set_standard_blob_tier_blobs(standard_blob_tier, *blobs, **kwargs)
   parameters:
+  - name: standard_blob_tier
+    description: 'Indicates the tier to be set on all blobs. Options include ''Hot'',
+      ''Cool'',
+
+      ''Archive''. The hot tier is optimized for storing data that is accessed
+
+      frequently. The cool storage tier is optimized for storing data that
+
+      is infrequently accessed and stored for at least a month. The archive
+
+      tier is optimized for storing data that is rarely accessed and stored
+
+      for at least six months with flexible latency requirements.
+
+
+
+      > [!NOTE]
+
+      > If you want to set different tier on different blobs please set this positional
+      parameter to None.
+
+      >
+
+      > Then the blob tier on every BlobProperties will be taken.
+
+      >'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.blob.StandardBlobTier>
+  - name: blobs
+    description: "The blobs with which to interact. This can be a single blob, or\
+      \ multiple values can\nbe supplied, where each value is either the name of the\
+      \ blob (str) or BlobProperties.\n\n\n> [!NOTE]\n> When the blob type is dict,\
+      \ here's a list of keys, value rules.\n>\n> \n>\n> blob name:\n>\n> \n>\n> key:\
+      \ 'name', value type: str\n>\n> \n>\n> standard blob tier:\n>\n> \n>\n> key:\
+      \ 'blob_tier', value type: StandardBlobTier\n>\n> \n>\n> rehydrate priority:\n\
+      >\n> \n>\n> key: 'rehydrate_priority', value type: RehydratePriority\n>\n> \n\
+      >\n> lease:\n>\n> \n>\n> key: 'lease_id', value type: Union[str, LeaseClient]\n\
+      >\n> \n>\n> snapshot:\n>\n> \n>\n> key: \"snapshost\", value type: str\n>\n\
+      > \n>\n> version id:\n>\n> \n>\n> key: \"version_id\", value type: str\n>\n\
+      > \n>\n> tags match condition:\n>\n> \n>\n> key: 'if_tags_match_condition',\
+      \ value type: str\n>\n> \n>\n> timeout for subrequest:\n>\n> \n>\n> key: 'timeout',\
+      \ value type: int\n>"
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
+    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+  - name: rehydrate_priority
+    description: Indicates the priority with which to rehydrate an archived blob
+    types:
+    - <xref:azure.storage.blob.RehydratePriority>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -881,13 +1216,136 @@ methods:
     - <xref:Iterator>[<xref:azure.core.pipeline.transport.HttpResponse>]
 - uid: azure.storage.blob.ContainerClient.upload_blob
   name: upload_blob
-  summary: "Creates a new blob from a data source with automatic chunking.\n\n\n:keyword\
-    \ str if_tags_match_condition\n   Specify a SQL where clause on blob tags to operate\
-    \ only on blob with a matching value.\n   eg. \"\"tagname\"='my tag'\"\n\n   New\
-    \ in version 12.4.0."
+  summary: Creates a new blob from a data source with automatic chunking.
   signature: 'upload_blob(name, data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>,
     length=None, metadata=None, **kwargs)'
   parameters:
+  - name: name
+    description: 'The blob with which to interact. If specified, this value will override
+
+      a blob value specified in the blob URL.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.blob.BlobProperties>
+  - name: data
+    description: The blob data to upload.
+    isRequired: true
+  - name: blob_type
+    description: 'The type of the blob. This can be
+
+      either BlockBlob, PageBlob or AppendBlob. The default value is BlockBlob.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.blob.BlobType>
+  - name: length
+    description: 'Number of bytes to read from the stream. This is optional, but
+
+      should be supplied for optimal performance.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: metadata
+    description: 'Name-value pairs associated with the blob as metadata.'
+    isRequired: true
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: overwrite
+    description: 'Whether the blob to be uploaded should overwrite the current data.
+
+      If True, upload_blob will overwrite the existing data. If set to False, the
+
+      operation will fail with ResourceExistsError. The exception to the above is
+      with Append
+
+      blob types: if set to False and the data already exists, an error will not be
+      raised
+
+      and the data will be appended to the existing blob. If set overwrite=True, then
+      the existing
+
+      append blob will be deleted, and a new one created. Defaults to False.'
+    types:
+    - <xref:bool>
+  - name: content_settings
+    description: 'ContentSettings object used to set blob properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
+    types:
+    - <xref:azure.storage.blob.ContentSettings>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https, as https (the default), will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used, because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the container has an active lease. Value can be a BlobLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
