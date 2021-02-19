@@ -71,7 +71,7 @@ examples:
 - "Creating the TextAnalyticsClient with endpoint and API key.<!--[!code-python[Main](les\\\
   sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
   \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_authentication.py\"\
+  \\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\sample_authentication.py\"\
   , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
   highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
   \ import AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient\n\
@@ -81,7 +81,7 @@ examples:
   \ and token credential from Azure Active Directory.<!--[!code-python[Main](les\\\
   sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
   \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_authentication.py\"\
+  \\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\sample_authentication.py\"\
   , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
   highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.textanalytics\
   \ import TextAnalyticsClient\n   from azure.identity import DefaultAzureCredential\n\
@@ -108,7 +108,9 @@ methods:
 
 
 
-    New in version v3.1-preview: The *show_opinion_mining* parameter.'
+    New in version v3.1-preview: The *show_opinion_mining* parameter.
+
+    The *string_index_type* parameter.'
   signature: analyze_sentiment(documents, **kwargs)
   return:
     description: 'The combined list of <xref:azure.ai.textanalytics.AnalyzeSentimentResult>
@@ -127,7 +129,7 @@ methods:
   - "Analyze sentiment in a batch of documents.<!--[!code-python[Main](les\\sample_analyze_sentiment.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_analyze_sentiment.py\"\
+    \\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\sample_analyze_sentiment.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient\n\
@@ -149,12 +151,11 @@ methods:
     \ the sentiment of each of these documents\")\n   for idx, doc in enumerate(docs):\n\
     \       print(\"Document text: {}\".format(documents[idx]))\n       print(\"Overall\
     \ sentiment: {}\".format(doc.sentiment))\n\n   ````\n"
-- uid: azure.ai.textanalytics.TextAnalyticsClient.begin_analyze
-  name: begin_analyze
-  summary: Start a long-running operation to perform a variety of text analysis tasks
+- uid: azure.ai.textanalytics.TextAnalyticsClient.begin_analyze_batch_actions
+  name: begin_analyze_batch_actions
+  summary: Start a long-running operation to perform a variety of text analysis actions
     over a batch of documents.
-  signature: begin_analyze(documents, entities_recognition_tasks=None, pii_entities_recognition_tasks=None,
-    key_phrase_extraction_tasks=None, **kwargs)
+  signature: begin_analyze_batch_actions(documents, actions, **kwargs)
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -172,16 +173,20 @@ methods:
     - <xref:list>[<xref:str>]
     - <xref:list>[<xref:azure.ai.textanalytics.TextDocumentInput>]
     - <xref:list>[<xref:dict>[<xref:str>, <xref:str>]]
-  - name: tasks
-    description: 'A list of tasks to include in the analysis.  Each task object encapsulates
-      the parameters
+  - name: actions
+    description: 'A heterogeneous list of actions to perform on the inputted documents.
 
-      used for the particular task type.'
+      Each action object encapsulates the parameters used for the particular action
+      type.
+
+      The outputted action results will be in the same order you inputted your actions.
+
+      Duplicate actions in list not supported.'
     isRequired: true
     types:
-    - <xref:list>[<xref:Union>[<xref:azure.ai.textanalytics.EntitiesRecognitionTask,azure.ai.textanalytics.PiiEntitiesRecognitionTask>,
-      <xref:azure.ai.textanalytics.EntityLinkingTask,azure.ai.textanalytics.KeyPhraseExtractionTask>,
-      <xref:azure.ai.textanalytics.SentimentAnalysisTask>]]
+    - <xref:list>[<xref:RecognizeEntitiesAction>
+    - <xref:RecognizePiiEntitiesAction>
+    - <xref:ExtractKeyPhrasesAction>]
   - name: display_name
     description: An optional display name to set for the requested analysis.
     types:
@@ -212,62 +217,64 @@ methods:
   return:
     description: 'An instance of an LROPoller. Call *result()* on the poller
 
-      object to return an instance of TextAnalysisResult.'
+      object to return a pageable heterogeneous list of the action results in the
+      order
+
+      the actions were sent in this method.'
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.core.paging.ItemPaged>[<xref:azure.ai.textanalytics.AnalyzeBatchActionsResult>]]
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError or TypeError or ValueError or NotImplementedError
   examples:
-  - "Start a long-running operation to perform a variety of text analysis\ntasks over\
-    \ a batch of documents.<!--[!code-python[Main](les\\sample_analyze.py )]-->\n\n\
-    <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\23\\\\\
-    azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_analyze.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
-    \ AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient,\
-    \ \\\n       EntitiesRecognitionTask, \\\n       PiiEntitiesRecognitionTask, \\\
-    \n       KeyPhraseExtractionTask\n\n   endpoint = os.environ[\"AZURE_TEXT_ANALYTICS_ENDPOINT\"\
+  - "Start a long-running operation to perform a variety of text analysis\nactions\
+    \ over a batch of documents.<!--[!code-python[Main](les\\sample_analyze_batch_actions.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\sample_analyze_batch_actions.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.ai.textanalytics import (\n       TextAnalyticsClient,\n\
+    \       RecognizeEntitiesAction,\n       RecognizePiiEntitiesAction,\n       ExtractKeyPhrasesAction,\n\
+    \       PiiEntityDomainType,\n   )\n\n   endpoint = os.environ[\"AZURE_TEXT_ANALYTICS_ENDPOINT\"\
     ]\n   key = os.environ[\"AZURE_TEXT_ANALYTICS_KEY\"]\n\n   text_analytics_client\
-    \ = TextAnalyticsClient(\n       endpoint=endpoint, \n       credential=AzureKeyCredential(key),\n\
-    \       api_version=\"v3.1-preview.3\"\n   )\n\n   documents = [\n       \"We\
-    \ went to Contoso Steakhouse located at midtown NYC last week for a dinner party,\
-    \ and we adore the spot! \\\n       They provide marvelous food and they have\
-    \ a great menu. The chief cook happens to be the owner (I think his name is John\
-    \ Doe) \\\n       and he is super nice, coming out of the kitchen and greeted\
-    \ us all. We enjoyed very much dining in the place! \\\n       The Sirloin steak\
-    \ I ordered was tender and juicy, and the place was impeccably clean. You can\
-    \ even pre-order from their \\\n       online menu at www.contososteakhouse.com,\
-    \ call 312-555-0176 or send email to order@contososteakhouse.com! \\\n       The\
-    \ only complaint I have is the food didn't come fast enough. Overall I highly\
-    \ recommend it!\"\n   ]\n\n   poller = text_analytics_client.begin_analyze(\n\
-    \       documents,\n       display_name=\"Sample Text Analysis\",\n       entities_recognition_tasks=[EntitiesRecognitionTask()],\n\
-    \       pii_entities_recognition_tasks=[PiiEntitiesRecognitionTask()],\n     \
-    \  key_phrase_extraction_tasks=[KeyPhraseExtractionTask()]\n   )\n\n   result\
-    \ = poller.result()\n\n   for page in result:\n       for task in page.entities_recognition_results:\n\
-    \           print(\"Results of Entities Recognition task:\")\n           \n  \
-    \         docs = [doc for doc in task.results if not doc.is_error]\n         \
-    \  for idx, doc in enumerate(docs):\n               print(\"\\nDocument text:\
-    \ {}\".format(documents[idx]))\n               for entity in doc.entities:\n \
-    \                  print(\"Entity: {}\".format(entity.text))\n               \
-    \    print(\"...Category: {}\".format(entity.category))\n                   print(\"\
-    ...Confidence Score: {}\".format(entity.confidence_score))\n                 \
-    \  print(\"...Offset: {}\".format(entity.offset))\n               print(\"------------------------------------------\"\
-    )\n\n       for task in page.pii_entities_recognition_results:\n           print(\"\
-    Results of PII Entities Recognition task:\")\n\n           docs = [doc for doc\
-    \ in task.results if not doc.is_error]\n           for idx, doc in enumerate(docs):\n\
-    \               print(\"Document text: {}\".format(documents[idx]))\n        \
-    \       for entity in doc.entities:\n                   print(\"Entity: {}\".format(entity.text))\n\
-    \                   print(\"Category: {}\".format(entity.category))\n        \
-    \           print(\"Confidence Score: {}\\n\".format(entity.confidence_score))\n\
-    \               print(\"------------------------------------------\")\n\n    \
-    \   for task in page.key_phrase_extraction_results:\n           print(\"Results\
-    \ of Key Phrase Extraction task:\")\n\n           docs = [doc for doc in task.results\
-    \ if not doc.is_error]\n           for idx, doc in enumerate(docs):\n        \
-    \       print(\"Document text: {}\\n\".format(documents[idx]))\n             \
-    \  print(\"Key Phrases: {}\\n\".format(doc.key_phrases))\n               print(\"\
-    ------------------------------------------\")\n\n\n   ````\n"
-- uid: azure.ai.textanalytics.TextAnalyticsClient.begin_analyze_healthcare
-  name: begin_analyze_healthcare
+    \ = TextAnalyticsClient(\n       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n\
+    \   )\n\n   documents = [\n       \"We went to Contoso Steakhouse located at midtown\
+    \ NYC last week for a dinner party, and we adore the spot! \\\n       They provide\
+    \ marvelous food and they have a great menu. The chief cook happens to be the\
+    \ owner (I think his name is John Doe) \\\n       and he is super nice, coming\
+    \ out of the kitchen and greeted us all. We enjoyed very much dining in the place!\
+    \ \\\n       The Sirloin steak I ordered was tender and juicy, and the place was\
+    \ impeccably clean. You can even pre-order from their \\\n       online menu at\
+    \ www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com!\
+    \ \\\n       The only complaint I have is the food didn't come fast enough. Overall\
+    \ I highly recommend it!\"\n   ]\n\n   poller = text_analytics_client.begin_analyze_batch_actions(\n\
+    \       documents,\n       display_name=\"Sample Text Analysis\",\n       actions=[\n\
+    \           RecognizeEntitiesAction(),\n           RecognizePiiEntitiesAction(domain_filter=PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION),\n\
+    \           ExtractKeyPhrasesAction()\n       ],\n   )\n\n   result = poller.result()\n\
+    \   action_results = [action_result for action_result in list(result) if not action_result.is_error]\n\
+    \n   first_action_result = action_results[0]\n   print(\"Results of Entities Recognition\
+    \ action:\")\n   docs = [doc for doc in first_action_result.document_results if\
+    \ not doc.is_error]\n\n   for idx, doc in enumerate(docs):\n       print(\"\\\
+    nDocument text: {}\".format(documents[idx]))\n       for entity in doc.entities:\n\
+    \           print(\"Entity: {}\".format(entity.text))\n           print(\"...Category:\
+    \ {}\".format(entity.category))\n           print(\"...Confidence Score: {}\"\
+    .format(entity.confidence_score))\n           print(\"...Offset: {}\".format(entity.offset))\n\
+    \       print(\"------------------------------------------\")\n\n   second_action_result\
+    \ = action_results[1]\n   print(\"Results of PII Entities Recognition action:\"\
+    )\n   docs = [doc for doc in second_action_result.document_results if not doc.is_error]\n\
+    \n   for idx, doc in enumerate(docs):\n       print(\"Document text: {}\".format(documents[idx]))\n\
+    \       for entity in doc.entities:\n           print(\"Entity: {}\".format(entity.text))\n\
+    \           print(\"Category: {}\".format(entity.category))\n           print(\"\
+    Confidence Score: {}\\n\".format(entity.confidence_score))\n       print(\"------------------------------------------\"\
+    )\n\n   third_action_result = action_results[2]\n   print(\"Results of Key Phrase\
+    \ Extraction action:\")\n   docs = [doc for doc in third_action_result.document_results\
+    \ if not doc.is_error]\n\n   for idx, doc in enumerate(docs):\n       print(\"\
+    Document text: {}\\n\".format(documents[idx]))\n       print(\"Key Phrases: {}\\\
+    n\".format(doc.key_phrases))\n       print(\"------------------------------------------\"\
+    )\n\n\n   ````\n"
+- uid: azure.ai.textanalytics.TextAnalyticsClient.begin_analyze_healthcare_entities
+  name: begin_analyze_healthcare_entities
   summary: 'Analyze healthcare entities and identify relationships between these entities
     in a batch of documents.
 
@@ -279,7 +286,7 @@ methods:
 
 
     Relations are comprised of a pair of entities and a directional relationship.'
-  signature: begin_analyze_healthcare(documents, **kwargs)
+  signature: begin_analyze_healthcare_entities(documents, **kwargs)
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -302,13 +309,26 @@ methods:
 
       be used for scoring, e.g. "latest", "2019-10-01". If a model-version
 
-      is not specified, the API will default to the latest, non-preview version.'
+      is not specified, the API will default to the latest, non-preview version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
     - <xref:str>
   - name: show_stats
     description: If set to true, response will contain document level statistics.
     types:
     - <xref:bool>
+  - name: string_index_type
+    description: 'Specifies the method used to interpret string offsets.
+
+      *UnicodeCodePoint*, the Python encoding, is the default. To override the Python
+      default,
+
+      you can also pass in *Utf16CodePoint* or *TextElements_v8*. For additional information
+
+      see [https://aka.ms/text-analytics-offsets](https://aka.ms/text-analytics-offsets)'
+    types:
+    - <xref:str>
   - name: polling_interval
     description: 'Waiting time between two polls for LRO operations
 
@@ -320,89 +340,44 @@ methods:
     types:
     - <xref:str>
   return:
-    description: 'An instance of an LROPoller. Call *result()* on the poller
+    description: 'An instance of an AnalyzeHealthcareEntitiesLROPoller. Call *result()*
+      on the this
 
-      object to return a list[<xref:azure.ai.textanalytics.AnalyzeHealthcareResultItem>].'
+      object to return a pageable of <xref:azure.ai.textanalytics.AnalyzeHealthcareEntitiesResultItem>.'
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.core.paging.ItemPaged>[<xref:azure.ai.textanalytics.AnalyzeHealthcareEntitiesResultItem>]]
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError or TypeError or ValueError or NotImplementedError
   examples:
   - "Recognize healthcare entities in a batch of documents.<!--[!code-python[Main](les\\\
-    sample_analyze_healthcare.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\\
-    sample_analyze_healthcare.py\", \"xml:space\": \"preserve\", \"language\": \"\
-    python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
-    ````python\n\n   from azure.core.credentials import AzureKeyCredential\n   from\
-    \ azure.ai.textanalytics import TextAnalyticsClient\n\n   endpoint = os.environ[\"\
+    sample_analyze_healthcare_entities.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b5\\\\\
+    samples\\\\sample_analyze_healthcare_entities.py\", \"xml:space\": \"preserve\"\
+    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+    : 1}} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.ai.textanalytics import TextAnalyticsClient\n\n   endpoint = os.environ[\"\
     AZURE_TEXT_ANALYTICS_ENDPOINT\"]\n   key = os.environ[\"AZURE_TEXT_ANALYTICS_KEY\"\
-    ]\n\n   text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\
-    \ \n       credential=AzureKeyCredential(key),\n       api_version=\"v3.1-preview.3\"\
-    )\n\n   documents = [\n       \"Subject is taking 100mg of ibuprofen twice daily\"\
-    \n   ]\n\n   poller = text_analytics_client.begin_analyze_healthcare(documents,\
+    ]\n\n   text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\n\
+    \       credential=AzureKeyCredential(key),\n   )\n\n   documents = [\n      \
+    \ \"Subject is taking 100mg of ibuprofen twice daily\"\n   ]\n\n   poller = text_analytics_client.begin_analyze_healthcare_entities(documents,\
     \ show_stats=True)\n   result = poller.result()\n\n   docs = [doc for doc in result\
-    \ if not doc.is_error]\n\n   print(\"Results of Healthcare Analysis:\")\n   for\
-    \ idx, doc in enumerate(docs):\n       for entity in doc.entities:\n         \
-    \  print(\"Entity: {}\".format(entity.text))\n           print(\"...Category:\
+    \ if not doc.is_error]\n\n   print(\"Results of Healthcare Entities Analysis:\"\
+    )\n   for idx, doc in enumerate(docs):\n       for entity in doc.entities:\n \
+    \          print(\"Entity: {}\".format(entity.text))\n           print(\"...Category:\
     \ {}\".format(entity.category))\n           print(\"...Subcategory: {}\".format(entity.subcategory))\n\
     \           print(\"...Offset: {}\".format(entity.offset))\n           print(\"\
-    ...Confidence score: {}\".format(entity.confidence_score))\n           if entity.links\
-    \ is not None:\n               print(\"...Links:\")\n               for link in\
-    \ entity.links:\n                   print(\"......ID: {}\".format(link.id))\n\
-    \                   print(\"......Data source: {}\".format(link.data_source))\n\
-    \       for relation in doc.relations:\n           print(\"Relation:\")\n    \
-    \       print(\"...Source: {}\".format(relation.source.text))\n           print(\"\
-    ...Target: {}\".format(relation.target.text))\n           print(\"...Type: {}\"\
-    .format(relation.relation_type))\n           print(\"...Bidirectional: {}\".format(relation.is_bidirectional))\n\
-    \       print(\"------------------------------------------\")\n\n   # [END analyze_health]\n\
-    \n   e__ == \"__main__\":\n   le = AnalyzeHealthcareSample()\n   le.analyze_healthcare()\n\
-    \n   ````\n"
-- uid: azure.ai.textanalytics.TextAnalyticsClient.begin_cancel_analyze_healthcare
-  name: begin_cancel_analyze_healthcare
-  summary: Cancel an existing health operation.
-  signature: begin_cancel_analyze_healthcare(poller, **kwargs)
-  parameters:
-  - name: poller
-    description: The LRO poller object associated with the health operation.
-    isRequired: true
-  return:
-    description: An instance of an LROPoller that returns None.
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:None>]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError or TypeError or ValueError or NotImplementedError
-  examples:
-  - "Cancel an existing health operation.<!--[!code-python[Main](les\\sample_health_with_cancellation.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_health_with_cancellation.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_TEXT_ANALYTICS_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_TEXT_ANALYTICS_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n\
-    \       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n     \
-    \  api_version=\"v3.1-preview.3\")\n\n   documents = [\n       \"RECORD #333582770390100\
-    \ | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | \\\n       CORONARY ARTERY\
-    \ DISEASE | Signed | DIS | Admission Date: 5/22/2001 \\\n       Report Status:\
-    \ Signed Discharge Date: 4/24/2001 ADMISSION DIAGNOSIS: \\\n       CORONARY ARTERY\
-    \ DISEASE. HISTORY OF PRESENT ILLNESS: \\\n       The patient is a 54-year-old\
-    \ gentleman with a history of progressive angina over the past several months.\
-    \ \\\n       The patient had a cardiac catheterization in July of this year revealing\
-    \ total occlusion of the RCA and \\\n       50% left main disease , with a strong\
-    \ family history of coronary artery disease with a brother dying at \\\n     \
-    \  the age of 52 from a myocardial infarction and another brother who is status\
-    \ post coronary artery bypass grafting. \\\n       The patient had a stress echocardiogram\
-    \ done on July , 2001 , which showed no wall motion abnormalities ,\\\n      \
-    \ but this was a difficult study due to body habitus. The patient went for six\
-    \ minutes with minimal ST depressions \\\n       in the anterior lateral leads\
-    \ , thought due to fatigue and wrist pain , his anginal equivalent. Due to the\
-    \ patient's \\\n       increased symptoms and family history and history left\
-    \ main disease with total occasional of his RCA was referred \\\n       for revascularization\
-    \ with open heart surgery.\"\n   ]\n\n   poller = text_analytics_client.begin_analyze_healthcare(documents)\n\
-    \   text_analytics_client.begin_cancel_analyze_healthcare(poller)\n   poller.wait()\n\
-    \n\n   ````\n"
+    ...Confidence score: {}\".format(entity.confidence_score))\n           if entity.data_sources\
+    \ is not None:\n               print(\"...Data Sources:\")\n               for\
+    \ data_source in entity.data_sources:\n                   print(\"......Entity\
+    \ ID: {}\".format(data_source.entity_id))\n                   print(\"......Name:\
+    \ {}\".format(data_source.name))\n           if len(entity.related_entities) >\
+    \ 0:\n               print(\"...Related Entities:\")\n               for related_entity,\
+    \ relation_type in entity.related_entities.items():\n                   print(\"\
+    ......Entity Text: {}\".format(related_entity.text))\n                   print(\"\
+    ......Relation Type: {}\".format(relation_type))\n       print(\"------------------------------------------\"\
+    )\n\n\n   ````\n"
 - uid: azure.ai.textanalytics.TextAnalyticsClient.detect_language
   name: detect_language
   summary: 'Detect language for a batch of documents.
@@ -452,7 +427,9 @@ methods:
 
       e.g. "latest", "2019-10-01". If a model version
 
-      is not specified, the API will default to the latest, non-preview version.'
+      is not specified, the API will default to the latest, non-preview version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
     - <xref:str>
   - name: show_stats
@@ -478,7 +455,7 @@ methods:
   - "Detecting language in a batch of documents.<!--[!code-python[Main](les\\sample_detect_language.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_detect_language.py\"\
+    \\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\sample_detect_language.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient\n\
@@ -555,7 +532,9 @@ methods:
 
       be used for scoring, e.g. "latest", "2019-10-01". If a model-version
 
-      is not specified, the API will default to the latest, non-preview version.'
+      is not specified, the API will default to the latest, non-preview version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
     - <xref:str>
   - name: show_stats
@@ -581,7 +560,7 @@ methods:
   - "Extract the key phrases in a batch of documents.<!--[!code-python[Main](les\\\
     sample_extract_key_phrases.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\\
     sample_extract_key_phrases.py\", \"xml:space\": \"preserve\", \"language\": \"\
     python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
     ````python\n\n   from azure.core.credentials import AzureKeyCredential\n   from\
@@ -651,7 +630,9 @@ methods:
 
       be used for scoring, e.g. "latest", "2019-10-01". If a model-version
 
-      is not specified, the API will default to the latest, non-preview version.'
+      is not specified, the API will default to the latest, non-preview version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
     - <xref:str>
   - name: show_stats
@@ -660,6 +641,17 @@ methods:
       level statistics in the *statistics* field of the document-level response.'
     types:
     - <xref:bool>
+  - name: string_index_type
+    description: 'Specifies the method used to interpret string offsets.
+
+      *UnicodeCodePoint*, the Python encoding, is the default. To override the Python
+      default,
+
+      you can also pass in *Utf16CodePoint* or TextElements_v8`. For additional information
+
+      see [https://aka.ms/text-analytics-offsets](https://aka.ms/text-analytics-offsets)'
+    types:
+    - <xref:str>
   return:
     description: 'The combined list of <xref:azure.ai.textanalytics.RecognizeEntitiesResult>
       and
@@ -676,7 +668,7 @@ methods:
   - "Recognize entities in a batch of documents.<!--[!code-python[Main](les\\sample_recognize_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\23\\\\azure-ai-textanalytics-5.1.0b4\\\\samples\\\\sample_recognize_entities.py\"\
+    \\23\\\\azure-ai-textanalytics-5.1.0b5\\\\samples\\\\sample_recognize_entities.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient\n\
@@ -750,7 +742,9 @@ methods:
 
       be used for scoring, e.g. "latest", "2019-10-01". If a model-version
 
-      is not specified, the API will default to the latest, non-preview version.'
+      is not specified, the API will default to the latest, non-preview version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
     - <xref:str>
   - name: show_stats
@@ -759,6 +753,17 @@ methods:
       level statistics in the *statistics* field of the document-level response.'
     types:
     - <xref:bool>
+  - name: string_index_type
+    description: 'Specifies the method used to interpret string offsets.
+
+      *UnicodeCodePoint*, the Python encoding, is the default. To override the Python
+      default,
+
+      you can also pass in *Utf16CodePoint* or *TextElements_v8*. For additional information
+
+      see [https://aka.ms/text-analytics-offsets](https://aka.ms/text-analytics-offsets)'
+    types:
+    - <xref:str>
   return:
     description: 'The combined list of <xref:azure.ai.textanalytics.RecognizeLinkedEntitiesResult>
 
@@ -774,7 +779,7 @@ methods:
   - "Recognize linked entities in a batch of documents.<!--[!code-python[Main](les\\\
     sample_recognize_linked_entities.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b4\\\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b5\\\\\
     samples\\\\sample_recognize_linked_entities.py\", \"xml:space\": \"preserve\"\
     , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -846,7 +851,9 @@ methods:
 
       be used for scoring, e.g. "latest", "2019-10-01". If a model-version
 
-      is not specified, the API will default to the latest, non-preview version.'
+      is not specified, the API will default to the latest, non-preview version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
     - <xref:str>
   - name: show_stats
@@ -859,13 +866,24 @@ methods:
     description: 'Filters the response entities to ones only included in the specified
       domain.
 
-      I.e., if set to ''PHI'', will only return entities in the Protected Healthcare
+      I.e., if set to ''phi'', will only return entities in the Protected Healthcare
       Information domain.
 
       See [https://aka.ms/tanerpii](https://aka.ms/tanerpii) for more information.'
     types:
     - <xref:str>
     - <xref:azure.ai.textanalytics.PiiEntityDomainType>
+  - name: string_index_type
+    description: 'Specifies the method used to interpret string offsets.
+
+      *UnicodeCodePoint*, the Python encoding, is the default. To override the Python
+      default,
+
+      you can also pass in *Utf16CodePoint* or *TextElements_v8*. For additional information
+
+      see [https://aka.ms/text-analytics-offsets](https://aka.ms/text-analytics-offsets)'
+    types:
+    - <xref:str>
   return:
     description: 'The combined list of <xref:azure.ai.textanalytics.RecognizePiiEntitiesResult>
 
@@ -881,7 +899,7 @@ methods:
   - "Recognize personally identifiable information entities in a batch of documents.<!--[!code-python[Main](les\\\
     sample_recognize_pii_entities.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b4\\\\\
+    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\23\\\\azure-ai-textanalytics-5.1.0b5\\\\\
     samples\\\\sample_recognize_pii_entities.py\", \"xml:space\": \"preserve\", \"\
     language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
     : 1}} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\

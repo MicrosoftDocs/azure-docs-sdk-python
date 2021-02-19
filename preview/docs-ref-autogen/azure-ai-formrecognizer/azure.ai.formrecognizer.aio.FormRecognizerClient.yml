@@ -44,7 +44,7 @@ examples:
 - "Creating the FormRecognizerClient with an endpoint and API key.<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b2\\\\samples\\\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b3\\\\samples\\\
   \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
   , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
   : 1}} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -54,7 +54,7 @@ examples:
   \n   ````\n\nCreating the FormRecognizerClient with a token credential.<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b2\\\\samples\\\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b3\\\\samples\\\
   \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
   , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
   : 1}} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential will use the values from\
@@ -134,7 +134,7 @@ methods:
   - "Recognize business cards from a file.<!--[!code-python[Main](les\\async_samples\\\
     sample_recognize_business_cards_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b2\\\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b3\\\\\
     samples\\\\async_samples\\\\sample_recognize_business_cards_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
@@ -262,13 +262,13 @@ methods:
     - <xref:bytes>
     - <xref:IO>[<xref:bytes>]
   - name: pages
-    description: 'Custom page numbers for multi-page documents(PDF/TIFF), input the
-      number of the
+    description: 'Custom page numbers for multi-page documents(PDF/TIFF). Input the
+      page numbers
 
-      pages you want to get OCR result. For a range of pages, use a hyphen. Separate
-      each page or
+      and/or ranges of pages you want to get in the result. For a range of pages,
+      use a hyphen, like
 
-      range with a comma.'
+      *pages=["1-3", "5-6"]*. Separate each page number or range with a comma.'
     types:
     - <xref:list>[<xref:str>]
   - name: language
@@ -319,7 +319,7 @@ methods:
   - "Recognize text and content/layout information from a form.<!--[!code-python[Main](les\\\
     async_samples\\sample_recognize_content_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b3\\\
     \\samples\\\\async_samples\\\\sample_recognize_content_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
@@ -344,13 +344,17 @@ methods:
     \           print(\"Line # {} has word count '{}' and text '{}' within bounding\
     \ box '{}'\".format(\n                   line_idx,\n                   len(line.words),\n\
     \                   line.text,\n                   format_bounding_box(line.bounding_box)\n\
-    \               ))\n               for word in line.words:\n                 \
-    \  print(\"...Word '{}' has a confidence of {}\".format(word.text, word.confidence))\n\
-    \n           for selection_mark in content.selection_marks:\n               print(\"\
-    Selection mark is '{}' within bounding box '{}' and has a confidence of {}\".format(\n\
-    \                   selection_mark.state,\n                   format_bounding_box(selection_mark.bounding_box),\n\
-    \                   selection_mark.confidence\n               ))\n           print(\"\
-    ----------------------------------------\")\n\n\n   ````\n"
+    \               ))\n               if line.appearance:\n                   if\
+    \ line.appearance.style.name == \"handwriting\" and line.appearance.style.confidence\
+    \ > 0.8:\n                       print(\"Text line '{}' is handwritten and might\
+    \ be a signature.\".format(line.text))\n               for word in line.words:\n\
+    \                   print(\"...Word '{}' has a confidence of {}\".format(word.text,\
+    \ word.confidence))\n\n           for selection_mark in content.selection_marks:\n\
+    \               print(\"Selection mark is '{}' within bounding box '{}' and has\
+    \ a confidence of {}\".format(\n                   selection_mark.state,\n   \
+    \                format_bounding_box(selection_mark.bounding_box),\n         \
+    \          selection_mark.confidence\n               ))\n           print(\"----------------------------------------\"\
+    )\n\n\n   ````\n"
 - uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_content_from_url
   name: begin_recognize_content_from_url
   summary: 'Extract text and layout information from a given document.
@@ -372,13 +376,13 @@ methods:
     types:
     - <xref:str>
   - name: pages
-    description: 'Custom page numbers for multi-page documents(PDF/TIFF), input the
-      number of the
+    description: 'Custom page numbers for multi-page documents(PDF/TIFF). Input the
+      page numbers
 
-      pages you want to get OCR result. For a range of pages, use a hyphen. Separate
-      each page or
+      and/or ranges of pages you want to get in the result. For a range of pages,
+      use a hyphen, like
 
-      range with a comma.'
+      *pages=["1-3", "5-6"]*. Separate each page number or range with a comma.'
     types:
     - <xref:list>[<xref:str>]
   - name: language
@@ -480,7 +484,7 @@ methods:
   - "Recognize fields and values from a custom form.<!--[!code-python[Main](les\\\
     async_samples\\sample_recognize_custom_forms_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b2\\\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b3\\\
     \\samples\\\\async_samples\\\\sample_recognize_custom_forms_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
@@ -625,7 +629,7 @@ methods:
   - "Recognize invoices from a file.<!--[!code-python[Main](les\\async_samples\\sample_recognize_invoices_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\6\\\\azure-ai-formrecognizer-3.1.0b2\\\\samples\\\\async_samples\\\\sample_recognize_invoices_async.py\"\
+    \\6\\\\azure-ai-formrecognizer-3.1.0b3\\\\samples\\\\async_samples\\\\sample_recognize_invoices_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
@@ -640,10 +644,15 @@ methods:
     \ {} has confidence: {}\".format(vendor_name.value, vendor_name.confidence))\n\
     \           vendor_address = invoice.fields.get(\"VendorAddress\")\n         \
     \  if vendor_address:\n               print(\"Vendor Address: {} has confidence:\
-    \ {}\".format(vendor_address.value, vendor_address.confidence))\n           customer_name\
-    \ = invoice.fields.get(\"CustomerName\")\n           if customer_name:\n     \
-    \          print(\"Customer Name: {} has confidence: {}\".format(customer_name.value,\
-    \ customer_name.confidence))\n           customer_address = invoice.fields.get(\"\
+    \ {}\".format(vendor_address.value, vendor_address.confidence))\n           vendor_address_recipient\
+    \ = invoice.fields.get(\"VendorAddressRecipient\")\n           if vendor_address_recipient:\n\
+    \               print(\"Vendor Address Recipient: {} has confidence: {}\".format(vendor_address_recipient.value,\
+    \ vendor_address_recipient.confidence))\n           customer_name = invoice.fields.get(\"\
+    CustomerName\")\n           if customer_name:\n               print(\"Customer\
+    \ Name: {} has confidence: {}\".format(customer_name.value, customer_name.confidence))\n\
+    \           customer_id = invoice.fields.get(\"CustomerId\")\n           if customer_id:\n\
+    \               print(\"Customer Id: {} has confidence: {}\".format(customer_id.value,\
+    \ customer_id.confidence))\n           customer_address = invoice.fields.get(\"\
     CustomerAddress\")\n           if customer_address:\n               print(\"Customer\
     \ Address: {} has confidence: {}\".format(customer_address.value, customer_address.confidence))\n\
     \           customer_address_recipient = invoice.fields.get(\"CustomerAddressRecipient\"\
@@ -659,7 +668,49 @@ methods:
     \ Total: {} has confidence: {}\".format(invoice_total.value, invoice_total.confidence))\n\
     \           due_date = invoice.fields.get(\"DueDate\")\n           if due_date:\n\
     \               print(\"Due Date: {} has confidence: {}\".format(due_date.value,\
-    \ due_date.confidence))\n\n   ````\n"
+    \ due_date.confidence))\n           purchase_order = invoice.fields.get(\"PurchaseOrder\"\
+    )\n           if purchase_order:\n               print(\"Purchase Order: {} has\
+    \ confidence: {}\".format(purchase_order.value, purchase_order.confidence))\n\
+    \           billing_address = invoice.fields.get(\"BillingAddress\")\n       \
+    \    if billing_address:\n               print(\"Billing Address: {} has confidence:\
+    \ {}\".format(billing_address.value, billing_address.confidence))\n          \
+    \ billing_address_recipient = invoice.fields.get(\"BillingAddressRecipient\")\n\
+    \           if billing_address_recipient:\n               print(\"Billing Address\
+    \ Recipient: {} has confidence: {}\".format(billing_address_recipient.value, billing_address_recipient.confidence))\n\
+    \           shipping_address = invoice.fields.get(\"ShippingAddress\")\n     \
+    \      if shipping_address:\n               print(\"Shipping Address: {} has confidence:\
+    \ {}\".format(shipping_address.value, shipping_address.confidence))\n        \
+    \   shipping_address_recipient = invoice.fields.get(\"ShippingAddressRecipient\"\
+    )\n           if shipping_address_recipient:\n               print(\"Shipping\
+    \ Address Recipient: {} has confidence: {}\".format(shipping_address_recipient.value,\
+    \ shipping_address_recipient.confidence))\n           subtotal = invoice.fields.get(\"\
+    SubTotal\")\n           if subtotal:\n               print(\"Subtotal: {} has\
+    \ confidence: {}\".format(subtotal.value, subtotal.confidence))\n           total_tax\
+    \ = invoice.fields.get(\"TotalTax\")\n           if total_tax:\n             \
+    \  print(\"Total Tax: {} has confidence: {}\".format(total_tax.value, total_tax.confidence))\n\
+    \           previous_unpaid_balance = invoice.fields.get(\"PreviousUnpaidBalance\"\
+    )\n           if previous_unpaid_balance:\n               print(\"Previous Unpaid\
+    \ Balance: {} has confidence: {}\".format(previous_unpaid_balance.value, previous_unpaid_balance.confidence))\n\
+    \           amount_due = invoice.fields.get(\"AmountDue\")\n           if amount_due:\n\
+    \               print(\"Amount Due: {} has confidence: {}\".format(amount_due.value,\
+    \ amount_due.confidence))\n           service_start_date = invoice.fields.get(\"\
+    ServiceStartDate\")\n           if service_start_date:\n               print(\"\
+    Service Start Date: {} has confidence: {}\".format(service_start_date.value, service_start_date.confidence))\n\
+    \           service_end_date = invoice.fields.get(\"ServiceEndDate\")\n      \
+    \     if service_end_date:\n               print(\"Service End Date: {} has confidence:\
+    \ {}\".format(service_end_date.value, service_end_date.confidence))\n        \
+    \   service_address = invoice.fields.get(\"ServiceAddress\")\n           if service_address:\n\
+    \               print(\"Service Address: {} has confidence: {}\".format(service_address.value,\
+    \ service_address.confidence))\n           service_address_recipient = invoice.fields.get(\"\
+    ServiceAddressRecipient\")\n           if service_address_recipient:\n       \
+    \        print(\"Service Address Recipient: {} has confidence: {}\".format(service_address_recipient.value,\
+    \ service_address_recipient.confidence))\n           remittance_address = invoice.fields.get(\"\
+    RemittanceAddress\")\n           if remittance_address:\n               print(\"\
+    Remittance Address: {} has confidence: {}\".format(remittance_address.value, remittance_address.confidence))\n\
+    \           remittance_address_recipient = invoice.fields.get(\"RemittanceAddressRecipient\"\
+    )\n           if remittance_address_recipient:\n               print(\"Remittance\
+    \ Address Recipient: {} has confidence: {}\".format(remittance_address_recipient.value,\
+    \ remittance_address_recipient.confidence))\n\n   ````\n"
 - uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_invoices_from_url
   name: begin_recognize_invoices_from_url
   summary: 'Extract field text and semantic values from a given invoice.
@@ -785,7 +836,7 @@ methods:
   - "Recognize sales receipt fields.<!--[!code-python[Main](les\\async_samples\\sample_recognize_receipts_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\6\\\\azure-ai-formrecognizer-3.1.0b2\\\\samples\\\\async_samples\\\\sample_recognize_receipts_async.py\"\
+    \\6\\\\azure-ai-formrecognizer-3.1.0b3\\\\samples\\\\async_samples\\\\sample_recognize_receipts_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
@@ -888,7 +939,7 @@ methods:
   - "Recognize sales receipt fields from a URL.<!--[!code-python[Main](les\\async_samples\\\
     sample_recognize_receipts_from_url_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b2\\\\\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\6\\\\azure-ai-formrecognizer-3.1.0b3\\\\\
     samples\\\\async_samples\\\\sample_recognize_receipts_from_url_async.py\", \"\
     xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\

@@ -10,7 +10,8 @@ summary: 'A client to interact with the AzureCommunicationService Chat gateway.
   Instances of this class is normally created by ChatClient.create_chat_thread()
 
 
-  This client provides operations to add member to chat thread, remove member from
+  This client provides operations to add participant to chat thread, remove participant
+  from
 
   chat thread, send message, delete message, update message, send typing notifications,
 
@@ -30,7 +31,7 @@ constructor:
       Access Token'
     isRequired: true
     types:
-    - <xref:CommunicationUserCredential>
+    - <xref:CommunicationTokenCredential>
   - name: thread_id
     description: The unique thread id.
     isRequired: true
@@ -44,27 +45,30 @@ variables:
 examples:
 - "Creating the ChatThreadClient.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\
   \\samples\\\\chat_thread_client_sample.py\", \"xml:space\": \"preserve\", \"language\"\
   : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
   \n````python\n\n   from datetime import datetime\n   from azure.communication.chat\
-  \ import (\n       ChatClient,\n       ChatThreadMember,\n       CommunicationUser,\n\
-  \       CommunicationUserCredential\n   )\n   chat_client = ChatClient(self.endpoint,\
-  \ CommunicationUserCredential(self.token))\n   topic = \"test topic\"\n   members\
-  \ = [ChatThreadMember(\n       user=self.user,\n       display_name='name',\n  \
-  \     share_history_time=datetime.utcnow()\n   )]\n   chat_thread_client = chat_client.create_chat_thread(topic,\
-  \ members)\n\n   ````\n"
+  \ import (\n       ChatClient,\n       CommunicationUserIdentifier,\n       CommunicationTokenCredential,\n\
+  \       CommunicationTokenRefreshOptions,\n       ChatThreadParticipant\n   )\n\
+  \   refresh_options = CommunicationTokenRefreshOptions(self.token)\n   chat_client\
+  \ = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n \
+  \  topic = \"test topic\"\n   participants = [ChatThreadParticipant(\n       user=self.user,\n\
+  \       display_name='name',\n       share_history_time=datetime.utcnow()\n   )]\n\
+  \   chat_thread_client = chat_client.create_chat_thread(topic, participants)\n\n\
+  \   ````\n"
 methods:
-- uid: azure.communication.chat.ChatThreadClient.add_members
-  name: add_members
-  summary: Adds thread members to a thread. If members already exist, no change occurs.
-  signature: add_members(thread_members, **kwargs)
+- uid: azure.communication.chat.ChatThreadClient.add_participant
+  name: add_participant
+  summary: Adds single thread participant to a thread. If participant already exist,
+    no change occurs.
+  signature: add_participant(thread_participant, **kwargs)
   parameters:
-  - name: thread_members
-    description: Required. Thread members to be added to the thread.
+  - name: thread_participant
+    description: Required. Single thread participant to be added to the thread.
     isRequired: true
     types:
-    - <xref:list>[<xref:azure.communication.chat.ChatThreadMember>]
+    - <xref:azure.communication.chat.ChatThreadParticipant>
   - name: cls
     description: A custom type or function that will be passed the direct response
     types:
@@ -74,16 +78,46 @@ methods:
     types:
     - <xref:None>
   examples:
-  - "Adding members to chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
+  - "Adding single participant to chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
-    \ import ChatThreadMember\n   from datetime import datetime\n   new_member = ChatThreadMember(\n\
-    \           user=self.new_user,\n           display_name='name',\n           share_history_time=datetime.utcnow())\n\
-    \   thread_members = [new_member]\n   chat_thread_client.add_members(thread_members)\n\
+    \ import ChatThreadParticipant\n   from datetime import datetime\n   new_chat_thread_participant\
+    \ = ChatThreadParticipant(\n           user=self.new_user,\n           display_name='name',\n\
+    \           share_history_time=datetime.utcnow())\n   chat_thread_client.add_participant(new_chat_thread_participant)\n\
     \n   ````\n"
+- uid: azure.communication.chat.ChatThreadClient.add_participants
+  name: add_participants
+  summary: Adds thread participants to a thread. If participants already exist, no
+    change occurs.
+  signature: add_participants(thread_participants, **kwargs)
+  parameters:
+  - name: thread_participants
+    description: Required. Thread participants to be added to the thread.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.chat.ChatThreadParticipant>]
+  - name: cls
+    description: A custom type or function that will be passed the direct response
+    types:
+    - <xref:callable>
+  return:
+    description: None, or the result of cls(response)
+    types:
+    - <xref:None>
+  examples:
+  - "Adding participants to chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
+    \ import ChatThreadParticipant\n   from datetime import datetime\n   new_participant\
+    \ = ChatThreadParticipant(\n           user=self.new_user,\n           display_name='name',\n\
+    \           share_history_time=datetime.utcnow())\n   thread_participants = [new_participant]\n\
+    \   chat_thread_client.add_participants(thread_participants)\n\n   ````\n"
 - uid: azure.communication.chat.ChatThreadClient.close
   name: close
   signature: close()
@@ -109,7 +143,7 @@ methods:
   - "Deleting a messages.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_client.delete_message(self._message_id)\n\
     \n   ````\n"
@@ -135,33 +169,10 @@ methods:
   - "Getting a message by message id.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_message =\
     \ chat_thread_client.get_message(self._message_id)\n\n   ````\n"
-- uid: azure.communication.chat.ChatThreadClient.list_members
-  name: list_members
-  summary: Gets the members of a thread.
-  signature: list_members(**kwargs)
-  parameters:
-  - name: cls
-    description: A custom type or function that will be passed the direct response
-    types:
-    - <xref:callable>
-  return:
-    description: ItemPaged[<xref:azure.communication.chat.ChatThreadMember>]
-    types:
-    - <xref:azure.core.paging.ItemPaged>
-  examples:
-  - "Listing members of chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_members\
-    \ = chat_thread_client.list_members()\n   print(\"list_chat_members succeeded,\
-    \ members: \")\n   for chat_thread_member in chat_thread_members:\n       print(chat_thread_member)\n\
-    \n   ````\n"
 - uid: azure.communication.chat.ChatThreadClient.list_messages
   name: list_messages
   summary: Gets a list of messages from a thread.
@@ -180,14 +191,14 @@ methods:
     types:
     - <xref:callable>
   return:
-    description: ItemPaged[<xref:azure.communication.chat.ChatMessage>]
+    description: An iterator like instance of ChatMessage
     types:
-    - <xref:azure.core.paging.ItemPaged>
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.chat.ChatMessage>]
   examples:
   - "Listing messages of a chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from datetime\
     \ import datetime, timedelta\n   start_time = datetime.utcnow() - timedelta(days=1)\n\
@@ -196,39 +207,80 @@ methods:
     \ is yesterday UTC\")\n   for chat_message_page in chat_messages.by_page():\n\
     \       l = list(chat_message_page)\n       print(\"page size: \", len(l))\n\n\
     \   ````\n"
-- uid: azure.communication.chat.ChatThreadClient.list_read_receipts
-  name: list_read_receipts
-  summary: Gets read receipts for a thread.
-  signature: list_read_receipts(**kwargs)
+- uid: azure.communication.chat.ChatThreadClient.list_participants
+  name: list_participants
+  summary: Gets the participants of a thread.
+  signature: list_participants(**kwargs)
   parameters:
+  - name: results_per_page
+    description: The maximum number of participants to be returned per page.
+    types:
+    - <xref:int>
+  - name: skip
+    description: Skips participants up to a specified position in response.
+    types:
+    - <xref:int>
   - name: cls
     description: A custom type or function that will be passed the direct response
     types:
     - <xref:callable>
   return:
-    description: ItemPaged[<xref:azure.communication.chat.ReadReceipt>]
+    description: An iterator like instance of ChatThreadParticipant
     types:
-    - <xref:azure.core.paging.ItemPaged>
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.chat.ChatThreadParticipant>]
+  examples:
+  - "Listing participants of chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_participants\
+    \ = chat_thread_client.list_participants()\n   print(\"list_chat_participants\
+    \ succeeded, participants: \")\n   for chat_thread_participant in chat_thread_participants:\n\
+    \       print(chat_thread_participant)\n\n   ````\n"
+- uid: azure.communication.chat.ChatThreadClient.list_read_receipts
+  name: list_read_receipts
+  summary: Gets read receipts for a thread.
+  signature: list_read_receipts(**kwargs)
+  parameters:
+  - name: results_per_page
+    description: The maximum number of chat message read receipts to be returned per
+      page.
+    types:
+    - <xref:int>
+  - name: skip
+    description: Skips chat message read receipts up to a specified position in response.
+    types:
+    - <xref:int>
+  - name: cls
+    description: A custom type or function that will be passed the direct response
+    types:
+    - <xref:callable>
+  return:
+    description: An iterator like instance of ChatMessageReadReceipt
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.chat.ChatMessageReadReceipt>]
   examples:
   - "Listing read receipts.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   read_receipts\
     \ = chat_thread_client.list_read_receipts()\n   print(\"list_read_receipts succeeded,\
     \ receipts:\")\n   for read_receipt in read_receipts:\n       print(read_receipt)\n\
     \n   ````\n"
-- uid: azure.communication.chat.ChatThreadClient.remove_member
-  name: remove_member
-  summary: Remove a member from a thread.
-  signature: remove_member(user, **kwargs)
+- uid: azure.communication.chat.ChatThreadClient.remove_participant
+  name: remove_participant
+  summary: Remove a participant from a thread.
+  signature: remove_participant(user, **kwargs)
   parameters:
   - name: user
-    description: Required. User identity of the thread member to remove from the thread.
+    description: Required. User identity of the thread participant to remove from
+      the thread.
     isRequired: true
     types:
-    - <xref:azure.communication.chat.CommunicationUser>
+    - <xref:azure.communication.chat.CommunicationUserIdentifier>
   - name: cls
     description: A custom type or function that will be passed the direct response
     types:
@@ -238,53 +290,41 @@ methods:
     types:
     - <xref:None>
   examples:
-  - "Removing member from chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
+  - "Removing participant from chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_client.remove_member(self.new_user)\n\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_client.remove_participant(self.new_user)\n\
     \n   ````\n"
 - uid: azure.communication.chat.ChatThreadClient.send_message
   name: send_message
-  summary: Sends a message to a thread.
+  summary: "Sends a message to a thread.\n\n\nDefault: ChatMessageType.TEXT\n:type\
+    \ chat_message_type: str or ~azure.communication.chat.models.ChatMessageType\n\
+    :keyword str sender_display_name: The display name of the message sender. This\
+    \ property is used to\n\n\n   populate sender name for push notifications."
   signature: send_message(content, **kwargs)
   parameters:
-  - name: content
-    description: Required. Chat message content.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: priority
-    description: Message priority.
-    types:
-    - <xref:str>
-    - <xref:ChatMessagePriority>
-  - name: sender_display_name
-    description: 'The display name of the message sender. This property is used to
-
-      populate sender name for push notifications.'
-    types:
-    - <xref:str>
   - name: cls
     description: A custom type or function that will be passed the direct response
     types:
     - <xref:callable>
   return:
-    description: SendChatMessageResult, or the result of cls(response)
+    description: str, or the result of cls(response)
     types:
-    - <xref:azure.communication.chat.SendChatMessageResult>
+    - <xref:str>
   examples:
   - "Sending a message.<!--[!code-python[Main](les\\chat_thread_client_sample.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\\
-    azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.communication.chat\
-    \ import ChatMessagePriority\n\n   priority = ChatMessagePriority.NORMAL\n   content\
-    \ = 'hello world'\n   sender_display_name = 'sender name'\n\n   send_message_result\
-    \ = chat_thread_client.send_message(\n       content,\n       priority=priority,\n\
-    \       sender_display_name=sender_display_name)\n\n   ````\n"
+    \ import ChatMessagePriority\n\n   content = 'hello world'\n   sender_display_name\
+    \ = 'sender name'\n\n   send_message_result_id = chat_thread_client.send_message(\n\
+    \       content,\n       sender_display_name=sender_display_name)\n\n   send_message_result_w_type_id\
+    \ = chat_thread_client.send_message(\n       content,\n       sender_display_name=sender_display_name,\
+    \ chat_message_type=ChatMessageType.TEXT)\n\n   ````\n"
 - uid: azure.communication.chat.ChatThreadClient.send_read_receipt
   name: send_read_receipt
   summary: Posts a read receipt event to a thread, on behalf of a user.
@@ -307,7 +347,7 @@ methods:
   - "Sending read receipt of a chat message.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_client.send_read_receipt(self._message_id)\n\
     \n   ````\n"
@@ -328,7 +368,7 @@ methods:
   - "Sending typing notification.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread_client.send_typing_notification()\n\
     \n   ````\n"
@@ -359,15 +399,15 @@ methods:
   - "Updating a sent messages.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   content = \"updated\
     \ content\"\n   chat_thread_client.update_message(self._message_id, content=content)\n\
     \n   ````\n"
-- uid: azure.communication.chat.ChatThreadClient.update_thread
-  name: update_thread
+- uid: azure.communication.chat.ChatThreadClient.update_topic
+  name: update_topic
   summary: Updates a thread's properties.
-  signature: update_thread(topic=None, **kwargs)
+  signature: update_topic(topic=None, **kwargs)
   parameters:
   - name: topic
     description: 'Thread topic. If topic is not specified, the update will succeeded
@@ -389,10 +429,10 @@ methods:
   - "Updating chat thread.<!--[!code-python[Main](les\\chat_thread_client_sample.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_thread_client_sample.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_thread_client_sample.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   topic = \"updated\
-    \ thread topic\"\n   chat_thread_client.update_thread(topic=topic)\n\n   ````\n"
+    \ thread topic\"\n   chat_thread_client.update_topic(topic=topic)\n\n   ````\n"
 attributes:
 - uid: azure.communication.chat.ChatThreadClient.thread_id
   name: thread_id

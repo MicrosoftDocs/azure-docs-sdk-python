@@ -12,8 +12,8 @@ summary: 'A client to interact with the AzureCommunicationService Chat gateway.
 
   get chat thread by id, list chat threads.'
 constructor:
-  syntax: 'ChatClient(endpoint: str, credential: azure.communication.chat._shared.user_credential_async.CommunicationUserCredential,
-    **kwargs) -> None'
+  syntax: 'ChatClient(endpoint: str, credential: azure.communication.chat._shared.user_credential_async.CommunicationTokenCredential,
+    **kwargs: typing.Any) -> None'
   parameters:
   - name: endpoint
     description: The endpoint of the Azure Communication resource.
@@ -24,15 +24,16 @@ constructor:
     description: The credentials with which to authenticate.
     isRequired: true
     types:
-    - <xref:CommunicationUserCredential>
+    - <xref:CommunicationTokenCredential>
 examples:
 - "Creating the ChatClient from a URL and token.<!--[!code-python[Main](les\\chat_client_sample_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\
   \\samples\\\\chat_client_sample_async.py\", \"xml:space\": \"preserve\", \"language\"\
   : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-  \n````python\n\n   from azure.communication.chat.aio import ChatClient, CommunicationUserCredential\n\
-  \   chat_client = ChatClient(self.endpoint, CommunicationUserCredential(self.token))\n\
+  \n````python\n\n   from azure.communication.chat.aio import ChatClient, CommunicationTokenCredential,\
+  \ CommunicationTokenRefreshOptions\n\n   refresh_options = CommunicationTokenRefreshOptions(self.token)\n\
+  \   chat_client = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
   \n   ````\n"
 methods:
 - uid: azure.communication.chat.aio.ChatClient.close
@@ -41,19 +42,38 @@ methods:
 - uid: azure.communication.chat.aio.ChatClient.create_chat_thread
   name: create_chat_thread
   summary: Creates a chat thread.
-  signature: 'create_chat_thread(topic: str, thread_members: typing.List[azure.communication.chat._models.ChatThreadMember],
-    **kwargs) -> azure.communication.chat.aio._chat_thread_client_async.ChatThreadClient'
+  signature: 'create_chat_thread(topic: str, thread_participants: typing.List[azure.communication.chat._models.ChatThreadParticipant],
+    repeatability_request_id: typing.Union[str, NoneType] = None, **kwargs) -> azure.communication.chat.aio._chat_thread_client_async.ChatThreadClient'
   parameters:
   - name: topic
     description: Required. The thread topic.
     isRequired: true
     types:
     - <xref:str>
-  - name: thread_members
-    description: Required. Members to be added to the thread.
+  - name: thread_participants
+    description: Required. Participants to be added to the thread.
     isRequired: true
     types:
-    - <xref:list>[<xref:azure.communication.chat.ChatThreadMember>]
+    - <xref:list>[<xref:azure.communication.chat.ChatThreadParticipant>]
+  - name: repeatability_request_id
+    description: 'If specified, the client directs that the request is
+
+      repeatable; that is, that the client can make the request multiple times with
+      the same
+
+      Repeatability-Request-ID and get back an appropriate response without the server
+      executing the
+
+      request multiple times. The value of the Repeatability-Request-ID is an opaque
+      string
+
+      representing a client-generated, globally unique for all time, identifier for
+      the request. If not
+
+      specified, a new unique id would be generated.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: ChatThreadClient
     types:
@@ -62,13 +82,18 @@ methods:
   - "Creating ChatThreadClient by creating a new chat thread.<!--[!code-python[Main](les\\\
     chat_client_sample_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\
     \\chat_client_sample_async.py\", \"xml:space\": \"preserve\", \"language\": \"\
     python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
-    ````python\n\n   topic = \"test topic\"\n   members = [ChatThreadMember(\n   \
-    \    user=self.user,\n       display_name='name',\n       share_history_time=datetime.utcnow()\n\
-    \   )]\n   chat_thread_client = await chat_client.create_chat_thread(topic, members)\n\
-    \n   ````\n"
+    ````python\n\n   topic = \"test topic\"\n   participants = [ChatThreadParticipant(\n\
+    \       user=self.user,\n       display_name='name',\n       share_history_time=datetime.utcnow()\n\
+    \   )]\n   # creates a new chat_thread everytime\n   chat_thread_client = await\
+    \ chat_client.create_chat_thread(topic, participants)\n\n   # creates a new chat_thread\
+    \ if not exists\n   repeatability_request_id = 'b66d6031-fdcc-41df-8306-e524c9f226b8'\
+    \  # unique identifier\n   chat_thread_client_w_repeatability_id = await chat_client.create_chat_thread(topic,\n\
+    \                                                                            \
+    \    participants,\n                                                         \
+    \                       repeatability_request_id)\n\n   ````\n"
 - uid: azure.communication.chat.aio.ChatClient.delete_chat_thread
   name: delete_chat_thread
   summary: Deletes a thread.
@@ -91,7 +116,7 @@ methods:
   - "deleting chat thread.<!--[!code-python[Main](les\\chat_client_sample_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample_async.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   await chat_client.delete_chat_thread(self._thread_id)\n\
     \n   ````\n"
@@ -117,14 +142,14 @@ methods:
   - "Getting a chat thread by thread id.<!--[!code-python[Main](les\\chat_client_sample_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample_async.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   chat_thread =\
     \ await chat_client.get_chat_thread(self._thread_id)\n\n   ````\n"
 - uid: azure.communication.chat.aio.ChatClient.get_chat_thread_client
   name: get_chat_thread_client
   summary: Get ChatThreadClient by providing a thread_id.
-  signature: 'get_chat_thread_client(thread_id: str, **kwargs) -> azure.communication.chat.aio._chat_thread_client_async.ChatThreadClient'
+  signature: 'get_chat_thread_client(thread_id: str, **kwargs: typing.Any) -> azure.communication.chat.aio._chat_thread_client_async.ChatThreadClient'
   parameters:
   - name: thread_id
     description: Required. The thread id.
@@ -139,17 +164,18 @@ methods:
   - "Creating the ChatThreadClient from an existing chat thread id.<!--[!code-python[Main](les\\\
     chat_client_sample_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\
     \\chat_client_sample_async.py\", \"xml:space\": \"preserve\", \"language\": \"\
     python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
-    ````python\n\n   from azure.communication.chat.aio import ChatClient, CommunicationUserCredential\n\
-    \n   chat_client = ChatClient(self.endpoint, CommunicationUserCredential(self.token))\n\
+    ````python\n\n   from azure.communication.chat.aio import ChatClient, CommunicationTokenCredential,\
+    \ CommunicationTokenRefreshOptions\n\n   refresh_options = CommunicationTokenRefreshOptions(self.token)\n\
+    \   chat_client = ChatClient(self.endpoint, CommunicationTokenCredential(refresh_options))\n\
     \   chat_thread_client = chat_client.get_chat_thread_client(self._thread_id)\n\
     \n   ````\n"
 - uid: azure.communication.chat.aio.ChatClient.list_chat_threads
   name: list_chat_threads
   summary: Gets the list of chat threads of a user.
-  signature: list_chat_threads(**kwargs) -> azure.core.async_paging.AsyncItemPaged[azure.communication.chat._generated.models._models_py3.ChatThreadInfo]
+  signature: 'list_chat_threads(**kwargs: typing.Any)'
   parameters:
   - name: results_per_page
     description: The maximum number of chat threads to be returned per page.
@@ -164,14 +190,14 @@ methods:
     types:
     - <xref:callable>
   return:
-    description: AsyncItemPaged[<xref:azure.communication.chat.ChatThreadInfo>]
+    description: An iterator like instance of ChatThreadInfo
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.chat.ChatThreadInfo>]
   examples:
   - "listing chat threads.<!--[!code-python[Main](les\\chat_client_sample_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\26\\\\azure-communication-chat-1.0.0b3\\\\samples\\\\chat_client_sample_async.py\"\
+    \\26\\\\azure-communication-chat-1.0.0b4\\\\samples\\\\chat_client_sample_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from datetime\
     \ import datetime, timedelta\n   import pytz\n   start_time = datetime.utcnow()\
