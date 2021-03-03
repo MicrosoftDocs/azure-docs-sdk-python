@@ -1,13 +1,13 @@
 ---
 title: 
-keywords: Azure, , SDK, API, azure-mgmt-datadog, datadog
+keywords: Azure, python, SDK, API, azure-mgmt-datadog, datadog
 author: maggiepint
 ms.author: magpint
-ms.date: 11/23/2020
+ms.date: 03/02/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
-ms.devlang: 
+ms.devlang: python
 ms.service: datadog
 ---
 
