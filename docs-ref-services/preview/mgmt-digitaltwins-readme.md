@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-digitaltwins, digitaltwins
 author: maggiepint
 ms.author: magpint
-ms.date: 01/15/2021
+ms.date: 02/26/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure

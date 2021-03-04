@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-resource, resources
 author: maggiepint
 ms.author: magpint
-ms.date: 12/07/2020
+ms.date: 03/01/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -20,7 +20,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 # Usage
 
-For code examples, see [Resource Management](https://docs.microsoft.com/python/api/overview/azure/resources)
+For code examples, see [Resource Management](https://docs.microsoft.com/python/api/overview/azure/resources?view=azure-python-preview)
 on docs.microsoft.com.
 
 
@@ -32,5 +32,14 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-resource%2FREADME.png)
+# Usage
 
+
+To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
+
+
+ 
+For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
+Code samples for this package can be found at [Resource Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
