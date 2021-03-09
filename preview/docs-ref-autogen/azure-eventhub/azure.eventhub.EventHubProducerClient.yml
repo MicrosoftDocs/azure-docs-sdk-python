@@ -109,11 +109,56 @@ constructor:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:str>
+  - name: enable_idempotent_partitions
+    description: 'Indicates whether or not the producer should enable idempotent
+
+      publishing to the Event Hub partitions. If enabled, the producer will only be
+      able to publish directly
+
+      to partitions; it will not be able to publish to the Event Hubs gateway for
+      automatic partition routing
+
+      nor will it be able to use a partition key. Default is False.'
+    types:
+    - <xref:bool>
+  - name: partition_config
+    description: 'The set of configurations that can be specified to influence publishing
+      behavior
+
+      specific to the configured Event Hub partition. These configurations are not
+      necessary in the majority of
+
+      scenarios and are intended for use with specialized scenarios, such as when
+      recovering the state used for
+
+      idempotent publishing.
+
+      It is highly recommended that these configurations only be specified if there
+      is a proven need to do so;
+
+      Incorrectly configuring these values may result in an *EventHubProducerClient*
+      instance that is unable to
+
+      publish to the Event Hubs. These configurations are ignored when publishing
+      to the Event Hubs gateway for
+
+      automatic routing or when using a partition key.
+
+      If a dict is provided as the value instead of a PartitionPublishingConfiguration
+      object, it may contain the
+
+      optional keys: *''producer_group_id''* (int value), *''owner_level''* (int value)
+      and
+
+      *''starting_sequence_number''* (int value).'
+    types:
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.eventhub.PartitionPublishingConfiguration>,
+      <xref:dict>]]
 examples:
 - "Create a new instance of the EventHubProducerClient.<!--[!code-python[Main](les\\\
   sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-eventhub-5.3.0\\\\samples\\\\\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-eventhub-5.4.0b1\\\\samples\\\\\
   sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
   : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
   \n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient,\
@@ -136,7 +181,7 @@ methods:
   - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-eventhub-5.3.0\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    \\17\\\\azure-eventhub-5.4.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n  \
     \ from azure.eventhub import EventHubProducerClient, EventData\n\n   event_hub_connection_str\
@@ -173,7 +218,19 @@ methods:
       a particular partition of the Event Hub decided by the service.
 
       If both partition_id and partition_key are provided, the partition_id will take
-      precedence.'
+      precedence.
+
+      **WARNING: Setting partition_key of non-string value on the events to be sent
+      is discouraged
+
+      as the partition_key will be ignored by the Event Hub service and events will
+      be assigned
+
+      to all partitions using round-robin. Furthermore, there are SDKs for consuming
+      events which expect
+
+      partition_key to only be string type, they might fail to parse the non-string
+      value.**'
     types:
     - <xref:str>
   - name: max_size_in_bytes
@@ -190,8 +247,8 @@ methods:
   - "Create EventDataBatch object within limited size<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-eventhub-5.3.0\\\\samples\\\\\
-    sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-eventhub-5.4.0b1\\\\samples\\\
+    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n       event_data_batch = producer.create_batch()\n       while\
     \ True:\n           try:\n               event_data_batch.add(EventData('Message\
@@ -286,6 +343,51 @@ methods:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:str>
+  - name: enable_idempotent_partitions
+    description: 'Indicates whether or not the producer should enable idempotent
+
+      publishing to the Event Hub partitions. If enabled, the producer will only be
+      able to publish directly
+
+      to partitions; it will not be able to publish to the Event Hubs gateway for
+      automatic partition routing
+
+      nor will it be able to use a partition key. Default is False.'
+    types:
+    - <xref:bool>
+  - name: partition_config
+    description: 'The set of configurations that can be specified to influence publishing
+      behavior
+
+      specific to the configured Event Hub partition. These configurations are not
+      necessary in the majority of
+
+      scenarios and are intended for use with specialized scenarios, such as when
+      recovering the state used for
+
+      idempotent publishing.
+
+      It is highly recommended that these configurations only be specified if there
+      is a proven need to do so;
+
+      Incorrectly configuring these values may result in an *EventHubProducerClient*
+      instance that is unable to
+
+      publish to the Event Hubs. These configurations are ignored when publishing
+      to the Event Hubs gateway for
+
+      automatic routing or when using a partition key.
+
+      If a dict is provided as the value instead of a PartitionPublishingConfiguration
+      object, it may contain the
+
+      optional keys: *''producer_group_id''* (int value), *''owner_level''* (int value)
+      and
+
+      *''starting_sequence_number''* (int value).'
+    types:
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.eventhub.PartitionPublishingConfiguration>,
+      <xref:dict>]]
   return:
     types:
     - <xref:azure.eventhub.EventHubProducerClient>
@@ -293,8 +395,8 @@ methods:
   - "Create a new instance of the EventHubProducerClient from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-eventhub-5.3.0\\\\samples\\\\\
-    sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-eventhub-5.4.0b1\\\\samples\\\
+    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"language\"\
     : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient\n\
     \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
@@ -337,6 +439,24 @@ methods:
     - <xref:dict>
   exceptions:
   - type: azure.eventhub.exceptions.EventHubError
+- uid: azure.eventhub.EventHubProducerClient.get_partition_publishing_properties
+  name: get_partition_publishing_properties
+  summary: "Get the information about the state of publishing for a partition as observed\
+    \ by\nthe *EventHubProducerClient*. This data can always be read, but will only\
+    \ be populated with\ninformation relevant to the active features for the producer\
+    \ client.\n\n   * *enable_idempotent_publishing* (bool) \n\n   * *partition_id*\
+    \ (str) \n\n   * *last_published_sequence_number* (Optional[int]) \n\n   * *producer_group_id*\
+    \ (Optional[int]) \n\n   * *owner_level* (Optional[int]"
+  signature: get_partition_publishing_properties(partition_id)
+  parameters:
+  - name: partition_id
+    description: The target partition ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    types:
+    - <xref:dict>
 - uid: azure.eventhub.EventHubProducerClient.send_batch
   name: send_batch
   summary: 'Sends event data and blocks until acknowledgement is received or operation
@@ -393,7 +513,19 @@ methods:
       *EventDataBatch* itself has partition_key.
 
       If both partition_id and partition_key are provided, the partition_id will take
-      precedence.'
+      precedence.
+
+      **WARNING: Setting partition_key of non-string value on the events to be sent
+      is discouraged
+
+      as the partition_key will be ignored by the Event Hub service and events will
+      be assigned
+
+      to all partitions using round-robin. Furthermore, there are SDKs for consuming
+      events which expect
+
+      partition_key to only be string type, they might fail to parse the non-string
+      value.**'
     types:
     - <xref:str>
   return:
@@ -406,7 +538,7 @@ methods:
   - "Sends event data<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-eventhub-5.3.0\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    \\17\\\\azure-eventhub-5.4.0b1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n       with producer:\n\
     \           event_data_batch = producer.create_batch()\n\n           while True:\n\
