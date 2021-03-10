@@ -15,14 +15,14 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credentials with which to authenticate. The value is an account
-
-      shared access key'
+    description: The TokenCredential we use to authenticate against the service.
     isRequired: true
+    types:
+    - <xref:TokenCredential>
 examples:
 - "<!--[!code-python[Main](les\\identity_samples.py )]-->\n\n<!-- literal_block {\"\
   ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"\
-  source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\126\\\\azure-communication-identity-1.0.0b4\\\
+  source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\126\\\\azure-communication-identity-1.0.0b5\\\
   \\samples\\\\identity_samples.py\", \"xml:space\": \"preserve\", \"language\": \"\
   python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
   ````python\n\n   : utf-8\n\n   -------------------------------------------------------------------\n\
@@ -36,21 +36,21 @@ examples:
   \n   __init__(self):\n   self.connection_string = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')\n\
   \   self.endpoint = os.getenv('AZURE_COMMUNICATION_SERVICE_ENDPOINT')\n   self.client_id\
   \ = os.getenv('AZURE_CLIENT_ID')\n   self.client_secret = os.getenv('AZURE_CLIENT_SECRET')\n\
-  \   self.tenant_id = os.getenv('AZURE_TENANT_ID')\n\n   issue_token(self):\n   from\
+  \   self.tenant_id = os.getenv('AZURE_TENANT_ID')\n\n   get_token(self):\n   from\
   \ azure.communication.identity import (\n       CommunicationIdentityClient,\n \
   \      CommunicationTokenScope\n   )\n\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
   \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
   \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
-  \   user = identity_client.create_user()\n   print(\"Issuing token for: \" + user.identifier)\n\
-  \   tokenresponse = identity_client.issue_token(user, scopes=[CommunicationTokenScope.CHAT])\n\
+  \   user = identity_client.create_user()\n   print(\"Getting token for: \" + user.identifier)\n\
+  \   tokenresponse = identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])\n\
   \   print(\"Token issued with value: \" + tokenresponse.token)\n\n   revoke_tokens(self):\n\
   \   from azure.communication.identity import (\n       CommunicationIdentityClient,\n\
   \       CommunicationTokenScope\n   )\n\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
   \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
   \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
-  \   user = identity_client.create_user()\n   tokenresponse = identity_client.issue_token(user,\
+  \   user = identity_client.create_user()\n   tokenresponse = identity_client.get_token(user,\
   \ scopes=[CommunicationTokenScope.CHAT])\n   print(\"Revoking token: \" + tokenresponse.token)\n\
   \   identity_client.revoke_tokens(user)\n   print(tokenresponse.token + \" revoked\
   \ successfully\")\n\n   create_user(self):\n   from azure.communication.identity\
@@ -59,13 +59,13 @@ examples:
   \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
   \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
   \   print(\"Creating new user\")\n   user = identity_client.create_user()\n   print(\"\
-  User created with id:\" + user.identifier)\n\n   create_user_with_token(self):\n\
+  User created with id:\" + user.identifier)\n\n   create_user_and_token(self):\n\
   \   from azure.communication.identity import (\n       CommunicationIdentityClient,\n\
   \       CommunicationTokenScope\n   )\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
   \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
   \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
-  \   print(\"Creating new user with token\")\n   user, tokenresponse = identity_client.create_user_with_token(scopes=[CommunicationTokenScope.CHAT])\n\
+  \   print(\"Creating new user with token\")\n   user, tokenresponse = identity_client.create_user_and_token(scopes=[CommunicationTokenScope.CHAT])\n\
   \   print(\"User created with id:\" + user.identifier)\n   print(\"Token issued\
   \ with value: \" + tokenresponse.token)\n\n   delete_user(self):\n   from azure.communication.identity\
   \ import CommunicationIdentityClient\n\n   if self.client_id is not None and self.client_secret\
@@ -75,8 +75,8 @@ examples:
   \   user = identity_client.create_user()\n   print(\"Deleting user: \" + user.identifier)\n\
   \   identity_client.delete_user(user)\n   print(user.identifier + \" deleted\")\n\
   \n   e__ == '__main__':\n   le = CommunicationIdentityClientSamples()\n   le.create_user()\n\
-  \   le.create_user_with_token()\n   le.issue_token()\n   le.revoke_tokens()\n  \
-  \ le.delete_user()\n\n   ````\n"
+  \   le.create_user_and_token()\n   le.get_token()\n   le.revoke_tokens()\n   le.delete_user()\n\
+  \n   ````\n"
 methods:
 - uid: azure.communication.identity.CommunicationIdentityClient.create_user
   name: create_user
@@ -86,11 +86,11 @@ methods:
     description: CommunicationUserIdentifier
     types:
     - <xref:azure.communication.identity.CommunicationUserIdentifier>
-- uid: azure.communication.identity.CommunicationIdentityClient.create_user_with_token
-  name: create_user_with_token
+- uid: azure.communication.identity.CommunicationIdentityClient.create_user_and_token
+  name: create_user_and_token
   summary: "create a single Communication user with an identity token.\n:param scopes:\n\
     \n\n   List of scopes to be added to the token."
-  signature: create_user_with_token(scopes, **kwargs)
+  signature: create_user_and_token(scopes, **kwargs)
   return:
     description: A tuple of a CommunicationUserIdentifier and a AccessToken.
     types:
@@ -130,14 +130,14 @@ methods:
   - "Creating the CommunicationIdentityClient from a connection string.<!--[!code-python[Main](les\\\
     identity_samples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\126\\\\azure-communication-identity-1.0.0b4\\\\samples\\\
+    1\\\\s\\\\dist_temp\\\\126\\\\azure-communication-identity-1.0.0b5\\\\samples\\\
     \\identity_samples.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
     , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n\n   ````\n"
-- uid: azure.communication.identity.CommunicationIdentityClient.issue_token
-  name: issue_token
+- uid: azure.communication.identity.CommunicationIdentityClient.get_token
+  name: get_token
   summary: Generates a new token for an identity.
-  signature: issue_token(user, scopes, **kwargs)
+  signature: get_token(user, scopes, **kwargs)
   parameters:
   - name: user
     description: Azure Communication User
