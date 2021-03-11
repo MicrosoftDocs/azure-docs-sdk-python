@@ -1,0 +1,97 @@
+### YamlMime:PythonClass
+uid: azure.core.pipeline.policies.ChallengeAuthenticationPolicy
+name: ChallengeAuthenticationPolicy
+fullName: azure.core.pipeline.policies.ChallengeAuthenticationPolicy
+module: azure.core.pipeline.policies
+inheritances:
+- azure.core.pipeline.policies._base.HTTPPolicy
+summary: Base class for policies that authorize requests with bearer tokens and expect
+  authentication challenges
+constructor:
+  syntax: ChallengeAuthenticationPolicy(credential, *scopes, **kwargs)
+  parameters:
+  - name: credential
+    description: 'an object which can provide access tokens, such as a
+
+      credential from <xref:azure.identity>'
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: scopes
+    description: required authentication scopes
+    isRequired: true
+    types:
+    - <xref:str>
+methods:
+- uid: azure.core.pipeline.policies.ChallengeAuthenticationPolicy.authorize_request
+  name: authorize_request
+  summary: 'Acquire a token from the credential and authorize the request with it.
+
+
+    Keyword arguments are passed to the credential''s get_token method. The token
+    will be cached and used to
+
+    authorize future requests.'
+  signature: authorize_request(request, *scopes, **kwargs)
+  parameters:
+  - name: request
+    description: the request
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  - name: scopes
+    description: required scopes of authentication
+    isRequired: true
+    types:
+    - <xref:str>
+- uid: azure.core.pipeline.policies.ChallengeAuthenticationPolicy.on_challenge
+  name: on_challenge
+  summary: 'Authorize request according to an authentication challenge
+
+
+    This method is called when the resource provider responds 401 with a WWW-Authenticate
+    header.'
+  signature: on_challenge(request, response, challenge)
+  parameters:
+  - name: request
+    description: the request which elicited an authentication challenge
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  - name: response
+    description: the resource provider's response
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  - name: challenge
+    description: response's WWW-Authenticate header, unparsed. It may contain multiple
+      challenges.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: a bool indicating whether the policy should send the request
+- uid: azure.core.pipeline.policies.ChallengeAuthenticationPolicy.on_request
+  name: on_request
+  summary: 'Called before the policy sends a request.
+
+
+    The base implementation authorizes the request with a bearer token.'
+  signature: on_request(request)
+  parameters:
+  - name: request
+    description: the request
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+- uid: azure.core.pipeline.policies.ChallengeAuthenticationPolicy.send
+  name: send
+  summary: Authorizes a request with a bearer token, possibly handling an authentication
+    challenge
+  signature: send(request)
+  parameters:
+  - name: request
+    description: the request
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
