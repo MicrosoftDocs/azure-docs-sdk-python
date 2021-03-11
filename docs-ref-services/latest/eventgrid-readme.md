@@ -1,6 +1,6 @@
 ---
 title: Azure Event Grid client library for Python
-keywords: Azure, python, SDK, API, azure-eventgrid, eventgrideventgrid
+keywords: Azure, python, SDK, API, azure-eventgrid, eventgrid
 author: maggiepint
 ms.author: magpint
 ms.date: 03/11/2021
@@ -451,4 +451,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-
