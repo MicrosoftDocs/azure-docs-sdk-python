@@ -29,13 +29,10 @@ The Microsoft Authentication Library for Python enables applications to integrat
 You can find MSAL Python on [Pypi](https://pypi.org/project/msal/).
 
 1. If you haven't already, install [pip](https://pip.pypa.io/en/stable/installing/).
-2. Execute `pip install msal` to install the package.
-
-## Versions
-
-This library follows [Semantic Versioning](http://semver.org/).
-
-You can find the changes for each version under [Releases](https://github.com/AzureAD/microsoft-authentication-library-for-python/releases).
+2. Install the MSAL for Python package.
+```Bash
+pip install msal
+```
 
 ## Usage
 
@@ -99,6 +96,6 @@ See the [ADAL to MSAL migration](https://github.com/AzureAD/microsoft-authentica
 
 ## Next Steps
 
-- [Application types and authentication scenarios](https://docs.microsoft.com/azure/active-directory/develop/authentication-flows-app-scenarios): MSAL Python supports multiple application types and authentication scenarios.
-- [Auth Scenarios](https://docs.microsoft.com/azure/active-directory/develop/authentication-scenarios) and [Auth protocols](https://docs.microsoft.com/azure/active-directory/develop/active-directory-v2-protocols): Get more information on authentication scenarios and protocols.
-- [Sample applications](https://aka.ms/aaddevsamplesv2) and [documentation](https://aka.ms/aaddevv2): Get started with learning the Microsoft identity platform.
+- [Handle errors and exceptions in MSAL Python](https://docs.microsoft.com/azure/active-directory/develop/msal-error-handling-python): Learn about the different types of errors and how to handle common sign-in errors.
+- [Logging in MSAL Python](https://docs.microsoft.com/azure/active-directory/develop/msal-logging-python): Learn how to generate log messages that can help diagnose issues.
+
