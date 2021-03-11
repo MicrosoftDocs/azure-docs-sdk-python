@@ -19,9 +19,7 @@ ms.custom: marsma
 
 The Microsoft Authentication Library for Python enables applications to integrate with the [Microsoft identity platform](https://aka.ms/aaddevv2). It allows you to sign in users or apps with Microsoft identities ([Azure AD](https://azure.microsoft.com/services/active-directory/), [Microsoft Accounts](https://account.microsoft.com) and [Azure AD B2C](https://azure.microsoft.com/services/active-directory-b2c/) accounts) and obtain tokens to call Microsoft APIs such as [Microsoft Graph](https://graph.microsoft.io/) or your own APIs registered with the Microsoft identity platform. It is built using industry standard OAuth2 and OpenID Connect protocols
 
-Not sure whether this is the SDK you are looking for your app? There are other Microsoft Identity SDKs [here](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki/Microsoft-Authentication-Client-Libraries).
 
-Quick links:
 
 [Getting Started](/azure/active-directory/develop/quickstart-v2-python-webapp) | [Documentation](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) (GitHub) | [Samples](https://aka.ms/aaddevsamplesv2) |
 
