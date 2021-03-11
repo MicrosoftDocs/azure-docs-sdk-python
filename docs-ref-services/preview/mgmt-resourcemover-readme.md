@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-resourcemover, resourcemover
 author: maggiepint
 ms.author: magpint
-ms.date: 02/03/2021
+ms.date: 03/09/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
