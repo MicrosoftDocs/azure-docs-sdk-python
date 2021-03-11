@@ -1,20 +1,20 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-managedprivateendpoints, 
+keywords: Azure, python, SDK, API, azure-synapse-managedprivateendpoints, synapseanalytics
 author: maggiepint
 ms.author: magpint
-ms.date: 02/09/2021
+ms.date: 03/09/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: synapseanalytics
 ---
 
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Managed Private Endpoints Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
+This package has been tested with Python 2.7, 3.6, 3.7, 3.8 and 3.9.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
