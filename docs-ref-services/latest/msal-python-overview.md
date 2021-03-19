@@ -17,29 +17,32 @@ ms.custom: marsma
 ---
 # Microsoft Authentication Library (MSAL) for Python
 
-The Microsoft Authentication Library for Python enables applications to integrate with the [Microsoft identity platform](https://aka.ms/aaddevv2). It allows you to sign in users or apps with Microsoft identities ([Azure AD](https://azure.microsoft.com/services/active-directory/), [Microsoft Accounts](https://account.microsoft.com) and [Azure AD B2C](https://azure.microsoft.com/services/active-directory-b2c/) accounts) and obtain tokens to call Microsoft APIs such as [Microsoft Graph](https://graph.microsoft.io/) or your own APIs registered with the Microsoft identity platform. It is built using industry standard OAuth2 and OpenID Connect protocols
+Get started with the Microsoft Authentication Library for Python to sign in users or apps with Microsoft identities ([Azure AD](https://azure.microsoft.com/services/active-directory/), [Microsoft Accounts](https://account.microsoft.com) and [Azure AD B2C](https://azure.microsoft.com/services/active-directory-b2c/) accounts) and obtain tokens to call Microsoft APIs such as [Microsoft Graph](https://graph.microsoft.io/) or your own APIs registered with the [Microsoft identity platform](https://aka.ms/aaddevv2).
+
+Follow steps to install the package and try out example code for basic tasks.
+
+[Get started](/azure/active-directory/develop/quickstart-v2-python-webapp) | [API reference Documentation](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) (GitHub) | [Samples](https://aka.ms/aaddevsamplesv2) |
 
 
+## Prerequisites
 
-[Getting Started](/azure/active-directory/develop/quickstart-v2-python-webapp) | [Documentation](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) (GitHub) | [Samples](https://aka.ms/aaddevsamplesv2) |
+- An Azure account with an active subscription. [Create a free account][azure_sub].
+- [Python 3.6+](https://www.python.org/downloads/)
 
+## Install the package
 
-## Installation
-
-You can find MSAL Python on [Pypi](https://pypi.org/project/msal/).
-
-1. If you haven't already, install [pip](https://pip.pypa.io/en/stable/installing/).
-2. Install the MSAL for Python package.
+Install the MSAL for Python package. You can find MSAL Python on [Pypi](https://pypi.org/project/msal/).
 ```Bash
 pip install msal
 ```
 
-## Usage
+## Setting up
 
 Before using MSAL Python [register your application](/azure/active-directory/develop/quickstart-v2-register-an-app) with the Microsoft identity platform.
 
-Acquiring tokens with MSAL Python follows this 3-step pattern. This is the high level conceptual pattern. There will be some variations for different flows. They are demonstrated in [runnable samples hosted right in this repo](https://github.com/AzureAD/microsoft-authentication-library-for-python/tree/dev/sample).
+## Usage
 
+Acquiring tokens with MSAL Python follows this 3-step pattern. This is the high level conceptual pattern. There will be some variations for different flows. They are demonstrated in [runnable samples hosted right in this repo](https://github.com/AzureAD/microsoft-authentication-library-for-python/tree/dev/sample).
 
 1. MSAL proposes a clean separation between [public client applications, and confidential client applications](https://tools.ietf.org/html/rfc6749#section-2.1). Therefore, create either a `PublicClientApplication` or a `ConfidentialClientApplication` instance, and reuse it during the lifecycle of your app. The following example shows a `PublicClientApplication`:
 
@@ -99,3 +102,5 @@ See the [ADAL to MSAL migration](https://github.com/AzureAD/microsoft-authentica
 - [Handle errors and exceptions in MSAL Python](https://docs.microsoft.com/azure/active-directory/develop/msal-error-handling-python): Learn about the different types of errors and how to handle common sign-in errors.
 - [Logging in MSAL Python](https://docs.microsoft.com/azure/active-directory/develop/msal-logging-python): Learn how to generate log messages that can help diagnose issues.
 
+<!--Reference-style links -->
+[azure_sub]: https://azure.microsoft.com/free/
