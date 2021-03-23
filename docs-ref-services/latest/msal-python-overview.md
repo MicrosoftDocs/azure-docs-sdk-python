@@ -75,7 +75,7 @@ Acquiring tokens with MSAL Python follows this 3-step pattern. This is the high 
        result = app.acquire_token_silent(["your_scope"], account=chosen)
    ```
 
-3. Either there is no suitable token in the cache, or you chose to skip the previous step. Send a request to Azure AD to obtain a token. There are different methods based on your client type and scenario. Here we demonstrate a placeholder flow.
+3. If there is no suitable token in the cache or you've chosen to skip the previous step, send a request to Azure AD to get a token. There are different methods based on your client type and scenario. Here we demonstrate a placeholder flow.
 
    ```python
    if not result:
