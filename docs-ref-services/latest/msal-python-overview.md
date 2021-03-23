@@ -21,13 +21,13 @@ Get started with the Microsoft Authentication Library for Python to sign in user
 
 Follow steps to install the package and try out example code for basic tasks.
 
-[Quickstart](/azure/active-directory/develop/quickstart-v2-python-webapp) | [API reference documentation](https://docs.microsoft.com/python/api/msal/msal?view=azure-python) | [Samples](https://aka.ms/aaddevsamplesv2)
+[Quickstart](/azure/active-directory/develop/quickstart-v2-python-webapp) | [API reference documentation](/python/api/msal/msal?view=azure-python) | [Samples](https://aka.ms/aaddevsamplesv2)
 
 
 ## Prerequisites
 
 - An Azure account with an active subscription. [Create a free account][azure_sub].
-- [Python 3.6+](https://www.python.org/downloads/)
+- [Python 3.6+](https://www.python.org/downloads/).
 
 ## Install the package
 
@@ -79,7 +79,7 @@ Acquiring tokens with MSAL Python follows this 3-step pattern. This is the high 
 
    ```python
    if not result:
-       # So no suitable token exists in cache. Let's get a new one from AAD.
+       # So no suitable token exists in cache. Let's get a new one from Azure AD.
        result = app.acquire_token_by_one_of_the_actual_method(..., scopes=["User.Read"])
    if "access_token" in result:
        print(result["access_token"])  # Yay!
@@ -95,7 +95,7 @@ Refer to the [Wiki on GitHub](https://github.com/AzureAD/microsoft-authenticatio
 
 If your application is using ADAL Python, we recommend you update it to use MSAL Python. No new feature work will be done in ADAL Python.
 
-See the [ADAL to MSAL migration](https://docs.microsoft.com/en-us/azure/active-directory/develop/migrate-python-adal-msal) guide.
+See the [ADAL to MSAL migration](/azure/active-directory/develop/migrate-python-adal-msal) guide.
 
 ## Next Steps
 
