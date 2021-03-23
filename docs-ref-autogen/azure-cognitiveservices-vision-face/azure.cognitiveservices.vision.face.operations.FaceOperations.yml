@@ -38,29 +38,29 @@ methods:
 
     will be used in [Face -
 
-    Identify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify)),
+    Identify]([https://docs.microsoft.com/rest/api/faceapi/face/identify](https://docs.microsoft.com/rest/api/faceapi/face/identify)),
 
     [Face -
 
-    Verify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface)),
+    Verify]([https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface](https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface)),
 
     and [Face - Find
 
-    Similar]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar)).
+    Similar]([https://docs.microsoft.com/rest/api/faceapi/face/findsimilar](https://docs.microsoft.com/rest/api/faceapi/face/findsimilar)).
 
-    The stored face feature(s) will expire and be deleted 24 hours after
+    The stored face feature(s) will expire and be deleted at the time
 
-    the original detection call.
+    specified by faceIdTimeToLive after the original detection call.
 
     * Optional parameters include faceId, landmarks, and attributes.
 
     Attributes include age, gender, headPose, smile, facialHair, glasses,
 
-    emotion, hair, makeup, occlusion, accessories, blur, exposure and
+    emotion, hair, makeup, occlusion, accessories, blur, exposure, noise,
 
-    noise. Some of the results returned for specific attributes may not be
+    and mask. Some of the results returned for specific attributes may not
 
-    highly accurate.
+    be highly accurate.
 
     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The
 
@@ -72,15 +72,15 @@ methods:
 
     * For optimal results when querying [Face -
 
-    Identify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify)),
+    Identify]([https://docs.microsoft.com/rest/api/faceapi/face/identify](https://docs.microsoft.com/rest/api/faceapi/face/identify)),
 
     [Face -
 
-    Verify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface)),
+    Verify]([https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface](https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface)),
 
     and [Face - Find
 
-    Similar]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar))
+    Similar]([https://docs.microsoft.com/rest/api/faceapi/face/findsimilar](https://docs.microsoft.com/rest/api/faceapi/face/findsimilar))
 
     (''returnFaceId'' is true), please use faces that are: frontal, clear,
 
@@ -98,24 +98,6 @@ methods:
 
     model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model))
 
-    | Model | Recommended use-case(s) |
-
-    | ---------- | -------- |
-
-    | ''detection_01'': | The default detection model for [Face -
-
-    Detect]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl)).
-
-    Recommend for near frontal face detection. For scenarios with
-
-    exceptionally large angle (head-pose) faces, occluded faces or wrong
-
-    image orientation, the faces in such cases may not be detected. |
-
-    | ''detection_02'': | Detection model released in 2019 May with improved
-
-    accuracy especially on small, side and blurry faces. |
-
     * Different ''recognitionModel'' values are provided. If follow-up
 
     operations like Verify, Identify, Find Similar are needed, please
@@ -128,35 +110,15 @@ methods:
 
     parameter. Once specified, the detected faceIds will be associated with
 
-    the specified recognition model. More details, please refer to [How to
+    the specified recognition model. More details, please refer to [Specify
 
-    specify a recognition
+    a recognition
 
-    model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model))
-
-    | Model | Recommended use-case(s) |
-
-    | ---------- | -------- |
-
-    | ''recognition_01'': | The default recognition model for [Face -
-
-    Detect]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl)).
-
-    All those faceIds created before 2019 March are bonded with this
-
-    recognition model. |
-
-    | ''recognition_02'': | Recognition model released in 2019 March. |
-
-    | ''recognition_03'': | Recognition model released in 2020 May.
-
-    ''recognition_03'' is recommended since its overall accuracy is improved
-
-    compared with ''recognition_01'' and ''recognition_02''. >>|<<.'
+    model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model)).'
   signature: detect_with_stream(image, return_face_id=True, return_face_landmarks=False,
     return_face_attributes=None, recognition_model='recognition_01', return_recognition_model=False,
-    detection_model='detection_01', custom_headers=None, raw=False, callback=None,
-    **operation_config)
+    detection_model='detection_01', face_id_time_to_live=86400, custom_headers=None,
+    raw=False, callback=None, **operation_config)
   parameters:
   - name: image
     description: An image stream.
@@ -184,13 +146,19 @@ methods:
 
       specified face attributes in the comma-separated string like
 
-      "returnFaceAttributes=age,gender". Supported face attributes include
+      "returnFaceAttributes=age,gender". The available attributes depends on
 
-      age, gender, headPose, smile, facialHair, glasses and emotion. Note
+      the ''detectionModel'' specified. ''detection_01'' supports age, gender,
 
-      that each face attribute analysis has additional computational and
+      headPose, smile, facialHair, glasses, emotion, hair, makeup,
 
-      time cost.'
+      occlusion, accessories, blur, exposure, and noise. While
+
+      ''detection_02'' does not support any attributes and ''detection_03'' only
+
+      supports mask. Note that each face attribute analysis has additional
+
+      computational and time cost.'
     isRequired: true
     defaultValue: None
     types:
@@ -211,7 +179,7 @@ methods:
 
       specify the model you need. Possible values include: ''recognition_01'',
 
-      ''recognition_02'', ''recognition_03'''
+      ''recognition_02'', ''recognition_03'', ''recognition_04'''
     isRequired: true
     defaultValue: recognition_01
     types:
@@ -236,12 +204,24 @@ methods:
 
       ''detection_01'', if another model is needed, please explicitly specify
 
-      it. Possible values include: ''detection_01'', ''detection_02'''
+      it. Possible values include: ''detection_01'', ''detection_02'',
+
+      ''detection_03'''
     isRequired: true
     defaultValue: detection_01
     types:
     - <xref:str>
     - <xref:azure.cognitiveservices.vision.face.models.DetectionModel>
+  - name: face_id_time_to_live
+    description: 'The number of seconds for the faceId
+
+      being cached. Supported range from 60 seconds up to 86400 seconds. The
+
+      default value is 86400 (24 hours).'
+    isRequired: true
+    defaultValue: '86400'
+    types:
+    - <xref:int>
   - name: custom_headers
     description: headers that will be added to the request
     isRequired: true
@@ -292,29 +272,29 @@ methods:
 
     will be used in [Face -
 
-    Identify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify)),
+    Identify]([https://docs.microsoft.com/rest/api/faceapi/face/identify](https://docs.microsoft.com/rest/api/faceapi/face/identify)),
 
     [Face -
 
-    Verify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface)),
+    Verify]([https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface](https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface)),
 
     and [Face - Find
 
-    Similar]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar)).
+    Similar]([https://docs.microsoft.com/rest/api/faceapi/face/findsimilar](https://docs.microsoft.com/rest/api/faceapi/face/findsimilar)).
 
-    The stored face feature(s) will expire and be deleted 24 hours after
+    The stored face feature(s) will expire and be deleted at the time
 
-    the original detection call.
+    specified by faceIdTimeToLive after the original detection call.
 
     * Optional parameters include faceId, landmarks, and attributes.
 
     Attributes include age, gender, headPose, smile, facialHair, glasses,
 
-    emotion, hair, makeup, occlusion, accessories, blur, exposure and
+    emotion, hair, makeup, occlusion, accessories, blur, exposure, noise,
 
-    noise. Some of the results returned for specific attributes may not be
+    and mask. Some of the results returned for specific attributes may not
 
-    highly accurate.
+    be highly accurate.
 
     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The
 
@@ -326,15 +306,15 @@ methods:
 
     * For optimal results when querying [Face -
 
-    Identify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify)),
+    Identify]([https://docs.microsoft.com/rest/api/faceapi/face/identify](https://docs.microsoft.com/rest/api/faceapi/face/identify)),
 
     [Face -
 
-    Verify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface)),
+    Verify]([https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface](https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface)),
 
     and [Face - Find
 
-    Similar]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar))
+    Similar]([https://docs.microsoft.com/rest/api/faceapi/face/findsimilar](https://docs.microsoft.com/rest/api/faceapi/face/findsimilar))
 
     (''returnFaceId'' is true), please use faces that are: frontal, clear,
 
@@ -350,25 +330,7 @@ methods:
 
     different detection models, please refer to [How to specify a detection
 
-    model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model))
-
-    | Model | Recommended use-case(s) |
-
-    | ---------- | -------- |
-
-    | ''detection_01'': | The default detection model for [Face -
-
-    Detect]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl)).
-
-    Recommend for near frontal face detection. For scenarios with
-
-    exceptionally large angle (head-pose) faces, occluded faces or wrong
-
-    image orientation, the faces in such cases may not be detected. |
-
-    | ''detection_02'': | Detection model released in 2019 May with improved
-
-    accuracy especially on small, side and blurry faces. |
+    model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)).
 
     * Different ''recognitionModel'' values are provided. If follow-up
 
@@ -382,34 +344,15 @@ methods:
 
     parameter. Once specified, the detected faceIds will be associated with
 
-    the specified recognition model. More details, please refer to [How to
+    the specified recognition model. More details, please refer to [Specify
 
-    specify a recognition
+    a recognition
 
-    model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model))
-
-    | Model | Recommended use-case(s) |
-
-    | ---------- | -------- |
-
-    | ''recognition_01'': | The default recognition model for [Face -
-
-    Detect]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl)).
-
-    All those faceIds created before 2019 March are bonded with this
-
-    recognition model. |
-
-    | ''recognition_02'': | Recognition model released in 2019 March. |
-
-    | ''recognition_03'': | Recognition model released in 2020 May.
-
-    ''recognition_03'' is recommended since its overall accuracy is improved
-
-    compared with ''recognition_01'' and ''recognition_02''. >>|<<.'
+    model]([https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model)).'
   signature: detect_with_url(url, return_face_id=True, return_face_landmarks=False,
     return_face_attributes=None, recognition_model='recognition_01', return_recognition_model=False,
-    detection_model='detection_01', custom_headers=None, raw=False, **operation_config)
+    detection_model='detection_01', face_id_time_to_live=86400, custom_headers=None,
+    raw=False, **operation_config)
   parameters:
   - name: url
     description: Publicly reachable URL of an image
@@ -437,13 +380,19 @@ methods:
 
       specified face attributes in the comma-separated string like
 
-      "returnFaceAttributes=age,gender". Supported face attributes include
+      "returnFaceAttributes=age,gender". The available attributes depends on
 
-      age, gender, headPose, smile, facialHair, glasses and emotion. Note
+      the ''detectionModel'' specified. ''detection_01'' supports age, gender,
 
-      that each face attribute analysis has additional computational and
+      headPose, smile, facialHair, glasses, emotion, hair, makeup,
 
-      time cost.'
+      occlusion, accessories, blur, exposure, and noise. While
+
+      ''detection_02'' does not support any attributes and ''detection_03'' only
+
+      supports mask. Note that each face attribute analysis has additional
+
+      computational and time cost.'
     isRequired: true
     defaultValue: None
     types:
@@ -464,7 +413,7 @@ methods:
 
       specify the model you need. Possible values include: ''recognition_01'',
 
-      ''recognition_02'', ''recognition_03'''
+      ''recognition_02'', ''recognition_03'', ''recognition_04'''
     isRequired: true
     defaultValue: recognition_01
     types:
@@ -489,12 +438,24 @@ methods:
 
       ''detection_01'', if another model is needed, please explicitly specify
 
-      it. Possible values include: ''detection_01'', ''detection_02'''
+      it. Possible values include: ''detection_01'', ''detection_02'',
+
+      ''detection_03'''
     isRequired: true
     defaultValue: detection_01
     types:
     - <xref:str>
     - <xref:azure.cognitiveservices.vision.face.models.DetectionModel>
+  - name: face_id_time_to_live
+    description: 'The number of seconds for the faceId
+
+      being cached. Supported range from 60 seconds up to 86400 seconds. The
+
+      default value is 86400 (24 hours).'
+    isRequired: true
+    defaultValue: '86400'
+    types:
+    - <xref:int>
   - name: custom_headers
     description: headers that will be added to the request
     isRequired: true
@@ -527,21 +488,26 @@ methods:
 
     faceId array, a face list or a large face list. faceId array contains
 
-    the faces created by [Face -
+    the faces created by [Face - Detect With
 
-    Detect]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl)),
+    Url]([https://docs.microsoft.com/rest/api/faceapi/face/detectwithurl](https://docs.microsoft.com/rest/api/faceapi/face/detectwithurl))
+    or
 
-    which will expire 24 hours after creation. A "faceListId" is created by
+    [Face - Detect With
 
-    [FaceList -
+    Stream]([https://docs.microsoft.com/rest/api/faceapi/face/detectwithstream](https://docs.microsoft.com/rest/api/faceapi/face/detectwithstream)),
 
-    Create]([https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create))
+    which will expire at the time specified by faceIdTimeToLive after
+
+    creation. A "faceListId" is created by [FaceList -
+
+    Create]([https://docs.microsoft.com/rest/api/faceapi/facelist/create](https://docs.microsoft.com/rest/api/faceapi/facelist/create))
 
     containing persistedFaceIds that will not expire. And a
 
     "largeFaceListId" is created by [LargeFaceList -
 
-    Create]([https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist/create](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist/create))
+    Create]([https://docs.microsoft.com/rest/api/faceapi/largefacelist/create](https://docs.microsoft.com/rest/api/faceapi/largefacelist/create))
 
     containing persistedFaceIds that will also not expire. Depending on the
 
@@ -581,7 +547,9 @@ methods:
 
       Detect first to get a valid faceId. Note that this faceId is not
 
-      persisted and will expire 24 hours after the detection call'
+      persisted and will expire at the time specified by faceIdTimeToLive
+
+      after the detection call'
     isRequired: true
     types:
     - <xref:str>
@@ -616,13 +584,13 @@ methods:
   - name: face_ids
     description: 'An array of candidate faceIds. All of them are
 
-      created by Face - Detect and the faceIds will expire 24 hours after
+      created by Face - Detect and the faceIds will expire at the time
 
-      the detection call. The number of faceIds is limited to 1000.
+      specified by faceIdTimeToLive after the detection call. The number of
 
-      Parameter faceListId, largeFaceListId and faceIds should not be
+      faceIds is limited to 1000. Parameter faceListId, largeFaceListId and
 
-      provided at the same time.'
+      faceIds should not be provided at the same time.'
     isRequired: true
     defaultValue: None
     types:
@@ -694,7 +662,7 @@ methods:
 
     suggest to try [Face -
 
-    Verify]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface))
+    Verify]([https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface](https://docs.microsoft.com/rest/api/faceapi/face/verifyfacetoface))
 
     when you only have 2 candidate faces.
 
@@ -758,11 +726,11 @@ methods:
 
     [PersonGroup -
 
-    Train]([https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train))
+    Train]([https://docs.microsoft.com/rest/api/faceapi/persongroup/train](https://docs.microsoft.com/rest/api/faceapi/persongroup/train))
 
     and [LargePersonGroup -
 
-    Train]([https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup/train](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup/train)).
+    Train]([https://docs.microsoft.com/rest/api/faceapi/largepersongroup/train](https://docs.microsoft.com/rest/api/faceapi/largepersongroup/train)).
 
     <br/>
 
@@ -790,7 +758,7 @@ methods:
 
     * Try [Face - Find
 
-    Similar]([https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar))
+    Similar]([https://docs.microsoft.com/rest/api/faceapi/face/findsimilar](https://docs.microsoft.com/rest/api/faceapi/face/findsimilar))
 
     when you need to find similar faces from a face list/large face list
 
