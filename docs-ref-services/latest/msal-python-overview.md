@@ -21,7 +21,7 @@ Get started with the Microsoft Authentication Library for Python to sign in user
 
 Follow steps to install the package and try out example code for basic tasks.
 
-[Get started](/azure/active-directory/develop/quickstart-v2-python-webapp) | [API reference Documentation](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki) (GitHub) | [Samples](https://aka.ms/aaddevsamplesv2) |
+[Quickstart](/azure/active-directory/develop/quickstart-v2-python-webapp) | [API reference documentation](https://docs.microsoft.com/python/api/msal/msal?view=azure-python) | [Samples](https://aka.ms/aaddevsamplesv2)
 
 
 ## Prerequisites
@@ -42,7 +42,7 @@ Before using MSAL Python [register your application](/azure/active-directory/dev
 
 ## Usage
 
-Acquiring tokens with MSAL Python follows this 3-step pattern. This is the high level conceptual pattern. There will be some variations for different flows. They are demonstrated in [runnable samples hosted right in this repo](https://github.com/AzureAD/microsoft-authentication-library-for-python/tree/dev/sample).
+Acquiring tokens with MSAL Python follows this 3-step pattern. This is the high level conceptual pattern. There will be some variations for different flows. They are demonstrated in the [runnable samples](https://github.com/AzureAD/microsoft-authentication-library-for-python/tree/dev/sample).
 
 1. MSAL proposes a clean separation between [public client applications, and confidential client applications](https://tools.ietf.org/html/rfc6749#section-2.1). Therefore, create either a `PublicClientApplication` or a `ConfidentialClientApplication` instance, and reuse it during the lifecycle of your app. The following example shows a `PublicClientApplication`:
 
@@ -95,7 +95,7 @@ Refer to the [Wiki on GitHub](https://github.com/AzureAD/microsoft-authenticatio
 
 If your application is using ADAL Python, we recommend you update it to use MSAL Python. No new feature work will be done in ADAL Python.
 
-See the [ADAL to MSAL migration](https://github.com/AzureAD/microsoft-authentication-library-for-python/wiki/Migrate-to-MSAL-Python) guide.
+See the [ADAL to MSAL migration](https://docs.microsoft.com/en-us/azure/active-directory/develop/migrate-python-adal-msal) guide.
 
 ## Next Steps
 
