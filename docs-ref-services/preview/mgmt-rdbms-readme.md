@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-rdbms, databaseformysql/postgresql
 author: maggiepint
 ms.author: magpint
-ms.date: 03/19/2021
+ms.date: 03/17/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -40,4 +40,5 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-rdbms%2FREADME.png)
+
 
