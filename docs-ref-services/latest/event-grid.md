@@ -43,10 +43,10 @@ To manage your Azure Event Grid resources like topics and domains via the Azure 
 
 |    Library    |    Reference    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-|    [azure-mgmt-eventgrid](https://pypi.org/project/azure-mgmt-eventgrid/)    |    [API Reference for azure-mgmt-eventgrid](https://docs.microsoft.com/en-us/python/api/overview/azure/eventgrid/management?view=azure-python)    |   [Source code for azure-mgmt-eventgrid](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-mgmt-eventgrid)    |
+|    [azure-mgmt-eventgrid](https://pypi.org/project/azure-mgmt-eventgrid/)    |    [API Reference for azure-mgmt-eventgrid](https://docs.microsoft.com/python/api/overview/azure/eventgrid/management?view=azure-python)    |   [Source code for azure-mgmt-eventgrid](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-mgmt-eventgrid)    |
 
 ## Next Steps
 
 * [Event Grid documentation](https://docs.microsoft.com/azure/event-grid/)
 * [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/)
-* [SDK reference documentation](https://docs.microsoft.com/en-us/python/api/overview/azure/event-grid?view=azure-python)
+* [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)
