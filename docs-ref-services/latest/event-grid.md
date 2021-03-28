@@ -35,7 +35,7 @@ The older verson allows you to send events to Azure Event Grid, but it lacks a l
 
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    [azure-eventgrid v1](https://pypi.org/project/azure-eventgrid/1.3.0/)    |    [API Reference for azure-eventgrid v1](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)    |    [Samples for azure-eventgrid v1](https://github.com/Azure-Samples/event-grid-python-public-consume-events)   |    [Source code for azure-eventgrid v1](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/eventgrid/azure-eventgrid/)    |
+|    [azure-eventgrid v1](https://pypi.org/project/azure-eventgrid/1.3.0/)    |    [API Reference for azure-eventgrid v1](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)    |    [Samples for azure-eventgrid v1](https://github.com/Azure-Samples/event-grid-python-public-consume-events)   |    [Source code for azure-eventgrid v1](https://github.com/Azure/azure-sdk-for-python/tree/release/eventgrid-v1/sdk/eventgrid/azure-eventgrid)    |
 
 ## Libraries for resource management
 
