@@ -15,8 +15,6 @@ ms.service: event-grid
 
 Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.
 
-[Learn more](/azure/event-grid/overview) about Azure Event Grid and get started with the [Azure Blob storage event tutorial](/azure/storage/blobs/storage-blob-event-quickstart). 
-
 ## Libraries for data access
 
 The latest version of the Azure Event Grid library is version 4.x.x. We highly recommend using version 4.x.x for new applications.
