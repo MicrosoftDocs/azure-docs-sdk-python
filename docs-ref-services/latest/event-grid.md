@@ -31,7 +31,7 @@ To publish a CloudEvent, an EventGridEvent or a Custom schema event to Azure Eve
 
 ### Version 1.x.x
 
-The older verson allows you to send events to Azure Event Grid, but it lacks a lot of the new features and performance improvements available in the latest version of the same package.
+The older version allows you to send events to Azure Event Grid, but it lacks a lot of the new features and performance improvements available in the latest version of the same package.
 
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
@@ -39,7 +39,7 @@ The older verson allows you to send events to Azure Event Grid, but it lacks a l
 
 ## Libraries for resource management
 
-To manage your AzureEvent Grid resources like topics and domains via the Azure Resource Manager, you would use the below package:
+To manage your Azure Event Grid resources like topics and domains via the Azure Resource Manager, you would use the below package:
 
 |    Library    |    Reference    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
