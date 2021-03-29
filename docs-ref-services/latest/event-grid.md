@@ -27,7 +27,7 @@ To publish a CloudEvent, an EventGridEvent or a Custom schema event to Azure Eve
 
 | Library | Reference | Samples | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    [azure-eventgrid v4](https://pypi.org/project/azure-eventgrid/)    |    [API Reference for azure-eventgrid v4](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)    |    [Samples for azure-eventgrid v4](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-eventgrid/samples)   |    [Source code for azure-eventgrid v4](https://github.com/Azure/azure-sdk-for-python/tree/release/eventgrid-v1/sdk/eventgrid/azure-eventgrid)    |
+|    [azure-eventgrid v4](https://pypi.org/project/azure-eventgrid/)    |    [API Reference for azure-eventgrid v4](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)    |    [Samples for azure-eventgrid v4](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-eventgrid/samples)   |    [Source code for azure-eventgrid v4](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-eventgrid)    |
 
 ### Version 1.x.x
 
