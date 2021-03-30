@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-cdn, contentdeliverynetwork
 author: maggiepint
 ms.author: magpint
-ms.date: 01/25/2021
+ms.date: 03/30/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure

@@ -15,132 +15,38 @@ ms.service: event-grid
 
 Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.
 
-[Learn more](/azure/event-grid/overview) about Azure Event Grid and get started with the [Azure Blob storage event tutorial](/azure/storage/blobs/storage-blob-event-quickstart). 
+## Libraries for data access
 
-## Publish SDK
+The latest version of the Azure Event Grid library is version 4.x.x. We highly recommend using version 4.x.x for new applications.
 
-Authenticate, create, handle, and publish events to topics using the Azure Event Grid publish SDK.
+To update existing applications to version 4.x.x, please follow the [migration guide](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/eventgrid/azure-eventgrid/migration_guide.md).
 
-### Installation 
+### Version 4.x.x
 
-Install the package with [pip](https://pip.pypa.io/en/stable/quickstart/):
+To publish a CloudEvent, an EventGridEvent or a Custom schema event to Azure Event Grid, you would use the latest version of the `azure-eventgrid`. This version also has async support.
 
-```bash
-pip install azure-eventgrid
-```
+| Library | Reference | Samples | Source |
+|----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+|    [azure-eventgrid v4](https://pypi.org/project/azure-eventgrid/)    |    [API Reference for azure-eventgrid v4](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)    |    [Samples for azure-eventgrid v4](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-eventgrid/samples)   |    [Source code for azure-eventgrid v4](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-eventgrid)    |
 
-### Example 
+### Version 1.x.x
 
-The following code publishes an event to a topic. You can retrieve the topic key and endpoint through the Azure Portal or through the Azure CLI:
+The older version allows you to send events to Azure Event Grid, but it lacks a lot of the new features and performance improvements available in the latest version of the same package.
 
-```azurecli-interactive
-endpoint=$(az eventgrid topic show --name <topic_name> -g gridResourceGroup --query "endpoint" --output tsv)
-key=$(az eventgrid topic key list --name <topic_name> -g gridResourceGroup --query "key1" --output tsv)
-```
+| Library | Reference | Samples | Source |
+|----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+|    [azure-eventgrid v1](https://pypi.org/project/azure-eventgrid/1.3.0/)    |    [API Reference for azure-eventgrid v1](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)    |    [Samples for azure-eventgrid v1](https://github.com/Azure-Samples/event-grid-python-public-consume-events)   |    [Source code for azure-eventgrid v1](https://github.com/Azure/azure-sdk-for-python/tree/release/eventgrid-v1/sdk/eventgrid/azure-eventgrid)    |
 
-```python
-from datetime import datetime
-from azure.eventgrid import EventGridClient
-from msrest.authentication import TopicCredentials
+## Libraries for resource management
 
-def publish_event(self):
+To manage your Azure Event Grid resources like topics and domains via the Azure Resource Manager, you would use the below package:
 
-        credentials = TopicCredentials(
-            self.settings.EVENT_GRID_KEY
-        )
-        event_grid_client = EventGridClient(credentials)
-        event_grid_client.publish_events(
-            "your-endpoint-here",
-            events=[{
-                'id' : "dbf93d79-3859-4cac-8055-51e3b6b54bea",
-                'subject' : "Sample subject",
-                'data': {
-                    'key': 'Sample Data'
-                },
-                'event_type': 'SampleEventType',
-                'event_time': datetime(2018, 5, 2),
-                'data_version': 1
-            }]
-        )
-```
+|    Library    |    Reference    |    Source    |
+|------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+|    [azure-mgmt-eventgrid](https://pypi.org/project/azure-mgmt-eventgrid/)    |    [API Reference for azure-mgmt-eventgrid](https://docs.microsoft.com/python/api/overview/azure/eventgrid/management?view=azure-python)    |   [Source code for azure-mgmt-eventgrid](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/azure-mgmt-eventgrid)    |
 
-> [!div class="nextstepaction"]
-> [Explore the Client APIs](/python/api/overview/azure/eventgrid/client)
+## Next Steps
 
-## Management SDK
-
-Create, update, or delete Event Grid instances, topics, and subscriptions with the management SDK.
-
-### Installation 
-
-Install the package with [pip](https://pip.pypa.io/en/stable/quickstart/):
-
-```bash
-pip install azure-mgmt-eventgrid
-```
-
-### Example
-
-The following creates a custom topic and subscribes an endpoint to the topic. The code then sends an event to the topic through HTTPS.
-RequestBin is an open source, third-party tool that enables you to create an endpoint, and view requests that are sent to it. Go to [RequestBin](https://requestbin.com), and click **Create a RequestBin**. Copy the bin URL, because you need it when subscribing to the topic.
-
-```python
-from azure.mgmt.resource import ResourceManagementClient
-from azure.mgmt.eventgrid import EventGridManagementClient
-import requests
-
-RESOURCE_GROUP_NAME = 'gridResourceGroup'
-TOPIC_NAME = 'gridTopic1234'
-LOCATION = 'westus2'
-SUBSCRIPTION_ID = 'YOUR_SUBSCRIPTION_ID'
-SUBSCRIPTION_NAME = 'gridSubscription'
-REQUEST_BIN_URL = 'YOUR_REQUEST_BIN_URL'
-
-# create resource group
-resource_client = ResourceManagementClient(credentials, SUBSCRIPTION_ID)
-resource_client.resource_groups.create_or_update(
-    RESOURCE_GROUP_NAME,
-    {
-        'location': LOCATION
-    }
-)
-
-event_client = EventGridManagementClient(credentials, SUBSCRIPTION_ID)
-
-# create a custom topic
-event_client.topics.create_or_update(RESOURCE_GROUP_NAME, TOPIC_NAME, LOCATION)
-
-# subscribe to a topic
-scope = '/subscriptions/'+SUBSCRIPTION_ID+'/resourceGroups/'+RESOURCE_GROUP_NAME+'/providers/Microsoft.EventGrid/topics/'+TOPIC_NAME
-event_client.event_subscriptions.create(scope, SUBSCRIPTION_NAME,
-    {
-        'destination': {
-            'endpoint_url': REQUEST_BIN_URL
-        }
-    }
-)
-
-# send an event to topic
-# get endpoint url
-url = event_client.event_subscriptions.get_full_url(scope, SUBSCRIPTION_NAME).endpoint_url
-# get key
-key = event_client.topics.list_shared_access_keys(RESOURCE_GROUP_NAME,TOPIC_NAME).key1
-headers = {'aeg-sas-key': key}
-s = requests.get('https://raw.githubusercontent.com/Azure/azure-docs-json-samples/master/event-grid/customevent.json')
-r = requests.post(url, data=s, headers=headers)
-print(r.status_code)
-print(r.content)
-```
-Browse to the RequestBin URL created earlier to see the event just sent.
-
-Clean up resources
-```azurecli-interactive
-az group delete --name gridResourceGroup
-```
-
-> [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/eventgrid/management)
-
-## Learn more
-
-[Receive events using the Event Grid SDK](/azure/event-grid/receive-events)
+* [Event Grid documentation](https://docs.microsoft.com/azure/event-grid/)
+* [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/)
+* [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)
