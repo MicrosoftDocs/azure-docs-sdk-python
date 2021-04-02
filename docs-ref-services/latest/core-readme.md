@@ -3,7 +3,7 @@ title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
 author: maggiepint
 ms.author: magpint
-ms.date: 03/08/2021
+ms.date: 04/02/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -12,21 +12,21 @@ ms.service: core
 ---
 
 
-# Azure Core shared client library for Python - Version 1.12.0 
+# Azure Core shared client library for Python - Version 1.13.0 
 
 
-Azure core provides shared exceptions and modules for Python SDK client libraries. 
-These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python_introduction.html) .
+Azure core provides shared exceptions and modules for Python SDK client libraries.
+These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python/guidelines/index.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.12.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.13.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.12.0/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.12.0/sdk/core/azure-core/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.13.0/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.13.0/sdk/core/azure-core/)
 
 ## Getting started
 
-Typically, you will not need to install azure core; 
-it will be installed when you install one of the client libraries using it. 
-In case you want to install it explicitly (to implement your own client library, for example), 
+Typically, you will not need to install azure core;
+it will be installed when you install one of the client libraries using it.
+In case you want to install it explicitly (to implement your own client library, for example),
 you can find it [here](https://pypi.org/project/azure-core/).
 
 ## Key concepts
@@ -46,7 +46,7 @@ class AzureError(Exception):
         super(AzureError, self).__init__(self.message, *args)
 ```
 
-*message* is any message (str) to be associated with the exception. 
+*message* is any message (str) to be associated with the exception.
 
 *args* are any additional args to be included with exception.
 
