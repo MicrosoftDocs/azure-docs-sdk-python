@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-apimanagement, apimanagement
 author: maggiepint
 ms.author: magpint
-ms.date: 01/04/2021
+ms.date: 04/02/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -37,5 +37,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-apimanagement%2FREADME.png)
-
 
