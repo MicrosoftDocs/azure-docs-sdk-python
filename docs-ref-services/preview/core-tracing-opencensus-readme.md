@@ -1,89 +1,60 @@
 ---
-title: Azure Core Tracing OpenTelemetry client library for Python
-keywords: Azure, python, SDK, API, core, azure-core-tracing-opentelemetry
+title: Azure Core Tracing OpenCensus client library for Python
+keywords: Azure, python, SDK, API, azure-core-tracing-opencensus, core
 author: maggiepint
 ms.author: magpint
-ms.date: 06/08/2020
+ms.date: 04/08/2021
 ms.topic: article
+ms.prod: azure
+ms.technology: azure
 ms.devlang: python
-ms.service: azure
+ms.service: core
 ---
 
-# Azure Core Tracing OpenTelemetry client library for Python - Version 1.0.0b5 
+
+
+# Azure Core Tracing OpenCensus client library for Python - Version 1.0.0b7 
 
 
 ## Getting started
 
-### Install the package
-
-Install the opentelemetry python for Python with [pip](https://pypi.org/project/pip/):
+Install the opencensus python for Python with [pip](https://pypi.org/project/pip/):
 
 ```bash
-pip install azure-core-tracing-opentelemetry
+pip install azure-core-tracing-opencensus --pre
 ```
 
-Now you can use opentelemetry for Python as usual with any SDKs that are compatible
+Now you can use opencensus for Python as usual with any SDKs that is compatible
 with azure-core tracing. This includes (not exhaustive list), azure-storage-blob, azure-keyvault-secrets, azure-eventhub, etc.
 
 ## Key concepts
 
 * You don't need to pass any context, SDK will get it for you
-* Those lines are the only ones you need to enable tracing
-
-  ``` python
-    from azure.core.settings import settings
-    from azure.core.tracing.ext.opentelemetry_span import OpenTelemetrySpan
-    settings.tracing_implementation = OpenTelemetrySpan
-  ```
+* The opencensus threading plugin is installed with this package
 
 ## Examples
 
-There is no explicit context to pass, you just create your usual opentelemetry tracer and
+There is no explicit context to pass, you just create your usual opencensus and tracer and
 call any SDK code that is compatible with azure-core tracing. This is an example
 using Azure Monitor exporter, but you can use any exporter (Zipkin, etc.).
 
 ```python
+from opencensus.ext.azure.trace_exporter import AzureExporter
 
-# Declare OpenTelemetry as enabled tracing plugin for Azure SDKs
-from azure.core.settings import settings
-from azure.core.tracing.ext.opentelemetry_span import OpenTelemetrySpan
-
-settings.tracing_implementation = OpenTelemetrySpan
-
-# In the below example, we use a simple console exporter, uncomment these lines to use
-# the Azure Monitor Exporter.
-# Example of Azure Monitor exporter, but you can use anything OpenTelemetry supports
-# from azure_monitor import AzureMonitorSpanExporter
-# exporter = AzureMonitorSpanExporter(
-#     instrumentation_key="uuid of the instrumentation key (see your Azure Monitor account)"
-# )
-
-# Regular open telemetry usage from here, see https://github.com/open-telemetry/opentelemetry-python
-# for details
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import ConsoleSpanExporter
-from opentelemetry.sdk.trace.export import SimpleExportSpanProcessor
-
-# Simple console exporter
-exporter = ConsoleSpanExporter()
-
-trace.set_tracer_provider(TracerProvider())
-tracer = trace.get_tracer(__name__)
-trace.get_tracer_provider().add_span_processor(
-    SimpleExportSpanProcessor(exporter)
-)
-
-# Example with Storage SDKs
+from opencensus.trace.tracer import Tracer
+from opencensus.trace.samplers import AlwaysOnSampler
 
 from azure.storage.blob import BlobServiceClient
 
-with tracer.start_as_current_span(name="MyApplication"):
-    client = BlobServiceClient.from_connection_string('connectionstring')
-    client.create_container('mycontainer')  # Call will be traced
-```
+exporter = AzureExporter(
+    instrumentation_key="uuid of the instrumentation key (see your Azure Monitor account)"
+)
 
-Azure Exporter can be found in the [package](https://pypi.org/project/opentelemetry-azure-monitor-exporter/) `opentelemetry-azure-monitor-exporter`
+tracer = Tracer(exporter=exporter, sampler=AlwaysOnSampler())
+with tracer.span(name="MyApplication") as span:
+    client = BlobServiceClient.from_connection_string('connectionstring')
+    client.delete_container('mycontainer')  # Call will be traced
+```
 
 
 ## Troubleshooting
@@ -93,7 +64,7 @@ This client raises exceptions defined in [Azure Core](https://docs.microsoft.com
 
 ## Next steps
 
-More documentation on OpenTelemetry configuration can be found on the [OpenTelemetry website](https://opentelemetry.io)
+More documentation on OpenCensus configuration can be found on the [OpenCensus website](https://opencensus.io)
 
 
 ## Contributing
