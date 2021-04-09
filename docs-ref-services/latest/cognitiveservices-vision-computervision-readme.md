@@ -1,12 +1,14 @@
 ---
-title: Azure Cognitive Services Computer Vision SDK for Python
-keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-computervision, cognitiveservices
+title: 
+keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-computervision, computervision
 author: maggiepint
 ms.author: magpint
-ms.date: 10/08/2020
-ms.topic: reference
+ms.date: 04/09/2021
+ms.topic: article
+ms.prod: azure
+ms.technology: azure
 ms.devlang: python
-ms.service: cognitive-services
+ms.service: computervision
 ---
 
 # Azure Cognitive Services Computer Vision SDK for Python
@@ -304,7 +306,7 @@ For more extensive documentation on the Computer Vision service, see the [Azure 
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cognitiveservices-vision-computervision_0.7.0/sdk/cognitiveservices/azure-cognitiveservices-vision-computervision
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cognitiveservices-vision-computervision_0.8.0/sdk/cognitiveservices/azure-cognitiveservices-vision-computervision
 
 [pypi_computervision]:https://pypi.org/project/azure-cognitiveservices-vision-computervision/
 [pypi_pillow]:https://pypi.org/project/Pillow/
