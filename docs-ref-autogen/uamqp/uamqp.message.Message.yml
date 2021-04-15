@@ -8,7 +8,9 @@ inheritances:
 summary: 'An AMQP message.
 
 
-  When sending, depending on the nature of the data,
+  When sending, if body type information is not provided,
+
+  then depending on the nature of the data,
 
   different body encoding will be used. If the data is str or bytes,
 
@@ -18,10 +20,16 @@ summary: 'An AMQP message.
 
   type of data will be sent as a ValueBody.
 
-  An empty payload will also be sent as a ValueBody.'
+  An empty payload will also be sent as a ValueBody.
+
+  If body type information is provided, then the Message will use the given
+
+  body type to encode the data or raise error if the data doesn''t match the body
+  type.'
 constructor:
   syntax: Message(body=None, properties=None, application_properties=None, annotations=None,
-    header=None, msg_format=None, message=None, settler=None, delivery_no=None, encoding='UTF-8')
+    header=None, msg_format=None, message=None, settler=None, delivery_no=None, encoding='UTF-8',
+    body_type=None, footer=None, delivery_annotations=None)
   parameters:
   - name: body
     description: The data to send in the message.
@@ -87,6 +95,36 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  - name: body_type
+    description: 'The AMQP body type used to specify the type of the body section
+      of an amqp message.
+
+      By default is None which means depending on the nature of the data,
+
+      different body encoding will be used. If the data is str or bytes,
+
+      a single part DataBody will be sent. If the data is a list of str/bytes,
+
+      a multipart DataBody will be sent. Any other type of list or any other
+
+      type of data will be sent as a ValueBody. An empty payload will also be sent
+      as a ValueBody.
+
+      Please check class ~uamqp.MessageBodyType for usage information of each body
+      type.'
+    isRequired: true
+    types:
+    - <xref:uamqp.MessageBodyType>
+  - name: footer
+    description: The message footer.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: delivery_annotations
+    description: Service specific delivery annotations.
+    isRequired: true
+    types:
+    - <xref:dict>
 variables:
 - description: 'A custom callback to be run on completion of
 
