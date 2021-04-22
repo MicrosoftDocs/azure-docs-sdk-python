@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-automanage, 
+keywords: Azure, python, SDK, API, azure-mgmt-automanage, automanage
 author: maggiepint
 ms.author: magpint
-ms.date: 09/14/2020
+ms.date: 04/22/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: automanage
 ---
 
 # Microsoft Azure SDK for Python
