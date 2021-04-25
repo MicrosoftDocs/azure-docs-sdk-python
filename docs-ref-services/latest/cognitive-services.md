@@ -192,7 +192,7 @@ Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 pip install azure-cognitiveservices-language-luis
 ```
 
-[Learn more](azure/cognitive-services/luis/what-is-luis) about the LUIS and get started with the [LUIS SDK quickstart](https://docs.microsoft.com/azure/cognitive-services/luis/client-libraries-rest-api).
+[Learn more](/azure/cognitive-services/luis/what-is-luis) about the LUIS and get started with the [LUIS SDK quickstart](/azure/cognitive-services/luis/client-libraries-rest-api).
 
 
 ### Spell Check
