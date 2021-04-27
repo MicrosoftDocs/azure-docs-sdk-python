@@ -9,16 +9,14 @@ summary: "Performs cryptographic operations using Azure Key Vault keys.\n\nCreat
   \ a CryptographyClient<!--[!code-python[Main](s\\test_examples_crypto_async.py )]-->\n\
   \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.3.1\\\
-  \\tests\\\\test_examples_crypto_async.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   # create a CryptographyClient using a\
-  \ KeyVaultKey instance\n   key = await key_client.get_key(key_name)\n   crypto_client\
-  \ = CryptographyClient(key, credential)\n\n   # or a key's id, which must include\
-  \ a version\n   key_id = \"https://<your vault>.vault.azure.net/keys/<key name>/fe4fdcab688c479a9aa80f01ffeac26\"\
+  \\tests\\\\test_examples_crypto_async.py\", \"xml:space\": \"preserve\", \"language\"\
+  : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+  \n````python\n\n   # create a CryptographyClient using a KeyVaultKey instance\n\
+  \   key = await key_client.get_key(key_name)\n   crypto_client = CryptographyClient(key,\
+  \ credential)\n\n   # or a key's id, which must include a version\n   key_id = \"\
+  https://<your vault>.vault.azure.net/keys/<key name>/fe4fdcab688c479a9aa80f01ffeac26\"\
   \n   crypto_client = CryptographyClient(key_id, credential)\n\n   ````"
 constructor:
-  syntax: 'CryptographyClient(key: typing.Union[KeyVaultKey, str], credential: AsyncTokenCredential,
-    **kwargs: typing.Any) -> None'
   parameters:
   - name: key
     description: 'Either a <xref:azure.keyvault.keys.KeyVaultKey> instance as returned
@@ -30,13 +28,22 @@ constructor:
       with a version.'
     isRequired: true
     types:
-    - str or <xref:azure.keyvault.keys.KeyVaultKey>
+    - <xref:str>
+    - <xref:azure.keyvault.keys.KeyVaultKey>
   - name: credential
     description: 'An object which can provide an access token for the vault, such
       as a credential from
 
       <xref:azure.identity.aio>'
     isRequired: true
+  - name: api_version
+    description: version of the Key Vault API to use. Defaults to the most recent.
+    types:
+    - <xref:azure.keyvault.keys.ApiVersion>
+  - name: transport
+    description: transport to use. Defaults to <xref:azure.core.pipeline.transport.AioHttpTransport>.
+    types:
+    - <xref:azure.core.pipeline.transport.AsyncHttpTransport>
 methods:
 - uid: azure.keyvault.keys.crypto.aio.CryptographyClient.decrypt
   name: decrypt
@@ -46,13 +53,10 @@ methods:
     test_examples_crypto_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
     a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.3.1\\\\tests\\\\test_examples_crypto_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\n   result =\
-    \ await client.decrypt(EncryptionAlgorithm.rsa_oaep, ciphertext)\n   print(result.plaintext)\n\
-    \n   ````"
-  signature: 'decrypt(algorithm: EncryptionAlgorithm, ciphertext: bytes, **kwargs:
-    typing.Any) -> azure.keyvault.keys.crypto._models.DecryptResult'
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
+    \ import EncryptionAlgorithm\n\n   result = await client.decrypt(EncryptionAlgorithm.rsa_oaep,\
+    \ ciphertext)\n   print(result.plaintext)\n\n   ````"
   parameters:
   - name: algorithm
     description: encryption algorithm to use
@@ -63,7 +67,7 @@ methods:
     description: encrypted bytes to decrypt
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   return:
     types:
     - <xref:azure.keyvault.keys.crypto.DecryptResult>
@@ -75,15 +79,12 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\17\\\\azure-keyvault-keys-4.3.1\\\\tests\\\\test_examples_crypto_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\n   # the result\
-    \ holds the ciphertext and identifies the encryption key and algorithm used\n\
-    \   result = await client.encrypt(EncryptionAlgorithm.rsa_oaep, b\"plaintext\"\
-    )\n   print(result.key_id)\n   print(result.algorithm)\n   ciphertext = result.ciphertext\n\
-    \n   ````"
-  signature: 'encrypt(algorithm: EncryptionAlgorithm, plaintext: bytes, **kwargs:
-    typing.Any) -> azure.keyvault.keys.crypto._models.EncryptResult'
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
+    \ import EncryptionAlgorithm\n\n   # the result holds the ciphertext and identifies\
+    \ the encryption key and algorithm used\n   result = await client.encrypt(EncryptionAlgorithm.rsa_oaep,\
+    \ b\"plaintext\")\n   print(result.key_id)\n   print(result.algorithm)\n   ciphertext\
+    \ = result.ciphertext\n\n   ````"
   parameters:
   - name: algorithm
     description: encryption algorithm to use
@@ -94,7 +95,7 @@ methods:
     description: bytes to encrypt
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   return:
     types:
     - <xref:azure.keyvault.keys.crypto.EncryptResult>
@@ -105,15 +106,13 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\17\\\\azure-keyvault-keys-4.3.1\\\\tests\\\\test_examples_crypto_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import hashlib\n   from azure.keyvault.keys.crypto import SignatureAlgorithm\n\
-    \n   digest = hashlib.sha256(b\"plaintext\").digest()\n\n   # sign returns the\
-    \ signature and the metadata required to verify it\n   result = await client.sign(SignatureAlgorithm.rs256,\
-    \ digest)\n   print(result.key_id)\n   print(result.algorithm)\n   signature =\
-    \ result.signature\n\n   ````"
-  signature: 'sign(algorithm: SignatureAlgorithm, digest: bytes, **kwargs: typing.Any)
-    -> azure.keyvault.keys.crypto._models.SignResult'
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import hashlib\n\
+    \   from azure.keyvault.keys.crypto import SignatureAlgorithm\n\n   digest = hashlib.sha256(b\"\
+    plaintext\").digest()\n\n   # sign returns the signature and the metadata required\
+    \ to verify it\n   result = await client.sign(SignatureAlgorithm.rs256, digest)\n\
+    \   print(result.key_id)\n   print(result.algorithm)\n   signature = result.signature\n\
+    \n   ````"
   parameters:
   - name: algorithm
     description: signing algorithm
@@ -124,7 +123,7 @@ methods:
     description: hashed bytes to sign
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   return:
     types:
     - <xref:azure.keyvault.keys.crypto.SignResult>
@@ -135,12 +134,10 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\17\\\\azure-keyvault-keys-4.3.1\\\\tests\\\\test_examples_crypto_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.keyvault.keys.crypto import KeyWrapAlgorithm\n\n   result = await\
-    \ client.unwrap_key(KeyWrapAlgorithm.rsa_oaep, encrypted_key)\n\n   ````"
-  signature: 'unwrap_key(algorithm: KeyWrapAlgorithm, encrypted_key: bytes, **kwargs:
-    typing.Any) -> azure.keyvault.keys.crypto._models.UnwrapResult'
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
+    \ import KeyWrapAlgorithm\n\n   result = await client.unwrap_key(KeyWrapAlgorithm.rsa_oaep,\
+    \ encrypted_key)\n\n   ````"
   parameters:
   - name: algorithm
     description: wrapping algorithm to use
@@ -151,7 +148,7 @@ methods:
     description: the wrapped key
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   return:
     types:
     - <xref:azure.keyvault.keys.crypto.UnwrapResult>
@@ -162,12 +159,10 @@ methods:
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\\
     azure-keyvault-keys-4.3.1\\\\tests\\\\test_examples_crypto_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
     \ import SignatureAlgorithm\n\n   verified = await client.verify(SignatureAlgorithm.rs256,\
     \ digest, signature)\n   assert verified.is_valid\n\n   ````"
-  signature: 'verify(algorithm: SignatureAlgorithm, digest: bytes, signature: bytes,
-    **kwargs: typing.Any) -> azure.keyvault.keys.crypto._models.VerifyResult'
   parameters:
   - name: algorithm
     description: verification algorithm
@@ -181,12 +176,12 @@ methods:
       compatible with **algorithm**.'
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   - name: signature
     description: signature to verify
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   return:
     types:
     - <xref:azure.keyvault.keys.crypto.VerifyResult>
@@ -197,14 +192,12 @@ methods:
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\\
     azure-keyvault-keys-4.3.1\\\\tests\\\\test_examples_crypto_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
     \ import KeyWrapAlgorithm\n\n   # wrap returns a tuple with the wrapped bytes\
     \ and the metadata required to unwrap the key\n   result = await client.wrap_key(KeyWrapAlgorithm.rsa_oaep,\
     \ key_bytes)\n   print(result.key_id)\n   print(result.algorithm)\n   encrypted_key\
     \ = result.encrypted_key\n\n   ````"
-  signature: 'wrap_key(algorithm: KeyWrapAlgorithm, key: bytes, **kwargs: typing.Any)
-    -> azure.keyvault.keys.crypto._models.WrapResult'
   parameters:
   - name: algorithm
     description: wrapping algorithm to use
@@ -215,7 +208,7 @@ methods:
     description: key to wrap
     isRequired: true
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.bytes>
+    - <xref:bytes>
   return:
     types:
     - <xref:azure.keyvault.keys.crypto.WrapResult>
@@ -225,4 +218,4 @@ attributes:
   summary: The full identifier of the client's key.
   return:
     types:
-    - <xref:azure.keyvault.keys.crypto.aio.str>
+    - <xref:str>

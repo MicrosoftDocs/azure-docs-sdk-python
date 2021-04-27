@@ -20,15 +20,15 @@ methods:
     **kwargs)
   parameters:
   - name: auth_code_flow
-    description: The same dict returned by <xref:msal.application.ClientApplication.initiate_auth_code_flow>.
+    description: The same dict returned by <xref:msal.application.initiate_auth_code_flow>.
     isRequired: true
     types:
-    - <xref:msal.application.dict>
+    - <xref:dict>
   - name: auth_response
     description: A dict of the query string received from auth server.
     isRequired: true
     types:
-    - <xref:msal.application.dict>
+    - <xref:dict>
   - name: scopes
     description: 'Scopes requested to access a protected API (a resource).
 
@@ -40,7 +40,7 @@ methods:
 
       need to provide a subset of what you required in
 
-      <xref:msal.application.ClientApplication.initiate_auth_code_flow>.
+      <xref:msal.application.initiate_auth_code_flow>.
 
 
       OAuth2 was designed mostly for singleton services,
@@ -63,7 +63,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.list>[<xref:msal.application.str>]
+    - <xref:list>[<xref:str>]
   return:
     description: "* A dict containing \"access_token\" and/or \"id_token\", among\
       \ others, depends on what scope was used. (See [https://tools.ietf.org/html/rfc6749#section-5.1](https://tools.ietf.org/html/rfc6749#section-5.1))\
@@ -73,9 +73,8 @@ methods:
       \ data error would result in ValueError exception. So the usage pattern could\
       \ be without any protocol details: \n\n  <!-- literal_block {\"ids\": [], \"\
       classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
-      : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
-      \ -->\n\n  ````default\n\n     def authorize():  # A controller in a web app\n\
-      \         try:\n             result = msal_app.acquire_token_by_auth_code_flow(\n\
+      : \"preserve\"} -->\n\n  ````\n\n     def authorize():  # A controller in a\
+      \ web app\n         try:\n             result = msal_app.acquire_token_by_auth_code_flow(\n\
       \                 session.get(\"flow\", {}), request.args)\n             if\
       \ \"error\" in result:\n                 return render_template(\"error.html\"\
       , result)\n             use(result)  # Token(s) are available in result and\
@@ -121,9 +120,9 @@ methods:
       token to be issued for the corresponding audience.'
     isRequired: true
     types:
-    - <xref:msal.application.list>[<xref:msal.application.str>]
+    - <xref:list>[<xref:str>]
   - name: nonce
-    description: 'If you provided a nonce when calling <xref:msal.application.ClientApplication.get_authorization_request_url>,
+    description: 'If you provided a nonce when calling <xref:msal.application.get_authorization_request_url>,
 
       same nonce should also be provided here, so that we''ll validate it.
 
@@ -144,7 +143,6 @@ methods:
     isRequired: true
     defaultValue: None
   - name: claims_challenge
-    isRequired: true
     defaultValue: None
   return:
     description: "A dict representing the json response from AAD:\n\n* A successful\
@@ -168,14 +166,14 @@ methods:
 
     and an access token can be retrieved
 
-    when you call <xref:msal.application.ClientApplication.acquire_token_silent>.'
+    when you call <xref:msal.application.acquire_token_silent>.'
   signature: acquire_token_by_refresh_token(refresh_token, scopes, **kwargs)
   parameters:
   - name: refresh_token
     description: The old refresh token, as a string.
     isRequired: true
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: scopes
     description: 'The scopes associate with this old RT.
 
@@ -184,7 +182,7 @@ methods:
       See [Scopes not resources](https://docs.microsoft.com/en-us/azure/active-directory/develop/migrate-python-adal-msal#scopes-not-resources).'
     isRequired: true
     types:
-    - <xref:msal.application.list>
+    - <xref:list>
   return:
     description: "* A dict contains \"error\" and some other keys, when error happened.\
       \ \n\n* A dict contains no \"error\" key means migration was successful."
@@ -203,17 +201,17 @@ methods:
     description: Typically a UPN in the form of an email address.
     isRequired: true
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: password
     description: The password.
     isRequired: true
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: scopes
     description: Scopes requested to access a protected API (a resource).
     isRequired: true
     types:
-    - <xref:msal.application.list>[<xref:msal.application.str>]
+    - <xref:list>[<xref:str>]
   - name: claims_challenge
     description: 'The claims_challenge parameter requests specific claims requested
       by the resource provider
@@ -252,7 +250,7 @@ methods:
     token cache look-up, then this method is easier and recommended.
 
 
-    Internally, this method calls <xref:msal.application.ClientApplication.acquire_token_silent_with_error>.'
+    Internally, this method calls <xref:msal.application.acquire_token_silent_with_error>.'
   signature: acquire_token_silent(scopes, account, authority=None, force_refresh=False,
     claims_challenge=None, **kwargs)
   parameters:
@@ -271,13 +269,10 @@ methods:
   - name: account
     isRequired: true
   - name: authority
-    isRequired: true
     defaultValue: None
   - name: force_refresh
-    isRequired: true
     defaultValue: 'False'
   - name: claims_challenge
-    isRequired: true
     defaultValue: None
   return:
     description: "* A dict containing no \"error\" key, and typically contains an\
@@ -312,9 +307,9 @@ methods:
       Scopes requested to access a protected API (a resource).'
     isRequired: true
     types:
-    - <xref:msal.application.list>[<xref:msal.application.str>]
+    - <xref:list>[<xref:str>]
   - name: account
-    description: 'one of the account object returned by <xref:msal.application.ClientApplication.get_accounts>,
+    description: 'one of the account object returned by <xref:msal.application.get_accounts>,
 
       or use None when you want to find an access token for this client.'
     isRequired: true
@@ -338,7 +333,6 @@ methods:
     isRequired: true
     defaultValue: 'False'
   - name: claims_challenge
-    isRequired: true
     defaultValue: None
   return:
     description: "* A dict containing no \"error\" key, and typically contains an\
@@ -380,25 +374,25 @@ methods:
       Scopes requested to access a protected API (a resource).'
     isRequired: true
     types:
-    - <xref:msal.application.list>[<xref:msal.application.str>]
+    - <xref:list>[<xref:str>]
   - name: state
     description: Recommended by OAuth2 for CSRF protection.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: login_hint
     description: Identifier of the user. Generally a User Principal Name (UPN).
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: redirect_uri
     description: Address to return to upon receiving a response from the authority.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: response_type
     description: 'Default value is "code" for an OAuth2 Authorization Code grant.
 
@@ -411,7 +405,7 @@ methods:
     isRequired: true
     defaultValue: code
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: prompt
     description: 'By default, no prompt value will be sent, not even "none".
 
@@ -423,7 +417,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: nonce
     description: 'A cryptographically random value used to mitigate replay attacks.
       See also
@@ -476,16 +470,16 @@ methods:
     login_hint=None, domain_hint=None, claims_challenge=None)
   parameters:
   - name: scopes
-    description: It is a list of case-sensitive strings.
+    description: 'It is a list of case-sensitive strings.'
     isRequired: true
     types:
-    - <xref:msal.application.list>
+    - <xref:list>
   - name: redirect_uri
-    description: Optional. If not specified, server will use the pre-registered one.
+    description: 'Optional. If not specified, server will use the pre-registered one.'
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: state
     description: 'An opaque value used by the client to
 
@@ -495,7 +489,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: prompt
     description: 'By default, no prompt value will be sent, not even "none".
 
@@ -507,14 +501,14 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: login_hint
     description: Optional. Identifier of the user. Generally a User Principal Name
       (UPN).
     isRequired: true
     defaultValue: None
     types:
-    - <xref:msal.application.str>
+    - <xref:str>
   - name: domain_hint
     description: 'Can be one of "consumers" or "organizations" or your tenant domain
       "contoso.com".
@@ -532,20 +526,19 @@ methods:
     isRequired: true
     defaultValue: None
   - name: claims_challenge
-    isRequired: true
     defaultValue: None
   return:
     description: "The auth code flow. It is a dict in this form:\n\n<!-- literal_block\
       \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-      : [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
-      \ \"linenos\": false} -->\n\n````default\n\n   {\n       \"auth_uri\": \"https://...\"\
-      ,  // Guide user to visit this\n       \"state\": \"...\",  // You may choose\
-      \ to verify it by yourself,\n                        // or just let acquire_token_by_auth_code_flow()\n\
-      \                        // do that for you.\n       \"...\": \"...\",  // Everything\
-      \ else are reserved and internal\n   }\n   ````\n\nThe caller is expected to:\n\
-      \n1. somehow store this content, typically inside the current session, \n\n\
-      2. guide the end user (i.e. resource owner) to visit that auth_uri, \n\n3. and\
-      \ then relay this dict and subsequent auth response to <xref:msal.application.ClientApplication.acquire_token_by_auth_code_flow>."
+      : [], \"xml:space\": \"preserve\"} -->\n\n````\n\n   {\n       \"auth_uri\"\
+      : \"https://...\",  // Guide user to visit this\n       \"state\": \"...\",\
+      \  // You may choose to verify it by yourself,\n                        // or\
+      \ just let acquire_token_by_auth_code_flow()\n                        // do\
+      \ that for you.\n       \"...\": \"...\",  // Everything else are reserved and\
+      \ internal\n   }\n   ````\n\nThe caller is expected to:\n\n1. somehow store\
+      \ this content, typically inside the current session, \n\n2. guide the end user\
+      \ (i.e. resource owner) to visit that auth_uri, \n\n3. and then relay this dict\
+      \ and subsequent auth response to <xref:msal.application.ClientApplication.acquire_token_by_auth_code_flow>."
 - uid: msal.application.ClientApplication.remove_account
   name: remove_account
   summary: Sign me out and forget me from token cache

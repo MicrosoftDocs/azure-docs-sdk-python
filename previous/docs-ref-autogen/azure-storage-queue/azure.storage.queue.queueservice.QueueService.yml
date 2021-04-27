@@ -35,7 +35,7 @@ variables:
     no encoding methods as well as binary equivalents.'
   name: encode_function
   types:
-  - <xref:azure.storage.queue.queueservice.function>(<xref:azure.storage.queue.queueservice.data>)
+  - <xref:function>(<xref:data>)
 - description: 'A function used to encode decode messages. Takes as
 
     a parameter the data returned by the get_messages and peek_messages APIs and
@@ -51,22 +51,36 @@ variables:
     and no decoding methods as well as binary equivalents.'
   name: decode_function
   types:
-  - <xref:azure.storage.queue.queueservice.function>(<xref:azure.storage.queue.queueservice.data>)
-- description: "The key-encryption-key optionally provided by the user. If provided,\
-    \ will be used to\nencrypt/decrypt in supported methods.\nFor methods requiring\
-    \ decryption, either the key_encryption_key OR the resolver must be provided.\n\
-    If both are provided, the resolver will take precedence.\nMust implement the following\
-    \ methods for APIs requiring encryption:\nwrap_key(key)\u2013wraps the specified\
-    \ key (bytes) using an algorithm of the user's choice. Returns the encrypted key\
-    \ as bytes.\nget_key_wrap_algorithm()\u2013returns the algorithm used to wrap\
-    \ the specified symmetric key.\nget_kid()\u2013returns a string key id for this\
-    \ key-encryption-key.\nMust implement the following methods for APIs requiring\
-    \ decryption:\nunwrap_key(key, algorithm)\u2013returns the unwrapped form of the\
-    \ specified symmetric key using the string-specified algorithm.\nget_kid()\u2013\
-    returns a string key id for this key-encryption-key."
+  - <xref:function>(<xref:data>)
+- description: 'The key-encryption-key optionally provided by the user. If provided,
+    will be used to
+
+    encrypt/decrypt in supported methods.
+
+    For methods requiring decryption, either the key_encryption_key OR the resolver
+    must be provided.
+
+    If both are provided, the resolver will take precedence.
+
+    Must implement the following methods for APIs requiring encryption:
+
+    wrap_key(key)--wraps the specified key (bytes) using an algorithm of the user''s
+    choice. Returns the encrypted key as bytes.
+
+    get_key_wrap_algorithm()--returns the algorithm used to wrap the specified symmetric
+    key.
+
+    get_kid()--returns a string key id for this key-encryption-key.
+
+    Must implement the following methods for APIs requiring decryption:
+
+    unwrap_key(key, algorithm)--returns the unwrapped form of the specified symmetric
+    key using the string-specified algorithm.
+
+    get_kid()--returns a string key id for this key-encryption-key.'
   name: key_encryption_key
   types:
-  - <xref:azure.storage.queue.queueservice.object>
+  - <xref:object>
 - description: 'A function to resolve keys optionally provided by the user. If provided,
     will be used to decrypt in supported methods.
 
@@ -76,9 +90,9 @@ variables:
 
     It uses the kid string to return a key-encryption-key implementing the interface
     defined above.'
-  name: key_resolver_function
+  name: key_resolver_function(kid)
   types:
-  - <xref:kid>) (<xref:azure.storage.queue.queueservice.function>
+  - <xref:function>
 - description: 'A flag that may be set to ensure that all messages successfully uploaded
     to the queue and all those downloaded and
 
@@ -100,13 +114,13 @@ methods:
     description: The name of the queue whose messages to clear.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
 - uid: azure.storage.queue.queueservice.QueueService.create_queue
   name: create_queue
   summary: Creates a queue under the given account.
@@ -126,7 +140,7 @@ methods:
       queue name.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the queue as
 
@@ -136,8 +150,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.dict>(<xref:azure.storage.queue.queueservice.str>,
-      <xref:azure.storage.queue.queueservice.str>)
+    - <xref:dict>(<xref:str>, <xref:str>)
   - name: fail_on_exist
     description: Specifies whether to throw an exception if the queue already exists.
     isRequired: true
@@ -149,7 +162,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: 'A boolean indicating whether the queue was created. If fail_on_exist
 
@@ -169,16 +182,16 @@ methods:
 
     id is returned from the previous get_messages operation. The
 
-    pop_receipt is returned from the most recent <xref:azure.storage.queue.queueservice.QueueService.get_messages>
+    pop_receipt is returned from the most recent <xref:azure.storage.queue.queueservice.get_messages>
     or
 
-    <xref:azure.storage.queue.queueservice.QueueService.update_message> operation.
-    In order for the delete_message operation
+    <xref:azure.storage.queue.queueservice.update_message> operation. In order for
+    the delete_message operation
 
     to succeed, the pop_receipt specified on the request must match the
 
-    pop_receipt returned from the <xref:azure.storage.queue.queueservice.QueueService.get_messages>
-    or <xref:azure.storage.queue.queueservice.QueueService.update_message>
+    pop_receipt returned from the <xref:azure.storage.queue.queueservice.get_messages>
+    or <xref:azure.storage.queue.queueservice.update_message>
 
     operation.'
   signature: delete_message(queue_name, message_id, pop_receipt, timeout=None)
@@ -187,26 +200,25 @@ methods:
     description: The name of the queue from which to delete the message.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: message_id
     description: The message id identifying the message to delete.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: pop_receipt
     description: 'A valid pop receipt value returned from an earlier call
 
-      to the <xref:azure.storage.queue.queueservice.QueueService.get_messages> or
-      <xref:azure.storage.queue.queueservice.QueueService.update_message>.'
+      to the <xref:azure.storage.queue.queueservice.get_messages> or <xref:azure.storage.queue.queueservice.update_message>.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
 - uid: azure.storage.queue.queueservice.QueueService.delete_queue
   name: delete_queue
   summary: 'Deletes the specified queue and any messages it contains.
@@ -230,7 +242,7 @@ methods:
     description: The name of the queue to delete.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: fail_not_exist
     description: Specifies whether to throw an exception if the queue doesn't exist.
     isRequired: true
@@ -242,7 +254,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: 'A boolean indicating whether the queue was deleted. If fail_not_exist
 
@@ -258,13 +270,13 @@ methods:
     description: The name of queue to check for existence.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: A boolean indicating whether the queue exists.
     types:
@@ -282,7 +294,7 @@ methods:
       SAS.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.ResourceTypes>
+    - <xref:ResourceTypes>
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -295,7 +307,7 @@ methods:
       specified in an associated stored access policy.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.AccountPermissions>
+    - <xref:AccountPermissions>
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
@@ -310,7 +322,8 @@ methods:
       is assumed to be UTC.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.datetime> or <xref:azure.storage.queue.queueservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: start
     description: 'The time at which the shared access signature becomes valid. If
 
@@ -324,7 +337,8 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.datetime> or <xref:azure.storage.queue.queueservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: ip
     description: 'Specifies an IP address or a range of IP addresses from which to
       accept requests.
@@ -339,7 +353,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: protocol
     description: 'Specifies the protocol permitted for a request made. The default
       value
@@ -349,11 +363,11 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   return:
     description: A Shared Access Signature (sas) token.
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
 - uid: azure.storage.queue.queueservice.QueueService.generate_queue_shared_access_signature
   name: generate_queue_shared_access_signature
   summary: 'Generates a shared access signature for the queue.
@@ -366,7 +380,7 @@ methods:
     description: The name of the queue to create a SAS token for.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -380,7 +394,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.models.QueuePermissions>
+    - <xref:QueuePermissions>
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
@@ -396,7 +410,8 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.datetime> or <xref:azure.storage.queue.queueservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: start
     description: 'The time at which the shared access signature becomes valid. If
 
@@ -410,16 +425,17 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.datetime> or <xref:azure.storage.queue.queueservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: id
     description: 'A unique value up to 64 characters in length that correlates to
       a
 
-      stored access policy. To create a stored access policy, use <xref:azure.storage.queue.queueservice.QueueService.set_queue_acl>.'
+      stored access policy. To create a stored access policy, use <xref:azure.storage.queue.queueservice.set_queue_acl>.'
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: ip
     description: 'Specifies an IP address or a range of IP addresses from which to
       accept requests.
@@ -435,7 +451,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: protocol
     description: 'Specifies the protocol permitted for a request made. The default
       value
@@ -445,11 +461,11 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   return:
     description: A Shared Access Signature (sas) token.
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
 - uid: azure.storage.queue.queueservice.QueueService.get_messages
   name: get_messages
   summary: 'Retrieves one or more messages from the front of the queue.
@@ -477,7 +493,7 @@ methods:
     description: The name of the queue to get messages from.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: num_messages
     description: 'A nonzero integer value that specifies the number of
 
@@ -489,7 +505,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: visibility_timeout
     description: 'Specifies the new visibility timeout value, in seconds, relative
 
@@ -501,18 +517,18 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: A <xref:azure.storage.queue.models.QueueMessage> object representing
       the information passed.
     types:
-    - list(<xref:azure.storage.queue.models.QueueMessage>)
+    - <xref:list>(<xref:<xref:azure.storage.queue.models.QueueMessage>>)
 - uid: azure.storage.queue.queueservice.QueueService.get_queue_acl
   name: get_queue_acl
   summary: 'Returns details about any stored access policies specified on the
@@ -524,17 +540,17 @@ methods:
     description: The name of an existing queue.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: A dictionary of access policies associated with the queue.
     types:
-    - dict(str, <xref:azure.storage.common.models.AccessPolicy>)
+    - <xref:dict>(<xref:str>, <xref:<xref:azure.storage.common.models.AccessPolicy>>)
 - uid: azure.storage.queue.queueservice.QueueService.get_queue_metadata
   name: get_queue_metadata
   summary: 'Retrieves user-defined metadata and queue properties on the specified
@@ -546,13 +562,13 @@ methods:
     description: The name of an existing queue.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: 'A dictionary representing the queue metadata with an
 
@@ -560,8 +576,7 @@ methods:
 
       number of messages in the queue.'
     types:
-    - <xref:azure.storage.queue.queueservice.dict>(<xref:azure.storage.queue.queueservice.str>,
-      <xref:azure.storage.queue.queueservice.str>)
+    - <xref:dict>(<xref:str>, <xref:str>)
 - uid: azure.storage.queue.queueservice.QueueService.get_queue_service_properties
   name: get_queue_service_properties
   summary: 'Gets the properties of a storage account''s Queue service, including
@@ -574,7 +589,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: The queue service properties.
     types:
@@ -619,7 +634,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: The queue service stats.
     types:
@@ -650,13 +665,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: num_results
     description: The maximum number of queues to return.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: include_metadata
     description: Specifies that container metadata be returned in the response.
     isRequired: true
@@ -676,7 +691,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: timeout
     description: 'The server timeout, expressed in seconds. This function may make
       multiple
@@ -687,7 +702,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
 - uid: azure.storage.queue.queueservice.QueueService.peek_messages
   name: peek_messages
   summary: 'Retrieves one or more messages from the front of the queue, but does
@@ -720,7 +735,7 @@ methods:
     description: The name of the queue to peek messages from.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: num_messages
     description: 'A nonzero integer value that specifies the number of
 
@@ -730,13 +745,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: 'A list of <xref:azure.storage.queue.models.QueueMessage> objects.
       Note that
@@ -745,7 +760,7 @@ methods:
 
       not pop the message and can only retrieve already visible messages.'
     types:
-    - list(<xref:azure.storage.queue.models.QueueMessage>)
+    - <xref:list>(<xref:<xref:azure.storage.queue.models.QueueMessage>>)
 - uid: azure.storage.queue.queueservice.QueueService.put_message
   name: put_message
   summary: 'Adds a new message to the back of the message queue.
@@ -776,7 +791,7 @@ methods:
     description: The name of the queue to put the message into.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: content
     description: 'Message content. Allowed type is determined by the encode_function
 
@@ -785,7 +800,7 @@ methods:
       64KB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.obj>
+    - <xref:obj>
   - name: visibility_timeout
     description: 'If not specified, the default value is 0. Specifies the
 
@@ -801,7 +816,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: time_to_live
     description: 'Specifies the time-to-live interval for the message, in
 
@@ -812,13 +827,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: 'A <xref:azure.storage.queue.models.QueueMessage> object.
 
@@ -860,7 +875,7 @@ methods:
     description: The name of an existing queue.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the queue. The
 
@@ -870,13 +885,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - dict(str, <xref:azure.storage.common.models.AccessPolicy>)
+    - <xref:dict>(<xref:str>, <xref:azure.storage.common.models.AccessPolicy>)
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
 - uid: azure.storage.queue.queueservice.QueueService.set_queue_metadata
   name: set_queue_metadata
   summary: 'Sets user-defined metadata on the specified queue. Metadata is
@@ -888,7 +903,7 @@ methods:
     description: The name of an existing queue.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the
 
@@ -896,13 +911,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.dict>
+    - <xref:dict>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
 - uid: azure.storage.queue.queueservice.QueueService.set_queue_service_properties
   name: set_queue_service_properties
   summary: 'Sets the properties of a storage account''s Queue service, including
@@ -922,7 +937,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.Logging>
+    - <xref:Logging>
   - name: hour_metrics
     description: 'The hour metrics settings provide a summary of request
 
@@ -930,7 +945,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.Metrics>
+    - <xref:Metrics>
   - name: minute_metrics
     description: 'The minute metrics settings provide request statistics
 
@@ -938,7 +953,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.Metrics>
+    - <xref:Metrics>
   - name: cors
     description: 'You can include up to five CorsRule elements in the
 
@@ -952,13 +967,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - list(<xref:azure.storage.common.models.CorsRule>)
+    - <xref:list>(<xref:azure.storage.common.models.CorsRule>)
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
 - uid: azure.storage.queue.queueservice.QueueService.update_message
   name: update_message
   summary: 'Updates the visibility timeout of a message. You can also use this
@@ -992,12 +1007,12 @@ methods:
     description: The name of the queue containing the message to update.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: message_id
     description: The message id identifying the message to update.
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: pop_receipt
     description: 'A valid pop receipt value returned from an earlier call
 
@@ -1005,7 +1020,7 @@ methods:
       <xref:azure.storage.queue.queueservice.QueueService.update_message> operation.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.str>
+    - <xref:str>
   - name: visibility_timeout
     description: 'Specifies the new visibility timeout value, in seconds,
 
@@ -1018,7 +1033,7 @@ methods:
       message can be updated until it has been deleted or has expired.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   - name: content
     description: 'Message content. Allowed type is determined by the encode_function
 
@@ -1026,13 +1041,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.obj>
+    - <xref:obj>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.queue.queueservice.int>
+    - <xref:int>
   return:
     description: 'A list of <xref:azure.storage.queue.models.QueueMessage> objects.
       For convenience,
@@ -1040,4 +1055,4 @@ methods:
       this object is also populated with the content, although it is not returned
       by the service.'
     types:
-    - list(<xref:azure.storage.queue.models.QueueMessage>)
+    - <xref:list>(<xref:<xref:azure.storage.queue.models.QueueMessage>>)

@@ -14,8 +14,6 @@ summary: 'FormRecognizerClient extracts information from forms and images into s
 
   based on inputs from a URL and inputs from a stream.'
 constructor:
-  syntax: 'FormRecognizerClient(endpoint: str, credential: typing.Union[AzureKeyCredential,
-    AsyncTokenCredential], **kwargs: typing.Any) -> None'
   parameters:
   - name: endpoint
     description: 'Supported Cognitive Services endpoints (protocol and hostname,
@@ -23,7 +21,7 @@ constructor:
       for example: [https://westus2.api.cognitive.microsoft.com](https://westus2.api.cognitive.microsoft.com)).'
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.str>
+    - <xref:str>
   - name: credential
     description: 'Credentials needed for the client to connect to Azure.
 
@@ -31,27 +29,38 @@ constructor:
 
       credential from <xref:azure.identity>.'
     isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
+  - name: api_version
+    description: 'The API version of the service to use for requests. It defaults
+      to the latest service version.
+
+      Setting to an older version may result in reduced feature compatibility.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.formrecognizer.FormRecognizerApiVersion>
 examples:
 - "Creating the FormRecognizerClient with an endpoint and API key.<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
   : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\azure-ai-formrecognizer-3.0.0\\\\samples\\\
   \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
-  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import\
-  \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-  \   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
-  AZURE_FORM_RECOGNIZER_KEY\"]\n\n   form_recognizer_client = FormRecognizerClient(endpoint,\
-  \ AzureKeyCredential(key))\n\n   ````\n\nCreating the FormRecognizerClient with\
-  \ a token credential.<!--[!code-python[Main](les\\async_samples\\sample_authentication_async.py\
-  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\\
-  azure-ai-formrecognizer-3.0.0\\\\samples\\\\async_samples\\\\sample_authentication_async.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential\
-  \ will use the values from these environment\n   variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,\
-  \ AZURE_CLIENT_SECRET\n   \"\"\"\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
-  \   from azure.identity.aio import DefaultAzureCredential\n\n   endpoint = os.environ[\"\
+  , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+  : 1}} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+  \   from azure.ai.formrecognizer.aio import FormRecognizerClient\n   endpoint =\
+  \ os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"AZURE_FORM_RECOGNIZER_KEY\"\
+  ]\n\n   form_recognizer_client = FormRecognizerClient(endpoint, AzureKeyCredential(key))\n\
+  \n   ````\n\nCreating the FormRecognizerClient with a token credential.<!--[!code-python[Main](les\\\
+  async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
+  : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\azure-ai-formrecognizer-3.0.0\\\\samples\\\
+  \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
+  , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
+  : 1}} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential will use the values from\
+  \ these environment\n   variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET\n\
+  \   \"\"\"\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n  \
+  \ from azure.identity.aio import DefaultAzureCredential\n\n   endpoint = os.environ[\"\
   AZURE_FORM_RECOGNIZER_AAD_ENDPOINT\"]\n   credential = DefaultAzureCredential()\n\
   \n   form_recognizer_client = FormRecognizerClient(endpoint, credential)\n\n   ````\n"
 methods:
@@ -62,29 +71,52 @@ methods:
     The input document must be of one of the supported content types - ''application/pdf'',
 
     ''image/jpeg'', ''image/png'' or ''image/tiff''.'
-  signature: 'begin_recognize_content(form: typing.Union[bytes, IO[bytes]], **kwargs:
-    typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller'
+  signature: 'begin_recognize_content(form: typing.Union[bytes, typing.IO[bytes]],
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
   parameters:
   - name: form
     description: JPEG, PNG, PDF and TIFF type file stream or bytes.
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.bytes> or <xref:azure.ai.formrecognizer.aio.IO>[<xref:azure.ai.formrecognizer.aio.bytes>]
+    - <xref:bytes>
+    - <xref:IO>[<xref:bytes>]
+  - name: content_type
+    description: 'Media type of the body sent to the API. Content-type is
+
+      auto-detected, but can be overridden by passing this keyword argument. For options,
+
+      see <xref:azure.ai.formrecognizer.FormContentType>.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.formrecognizer.FormContentType>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
   return:
     description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
 
       object to return a list[<xref:azure.ai.formrecognizer.FormPage>].'
     types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.formrecognizer.aio.list>[<xref:azure.ai.formrecognizer.FormPage>]]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:list>[<xref:azure.ai.formrecognizer.FormPage>]]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Recognize text and content/layout information from a form.<!--[!code-python[Main](les\\\
     async_samples\\sample_recognize_content_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\azure-ai-formrecognizer-3.0.0\\\
     \\samples\\\\async_samples\\\\sample_recognize_content_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
     \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_FORM_RECOGNIZER_KEY\"]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint,\
     \ credential=AzureKeyCredential(key)\n   ) as form_recognizer_client:\n\n    \
@@ -106,7 +138,7 @@ methods:
 
     The input document must be the location (URL) of the document to be analyzed.'
   signature: 'begin_recognize_content_from_url(form_url: str, **kwargs: typing.Any)
-    -> azure.core.polling._async_poller.AsyncLROPoller'
+    -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.FormPage]]'
   parameters:
   - name: form_url
     description: 'The URL of the form to analyze. The input must be a valid, encoded
@@ -115,13 +147,26 @@ methods:
       of one of the supported formats: JPEG, PNG, PDF and TIFF.'
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.str>
+    - <xref:str>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
   return:
     description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
 
       object to return a list[<xref:azure.ai.formrecognizer.FormPage>].'
     types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.formrecognizer.aio.list>[<xref:azure.ai.formrecognizer.FormPage>]]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:list>[<xref:azure.ai.formrecognizer.FormPage>]]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_custom_forms
   name: begin_recognize_custom_forms
   summary: 'Analyze a custom form with a model trained with or without labels. The
@@ -134,33 +179,61 @@ methods:
 
     ''image/jpeg'', ''image/png'' or ''image/tiff''.'
   signature: 'begin_recognize_custom_forms(model_id: str, form: typing.Union[bytes,
-    IO[bytes]], **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller'
+    typing.IO[bytes]], **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
   parameters:
   - name: model_id
     description: Custom model identifier.
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.str>
+    - <xref:str>
   - name: form
     description: JPEG, PNG, PDF and TIFF type file stream or bytes.
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.bytes> or <xref:azure.ai.formrecognizer.aio.IO>[<xref:azure.ai.formrecognizer.aio.bytes>]
+    - <xref:bytes>
+    - <xref:IO>[<xref:bytes>]
+  - name: include_field_elements
+    description: Whether or not to include field elements such as lines and words
+      in addition to form fields.
+    types:
+    - <xref:bool>
+  - name: content_type
+    description: 'Media type of the body sent to the API. Content-type is
+
+      auto-detected, but can be overridden by passing this keyword argument. For options,
+
+      see <xref:azure.ai.formrecognizer.FormContentType>.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.formrecognizer.FormContentType>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
   return:
     description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
 
       object to return a list[<xref:azure.ai.formrecognizer.RecognizedForm>].'
     types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.formrecognizer.aio.list>[<xref:azure.ai.formrecognizer.RecognizedForm>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:list>[<xref:azure.ai.formrecognizer.RecognizedForm>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Recognize fields and values from a custom form.<!--[!code-python[Main](les\\\
     async_samples\\sample_recognize_custom_forms_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
     : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\azure-ai-formrecognizer-3.0.0\\\
     \\samples\\\\async_samples\\\\sample_recognize_custom_forms_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
     \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_FORM_RECOGNIZER_KEY\"]\n   model_id = os.environ[\"CUSTOM_TRAINED_MODEL_ID\"\
     ]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint, credential=AzureKeyCredential(key)\n\
@@ -193,13 +266,13 @@ methods:
 
     The input document must be the location (URL) of the document to be analyzed.'
   signature: 'begin_recognize_custom_forms_from_url(model_id: str, form_url: str,
-    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller'
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
   parameters:
   - name: model_id
     description: Custom model identifier.
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.str>
+    - <xref:str>
   - name: form_url
     description: 'The URL of the form to analyze. The input must be a valid, encoded
       URL
@@ -207,13 +280,31 @@ methods:
       of one of the supported formats: JPEG, PNG, PDF and TIFF.'
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.str>
+    - <xref:str>
+  - name: include_field_elements
+    description: Whether or not to include field elements such as lines and words
+      in addition to form fields.
+    types:
+    - <xref:bool>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
   return:
     description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
 
       object to return a list[<xref:azure.ai.formrecognizer.RecognizedForm>].'
     types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.formrecognizer.aio.list>[<xref:azure.ai.formrecognizer.RecognizedForm>]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:list>[<xref:azure.ai.formrecognizer.RecognizedForm>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.ai.formrecognizer.aio.FormRecognizerClient.begin_recognize_receipts
   name: begin_recognize_receipts
   summary: 'Extract field text and semantic values from a given US sales receipt.
@@ -226,8 +317,8 @@ methods:
     See fields found on a receipt here:
 
     [https://aka.ms/formrecognizer/receiptfields](https://aka.ms/formrecognizer/receiptfields)'
-  signature: 'begin_recognize_receipts(receipt: typing.Union[bytes, IO[bytes]], **kwargs:
-    typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller'
+  signature: 'begin_recognize_receipts(receipt: typing.Union[bytes, typing.IO[bytes]],
+    **kwargs: typing.Any) -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
   parameters:
   - name: receipt
     description: 'JPEG, PNG, PDF and TIFF type file stream or bytes.
@@ -235,22 +326,50 @@ methods:
       Currently only supports US sales receipts.'
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.bytes> or <xref:azure.ai.formrecognizer.aio.IO>[<xref:azure.ai.formrecognizer.aio.bytes>]
+    - <xref:bytes>
+    - <xref:IO>[<xref:bytes>]
+  - name: include_field_elements
+    description: Whether or not to include field elements such as lines and words
+      in addition to form fields.
+    types:
+    - <xref:bool>
+  - name: content_type
+    description: 'Media type of the body sent to the API. Content-type is
+
+      auto-detected, but can be overridden by passing this keyword argument. For options,
+
+      see <xref:azure.ai.formrecognizer.FormContentType>.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.formrecognizer.FormContentType>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
   return:
     description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
 
       object to return a list[<xref:azure.ai.formrecognizer.RecognizedForm>].'
     types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.formrecognizer.aio.list>[<xref:azure.ai.formrecognizer.RecognizedForm>]]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:list>[<xref:azure.ai.formrecognizer.RecognizedForm>]]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Recognize US sales receipt fields.<!--[!code-python[Main](les\\async_samples\\\
     sample_recognize_receipts_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
     \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\azure-ai-formrecognizer-3.0.0\\\\\
     samples\\\\async_samples\\\\sample_recognize_receipts_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
     \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_FORM_RECOGNIZER_KEY\"]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint,\
     \ credential=AzureKeyCredential(key)\n   ) as form_recognizer_client:\n\n    \
@@ -298,7 +417,7 @@ methods:
 
     [https://aka.ms/formrecognizer/receiptfields](https://aka.ms/formrecognizer/receiptfields)'
   signature: 'begin_recognize_receipts_from_url(receipt_url: str, **kwargs: typing.Any)
-    -> azure.core.polling._async_poller.AsyncLROPoller'
+    -> azure.core.polling._async_poller.AsyncLROPoller[typing.List[azure.ai.formrecognizer._models.RecognizedForm]]'
   parameters:
   - name: receipt_url
     description: 'The URL of the receipt to analyze. The input must be a valid, encoded
@@ -309,22 +428,40 @@ methods:
       US sales receipts.'
     isRequired: true
     types:
-    - <xref:azure.ai.formrecognizer.aio.str>
+    - <xref:str>
+  - name: include_field_elements
+    description: Whether or not to include field elements such as lines and words
+      in addition to form fields.
+    types:
+    - <xref:bool>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
   return:
     description: 'An instance of an AsyncLROPoller. Call *result()* on the poller
 
       object to return a list[<xref:azure.ai.formrecognizer.RecognizedForm>].'
     types:
-    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.ai.formrecognizer.aio.list>[<xref:azure.ai.formrecognizer.RecognizedForm>]]
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:list>[<xref:azure.ai.formrecognizer.RecognizedForm>]]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
   examples:
   - "Recognize US sales receipt fields from a URL.<!--[!code-python[Main](les\\async_samples\\\
     sample_recognize_receipts_from_url_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\128\\\\azure-ai-formrecognizer-3.0.0\\\\\
     samples\\\\async_samples\\\\sample_recognize_receipts_from_url_async.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
+    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.formrecognizer.aio import FormRecognizerClient\n\
     \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_FORM_RECOGNIZER_KEY\"]\n\n   async with FormRecognizerClient(\n       endpoint=endpoint,\
     \ credential=AzureKeyCredential(key)\n   ) as form_recognizer_client:\n      \

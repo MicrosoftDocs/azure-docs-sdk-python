@@ -16,6 +16,7 @@ summary: 'A client to interact with a specific share, although that share may no
   and <xref:azure.storage.fileshare.ShareClient.get_file_client> functions.
 
 
+
   For more optional configuration, please click
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share#optional-configuration).'
@@ -29,12 +30,12 @@ constructor:
       use the <xref:azure.storage.fileshare.ShareClient.from_share_url> classmethod.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: share_name
     description: The name of the share with which to interact.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: snapshot
     description: 'An optional share snapshot on which to operate. This can be the
       snapshot ID string
@@ -42,7 +43,7 @@ constructor:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: credential
     description: 'The credential with which to authenticate. This is optional if the
 
@@ -52,6 +53,23 @@ constructor:
 
       shared access key.'
     isRequired: true
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+
+      Setting to an older version may result in reduced feature compatibility.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: max_range_size
+    description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
+    types:
+    - <xref:int>
 methods:
 - uid: azure.storage.fileshare.ShareClient.create_directory
   name: create_directory
@@ -64,7 +82,13 @@ methods:
     description: The name of the directory.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: metadata
+    description: 'Name-value pairs associated with the directory as metadata.'
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: ShareDirectoryClient
     types:
@@ -85,30 +109,65 @@ methods:
     description: File permission, a Portable SDDL
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A file permission key
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
 - uid: azure.storage.fileshare.ShareClient.create_share
   name: create_share
   summary: 'Creates a new Share under the account. If a share with the
 
     same name already exists, the operation fails.'
   signature: create_share(**kwargs)
-  return:
-    description: Share-updated property dict (Etag and last modified).
+  parameters:
+  - name: metadata
+    description: 'Name-value pairs associated with the share as metadata.'
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:dict>(<xref:str,str>)
+  - name: quota
+    description: The quota to be allotted.
+    types:
+    - <xref:int>
+  - name: access_tier
+    description: 'Specifies the access tier of the share.
+
+      Possible values: ''TransactionOptimized'', ''Hot'', ''Cool'''
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: protocols
+    description: Protocols to enable on the share. Only one protocol can be enabled
+      on the share.
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.ShareProtocols>
+  - name: root_squash
+    description: 'Root squash to set on the share.
+
+      Only valid for NFS shares. Possible values include: ''NoRootSquash'', ''RootSquash'',
+      ''AllSquash''.'
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.ShareRootSquash>
+  return:
+    description: 'Share-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\\
     azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Create share\
-    \ with Access Tier set to Hot\n   share.create_share(access_tier=ShareAccessTier(\"\
-    Hot\"))\n\n   ````\n"
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   # Create share with Access Tier\
+    \ set to Hot\n   share.create_share(access_tier=ShareAccessTier(\"Hot\"))\n\n\
+    \   ````\n"
 - uid: azure.storage.fileshare.ShareClient.create_snapshot
   name: create_snapshot
   summary: 'Creates a snapshot of the share.
@@ -127,18 +186,27 @@ methods:
 
     snapshot was taken.'
   signature: create_snapshot(**kwargs)
-  return:
-    description: Share-updated property dict (Snapshot ID, Etag, and last modified).
+  parameters:
+  - name: metadata
+    description: 'Name-value pairs associated with the share as metadata.'
     types:
-    - <xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
+    - <xref:dict>(<xref:str,str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: 'Share-updated property dict (Snapshot ID, Etag, and last modified).'
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
   examples:
   - "Creates a snapshot of the file share.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   share.create_snapshot()\n\n   ````\n"
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   share.create_snapshot()\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.delete_directory
   name: delete_directory
   summary: 'Marks the directory for deletion. The directory is
@@ -150,7 +218,11 @@ methods:
     description: The name of the directory.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -166,14 +238,18 @@ methods:
     isRequired: true
     types:
     - <xref:bool>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   examples:
   - "Deletes the share and any snapshots.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   share.delete_share(delete_snapshots=True)\n\n   ````\n"
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   share.delete_share(delete_snapshots=True)\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.from_connection_string
   name: from_connection_string
   summary: Create ShareClient from a Connection String.
@@ -184,12 +260,12 @@ methods:
     description: A connection string to an Azure Storage account.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: share_name
     description: The name of the share.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: snapshot
     description: 'The optional share snapshot on which to operate. This can be the
       snapshot ID string
@@ -197,7 +273,7 @@ methods:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: credential
     description: 'The credential with which to authenticate. This is optional if the
 
@@ -209,7 +285,6 @@ methods:
     isRequired: true
     defaultValue: None
   - name: credential
-    isRequired: true
     defaultValue: None
   return:
     description: A share client.
@@ -220,9 +295,9 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.storage.fileshare import ShareClient\n   share = ShareClient.from_connection_string(self.connection_string,\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.storage.fileshare\
+    \ import ShareClient\n   share = ShareClient.from_connection_string(self.connection_string,\
     \ \"sharesamples2\")\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.from_share_url
   name: from_share_url
@@ -232,7 +307,7 @@ methods:
     description: The full URI to the share.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: snapshot
     description: 'An optional share snapshot on which to operate. This can be the
       snapshot ID string
@@ -240,7 +315,7 @@ methods:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: credential
     description: 'The credential with which to authenticate. This is optional if the
 
@@ -252,7 +327,6 @@ methods:
     isRequired: true
     defaultValue: None
   - name: credential
-    isRequired: true
     defaultValue: None
   return:
     description: A share client.
@@ -270,7 +344,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   return:
     description: A Directory Client.
     types:
@@ -286,7 +360,7 @@ methods:
     description: Path to the specified file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   return:
     description: A File Client.
     types:
@@ -303,21 +377,30 @@ methods:
     description: Key of the file permission to retrieve
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A file permission (a portable SDDL)
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
 - uid: azure.storage.fileshare.ShareClient.get_share_access_policy
   name: get_share_access_policy
   summary: 'Gets the permissions for the share. The permissions
 
     indicate whether files in a share may be accessed publicly.'
   signature: get_share_access_policy(**kwargs)
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Access policy information in a dict.
     types:
-    - <xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
+    - <xref:dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.ShareClient.get_share_properties
   name: get_share_properties
   summary: 'Returns all user-defined metadata and system properties for the
@@ -326,6 +409,11 @@ methods:
 
     list of files or directories.'
   signature: get_share_properties(**kwargs)
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: The share properties.
     types:
@@ -335,9 +423,9 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_hello_world.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   properties = share.get_share_properties()\n\n   ````\n"
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   properties = share.get_share_properties()\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.get_share_stats
   name: get_share_stats
   summary: 'Gets the approximate size of the data stored on the share in bytes.
@@ -347,10 +435,15 @@ methods:
 
     or recently re-sized files.'
   signature: get_share_stats(**kwargs)
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: The approximate size of the data (in bytes) stored on the share.
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
 - uid: azure.storage.fileshare.ShareClient.list_directories_and_files
   name: list_directories_and_files
   summary: Lists the directories and files under the share.
@@ -361,14 +454,14 @@ methods:
     description: Name of a directory.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: name_starts_with
     description: 'Filters the results to return only directories whose names
 
       begin with the specified prefix.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: marker
     description: 'An opaque continuation token. This value can be retrieved from the
 
@@ -377,7 +470,11 @@ methods:
       this generator will begin returning results from this point.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: An auto-paging iterable of dict-like DirectoryProperties and FileProperties
   examples:
@@ -385,12 +482,12 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Create a directory in the share\n   dir_client = share.create_directory(\"\
-    mydir\")\n\n   # Upload a file to the directory\n   with open(SOURCE_FILE, \"\
-    rb\") as source_file:\n       dir_client.upload_file(file_name=\"sample\", data=source_file)\n\
-    \n   # List files in the directory\n   my_files = list(share.list_directories_and_files(directory_name=\"\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create a directory\
+    \ in the share\n   dir_client = share.create_directory(\"mydir\")\n\n   # Upload\
+    \ a file to the directory\n   with open(SOURCE_FILE, \"rb\") as source_file:\n\
+    \       dir_client.upload_file(file_name=\"sample\", data=source_file)\n\n   #\
+    \ List files in the directory\n   my_files = list(share.list_directories_and_files(directory_name=\"\
     mydir\"))\n   print(my_files)\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.set_share_access_policy
   name: set_share_access_policy
@@ -409,11 +506,15 @@ methods:
       will clear the access policies set on the service.'
     isRequired: true
     types:
-    - dict(str, <xref:azure.storage.fileshare.AccessPolicy>)
-  return:
-    description: Share-updated property dict (Etag and last modified).
+    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.AccessPolicy>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:int>
+  return:
+    description: 'Share-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.ShareClient.set_share_metadata
   name: set_share_metadata
   summary: 'Sets the metadata for the share.
@@ -427,22 +528,26 @@ methods:
   signature: set_share_metadata(metadata, **kwargs)
   parameters:
   - name: metadata
-    description: Name-value pairs associated with the share as metadata.
+    description: 'Name-value pairs associated with the share as metadata.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.str>)
-  return:
-    description: Share-updated property dict (Etag and last modified).
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:int>
+  return:
+    description: 'Share-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Sets the share metadata.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\\
     azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   data = {'category':\
-    \ 'test'}\n   share.set_share_metadata(metadata=data)\n\n   ````\n"
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   data = {'category': 'test'}\n\
+    \   share.set_share_metadata(metadata=data)\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.set_share_properties
   name: set_share_properties
   summary: 'Sets the share properties.
@@ -450,19 +555,45 @@ methods:
 
     New in version 12.6.0.'
   signature: set_share_properties(**kwargs)
-  return:
-    description: Share-updated property dict (Etag and last modified).
+  parameters:
+  - name: access_tier
+    description: 'Specifies the access tier of the share.
+
+      Possible values: ''TransactionOptimized'', ''Hot'', and ''Cool'''
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:str>
+    - <xref:azure.storage.fileshare.models.ShareAccessTier>
+  - name: quota
+    description: 'Specifies the maximum size of the share, in gigabytes.
+
+      Must be greater than 0, and less than or equal to 5TB.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: root_squash
+    description: 'Root squash to set on the share.
+
+      Only valid for NFS shares. Possible values include: ''NoRootSquash'', ''RootSquash'',
+      ''AllSquash''.'
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.ShareRootSquash>
+  return:
+    description: 'Share-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Sets the share properties.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Set the tier for the first share to Hot\n   share1.set_share_properties(access_tier=\"\
-    Hot\")\n   # Set the quota for the first share to 3\n   share1.set_share_properties(quota=3)\n\
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Set the tier\
+    \ for the first share to Hot\n   share1.set_share_properties(access_tier=\"Hot\"\
+    )\n   # Set the quota for the first share to 3\n   share1.set_share_properties(quota=3)\n\
     \   # Set the tier for the second share to Cool and quota to 2\n   share2.set_share_properties(access_tier=ShareAccessTier(\"\
     Cool\"), quota=2)\n\n   # Get the shares' properties\n   print(share1.get_share_properties().access_tier)\n\
     \   print(share1.get_share_properties().quota)\n   print(share2.get_share_properties().access_tier)\n\
@@ -478,16 +609,20 @@ methods:
       Must be greater than 0, and less than or equal to 5TB.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
-  return:
-    description: Share-updated property dict (Etag and last modified).
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:int>
+  return:
+    description: 'Share-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Sets the share quota.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\\
     azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_share.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Set the\
-    \ quota for the share to 1GB\n   share.set_share_quota(quota=1)\n\n   ````\n"
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   # Set the quota for the share\
+    \ to 1GB\n   share.set_share_quota(quota=1)\n\n   ````\n"

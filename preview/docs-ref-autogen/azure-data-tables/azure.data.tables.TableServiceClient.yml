@@ -11,7 +11,7 @@ variables:
 - description: Name of the storage account (Cosmos or Azure)
   name: account_name
   types:
-  - <xref:azure.data.tables.str>
+  - <xref:str>
 methods:
 - uid: azure.data.tables.TableServiceClient.create_table
   name: create_table
@@ -22,11 +22,14 @@ methods:
     description: The Table name.
     isRequired: true
     types:
-    - <xref:azure.data.tables.str>
+    - <xref:str>
   return:
     description: TableClient
     types:
     - <xref:azure.data.tables.TableClient>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.data.tables.TableServiceClient.create_table_if_not_exists
   name: create_table_if_not_exists
   summary: 'Creates a new table if it does not currently exist.
@@ -40,11 +43,14 @@ methods:
     description: The Table name.
     isRequired: true
     types:
-    - <xref:azure.data.tables.str>
+    - <xref:str>
   return:
     description: TableClient
     types:
     - <xref:azure.data.tables.TableClient>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableServiceClient.delete_table
   name: delete_table
   summary: Deletes the table under the current account
@@ -54,11 +60,14 @@ methods:
     description: The Table name.
     isRequired: true
     types:
-    - <xref:azure.data.tables.str>
+    - <xref:str>
   return:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.data.tables.TableServiceClient.from_connection_string
   name: from_connection_string
   summary: Create TableServiceClient from a connection string.
@@ -68,7 +77,7 @@ methods:
     description: A connection string to an Azure Storage or Cosmos account.
     isRequired: true
     types:
-    - <xref:azure.data.tables.str>
+    - <xref:str>
   - name: conn_str
     isRequired: true
   return:
@@ -80,6 +89,7 @@ methods:
   summary: 'Gets the properties of an account''s Table service,
 
     including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+
 
 
     :rtype:dict[str, Any]
@@ -96,10 +106,18 @@ methods:
     location endpoint when read-access geo-redundant replication is enabled for the
     account.'
   signature: get_service_stats(**kwargs)
+  parameters:
+  - name: cls
+    description: A custom type or function that will be passed the direct response
+    types:
+    - <xref:callable>
   return:
     description: Dictionary of service stats
     types:
     - <xref:azure.data.tables.models.TableServiceStats>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableServiceClient.get_table_client
   name: get_table_client
   summary: 'Get a client to interact with the specified table.
@@ -112,7 +130,7 @@ methods:
     description: The table name
     isRequired: true
     types:
-    - <xref:azure.data.tables.str>
+    - <xref:str>
   return:
     description: A <xref:azure.data.tables.TableClient> object.
     types:
@@ -121,10 +139,23 @@ methods:
   name: list_tables
   summary: Queries tables under the given account.
   signature: list_tables(**kwargs)
+  parameters:
+  - name: results_per_page
+    description: Number of tables per page in return ItemPaged
+    types:
+    - <xref:int>
+  - name: select
+    description: Specify desired properties of a table to return certain tables
+    types:
+    - <xref:str>
+    - <xref:list>[<xref:str>]
   return:
     description: A query of tables
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.data.tables.TableItem>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:TableItem>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableServiceClient.query_tables
   name: query_tables
   summary: Queries tables under the given account.
@@ -134,11 +165,27 @@ methods:
     description: Specify a filter to return certain tables.
     isRequired: true
     types:
-    - <xref:azure.data.tables.str>
+    - <xref:str>
+  - name: results_per_page
+    description: Number of tables per page in return ItemPaged
+    types:
+    - <xref:int>
+  - name: select
+    description: Specify desired properties of a table to return certain tables
+    types:
+    - <xref:str>
+    - <xref:list>[<xref:str>]
+  - name: parameters
+    description: Dictionary for formatting query with additional, user defined parameters
+    types:
+    - <xref:dict>[<xref:str,str>]
   return:
     description: An ItemPaged of tables
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.data.tables.TableItem>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:TableItem>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableServiceClient.set_service_properties
   name: set_service_properties
   summary: "Sets properties for an account's Table service endpoint,\n   including\
@@ -170,3 +217,6 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError

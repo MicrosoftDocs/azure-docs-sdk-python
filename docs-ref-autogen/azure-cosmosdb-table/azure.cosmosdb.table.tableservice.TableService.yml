@@ -26,21 +26,35 @@ constructor:
     protocol='https', endpoint_suffix='core.windows.net', request_session=None, connection_string=None,
     socket_timeout=None)
 variables:
-- description: "The key-encryption-key optionally provided by the user. If provided,\
-    \ will be used to\nencrypt/decrypt in supported methods.\nFor methods requiring\
-    \ decryption, either the key_encryption_key OR the resolver must be provided.\n\
-    If both are provided, the resolver will take precedence.\nMust implement the following\
-    \ methods for APIs requiring encryption:\nwrap_key(key)\u2013wraps the specified\
-    \ key (bytes) using an algorithm of the user's choice. Returns the encrypted key\
-    \ as bytes.\nget_key_wrap_algorithm()\u2013returns the algorithm used to wrap\
-    \ the specified symmetric key.\nget_kid()\u2013returns a string key id for this\
-    \ key-encryption-key.\nMust implement the following methods for APIs requiring\
-    \ decryption:\nunwrap_key(key, algorithm)\u2013returns the unwrapped form of the\
-    \ specified symmetric key using the string-specified algorithm.\nget_kid()\u2013\
-    returns a string key id for this key-encryption-key."
+- description: 'The key-encryption-key optionally provided by the user. If provided,
+    will be used to
+
+    encrypt/decrypt in supported methods.
+
+    For methods requiring decryption, either the key_encryption_key OR the resolver
+    must be provided.
+
+    If both are provided, the resolver will take precedence.
+
+    Must implement the following methods for APIs requiring encryption:
+
+    wrap_key(key)--wraps the specified key (bytes) using an algorithm of the user''s
+    choice. Returns the encrypted key as bytes.
+
+    get_key_wrap_algorithm()--returns the algorithm used to wrap the specified symmetric
+    key.
+
+    get_kid()--returns a string key id for this key-encryption-key.
+
+    Must implement the following methods for APIs requiring decryption:
+
+    unwrap_key(key, algorithm)--returns the unwrapped form of the specified symmetric
+    key using the string-specified algorithm.
+
+    get_kid()--returns a string key id for this key-encryption-key.'
   name: key_encryption_key
   types:
-  - <xref:azure.cosmosdb.table.tableservice.object>
+  - <xref:object>
 - description: 'A function to resolve keys optionally provided by the user. If provided,
     will be used to decrypt in supported methods.
 
@@ -50,16 +64,16 @@ variables:
 
     It uses the kid string to return a key-encryption-key implementing the interface
     defined above.'
-  name: key_resolver_function
+  name: key_resolver_function(kid)
   types:
-  - <xref:kid>) (<xref:azure.cosmosdb.table.tableservice.function>
+  - <xref:function>
 - description: 'A function that takes in an entity''s partition key, row key, and
     property name and returns
 
     a boolean that indicates whether that property should be encrypted.'
   name: row_key, property_name) encryption_resolver_functions
   types:
-  - <xref:azure.cosmosdb.table.tableservice.function>(<xref:azure.cosmosdb.table.tableservice.partition_key>,
+  - <xref:function>(<xref:partition_key,>
 - description: 'A flag that may be set to ensure that all messages successfully uploaded
     to the queue and all those downloaded and
 
@@ -82,12 +96,12 @@ methods:
     description: The name of the table to commit the batch to.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
 - uid: azure.cosmosdb.table.tableservice.TableService.commit_batch
   name: commit_batch
   summary: Commits a <xref:azure.storage.table.TableBatch> request.
@@ -97,18 +111,18 @@ methods:
     description: The name of the table to commit the batch to.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: batch
     description: The batch to commit.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tablebatch.TableBatch>
+    - <xref:TableBatch>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: 'A list of the batch responses corresponding to the requests in the
       batch.
@@ -116,7 +130,8 @@ methods:
       The items could either be an etag, in case of success, or an error object in
       case of failure.'
     types:
-    - list(<xref:azure.storage.table.models.AzureBatchOperationError>, str)
+    - <xref:list>(<xref:<xref:azure.storage.table.models.AzureBatchOperationError>>,
+      <xref:str>)
 - uid: azure.cosmosdb.table.tableservice.TableService.create_table
   name: create_table
   summary: Creates a new table in the storage account.
@@ -130,7 +145,7 @@ methods:
       It is case-insensitive and must be from 3 to 63 characters long.'
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: fail_on_exist
     description: Specifies whether to throw an exception if the table already exists.
     isRequired: true
@@ -142,7 +157,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: 'A boolean indicating whether the table was created. If fail_on_exist
 
@@ -165,17 +180,17 @@ methods:
     description: The name of the table containing the entity to delete.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: partition_key
     description: The PartitionKey of the entity.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: row_key
     description: The RowKey of the entity.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: if_match
     description: 'The client may specify the ETag for the entity on the
 
@@ -193,13 +208,13 @@ methods:
     isRequired: true
     defaultValue: '*'
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
 - uid: azure.cosmosdb.table.tableservice.TableService.delete_table
   name: delete_table
   summary: 'Deletes the specified table and any data it contains.
@@ -223,7 +238,7 @@ methods:
     description: The name of the table to delete.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: fail_not_exist
     description: Specifies whether to throw an exception if the table doesn't exist.
     isRequired: true
@@ -235,7 +250,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: 'A boolean indicating whether the table was deleted. If fail_not_exist
 
@@ -251,13 +266,13 @@ methods:
     description: The name of table to check for existence.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: A boolean indicating whether the table exists.
     types:
@@ -275,7 +290,7 @@ methods:
       SAS.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.common.models.ResourceTypes>
+    - <xref:ResourceTypes>
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -288,7 +303,7 @@ methods:
       specified in an associated stored access policy.'
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.common.models.AccountPermissions>
+    - <xref:AccountPermissions>
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
@@ -303,7 +318,8 @@ methods:
       is assumed to be UTC.'
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.datetime> or <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: start
     description: 'The time at which the shared access signature becomes valid. If
 
@@ -317,7 +333,8 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.datetime> or <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: ip
     description: 'Specifies an IP address or a range of IP addresses from which to
       accept requests.
@@ -332,7 +349,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: protocol
     description: 'Specifies the protocol permitted for a request made. The default
       value
@@ -342,11 +359,11 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   return:
     description: A Shared Access Signature (sas) token.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
 - uid: azure.cosmosdb.table.tableservice.TableService.generate_table_shared_access_signature
   name: generate_table_shared_access_signature
   summary: 'Generates a shared access signature for the table.
@@ -360,7 +377,7 @@ methods:
     description: The name of the table to create a SAS token for.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
@@ -374,7 +391,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.models.TablePermissions>
+    - <xref:TablePermissions>
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
@@ -390,7 +407,8 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.datetime> or <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: start
     description: 'The time at which the shared access signature becomes valid. If
 
@@ -404,16 +422,17 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.datetime> or <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:datetime>
+    - <xref:str>
   - name: id
     description: 'A unique value up to 64 characters in length that correlates to
       a
 
-      stored access policy. To create a stored access policy, use <xref:azure.cosmosdb.table.tableservice.TableService.set_table_acl>.'
+      stored access policy. To create a stored access policy, use <xref:azure.cosmosdb.table.tableservice.set_table_acl>.'
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: ip
     description: 'Specifies an IP address or a range of IP addresses from which to
       accept requests.
@@ -429,7 +448,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: protocol
     description: 'Specifies the protocol permitted for a request made. The default
       value
@@ -439,7 +458,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: start_pk
     description: 'The minimum partition key accessible with this shared access
 
@@ -451,7 +470,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: start_rk
     description: 'The minimum row key accessible with this shared access signature.
 
@@ -463,7 +482,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: end_pk
     description: 'The maximum partition key accessible with this shared access
 
@@ -475,7 +494,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: end_rk
     description: 'The maximum row key accessible with this shared access signature.
 
@@ -485,11 +504,11 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   return:
     description: A Shared Access Signature (sas) token.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
 - uid: azure.cosmosdb.table.tableservice.TableService.get_entity
   name: get_entity
   summary: Get an entity from the specified table. Throws if the entity does not exist.
@@ -500,23 +519,23 @@ methods:
     description: The name of the table to get the entity from.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: partition_key
     description: The PartitionKey of the entity.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: row_key
     description: The RowKey of the entity.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: select
     description: Returns only the desired properties of an entity from the set.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: accept
     description: 'Specifies the accepted content type of the response payload. See
 
@@ -526,7 +545,7 @@ methods:
     isRequired: true
     defaultValue: application/json;odata=minimalmetadata
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: property_resolver
     description: 'A function which given the partition key, row key, property name,
 
@@ -538,15 +557,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.func>(<xref:azure.cosmosdb.table.tableservice.pk>,
-      <xref:azure.cosmosdb.table.tableservice.rk>, <xref:azure.cosmosdb.table.tableservice.prop_name>,
-      <xref:azure.cosmosdb.table.tableservice.prop_value>, <xref:azure.cosmosdb.table.tableservice.service_edm_type>)
+    - <xref:func>(<xref:pk>, <xref:rk>, <xref:prop_name>, <xref:prop_value>, <xref:service_edm_type>)
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The retrieved entity.
     types:
@@ -562,17 +579,17 @@ methods:
     description: The name of an existing table.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: A dictionary of access policies associated with the table.
     types:
-    - dict(str, <xref:azure.cosmosdb.table.common.models.AccessPolicy>)
+    - <xref:dict>(<xref:str>, <xref:<xref:azure.cosmosdb.table.common.models.AccessPolicy>>)
 - uid: azure.cosmosdb.table.tableservice.TableService.get_table_service_properties
   name: get_table_service_properties
   summary: 'Gets the properties of a storage account''s Table service, including
@@ -585,7 +602,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The table service properties.
     types:
@@ -630,7 +647,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The table service stats.
     types:
@@ -663,24 +680,25 @@ methods:
     description: The name of the table to insert the entity into.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: entity
     description: 'The entity to insert. Could be a dict or an entity object.
 
       Must contain a PartitionKey and a RowKey.'
     isRequired: true
     types:
-    - dict or <xref:azure.storage.table.models.Entity>
+    - <xref:dict>
+    - <xref:azure.storage.table.models.Entity>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The etag of the inserted entity.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
 - uid: azure.cosmosdb.table.tableservice.TableService.insert_or_merge_entity
   name: insert_or_merge_entity
   summary: 'Merges an existing entity or inserts a new entity if it does not exist
@@ -699,24 +717,25 @@ methods:
     description: The name of the table in which to insert or merge the entity.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: entity
     description: 'The entity to insert or merge. Could be a dict or an entity object.
 
       Must contain a PartitionKey and a RowKey.'
     isRequired: true
     types:
-    - dict or <xref:azure.storage.table.models.Entity>
+    - <xref:dict>
+    - <xref:azure.storage.table.models.Entity>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The etag of the entity.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
 - uid: azure.cosmosdb.table.tableservice.TableService.insert_or_replace_entity
   name: insert_or_replace_entity
   summary: 'Replaces an existing entity or inserts a new entity if it does not
@@ -737,24 +756,25 @@ methods:
     description: The name of the table in which to insert or replace the entity.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: entity
     description: 'The entity to insert or replace. Could be a dict or an entity object.
 
       Must contain a PartitionKey and a RowKey.'
     isRequired: true
     types:
-    - dict or <xref:azure.storage.table.models.Entity>
+    - <xref:dict>
+    - <xref:azure.storage.table.models.Entity>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The etag of the entity.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
 - uid: azure.cosmosdb.table.tableservice.TableService.list_tables
   name: list_tables
   summary: 'Returns a generator to list the tables. The generator will lazily follow
@@ -778,7 +798,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   - name: marker
     description: 'An opaque continuation object. This value can be retrieved from
       the
@@ -793,7 +813,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.obj>
+    - <xref:obj>
   - name: timeout
     description: 'The server timeout, expressed in seconds. This function may make
       multiple
@@ -804,7 +824,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: A generator which produces <xref:azure.cosmosdb.table.common.models.table.Table>
       objects.
@@ -831,14 +851,15 @@ methods:
     description: The name of the table containing the entity to merge.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: entity
     description: 'The entity to merge. Could be a dict or an entity object.
 
       Must contain a PartitionKey and a RowKey.'
     isRequired: true
     types:
-    - dict or <xref:azure.storage.table.models.Entity>
+    - <xref:dict>
+    - <xref:azure.storage.table.models.Entity>
   - name: if_match
     description: 'The client may specify the ETag for the entity on the
 
@@ -856,17 +877,17 @@ methods:
     isRequired: true
     defaultValue: '*'
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The etag of the entity.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
 - uid: azure.cosmosdb.table.tableservice.TableService.query_entities
   name: query_entities
   summary: 'Returns a generator to list the entities in the table specified. The
@@ -893,7 +914,7 @@ methods:
     description: The name of the table to query.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: filter
     description: 'Returns only entities that satisfy the specified filter. Note that
 
@@ -905,19 +926,19 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: select
     description: Returns only the desired properties of an entity from the set.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: num_results
     description: The maximum number of entities to return.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   - name: marker
     description: 'An opaque continuation object. This value can be retrieved from
       the
@@ -932,7 +953,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.obj>
+    - <xref:obj>
   - name: accept
     description: 'Specifies the accepted content type of the response payload. See
 
@@ -942,7 +963,7 @@ methods:
     isRequired: true
     defaultValue: application/json;odata=minimalmetadata
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: property_resolver
     description: 'A function which given the partition key, row key, property name,
 
@@ -954,9 +975,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.func>(<xref:azure.cosmosdb.table.tableservice.pk>,
-      <xref:azure.cosmosdb.table.tableservice.rk>, <xref:azure.cosmosdb.table.tableservice.prop_name>,
-      <xref:azure.cosmosdb.table.tableservice.prop_value>, <xref:azure.cosmosdb.table.tableservice.service_edm_type>)
+    - <xref:func>(<xref:pk>, <xref:rk>, <xref:prop_name>, <xref:prop_value>, <xref:service_edm_type>)
   - name: timeout
     description: 'The server timeout, expressed in seconds. This function may make
       multiple
@@ -967,7 +986,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: A generator which produces <xref:azure.storage.table.models.Entity>
       objects.
@@ -1006,7 +1025,7 @@ methods:
     description: The name of an existing table.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the table. The
 
@@ -1016,13 +1035,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - dict(str, <xref:azure.cosmosdb.table.common.models.AccessPolicy>)
+    - <xref:dict>(<xref:str>, <xref:azure.cosmosdb.table.common.models.AccessPolicy>)
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
 - uid: azure.cosmosdb.table.tableservice.TableService.set_table_service_properties
   name: set_table_service_properties
   summary: 'Sets the properties of a storage account''s Table service, including
@@ -1042,7 +1061,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.common.models.Logging>
+    - <xref:Logging>
   - name: hour_metrics
     description: 'The hour metrics settings provide a summary of request
 
@@ -1050,7 +1069,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.common.models.Metrics>
+    - <xref:Metrics>
   - name: minute_metrics
     description: 'The minute metrics settings provide request statistics
 
@@ -1058,7 +1077,7 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.common.models.Metrics>
+    - <xref:Metrics>
   - name: cors
     description: 'You can include up to five CorsRule elements in the
 
@@ -1072,13 +1091,13 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - list(<xref:azure.cosmosdb.table.common.models.CorsRule>)
+    - <xref:list>(<xref:azure.cosmosdb.table.common.models.CorsRule>)
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
 - uid: azure.cosmosdb.table.tableservice.TableService.update_entity
   name: update_entity
   summary: 'Updates an existing entity in a table. Throws if the entity does not exist.
@@ -1092,14 +1111,15 @@ methods:
     description: The name of the table containing the entity to update.
     isRequired: true
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: entity
     description: 'The entity to update. Could be a dict or an entity object.
 
       Must contain a PartitionKey and a RowKey.'
     isRequired: true
     types:
-    - dict or <xref:azure.storage.table.models.Entity>
+    - <xref:dict>
+    - <xref:azure.storage.table.models.Entity>
   - name: if_match
     description: 'The client may specify the ETag for the entity on the
 
@@ -1117,14 +1137,14 @@ methods:
     isRequired: true
     defaultValue: '*'
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>
   - name: timeout
     description: The server timeout, expressed in seconds.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.cosmosdb.table.tableservice.int>
+    - <xref:int>
   return:
     description: The etag of the entity.
     types:
-    - <xref:azure.cosmosdb.table.tableservice.str>
+    - <xref:str>

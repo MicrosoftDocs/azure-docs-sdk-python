@@ -23,12 +23,12 @@ constructor:
       file, use the <xref:azure.storage.fileshare.ShareFileClient.from_file_url> classmethod.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: share_name
     description: The name of the share for the file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: file_path
     description: 'The file path to the file with which to interact. If specified,
       this value will override
@@ -36,15 +36,15 @@ constructor:
       a file value specified in the file URL.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: snapshot
     description: 'An optional file snapshot on which to operate. This can be the snapshot
       ID string
 
-      or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
+      or the response returned from <xref:ShareClient.create_snapshot>.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: credential
     description: 'The credential with which to authenticate. This is optional if the
 
@@ -54,6 +54,23 @@ constructor:
 
       shared access key.'
     isRequired: true
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+
+      Setting to an older version may result in reduced feature compatibility.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: max_range_size
+    description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
+    types:
+    - <xref:int>
 methods:
 - uid: azure.storage.fileshare.ShareFileClient.abort_copy
   name: abort_copy
@@ -71,7 +88,23 @@ methods:
       instance of FileProperties.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:azure.storage.fileshare.FileProperties>
+    - <xref:str>
+    - <xref:azure.storage.fileshare.FileProperties>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -93,7 +126,11 @@ methods:
       in the correct format.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A ShareLeaseClient object.
     types:
@@ -103,11 +140,10 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_client.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   source_file.create_file(1024)\n   lease = source_file.acquire_lease()\n \
-    \  source_file.upload_file(b'hello world', lease=lease)\n\n   lease.release()\n\
-    \n   ````\n"
+    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   source_file.create_file(1024)\n\
+    \   lease = source_file.acquire_lease()\n   source_file.upload_file(b'hello world',\
+    \ lease=lease)\n\n   lease.release()\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.clear_range
   name: clear_range
   summary: 'Clears the specified range and releases the space used in storage for
@@ -121,18 +157,33 @@ methods:
       The range can be up to 4 MB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: length
     description: 'Number of bytes to use for clearing a section of the file.
 
       The range can be up to 4 MB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
     types:
-    - <xref:Dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.ShareFileClient.close_all_handles
   name: close_all_handles
   summary: 'Close any open file handles.
@@ -140,13 +191,18 @@ methods:
 
     This operation will block until the service has closed all open handles.'
   signature: close_all_handles(**kwargs)
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: 'The number of handles closed (this may be 0 if the specified handle
       was not found)
 
       and the number of handles failed to close in a dict.'
     types:
-    - <xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.int>]
+    - <xref:dict>[<xref:str>, <xref:int>]
 - uid: azure.storage.fileshare.ShareFileClient.close_handle
   name: close_handle
   summary: Close an open file handle.
@@ -156,14 +212,19 @@ methods:
     description: A specific handle to close.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:azure.storage.fileshare.Handle>
+    - <xref:str>
+    - <xref:azure.storage.fileshare.Handle>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: 'The number of handles closed (this may be 0 if the specified handle
       was not found)
 
       and the number of handles failed to close in a dict.'
     types:
-    - <xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.int>]
+    - <xref:dict>[<xref:str>, <xref:int>]
 - uid: azure.storage.fileshare.ShareFileClient.create_file
   name: create_file
   summary: 'Creates a new file.
@@ -179,7 +240,7 @@ methods:
       up to 1 TB.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: file_attributes
     description: 'The file system attributes for files and directories.
 
@@ -191,21 +252,24 @@ methods:
       file_attributes value is not case sensitive.'
     isRequired: true
     types:
-    - str or <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:str>
+    - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'Creation time for the file
 
       Default value: Now.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: file_last_write_time
     description: 'Last write time for the file
 
       Default value: Now.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -220,7 +284,7 @@ methods:
       x-ms-file-permission or x-ms-file-permission-key should be specified.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: permission_key
     description: 'Key of the permission to be set for the
 
@@ -229,26 +293,67 @@ methods:
       x-ms-file-permission-key should be specified.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:str>
+  - name: content_settings
+    description: 'ContentSettings object used to set file properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:azure.storage.fileshare.ContentSettings>
+  - name: metadata
+    description: 'Name-value pairs associated with the file as metadata.'
+    types:
+    - <xref:dict>(<xref:str,str>)
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-storage-file-share-12.4.2\\\
-    \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   # Create and allocate bytes for the\
-    \ file (no content added yet)\n   my_allocated_file.create_file(size=100)\n\n\
-    \   ````\n"
+    \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+    \n````python\n\n   # Create and allocate bytes for the file (no content added\
+    \ yet)\n   my_allocated_file.create_file(size=100)\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.delete_file
   name: delete_file
   summary: 'Marks the specified file for deletion. The file is
 
     later deleted during garbage collection.'
   signature: delete_file(**kwargs)
+  parameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -256,9 +361,9 @@ methods:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-storage-file-share-12.4.2\\\
-    \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   my_file.delete_file()\n\n   ````\n"
+    \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+    \n````python\n\n   my_file.delete_file()\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.download_file
   name: download_file
   summary: 'Downloads a file to the StorageStreamDownloader. The readall() method
@@ -277,14 +382,52 @@ methods:
       Must be set if length is provided.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
+  - name: max_concurrency
+    description: Maximum number of parallel connections to use.
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used, because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A streaming object (StorageStreamDownloader)
     types:
@@ -294,9 +437,9 @@ methods:
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\\
     azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_client.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   with open(DEST_FILE,\
-    \ \"wb\") as data:\n       stream = my_file.download_file()\n       data.write(stream.readall())\n\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   with open(DEST_FILE, \"wb\") as\
+    \ data:\n       stream = my_file.download_file()\n       data.write(stream.readall())\n\
     \n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.from_connection_string
   name: from_connection_string
@@ -308,25 +451,25 @@ methods:
     description: A connection string to an Azure Storage account.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: share_name
     description: The name of the share.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: file_path
     description: The file path.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: snapshot
     description: 'An optional file snapshot on which to operate. This can be the snapshot
       ID string
 
-      or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
+      or the response returned from <xref:ShareClient.create_snapshot>.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: credential
     description: 'The credential with which to authenticate. This is optional if the
 
@@ -338,7 +481,6 @@ methods:
     isRequired: true
     defaultValue: None
   - name: credential
-    isRequired: true
     defaultValue: None
   return:
     description: A File client.
@@ -349,10 +491,10 @@ methods:
     file_samples_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
     a\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-storage-file-share-12.4.2\\\\samples\\\
-    \\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.storage.fileshare import ShareFileClient\n\
-    \   file = ShareFileClient.from_connection_string(\n       self.connection_string,\n\
+    \\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"language\": \"\
+    python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
+    ````python\n\n   from azure.storage.fileshare import ShareFileClient\n   file\
+    \ = ShareFileClient.from_connection_string(\n       self.connection_string,\n\
     \       share_name=\"helloworld2\",\n       file_path=\"myfile\")\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.from_file_url
   name: from_file_url
@@ -364,15 +506,15 @@ methods:
     description: The full URI to the file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: snapshot
     description: 'An optional file snapshot on which to operate. This can be the snapshot
       ID string
 
-      or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
+      or the response returned from <xref:ShareClient.create_snapshot>.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: credential
     description: 'The credential with which to authenticate. This is optional if the
 
@@ -384,7 +526,6 @@ methods:
     isRequired: true
     defaultValue: None
   - name: credential
-    isRequired: true
     defaultValue: None
   return:
     description: A File client.
@@ -396,6 +537,22 @@ methods:
 
     system properties for the file.'
   signature: get_file_properties(**kwargs)
+  parameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: FileProperties
     types:
@@ -411,17 +568,31 @@ methods:
     description: Specifies the start offset of bytes over which to get ranges.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: length
     description: Number of bytes to use over which to get ranges.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A list of valid ranges.
     types:
-    - <xref:azure.storage.fileshare.List>[<xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>,
-      <xref:azure.storage.fileshare.int>]]
+    - <xref:List>[<xref:dict>[<xref:str>, <xref:int>]]
 - uid: azure.storage.fileshare.ShareFileClient.get_ranges_diff
   name: get_ranges_diff
   summary: 'Returns the list of valid page ranges for a file or snapshot
@@ -436,13 +607,13 @@ methods:
     description: Specifies the start offset of bytes over which to get ranges.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: length
     description: Number of bytes to use over which to get ranges.
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: previous_sharesnapshot
     description: 'The snapshot diff parameter that contains an opaque DateTime value
       that
@@ -453,20 +624,36 @@ methods:
     isRequired: true
     defaultValue: None
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: 'A tuple of two lists of file ranges as dictionaries with ''start''
       and ''end'' keys.
 
       The first element are filled file ranges, the 2nd element is cleared file ranges.'
     types:
-    - <xref:azure.storage.fileshare.tuple>(<xref:azure.storage.fileshare.list>(<xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>,
-      <xref:azure.storage.fileshare.str>), <xref:azure.storage.fileshare.list>(<xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>,
-      <xref:azure.storage.fileshare.str>))
+    - <xref:tuple>(<xref:list>(<xref:dict>(<xref:str>, <xref:str>), <xref:list>(<xref:dict>(<xref:str>,
+      <xref:str>))
 - uid: azure.storage.fileshare.ShareFileClient.list_handles
   name: list_handles
   summary: Lists handles for file.
   signature: list_handles(**kwargs)
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: An auto-paging iterable of HandleItem
     types:
@@ -480,11 +667,26 @@ methods:
     description: Size to resize file to (in bytes)
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
     types:
-    - <xref:Dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.ShareFileClient.set_file_metadata
   name: set_file_metadata
   summary: 'Sets user-defined metadata for the specified file as one or more
@@ -500,14 +702,29 @@ methods:
   signature: set_file_metadata(metadata=None, **kwargs)
   parameters:
   - name: metadata
-    description: Name-value pairs associated with the file as metadata.
+    description: 'Name-value pairs associated with the file as metadata.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.str>)
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.ShareFileClient.set_http_headers
   name: set_http_headers
   summary: Sets HTTP headers on the file.
@@ -530,21 +747,24 @@ methods:
       Here is an example for when the var type is str: ''Temporary|Archive'''
     isRequired: true
     types:
-    - str or <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:str>
+    - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'Creation time for the file
 
       Default value: Preserve.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: file_last_write_time
     description: 'Last write time for the file
 
       Default value: Preserve.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -559,7 +779,7 @@ methods:
       x-ms-file-permission or x-ms-file-permission-key should be specified.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: permission_key
     description: 'Key of the permission to be set for the
 
@@ -568,11 +788,26 @@ methods:
       x-ms-file-permission-key should be specified.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.ShareFileClient.start_copy_from_url
   name: start_copy_from_url
   summary: 'Initiates the copying of data from a source URL into the file
@@ -589,17 +824,140 @@ methods:
     description: Specifies the URL of the source file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
+  - name: file_permission
+    description: 'If specified the permission (security descriptor) shall be set for
+      the directory/file.
+
+      This value can be set to "source" to copy the security descriptor from the source
+      file.
+
+      Otherwise if set, this value will be used to override the source value. If not
+      set, permission value
+
+      is inherited from the parent directory of the target file. This setting can
+      be
+
+      used if Permission size is <= 8KB, otherwise permission_key shall be used.
+
+      If SDDL is specified as input, it must have owner, group and dacl.
+
+      Note: Only one of the file_permission or permission_key should be specified.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+  - name: permission_key
+    description: 'Key of the permission to be set for the directory/file.
+
+      This value can be set to "source" to copy the security descriptor from the source
+      file.
+
+      Otherwise if set, this value will be used to override the source value. If not
+      set, permission value
+
+      is inherited from the parent directory of the target file.
+
+      Note: Only one of the file_permission or permission_key should be specified.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+  - name: file_attributes
+    description: 'This value can be set to "source" to copy file attributes from the
+      source file to the target file,
+
+      or to clear all attributes, it can be set to "None". Otherwise it can be set
+      to a list of attributes
+
+      to set on the target file. If this is not set, the default value is "Archive".
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.NTFSAttributes>
+  - name: file_creation_time
+    description: 'This value can be set to "source" to copy the creation time from
+      the source file to the target file,
+
+      or a datetime to set as creation time on the target file. This could also be
+      a string in ISO 8601 format.
+
+      If this is not set, creation time will be set to the date time value of the
+      creation
+
+      (or when it was overwritten) of the target file by copy engine.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_last_write_time
+    description: 'This value can be set to "source" to copy the last write time from
+      the source file to the target file, or
+
+      a datetime to set as the last write time on the target file. This could also
+      be a string in ISO 8601 format.
+
+      If this is not set, value will be the last write time to the file by the copy
+      engine.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: ignore_read_only
+    description: 'Specifies the option to overwrite the target file if it already
+      exists and has read-only attribute set.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:bool>
+  - name: set_archive_attribute
+    description: 'Specifies the option to set the archive attribute on the target
+      file.
+
+      True means the archive attribute will be set on the target file despite attribute
+
+      overrides or the source file state.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:bool>
+  - name: metadata
+    description: 'Name-value pairs associated with the file as metadata.'
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\\
     azure-storage-file-share-12.4.2\\\\samples\\\\file_samples_client.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   destination_file.start_copy_from_url(source_url=source_url)\n\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   destination_file.start_copy_from_url(source_url=source_url)\n\
     \n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.upload_file
   name: upload_file
@@ -611,12 +969,12 @@ methods:
     description: Content of the file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.Any>
+    - <xref:Any>
   - name: length
     description: Length of the file in bytes. Specify its maximum size, up to 1 TiB.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: file_attributes
     description: 'The file system attributes for files and directories.
 
@@ -628,21 +986,24 @@ methods:
       file_attributes value is not case sensitive.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:str>
+    - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'Creation time for the file
 
       Default value: Now.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: file_last_write_time
     description: 'Last write time for the file
 
       Default value: Now.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str> or <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -657,7 +1018,7 @@ methods:
       x-ms-file-permission or x-ms-file-permission-key should be specified.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: permission_key
     description: 'Key of the permission to be set for the
 
@@ -666,19 +1027,68 @@ methods:
       x-ms-file-permission-key should be specified.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:str>
+  - name: metadata
+    description: 'Name-value pairs associated with the file as metadata.'
     types:
-    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
+    - <xref:dict>(<xref:str,str>)
+  - name: content_settings
+    description: 'ContentSettings object used to set file properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
+    types:
+    - <xref:azure.storage.fileshare.ContentSettings>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    types:
+    - <xref:bool>
+  - name: max_concurrency
+    description: Maximum number of parallel connections to use.
+    types:
+    - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: encoding
+    description: Defaults to UTF-8.
+    types:
+    - <xref:str>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-storage-file-share-12.4.2\\\
-    \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   with open(SOURCE_FILE, \"rb\") as source:\n\
-    \       my_file.upload_file(source)\n\n   ````\n"
+    \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"language\"\
+    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
+    \n````python\n\n   with open(SOURCE_FILE, \"rb\") as source:\n       my_file.upload_file(source)\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.ShareFileClient.upload_range
   name: upload_range
   summary: Upload a range of bytes to a file.
@@ -688,25 +1098,58 @@ methods:
     description: The data to upload.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.bytes>
+    - <xref:bytes>
   - name: offset
     description: 'Start of byte range to use for uploading a section of the file.
 
       The range can be up to 4 MB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: length
     description: 'Number of bytes to use for uploading a section of the file.
 
       The range can be up to 4 MB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
-  return:
-    description: File-updated property dict (Etag and last modified).
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash of the page content. The storage
+
+      service checks the hash of the content that has arrived
+
+      with the hash that was sent. This is primarily valuable for detecting
+
+      bitflips on the wire if using http instead of https as https (the default)
+
+      will already validate. Note that this MD5 hash is not stored with the
+
+      file.'
     types:
-    - <xref:Dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: encoding
+    description: Defaults to UTF-8.
+    types:
+    - <xref:str>
+  return:
+    description: 'File-updated property dict (Etag and last modified).'
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.ShareFileClient.upload_range_from_url
   name: upload_range_from_url
   summary: Writes the bytes from one Azure File endpoint into the specified range
@@ -719,14 +1162,14 @@ methods:
       The range can be up to 4 MB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: length
     description: 'Number of bytes to use for updating a section of the file.
 
       The range can be up to 4 MB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
   - name: source_url
     description: 'A URL of up to 2 KB in length that specifies an Azure file or blob.
 
@@ -745,7 +1188,7 @@ methods:
       [https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken](https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken)'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.str>
+    - <xref:str>
   - name: source_offset
     description: 'This indicates the start of the range of bytes(inclusive) that has
       to be taken from the copy source.
@@ -753,4 +1196,54 @@ methods:
       The service will read the same number of bytes as the destination range (length-offset).'
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.int>
+    - <xref:int>
+  - name: source_if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this conditional header to copy the blob only if the source
+
+      blob has been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: source_if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this conditional header to copy the blob only if the source blob
+
+      has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: source_etag
+    description: 'The source ETag value, or the wildcard character (*). Used to check
+      if the resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: source_match_condition
+    description: The source match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>

@@ -12,7 +12,7 @@ variables:
 - description: Name of the storage account (Cosmos or Azure)
   name: account_name
   types:
-  - <xref:azure.data.tables.aio.str>
+  - <xref:str>
 methods:
 - uid: azure.data.tables.aio.TableClient.create_batch
   name: create_batch
@@ -31,11 +31,15 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.TableEntity> or <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.aio.str>]
+    - <xref:TableEntity>
+    - <xref:dict>[<xref:str,str>]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.aio.str>]
+    - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: If the entity already exists
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.data.tables.aio.TableClient.create_table
   name: create_table
   summary: Creates a new table under the given account.
@@ -43,7 +47,10 @@ methods:
   return:
     description: Dictionary of operation metadata returned from service
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.aio.str>]
+    - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: If the table already exists
+    type: ~azure.core.exceptions.ResourceExistsError
 - uid: azure.data.tables.aio.TableClient.delete_entity
   name: delete_entity
   summary: Deletes the specified entity in a table.
@@ -53,16 +60,27 @@ methods:
     description: The partition key of the entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   - name: row_key
     description: The row key of the entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
+  - name: etag
+    description: Etag of the entity
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: MatchCondition
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: If the table does not exist
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.data.tables.aio.TableClient.delete_table
   name: delete_table
   summary: Deletes the table under the current account.
@@ -71,6 +89,9 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.ResourceNotFoundError
 - uid: azure.data.tables.aio.TableClient.from_connection_string
   name: from_connection_string
   summary: Create TableClient from a Connection string.
@@ -80,12 +101,12 @@ methods:
     description: A connection string to an Azure Storage or Cosmos account.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   - name: table_name
     description: The table name.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   - name: table_name
     isRequired: true
   return:
@@ -101,7 +122,7 @@ methods:
     description: The full URI to the table, including SAS token if used.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -112,9 +133,8 @@ methods:
       shared access key.'
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   - name: credential
-    isRequired: true
     defaultValue: None
   return:
     description: A table client.
@@ -129,16 +149,19 @@ methods:
     description: The partition key of the entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   - name: row_key
     description: The row key of the entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
     - <xref:azure.data.tables.TableEntity>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.get_table_access_policy
   name: get_table_access_policy
   summary: 'Retrieves details about any stored access policies specified on the table
@@ -149,15 +172,31 @@ methods:
   return:
     description: Dictionary of SignedIdentifiers
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.AccessPolicy>]
+    - <xref:dict>[<xref:str,azure.data.tables.AccessPolicy>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
   signature: list_entities(**kwargs)
+  parameters:
+  - name: results_per_page
+    description: Number of entities per page in return AsyncItemPaged
+    types:
+    - <xref:int>
+  - name: select
+    description: Specify desired properties of an entity to return certain entities
+    types:
+    - <xref:str>
+    - <xref:list>[<xref:str>]
   return:
     description: Query of table entities
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.data.tables.TableEntity>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.query_entities
   name: query_entities
   summary: Lists entities in a table.
@@ -167,11 +206,27 @@ methods:
     description: Specify a filter to return certain entities
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.str>
+    - <xref:str>
+  - name: results_per_page
+    description: Number of entities per page in return AsyncItemPaged
+    types:
+    - <xref:int>
+  - name: select
+    description: Specify desired properties of an entity to return certain entities
+    types:
+    - <xref:str>
+    - <xref:list>[<xref:str>]
+  - name: parameters
+    description: Dictionary for formatting query with additional, user defined parameters
+    types:
+    - <xref:dict>
   return:
     description: Query of table entities
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.data.tables.TableEntity>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.send_batch
   name: send_batch
   summary: Commit a TableBatchOperations to send requests to the server
@@ -181,6 +236,9 @@ methods:
     description: Object containing requests and responses
     types:
     - <xref:azure.data.tables.BatchTransactionResult>
+  exceptions:
+  - description: ''
+    type: ~azure.data.tables.BatchErrorException
 - uid: azure.data.tables.aio.TableClient.set_table_access_policy
   name: set_table_access_policy
   summary: Sets stored access policies for the table that may be used with Shared
@@ -190,11 +248,14 @@ methods:
   - name: signed_identifiers
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.AccessPolicy>]
+    - <xref:dict>[<xref:str,AccessPolicy>]
   return:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.update_entity
   name: update_entity
   summary: Update entity in a table.
@@ -204,16 +265,35 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>, <xref:azure.data.tables.aio.str>]
+    - <xref:dict>[<xref:str>, <xref:str>]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
     types:
     - <xref:azure.data.tables.UpdateMode>
+  - name: partition_key
+    description: The partition key of the entity.
+    types:
+    - <xref:str>
+  - name: row_key
+    description: The row key of the entity.
+    types:
+    - <xref:str>
+  - name: etag
+    description: Etag of the entity
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: MatchCondition
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: Dictionary of operation metadata returned from service
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.aio.str>]
+    - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.upsert_entity
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
@@ -223,7 +303,8 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:azure.data.tables.TableEntity> or <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.aio.str>]
+    - <xref:TableEntity>
+    - <xref:dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace and Insert on fail
     isRequired: true
@@ -232,4 +313,7 @@ methods:
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
-    - <xref:azure.data.tables.aio.dict>[<xref:azure.data.tables.aio.str>,<xref:azure.data.tables.aio.str>]
+    - <xref:dict>[<xref:str,str>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
