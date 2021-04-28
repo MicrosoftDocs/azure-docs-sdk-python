@@ -180,6 +180,20 @@ pip install azure-cognitiveservices-language-textanalytics
 
 [Learn more](/azure/cognitive-services/text-analytics/overview) about the Text Analytics API and get started with the [Text Analytics API Python quickstart](/azure/cognitive-services/text-analytics/quickstarts/python).
 
+### Language Understanding
+
+The LUIS API provides you with natural language understanding capabilties like intent recognition and relevant entity extraction from user utterances.
+
+[Try LUIS API](https://westus.dev.cognitive.microsoft.com/docs/services/5890b47c39e2bb17b84a55ff/operations/5890b47c39e2bb052c5b9c2f) in your browser.
+
+Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
+
+```python
+pip install azure-cognitiveservices-language-luis
+```
+
+[Learn more](/azure/cognitive-services/luis/what-is-luis) about the LUIS and get started with the [LUIS SDK quickstart](/azure/cognitive-services/luis/client-libraries-rest-api).
+
 
 ### Spell Check
 
