@@ -12,7 +12,7 @@ summary: 'Defines a health policy used to evaluate the health of the cluster or 
 constructor:
   syntax: 'ClusterHealthPolicy(*, consider_warning_as_error: bool = False, max_percent_unhealthy_nodes:
     int = 0, max_percent_unhealthy_applications: int = 0, application_type_health_policy_map=None,
-    **kwargs) -> None'
+    node_type_health_policy_map=None, **kwargs) -> None'
   parameters:
   - name: consider_warning_as_error
     description: 'Indicates whether warnings are treated
@@ -126,3 +126,80 @@ constructor:
     isRequired: true
     types:
     - <xref:list>[<xref:azure.servicefabric.models.ApplicationTypeHealthPolicyMapItem>]
+  - name: node_type_health_policy_map
+    description: 'Defines a map with max percentage
+
+      unhealthy nodes for specific node types.
+
+      Each entry specifies as key the node type name and as value an integer
+
+      that represents the MaxPercentUnhealthyNodes percentage used to evaluate
+
+      the nodes of the specified node type.
+
+      The node type health policy map can be used during cluster health
+
+      evaluation to describe special node types.
+
+      They are evaluated against the percentages associated with their node type
+
+      name in the map.
+
+      Setting this has no impact on the global pool of nodes used for
+
+      MaxPercentUnhealthyNodes.
+
+      The node type health policy map is used only if the cluster manifest
+
+      enables node type health evaluation using the configuration entry for
+
+      HealthManager/EnableNodeTypeHealthEvaluation.
+
+      For example, given a cluster with many nodes of different types, with
+
+      important work hosted on node type "SpecialNodeType" that should not
+
+      tolerate any nodes down.
+
+      You can specify global MaxPercentUnhealthyNodes to 20% to tolerate some
+
+      failures for all nodes, but for the node type "SpecialNodeType", set the
+
+      MaxPercentUnhealthyNodes to 0 by
+
+      setting the value in the key value pair in NodeTypeHealthPolicyMapItem.
+
+      The key is the node type name.
+
+      This way, as long as no nodes of type "SpecialNodeType" are in Error
+
+      state,
+
+      even if some of the many nodes in the global pool are in Error state, but
+
+      below the global unhealthy percentage, the cluster would be evaluated to
+
+      Warning.
+
+      A Warning health state does not impact cluster upgrade or other monitoring
+
+      triggered by Error health state.
+
+      But even one node of type SpecialNodeType in Error would make cluster
+
+      unhealthy (in Error rather than Warning/Ok), which triggers rollback or
+
+      pauses the cluster upgrade, depending on the upgrade configuration.
+
+      Conversely, setting the global MaxPercentUnhealthyNodes to 0, and setting
+
+      SpecialNodeType''s max percent unhealthy nodes to 100,
+
+      with one node of type SpecialNodeType in Error state would still put the
+
+      cluster in an Error state, since the global restriction is more strict in
+
+      this case.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.servicefabric.models.NodeTypeHealthPolicyMapItem>]
