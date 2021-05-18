@@ -24,8 +24,12 @@ constructor:
     typing.Union[str, _ForwardRef(''CatalogCollationType''), NoneType] = None, zone_redundant:
     typing.Union[bool, NoneType] = None, license_type: typing.Union[str, _ForwardRef(''DatabaseLicenseType''),
     NoneType] = None, read_scale: typing.Union[str, _ForwardRef(''DatabaseReadScale''),
-    NoneType] = None, read_replica_count: typing.Union[int, NoneType] = None, auto_pause_delay:
-    typing.Union[int, NoneType] = None, min_capacity: typing.Union[float, NoneType]
+    NoneType] = None, high_availability_replica_count: typing.Union[int, NoneType]
+    = None, secondary_type: typing.Union[str, _ForwardRef(''SecondaryType''), NoneType]
+    = None, auto_pause_delay: typing.Union[int, NoneType] = None, requested_backup_storage_redundancy:
+    typing.Union[str, _ForwardRef(''RequestedBackupStorageRedundancy''), NoneType]
+    = None, min_capacity: typing.Union[float, NoneType] = None, maintenance_configuration_id:
+    typing.Union[str, NoneType] = None, is_ledger_on: typing.Union[bool, NoneType]
     = None, **kwargs)'
   parameters:
   - name: sku
@@ -205,30 +209,32 @@ constructor:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.DatabaseLicenseType>
   - name: read_scale
-    description: 'If enabled, connections that have application intent set to readonly
-      in
+    description: 'The state of read-only routing. If enabled, connections that have
 
-      their connection string may be routed to a readonly secondary replica. This
-      property is only
+      application intent set to readonly in their connection string may be routed
+      to a readonly
 
-      settable for Premium and Business Critical databases. Possible values include:
-      "Enabled",
-
-      "Disabled".'
+      secondary replica in the same region. Possible values include: "Enabled", "Disabled".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.DatabaseReadScale>
-  - name: read_replica_count
-    description: 'The number of readonly secondary replicas associated with the
+  - name: high_availability_replica_count
+    description: 'The number of secondary replicas associated with the
 
-      database to which readonly application intent connections may be routed. This
-      property is only
-
-      settable for Hyperscale edition databases.'
+      database that are used to provide high availability.'
     isRequired: true
     types:
     - <xref:int>
+  - name: secondary_type
+    description: 'The secondary type of the database if it is a secondary.  Valid
+      values
+
+      are Geo and Named. Possible values include: "Geo", "Named".'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.SecondaryType>
   - name: auto_pause_delay
     description: 'Time in minutes after which database is automatically paused. A
       value
@@ -237,12 +243,38 @@ constructor:
     isRequired: true
     types:
     - <xref:int>
+  - name: requested_backup_storage_redundancy
+    description: 'The storage account type to be used to store
+
+      backups for this database. Possible values include: "Geo", "Local", "Zone".'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.RequestedBackupStorageRedundancy>
   - name: min_capacity
     description: Minimal capacity that database will always have allocated, if not
       paused.
     isRequired: true
     types:
     - <xref:float>
+  - name: maintenance_configuration_id
+    description: 'Maintenance configuration id assigned to the database.
+
+      This configuration defines the period when the maintenance updates will occur.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: is_ledger_on
+    description: 'Whether or not this database is a ledger database, which means all
+      tables
+
+      in the database are ledger tables. Note: the value of this property cannot be
+      changed after the
+
+      database has been created.'
+    isRequired: true
+    types:
+    - <xref:bool>
 variables:
 - description: 'The status of the database. Possible values include: "Online", "Restoring",
 
@@ -299,8 +331,14 @@ variables:
   name: current_sku
   types:
   - <xref:azure.mgmt.sql.models.Sku>
-- description: 'The date when database was paused by user configuration or action
-    (ISO8601
+- description: 'The storage account type used to store backups for
+
+    this database. Possible values include: "Geo", "Local", "Zone".'
+  name: current_backup_storage_redundancy
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.CurrentBackupStorageRedundancy>
+- description: 'The date when database was paused by user configuration or action(ISO8601
 
     format). Null if the database is ready.'
   name: paused_date
@@ -312,3 +350,7 @@ variables:
   name: resumed_date
   types:
   - <xref:datetime.datetime>
+- description: Infra encryption is enabled for this database.
+  name: is_infra_encryption_enabled
+  types:
+  - <xref:bool>

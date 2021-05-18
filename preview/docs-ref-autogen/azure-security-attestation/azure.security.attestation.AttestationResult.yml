@@ -4,214 +4,314 @@ name: AttestationResult
 fullName: azure.security.attestation.AttestationResult
 module: azure.security.attestation
 inheritances:
-- msrest.serialization.Model
-summary: A Microsoft Azure Attestation response token body - the body of a response
-  token issued by MAA.
+- builtins.object
+summary: 'An AttestationResult represents the claims returned from the attestation
+
+  service as a result of a call to
+
+  <xref:AttestationClient.attest_sgx>, or <xref:azure.security.attestation.AttestationClient.attest_open_enclave>.'
 constructor:
-  syntax: 'AttestationResult(*, jti: typing.Union[str, NoneType] = None, iss: typing.Union[str,
-    NoneType] = None, iat: typing.Union[float, NoneType] = None, exp: typing.Union[float,
-    NoneType] = None, nbf: typing.Union[float, NoneType] = None, cnf: object = None,
-    nonce: typing.Union[str, NoneType] = None, version: typing.Union[str, NoneType]
-    = None, runtime_claims: object = None, inittime_claims: object = None, policy_claims:
-    object = None, verifier_type: typing.Union[str, NoneType] = None, policy_signer:
-    typing.Union[_ForwardRef(''JSONWebKey''), NoneType] = None, policy_hash: typing.Union[bytes,
-    NoneType] = None, is_debuggable: typing.Union[bool, NoneType] = None, product_id:
-    typing.Union[float, NoneType] = None, mr_enclave: typing.Union[str, NoneType]
-    = None, mr_signer: typing.Union[str, NoneType] = None, svn: typing.Union[float,
-    NoneType] = None, enclave_held_data: typing.Union[bytes, NoneType] = None, sgx_collateral:
-    object = None, deprecated_version: typing.Union[str, NoneType] = None, deprecated_is_debuggable:
-    typing.Union[bool, NoneType] = None, deprecated_sgx_collateral: object = None,
-    deprecated_enclave_held_data: typing.Union[bytes, NoneType] = None, deprecated_enclave_held_data2:
-    typing.Union[bytes, NoneType] = None, deprecated_product_id: typing.Union[float,
-    NoneType] = None, deprecated_mr_enclave: typing.Union[str, NoneType] = None, deprecated_mr_signer:
-    typing.Union[str, NoneType] = None, deprecated_svn: typing.Union[float, NoneType]
-    = None, deprecated_tee: typing.Union[str, NoneType] = None, deprecated_policy_signer:
-    typing.Union[_ForwardRef(''JSONWebKey''), NoneType] = None, deprecated_policy_hash:
-    typing.Union[bytes, NoneType] = None, deprecated_rp_data: typing.Union[str, NoneType]
-    = None, **kwargs)'
+  syntax: AttestationResult(**kwargs)
   parameters:
-  - name: jti
-    description: Unique Identifier for the token.
-    isRequired: true
+  - name: issuer
+    description: Entity which issued the attestation token.
     types:
     - <xref:str>
-  - name: iss
-    description: The Principal who issued the token.
-    isRequired: true
+  - name: confirmation
+    description: Confirmation claim for the token.
+    types:
+    - <xref:dict>
+  - name: unique_identifier
+    description: Unique identifier for the token.
     types:
     - <xref:str>
-  - name: iat
-    description: 'The time at which the token was issued, in the number of seconds
-      since
-
-      1970-01-0T00:00:00Z UTC.'
-    isRequired: true
-    types:
-    - <xref:float>
-  - name: exp
-    description: 'The expiration time after which the token is no longer valid, in
-      the number of
-
-      seconds since 1970-01-0T00:00:00Z UTC.'
-    isRequired: true
-    types:
-    - <xref:float>
-  - name: nbf
-    description: 'The not before time before which the token cannot be considered
-      valid, in the
-
-      number of seconds since 1970-01-0T00:00:00Z UTC.'
-    isRequired: true
-    types:
-    - <xref:float>
-  - name: cnf
-    description: An RFC 7800 Proof of Possession Key.
-    isRequired: true
-    types:
-    - <xref:object>
   - name: nonce
-    description: The Nonce input to the attestation request, if provided.
-    isRequired: true
+    description: Returns the input *nonce* attribute passed to the *attest* API.
     types:
     - <xref:str>
   - name: version
-    description: 'The Schema version of this structure. Current Value: 1.0.'
-    isRequired: true
+    description: Version of the token. Must be "1.0"
     types:
     - <xref:str>
   - name: runtime_claims
-    description: Runtime Claims.
-    isRequired: true
+    description: Runtime claims passed in from the caller of the attest API.
     types:
-    - <xref:object>
+    - <xref:dict>
   - name: inittime_claims
-    description: Inittime Claims.
-    isRequired: true
+    description: Inittime claims passed in from the caller of the attest API.
     types:
-    - <xref:object>
+    - <xref:dict>
+  - name: enclave_held_data
+    description: Runtime data passed in from the caller of the attest API.
+    types:
+    - <xref:bytes>
   - name: policy_claims
-    description: Policy Generated Claims.
-    isRequired: true
+    description: Attestation claims issued by policies.
     types:
-    - <xref:object>
+    - <xref:dict>
   - name: verifier_type
-    description: The Attestation type being attested.
-    isRequired: true
+    description: Verifier which generated this token.
     types:
     - <xref:str>
   - name: policy_signer
-    description: The certificate used to sign the policy object, if specified.
-    isRequired: true
+    description: 'If the policy which processed the request is signed,
+
+      this will be the certificate which signed the policy.'
     types:
-    - <xref:azure.security.attestation._generated.models.JSONWebKey>
+    - <xref:AttestationSigner>
   - name: policy_hash
-    description: The SHA256 hash of the BASE64URL encoded policy text used for attestation.
-    isRequired: true
+    description: 'The hash of the policy which processed the attestation
+
+      evidence.'
     types:
-    - <xref:bytes>
+    - <xref:str>
   - name: is_debuggable
-    description: True if the enclave is debuggable, false otherwise.
-    isRequired: true
+    description: True if the SGX enclave being attested is debuggable.
     types:
     - <xref:bool>
   - name: product_id
-    description: The SGX Product ID for the enclave.
-    isRequired: true
+    description: Product ID for the SGX enclave being attested.
     types:
-    - <xref:float>
+    - <xref:int>
   - name: mr_enclave
-    description: The HEX encoded SGX MRENCLAVE value for the enclave.
-    isRequired: true
+    description: MRENCLAVE value for the SGX enclave being attested.
     types:
     - <xref:str>
   - name: mr_signer
-    description: The HEX encoded SGX MRSIGNER value for the enclave.
-    isRequired: true
+    description: MRSIGNER value for the SGX enclave being attested.
     types:
     - <xref:str>
   - name: svn
-    description: The SGX SVN value for the enclave.
-    isRequired: true
+    description: Security version number for the SGX enclave being attested.
     types:
-    - <xref:float>
-  - name: enclave_held_data
-    description: A copy of the RuntimeData specified as an input to the attest call.
-    isRequired: true
-    types:
-    - <xref:bytes>
+    - <xref:int>
   - name: sgx_collateral
-    description: The SGX SVN value for the enclave.
-    isRequired: true
+    description: 'Collateral which identifies the collateral used to
+
+      create the token.'
     types:
-    - <xref:object>
-  - name: deprecated_version
-    description: 'DEPRECATED: Private Preview version of x-ms-ver claim.'
-    isRequired: true
+    - <xref:dict>
+attributes:
+- uid: azure.security.attestation.AttestationResult.confirmation
+  name: confirmation
+  summary: 'Returns the confirmation claim for the attestation token.
+
+
+    If present, the confirmation property can be used to identify a proof of
+
+    possession of a key.
+
+
+    See [RFC 7800 Section 3.1](https://www.rfc-editor.org/rfc/rfc7800.html#section-3.1)
+    for details.'
+  return:
     types:
     - <xref:str>
-  - name: deprecated_is_debuggable
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-is-debuggable
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.enclave_held_data
+  name: enclave_held_data
+  summary: 'Returns the value of the runtime_data field specified as an input
 
-      claim.'
-    isRequired: true
+    to the <xref:AttestationClient.attest_sgx> or
+
+    <xref:azure.security.attestation.AttestationClient.attest_open_enclave> API.
+
+
+
+    > [!NOTE]
+
+    > The enclave_held_data prperty will only be populated if the
+
+    >
+
+    > runtime_data parameter to the Attest API is marked as not being
+
+    >
+
+    > JSON.
+
+    >'
+  return:
+    types:
+    - <xref:bytes>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.inittime_claims
+  name: inittime_claims
+  summary: 'Returns the inittime claims in the token.
+
+
+    This value will match the input *inittime_data* property to the
+
+    <xref:AttestationClient.attest_sgx> or
+
+    <xref:azure.security.attestation.AttestationClient.attest_open_enclave> API.
+
+
+
+    > [!NOTE]
+
+    > The inittime_claims property will only be populated if the
+
+    >
+
+    > inittime_data parameter to the Attest API is marked as being JSON.
+
+    >'
+  return:
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.is_debuggable
+  name: is_debuggable
+  summary: 'Returns "True" if the source evidence being attested indicates
+
+    that the TEE has debugging enabled.'
+  return:
     types:
     - <xref:bool>
-  - name: deprecated_sgx_collateral
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-collateral
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.issuer
+  name: issuer
+  summary: 'Returns the issuer of the attestation token.
 
-      claim.'
-    isRequired: true
-    types:
-    - <xref:object>
-  - name: deprecated_enclave_held_data
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.'
-    isRequired: true
-    types:
-    - <xref:bytes>
-  - name: deprecated_enclave_held_data2
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-ehd
 
-      claim.'
-    isRequired: true
+    The issuer for the token MUST be the same as the *instance_uri* associated
+
+    with the <xref:azure.security.attestation.AttestationClient> object. If it is
+    not, then the token
+
+    should be rejected.
+
+
+
+    See [RFC 7519 Section 4.1.1](https://www.rfc-editor.org/rfc/rfc7519.html#section-4.1.1)
+    for details.'
+  return:
     types:
-    - <xref:bytes>
-  - name: deprecated_product_id
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-product-id.'
-    isRequired: true
+    - <xref:str>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.mr_enclave
+  name: mr_enclave
+  summary: Returns HEX encoded *mr-enclave* value of the SGX enclave being attested.
+  return:
+    types:
+    - <xref:str>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.mr_signer
+  name: mr_signer
+  summary: Returns HEX encoded *mr-signer* value of the SGX enclave being attested.
+  return:
+    types:
+    - <xref:str>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.nonce
+  name: nonce
+  summary: Returns the value of the "nonce" input to the attestation request.
+  return:
+    types:
+    - <xref:str>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.policy_claims
+  name: policy_claims
+  summary: Returns the claims for the token generated by attestation policy.
+  return:
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.policy_hash
+  name: policy_hash
+  summary: 'Returns the base64url encoded SHA256 hash of the Base64Url encoded
+
+    attestation policy which was applied when generating this token.'
+  return:
+    types:
+    - <xref:str>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.policy_signer
+  name: policy_signer
+  summary: 'Returns the signing certificate which was used to sign the policy
+
+    which was applied when the token was generated.'
+  return:
+    types:
+    - <xref:AttestationSigner>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.product_id
+  name: product_id
+  summary: Returns the product id associated with the SGX enclave being attested.
+  return:
     types:
     - <xref:float>
-  - name: deprecated_mr_enclave
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-mrenclave.'
-    isRequired: true
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.runtime_claims
+  name: runtime_claims
+  summary: 'Returns the runtime claims in the token.
+
+
+    This value will match the input *runtime_data* property to the
+
+    <xref:AttestationClient.attest_sgx> or
+
+    <xref:azure.security.attestation.AttestationClient.attest_open_enclave> API.
+
+
+
+    > [!NOTE]
+
+    > The runtime_claims property will only be populated if the
+
+    >
+
+    > runtime_data parameter to the Attest API is marked as being JSON.
+
+    >'
+  return:
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.sgx_collateral
+  name: sgx_collateral
+  summary: 'Returns a set of information describing the complete set of inputs
+
+    to the *oe_verify_evidence*'
+  return:
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.svn
+  name: svn
+  summary: Returns the *svn* value of the SGX enclave being attested.
+  return:
+    types:
+    - <xref:int>
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.unique_id
+  name: unique_id
+  summary: 'Returns a unique ID claim for the attestation token.
+
+
+    If present, the unique_id property can be used to distinguish between
+
+    different attestation tokens.
+
+
+    See [RFC 7519 Section 4.1.7](https://rfc-editor.org/rfc/rfc7519.html#section-4.1.7)
+    for details.'
+  return:
     types:
     - <xref:str>
-  - name: deprecated_mr_signer
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-mrsigner.'
-    isRequired: true
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.verifier_type
+  name: verifier_type
+  summary: Returns the verifier which generated this attestation token.
+  return:
     types:
     - <xref:str>
-  - name: deprecated_svn
-    description: 'DEPRECATED: Private Preview version of x-ms-sgx-svn.'
-    isRequired: true
-    types:
-    - <xref:float>
-  - name: deprecated_tee
-    description: 'DEPRECATED: Private Preview version of x-ms-tee.'
-    isRequired: true
+    - <xref:None>
+- uid: azure.security.attestation.AttestationResult.version
+  name: version
+  summary: Returns the version of the information returned in the token.
+  return:
     types:
     - <xref:str>
-  - name: deprecated_policy_signer
-    description: 'DEPRECATED: Private Preview version of x-ms-policy-signer.'
-    isRequired: true
-    types:
-    - <xref:azure.security.attestation._generated.models.JSONWebKey>
-  - name: deprecated_policy_hash
-    description: 'DEPRECATED: Private Preview version of x-ms-policy-hash.'
-    isRequired: true
-    types:
-    - <xref:bytes>
-  - name: deprecated_rp_data
-    description: 'DEPRECATED: Private Preview version of nonce.'
-    isRequired: true
-    types:
-    - <xref:str>
+    - <xref:None>

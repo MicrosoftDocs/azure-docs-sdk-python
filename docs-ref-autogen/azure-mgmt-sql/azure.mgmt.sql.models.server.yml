@@ -14,12 +14,14 @@ summary: 'An Azure SQL Database server.
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'Server(*, location: str, tags: typing.Union[typing.Dict[str, str], NoneType]
-    = None, identity: typing.Union[_ForwardRef(''ResourceIdentity''), NoneType] =
-    None, administrator_login: typing.Union[str, NoneType] = None, administrator_login_password:
+    = None, identity: typing.Union[_ForwardRef(''ResourceIdentityWithUserAssignedIdentities''),
+    NoneType] = None, administrator_login: typing.Union[str, NoneType] = None, administrator_login_password:
     typing.Union[str, NoneType] = None, version: typing.Union[str, NoneType] = None,
     minimal_tls_version: typing.Union[str, NoneType] = None, public_network_access:
     typing.Union[str, _ForwardRef(''ServerPublicNetworkAccess''), NoneType] = None,
-    **kwargs)'
+    primary_user_assigned_identity_id: typing.Union[str, NoneType] = None, key_id:
+    typing.Union[str, NoneType] = None, administrators: typing.Union[_ForwardRef(''ServerExternalAdministrator''),
+    NoneType] = None, **kwargs)'
   parameters:
   - name: location
     description: Required. Resource location.
@@ -35,7 +37,7 @@ constructor:
     description: The Azure Active Directory identity of the server.
     isRequired: true
     types:
-    - <xref:azure.mgmt.sql.models.ResourceIdentity>
+    - <xref:azure.mgmt.sql.models.ResourceIdentityWithUserAssignedIdentities>
   - name: administrator_login
     description: 'Administrator username for the server. Once created it cannot be
 
@@ -71,6 +73,23 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.ServerPublicNetworkAccess>
+  - name: primary_user_assigned_identity_id
+    description: 'The resource id of a user assigned identity to be
+
+      used by default.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: key_id
+    description: A CMK URI of the key to use for encryption.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: administrators
+    description: The Azure Active Directory identity of the server.
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.sql.models.ServerExternalAdministrator>
 variables:
 - description: Resource ID.
   name: id
@@ -100,3 +119,10 @@ variables:
   name: private_endpoint_connections
   types:
   - <xref:list>[<xref:azure.mgmt.sql.models.ServerPrivateEndpointConnection>]
+- description: 'Whether or not existing server has a workspace created and if it
+
+    allows connection from workspace. Possible values include: "Connected", "Disconnected".'
+  name: workspace_feature
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.ServerWorkspaceFeature>
