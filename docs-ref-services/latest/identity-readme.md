@@ -3,7 +3,7 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: maggiepint
 ms.author: magpint
-ms.date: 11/11/2020
+ms.date: 05/13/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,13 +11,14 @@ ms.devlang: python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.5.0 
+# Azure Identity client library for Python - Version 1.6.0 
 
 
 The Azure Identity library provides a set of credential classes for use with
 Azure SDK clients which support Azure Active Directory (AAD) token authentication.
+This library does not support Azure Active Directory B2C.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [API reference documentation][ref_docs]
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
@@ -98,10 +99,28 @@ the following mechanisms in this order, stopping when one succeeds:
   Managed Identity enabled, `DefaultAzureCredential` will authenticate with it.
 - Visual Studio Code - if a user has signed in to the Visual Studio Code Azure
   Account extension, `DefaultAzureCredential` will authenticate as that user.
-- Azure CLI - If a user has signed in via the Azure CLI `az login` command,
+- Azure CLI - if a user has signed in via the Azure CLI `az login` command,
   `DefaultAzureCredential` will authenticate as that user.
-- Interactive - If enabled, `DefaultAzureCredential` will interactively
-  authenticate a user via the current system's default browser.
+- Azure PowerShell - if a user has signed in via Azure PowerShell's
+  `Connect-AzAccount` command, `DefaultAzureCredential` will authenticate
+  as that user.
+- Interactive - if enabled, `DefaultAzureCredential` will interactively
+  authenticate a user via the default browser.
+
+>DefaultAzureCredential is intended to simplify getting started with the SDK by handling common
+>scenarios with reasonable default behaviors. Developers who want more control or whose scenario
+>isn't served by the default settings should use other credential types.
+
+### Managed Identity
+`DefaultAzureCredential` and `ManagedIdentityCredential` support
+[managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
+in any hosting environment which supports managed identities, such as (this list is not exhaustive):
+* [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
+* [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
+* [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
+* [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
+* [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+* [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)
 
 ## Examples
 
@@ -126,7 +145,7 @@ default_credential = DefaultAzureCredential()
 client = BlobServiceClient(account_url, credential=default_credential)
 ```
 
-### Enabling interactive authentication with `DefaultAzureCredential`
+#### Enabling interactive authentication with `DefaultAzureCredential`
 
 Interactive authentication is disabled in the `DefaultAzureCredential` by
 default and can be enabled with a keyword argument:
@@ -138,6 +157,19 @@ DefaultAzureCredential(exclude_interactive_browser_credential=False)
 When enabled, `DefaultAzureCredential` falls back to interactively
 authenticating via the system's default web browser when no other credential is
 available.
+
+#### Specifying a user assigned managed identity for `DefaultAzureCredential`
+
+Many Azure hosts allow the assignment of a user assigned managed identity. To
+configure `DefaultAzureCredential` to authenticate a user assigned identity,
+use the `managed_identity_client_id` keyword argument:
+
+```py
+DefaultAzureCredential(managed_identity_client_id=client_id)
+```
+
+Alternatively, set the environment variable `AZURE_CLIENT_ID` to the identity's
+client ID.
 
 ### Defining a custom authentication flow with `ChainedTokenCredential`
 
@@ -225,7 +257,7 @@ client = SecretClient("https://my-vault.vault.azure.net", default_credential)
 |-|-
 |[InteractiveBrowserCredential][interactive_cred_ref]|interactively authenticate a user with the default web browser
 |[DeviceCodeCredential][device_code_cred_ref]| interactively authenticate a user on a device with limited UI
-|[UsernamePasswordCredential][userpass_cred_ref]| authenticate a user with a username and password
+|[UsernamePasswordCredential][userpass_cred_ref]| authenticate a user with a username and password (does not support multi-factor authentication)
 
 ### Authenticating via Development Tools
 
@@ -303,17 +335,10 @@ credential = DefaultAzureCredential(logging_enable=True)
 
 ### Client library support
 
-This is an incomplete list of client libraries accepting Azure Identity
-credentials. You can learn more about these libraries, and find additional
-documentation of them, at the links below.
-
-- [azure-appconfiguration][azure_appconfiguration]
-- [azure-eventhub][azure_eventhub]
-- [azure-keyvault-certificates][azure_keyvault_certificates]
-- [azure-keyvault-keys][azure_keyvault_keys]
-- [azure-keyvault-secrets][azure_keyvault_secrets]
-- [azure-storage-blob][azure_storage_blob]
-- [azure-storage-queue][azure_storage_queue]
+Client and management libraries listed on the
+[Azure SDK release page](https://azure.github.io/azure-sdk/releases/latest/python.html)
+which support Azure AD authentication accept credentials from this library. You can learn more
+about using these libraries in their documentation, which is linked from the release page.
 
 ### Provide Feedback
 
@@ -339,15 +364,15 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/appconfiguration/azure-appconfiguration
+[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/appconfiguration/azure-appconfiguration
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/eventhub/azure-eventhub
-[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk//keyvault/azure-keyvault-certificates
-[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/keyvault/azure-keyvault-keys
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/storage/azure-storage-blob
-[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.5.0/sdk/storage/azure-storage-queue
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/eventhub/azure-eventhub
+[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk//keyvault/azure-keyvault-certificates
+[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/keyvault/azure-keyvault-keys
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/storage/azure-storage-blob
+[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.6.0/sdk/storage/azure-storage-queue
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.CertificateCredential
 [chain_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.ChainedTokenCredential
 [cli_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureCliCredential

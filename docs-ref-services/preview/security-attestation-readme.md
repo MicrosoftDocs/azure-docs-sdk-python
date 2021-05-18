@@ -3,7 +3,7 @@ title: Azure Attestation client library for Python
 keywords: Azure, python, SDK, API, azure-security-attestation, attestation
 author: maggiepint
 ms.author: magpint
-ms.date: 05/11/2021
+ms.date: 05/14/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: attestation
 ---
 
-# Azure Attestation client library for Python - Version 1.0.0b2 
+# Azure Attestation client library for Python - Version 1.0.0b3 
 
 
 The Microsoft Azure Attestation (MAA) service is a unified solution for remotely verifying the trustworthiness of a platform and integrity of the binaries running inside it. The service supports attestation of the platforms backed by Trusted Platform Modules (TPMs) alongside the ability to attest to the state of Trusted Execution Environments (TEEs) such as Intel(tm) Software Guard Extensions (SGX) enclaves and Virtualization-based Security (VBS) enclaves.
@@ -39,7 +39,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 ### Install the package
 
-Install the Microsoft Azure Attestation client library for .NET with [PyPI][Attestation_pypi]:
+Install the Microsoft Azure Attestation client library for Python with [PyPI][Attestation_pypi]:
 
 ```Powershell
 pip install --pre azure-security-attestation
@@ -99,7 +99,7 @@ Use the [Azure CLI][azure_cli] snippet below to create/get client secret credent
     $Env:AZURE_TENANT_ID="tenant-ID"
 ```
 
-For more information about the Azure Identity APIs and how to use them, see [Azure Identity client library](https://github.com/Azure/azure-sdk-for-python/tree/azure-security-attestation_1.0.0b2/sdk/identity/azure-identity)
+For more information about the Azure Identity APIs and how to use them, see [Azure Identity client library](https://github.com/Azure/azure-sdk-for-python/tree/azure-security-attestation_1.0.0b3/sdk/identity/azure-identity)
 
 ## Key concepts
 
@@ -163,7 +163,7 @@ Currently, MAA supports the following Trusted Execution environments:
 
 ### Runtime Data and Inittime Data
 
-RuntimeData refers to data which is presented to the Intel SGX Quote generation logic or the `oe_get_report`/`oe_get_evidence` APIs. The Azure Attestation service will validate that the first 32 bytes of the `report_data` field in the SGX Quote/OE Report/OE Evidence matches the SHA256 hash of the RuntimeData.
+RuntimeData refers to data which is presented to the Intel SGX Quote generation logic or the `oe_get_report`/`oe_get_evidence` APIs. If the caller to the attest API provided a `runtime_data` attribute, The Azure Attestation service will validate that the first 32 bytes of the `report_data` field in the SGX Quote/OE Report/OE Evidence matches the SHA256 hash of the `runtime_data`.
 
 InitTime data refers to data which is used to configure the SGX enclave being attested.
 
@@ -229,8 +229,8 @@ Clients need to be able to verify that the attestation policy document was not m
 
 There are two properties provided in the [PolicyResult][attestation_policy_result] that can be used to verify that the service received the policy document:
 
-* [`PolicySigner`][attestation_policy_result_signer] - if the `set_policy` call included a signing certificate, this will be the certificate provided at the time of the `set_policy` call. If no policy signer was set, this will be null.
-* [`PolicyTokenHash`][attestation_policy_result_token_hash] - this is the hash of the [JSON Web Token][json_web_token] sent to the service.
+* [`policy_signer`][attestation_policy_result_parameters] - if the `set_policy` call included a signing certificate, this will be the certificate provided at the time of the `set_policy` call. If no policy signer was set, this will be null.
+* [`policy_token_hash`][attestation_policy_result_parameters] - this is the hash of the [JSON Web Token][json_web_token] sent to the service.
 
 To verify the hash, clients can generate an attestation token and verify the hash generated from that token:
 
@@ -241,9 +241,8 @@ To verify the hash, clients can generate an attestation token and verify the has
     # verify that the hash of the policy document returned from the Attestation 
     # Service matches the hash of an attestation token created locally.
     expected_policy = AttestationToken(
-        body=StoredAttestationPolicy(
-            attestation_policy=str(attestation_policy).encode('ascii')),
-            signer=AttestationSigningKey(key, signing_certificate))
+        body=StoredAttestationPolicy(attestation_policy),
+        signer=AttestationSigningKey(key, signing_certificate))
     hasher = hashes.Hash(hashes.SHA256())
     hasher.update(expected_policy.serialize().encode('utf-8'))
     expected_hash = hasher.finalize()
@@ -253,11 +252,11 @@ To verify the hash, clients can generate an attestation token and verify the has
 
 ### Attest SGX Enclave
 
-Use the `AttestSgxEnclave` method to attest an SGX enclave.
+Use the [`attest_sgx`][attest_sgx] method to attest an SGX enclave.
 
-One of the core challenges customers have interacting with encrypted environments is how to ensure that you can reliably communicate with the code running in the environment ("enclave code").
+One of the core challenges customers have interacting with encrypted environments is how to ensure that you can securely communicate with the code running in the environment ("enclave code").
 
-One solution to this problem is what is known as "Secure Key Release", which is a pattern that enables this kind of communication with enclave code.
+One solution to this problem is what is known as "Secure Key Release", which is a pattern that enables secure communication with enclave code.
 
 To implement the "Secure Key Release" pattern, the enclave code generates an ephemeral asymmetric key. It then serializes the public portion of the key to some format (possibly a JSON Web Key, or PEM, or some other serialization format).
 
@@ -269,7 +268,7 @@ The client can then send that Attestation Token (which contains the serialized k
 
 This example shows one common pattern of calling into the attestation service to retrieve an attestation token associated with a request.
 
-This example assumes that you have an existing `AttestationClient` object which is configured with the base URI for your endpoint. It also assumes that you have an SGX Quote (`binaryQuote`) generated from within the SGX enclave you are attesting, and "Runtime Data" (`runtimeData`) which is referenced in the SGX Quote.
+This example assumes that you have an existing `AttestationClient` object which is configured with the base URI for your endpoint. It also assumes that you have an SGX Quote (`quote`) generated from within the SGX enclave you are attesting, and "Runtime Data" (`runtime_data`) which is referenced in the SGX Quote.
 
 ```python
     # Collect quote and runtime data from an SGX enclave.
@@ -302,11 +301,11 @@ This example assumes that you have an existing `AttestationClient` object which 
     # Now the encrypted data can be passed into the enclave which can decrypt that data.
 ```
 
-Additional information on how to perform attestation token validation can be found in the [MAA Service Attestation Sample](https://github.com/gkostal/attestation/tree/d6a216cd6af5a509e20ac0a752197fdb242fabc3/sgx.attest.sample).
+Additional information on how to perform attestation token validation can be found in the [MAA Service Attestation Sample](https://github.com/Azure-Samples/microsoft-azure-attestation).
 
 ### Retrieve Token Certificates
 
-Use `GetSigningCertificatesAsync` to retrieve the certificates which can be used to validate the token returned from the attestation service.
+Use `get_signing_certificates` to retrieve the certificates which can be used to validate the token returned from the attestation service.
 
 ```python
     signers = attest_client.get_signing_certificates()
@@ -317,7 +316,7 @@ Use `GetSigningCertificatesAsync` to retrieve the certificates which can be used
 
 ## Troubleshooting
 
-Most Attestation service operations will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-security-attestation_1.0.0b2/sdk/core/azure-core/README.md). The attestation service APIs will throw a `HttpResponseError` on failure with helpful error codes. Many of these errors are recoverable.
+Most Attestation service operations will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-security-attestation_1.0.0b3/sdk/core/azure-core/README.md). The attestation service APIs will throw a `HttpResponseError` on failure with helpful error codes. Many of these errors are recoverable.
 
 ```python
     try:
@@ -331,7 +330,7 @@ Most Attestation service operations will raise exceptions defined in [Azure Core
     }
 ```
 
-Additional troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/azure/attestation/troubleshoot-guide)
+Additional troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/python/api/overview/azure/attestation?view=azure-python-preview)
 
 ## Next steps
 
@@ -354,7 +353,15 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-security-attestation_1.0.0b2/sdk/attestation/azure-security-attestation
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-security-attestation_1.0.0b3/sdk/attestation/azure-security-attestation
+[azure_identity]: https://docs.microsoft.com/python/api/overview/azure/identity-readme?view=azure-python-preview
+[DefaultAzureCredential]: https://docs.microsoft.com/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python-preview
+[attestation_policy_result]:https://docs.microsoft.com/python/api/azure-security-attestation/azure.security.attestation.policyresult?view=azure-python-preview
+[attestation_client]: https://docs.microsoft.com/python/api/azure-security-attestation/azure.security.attestation.attestationclient?view=azure-python-preview
+[attestation_admin_client]: https://docs.microsoft.com/python/api/azure-security-attestation/azure.security.attestation.attestationadministrationclient?view=azure-python-preview
+[attestation_response]: https://docs.microsoft.com/python/api/azure-security-attestation/azure.security.attestation.attestationresponse?view=azure-python-preview
+[attestation_policy_result_parameters]: https://docs.microsoft.com/python/api/azure-security-attestation/azure.security.attestation.policyresult?view=azure-python-preview#parameters
+[attest_sgx]: https://docs.microsoft.com/python/api/azure-security-attestation/azure.security.attestation.attestationclient?view=azure-python-preview#attest-sgx-enclave-quote--inittime-data-none--runtime-data-none--draft-policy-none----kwargs-
 [attestation_pypi]: https://aka.ms/azsdk/python/azure-security-attestation
 [API_reference]:https://docs.microsoft.com/python/api/overview/azure/security-attestation-readme?view=azure-python-preview
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
@@ -366,7 +373,7 @@ section of the project.
 [json_web_token]: https://tools.ietf.org/html/rfc7519
 [JWK]: https://tools.ietf.org/html/rfc7517
 [base64url_encoding]: https://tools.ietf.org/html/rfc4648#section-5
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-security-attestation_1.0.0b2/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-security-attestation_1.0.0b3/CONTRIBUTING.md
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fattestation%2Fazure-security-attestation%2FREADME.png)

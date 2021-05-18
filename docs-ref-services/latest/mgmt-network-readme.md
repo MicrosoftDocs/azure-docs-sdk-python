@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-network, virtualnetwork
 author: maggiepint
 ms.author: magpint
-ms.date: 03/12/2021
+ms.date: 05/17/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure

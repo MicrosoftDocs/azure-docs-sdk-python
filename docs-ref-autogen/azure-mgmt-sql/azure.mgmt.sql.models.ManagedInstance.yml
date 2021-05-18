@@ -14,8 +14,8 @@ summary: 'An Azure SQL managed instance.
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'ManagedInstance(*, location: str, tags: typing.Union[typing.Dict[str, str],
-    NoneType] = None, identity: typing.Union[_ForwardRef(''ResourceIdentity''), NoneType]
-    = None, sku: typing.Union[_ForwardRef(''Sku''), NoneType] = None, managed_instance_create_mode:
+    NoneType] = None, identity: typing.Union[_ForwardRef(''ResourceIdentityWithUserAssignedIdentities''),
+    NoneType] = None, sku: typing.Union[_ForwardRef(''Sku''), NoneType] = None, managed_instance_create_mode:
     typing.Union[str, _ForwardRef(''ManagedServerCreateMode''), NoneType] = None,
     administrator_login: typing.Union[str, NoneType] = None, administrator_login_password:
     typing.Union[str, NoneType] = None, subnet_id: typing.Union[str, NoneType] = None,
@@ -29,7 +29,11 @@ constructor:
     timezone_id: typing.Union[str, NoneType] = None, instance_pool_id: typing.Union[str,
     NoneType] = None, maintenance_configuration_id: typing.Union[str, NoneType] =
     None, minimal_tls_version: typing.Union[str, NoneType] = None, storage_account_type:
-    typing.Union[str, _ForwardRef(''StorageAccountType''), NoneType] = None, **kwargs)'
+    typing.Union[str, _ForwardRef(''StorageAccountType''), NoneType] = None, zone_redundant:
+    typing.Union[bool, NoneType] = None, primary_user_assigned_identity_id: typing.Union[str,
+    NoneType] = None, key_id: typing.Union[str, NoneType] = None, administrators:
+    typing.Union[_ForwardRef(''ManagedInstanceExternalAdministrator''), NoneType]
+    = None, **kwargs)'
   parameters:
   - name: location
     description: Required. Resource location.
@@ -45,7 +49,7 @@ constructor:
     description: The Azure Active Directory identity of the managed instance.
     isRequired: true
     types:
-    - <xref:azure.mgmt.sql.models.ResourceIdentity>
+    - <xref:azure.mgmt.sql.models.ResourceIdentityWithUserAssignedIdentities>
   - name: sku
     description: 'Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5,
       BC_Gen4,
@@ -206,6 +210,28 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.StorageAccountType>
+  - name: zone_redundant
+    description: Whether or not the multi-az is enabled.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: primary_user_assigned_identity_id
+    description: 'The resource id of a user assigned identity to be
+
+      used by default.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: key_id
+    description: A CMK URI of the key to use for encryption.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: administrators
+    description: The Azure Active Directory administrator of the server.
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.sql.models.ManagedInstanceExternalAdministrator>
 variables:
 - description: Resource ID.
   name: id
@@ -238,3 +264,7 @@ variables:
   name: dns_zone
   types:
   - <xref:str>
+- description: List of private endpoint connections on a managed instance.
+  name: private_endpoint_connections
+  types:
+  - <xref:list>[<xref:azure.mgmt.sql.models.ManagedInstancePecProperty>]
