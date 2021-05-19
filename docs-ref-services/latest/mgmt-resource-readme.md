@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-resource, resources
 author: maggiepint
 ms.author: magpint
-ms.date: 05/13/2021
+ms.date: 05/19/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
