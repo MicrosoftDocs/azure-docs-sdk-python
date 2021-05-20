@@ -12,8 +12,10 @@ summary: 'Describes an update for a stateless service.
 constructor:
   syntax: 'StatelessServiceUpdateDescription(*, flags: str = None, placement_constraints:
     str = None, correlation_scheme=None, load_metrics=None, service_placement_policies=None,
-    default_move_cost=None, scaling_policies=None, instance_count: int = None, min_instance_count:
-    int = None, min_instance_percentage: int = None, instance_close_delay_duration_seconds:
+    default_move_cost=None, scaling_policies=None, service_dns_name: str = None, tags_for_placement=None,
+    tags_for_running=None, instance_count: int = None, min_instance_count: int = None,
+    min_instance_percentage: int = None, instance_close_delay_duration_seconds: str
+    = None, instance_lifecycle_description=None, instance_restart_wait_duration_seconds:
     str = None, **kwargs) -> None'
   parameters:
   - name: flags
@@ -97,9 +99,25 @@ constructor:
 
       property is set. The value is 16384.
 
+      - InstanceRestartWaitDuration - Indicates the InstanceCloseDelayDuration
+
+      property is set. The value is 32768.
+
       - DropSourceReplicaOnMove - Indicates the DropSourceReplicaOnMove property
 
-      is set. The value is 32768.'
+      is set. The value is 65536.
+
+      - ServiceDnsName - Indicates the ServiceDnsName property is set. The value
+
+      is 131072.
+
+      - TagsForPlacement - Indicates the TagsForPlacement property is set. The
+
+      value is 1048576.
+
+      - TagsForRunning - Indicates the TagsForRunning property is set. The value
+
+      is 2097152.'
     isRequired: true
     types:
     - <xref:str>
@@ -137,12 +155,28 @@ constructor:
       include: ''Zero'', ''Low'', ''Medium'', ''High'', ''VeryHigh'''
     isRequired: true
     types:
-    - <xref:str> or <xref:azure.servicefabric.models.MoveCost>
+    - <xref:str>
+    - <xref:azure.servicefabric.models.MoveCost>
   - name: scaling_policies
     description: Scaling policies for this service.
     isRequired: true
     types:
     - <xref:list>[<xref:azure.servicefabric.models.ScalingPolicyDescription>]
+  - name: service_dns_name
+    description: The DNS name of the service.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: tags_for_placement
+    description: Tags for placement of this service.
+    isRequired: true
+    types:
+    - <xref:azure.servicefabric.models.NodeTagsDescription>
+  - name: tags_for_running
+    description: Tags for running of this service.
+    isRequired: true
+    types:
+    - <xref:azure.servicefabric.models.NodeTagsDescription>
   - name: service_kind
     description: Required. Constant filled by server.
     isRequired: true
@@ -223,6 +257,32 @@ constructor:
       - Connect to a different instance of the service partition for future
 
       requests.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: instance_lifecycle_description
+    description: 'Defines how instances of this
+
+      service will behave during their lifecycle.'
+    isRequired: true
+    types:
+    - <xref:azure.servicefabric.models.InstanceLifecycleDescription>
+  - name: instance_restart_wait_duration_seconds
+    description: 'When a stateless instance
+
+      goes down, this timer starts. When it expires Service Fabric will create a
+
+      new instance on any node in the cluster.
+
+      This configuration is to reduce unnecessary creation of a new instance in
+
+      situations where the instance going down is likely to recover in a short
+
+      time. For example, during an upgrade.
+
+      The default value is 0, which indicates that when stateless instance goes
+
+      down, Service Fabric will immediately start building its replacement.'
     isRequired: true
     types:
     - <xref:str>

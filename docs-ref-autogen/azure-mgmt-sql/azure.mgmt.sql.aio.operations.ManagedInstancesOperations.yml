@@ -91,12 +91,14 @@ methods:
     replica_type: str = None, **kwargs) -> azure.core.polling._async_poller.AsyncLROPoller'
   parameters:
   - name: resource_group_name
-    description: The name of the resource group. The name is case insensitive.
+    description: 'The name of the resource group that contains the resource. You can
+
+      obtain this value from the Azure Resource Manager API or the portal.'
     isRequired: true
     types:
     - <xref:str>
   - name: managed_instance_name
-    description: The name of the managed instance.
+    description: The name of the managed instance to failover.
     isRequired: true
     types:
     - <xref:str>
@@ -104,7 +106,8 @@ methods:
     description: The type of replica to be failed over.
     defaultValue: None
     types:
-    - <xref:str> or <xref:azure.mgmt.sql.models.ReplicaType>
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.ReplicaType>
   return:
     description: An instance of AsyncLROPoller that returns either None or the result
       of cls(response)
@@ -141,8 +144,8 @@ methods:
 - uid: azure.mgmt.sql.aio.operations.ManagedInstancesOperations.get
   name: get
   summary: Gets a managed instance.
-  signature: 'get(resource_group_name: str, managed_instance_name: str, **kwargs)
-    -> ''models.ManagedInstance'''
+  signature: 'get(resource_group_name: str, managed_instance_name: str, expand: str
+    = None, **kwargs) -> ''_models.ManagedInstance'''
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
@@ -156,6 +159,11 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: ManagedInstance, or the result of cls(response)
     types:
@@ -163,7 +171,13 @@ methods:
 - uid: azure.mgmt.sql.aio.operations.ManagedInstancesOperations.list
   name: list
   summary: Gets a list of all managed instances in the subscription.
-  signature: list(**kwargs) -> Asynctyping.Iterable[_ForwardRef('models.ManagedInstancetyping.ListResult')]
+  signature: 'list(expand: str = None, **kwargs) -> Asynctyping.Iterable[_ForwardRef(''_models.ManagedInstancetyping.ListResult'')]'
+  parameters:
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: An iterator like instance of either ManagedInstanceListResult or
       the result of cls(response)
@@ -173,7 +187,7 @@ methods:
   name: list_by_instance_pool
   summary: Gets a list of all managed instances in an instance pool.
   signature: 'list_by_instance_pool(resource_group_name: str, instance_pool_name:
-    str, **kwargs) -> Asynctyping.Iterable[_ForwardRef(''models.ManagedInstancetyping.ListResult'')]'
+    str, expand: str = None, **kwargs) -> Asynctyping.Iterable[_ForwardRef(''_models.ManagedInstancetyping.ListResult'')]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
@@ -187,21 +201,101 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: An iterator like instance of either ManagedInstanceListResult or
       the result of cls(response)
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.sql.models.ManagedInstanceListResult>]
-- uid: azure.mgmt.sql.aio.operations.ManagedInstancesOperations.list_by_resource_group
-  name: list_by_resource_group
-  summary: Gets a list of managed instances in a resource group.
-  signature: 'list_by_resource_group(resource_group_name: str, **kwargs) -> Asynctyping.Iterable[_ForwardRef(''models.ManagedInstancetyping.ListResult'')]'
+- uid: azure.mgmt.sql.aio.operations.ManagedInstancesOperations.list_by_managed_instance
+  name: list_by_managed_instance
+  summary: Get top resource consuming queries of a managed instance.
+  signature: 'list_by_managed_instance(resource_group_name: str, managed_instance_name:
+    str, number_of_queries: int = None, databases: str = None, start_time: str = None,
+    end_time: str = None, interval: str = None, aggregation_function: str = None,
+    observation_metric: str = None, **kwargs) -> Asynctyping.Iterable[_ForwardRef(''_models.TopQueriestyping.ListResult'')]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
 
       obtain this value from the Azure Resource Manager API or the portal.'
     isRequired: true
+    types:
+    - <xref:str>
+  - name: managed_instance_name
+    description: The name of the managed instance.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: number_of_queries
+    description: How many 'top queries' to return. Default is 5.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: databases
+    description: 'Comma separated list of databases to be included into search. All
+      DB''s are
+
+      included if this parameter is not specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: start_time
+    description: Start time for observed period.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: end_time
+    description: End time for observed period.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: interval
+    description: 'The time step to be used to summarize the metric values. Default
+      value is
+
+      PT1H.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.QueryTimeGrainType>
+  - name: aggregation_function
+    description: Aggregation function to be used, default value is 'sum'.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.AggregationFunctionType>
+  - name: observation_metric
+    description: Metric to be used for ranking top queries. Default is 'cpu'.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.MetricType>
+  return:
+    description: An iterator like instance of either TopQueriesListResult or the result
+      of cls(response)
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.sql.models.TopQueriesListResult>]
+- uid: azure.mgmt.sql.aio.operations.ManagedInstancesOperations.list_by_resource_group
+  name: list_by_resource_group
+  summary: Gets a list of managed instances in a resource group.
+  signature: 'list_by_resource_group(resource_group_name: str, expand: str = None,
+    **kwargs) -> Asynctyping.Iterable[_ForwardRef(''_models.ManagedInstancetyping.ListResult'')]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group that contains the resource. You can
+
+      obtain this value from the Azure Resource Manager API or the portal.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
     types:
     - <xref:str>
   return:

@@ -88,12 +88,14 @@ methods:
     **kwargs)
   parameters:
   - name: resource_group_name
-    description: The name of the resource group. The name is case insensitive.
+    description: 'The name of the resource group that contains the resource. You can
+
+      obtain this value from the Azure Resource Manager API or the portal.'
     isRequired: true
     types:
     - <xref:str>
   - name: managed_instance_name
-    description: The name of the managed instance.
+    description: The name of the managed instance to failover.
     isRequired: true
     types:
     - <xref:str>
@@ -101,7 +103,8 @@ methods:
     description: The type of replica to be failed over.
     defaultValue: None
     types:
-    - <xref:str> or <xref:azure.mgmt.sql.models.ReplicaType>
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.ReplicaType>
   return:
     description: An instance of LROPoller that returns either None or the result of
       cls(response)
@@ -138,7 +141,7 @@ methods:
 - uid: azure.mgmt.sql.operations.ManagedInstancesOperations.get
   name: get
   summary: Gets a managed instance.
-  signature: get(resource_group_name, managed_instance_name, **kwargs)
+  signature: get(resource_group_name, managed_instance_name, expand=None, **kwargs)
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
@@ -152,6 +155,11 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: ManagedInstance, or the result of cls(response)
     types:
@@ -159,7 +167,13 @@ methods:
 - uid: azure.mgmt.sql.operations.ManagedInstancesOperations.list
   name: list
   summary: Gets a list of all managed instances in the subscription.
-  signature: list(**kwargs)
+  signature: list(expand=None, **kwargs)
+  parameters:
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: An iterator like instance of either ManagedInstanceListResult or
       the result of cls(response)
@@ -168,7 +182,8 @@ methods:
 - uid: azure.mgmt.sql.operations.ManagedInstancesOperations.list_by_instance_pool
   name: list_by_instance_pool
   summary: Gets a list of all managed instances in an instance pool.
-  signature: list_by_instance_pool(resource_group_name, instance_pool_name, **kwargs)
+  signature: list_by_instance_pool(resource_group_name, instance_pool_name, expand=None,
+    **kwargs)
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
@@ -182,21 +197,99 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
+    types:
+    - <xref:str>
   return:
     description: An iterator like instance of either ManagedInstanceListResult or
       the result of cls(response)
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.sql.models.ManagedInstanceListResult>]
-- uid: azure.mgmt.sql.operations.ManagedInstancesOperations.list_by_resource_group
-  name: list_by_resource_group
-  summary: Gets a list of managed instances in a resource group.
-  signature: list_by_resource_group(resource_group_name, **kwargs)
+- uid: azure.mgmt.sql.operations.ManagedInstancesOperations.list_by_managed_instance
+  name: list_by_managed_instance
+  summary: Get top resource consuming queries of a managed instance.
+  signature: list_by_managed_instance(resource_group_name, managed_instance_name,
+    number_of_queries=None, databases=None, start_time=None, end_time=None, interval=None,
+    aggregation_function=None, observation_metric=None, **kwargs)
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
 
       obtain this value from the Azure Resource Manager API or the portal.'
     isRequired: true
+    types:
+    - <xref:str>
+  - name: managed_instance_name
+    description: The name of the managed instance.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: number_of_queries
+    description: How many 'top queries' to return. Default is 5.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: databases
+    description: 'Comma separated list of databases to be included into search. All
+      DB''s are
+
+      included if this parameter is not specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: start_time
+    description: Start time for observed period.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: end_time
+    description: End time for observed period.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: interval
+    description: 'The time step to be used to summarize the metric values. Default
+      value is
+
+      PT1H.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.QueryTimeGrainType>
+  - name: aggregation_function
+    description: Aggregation function to be used, default value is 'sum'.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.AggregationFunctionType>
+  - name: observation_metric
+    description: Metric to be used for ranking top queries. Default is 'cpu'.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.MetricType>
+  return:
+    description: An iterator like instance of either TopQueriesListResult or the result
+      of cls(response)
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.sql.models.TopQueriesListResult>]
+- uid: azure.mgmt.sql.operations.ManagedInstancesOperations.list_by_resource_group
+  name: list_by_resource_group
+  summary: Gets a list of managed instances in a resource group.
+  signature: list_by_resource_group(resource_group_name, expand=None, **kwargs)
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group that contains the resource. You can
+
+      obtain this value from the Azure Resource Manager API or the portal.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: expand
+    description: The child resources to include in the response.
+    defaultValue: None
     types:
     - <xref:str>
   return:

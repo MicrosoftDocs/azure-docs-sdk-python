@@ -31,47 +31,6 @@ variables:
 - description: Alias to model classes used in this operation group.
   name: "models \u2013 Alias to model classes used in this operation group"
 methods:
-- uid: azure.mgmt.sql.operations.DatabasesOperations.begin_create_import_operation
-  name: begin_create_import_operation
-  summary: 'Creates an import operation that imports a bacpac into an existing database.
-    The existing
-
-    database must be empty.'
-  signature: begin_create_import_operation(resource_group_name, server_name, database_name,
-    extension_name, parameters, **kwargs)
-  parameters:
-  - name: resource_group_name
-    description: 'The name of the resource group that contains the resource. You can
-
-      obtain this value from the Azure Resource Manager API or the portal.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: server_name
-    description: The name of the server.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: database_name
-    description: The name of the database to import into.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: extension_name
-    description: The name of the operation to perform.
-    isRequired: true
-    types:
-    - <xref:str> or <xref:azure.mgmt.sql.models.ExtensionName>
-  - name: parameters
-    description: The required parameters for importing a Bacpac into a database.
-    isRequired: true
-    types:
-    - <xref:azure.mgmt.sql.models.ImportExtensionRequest>
-  return:
-    description: An instance of LROPoller that returns either ImportExportResponse
-      or the result of cls(response)
-    types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.sql.models.ImportExportResponse>]
 - uid: azure.mgmt.sql.operations.DatabasesOperations.begin_create_or_update
   name: begin_create_or_update
   summary: Creates a new database or updates an existing database.
@@ -134,7 +93,7 @@ methods:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
 - uid: azure.mgmt.sql.operations.DatabasesOperations.begin_export
   name: begin_export
-  summary: Exports a database to a bacpac.
+  summary: Exports a database.
   signature: begin_export(resource_group_name, server_name, database_name, parameters,
     **kwargs)
   parameters:
@@ -151,20 +110,20 @@ methods:
     types:
     - <xref:str>
   - name: database_name
-    description: The name of the database to be exported.
+    description: The name of the database.
     isRequired: true
     types:
     - <xref:str>
   - name: parameters
-    description: The required parameters for exporting a database.
+    description: The database export request parameters.
     isRequired: true
     types:
-    - <xref:azure.mgmt.sql.models.ExportRequest>
+    - <xref:azure.mgmt.sql.models.ExportDatabaseDefinition>
   return:
-    description: An instance of LROPoller that returns either ImportExportResponse
+    description: An instance of LROPoller that returns either ImportExportOperationResult
       or the result of cls(response)
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.sql.models.ImportExportResponse>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.sql.models.ImportExportOperationResult>]
 - uid: azure.mgmt.sql.operations.DatabasesOperations.begin_failover
   name: begin_failover
   summary: Failovers a database.
@@ -192,7 +151,8 @@ methods:
     description: The type of replica to be failed over.
     defaultValue: None
     types:
-    - <xref:str> or <xref:azure.mgmt.sql.models.ReplicaType>
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.ReplicaType>
   return:
     description: An instance of LROPoller that returns either None or the result of
       cls(response)
@@ -201,7 +161,8 @@ methods:
 - uid: azure.mgmt.sql.operations.DatabasesOperations.begin_import_method
   name: begin_import_method
   summary: Imports a bacpac into a new database.
-  signature: begin_import_method(resource_group_name, server_name, parameters, **kwargs)
+  signature: begin_import_method(resource_group_name, server_name, database_name,
+    parameters, **kwargs)
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can
@@ -215,16 +176,21 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: parameters
-    description: The required parameters for importing a Bacpac into a database.
+  - name: database_name
+    description: The name of the database.
     isRequired: true
     types:
-    - <xref:azure.mgmt.sql.models.ImportRequest>
+    - <xref:str>
+  - name: parameters
+    description: The database import request parameters.
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.sql.models.ImportExistingDatabaseDefinition>
   return:
-    description: An instance of LROPoller that returns either ImportExportResponse
+    description: An instance of LROPoller that returns either ImportExportOperationResult
       or the result of cls(response)
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.sql.models.ImportExportResponse>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.mgmt.sql.models.ImportExportOperationResult>]
 - uid: azure.mgmt.sql.operations.DatabasesOperations.begin_pause
   name: begin_pause
   summary: Pauses a database.
@@ -397,7 +363,33 @@ methods:
 - uid: azure.mgmt.sql.operations.DatabasesOperations.list_by_server
   name: list_by_server
   summary: Gets a list of databases.
-  signature: list_by_server(resource_group_name, server_name, **kwargs)
+  signature: list_by_server(resource_group_name, server_name, skip_token=None, **kwargs)
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group that contains the resource. You can
+
+      obtain this value from the Azure Resource Manager API or the portal.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: server_name
+    description: The name of the server.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: skip_token
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of either DatabaseListResult or the result
+      of cls(response)
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.sql.models.DatabaseListResult>]
+- uid: azure.mgmt.sql.operations.DatabasesOperations.list_inaccessible_by_server
+  name: list_inaccessible_by_server
+  summary: Gets a list of inaccessible databases in a logical server.
+  signature: list_inaccessible_by_server(resource_group_name, server_name, **kwargs)
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group that contains the resource. You can

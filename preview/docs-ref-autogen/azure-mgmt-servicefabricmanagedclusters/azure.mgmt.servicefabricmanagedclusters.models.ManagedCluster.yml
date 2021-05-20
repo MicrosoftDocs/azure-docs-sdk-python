@@ -22,9 +22,10 @@ constructor:
     = None, clients: typing.List[azure.mgmt.servicefabricmanagedclusters.models._models_py3.ClientCertificate]
     = None, azure_active_directory: azure.mgmt.servicefabricmanagedclusters.models._models_py3.AzureActiveDirectory
     = None, fabric_settings: typing.List[azure.mgmt.servicefabricmanagedclusters.models._models_py3.SettingsSectionDescription]
-    = None, cluster_code_version: str = None, cluster_upgrade_cadence: str = None,
-    addon_features: typing.List[str] = None, enable_auto_os_upgrade: bool = None,
-    application_type_versions_cleanup_policy: azure.mgmt.servicefabricmanagedclusters.models._models_py3.Applicationtyping.TypeVersionsCleanupPolicy
+    = None, cluster_code_version: str = None, cluster_upgrade_mode: str = ''Automatic'',
+    cluster_upgrade_cadence: str = None, addon_features: typing.List[str] = None,
+    enable_auto_os_upgrade: bool = None, zonal_resiliency: bool = False, application_type_versions_cleanup_policy:
+    azure.mgmt.servicefabricmanagedclusters.models._models_py3.Applicationtyping.TypeVersionsCleanupPolicy
     = None, **kwargs)'
   parameters:
   - name: location
@@ -109,22 +110,29 @@ constructor:
   - name: cluster_code_version
     description: 'The Service Fabric runtime version of the cluster. This property
 
-      can only by set the user when **upgradeMode** is set to ''Manual''. To get list
-      of available
+      is required when **clusterUpgradeMode** is set to ''Manual''. To get list of
+      available Service
 
-      Service Fabric versions for new clusters use <xref:./ClusterVersion.md>. To
+      Fabric versions for new clusters use <xref:./ClusterVersion.md>. To get the
 
-      get the list of available version for existing clusters use **availableClusterVersions**.'
+      list of available version for existing clusters use **availableClusterVersions**.'
     isRequired: true
     types:
     - <xref:str>
+  - name: cluster_upgrade_mode
+    description: 'The upgrade mode of the cluster when new Service Fabric runtime
+
+      version is available. Possible values include: "Automatic", "Manual". Default
+      value:
+
+      "Automatic".'
+    isRequired: true
   - name: cluster_upgrade_cadence
     description: 'Indicates when new cluster runtime version upgrades will be
 
-      applied after they are released. By default is Wave0. Possible values include:
-      "Wave0",
+      applied after they are released. By default is Wave0. Only applies when **clusterUpgradeMode**
 
-      "Wave1", "Wave2".'
+      is set to ''Automatic''. Possible values include: "Wave0", "Wave1", "Wave2".'
     isRequired: true
   - name: addon_features
     description: List of add-on features to enable on the cluster.
@@ -136,6 +144,11 @@ constructor:
       The default value for
 
       this setting is false.'
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: zonal_resiliency
+    description: Indicates if the cluster has zone resiliency.
     isRequired: true
     types:
     - <xref:bool>

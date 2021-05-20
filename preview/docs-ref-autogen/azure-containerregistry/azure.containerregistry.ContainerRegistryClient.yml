@@ -11,9 +11,9 @@ methods:
 - uid: azure.containerregistry.ContainerRegistryClient.delete_repository
   name: delete_repository
   summary: Delete a repository
-  signature: delete_repository(repository, **kwargs)
+  signature: delete_repository(repository_name, **kwargs)
   parameters:
-  - name: repository
+  - name: repository_name
     description: The repository to delete
     isRequired: true
     types:
@@ -21,24 +21,67 @@ methods:
   return:
     description: Object containing information about the deleted repository
     types:
-    - <xref:azure.containerregistry.DeletedRepositoryResult>
-- uid: azure.containerregistry.ContainerRegistryClient.get_repository_client
-  name: get_repository_client
-  summary: Get a repository client
-  signature: get_repository_client(repository, **kwargs)
+    - <xref:azure.containerregistry.DeleteRepositoryResult>
+  examples:
+  - "Delete a repository from the *ContainerRegistryClient*<!--[!code-python[Main](les\\\
+    sample_create_client.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\77\\\\azure-containerregistry-1.0.0b2\\\\samples\\\
+    \\sample_create_client.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
+    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n               client.delete_repository(\"hello-world\"\
+    )\n\n   ````\n"
+- uid: azure.containerregistry.ContainerRegistryClient.get_artifact
+  name: get_artifact
+  summary: Get a Registry Artifact object
+  signature: get_artifact(repository_name, tag_or_digest, **kwargs)
   parameters:
-  - name: repository
+  - name: repository_name
+    description: Name of the repository
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: tag_or_digest
+    description: The tag or digest of the artifact
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: <xref:azure.containerregistry.RegistryArtifact>
+- uid: azure.containerregistry.ContainerRegistryClient.get_repository
+  name: get_repository
+  summary: 'Get a Container Repository object
+
+
+    Example'
+  signature: get_repository(repository_name, **kwargs)
+  parameters:
+  - name: repository_name
     description: The repository to create a client for
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: <xref:azure.containerregistry.ContainerRepositoryClient>
-- uid: azure.containerregistry.ContainerRegistryClient.list_repositories
-  name: list_repositories
-  summary: List all repositories
-  signature: list_repositories(**kwargs)
+    description: <xref:azure.containerregistry.ContainerRepository>
+- uid: azure.containerregistry.ContainerRegistryClient.list_repository_names
+  name: list_repository_names
+  summary: "List all repositories\n:keyword max: Maximum number of repositories to\
+    \ return\n:paramtype max: int\n:keyword last: Query parameter for the last item\
+    \ in the previous call. Ensuing\n\n   call will return values after last lexically"
+  signature: list_repository_names(**kwargs)
   return:
     description: ItemPaged[str]
     types:
     - <xref:azure.core.paging.ItemPaged>
+  examples:
+  - "List repositories in a container registry account<!--[!code-python[Main](les\\\
+    sample_delete_old_tags.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\1\\\\s\\\\dist_temp\\\\77\\\\azure-containerregistry-1.0.0b2\\\\samples\\\
+    \\sample_delete_old_tags.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   account_url = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"\
+    ]\n   credential = DefaultAzureCredential()\n   client = ContainerRegistryClient(account_url,\
+    \ credential)\n\n   for repository in client.list_repository_names():\n      \
+    \ repository_client = ContainerRepositoryClient(account_url, repository, credential)\n\
+    \n   ````\n"

@@ -5,42 +5,104 @@ fullName: azure.security.attestation.AttestationClient
 module: azure.security.attestation
 inheritances:
 - builtins.object
-summary: Describes the interface for the per-tenant enclave service.
+summary: "An AttestationClient object enables access to the Attestation family of\
+  \ APIs provided\n   by the attestation service.\n\nFor additional client creation\
+  \ configuration options, please see [https://aka.ms/azsdk/python/options](https://aka.ms/azsdk/python/options)."
 constructor:
   syntax: AttestationClient(credential, instance_url, **kwargs)
   parameters:
-  - name: credential
-    description: Credential needed for the client to connect to Azure.
-    isRequired: true
-    types:
-    - <xref:azure.core.credentials.TokenCredential>
-  - name: instance_url
-    description: The attestation instance base URI, for example [https://mytenant.attest.azure.net](https://mytenant.attest.azure.net).
+  - name: base_url
+    description: base url of the service
     isRequired: true
     types:
     - <xref:str>
-variables:
-- description: PolicyOperations operations
-  name: policy
-  types:
-  - <xref:azure.security.attestation.operations.PolicyOperations>
-- description: PolicyCertificatesOperations operations
-  name: policy_certificates
-  types:
-  - <xref:azure.security.attestation.operations.PolicyCertificatesOperations>
-- description: AttestationOperations operations
-  name: attestation
-  types:
-  - <xref:azure.security.attestation.operations.AttestationOperations>
-- description: SigningCertificatesOperations operations
-  name: signing_certificates
-  types:
-  - <xref:azure.security.attestation.operations.SigningCertificatesOperations>
-- description: MetadataConfigurationOperations operations
-  name: metadata_configuration
-  types:
-  - <xref:azure.security.attestation.operations.MetadataConfigurationOperations>
+  - name: credential
+    description: Credentials for the caller used to interact with the service.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredentials>
 methods:
+- uid: azure.security.attestation.AttestationClient.attest_open_enclave
+  name: attest_open_enclave
+  summary: 'Attests the validity of an Open Enclave report.
+
+
+
+    > [!NOTE]
+
+    > Note that if the draft_policy parameter is provided, the resulting attestation
+    token will be an unsecured attestation token.
+
+    >
+
+
+    For additional request configuration options, please see [Python Request Options](https://aka.ms/azsdk/python/options).'
+  signature: attest_open_enclave(report, inittime_data=None, runtime_data=None, **kwargs)
+  parameters:
+  - name: report
+    description: An open_enclave report generated from an Intel(tm) SGX enclave
+    isRequired: true
+    types:
+    - <xref:azure.security.attestation.bytes>
+  return:
+    types:
+    - Attestation service response encapsulating an <xref:azure.security.attestation.AttestationResult>.
+- uid: azure.security.attestation.AttestationClient.attest_sgx_enclave
+  name: attest_sgx_enclave
+  summary: 'Attests the validity of an SGX quote.
+
+
+
+    > [!NOTE]
+
+    > Note that if the draft_policy parameter is provided, the resulting attestation
+    token will be an unsecured attestation token.
+
+    >
+
+
+    For additional request configuration options, please see [Python Request Options](https://aka.ms/azsdk/python/options).'
+  signature: attest_sgx_enclave(quote, inittime_data=None, runtime_data=None, **kwargs)
+  parameters:
+  - name: quote
+    description: An SGX quote generated from an Intel(tm) SGX enclave
+    isRequired: true
+    types:
+    - <xref:azure.security.attestation.bytes>
+  return:
+    types:
+    - Attestation service response encapsulating an <xref:azure.security.attestation.AttestationResult>.
+- uid: azure.security.attestation.AttestationClient.attest_tpm
+  name: attest_tpm
+  summary: 'Attest a TPM based enclave.
+
+
+    See the [TPM Attestation Protocol Reference](https://docs.microsoft.com/en-us/azure/attestation/virtualization-based-security-protocol)
+    for more information.'
+  signature: attest_tpm(request, **kwargs)
+  parameters:
+  - name: request
+    description: Incoming request to send to the TPM attestation service.
+    isRequired: true
+    types:
+    - <xref:azure.security.attestation.TpmAttestationRequest>
+  return:
+    description: A structure containing the response from the TPM attestation.
 - uid: azure.security.attestation.AttestationClient.close
   name: close
   signature: close()
+- uid: azure.security.attestation.AttestationClient.get_openidmetadata
+  name: get_openidmetadata
+  summary: Retrieves the OpenID metadata configuration document for this attestation
+    instance.
+  signature: get_openidmetadata()
+- uid: azure.security.attestation.AttestationClient.get_signing_certificates
+  name: get_signing_certificates
+  summary: 'Returns the set of signing certificates used to sign attestation tokens.
+
+
+    For additional request configuration options, please see [Python Request Options](https://aka.ms/azsdk/python/options).'
+  signature: get_signing_certificates(**kwargs)
+  return:
+    types:
+    - A list of <xref:azure.security.attestation.AttestationSigner> objects.
