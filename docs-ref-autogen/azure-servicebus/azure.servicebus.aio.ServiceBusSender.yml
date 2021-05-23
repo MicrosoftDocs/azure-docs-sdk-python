@@ -16,6 +16,9 @@ summary: 'The ServiceBusSender class defines a high level interface for
 
   ServiceBusSender instance.**'
 constructor:
+  syntax: 'ServiceBusSender(fully_qualified_namespace: str, credential: typing.Union[AsyncTokenCredential,
+    azure.core.credentials.AzureSasCredential, azure.core.credentials.AzureNamedKeyCredential],
+    **kwargs: typing.Any) -> None'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -35,46 +38,6 @@ constructor:
       *get_token(self, *scopes)* method, or alternatively, an AzureSasCredential can
       be provided too.'
     isRequired: true
-    types:
-    - <xref:azure.core.credentials_async.AsyncTokenCredential>
-    - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.AzureNamedKeyCredential>
-  - name: queue_name
-    description: 'The path of specific Service Bus Queue the client connects to.
-
-      Only one of queue_name or topic_name can be provided.'
-    types:
-    - <xref:str>
-  - name: topic_name
-    description: 'The path of specific Service Bus Topic the client connects to.
-
-      Only one of queue_name or topic_name can be provided.'
-    types:
-    - <xref:str>
-  - name: logging_enable
-    description: Whether to output network trace logs to the logger. Default is *False*.
-    types:
-    - <xref:bool>
-  - name: transport_type
-    description: 'The type of transport protocol that will be used for communicating
-      with
-
-      the Service Bus service. Default is *TransportType.Amqp*.'
-    types:
-    - <xref:azure.servicebus.TransportType>
-  - name: http_proxy
-    description: 'HTTP proxy settings. This must be a dictionary with the following
-
-      keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
-
-      Additionally the following keys may also be present: *''username'', ''password''*.'
-    types:
-    - <xref:dict>
-  - name: user_agent
-    description: If specified, this will be added in front of the built-in user agent
-      string.
-    types:
-    - <xref:str>
 variables:
 - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -100,13 +63,6 @@ methods:
     types:
     - <xref:int>
     - <xref:list>[<xref:int>]
-  - name: timeout
-    description: 'The total operation timeout in seconds including all the retries.
-      The value must be
-
-      greater than 0 if specified. The default value is None, meaning no timeout.'
-    types:
-    - <xref:float>
   return:
     types:
     - <xref:None>
@@ -116,10 +72,10 @@ methods:
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\64\\\\azure-servicebus-7.2.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   async with servicebus_sender:\n\
-    \       await servicebus_sender.cancel_scheduled_messages(sequence_nums)\n\n \
-    \  ````\n"
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
+    \ servicebus_sender:\n       await servicebus_sender.cancel_scheduled_messages(sequence_nums)\n\
+    \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusSender.create_message_batch
   name: create_message_batch
   summary: 'Create a ServiceBusMessageBatch object with the max size of all content
@@ -127,8 +83,7 @@ methods:
 
     max_size_in_bytes. The max_size should be no greater than the max allowed message
     size defined by the service.'
-  signature: 'create_message_batch(max_size_in_bytes: typing.Union[int, NoneType]
-    = None) -> azure.servicebus._common.message.ServiceBusMessageBatch'
+  signature: 'create_message_batch(max_size_in_bytes: int = None) -> azure.servicebus._common.message.ServiceBusMessageBatch'
   parameters:
   - name: max_size_in_bytes
     description: 'The maximum size of bytes data that a ServiceBusMessageBatch object
@@ -137,7 +92,7 @@ methods:
       hold. By default, the value is determined by your Service Bus tier.'
     defaultValue: None
     types:
-    - <xref:Optional>[<xref:int>]
+    - <xref:azure.servicebus.aio.Optional>[<xref:int>]
   return:
     types:
     - <xref:azure.servicebus.ServiceBusMessageBatch>
@@ -147,10 +102,10 @@ methods:
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
     \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\64\\\\azure-servicebus-7.2.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   async with servicebus_sender:\n\
-    \       batch_message = await servicebus_sender.create_message_batch()\n     \
-    \  batch_message.add_message(ServiceBusMessage(\"Single message inside batch\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
+    \ servicebus_sender:\n       batch_message = await servicebus_sender.create_message_batch()\n\
+    \       batch_message.add_message(ServiceBusMessage(\"Single message inside batch\"\
     ))\n\n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusSender.schedule_messages
   name: schedule_messages
@@ -158,10 +113,9 @@ methods:
     the service.
 
     Returns a list of the sequence numbers of the enqueued messages.'
-  signature: 'schedule_messages(messages: typing.Union[typing.Mapping[str, typing.Any],
-    azure.servicebus._common.message.ServiceBusMessage, typing.List[typing.Union[typing.Mapping[str,
-    typing.Any], azure.servicebus._common.message.ServiceBusMessage]]], schedule_time_utc:
-    datetime.datetime, **kwargs: typing.Any) -> typing.List[int]'
+  signature: 'schedule_messages(messages: typing.Union[Mapping[str, typing.Any], azure.servicebus._common.message.ServiceBusMessage,
+    typing.List[typing.Union[Mapping[str, typing.Any], azure.servicebus._common.message.ServiceBusMessage]]],
+    schedule_time_utc: datetime.datetime, **kwargs: typing.Any) -> typing.List[int]'
   parameters:
   - name: messages
     description: The message or list of messages to schedule.
@@ -174,13 +128,6 @@ methods:
     isRequired: true
     types:
     - <xref:datetime.datetime>
-  - name: timeout
-    description: 'The total operation timeout in seconds including all the retries.
-      The value must be
-
-      greater than 0 if specified. The default value is None, meaning no timeout.'
-    types:
-    - <xref:float>
   return:
     types:
     - <xref:list>[<xref:int>]
@@ -189,10 +136,10 @@ methods:
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
     a\\\\1\\\\s\\\\dist_temp\\\\64\\\\azure-servicebus-7.2.0\\\\samples\\\\async_samples\\\
-    \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"language\"\
-    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-    \n````python\n\n   async with servicebus_sender:\n       scheduled_time_utc =\
-    \ datetime.datetime.utcnow() + datetime.timedelta(seconds=30)\n       scheduled_messages\
+    \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   async with servicebus_sender:\n       scheduled_time_utc\
+    \ = datetime.datetime.utcnow() + datetime.timedelta(seconds=30)\n       scheduled_messages\
     \ = [ServiceBusMessage(\"Scheduled message\") for _ in range(10)]\n       sequence_nums\
     \ = await servicebus_sender.schedule_messages(scheduled_messages, scheduled_time_utc)\n\
     \n   ````\n"
@@ -206,23 +153,14 @@ methods:
     a
 
     *ValueError* if they cannot fit in a single batch.'
-  signature: 'send_messages(message: typing.Union[typing.Mapping[str, typing.Any],
-    azure.servicebus._common.message.ServiceBusMessage, typing.List[typing.Union[typing.Mapping[str,
-    typing.Any], azure.servicebus._common.message.ServiceBusMessage]], azure.servicebus._common.message.ServiceBusMessageBatch],
-    **kwargs: typing.Any) -> None'
+  signature: 'send_messages(message: typing.Union[Mapping[str, typing.Any], azure.servicebus._common.message.ServiceBusMessage,
+    typing.List[typing.Union[Mapping[str, typing.Any], azure.servicebus._common.message.ServiceBusMessage]],
+    azure.servicebus._common.message.ServiceBusMessageBatch], **kwargs: typing.Any)
+    -> None'
   parameters:
   - name: message
     description: The ServiceBus message to be sent.
     isRequired: true
-    types:
-    - <xref:Union>[<xref:azure.servicebus.ServiceBusMessage,azure.servicebus.ServiceBusMessageBatch,list>[<xref:azure.servicebus.ServiceBusMessage>]]
-  - name: timeout
-    description: 'The total operation timeout in seconds including all the retries.
-
-      The value must be greater than 0 if specified. The default value is None, meaning
-      no timeout.'
-    types:
-    - <xref:Optional>[<xref:float>]
   return:
     types:
     - <xref:None>
@@ -231,7 +169,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\64\\\\azure-servicebus-7.2.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   async with servicebus_sender:\n\
-    \       message = ServiceBusMessage(\"Hello World\")\n       await servicebus_sender.send_messages(message)\n\
-    \n   ````\n"
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   async with servicebus_sender:\n       message = ServiceBusMessage(\"Hello\
+    \ World\")\n       await servicebus_sender.send_messages(message)\n\n   ````\n"

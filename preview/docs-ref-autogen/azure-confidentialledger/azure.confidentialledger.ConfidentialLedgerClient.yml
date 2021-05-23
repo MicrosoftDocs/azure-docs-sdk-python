@@ -9,7 +9,7 @@ summary: "A client for putting data into and querying data from the Confidential
   \ service.\n\nThe *transport* parameter is typically accepted by Azure SDK clients\
   \ to provide a custom\ntransport stage in the pipeline. Since this client makes\
   \ modifications to the default transport,\nusing a custom transport will override\
-  \ and remove the following functionality:\n\n\n   1. Authentication using a client\
+  \ and remove the following functionality:\n\n   1. Authentication using a client\
   \ certificate. \n\n   2. TLS verification using the Confidential Ledger TLS certificate."
 constructor:
   syntax: ConfidentialLedgerClient(endpoint, credential, ledger_certificate_path,
@@ -30,9 +30,6 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
-  - name: api_version
-    description: "Version of the Confidential Ledger API to use. Defaults to the most\
-      \ recent.\nSupport API versions:\n\n   * 0.1-preview"
 methods:
 - uid: azure.confidentialledger.ConfidentialLedgerClient.append_to_ledger
   name: append_to_ledger
@@ -44,18 +41,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: sub_ledger_id
-    description: 'Identifies the sub-ledger to append to. If none is
-
-      specified, the service will use the service-default sub-ledger id.'
-    types:
-    - <xref:str>
-  - name: wait_for_commit
-    description: 'If True, this method will not return until the write is
-
-      durably saved to the ledger.'
-    types:
-    - <xref:bool>
 - uid: azure.confidentialledger.ConfidentialLedgerClient.create_or_update_user
   name: create_or_update_user
   summary: Creates a new Confidential Ledger user, or updates an existing one.
@@ -73,7 +58,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:LedgerUserRole>
+    - <xref:azure.confidentialledger.LedgerUserRole>
   return:
     description: Details of the updated ledger user.
     types:
@@ -129,55 +114,16 @@ methods:
   name: get_ledger_entries
   summary: Gets a range of entries in the ledger.
   signature: get_ledger_entries(**kwargs)
-  parameters:
-  - name: from_transaction_id
-    description: 'Transaction identifier from which to start the query.
-
-      If this is not specified, the query begins from the first transaction.'
-    types:
-    - <xref:str>
-  - name: to_transaction_id
-    description: 'Transaction identifier at which to end the query
-
-      (inclusive). If this is not specified, the query ends at the end of the ledger.'
-    types:
-    - <xref:str>
-  - name: sub_ledger_id
-    description: Identifies the sub-ledger to fetch the ledger entry from.
-    types:
-    - <xref:str>
   return:
     description: An iterable for iterating over the entries in the range.
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:LedgerEntry>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.confidentialledger.LedgerEntry>]
 - uid: azure.confidentialledger.ConfidentialLedgerClient.get_ledger_entry
   name: get_ledger_entry
   summary: 'Gets an entry in the ledger. The query may need to be retried while the
 
     service is loading results.'
   signature: get_ledger_entry(**kwargs)
-  parameters:
-  - name: interval
-    description: 'Interval, in seconds, between retries while waiting for results,
-
-      defaults to 0.5.'
-    types:
-    - <xref:float>
-  - name: max_tries
-    description: 'Maximum number of times to try the query, defaults to 6. Retries
-      are
-
-      attempted if the result is not Ready.'
-    types:
-    - <xref:int>
-  - name: transaction_id
-    description: 'A transaction identifier. If not specified, the latest
-
-      transaction is fetched.'
-    types:
-    - <xref:str>
-  - name: sub_ledger_id
-    description: Identifies the sub-ledger to fetch the ledger entry from.
   return:
     description: The corresponding ledger entry.
     types:
@@ -195,19 +141,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: interval
-    description: 'Interval, in seconds, between retries while waiting for results,
-
-      defaults to 0.5.'
-    types:
-    - <xref:float>
-  - name: max_tries
-    description: 'Maximum number of times to try the query, defaults to 6. Retries
-      are
-
-      attempted if the result is not Ready.'
-    types:
-    - <xref:int>
   return:
     description: Receipt certifying the specified transaction.
     types:
@@ -258,16 +191,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: interval
-    description: 'Interval, in seconds, between retries while waiting for results,
-
-      defaults to 0.5.'
-    types:
-    - <xref:float>
-  - name: max_queries
-    description: Maximum number of queries to make for durability, defaults to 3.
-    types:
-    - <xref:int>
   return:
     description: None.
     types:

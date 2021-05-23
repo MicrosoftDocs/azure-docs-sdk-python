@@ -31,14 +31,12 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,str>]
+    - Dict[str,str]
     - <xref:azure.data.tables.TableEntity>
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
-    - <xref:Dict>[<xref:str,str>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
+    - <xref:Dict>[<xref:str>,<xref:str>]
 - uid: azure.data.tables.TableClient.create_table
   name: create_table
   summary: Creates a new table under the current account.
@@ -46,13 +44,14 @@ methods:
   return:
     description: Dictionary of operation metadata returned from service
     types:
-    - <xref:Dict>[<xref:str,str>]
+    - <xref:Dict>[<xref:str>,<xref:str>]
+  exceptions:
+  - 'type: azure.core.exceptions.ResourceExistsError> If the entity already exist'
 - uid: azure.data.tables.TableClient.delete_entity
   name: delete_entity
   summary: 'Deletes the specified entity in a table. No error will be raised if
 
     the entity or PartitionKey-RowKey pairing is not found.'
-  signature: delete_entity(*args, **kwargs)
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -68,22 +67,12 @@ methods:
     description: The entity to delete
     isRequired: true
     types:
-    - <xref:Union>[<xref:TableEntity>, <xref:Mapping>[<xref:str>, <xref:str>]]
-  - name: etag
-    description: Etag of the entity
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: MatchCondition
-    types:
-    - <xref:azure.core.MatchConditions>
+    - <xref:azure.data.tables.Union>[<xref:azure.data.tables.TableEntity>, <xref:azure.data.tables.Mapping>[<xref:str>,
+      <xref:str>]]
   return:
     description: None
     types:
     - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.delete_table
   name: delete_table
   summary: 'Deletes the table under the current account. No error will be raised
@@ -157,18 +146,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: select
-    description: Specify desired properties of an entity to return.
-    types:
-    - <xref:str>
-    - <xref:List>[<xref:str>]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
     - <xref:azure.data.tables.TableEntity>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.get_table_access_policy
   name: get_table_access_policy
   summary: 'Retrieves details about any stored access policies specified on the table
@@ -179,27 +160,15 @@ methods:
   return:
     description: Dictionary of SignedIdentifiers
     types:
-    - <xref:Dict>[<xref:str>, <xref:<xref:azure.data.tables.AccessPolicy>>]
+    - Dict[str, <xref:azure.data.tables.AccessPolicy>]
 - uid: azure.data.tables.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
   signature: list_entities(**kwargs)
-  parameters:
-  - name: results_per_page
-    description: Number of entities returned per service request.
-    types:
-    - <xref:int>
-  - name: select
-    description: Specify desired properties of an entity to return.
-    types:
-    - <xref:str>
-    - <xref:List>[<xref:str>]
   return:
     description: ItemPaged[<xref:azure.data.tables.TableEntity>]
     types:
     - <xref:azure.core.paging.ItemPaged>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.query_entities
   name: query_entities
   summary: Lists entities in a table.
@@ -210,26 +179,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: results_per_page
-    description: Number of entities returned per service request.
-    types:
-    - <xref:int>
-  - name: select
-    description: Specify desired properties of an entity to return.
-    types:
-    - <xref:str>
-    - <xref:List>[<xref:str>]
-  - name: parameters
-    description: Dictionary for formatting query with additional, user defined parameters
-    types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
   return:
     description: ItemPaged[<xref:azure.data.tables.TableEntity>]
     types:
     - <xref:azure.core.paging.ItemPaged>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.set_table_access_policy
   name: set_table_access_policy
   summary: Sets stored access policies for the table that may be used with Shared
@@ -240,13 +193,11 @@ methods:
     description: Access policies to set for the table
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.data.tables.AccessPolicy>]
+    - Dict[str, <xref:azure.data.tables.AccessPolicy>]
   return:
     description: None
     types:
     - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableClient.submit_transaction
   name: submit_transaction
   summary: 'Commit a list of operations as a single transaction.
@@ -265,14 +216,15 @@ methods:
       kwargs for that operation.'
     isRequired: true
     types:
-    - <xref:Iterable>[<xref:Tuple>[<xref:str>, <xref:EntityType>]]
+    - <xref:azure.data.tables.Iterable>[<xref:azure.data.tables.Tuple>[<xref:str>,
+      <xref:azure.data.tables.EntityType>]]
   return:
     description: A list of mappings with response metadata for each operation in the
       transaction.
     types:
-    - <xref:List>[<xref:Mapping>[<xref:str>, <xref:Any>]]
+    - <xref:azure.data.tables.List>[<xref:azure.data.tables.Mapping>[<xref:str>, <xref:azure.data.tables.Any>]]
   exceptions:
-  - type: azure.data.tables.TableTransactionError
+  - 'type: azure.data.tables.TableTransactionError'
 - uid: azure.data.tables.TableClient.update_entity
   name: update_entity
   summary: Update entity in a table.
@@ -283,27 +235,16 @@ methods:
     isRequired: true
     types:
     - <xref:azure.data.tables.TableEntity>
-    - <xref:Dict>[<xref:str,str>]
+    - Dict[str,str]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
     types:
     - <xref:azure.data.tables.UpdateMode>
-  - name: etag
-    description: Etag of the entity
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: MatchCondition
-    types:
-    - <xref:azure.core.MatchCondition>
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
-    - <xref:Dict>[<xref:str,str>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
+    - <xref:Dict>[<xref:str>,<xref:str>]
 - uid: azure.data.tables.TableClient.upsert_entity
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
@@ -314,7 +255,7 @@ methods:
     isRequired: true
     types:
     - <xref:azure.data.tables.TableEntity>
-    - <xref:Dict>[<xref:str,str>]
+    - Dict[str,str]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
@@ -323,6 +264,4 @@ methods:
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
-    - <xref:Dict>[<xref:str,str>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
+    - <xref:Dict>[<xref:str>,<xref:str>]

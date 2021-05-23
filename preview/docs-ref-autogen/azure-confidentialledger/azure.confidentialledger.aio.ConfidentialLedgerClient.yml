@@ -9,10 +9,12 @@ summary: "An asynchronous client for putting data into and querying data from th
   \ Confidential Ledger\nservice.\n\nThe *transport* parameter is typically accepted\
   \ by Azure SDK clients to provide a custom\ntransport stage in the pipeline. Since\
   \ this client makes modifications to the default transport,\nusing a custom transport\
-  \ will override and remove the following functionality:\n\n\n   1. Authentication\
+  \ will override and remove the following functionality:\n\n   1. Authentication\
   \ using a client certificate. \n\n   2. TLS verification using the Confidential\
   \ Ledger TLS certificate."
 constructor:
+  syntax: 'ConfidentialLedgerClient(endpoint: str, credential: typing.Union[azure.confidentialledger._shared.credential.ConfidentialLedgerCertificateCredential,
+    TokenCredential], ledger_certificate_path: str, **kwargs: typing.Any) -> None'
   parameters:
   - name: endpoint
     description: URL of the Confidential Ledger service.
@@ -29,15 +31,12 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
-  - name: api_version
-    description: "Version of the Confidential Ledger API to use. Defaults to the most\
-      \ recent.\nSupport API versions:\n\n   * 0.1-preview"
 methods:
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.append_to_ledger
   name: append_to_ledger
   summary: Appends an entry to the Confidential Ledger.
-  signature: 'append_to_ledger(entry_contents: str, *, sub_ledger_id: typing.Union[str,
-    NoneType] = None, wait_for_commit: bool = False, **kwargs: typing.Any) -> azure.confidentialledger._models.AppendResult'
+  signature: 'append_to_ledger(entry_contents: str, *, sub_ledger_id: str = None,
+    wait_for_commit: bool = False, **kwargs: typing.Any) -> azure.confidentialledger._models.AppendResult'
   parameters:
   - name: entry_contents
     description: Text to write to the ledger.
@@ -51,7 +50,7 @@ methods:
       specified, the service will use the service-default sub-ledger id.'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:azure.confidentialledger.aio.Optional>[<xref:str>]
   - name: wait_for_commit
     description: 'If True, this method will not return until the write is
 
@@ -81,7 +80,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:LedgerUserRole>
+    - <xref:azure.confidentialledger.LedgerUserRole>
   return:
     description: Details of the updated ledger user.
     types:
@@ -145,7 +144,7 @@ methods:
       to None. If this is None, the query begins from the first transaction.'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:azure.confidentialledger.aio.Optional>[<xref:str>]
   - name: to_transaction_id
     description: 'Transaction identifier at which to end the query (inclusive),
 
@@ -158,17 +157,16 @@ methods:
       None.'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:azure.confidentialledger.aio.Optional>[<xref:str>]
   return:
     description: An iterable for iterating over the entries in the range.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:LedgerEntry>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.LedgerEntry>]
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_ledger_entry
   name: get_ledger_entry
   summary: Gets an entry in the ledger.
-  signature: 'get_ledger_entry(*, transaction_id: typing.Union[str, NoneType] = None,
-    sub_ledger_id: typing.Union[str, NoneType] = None, interval: float = 0.5, max_tries:
-    int = 6, **kwargs: typing.Any) -> azure.confidentialledger._models.LedgerEntry'
+  signature: 'get_ledger_entry(*, transaction_id: str = None, sub_ledger_id: str =
+    None, interval: float = 0.5, max_tries: int = 6, **kwargs: typing.Any) -> azure.confidentialledger._models.LedgerEntry'
   parameters:
   - name: transaction_id
     description: 'Transaction identifier, defaults to None. If this is None, the latest
@@ -176,7 +174,7 @@ methods:
       transaction is fetched.'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:azure.confidentialledger.aio.Optional>[<xref:str>]
   - name: sub_ledger_id
     description: 'Identifies the sub-ledger to fetch the ledger entry from, defaults
       to
@@ -184,7 +182,7 @@ methods:
       None.'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:azure.confidentialledger.aio.Optional>[<xref:str>]
   - name: interval
     description: Interval, in seconds, between retries while waiting for results.
     isRequired: true
