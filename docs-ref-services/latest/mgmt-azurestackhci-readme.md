@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-azurestackhci, 
+keywords: Azure, python, SDK, API, azure-mgmt-azurestackhci, stackhci
 author: maggiepint
 ms.author: magpint
-ms.date: 10/15/2020
+ms.date: 05/20/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: stackhci
 ---
 
 # Microsoft Azure SDK for Python
@@ -20,8 +20,14 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 # Usage
 
-For code examples, see [AzureStackHCI Management](https://docs.microsoft.com/python/api/overview/azure/)
-on docs.microsoft.com.
+
+To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
+
+
+
+For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
+Code samples for this package can be found at [Azure Stack HCI Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 # Provide Feedback
