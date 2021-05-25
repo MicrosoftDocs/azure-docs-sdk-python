@@ -36,6 +36,54 @@ constructor:
     - '<xref:azure.core.credentials.AzureSasCredential>
 
       or <xref:azure.core.credentials.AzureNamedKeyCredential>'
+  - name: logging_enable
+    description: Whether to output network trace logs to the logger. Default is *False*.
+    types:
+    - <xref:bool>
+  - name: transport_type
+    description: 'The type of transport protocol that will be used for communicating
+      with
+
+      the Service Bus service. Default is *TransportType.Amqp* in which case port
+      5671 is used.
+
+      If the port 5671 is unavailable/blocked in the network environment, *TransportType.AmqpOverWebsocket*
+      could
+
+      be used instead which uses port 443 for communication.'
+    types:
+    - <xref:azure.servicebus.TransportType>
+  - name: http_proxy
+    description: 'HTTP proxy settings. This must be a dictionary with the following
+
+      keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+      Additionally the following keys may also be present: *''username'', ''password''*.'
+    types:
+    - <xref:dict>
+  - name: user_agent
+    description: If specified, this will be added in front of the built-in user agent
+      string.
+    types:
+    - <xref:str>
+  - name: retry_total
+    description: 'The total number of attempts to redo a failed operation when an
+      error occurs.
+
+      Default value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_backoff_factor
+    description: 'Delta back-off internal in the unit of second between retries.
+
+      Default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: Maximum back-off interval in the unit of second. Default value is
+      120.
+    types:
+    - <xref:float>
 variables:
 - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -43,53 +91,6 @@ variables:
   name: fully_qualified_namespace
   types:
   - <xref:str>
-- description: Whether to output network trace logs to the logger. Default is *False*.
-  name: logging_enable
-  types:
-  - <xref:bool>
-- description: 'The type of transport protocol that will be used for communicating
-    with
-
-    the Service Bus service. Default is *TransportType.Amqp* in which case port 5671
-    is used.
-
-    If the port 5671 is unavailable/blocked in the network environment, *TransportType.AmqpOverWebsocket*
-    could
-
-    be used instead which uses port 443 for communication.'
-  name: transport_type
-  types:
-  - <xref:azure.servicebus.TransportType>
-- description: 'HTTP proxy settings. This must be a dictionary with the following
-
-    keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
-
-    Additionally the following keys may also be present: *''username'', ''password''*.'
-  name: http_proxy
-  types:
-  - <xref:dict>
-- description: If specified, this will be added in front of the built-in user agent
-    string.
-  name: user_agent
-  types:
-  - <xref:str>
-- description: 'The total number of attempts to redo a failed operation when an error
-    occurs.
-
-    Default value is 3.'
-  name: retry_total
-  types:
-  - <xref:int>
-- description: 'Delta back-off internal in the unit of second between retries.
-
-    Default value is 0.8.'
-  name: retry_backoff_factor
-  types:
-  - <xref:float>
-- description: Maximum back-off interval in the unit of second. Default value is 120.
-  name: retry_backoff_max
-  types:
-  - <xref:float>
 examples:
 - "Create a new instance of the ServiceBusClient.<!--[!code-python[Main](les\\async_samples\\\
   sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
@@ -121,8 +122,54 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: conn_str
-    isRequired: true
+  - name: logging_enable
+    description: Whether to output network trace logs to the logger. Default is *False*.
+    types:
+    - <xref:bool>
+  - name: transport_type
+    description: 'The type of transport protocol that will be used for communicating
+      with
+
+      the Service Bus service. Default is *TransportType.Amqp* in which case port
+      5671 is used.
+
+      If the port 5671 is unavailable/blocked in the network environment, *TransportType.AmqpOverWebsocket*
+      could
+
+      be used instead which uses port 443 for communication.'
+    types:
+    - <xref:azure.servicebus.TransportType>
+  - name: http_proxy
+    description: 'HTTP proxy settings. This must be a dictionary with the following
+
+      keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+      Additionally the following keys may also be present: *''username'', ''password''*.'
+    types:
+    - <xref:dict>
+  - name: user_agent
+    description: If specified, this will be added in front of the built-in user agent
+      string.
+    types:
+    - <xref:str>
+  - name: retry_total
+    description: 'The total number of attempts to redo a failed operation when an
+      error occurs.
+
+      Default value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_backoff_factor
+    description: 'Delta back-off internal in the unit of second between retries.
+
+      Default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: Maximum back-off interval in the unit of second. Default value is
+      120.
+    types:
+    - <xref:float>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusClient>
@@ -147,6 +194,86 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: session_id
+    description: 'A specific session from which to receive. This must be specified
+      for a
+
+      sessionful queue, otherwise it must be None. In order to receive messages from
+      the next available
+
+      session, set this to ~azure.servicebus.NEXT_AVAILABLE_SESSION.'
+    types:
+    - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
+  - name: str
+    description: 'If specified, the subqueue this receiver will
+
+      connect to.
+
+      This includes the DEAD_LETTER and TRANSFER_DEAD_LETTER queues, holds messages
+      that can''t be delivered to any
+
+      receiver or messages that can''t be processed.
+
+      The default is None, meaning connect to the primary queue.  Can be assigned
+      values from *ServiceBusSubQueue*
+
+      enum or equivalent string values "deadletter" and "transferdeadletter".'
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:azure.servicebus.ServiceBusSubQueue>,
+  - name: receive_mode
+    description: 'The mode with which messages will be retrieved from the entity.
+      The two options
+
+      are PEEK_LOCK and RECEIVE_AND_DELETE. Messages received with PEEK_LOCK must
+      be settled within a given
+
+      lock period before they will be removed from the queue. Messages received with
+      RECEIVE_AND_DELETE
+
+      will be immediately removed from the queue, and cannot be subsequently rejected
+      or re-received if
+
+      the client fails to process the message. The default mode is PEEK_LOCK.'
+    types:
+    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
+  - name: max_wait_time
+    description: 'The timeout in seconds between received messages after which the
+
+      receiver will automatically stop receiving. The default value is None, meaning
+      no timeout.'
+    types:
+    - <xref:Optional>[<xref:float>]
+  - name: auto_lock_renewer
+    description: 'An
+
+      ~azure.servicebus.aio.AutoLockRenewer can be provided such that messages are
+      automatically registered on
+
+      receipt. If the receiver is a session receiver, it will apply to the session
+      instead.'
+    types:
+    - <xref:Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
+  - name: prefetch_count
+    description: 'The maximum number of messages to cache with each request to the
+      service.
+
+      This setting is only for advanced performance tuning. Increasing this value
+      will improve message throughput
+
+      performance but increase the chance that messages will expire while they are
+      cached if they''re not
+
+      processed fast enough.
+
+      The default value is 0, meaning messages will be received from the service and
+      processed one at a time.
+
+      In the case of prefetch_count being 0, *ServiceBusReceiver.receive* would try
+      to cache *max_message_count*
+
+      (if provided) within its request to the service.'
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusReceiver>
@@ -207,6 +334,86 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: session_id
+    description: 'A specific session from which to receive. This must be specified
+      for a
+
+      sessionful subscription, otherwise it must be None. In order to receive messages
+      from the next available
+
+      session, set this to ~azure.servicebus.NEXT_AVAILABLE_SESSION.'
+    types:
+    - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
+  - name: str
+    description: 'If specified, the subqueue this receiver will
+
+      connect to.
+
+      This includes the DEAD_LETTER and TRANSFER_DEAD_LETTER queues, holds messages
+      that can''t be delivered to any
+
+      receiver or messages that can''t be processed.
+
+      The default is None, meaning connect to the primary queue.  Can be assigned
+      values from *ServiceBusSubQueue*
+
+      enum or equivalent string values "deadletter" and "transferdeadletter".'
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:azure.servicebus.ServiceBusSubQueue>,
+  - name: receive_mode
+    description: 'The mode with which messages will be retrieved from the entity.
+      The two options
+
+      are PEEK_LOCK and RECEIVE_AND_DELETE. Messages received with PEEK_LOCK must
+      be settled within a given
+
+      lock period before they will be removed from the subscription. Messages received
+      with RECEIVE_AND_DELETE
+
+      will be immediately removed from the subscription, and cannot be subsequently
+      rejected or re-received if
+
+      the client fails to process the message. The default mode is PEEK_LOCK.'
+    types:
+    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
+  - name: max_wait_time
+    description: 'The timeout in seconds between received messages after which the
+
+      receiver will automatically stop receiving. The default value is None, meaning
+      no timeout.'
+    types:
+    - <xref:Optional>[<xref:float>]
+  - name: auto_lock_renewer
+    description: 'An
+
+      ~azure.servicebus.aio.AutoLockRenewer can be provided such that messages are
+      automatically registered on
+
+      receipt. If the receiver is a session receiver, it will apply to the session
+      instead.'
+    types:
+    - <xref:Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
+  - name: prefetch_count
+    description: 'The maximum number of messages to cache with each request to the
+      service.
+
+      This setting is only for advanced performance tuning. Increasing this value
+      will improve message throughput
+
+      performance but increase the chance that messages will expire while they are
+      cached if they''re not
+
+      processed fast enough.
+
+      The default value is 0, meaning messages will be received from the service and
+      processed one at a time.
+
+      In the case of prefetch_count being 0, *ServiceBusReceiver.receive* would try
+      to cache *max_message_count*
+
+      (if provided) within its request to the service.'
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusReceiver>

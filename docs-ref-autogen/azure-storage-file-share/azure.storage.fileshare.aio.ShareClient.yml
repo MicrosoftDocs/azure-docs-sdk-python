@@ -48,26 +48,25 @@ constructor:
 
       shared access key.'
     isRequired: true
-variables:
-- description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
-    Setting to an older version may result in reduced feature compatibility.
+      Setting to an older version may result in reduced feature compatibility.
 
 
-    New in version 12.1.0.'
-  name: api_version
-  types:
-  - <xref:str>
-- description: The hostname of the secondary endpoint.
-  name: secondary_hostname
-  types:
-  - <xref:str>
-- description: The event loop to run the asynchronous tasks.
-  name: loop
-- description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
-  name: max_range_size
-  types:
-  - <xref:int>
+      New in version 12.1.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: loop
+    description: The event loop to run the asynchronous tasks.
+  - name: max_range_size
+    description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
+    types:
+    - <xref:int>
 methods:
 - uid: azure.storage.fileshare.aio.ShareClient.create_directory
   name: create_directory
@@ -81,6 +80,14 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: metadata
+    description: Name-value pairs associated with the directory as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: ShareDirectoryClient
     types:
@@ -116,10 +123,41 @@ methods:
 
     same name already exists, the operation fails.'
   signature: create_share(**kwargs)
+  parameters:
+  - name: metadata
+    description: Name-value pairs associated with the share as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: quota
+    description: The quota to be allotted.
+    types:
+    - <xref:int>
+  - name: access_tier
+    description: 'Specifies the access tier of the share.
+
+      Possible values: ''TransactionOptimized'', ''Hot'', ''Cool'''
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: protocols
+    description: Protocols to enable on the share. Only one protocol can be enabled
+      on the share.
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.ShareProtocols>
+  - name: root_squash
+    description: 'Root squash to set on the share.
+
+      Only valid for NFS shares. Possible values include: ''NoRootSquash'', ''RootSquash'',
+      ''AllSquash''.'
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.ShareRootSquash>
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -147,10 +185,19 @@ methods:
 
     snapshot was taken.'
   signature: create_snapshot(**kwargs)
+  parameters:
+  - name: metadata
+    description: Name-value pairs associated with the share as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Share-updated property dict (Snapshot ID, Etag, and last modified).
     types:
-    - <xref:dict>[<xref:str>, <xref:azure.storage.fileshare.aio.Any>]
+    - <xref:dict>[<xref:str>, <xref:Any>]
   examples:
   - "Creates a snapshot of the file share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -269,7 +316,7 @@ methods:
   return:
     description: Access policy information in a dict.
     types:
-    - <xref:dict>[<xref:str>, <xref:azure.storage.fileshare.aio.Any>]
+    - <xref:dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.aio.ShareClient.get_share_properties
   name: get_share_properties
   summary: 'Returns all user-defined metadata and system properties for the
@@ -384,7 +431,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.aio.ShareClient.set_share_metadata
   name: set_share_metadata
   summary: 'Sets the metadata for the share.
@@ -409,7 +456,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Sets the share metadata.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -426,10 +473,36 @@ methods:
 
     New in version 12.6.0.'
   signature: set_share_properties(**kwargs)
+  parameters:
+  - name: access_tier
+    description: 'Specifies the access tier of the share.
+
+      Possible values: ''TransactionOptimized'', ''Hot'', and ''Cool'''
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.models.ShareAccessTier>
+  - name: quota
+    description: 'Specifies the maximum size of the share, in gigabytes.
+
+      Must be greater than 0, and less than or equal to 5TB.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: root_squash
+    description: 'Root squash to set on the share.
+
+      Only valid for NFS shares. Possible values include: ''NoRootSquash'', ''RootSquash'',
+      ''AllSquash'''
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.ShareRootSquash>
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Sets the share properties.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -463,7 +536,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Sets the share quota.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\

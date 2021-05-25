@@ -37,29 +37,28 @@ constructor:
 
       shared access key, or an instance of a TokenCredentials class from azure.identity.'
     isRequired: true
-variables:
-- description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
-    Setting to an older version may result in reduced feature compatibility.'
-  name: api_version
-  types:
-  - <xref:str>
-- description: The hostname of the secondary endpoint.
-  name: secondary_hostname
-  types:
-  - <xref:str>
-- description: 'The encoding policy to use on outgoing messages.
+      Setting to an older version may result in reduced feature compatibility.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: message_encode_policy
+    description: 'The encoding policy to use on outgoing messages.
 
-    Default is not to encode messages. Other options include <xref:azure.storage.queue.TextBase64EncodePolicy>,
+      Default is not to encode messages. Other options include <xref:azure.storage.queue.TextBase64EncodePolicy>,
 
-    <xref:azure.storage.queue.BinaryBase64EncodePolicy> or *None*.'
-  name: message_encode_policy
-- description: 'The decoding policy to use on incoming messages.
+      <xref:azure.storage.queue.BinaryBase64EncodePolicy> or *None*.'
+  - name: message_decode_policy
+    description: 'The decoding policy to use on incoming messages.
 
-    Default value is not to decode messages. Other options include <xref:azure.storage.queue.TextBase64DecodePolicy>,
+      Default value is not to decode messages. Other options include <xref:azure.storage.queue.TextBase64DecodePolicy>,
 
-    <xref:azure.storage.queue.BinaryBase64DecodePolicy> or *None*.'
-  name: message_decode_policy
+      <xref:azure.storage.queue.BinaryBase64DecodePolicy> or *None*.'
 examples:
 - "Create the queue client with url and credential.<!--[!code-python[Main](les\\queue_samples_message.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
@@ -95,6 +94,19 @@ methods:
 
     a *ResourceExistsError*.'
   signature: create_queue(**kwargs)
+  parameters:
+  - name: metadata
+    description: 'A dict containing name-value pairs to associate with the queue as
+
+      metadata. Note that metadata names preserve the case with which they
+
+      were created, but are case-insensitive when set or read.'
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: timeout
+    description: The server timeout, expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: None or the result of cls(response)
     types:
@@ -385,6 +397,25 @@ methods:
 
     decrypted before being returned.'
   signature: receive_message(**kwargs)
+  parameters:
+  - name: visibility_timeout
+    description: 'If not specified, the default value is 0. Specifies the
+
+      new visibility timeout value, in seconds, relative to server time.
+
+      The value must be larger than or equal to 0, and cannot be
+
+      larger than 7 days. The visibility timeout of a message cannot be
+
+      set to a value later than the expiry time. visibility_timeout
+
+      should be set to a value smaller than the time-to-live value.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The server timeout, expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Returns a message from the Queue.
     types:
@@ -421,6 +452,25 @@ methods:
 
     decrypted before being returned.'
   signature: receive_messages(**kwargs)
+  parameters:
+  - name: visibility_timeout
+    description: 'If not specified, the default value is 0. Specifies the
+
+      new visibility timeout value, in seconds, relative to server time.
+
+      The value must be larger than or equal to 0, and cannot be
+
+      larger than 7 days. The visibility timeout of a message cannot be
+
+      set to a value later than the expiry time. visibility_timeout
+
+      should be set to a value smaller than the time-to-live value.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The server timeout, expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Returns a message iterator of dict-like Message objects.
     types:
@@ -469,7 +519,34 @@ methods:
       64KB in size.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.obj>
+    - <xref:obj>
+  - name: visibility_timeout
+    description: 'If not specified, the default value is 0. Specifies the
+
+      new visibility timeout value, in seconds, relative to server time.
+
+      The value must be larger than or equal to 0, and cannot be
+
+      larger than 7 days. The visibility timeout of a message cannot be
+
+      set to a value later than the expiry time. visibility_timeout
+
+      should be set to a value smaller than the time-to-live value.'
+    types:
+    - <xref:int>
+  - name: time_to_live
+    description: 'Specifies the time-to-live interval for the message, in
+
+      seconds. The time-to-live may be any positive number or -1 for infinity. If
+      this
+
+      parameter is omitted, the default time-to-live is 7 days.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The server timeout, expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: 'A <xref:azure.storage.queue.QueueMessage> object.
 
@@ -618,7 +695,25 @@ methods:
       set on the service. Default is str.'
     isRequired: true
     types:
-    - <xref:azure.storage.queue.obj>
+    - <xref:obj>
+  - name: visibility_timeout
+    description: 'Specifies the new visibility timeout value, in seconds,
+
+      relative to server time. The new value must be larger than or equal
+
+      to 0, and cannot be larger than 7 days. The visibility timeout of a
+
+      message cannot be set to a value later than the expiry time. A
+
+      message can be updated until it has been deleted or has expired.
+
+      The message object or message id identifying the message to update.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The server timeout, expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: 'A <xref:azure.storage.queue.QueueMessage> object. For convenience,
 

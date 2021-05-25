@@ -22,7 +22,7 @@ functions:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.storage.blob.aio.writable stream>
+    - <xref:writable stream>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -41,6 +41,54 @@ functions:
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
     defaultValue: None
+  - name: overwrite
+    description: 'Whether the local file should be overwritten if it already exists.
+      The default value is
+
+      *False* - in which case a ValueError will be raised if the file already exists.
+      If set to
+
+      *True*, an attempt will be made to write to the existing file. If a stream handle
+      is passed
+
+      in, this value is ignored.'
+    types:
+    - <xref:bool>
+  - name: max_concurrency
+    description: The number of parallel connections with which to download.
+    types:
+    - <xref:int>
+  - name: offset
+    description: 'Start of byte range to use for downloading a section of the blob.
+
+      Must be set if length is provided.'
+    types:
+    - <xref:int>
+  - name: length
+    description: 'Number of bytes to read from the stream. This is optional, but
+
+      should be supplied for optimal performance.'
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used, because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
   return:
     types:
     - <xref:None>
@@ -62,9 +110,9 @@ functions:
       object.
     isRequired: true
     types:
-    - <xref:azure.storage.blob.aio.bytes>
+    - <xref:bytes>
     - <xref:str>
-    - <xref:azure.storage.blob.aio.Iterable>
+    - <xref:Iterable>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -81,10 +129,56 @@ functions:
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
     defaultValue: None
+  - name: overwrite
+    description: 'Whether the blob to be uploaded should overwrite the current data.
+
+      If True, upload_blob_to_url will overwrite any existing data. If set to False,
+      the
+
+      operation will fail with a ResourceExistsError.'
+    types:
+    - <xref:bool>
+  - name: max_concurrency
+    description: The number of parallel connections with which to download.
+    types:
+    - <xref:int>
+  - name: length
+    description: 'Number of bytes to read from the stream. This is optional, but
+
+      should be supplied for optimal performance.'
+    types:
+    - <xref:int>
+  - name: metadata
+    description: Name-value pairs associated with the blob as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used, because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: encoding
+    description: Encoding to use if text is supplied as input. Defaults to UTF-8.
+    types:
+    - <xref:str>
   return:
     description: Blob-updated property dict (Etag and last modified)
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.blob.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
 classes:
 - azure.storage.blob.aio.BlobClient
 - azure.storage.blob.aio.BlobLeaseClient

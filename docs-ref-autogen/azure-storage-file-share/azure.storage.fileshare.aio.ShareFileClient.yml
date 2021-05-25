@@ -50,26 +50,25 @@ constructor:
 
       shared access key.'
     isRequired: true
-variables:
-- description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
-    Setting to an older version may result in reduced feature compatibility.
+      Setting to an older version may result in reduced feature compatibility.
 
 
-    New in version 12.1.0.'
-  name: api_version
-  types:
-  - <xref:str>
-- description: The hostname of the secondary endpoint.
-  name: secondary_hostname
-  types:
-  - <xref:str>
-- description: The event loop to run the asynchronous tasks.
-  name: loop
-- description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
-  name: max_range_size
-  types:
-  - <xref:int>
+      New in version 12.1.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: loop
+    description: The event loop to run the asynchronous tasks.
+  - name: max_range_size
+    description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
+    types:
+    - <xref:int>
 methods:
 - uid: azure.storage.fileshare.aio.ShareFileClient.abort_copy
   name: abort_copy
@@ -89,6 +88,21 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.fileshare.FileProperties>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -140,10 +154,25 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.storage.fileshare.aio.Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.close_all_handles
   name: close_all_handles
   summary: 'Close any open file handles.
@@ -254,10 +283,36 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: content_settings
+    description: 'ContentSettings object used to set file properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
+    types:
+    - <xref:azure.storage.fileshare.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
@@ -273,6 +328,22 @@ methods:
 
     later deleted during garbage collection.'
   signature: delete_file(**kwargs)
+  parameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -310,6 +381,44 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: max_concurrency
+    description: Maximum number of parallel connections to use.
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used, because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A streaming object (StorageStreamDownloader)
     types:
@@ -329,6 +438,22 @@ methods:
 
     system properties for the file.'
   signature: get_file_properties(**kwargs)
+  parameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: FileProperties
     types:
@@ -350,10 +475,25 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A list of valid ranges.
     types:
-    - <xref:azure.storage.fileshare.aio.List>[<xref:dict>[<xref:str>, <xref:int>]]
+    - <xref:List>[<xref:dict>[<xref:str>, <xref:int>]]
 - uid: azure.storage.fileshare.aio.ShareFileClient.get_ranges_diff
   name: get_ranges_diff
   summary: 'Returns the list of valid page ranges for a file or snapshot
@@ -384,14 +524,26 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: 'A tuple of two lists of file ranges as dictionaries with ''start''
       and ''end'' keys.
 
       The first element are filled file ranges, the 2nd element is cleared file ranges.'
     types:
-    - <xref:azure.storage.fileshare.aio.tuple>(<xref:list>(<xref:dict>(<xref:str>,
-      <xref:str>), <xref:list>(<xref:dict>(<xref:str>, <xref:str>))
+    - <xref:tuple>(<xref:list>(<xref:dict>(<xref:str>, <xref:str>), <xref:list>(<xref:dict>(<xref:str>,
+      <xref:str>))
 - uid: azure.storage.fileshare.aio.ShareFileClient.list_handles
   name: list_handles
   summary: Lists handles for file.
@@ -415,10 +567,25 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.storage.fileshare.aio.Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.set_file_metadata
   name: set_file_metadata
   summary: 'Sets user-defined metadata for the specified file as one or more
@@ -438,10 +605,25 @@ methods:
     isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.aio.ShareFileClient.set_http_headers
   name: set_http_headers
   summary: Sets HTTP headers on the file.
@@ -506,10 +688,25 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.aio.ShareFileClient.start_copy_from_url
   name: start_copy_from_url
   summary: 'Initiates the copying of data from a source URL into the file
@@ -527,9 +724,132 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: file_permission
+    description: 'If specified the permission (security descriptor) shall be set for
+      the directory/file.
+
+      This value can be set to "source" to copy the security descriptor from the source
+      file.
+
+      Otherwise if set, this value will be used to override the source value. If not
+      set, permission value
+
+      is inherited from the parent directory of the target file. This setting can
+      be
+
+      used if Permission size is <= 8KB, otherwise permission_key shall be used.
+
+      If SDDL is specified as input, it must have owner, group and dacl.
+
+      Note: Only one of the file_permission or permission_key should be specified.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+  - name: permission_key
+    description: 'Key of the permission to be set for the directory/file.
+
+      This value can be set to "source" to copy the security descriptor from the source
+      file.
+
+      Otherwise if set, this value will be used to override the source value. If not
+      set, permission value
+
+      is inherited from the parent directory of the target file.
+
+      Note: Only one of the file_permission or permission_key should be specified.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+  - name: file_attributes
+    description: 'This value can be set to "source" to copy file attributes from the
+      source file to the target file,
+
+      or to clear all attributes, it can be set to "None". Otherwise it can be set
+      to a list of attributes
+
+      to set on the target file. If this is not set, the default value is "Archive".
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - str
+    - <xref:azure.storage.fileshare.NTFSAttributes>
+  - name: file_creation_time
+    description: 'This value can be set to "source" to copy the creation time from
+      the source file to the target file,
+
+      or a datetime to set as creation time on the target file. This could also be
+      a string in ISO 8601 format.
+
+      If this is not set, creation time will be set to the date time value of the
+      creation
+
+      (or when it was overwritten) of the target file by copy engine.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_last_write_time
+    description: 'This value can be set to "source" to copy the last write time from
+      the source file to the target file, or
+
+      a datetime to set as the last write time on the target file. This could also
+      be a string in ISO 8601 format.
+
+      If this is not set, value will be the last write time to the file by the copy
+      engine.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: ignore_read_only
+    description: 'Specifies the option to overwrite the target file if it already
+      exists and has read-only attribute set.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:bool>
+  - name: set_archive_attribute
+    description: 'Specifies the option to set the archive attribute on the target
+      file.
+
+      True means the archive attribute will be set on the target file despite attribute
+
+      overrides or the source file state.
+
+
+      New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:bool>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -548,7 +868,7 @@ methods:
     description: Content of the file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.aio.Any>
+    - <xref:Any>
   - name: length
     description: Length of the file in bytes. Specify its maximum size, up to 1 TiB.
     isRequired: true
@@ -607,10 +927,59 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: content_settings
+    description: 'ContentSettings object used to set file properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
+    types:
+    - <xref:azure.storage.fileshare.ContentSettings>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    types:
+    - <xref:bool>
+  - name: max_concurrency
+    description: Maximum number of parallel connections to use.
+    types:
+    - <xref:int>
+  - name: encoding
+    description: Defaults to UTF-8.
+    types:
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
@@ -629,7 +998,7 @@ methods:
     description: The data to upload.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.aio.bytes>
+    - <xref:bytes>
   - name: offset
     description: 'Start of byte range to use for uploading a section of the file.
 
@@ -644,10 +1013,43 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash of the page content. The storage
+
+      service checks the hash of the content that has arrived
+
+      with the hash that was sent. This is primarily valuable for detecting
+
+      bitflips on the wire if using http instead of https as https (the default)
+
+      will already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: encoding
+    description: Defaults to UTF-8.
+    types:
+    - <xref:str>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.storage.fileshare.aio.Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.upload_range_from_url
   name: upload_range_from_url
   summary: Writes the bytes from one Azure File endpoint into the specified range
@@ -693,5 +1095,20 @@ methods:
 
       The service will read the same number of bytes as the destination range (length-offset).'
     isRequired: true
+    types:
+    - <xref:int>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.
+
+
+      New in version 12.1.0.'
+    types:
+    - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>

@@ -45,63 +45,63 @@ constructor:
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
     isRequired: true
-variables:
-- description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
-    Setting to an older version may result in reduced feature compatibility.
+      Setting to an older version may result in reduced feature compatibility.
 
 
-    New in version 12.2.0.'
-  name: api_version
-  types:
-  - <xref:str>
-- description: The hostname of the secondary endpoint.
-  name: secondary_hostname
-  types:
-  - <xref:str>
-- description: 'The maximum chunk size for uploading a block blob in chunks.
+      New in version 12.2.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: max_block_size
+    description: 'The maximum chunk size for uploading a block blob in chunks.
 
-    Defaults to 4*1024*1024, or 4MB.'
-  name: max_block_size
-  types:
-  - <xref:int>
-- description: 'If the blob size is less than or equal max_single_put_size, then the
-    blob will be
+      Defaults to 4*1024*1024, or 4MB.'
+    types:
+    - <xref:int>
+  - name: max_single_put_size
+    description: 'If the blob size is less than or equal max_single_put_size, then
+      the blob will be
 
-    uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
+      uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
 
-    the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
-  name: max_single_put_size
-  types:
-  - <xref:int>
-- description: 'The minimum chunk size required to use the memory efficient
+      the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
+    types:
+    - <xref:int>
+  - name: min_large_block_upload_threshold
+    description: 'The minimum chunk size required to use the memory efficient
 
-    algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
-  name: min_large_block_upload_threshold
-  types:
-  - <xref:int>
-- description: Use a byte buffer for block blob uploads. Defaults to False.
-  name: use_byte_buffer
-  types:
-  - <xref:bool>
-- description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
-    or 4MB.
-  name: max_page_size
-  types:
-  - <xref:int>
-- description: 'The maximum size for a blob to be downloaded in a single call,
+      algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
+    types:
+    - <xref:int>
+  - name: use_byte_buffer
+    description: Use a byte buffer for block blob uploads. Defaults to False.
+    types:
+    - <xref:bool>
+  - name: max_page_size
+    description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
+      or 4MB.
+    types:
+    - <xref:int>
+  - name: max_single_get_size
+    description: 'The maximum size for a blob to be downloaded in a single call,
 
-    the exceeded part will be downloaded in chunks (could be parallel). Defaults to
-    32*1024*1024, or 32MB.'
-  name: max_single_get_size
-  types:
-  - <xref:int>
-- description: 'The maximum chunk size used for downloading a blob. Defaults to 4*1024*1024,
+      the exceeded part will be downloaded in chunks (could be parallel). Defaults
+      to 32*1024*1024, or 32MB.'
+    types:
+    - <xref:int>
+  - name: max_chunk_get_size
+    description: 'The maximum chunk size used for downloading a blob. Defaults to
+      4*1024*1024,
 
-    or 4MB.'
-  name: max_chunk_get_size
-  types:
-  - <xref:int>
+      or 4MB.'
+    types:
+    - <xref:int>
 examples:
 - "Creating the BlobServiceClient with account url and credential.<!--[!code-python[Main](les\\\
   blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
@@ -155,6 +155,21 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.blob.PublicAccess>
+  - name: container_encryption_scope
+    description: 'Specifies the default encryption scope to set on the container and
+      use for
+
+      all future writes.
+
+
+      New in version 12.2.0.'
+    types:
+    - <xref:dict>
+    - <xref:azure.storage.blob.ContainerEncryptionScope>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:azure.storage.blob.aio.ContainerClient>
@@ -195,6 +210,45 @@ methods:
 
       Required if the container has an active lease.'
     isRequired: true
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -228,6 +282,14 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: results_per_page
+    description: The max result per page when paginating.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: An iterable (auto-paging) response of BlobProperties.
     types:
@@ -291,7 +353,7 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:azure.storage.blob.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   return:
     description: A BlobClient.
     types:
@@ -356,7 +418,7 @@ methods:
 
       analytics logging, hour/minute metrics, cors rules, etc.'
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.storage.blob.aio.Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   examples:
   - "Getting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
@@ -407,7 +469,7 @@ methods:
   return:
     description: The blob service stats.
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.storage.blob.aio.Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   examples:
   - "Getting service stats for the blob service.<!--[!code-python[Main](les\\blob_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -465,6 +527,25 @@ methods:
     isRequired: true
     types:
     - <xref:bool>
+  - name: include_deleted
+    description: 'Specifies that deleted containers to be returned in the response.
+      This is for container restore enabled
+
+      account. The default value is *False*.
+
+      .. versionadded:: 12.4.0'
+    types:
+    - <xref:bool>
+  - name: results_per_page
+    description: 'The maximum number of container names to retrieve per API
+
+      call. If the request does not specify the server will return up to 5,000 items.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: An iterable (auto-paging) of ContainerProperties.
     types:
@@ -595,6 +676,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: new_name
+    description: 'The new name for the deleted container to be restored to.
+
+      If not specified deleted_container_name will be used as the restored container
+      name.'
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:azure.storage.blob.aio.ContainerClient>

@@ -48,63 +48,63 @@ constructor:
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
     isRequired: true
-variables:
-- description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
-    Setting to an older version may result in reduced feature compatibility.
+      Setting to an older version may result in reduced feature compatibility.
 
 
-    New in version 12.2.0.'
-  name: api_version
-  types:
-  - <xref:str>
-- description: The hostname of the secondary endpoint.
-  name: secondary_hostname
-  types:
-  - <xref:str>
-- description: 'The maximum chunk size for uploading a block blob in chunks.
+      New in version 12.2.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: max_block_size
+    description: 'The maximum chunk size for uploading a block blob in chunks.
 
-    Defaults to 4*1024*1024, or 4MB.'
-  name: max_block_size
-  types:
-  - <xref:int>
-- description: 'If the blob size is less than or equal max_single_put_size, then the
-    blob will be
+      Defaults to 4*1024*1024, or 4MB.'
+    types:
+    - <xref:int>
+  - name: max_single_put_size
+    description: 'If the blob size is less than or equal max_single_put_size, then
+      the blob will be
 
-    uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
+      uploaded with only one http PUT request. If the blob size is larger than max_single_put_size,
 
-    the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
-  name: max_single_put_size
-  types:
-  - <xref:int>
-- description: 'The minimum chunk size required to use the memory efficient
+      the blob will be uploaded in chunks. Defaults to 64*1024*1024, or 64MB.'
+    types:
+    - <xref:int>
+  - name: min_large_block_upload_threshold
+    description: 'The minimum chunk size required to use the memory efficient
 
-    algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
-  name: min_large_block_upload_threshold
-  types:
-  - <xref:int>
-- description: Use a byte buffer for block blob uploads. Defaults to False.
-  name: use_byte_buffer
-  types:
-  - <xref:bool>
-- description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
-    or 4MB.
-  name: max_page_size
-  types:
-  - <xref:int>
-- description: 'The maximum size for a blob to be downloaded in a single call,
+      algorithm when uploading a block blob. Defaults to 4*1024*1024+1.'
+    types:
+    - <xref:int>
+  - name: use_byte_buffer
+    description: Use a byte buffer for block blob uploads. Defaults to False.
+    types:
+    - <xref:bool>
+  - name: max_page_size
+    description: The maximum chunk size for uploading a page blob. Defaults to 4*1024*1024,
+      or 4MB.
+    types:
+    - <xref:int>
+  - name: max_single_get_size
+    description: 'The maximum size for a blob to be downloaded in a single call,
 
-    the exceeded part will be downloaded in chunks (could be parallel). Defaults to
-    32*1024*1024, or 32MB.'
-  name: max_single_get_size
-  types:
-  - <xref:int>
-- description: 'The maximum chunk size used for downloading a blob. Defaults to 4*1024*1024,
+      the exceeded part will be downloaded in chunks (could be parallel). Defaults
+      to 32*1024*1024, or 32MB.'
+    types:
+    - <xref:int>
+  - name: max_chunk_get_size
+    description: 'The maximum chunk size used for downloading a blob. Defaults to
+      4*1024*1024,
 
-    or 4MB.'
-  name: max_chunk_get_size
-  types:
-  - <xref:int>
+      or 4MB.'
+    types:
+    - <xref:int>
 examples:
 - "Get a ContainerClient from an existing BlobServiceClient.<!--[!code-python[Main](les\\\
   blob_samples_containers_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
@@ -151,6 +151,45 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: A BlobLeaseClient object, that can be run in a context manager.
     types:
@@ -184,6 +223,21 @@ methods:
     isRequired: true
     types:
     - <xref:azure.storage.blob.PublicAccess>
+  - name: container_encryption_scope
+    description: 'Specifies the default encryption scope to set on the container and
+      use for
+
+      all future writes.
+
+
+      New in version 12.2.0.'
+    types:
+    - <xref:dict>
+    - <xref:azure.storage.blob.ContainerEncryptionScope>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -238,6 +292,74 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime
+
+      value that, when present, specifies the version of the blob to delete.
+
+
+      New in version 12.4.0.
+
+
+      This keyword argument was introduced in API version ''2019-12-12''.'
+    types:
+    - <xref:str>
+  - name: lease
+    description: 'Required if the blob has an active lease. Value can be a Lease object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -287,10 +409,63 @@ methods:
     types:
     - <xref:list>[<xref:str>], <xref:list>[<xref:dict>],
     - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+  - name: delete_snapshots
+    description: "Required if a blob has associated snapshots. Values include:\n \
+      \  * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
+      \ the blob along with all snapshots."
+    types:
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: raise_on_any_failure
+    description: 'This is a boolean param which defaults to True. When this is set,
+      an exception
+
+      is raised even if there is a single operation failure. For optimal performance,
+
+      this should be set to False'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: An async iterator of responses, one for each blob in order
     types:
-    - <xref:azure.storage.blob.aio.asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
+    - <xref:asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
   examples:
   - "Deleting multiple blobs.<!--[!code-python[Main](les\\blob_samples_common_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -309,6 +484,55 @@ methods:
 
     contained within it are later deleted during garbage collection.'
   signature: delete_container(**kwargs)
+  parameters:
+  - name: lease
+    description: 'If specified, delete_container only succeeds if the
+
+      container''s lease is active and matches this ID.
+
+      Required if the container has an active lease.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -352,6 +576,107 @@ methods:
 
       should be supplied for optimal performance.'
     isRequired: true
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https, as https (the default), will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the blob has an active lease. If specified, download_blob
+      only
+
+      succeeds if the blob''s lease is active and matches this ID. Value can be a
+
+      BlobLeaseClient object or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    types:
+    - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
+  - name: max_concurrency
+    description: The number of parallel connections with which to download.
+    types:
+    - <xref:int>
+  - name: encoding
+    description: Encoding to decode the downloaded bytes. Default is None, i.e. no
+      decoding.
+    types:
+    - <xref:str>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
     types:
     - <xref:int>
   return:
@@ -425,10 +750,22 @@ methods:
 
     The permissions indicate whether container data may be accessed publicly.'
   signature: get_container_access_policy(**kwargs)
+  parameters:
+  - name: lease
+    description: 'If specified, get_container_access_policy only succeeds if the
+
+      container''s lease is active and matches this ID.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Access policy information in a dict.
     types:
-    - <xref:dict>[<xref:str>, <xref:azure.storage.blob.aio.Any>]
+    - <xref:dict>[<xref:str>, <xref:Any>]
   examples:
   - "Getting the access policy on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -443,6 +780,18 @@ methods:
 
     container. The data returned does not include the container''s list of blobs.'
   signature: get_container_properties(**kwargs)
+  parameters:
+  - name: lease
+    description: 'If specified, get_container_properties only succeeds if the
+
+      container''s lease is active and matches this ID.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Properties for the specified container within a container object.
     types:
@@ -520,6 +869,42 @@ methods:
     isRequired: true
     types:
     - <xref:azure.storage.blob.PublicAccess>
+  - name: lease
+    description: 'Required if the container has an active lease. Value can be a BlobLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A datetime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A datetime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Container-updated property dict (Etag and last modified).
     types:
@@ -558,6 +943,29 @@ methods:
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: lease
+    description: 'If specified, set_container_metadata only succeeds if the
+
+      container''s lease is active and matches this ID.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Container-updated property dict (Etag and last modified).
   examples:
@@ -614,10 +1022,27 @@ methods:
     types:
     - <xref:list>[<xref:str>], <xref:list>[<xref:dict>],
     - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    types:
+    - <xref:int>
+  - name: raise_on_any_failure
+    description: 'This is a boolean param which defaults to True. When this is set,
+      an exception
+
+      is raised even if there is a single operation failure. For optimal performance,
+
+      this should be set to False.'
+    types:
+    - <xref:bool>
   return:
     description: An async iterator of responses, one for each blob in order
     types:
-    - <xref:azure.storage.blob.aio.asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
+    - <xref:asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
 - uid: azure.storage.blob.aio.ContainerClient.set_standard_blob_tier_blobs
   name: set_standard_blob_tier_blobs
   summary: 'This operation sets the tier on block blobs.
@@ -676,10 +1101,37 @@ methods:
     types:
     - <xref:list>[<xref:str>], <xref:list>[<xref:dict>],
     - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+  - name: rehydrate_priority
+    description: Indicates the priority with which to rehydrate an archived blob
+    types:
+    - <xref:azure.storage.blob.RehydratePriority>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: raise_on_any_failure
+    description: 'This is a boolean param which defaults to True. When this is set,
+      an exception
+
+      is raised even if there is a single operation failure. For optimal performance,
+
+      this should be set to False.'
+    types:
+    - <xref:bool>
   return:
     description: An async iterator of responses, one for each blob in order
     types:
-    - <xref:azure.storage.blob.aio.asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
+    - <xref:asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
 - uid: azure.storage.blob.aio.ContainerClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
@@ -716,6 +1168,176 @@ methods:
     isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
+  - name: overwrite
+    description: 'Whether the blob to be uploaded should overwrite the current data.
+
+      If True, upload_blob will overwrite the existing data. If set to False, the
+
+      operation will fail with ResourceExistsError. The exception to the above is
+      with Append
+
+      blob types: if set to False and the data already exists, an error will not be
+      raised
+
+      and the data will be appended to the existing blob. If set overwrite=True, then
+      the existing
+
+      append blob will be deleted, and a new one created. Defaults to False.'
+    types:
+    - <xref:bool>
+  - name: content_settings
+    description: 'ContentSettings object used to set blob properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
+    types:
+    - <xref:azure.storage.blob.ContentSettings>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the blob. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https, as https (the default), will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used, because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the container has an active lease. Value can be a BlobLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    types:
+    - <xref:int>
+  - name: premium_page_blob_tier
+    description: 'A page blob tier value to set the blob to. The tier correlates to
+      the size of the
+
+      blob and number of allowed IOPS. This is only applicable to page blobs on
+
+      premium storage accounts.'
+    types:
+    - <xref:azure.storage.blob.PremiumPageBlobTier>
+  - name: standard_blob_tier
+    description: 'A standard blob tier value to set the blob to. For this version
+      of the library,
+
+      this is only applicable to block blobs on standard storage accounts.'
+    types:
+    - <xref:azure.storage.blob.StandardBlobTier>
+  - name: maxsize_condition
+    description: 'Optional conditional header. The max length in bytes permitted for
+
+      the append blob. If the Append Block operation would cause the blob
+
+      to exceed that limit or if the blob size is already greater than the
+
+      value specified in this header, the request will fail with
+
+      MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).'
+    types:
+    - <xref:int>
+  - name: max_concurrency
+    description: 'Maximum number of parallel connections to use when the blob size
+      exceeds
+
+      64MB.'
+    types:
+    - <xref:int>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    types:
+    - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
+  - name: encryption_scope
+    description: 'A predefined encryption scope used to encrypt the data on the service.
+      An encryption
+
+      scope can be created using the Management API and referenced here by name. If
+      a default
+
+      encryption scope has been defined at the container, this value will override
+      it if the
+
+      container-level scope is configured to allow overrides. Otherwise an error will
+      be raised.
+
+
+      New in version 12.2.0.'
+    types:
+    - <xref:str>
+  - name: encoding
+    description: Defaults to UTF-8.
+    types:
+    - <xref:str>
   return:
     description: A BlobClient to interact with the newly uploaded blob.
     types:

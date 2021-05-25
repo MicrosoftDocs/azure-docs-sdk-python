@@ -57,26 +57,25 @@ constructor:
 
       shared access key.'
     isRequired: true
-variables:
-- description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
 
-    Setting to an older version may result in reduced feature compatibility.
+      Setting to an older version may result in reduced feature compatibility.
 
 
-    New in version 12.1.0.'
-  name: api_version
-  types:
-  - <xref:str>
-- description: The hostname of the secondary endpoint.
-  name: secondary_hostname
-  types:
-  - <xref:str>
-- description: The event loop to run the asynchronous tasks.
-  name: loop
-- description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
-  name: max_range_size
-  types:
-  - <xref:int>
+      New in version 12.1.0.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: loop
+    description: The event loop to run the asynchronous tasks.
+  - name: max_range_size
+    description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
+    types:
+    - <xref:int>
 methods:
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.close_all_handles
   name: close_all_handles
@@ -131,10 +130,19 @@ methods:
   name: create_directory
   summary: Creates a new directory under the directory referenced by the client.
   signature: create_directory(**kwargs)
+  parameters:
+  - name: metadata
+    description: Name-value pairs associated with the directory as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: Directory-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
   examples:
   - "Creates a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -155,6 +163,14 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: metadata
+    description: Name-value pairs associated with the subdirectory as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
   return:
     description: ShareDirectoryClient
     types:
@@ -325,8 +341,8 @@ methods:
   return:
     description: An auto-paging iterable of dict-like DirectoryProperties and FileProperties
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.aio.DirectoryProperties
-      and FileProperties>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:DirectoryProperties and
+      FileProperties>]
   examples:
   - "List directories and files.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -382,7 +398,7 @@ methods:
   return:
     description: Directory-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.set_http_headers
   name: set_http_headers
   summary: Sets HTTP headers on the directory.
@@ -446,7 +462,7 @@ methods:
   return:
     description: File-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.fileshare.aio.Any>)
+    - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.upload_file
   name: upload_file
   summary: 'Creates a new file in the directory and returns a ShareFileClient
@@ -463,12 +479,50 @@ methods:
     description: Content of the file.
     isRequired: true
     types:
-    - <xref:azure.storage.fileshare.aio.Any>
+    - <xref:Any>
   - name: length
     description: Length of the file in bytes. Specify its maximum size, up to 1 TiB.
     isRequired: true
     types:
     - <xref:int>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: content_settings
+    description: 'ContentSettings object used to set file properties. Used to set
+      content type, encoding,
+
+      language, disposition, md5, and cache control.'
+    types:
+    - <xref:azure.storage.fileshare.ContentSettings>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    types:
+    - <xref:bool>
+  - name: max_concurrency
+    description: Maximum number of parallel connections to use.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: encoding
+    description: Defaults to UTF-8.
+    types:
+    - <xref:str>
   return:
     description: ShareFileClient
     types:
