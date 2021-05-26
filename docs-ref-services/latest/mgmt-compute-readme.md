@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-compute, virtualmachines
+keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
 author: maggiepint
 ms.author: magpint
-ms.date: 04/07/2021
+ms.date: 05/26/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: virtualmachines
+ms.service: compute
 ---
 
 # Microsoft Azure SDK for Python
