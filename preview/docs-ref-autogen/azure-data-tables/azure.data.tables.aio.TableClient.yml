@@ -8,8 +8,7 @@ inheritances:
 summary: A client to interact with a specific Table in an Azure Tables account.
 constructor:
   syntax: 'TableClient(endpoint: str, table_name: str, credential: typing.Union[azure.core.credentials.AzureSasCredential,
-    azure.core.credentials.AzureNamedKeyCredential, NoneType] = None, **kwargs) ->
-    None'
+    azure.core.credentials.AzureNamedKeyCredential] = None, **kwargs) -> None'
 variables:
 - description: The name of the Tables account.
   name: account_name
@@ -28,7 +27,7 @@ methods:
   name: create_entity
   summary: Insert entity in a table.
   signature: 'create_entity(entity: typing.Union[azure.data.tables._entity.TableEntity,
-    typing.Mapping[str, typing.Any]], **kwargs) -> typing.Mapping[str, typing.Any]'
+    Mapping[str, typing.Any]], **kwargs) -> Mapping[str, typing.Any]'
   parameters:
   - name: entity
     description: The properties for the table entity.
@@ -41,7 +40,7 @@ methods:
     types:
     - <xref:Dict>[<xref:str,str>]
   exceptions:
-  - type: azure.core.exceptions.ResourceExistsError
+  - type: azure.core.exceptions.ResourceExistsError If the entity already exists
 - uid: azure.data.tables.aio.TableClient.create_table
   name: create_table
   summary: Creates a new table under the given account.
@@ -50,13 +49,13 @@ methods:
     description: Dictionary of operation metadata returned from service
     types:
     - <xref:Dict>[<xref:str,str>]
+  exceptions:
+  - type: azure.core.exceptions.ResourceExistsError If the entity already exists
 - uid: azure.data.tables.aio.TableClient.delete_entity
   name: delete_entity
   summary: 'Deletes the specified entity in a table. No error will be raised if
 
     the entity or PartitionKey-RowKey pairing is not found.'
-  signature: 'delete_entity(*args: typing.Union[azure.data.tables._entity.TableEntity,
-    str], **kwargs: typing.Any) -> None'
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -72,7 +71,8 @@ methods:
     description: The entity to delete
     isRequired: true
     types:
-    - <xref:Union>[<xref:TableEntity>, <xref:Mapping>[<xref:str>, <xref:str>]]
+    - <xref:Union>[<xref:azure.data.tables.TableEntity>, <xref:Mapping>[<xref:str>,
+      <xref:str>]]
   - name: etag
     description: Etag of the entity
     types:
@@ -87,7 +87,6 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.delete_table
   name: delete_table
   summary: 'Deletes the table under the current account. No error will be raised if
@@ -98,6 +97,8 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.from_connection_string
   name: from_connection_string
   summary: Create TableClient from a Connection string.
@@ -124,8 +125,7 @@ methods:
   name: from_table_url
   summary: A client to interact with a specific Table.
   signature: 'from_table_url(table_url: str, credential: typing.Union[azure.core.credentials.AzureSasCredential,
-    azure.core.credentials.AzureNamedKeyCredential, NoneType] = None, **kwargs) ->
-    azure.data.tables.aio._table_client_async.TableClient'
+    azure.core.credentials.AzureNamedKeyCredential] = None, **kwargs) -> azure.data.tables.aio._table_client_async.TableClient'
   parameters:
   - name: table_url
     description: The full URI to the table, including SAS token if used.
@@ -176,18 +176,19 @@ methods:
     - <xref:azure.data.tables.TableEntity>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.get_table_access_policy
   name: get_table_access_policy
   summary: 'Retrieves details about any stored access policies specified on the table
     that may be
 
     used with Shared Access Signatures.'
-  signature: get_table_access_policy(**kwargs) -> typing.Mapping[str, azure.data.tables._models.AccessPolicy]
+  signature: get_table_access_policy(**kwargs) -> Mapping[str, azure.data.tables._models.AccessPolicy]
   return:
     description: Dictionary of SignedIdentifiers
     types:
-    - <xref:Dict>[<xref:str>, <xref:<xref:azure.data.tables.AccessPolicy>>]
+    - <xref:Dict>[<xref:str>, <xref:azure.data.tables.AccessPolicy>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
@@ -237,12 +238,11 @@ methods:
     - <xref:azure.core.async_paging.AsyncItemPaged>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.set_table_access_policy
   name: set_table_access_policy
   summary: Sets stored access policies for the table that may be used with Shared
     Access Signatures.
-  signature: 'set_table_access_policy(signed_identifiers: typing.Mapping[str, azure.data.tables._models.AccessPolicy],
+  signature: 'set_table_access_policy(signed_identifiers: Mapping[str, azure.data.tables._models.AccessPolicy],
     **kwargs) -> None'
   parameters:
   - name: signed_identifiers
@@ -263,9 +263,9 @@ methods:
 
     If any one of these operations fails, the entire transaction will be rejected.'
   signature: 'submit_transaction(operations: typing.Iterable[typing.Union[typing.Tuple[str,
-    typing.Union[azure.data.tables._entity.TableEntity, typing.Mapping[str, typing.Any]]],
-    typing.Tuple[str, typing.Union[azure.data.tables._entity.TableEntity, typing.Mapping[str,
-    typing.Any]], typing.Mapping[str, typing.Any]]]], **kwargs) -> typing.List[typing.Mapping[str,
+    typing.Union[azure.data.tables._entity.TableEntity, Mapping[str, typing.Any]]],
+    typing.Tuple[str, typing.Union[azure.data.tables._entity.TableEntity, Mapping[str,
+    typing.Any]], Mapping[str, typing.Any]]]], **kwargs) -> typing.List[Mapping[str,
     typing.Any]]'
   parameters:
   - name: operations
@@ -286,13 +286,13 @@ methods:
     - <xref:List>[<xref:Mapping>[<xref:str>, <xref:Any>]]
   exceptions:
   - description: ''
-    type: ~azure.data.tables.TableTransactionError
+    type: azure.data.tables.TableTransactionError
 - uid: azure.data.tables.aio.TableClient.update_entity
   name: update_entity
   summary: Update entity in a table.
   signature: 'update_entity(entity: typing.Union[azure.data.tables._entity.TableEntity,
-    typing.Mapping[str, typing.Any]], mode: str = <UpdateMode.MERGE: ''merge''>, **kwargs)
-    -> typing.Mapping[str, typing.Any]'
+    Mapping[str, typing.Any]], mode: str = <UpdateMode.MERGE: ''merge''>, **kwargs)
+    -> Mapping[str, typing.Any]'
   parameters:
   - name: entity
     description: The properties for the table entity.
@@ -319,13 +319,12 @@ methods:
     - <xref:Dict>[<xref:str,str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableClient.upsert_entity
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
   signature: 'upsert_entity(entity: typing.Union[azure.data.tables._entity.TableEntity,
-    typing.Mapping[str, typing.Any]], mode: str = <UpdateMode.MERGE: ''merge''>, **kwargs)
-    -> typing.Mapping[str, typing.Any]'
+    Mapping[str, typing.Any]], mode: str = <UpdateMode.MERGE: ''merge''>, **kwargs)
+    -> Mapping[str, typing.Any]'
   parameters:
   - name: entity
     description: The properties for the table entity.
