@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-eventhub, eventhub
+keywords: Azure, python, SDK, API, azure-mgmt-eventhub, eventhubs
 author: maggiepint
 ms.author: magpint
-ms.date: 09/18/2020
+ms.date: 05/26/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: event-hubs
+ms.service: eventhubs
 ---
 
 # Microsoft Azure SDK for Python
