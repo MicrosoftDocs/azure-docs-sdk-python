@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-datadog, datadog
 author: maggiepint
 ms.author: magpint
-ms.date: 03/23/2021
+ms.date: 05/26/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -36,5 +36,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-datadog%2FREADME.png)
-
 
