@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicesbackup, siterecovery
 author: maggiepint
 ms.author: magpint
-ms.date: 12/07/2020
+ms.date: 06/01/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -32,5 +32,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-recoveryservicesbackup%2FREADME.png)
-
 
