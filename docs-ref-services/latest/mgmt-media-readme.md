@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-media, media
+keywords: Azure, python, SDK, API, azure-mgmt-media, mediaservices
 author: maggiepint
 ms.author: magpint
-ms.date: 10/21/2020
+ms.date: 06/07/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: media
+ms.service: mediaservices
 ---
 
 # Microsoft Azure SDK for Python
