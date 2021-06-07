@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-hdinsight, hdinsight
 author: maggiepint
 ms.author: magpint
-ms.date: 01/04/2021
+ms.date: 06/07/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
