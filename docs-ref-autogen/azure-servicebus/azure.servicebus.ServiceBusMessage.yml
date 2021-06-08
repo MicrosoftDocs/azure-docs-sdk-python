@@ -62,18 +62,11 @@ constructor:
     description: The session identifier augmenting the *reply_to* address.
     types:
     - <xref:Optional>[<xref:str>]
-variables:
-- description: 'Advanced use only.
-
-    The internal AMQP message payload that is sent or received.'
-  name: raw_amqp_message
-  types:
-  - <xref:AMQPAnnotatedMessage>
 examples:
 - "Sending a message with additional properties<!--[!code-python[Main](les\\sync_samples\\\
   sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.2.0\\\\samples\\\\sync_samples\\\
+  \\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.3.0\\\\samples\\\\sync_samples\\\
   \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"language\": \"python\"\
   , \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
   \n   message = ServiceBusMessage(\n       \"Hello World!!\",\n       session_id=\"\
@@ -88,11 +81,23 @@ attributes:
     - <xref:dict>
 - uid: azure.servicebus.ServiceBusMessage.body
   name: body
-  summary: The body of the Message.
+  summary: '*The body of the Message. The format may vary depending on the body type*
+    -- For ~azure.servicebus.AmqpMessageBodyType.DATA, the body could be bytes or
+    Iterable[bytes]
+
+    For ~azure.servicebus.AmqpMessageBodyType.SEQUENCE, the body could be List or
+    Iterable[List]
+
+    For ~azure.servicebus.AmqpMessageBodyType.VALUE, the body could be any type.'
   return:
     types:
-    - <xref:bytes>
-    - <xref:Iterable>[<xref:bytes>]
+    - <xref:Any>
+- uid: azure.servicebus.ServiceBusMessage.body_type
+  name: body_type
+  summary: 'The body type of the underlying AMQP message.
+
+
+    rtype: ~azure.servicebus.amqp.AmqpMessageBodyType'
 - uid: azure.servicebus.ServiceBusMessage.content_type
   name: content_type
   summary: 'The content type descriptor.
@@ -162,6 +167,10 @@ attributes:
   return:
     types:
     - <xref:str>
+- uid: azure.servicebus.ServiceBusMessage.raw_amqp_message
+  name: raw_amqp_message
+  summary: Advanced usage only. The internal AMQP message payload that is sent or
+    received.
 - uid: azure.servicebus.ServiceBusMessage.reply_to
   name: reply_to
   summary: 'The address of an entity to send replies to.
