@@ -3,7 +3,7 @@ title: Azure Communication Phone Numbers Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-phonenumbers, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 04/26/2021
+ms.date: 06/08/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: communication
 ---
 
-# Azure Communication Phone Numbers Package client library for Python - Version 1.0.0 
+# Azure Communication Phone Numbers Package client library for Python - Version 1.0.1 
 
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers. 
@@ -37,8 +37,7 @@ import os
 from azure.communication.phonenumbers import PhoneNumbersClient
 from azure.identity import DefaultAzureCredential
 
-endpoint = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')
-
+endpoint = "https://<RESOURCE_NAME>.communication.azure.com"
 # To use Azure Active Directory Authentication (DefaultAzureCredential) make sure to have your
 # AZURE_TENANT_ID, AZURE_CLIENT_ID and AZURE_CLIENT_SECRET as env variables.
 phone_numbers_client = PhoneNumbersClient(endpoint, DefaultAzureCredential())
@@ -52,7 +51,7 @@ Connection string authentication is also available for Phone Numbers Client.
 import os
 from azure.communication.phonenumbers import PhoneNumbersClient
 
-connection_str = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')
+connection_str = "endpoint=ENDPOINT;accessKey=KEY"
 phone_numbers_client = PhoneNumbersClient.from_connection_string(connection_str)
 ```
 
@@ -116,7 +115,7 @@ search_result = poller.result()
 
 ### Purchase Phone Numbers
 
-The result of your search can be used to purchase the specificied phone numbers. This can be done by passing the `search_id` from the search response to the purchase phone number API.
+The result of your search can be used to purchase the specified phone numbers. This can be done by passing the `search_id` from the search response to the purchase phone number API.
 
 ```python
 purchase_poller = phone_numbers_client.begin_purchase_phone_numbers(
@@ -160,7 +159,7 @@ The Phone Numbers Administration client will raise exceptions defined in [Azure 
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.0.0/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.0.1/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
 
 ## Provide Feedback
 
@@ -177,5 +176,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.0.0/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.0.1/sdk/core/azure-core/README.md
 
