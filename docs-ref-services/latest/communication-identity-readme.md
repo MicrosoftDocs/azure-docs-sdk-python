@@ -3,7 +3,7 @@ title: Azure Communication Identity Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-identity, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 04/20/2021
+ms.date: 06/08/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,12 +11,12 @@ ms.devlang: python
 ms.service: communication
 ---
 
-# Azure Communication Identity Package client library for Python - Version 1.0.0 
+# Azure Communication Identity Package client library for Python - Version 1.0.1 
 
 
 Azure Communication Identity client package is intended to be used to setup the basics for opening a way to use Azure Communication Service offerings. This package helps to create identity user tokens to be used by other client packages such as chat, calling, sms.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.0/sdk/communication/azure-communication-identity) | [Package (Pypi)](https://pypi.org/project/azure-communication-identity/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.0/sdk/communication/azure-communication-identity) | [Product documentation](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.1/sdk/communication/azure-communication-identity) | [Package (Pypi)](https://pypi.org/project/azure-communication-identity/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.1/sdk/communication/azure-communication-identity) | [Product documentation](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
 
 
 # Getting started
@@ -46,8 +46,8 @@ import os
 from azure.communication.identity import CommunicationIdentityClient
 from azure.identity import DefaultAzureCredential
 
-connection_str = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')
-endpoint = os.getenv('AZURE_COMMUNICATION_SERVICE_ENDPOINT')
+connection_str = "endpoint=ENDPOINT;accessKey=KEY"
+endpoint = "https://<RESOURCE_NAME>.communication.azure.com"
 
 # To use Azure Active Directory Authentication (DefaultAzureCredential) make sure to have
 # AZURE_TENANT_ID, AZURE_CLIENT_ID and AZURE_CLIENT_SECRET as env variables.
@@ -115,7 +115,7 @@ The Azure Communication Service Identity client will raise exceptions defined in
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.0.0/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.0.1/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
 
 ## Provide Feedback
 
@@ -132,5 +132,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.0/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.1/sdk/core/azure-core/README.md
 

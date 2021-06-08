@@ -22,7 +22,7 @@ constructor:
 examples:
 - "<!--[!code-python[Main](les\\identity_samples.py )]-->\n\n<!-- literal_block {\"\
   ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"\
-  source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\162\\\\azure-communication-identity-1.0.0\\\
+  source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\162\\\\azure-communication-identity-1.0.1\\\
   \\samples\\\\identity_samples.py\", \"xml:space\": \"preserve\", \"language\": \"\
   python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
   ````python\n\n   : utf-8\n\n   -------------------------------------------------------------------\n\
@@ -31,53 +31,57 @@ examples:
   \n\n   entity_sample.py\n   ION:\n   e samples demonstrate creating a user, issuing\
   \ a token, revoking a token and deleting a user.\n\n\n   on identity_samples.py\n\
   \   the environment variables with your own values before running the sample:\n\
-  \   ZURE_COMMUNICATION_SERVICE_ENDPOINT - Communication Service endpoint url\n \
-  \  ZURE_COMMUNICATION_SERVICE_CONNECTION_STRING - the connection string in your\
-  \ ACS account\n   ZURE_CLIENT_ID - the client ID of your active directory application\n\
-  \   ZURE_CLIENT_SECRET - the secret of your active directory application\n   ZURE_TENANT_ID\
-  \ - the tenant ID of your active directory application\n\n   s\n\n   mmunicationIdentityClientSamples(object):\n\
-  \n   __init__(self):\n   self.connection_string = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')\n\
-  \   self.endpoint = os.getenv('AZURE_COMMUNICATION_SERVICE_ENDPOINT')\n   self.client_id\
-  \ = os.getenv('AZURE_CLIENT_ID')\n   self.client_secret = os.getenv('AZURE_CLIENT_SECRET')\n\
+  \   OMMUNICATION_SAMPLES_CONNECTION_STRING - the connection string in your ACS resource\n\
+  \   ZURE_CLIENT_ID - the client ID of your active directory application\n   ZURE_CLIENT_SECRET\
+  \ - the secret of your active directory application\n   ZURE_TENANT_ID - the tenant\
+  \ ID of your active directory application\n\n   s\n   re.communication.identity._shared.utils\
+  \ import parse_connection_str\n\n   mmunicationIdentityClientSamples(object):\n\n\
+  \   __init__(self):\n   self.connection_string = os.getenv('COMMUNICATION_SAMPLES_CONNECTION_STRING')\n\
+  \   self.client_id = os.getenv('AZURE_CLIENT_ID')\n   self.client_secret = os.getenv('AZURE_CLIENT_SECRET')\n\
   \   self.tenant_id = os.getenv('AZURE_TENANT_ID')\n\n   get_token(self):\n   from\
   \ azure.communication.identity import (\n       CommunicationIdentityClient,\n \
   \      CommunicationTokenScope\n   )\n\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
-  \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
-  \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
-  \   user = identity_client.create_user()\n   print(\"Getting token for: \" + user.identifier)\n\
+  \ DefaultAzureCredential\n       endpoint, _ = parse_connection_str(self.connection_string)\n\
+  \       identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \   user = identity_client.create_user()\n   print(\"Getting token for: \" + user.properties.get('id'))\n\
   \   tokenresponse = identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])\n\
   \   print(\"Token issued with value: \" + tokenresponse.token)\n\n   revoke_tokens(self):\n\
   \   from azure.communication.identity import (\n       CommunicationIdentityClient,\n\
   \       CommunicationTokenScope\n   )\n\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
-  \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
-  \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \ DefaultAzureCredential\n       endpoint, _ = parse_connection_str(self.connection_string)\n\
+  \       identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
   \   user = identity_client.create_user()\n   tokenresponse = identity_client.get_token(user,\
   \ scopes=[CommunicationTokenScope.CHAT])\n   print(\"Revoking token: \" + tokenresponse.token)\n\
   \   identity_client.revoke_tokens(user)\n   print(tokenresponse.token + \" revoked\
   \ successfully\")\n\n   create_user(self):\n   from azure.communication.identity\
   \ import CommunicationIdentityClient\n\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
-  \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
-  \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \ DefaultAzureCredential\n       endpoint, _ = parse_connection_str(self.connection_string)\n\
+  \       identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
   \   print(\"Creating new user\")\n   user = identity_client.create_user()\n   print(\"\
-  User created with id:\" + user.identifier)\n\n   create_user_and_token(self):\n\
+  User created with id:\" + user.properties.get('id'))\n\n   create_user_and_token(self):\n\
   \   from azure.communication.identity import (\n       CommunicationIdentityClient,\n\
   \       CommunicationTokenScope\n   )\n   if self.client_id is not None and self.client_secret\
   \ is not None and self.tenant_id is not None:\n       from azure.identity import\
-  \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
-  \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
+  \ DefaultAzureCredential\n       endpoint, _ = parse_connection_str(self.connection_string)\n\
+  \       identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential())\n\
+  \   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
   \   print(\"Creating new user with token\")\n   user, tokenresponse = identity_client.create_user_and_token(scopes=[CommunicationTokenScope.CHAT])\n\
-  \   print(\"User created with id:\" + user.identifier)\n   print(\"Token issued\
-  \ with value: \" + tokenresponse.token)\n\n   delete_user(self):\n   from azure.communication.identity\
-  \ import CommunicationIdentityClient\n\n   if self.client_id is not None and self.client_secret\
-  \ is not None and self.tenant_id is not None:\n       from azure.identity import\
-  \ DefaultAzureCredential\n       identity_client = CommunicationIdentityClient(self.endpoint,\
+  \   print(\"User created with id:\" + user.properties.get('id'))\n   print(\"Token\
+  \ issued with value: \" + tokenresponse.token)\n\n   delete_user(self):\n   from\
+  \ azure.communication.identity import CommunicationIdentityClient\n\n   if self.client_id\
+  \ is not None and self.client_secret is not None and self.tenant_id is not None:\n\
+  \       from azure.identity import DefaultAzureCredential\n       endpoint, _ =\
+  \ parse_connection_str(self.connection_string)\n       identity_client = CommunicationIdentityClient(endpoint,\
   \ DefaultAzureCredential())\n   else:\n       identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)\n\
-  \   user = identity_client.create_user()\n   print(\"Deleting user: \" + user.identifier)\n\
-  \   identity_client.delete_user(user)\n   print(user.identifier + \" deleted\")\n\
-  \n   e__ == '__main__':\n   le = CommunicationIdentityClientSamples()\n   le.create_user()\n\
+  \   user = identity_client.create_user()\n   print(\"Deleting user: \" + user.properties.get('id'))\n\
+  \   identity_client.delete_user(user)\n   print(user.properties.get('id') + \" deleted\"\
+  )\n\n   e__ == '__main__':\n   le = CommunicationIdentityClientSamples()\n   le.create_user()\n\
   \   le.create_user_and_token()\n   le.get_token()\n   le.revoke_tokens()\n   le.delete_user()\n\
   \n   ````\n"
 methods:
@@ -139,7 +143,7 @@ methods:
   - "Creating the CommunicationIdentityClient from a connection string.<!--[!code-python[Main](les\\\
     identity_samples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    1\\\\s\\\\dist_temp\\\\162\\\\azure-communication-identity-1.0.0\\\\samples\\\\\
+    1\\\\s\\\\dist_temp\\\\162\\\\azure-communication-identity-1.0.1\\\\samples\\\\\
     identity_samples.py\", \"xml:space\": \"preserve\", \"language\": \"python\",\
     \ \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\
     \n\n   ````\n"

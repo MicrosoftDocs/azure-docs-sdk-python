@@ -3,7 +3,7 @@ title: Azure Communication SMS Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-sms, communication
 author: maggiepint
 ms.author: magpint
-ms.date: 05/07/2021
+ms.date: 06/08/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,13 +11,13 @@ ms.devlang: python
 ms.service: communication
 ---
 
-# Azure Communication SMS Package client library for Python - Version 1.0.0 
+# Azure Communication SMS Package client library for Python - Version 1.0.1 
 
 
 This package contains a Python SDK for Azure Communication Services for SMS.
 Read more about Azure Communication Services [here](https://docs.microsoft.com/azure/communication-services/overview)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.0/sdk/communication/azure-communication-sms) | [Package (Pypi)](https://pypi.org/project/azure-communication-sms/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.0/sdk/communication/azure-communication-sms) | [Product documentation](https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-python)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.1/sdk/communication/azure-communication-sms) | [Package (Pypi)](https://pypi.org/project/azure-communication-sms/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.1/sdk/communication/azure-communication-sms) | [Product documentation](https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-python)
 
 
 
@@ -60,11 +60,12 @@ Alternatively, you can also use Active Directory authentication using DefaultAzu
 from azure.communication.sms import SmsClient
 from azure.identity import DefaultAzureCredential
 
-connection_string = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')
+connection_str = "endpoint=ENDPOINT;accessKey=KEY"
 sms_client = SmsClient.from_connection_string(connection_string)
+
 # To use Azure Active Directory Authentication (DefaultAzureCredential) make sure to have
 # AZURE_TENANT_ID, AZURE_CLIENT_ID and AZURE_CLIENT_SECRET as env variables.
-endpoint = os.getenv('AZURE_COMMUNICATION_SERVICE_ENDPOINT')
+endpoint = "https://<RESOURCE_NAME>.communication.azure.com"
 sms_client = SmsClient(endpoint, DefaultAzureCredential())
 ```
 
@@ -112,7 +113,7 @@ sms_responses = sms_client.send(
 
 
 ## Troubleshooting
-SMS operations will throw an exception if the request to the server fails. The SMS client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.0/sdk/core/azure-core/README.md). Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request. Please use the successful flag to validate each individual result to verify if the message was sent.
+SMS operations will throw an exception if the request to the server fails. The SMS client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.1/sdk/core/azure-core/README.md). Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request. Please use the successful flag to validate each individual result to verify if the message was sent.
 
 ```Python
 try:
@@ -139,7 +140,7 @@ except Exception as ex:
 
 ### More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-sms_1.0.0/sdk/communication/azure-communication-sms/samples) directory for detailed examples of how to use this library to send an sms.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-sms_1.0.1/sdk/communication/azure-communication-sms/samples) directory for detailed examples of how to use this library to send an sms.
 
 ## Provide Feedback
 
@@ -157,6 +158,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.0/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.1/sdk/core/azure-core/README.md
 [handle_sms_events]: https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/handle-sms-events
 [next_steps]:https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-python

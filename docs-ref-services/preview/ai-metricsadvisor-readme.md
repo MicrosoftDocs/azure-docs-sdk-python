@@ -3,7 +3,7 @@ title: Azure Metrics Advisor client library for Python
 keywords: Azure, python, SDK, API, azure-ai-metricsadvisor, metricsadvisor
 author: maggiepint
 ms.author: magpint
-ms.date: 02/09/2021
+ms.date: 06/07/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: metricsadvisor
 ---
 
-# Azure Metrics Advisor client library for Python - Version 1.0.0b3 
+# Azure Metrics Advisor client library for Python - Version 1.0.0b4 
 
 Metrics Advisor is a scalable real-time time series monitoring, alerting, and root cause analysis platform. Use Metrics Advisor to:
 
@@ -34,7 +34,7 @@ pip install azure-ai-metricsadvisor --pre
 
 ### Prerequisites
 
-* Python 2.7, or 3.5 or later is required to use this package.
+* Python 2.7, or 3.6 or later is required to use this package.
 * You need an [Azure subscription][azure_sub], and a [Metrics Advisor serivce][ma_service] to use this package.
 
 ### Authenticate the client
@@ -116,14 +116,14 @@ Metrics Advisor lets you create and subscribe to real-time alerts. These alerts 
 
 ## Examples
 
-* [Add a data feed from a sample or data source](#add-a-data-feed-from-a-sample-or-data-source "Add a data feed from a sample or data source")
-* [Check ingestion status](#check-ingestion-status "Check ingestion status")
-* [Configure anomaly detection configuration](#configure-anomaly-detection-configuration "Configure anomaly detection configuration")
-* [Configure alert configuration](#configure-alert-configuration "Configure alert configuration")
-* [Query anomaly detection results](#query-anomaly-detection-results "Query anomaly detection results")
-* [Query incidents](#query-incidents "Query incidents")
-* [Query root causes](#query-root-causes "Query root causes")
-* [Add hooks for receiving anomaly alerts](#add-hooks-for-receiving-anomaly-alerts "Add hooks for receiving anomaly alerts")
+- [Add a data feed from a sample or data source](#add-a-data-feed-from-a-sample-or-data-source "Add a data feed from a sample or data source")
+- [Check ingestion status](#check-ingestion-status "Check ingestion status")
+- [Configure anomaly detection configuration](#configure-anomaly-detection-configuration "Configure anomaly detection configuration")
+- [Configure alert configuration](#configure-alert-configuration "Configure alert configuration")
+- [Query anomaly detection results](#query-anomaly-detection-results "Query anomaly detection results")
+- [Query incidents](#query-incidents "Query incidents")
+- [Query root causes](#query-root-causes "Query root causes")
+- [Add hooks for receiving anomaly alerts](#add-hooks-for-receiving-anomaly-alerts "Add hooks for receiving anomaly alerts")
 
 ### Add a data feed from a sample or data source
 
@@ -134,11 +134,10 @@ import os
 import datetime
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 from azure.ai.metricsadvisor.models import (
-        SQLServerDataFeed,
+        SqlServerDataFeedSource,
         DataFeedSchema,
         DataFeedMetric,
         DataFeedDimension,
-        DataFeedOptions,
         DataFeedRollupSettings,
         DataFeedMissingDataPointFillSettings
     )
@@ -156,7 +155,7 @@ client = MetricsAdvisorAdministrationClient(
 
 data_feed = client.create_data_feed(
     name="My data feed",
-    source=SQLServerDataFeed(
+    source=SqlServerDataFeedSource(
         connection_string=sql_server_connection_string,
         query=query,
     ),
@@ -173,18 +172,16 @@ data_feed = client.create_data_feed(
         timestamp_column="Timestamp"
     ),
     ingestion_settings=datetime.datetime(2019, 10, 1),
-    options=DataFeedOptions(
-        data_feed_description="cost/revenue data feed",
-        rollup_settings=DataFeedRollupSettings(
-            rollup_type="AutoRollup",
-            rollup_method="Sum",
-            rollup_identification_value="__CUSTOM_SUM__"
-        ),
-        missing_data_point_fill_settings=DataFeedMissingDataPointFillSettings(
-            fill_type="SmartFilling"
-        ),
-        access_mode="Private"
-    )
+    data_feed_description="cost/revenue data feed",
+    rollup_settings=DataFeedRollupSettings(
+        rollup_type="AutoRollup",
+        rollup_method="Sum",
+        rollup_identification_value="__CUSTOM_SUM__"
+    ),
+    missing_data_point_fill_settings=DataFeedMissingDataPointFillSettings(
+        fill_type="SmartFilling"
+    ),
+    access_mode="Private"
 )
 
 return data_feed
@@ -477,7 +474,7 @@ hook = client.create_hook(
 
 ### Async APIs
 
-This library includes a complete async API supported on Python 3.5+. To use it, you must
+This library includes a complete async API supported on Python 3.6+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
 [azure-core documentation][azure_core_docs]
@@ -535,7 +532,7 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[src_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-metricsadvisor_1.0.0b3/sdk/metricsadvisor/azure-ai-metricsadvisor
+[src_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-metricsadvisor_1.0.0b4/sdk/metricsadvisor/azure-ai-metricsadvisor
 [reference_documentation]: https://aka.ms/azsdk/python/metricsadvisor/docs
 [ma_docs]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
 [azure_cli]: https://docs.microsoft.com/cli/azure
@@ -544,9 +541,9 @@ additional questions or comments.
 [ma_service]: https://go.microsoft.com/fwlink/?linkid=2142156
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [azure_core]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
-[azure_core_docs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b3/sdk/core/azure-core/README.md#transport
+[azure_core_docs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b4/sdk/core/azure-core/README.md#transport
 [sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
-[samples_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b3/sdk/metricsadvisor/azure-ai-metricsadvisor/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b4/sdk/metricsadvisor/azure-ai-metricsadvisor/samples/README.md
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
