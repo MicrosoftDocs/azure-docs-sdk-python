@@ -7,7 +7,7 @@ inheritances:
 - azure.data.tables._base_client.TablesBaseClient
 summary: A client to interact with a specific Table in an Azure Tables account.
 constructor:
-  syntax: TableClient(endpoint, table_name, credential=None, **kwargs)
+  syntax: TableClient(endpoint, table_name, **kwargs)
 variables:
 - description: The name of the Tables account.
   name: account_name
@@ -31,8 +31,7 @@ methods:
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str,str>]
-    - <xref:azure.data.tables.TableEntity>
+    - <xref:Union>[<xref:TableEntity>, <xref:Mapping>[<xref:str>, <xref:Any>]]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
@@ -44,9 +43,9 @@ methods:
   summary: Creates a new table under the current account.
   signature: create_table(**kwargs)
   return:
-    description: Dictionary of operation metadata returned from service
+    description: A TableItem representing the created table.
     types:
-    - <xref:Dict>[<xref:str,str>]
+    - <xref:azure.data.tables.TableItem>
 - uid: azure.data.tables.TableClient.delete_entity
   name: delete_entity
   summary: 'Deletes the specified entity in a table. No error will be raised if
@@ -74,7 +73,11 @@ methods:
     types:
     - <xref:str>
   - name: match_condition
-    description: MatchCondition
+    description: 'The condition under which to perform the operation.
+
+      Supported values include: MatchConditions.IfNotModified, MatchConditions.Unconditionally.
+
+      The default value is Unconditionally.'
     types:
     - <xref:azure.core.MatchConditions>
   return:
@@ -118,7 +121,7 @@ methods:
 - uid: azure.data.tables.TableClient.from_table_url
   name: from_table_url
   summary: A client to interact with a specific Table.
-  signature: from_table_url(table_url, credential=None, **kwargs)
+  signature: from_table_url(table_url, **kwargs)
   parameters:
   - name: table_url
     description: The full URI to the table, including SAS token if used.
@@ -129,15 +132,12 @@ methods:
     description: 'The credentials with which to authenticate. This is optional if
       the
 
-      account URL already has a SAS token. The value can be a SAS token string, an
-      account
+      account URL already has a SAS token. The value can be one of AzureNamedKeyCredential
 
-      shared access key.'
-    isRequired: true
+      or AzureSasCredential from azure-core.'
     types:
-    - <xref:str>
-  - name: credential
-    defaultValue: None
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
   return:
     description: A table client.
     types:
@@ -179,7 +179,7 @@ methods:
   return:
     description: Dictionary of SignedIdentifiers
     types:
-    - <xref:Dict>[<xref:str>, <xref:<xref:azure.data.tables.AccessPolicy>>]
+    - <xref:Dict>[<xref:str>, <xref:Optional>[<xref:<xref:azure.data.tables.TableAccessPolicy>>]]
 - uid: azure.data.tables.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
@@ -240,7 +240,7 @@ methods:
     description: Access policies to set for the table
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.data.tables.AccessPolicy>]
+    - <xref:Dict>[<xref:str>, <xref:Optional>[<xref:azure.data.tables.TableAccessPolicy>]]
   return:
     description: None
     types:
@@ -294,9 +294,13 @@ methods:
     types:
     - <xref:str>
   - name: match_condition
-    description: MatchCondition
+    description: 'The condition under which to perform the operation.
+
+      Supported values include: MatchConditions.IfNotModified, MatchConditions.Unconditionally.
+
+      The default value is Unconditionally.'
     types:
-    - <xref:azure.core.MatchCondition>
+    - <xref:azure.core.MatchConditions>
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
