@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: eventhubs
+ms.service: event-hubs
 ---
 
 # Azure EventHubs Checkpoint Store client library for Python - Version 1.1.4 
