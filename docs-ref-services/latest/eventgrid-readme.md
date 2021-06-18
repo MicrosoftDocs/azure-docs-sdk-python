@@ -1,5 +1,6 @@
 ---
 title: Azure Event Grid client library for Python
+description: Azure Event Grid client library for Python documentation
 keywords: Azure, python, SDK, API, azure-eventgrid, eventgrideventgrid
 author: maggiepint
 ms.author: magpint
