@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: servicebusservicebus
+ms.service: service-bus-messaging
 ---
 
 # Azure Service Bus client library for Python - Version 7.3.0 
