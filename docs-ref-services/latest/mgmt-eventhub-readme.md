@@ -1,5 +1,6 @@
 ---
-title: 
+title: Microsoft Azure EventHub Management Client Library.
+description: Microsoft Azure EventHub Management Client Library
 keywords: Azure, python, SDK, API, azure-mgmt-eventhub, eventhubs
 author: maggiepint
 ms.author: magpint
