@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: eventhubseventhubs
+ms.service: event-hubs
 ---
 
 # Azure Event Hubs client library for Python - Version 5.5.0 
