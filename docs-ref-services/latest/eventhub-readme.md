@@ -1,5 +1,6 @@
 ---
 title: Azure Event Hubs client library for Python
+description: Azure Event Hubs client library for Python documentation
 keywords: Azure, python, SDK, API, azure-eventhub, eventhubseventhubs
 author: maggiepint
 ms.author: magpint
