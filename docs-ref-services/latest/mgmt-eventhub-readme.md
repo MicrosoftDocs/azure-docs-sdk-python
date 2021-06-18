@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: eventhubs
+ms.service: event-hubs
 ---
 
 # Microsoft Azure SDK for Python
