@@ -8,7 +8,7 @@ ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: eventgrideventgrid
+ms.service: event-grid
 ---
 
 # Azure Event Grid client library for Python - Version 4.3.0 
