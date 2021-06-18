@@ -1,12 +1,11 @@
 ---
 title: Azure Service Bus client library for Python
+description: Azure Service Bus client library for Python
 keywords: Azure, python, SDK, API, azure-servicebus, servicebusservicebus
 author: maggiepint
 ms.author: magpint
 ms.date: 06/08/2021
 ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: service-bus-messaging
 ---
@@ -495,30 +494,30 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: /cli/azure
 [api_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-servicebus/latest/index.html
-[product_docs]: https://docs.microsoft.com/azure/service-bus-messaging/
+[product_docs]: /azure/service-bus-messaging/
 [azure_portal]: https://portal.azure.com
 [azure_sub]: https://azure.microsoft.com/free/
-[cloud_shell]: https://docs.microsoft.com/azure/cloud-shell/overview
+[cloud_shell]: /azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-servicebus/
 [python]: https://www.python.org/downloads/
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
-[service_bus_namespace]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
-[queue_status_codes]: https://docs.microsoft.com/rest/api/servicebus/create-queue#response-codes
-[service_bus_docs]: https://docs.microsoft.com/azure/service-bus/
-[service_bus_mgmt_docs]: https://docs.microsoft.com/python/api/overview/azure/servicebus/management?view=azure-python
-[queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
-[topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
-[subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
-[azure_namespace_creation]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
+[service_bus_namespace]: /azure/service-bus-messaging/service-bus-create-namespace-portal
+[service_bus_overview]: /azure/service-bus-messaging/service-bus-messaging-overview
+[queue_status_codes]: /rest/api/servicebus/create-queue#response-codes
+[service_bus_docs]: /azure/service-bus/
+[service_bus_mgmt_docs]: /python/api/overview/azure/servicebus/management?view=azure-python
+[queue_concept]: /azure/service-bus-messaging/service-bus-messaging-overview#queues
+[topic_concept]: /azure/service-bus-messaging/service-bus-messaging-overview#topics
+[subscription_concept]: /azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
+[azure_namespace_creation]: /azure/service-bus-messaging/service-bus-create-namespace-portal
 [servicebus_management_repository]: https://github.com/Azure/azure-sdk-for-python/tree/azure-servicebus_7.3.0/sdk/servicebus/azure-mgmt-servicebus
-[get_servicebus_conn_str]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
-[servicebus_aad_authentication]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-authentication-and-authorization
+[get_servicebus_conn_str]: /azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
+[servicebus_aad_authentication]: /azure/service-bus-messaging/service-bus-authentication-and-authorization
 [token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-servicebus_7.3.0/sdk/core/azure-core/azure/core/credentials.py
 [pypi_azure_identity]: https://pypi.org/project/azure-identity/
 [message_reference]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-servicebus/latest/azure.servicebus.html#azure.servicebus.ServiceBusMessage
