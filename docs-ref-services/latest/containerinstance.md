@@ -16,11 +16,11 @@ ms.service: container-instances
 
 # Azure Container Instances libraries for Python
 
-Use the Microsoft Azure Container Instances libraries for Python to create and manage Azure container instances. Learn more by reading the [Azure Container Instances overview](/azure/container-instances/container-instances-overview).
+Use the Microsoft Azure Container Instances libraries for Python to create and manage Azure Container Instances. Learn more by reading the [Azure Container Instances overview](/azure/container-instances/container-instances-overview).
 
 ## Management APIs
 
-Use the management library to create and manage Azure container instances in Azure.
+Use the management library to create and manage Azure Container Instances in Azure.
 
 Install the management package via pip:
 

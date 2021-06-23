@@ -1,15 +1,17 @@
 ---
-title: Azure Key Vault Secret client library for Python
+title: Azure Key Vault Secrets client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-secrets, keyvault
 author: maggiepint
 ms.author: magpint
-ms.date: 08/11/2020
+ms.date: 06/22/2021
 ms.topic: article
-ms.service: key-vault
+ms.prod: azure
+ms.technology: azure
 ms.devlang: python
+ms.service: keyvault
 ---
 
-# Azure Key Vault Secrets client library for Python - Version 4.2.0 
+# Azure Key Vault Secrets client library for Python - Version 4.3.0 
 
 Azure Key Vault helps solve the following problems:
 
@@ -22,6 +24,7 @@ create, store, and control access to the keys used to encrypt your data
 - Certificate management
 ([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-certificates)) -
 create, manage, and deploy public and private SSL/TLS certificates
+- Vault administration ([azure-keyvault-administration](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-administration)) - role-based access control (RBAC), and vault-level backup and restore options
 
 [Source code][secret_client_src] | [Package (PyPI)][pypi_package_secrets] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][secret_samples]
 
@@ -125,6 +128,7 @@ az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --secret-permi
 > Possible permissions:
 > - Secret management: set, backup, delete, get, list, purge, recover, restore
 
+If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
 
 #### Create a client
 Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
@@ -274,8 +278,8 @@ See
 [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
 for more information.
 
-Async clients should be closed when they're no longer needed. Each async
-client is an async context manager and defines an async `close` method. For
+Async clients and credentials should be closed when they're no longer needed. These
+objects are async context managers and define async `close` methods. For
 example:
 
 ```py
@@ -284,15 +288,17 @@ from azure.keyvault.secrets.aio import SecretClient
 
 credential = DefaultAzureCredential()
 
-# call close when the client is no longer needed
+# call close when the client and credential are no longer needed
 client = SecretClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 ...
 await client.close()
+await credential.close()
 
-# alternatively, use the client as an async context manager
+# alternatively, use them as async context managers (contextlib.AsyncExitStack can help)
 client = SecretClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 async with client:
-  ...
+  async with credential:
+    ...
 ```
 
 ### Asynchronously create a secret
@@ -412,10 +418,10 @@ you need to provide a CLA and decorate the PR appropriately (e.g., label,
 comment). Simply follow the instructions provided by the bot. You will only
 need to do this once across all repos using our CLA.
 
-This project has adopted the
-[Microsoft Open Source Code of Conduct][code_of_conduct]. For more information,
-see the Code of Conduct FAQ or contact opencode@microsoft.com with any
-additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct].
+For more information, see the
+[Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact opencode@microsoft.com with any additional questions or comments.
 
 [azure_cloud_shell]: https://shell.azure.com/bash
 [azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/core/azure-core#azure-core-library-exceptions
@@ -435,11 +441,12 @@ additional questions or comments.
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [pip]: https://pypi.org/project/pip/
 [pypi_package_secrets]: https://pypi.org/project/azure-keyvault-secrets/
+[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://aka.ms/azsdk/python/keyvault-secrets/docs
 [secret_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-secrets/azure/keyvault/secrets
 [secret_client_docs]: https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient
 [secret_samples]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-secrets/samples
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/key-vault-ovw-soft-delete
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-secrets%2FFREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-secrets%2FREADME.png)
 
