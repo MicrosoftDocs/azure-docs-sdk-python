@@ -25,7 +25,7 @@ methods:
   name: create_role_assignment
   summary: Create a role assignment.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'scope the role assignment will apply over. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
       defines common broad
 
@@ -34,7 +34,7 @@ methods:
     types:
     - <xref:str>
     - <xref:KeyVaultRoleScope>
-  - name: role_definition_id
+  - name: definition_id
     description: ID of the role's definition
     isRequired: true
     types:
@@ -47,16 +47,19 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: role_assignment_name
+  - name: name
     description: a name for the role assignment. Must be a UUID.
+    types:
+    - <xref:str>
+    - <xref:uuid.UUID>
   return:
     types:
-    - <xref:KeyVaultRoleAssignment>
+    - <xref:azure.keyvault.administration.KeyVaultRoleAssignment>
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.delete_role_assignment
   name: delete_role_assignment
   summary: Delete a role assignment.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'the assignment''s scope, for example "/", "/keys", or "/keys/<specific
       key identifier>".
 
@@ -66,21 +69,19 @@ methods:
     types:
     - <xref:str>
     - <xref:KeyVaultRoleScope>
-  - name: role_assignment_name
-    description: the assignment's name.
+  - name: name
+    description: the role assignment's name.
     isRequired: true
     types:
     - <xref:str>
     - <xref:uuid.UUID>
   return:
-    description: the deleted assignment
-    types:
-    - <xref:KeyVaultRoleAssignment>
+    description: None
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.delete_role_definition
   name: delete_role_definition
   summary: Deletes a custom role definition.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
       defines common broad scopes.
 
@@ -89,21 +90,19 @@ methods:
     types:
     - <xref:str>
     - <xref:KeyVaultRoleScope>
-  - name: role_definition_name
+  - name: name
     description: the role definition's name.
     isRequired: true
     types:
     - <xref:str>
     - <xref:uuid.UUID>
   return:
-    description: the deleted role definition
-    types:
-    - <xref:KeyVaultRoleDefinition>
+    description: None
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.get_role_assignment
   name: get_role_assignment
   summary: Get a role assignment.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'the assignment''s scope, for example "/", "/keys", or "/keys/<specific
       key identifier>".
 
@@ -113,20 +112,20 @@ methods:
     types:
     - <xref:str>
     - <xref:KeyVaultRoleScope>
-  - name: role_assignment_name
-    description: the assignment's name.
+  - name: name
+    description: the role assignment's name.
     isRequired: true
     types:
     - <xref:str>
     - <xref:uuid.UUID>
   return:
     types:
-    - <xref:KeyVaultRoleAssignment>
+    - <xref:azure.keyvault.administration.KeyVaultRoleAssignment>
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.get_role_definition
   name: get_role_definition
   summary: Get the specified role definition.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
       defines common broad scopes.
 
@@ -135,7 +134,7 @@ methods:
     types:
     - <xref:str>
     - <xref:KeyVaultRoleScope>
-  - name: role_definition_name
+  - name: name
     description: the role definition's name.
     isRequired: true
     types:
@@ -143,12 +142,12 @@ methods:
     - <xref:uuid.UUID>
   return:
     types:
-    - <xref:KeyVaultRoleDefinition>
+    - <xref:azure.keyvault.administration.KeyVaultRoleDefinition>
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.list_role_assignments
   name: list_role_assignments
   summary: List all role assignments for a scope.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'scope of the role assignments. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
       defines common broad
 
@@ -159,12 +158,12 @@ methods:
     - <xref:KeyVaultRoleScope>
   return:
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:KeyVaultRoleAssignment>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.keyvault.administration.KeyVaultRoleAssignment>]
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.list_role_definitions
   name: list_role_definitions
   summary: List all role definitions applicable at and above a scope.
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'scope of the role definitions. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
       defines common broad
 
@@ -175,12 +174,15 @@ methods:
     - <xref:KeyVaultRoleScope>
   return:
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:KeyVaultRoleDefinition>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.keyvault.administration.KeyVaultRoleDefinition>]
 - uid: azure.keyvault.administration.aio.KeyVaultAccessControlClient.set_role_definition
   name: set_role_definition
-  summary: Creates or updates a custom role definition.
+  summary: 'Creates or updates a custom role definition.
+
+
+    To update a role definition, specify the definition''s `name`.'
   parameters:
-  - name: role_scope
+  - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.aio.KeyVaultRoleScope>
       defines common broad scopes.
 
@@ -189,23 +191,25 @@ methods:
     types:
     - <xref:str>
     - <xref:KeyVaultRoleScope>
-  - name: permissions
-    description: 'the role definition''s permissions. An empty list results in a role
-      definition with no action
+  - name: name
+    description: 'the role definition''s name, a UUID. When this argument has a value,
+      the client will create a new
 
-      permissions.'
-    isRequired: true
-    types:
-    - <xref:Iterable>[<xref:KeyVaultPermission>]
-  - name: role_name
-    description: 'the role''s name. If unspecified when creating or updating a role
-      definition, the role
+      role definition with this name or update an existing role definition, if one
+      exists with the given name.
 
-      name will be set to an empty string.'
+      When this argument has no value, a new role definition will be created with
+      a generated name.'
     types:
     - <xref:str>
-  - name: role_definition_name
-    description: the role definition's name. Must be a UUID.
+    - <xref:uuid.UUID>
+  - name: role_name
+    description: 'the role''s display name. If unspecified when creating or updating
+      a role definition, the
+
+      role name will be set to an empty string.'
+    types:
+    - <xref:str>
   - name: description
     description: 'a description of the role definition. If unspecified when creating
       or updating a role
@@ -213,7 +217,19 @@ methods:
       definition, the description will be set to an empty string.'
     types:
     - <xref:str>
+  - name: permissions
+    description: 'the role definition''s permissions. If unspecified when creating
+      or updating a role
+
+      definition, the role definition will have no action permissions.'
+    types:
+    - <xref:Iterable>[<xref:KeyVaultPermission>]
+  - name: assignable_scopes
+    description: the scopes for which the role definition can be assigned.
+    types:
+    - <xref:Iterable>[<xref:str>]
+    - <xref:Iterable>[<xref:KeyVaultRoleScope>]
   return:
     description: The created or updated role definition
     types:
-    - <xref:KeyVaultRoleDefinition>
+    - <xref:azure.keyvault.administration.KeyVaultRoleDefinition>
