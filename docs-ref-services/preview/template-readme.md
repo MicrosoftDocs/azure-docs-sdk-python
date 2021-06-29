@@ -3,7 +3,7 @@ title: Azure Template Package client library for Python
 keywords: Azure, python, SDK, API, azure-template, template
 author: maggiepint
 ms.author: magpint
-ms.date: 06/18/2021
+ms.date: 06/29/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -13,7 +13,7 @@ ms.service: template
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Template Package client library for Python - Version 0.1.0b954542 
+# Azure Template Package client library for Python - Version 0.1.0b971103 
 
 
 This template package matches necessary patterns that the development team has established to create a unified sdk functional from Python 2.7 onwards. The packages contained herein can be installed singly or as part of the `azure` namespace. Any other introductory text should go here.
@@ -24,7 +24,7 @@ For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all
 
 # Getting started
 
-For a rich example of a well formatted readme, please check [here.](https://github.com/Azure/azure-sdk/blob/master/docs/policies/README-TEMPLATE.md) In addition, this is an [example readme](https://github.com/Azure/azure-sdk/blob/master/docs/policies/README-EXAMPLE.md) that should be emulated. Note that the top-level sections in this template align with that of the [template.](https://github.com/Azure/azure-sdk/blob/master/docs/policies/README-TEMPLATE.md)
+For a rich example of a well formatted readme, please check [here.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md) In addition, this is an [example readme](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-EXAMPLE.md) that should be emulated. Note that the top-level sections in this template align with that of the [template.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md)
 
 # Key concepts
 
