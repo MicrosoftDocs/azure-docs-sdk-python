@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-core, core
 author: maggiepint
 ms.author: magpint
-ms.date: 11/09/2020
+ms.date: 07/01/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -18,7 +18,7 @@ Azure management core library defines extensions to Azure Core that are specific
 
 As an end user, you don't need to manually install azure-mgmt-core because it will be installed automatically when you install other SDKs.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-mgmt-core_1.2.2/sdk/core/azure-mgmt-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-mgmt-core_1.2.2/sdk/core/azure-mgmt-core/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-mgmt-core_1.3.0/sdk/core/azure-mgmt-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-mgmt-core_1.3.0/sdk/core/azure-mgmt-core/)
 
 
 ## Contributing
