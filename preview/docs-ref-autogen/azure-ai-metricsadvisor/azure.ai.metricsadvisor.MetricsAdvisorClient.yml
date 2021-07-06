@@ -27,18 +27,6 @@ constructor:
     types:
     - <xref:azure.ai.metricsadvisor.MetricsAdvisorKeyCredential>
     - <xref:azure.core.credentials.TokenCredential>
-  - name: pipeline
-    description: If omitted, the standard pipeline is used.
-    types:
-    - <xref:Pipeline>
-  - name: transport
-    description: If omitted, the standard pipeline is used.
-    types:
-    - <xref:HttpTransport>
-  - name: policies
-    description: If omitted, the standard pipeline is used.
-    types:
-    - <xref:list>[<xref:HTTPPolicy>]
 methods:
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.add_feedback
   name: add_feedback
@@ -59,7 +47,7 @@ methods:
   examples:
   - "Add new feedback.<!--[!code-python[Main](les\\sample_feedback.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\9\\\\azure-ai-metricsadvisor-1.0.0\\\
     \\samples\\\\sample_feedback.py\", \"xml:space\": \"preserve\", \"language\":\
     \ \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
     \n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential,\
@@ -107,6 +95,7 @@ methods:
   return:
     description: The feedback object
     types:
+    - <xref:azure.ai.metricsadvisor.models.MetricFeedback>
     - <xref:azure.ai.metricsadvisor.models.AnomalyFeedback>
     - <xref:azure.ai.metricsadvisor.models.ChangePointFeedback>
     - <xref:azure.ai.metricsadvisor.models.CommentFeedback>
@@ -118,8 +107,8 @@ methods:
   - "Get a metric feedback by its id.<!--[!code-python[Main](les\\sample_feedback.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_feedback.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_feedback.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint = os.getenv(\"\
     METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\"\
@@ -171,7 +160,7 @@ methods:
   - "Query anomaly detection results.<!--[!code-python[Main](les\\sample_alert_configuration.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_alert_configuration.py\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_alert_configuration.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n\
     \   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\
@@ -183,7 +172,7 @@ methods:
     \       start_time=datetime.datetime(2020, 1, 1),\n       end_time=datetime.datetime(2020,\
     \ 9, 9),\n       time_mode=\"AnomalyTime\",\n   )\n\n   tolist = []\n   for result\
     \ in results:\n       tolist.append(result)\n       print(\"Alert id: {}\".format(result.id))\n\
-    \       print(\"Create on: {}\".format(result.created_on))\n   return tolist\n\
+    \       print(\"Create time: {}\".format(result.created_time))\n   return tolist\n\
     \n   ````\n"
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_anomalies
   name: list_anomalies
@@ -252,6 +241,10 @@ methods:
   - name: skip
     types:
     - <xref:int>
+  - name: str] dimension_filter
+    description: filter specfic dimension name and values.
+    types:
+    - <xref:Dict>[<xref:str,>
   return:
     description: Dimension values of anomalies.
     types:
@@ -263,7 +256,7 @@ methods:
   - "Query dimension values.<!--[!code-python[Main](les\\sample_queries.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\9\\\\\
-    azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
@@ -318,8 +311,8 @@ methods:
   return:
     description: Pageable list of MetricFeedback
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:Union>[<xref:AnomalyFeedback>, <xref:ChangePointFeedback>,
-      <xref:CommentFeedback>, <xref:PeriodFeedback>]]
+    - <xref:azure.core.paging.ItemPaged>[<xref:Union>[<xref:MetricFeedback>, <xref:AnomalyFeedback>,
+      <xref:ChangePointFeedback>, <xref:CommentFeedback>, <xref:PeriodFeedback>]]
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError
@@ -327,8 +320,8 @@ methods:
   - "List feedback on the given metric.<!--[!code-python[Main](les\\sample_feedback.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_feedback.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_feedback.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint = os.getenv(\"\
     METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\"\
@@ -364,7 +357,7 @@ methods:
   - "Query incident root causes.<!--[!code-python[Main](les\\sample_incidents.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\9\\\\\
-    azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_incidents.py\", \"xml:space\"\
+    azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_incidents.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint = os.getenv(\"\
@@ -448,7 +441,7 @@ methods:
   - "Query metric dimension values.<!--[!code-python[Main](les\\sample_queries.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.ai.metricsadvisor import\
     \ MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint = os.getenv(\"\
@@ -497,7 +490,7 @@ methods:
   - "Query metric enriched series data.<!--[!code-python[Main](les\\sample_queries.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
@@ -544,7 +537,7 @@ methods:
   - "Query metric enrichment status.<!--[!code-python[Main](les\\sample_queries.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
@@ -556,6 +549,56 @@ methods:
     \ metric_id=metric_id,\n           start_time=datetime.datetime(2020, 1, 1),\n\
     \           end_time=datetime.datetime(2020, 10, 21),\n       )\n   for result\
     \ in results:\n       print(str(result))\n\n\n   ````\n"
+- uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_metric_series_data
+  name: list_metric_series_data
+  summary: Get time series data from metric.
+  signature: list_metric_series_data(metric_id, series_keys, start_time, end_time,
+    **kwargs)
+  parameters:
+  - name: metric_id
+    description: metric unique id.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: series_keys
+    description: query specific series.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:str>]]
+  - name: datetime.datetime] start_time
+    description: start time filter under chosen time mode.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str,>
+  - name: datetime.datetime] end_time
+    description: end time filter under chosen time mode.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str,>
+  return:
+    description: Time series data from metric.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.metricsadvisor.models.MetricSeriesData>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+  examples:
+  - "Query metrics series data.<!--[!code-python[Main](les\\sample_queries.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\9\\\\\
+    azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
+    : {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
+    \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
+    \ = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"\
+    METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\"\
+    )\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\")\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
+    \                                 MetricsAdvisorKeyCredential(subscription_key,\
+    \ api_key))\n\n   results = client.list_metric_series_data(\n           metric_id=metric_id,\n\
+    \           start_time=datetime.datetime(2020, 1, 1),\n           end_time=datetime.datetime(2020,\
+    \ 10, 21),\n           series_keys=[\n               {\"city\": \"Los Angeles\"\
+    , \"category\": \"Homemade\"}\n           ]\n       )\n   for result in results:\n\
+    \       print(str(result))\n\n\n   ````\n"
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_metric_series_definitions
   name: list_metric_series_definitions
   summary: List series (dimension combinations) from metric.
@@ -592,7 +635,7 @@ methods:
   - "Query metric series definitions.<!--[!code-python[Main](les\\sample_queries.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\9\\\\azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    \\9\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
@@ -603,53 +646,3 @@ methods:
     \ api_key))\n\n   results = client.list_metric_series_definitions(\n         \
     \  metric_id=metric_id,\n           active_since=datetime.datetime(2020, 1, 1),\n\
     \       )\n   for result in results:\n       print(str(result))\n\n\n   ````\n"
-- uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_metrics_series_data
-  name: list_metrics_series_data
-  summary: Get time series data from metric.
-  signature: list_metrics_series_data(metric_id, start_time, end_time, series_to_filter,
-    **kwargs)
-  parameters:
-  - name: metric_id
-    description: metric unique id.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: datetime.datetime] start_time
-    description: start time filter under chosen time mode.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:str,>
-  - name: datetime.datetime] end_time
-    description: end time filter under chosen time mode.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:str,>
-  - name: series_to_filter
-    description: query specific series.
-    isRequired: true
-    types:
-    - <xref:list>[<xref:dict>[<xref:str>, <xref:str>]]
-  return:
-    description: Time series data from metric.
-    types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.metricsadvisor.models.MetricSeriesData>]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
-  examples:
-  - "Query metrics series data.<!--[!code-python[Main](les\\sample_queries.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\9\\\\\
-    azure-ai-metricsadvisor-1.0.0b4\\\\samples\\\\sample_queries.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
-    \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
-    \ = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"\
-    METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\"\
-    )\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\")\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
-    \                                 MetricsAdvisorKeyCredential(subscription_key,\
-    \ api_key))\n\n   results = client.list_metrics_series_data(\n           metric_id=metric_id,\n\
-    \           start_time=datetime.datetime(2020, 1, 1),\n           end_time=datetime.datetime(2020,\
-    \ 10, 21),\n           series_to_filter=[\n               {\"city\": \"Los Angeles\"\
-    , \"category\": \"Homemade\"}\n           ]\n       )\n   for result in results:\n\
-    \       print(str(result))\n\n\n   ````\n"
