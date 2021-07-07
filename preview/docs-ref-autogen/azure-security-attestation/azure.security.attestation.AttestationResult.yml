@@ -5,35 +5,104 @@ fullName: azure.security.attestation.AttestationResult
 module: azure.security.attestation
 inheritances:
 - builtins.object
-summary: 'An AttestationResult represents the claims returned from the attestation
+summary: 'Represents the claims returned from the attestation service as a result
 
-  service as a result of a call to
+  of a call to <xref:azure.security.attestation.AttestationClient.attest_sgx_enclave>,
 
-  <xref:azure.security.attestation.AttestationClient.attest_sgx>, or <xref:azure.security.attestation.AttestationClient.attest_open_enclave>.'
+  or <xref:azure.security.attestation.AttestationClient.attest_open_enclave>.'
 constructor:
   syntax: AttestationResult(**kwargs)
-attributes:
-- uid: azure.security.attestation.AttestationResult.confirmation
-  name: confirmation
-  summary: 'Returns the confirmation claim for the attestation token.
-
-
-    If present, the confirmation property can be used to identify a proof of
-
-    possession of a key.
-
-
-    See [RFC 7800 Section 3.1](https://www.rfc-editor.org/rfc/rfc7800.html#section-3.1)
-    for details.'
-  return:
+  parameters:
+  - name: issuer
+    description: Entity which issued the attestation token.
+    types:
+    - <xref:str>
+  - name: unique_identifier
+    description: Unique identifier for the token.
     types:
     - <xref:str>
     - <xref:None>
+  - name: nonce
+    description: Returns the input *nonce* attribute passed to the *Attest* API.
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: version
+    description: Version of the token. Must be "1.0"
+    types:
+    - <xref:str>
+  - name: runtime_claims
+    description: Runtime claims passed in from the caller of the attest API.
+    types:
+    - <xref:dict>
+    - <xref:None>
+  - name: inittime_claims
+    description: Inittime claims passed in from the caller of the attest API.
+    types:
+    - <xref:dict>
+    - <xref:None>
+  - name: enclave_held_data
+    description: Runtime data passed in from the caller of the attest API.
+    types:
+    - <xref:bytes>
+    - <xref:None>
+  - name: policy_claims
+    description: Attestation claims issued by policies.
+    types:
+    - <xref:dict>
+    - <xref:None>
+  - name: verifier_type
+    description: Verifier which generated this token.
+    types:
+    - <xref:str>
+  - name: policy_signer
+    description: 'If the policy which processed the request is signed,
+
+      this will be the certificate which signed the policy.'
+    types:
+    - <xref:azure.security.attestation.AttestationSigner>
+    - <xref:None>
+  - name: policy_hash
+    description: 'The hash of the policy which processed the attestation
+
+      evidence.'
+    types:
+    - <xref:str>
+  - name: is_debuggable
+    description: 'True if a debugger can be attached to the SGX enclave
+
+      being attested.'
+    types:
+    - <xref:bool>
+  - name: product_id
+    description: Product ID for the SGX enclave being attested.
+    types:
+    - <xref:int>
+  - name: mr_enclave
+    description: MRENCLAVE value for the SGX enclave being attested.
+    types:
+    - <xref:str>
+  - name: mr_signer
+    description: MRSIGNER value for the SGX enclave being attested.
+    types:
+    - <xref:str>
+  - name: svn
+    description: Security version number for the SGX enclave being attested.
+    types:
+    - <xref:int>
+  - name: sgx_collateral
+    description: 'Collateral which identifies the collateral used to
+
+      create the token.'
+    types:
+    - <xref:dict>
+attributes:
 - uid: azure.security.attestation.AttestationResult.enclave_held_data
   name: enclave_held_data
   summary: 'Returns the value of the runtime_data field specified as an input
 
-    to the <xref:azure.security.attestation.AttestationClient.attest_sgx> or
+    to the <xref:azure.security.attestation.AttestationClient.attest_sgx_enclave>
+    or
 
     <xref:azure.security.attestation.AttestationClient.attest_open_enclave> API.
 
@@ -41,15 +110,11 @@ attributes:
 
     > [!NOTE]
 
-    > The enclave_held_data prperty will only be populated if the
+    > The enclave_held_data property will only be populated if the
 
     >
 
-    > runtime_data parameter to the Attest API is marked as not being
-
-    >
-
-    > JSON.
+    > runtime_data parameter to the Attest API is specified.
 
     >'
   return:
@@ -61,9 +126,9 @@ attributes:
   summary: 'Returns the inittime claims in the token.
 
 
-    This value will match the input *inittime_data* property to the
+    This value will match the input *inittime_json* property to the
 
-    <xref:azure.security.attestation.AttestationClient.attest_sgx> or
+    <xref:azure.security.attestation.AttestationClient.attest_sgx_enclave> or
 
     <xref:azure.security.attestation.AttestationClient.attest_open_enclave> API.
 
@@ -75,7 +140,11 @@ attributes:
 
     >
 
-    > inittime_data parameter to the Attest API is marked as being JSON.
+    > inittime_json parameter to the Attest API is specified. It will
+
+    >
+
+    > not be populated if the inittime_data parameter is specified.
 
     >'
   return:
@@ -90,13 +159,12 @@ attributes:
   return:
     types:
     - <xref:bool>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.issuer
   name: issuer
   summary: 'Returns the issuer of the attestation token.
 
 
-    The issuer for the token MUST be the same as the *instance_uri* associated
+    The issuer for the token MUST be the same as the *endpoint* associated
 
     with the <xref:azure.security.attestation.AttestationClient> object.
 
@@ -109,21 +177,18 @@ attributes:
   return:
     types:
     - <xref:str>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.mr_enclave
   name: mr_enclave
   summary: Returns HEX encoded *mr-enclave* value of the SGX enclave being attested.
   return:
     types:
     - <xref:str>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.mr_signer
   name: mr_signer
   summary: Returns HEX encoded *mr-signer* value of the SGX enclave being attested.
   return:
     types:
     - <xref:str>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.nonce
   name: nonce
   summary: Returns the value of the "nonce" input to the attestation request.
@@ -140,13 +205,12 @@ attributes:
     - <xref:None>
 - uid: azure.security.attestation.AttestationResult.policy_hash
   name: policy_hash
-  summary: 'Returns the base64url encoded SHA256 hash of the Base64Url encoded
+  summary: 'Returns the base64url encoded SHA256 hash of the base64url encoded
 
     attestation policy which was applied when generating this token.'
   return:
     types:
     - <xref:str>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.policy_signer
   name: policy_signer
   summary: 'Returns the signing certificate which was used to sign the policy
@@ -162,15 +226,14 @@ attributes:
   return:
     types:
     - <xref:float>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.runtime_claims
   name: runtime_claims
   summary: 'Returns the runtime claims in the token.
 
 
-    This value will match the input *runtime_data* property to the
+    This value will match the input *runtime_json* property to the
 
-    <xref:azure.security.attestation.AttestationClient.attest_sgx> or
+    <xref:azure.security.attestation.AttestationClient.attest_sgx_enclave> or
 
     <xref:azure.security.attestation.AttestationClient.attest_open_enclave> API.
 
@@ -182,7 +245,11 @@ attributes:
 
     >
 
-    > runtime_data parameter to the Attest API is marked as being JSON.
+    > runtime_json parameter to the Attest API is specified. It will
+
+    >
+
+    > not be populated if the runtime_data parameter is specified.
 
     >'
   return:
@@ -197,14 +264,12 @@ attributes:
   return:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.svn
   name: svn
   summary: Returns the *svn* value of the SGX enclave being attested.
   return:
     types:
     - <xref:int>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.unique_id
   name: unique_id
   summary: 'Returns a unique ID claim for the attestation token.
@@ -227,11 +292,9 @@ attributes:
   return:
     types:
     - <xref:str>
-    - <xref:None>
 - uid: azure.security.attestation.AttestationResult.version
   name: version
   summary: Returns the version of the information returned in the token.
   return:
     types:
     - <xref:str>
-    - <xref:None>

@@ -4,8 +4,13 @@ name: AttestationToken
 fullName: azure.security.attestation.AttestationToken
 module: azure.security.attestation
 inheritances:
-- typing.Generic
-summary: Represents a token returned from the attestation service.
+- builtins.object
+summary: 'Represents a token returned from the attestation service.
+
+
+  If the *signing_key* and *signing_certificate* properties are not specified,
+
+  the token created is unsecured.'
 constructor:
   syntax: AttestationToken(**kwargs)
   parameters:
@@ -13,61 +18,31 @@ constructor:
     description: The body of the newly created token, if provided.
     types:
     - <xref:Any>
-  - name: signer
-    description: 'If specified, the key used to sign the token.
+  - name: signing_key
+    description: 'If specified, the PEM encoded key used to sign the
 
-      If the *signer* property is not specified, the token created is unsecured.'
+      token.'
     types:
-    - <xref:azure.security.attestation.AttestationSigningKey>
+    - <xref:str>
+  - name: signing_certificate
+    description: 'If specified, the PEM encoded certificate
+
+      used to sign the token.'
+    types:
+    - <xref:str>
   - name: token
     description: If no body or signer is provided, the string representation of the
       token.
     types:
     - <xref:str>
-  - name: body_type
-    description: The underlying type of the body of the 'token' parameter, used to
-      deserialize the underlying body when parsing the token.
-    types:
-    - <xref:Type>
 methods:
-- uid: azure.security.attestation.AttestationToken.get_body
-  name: get_body
-  summary: Returns the body of the attestation token as an object.
-  signature: get_body()
-  return:
-    types:
-    - <xref:T>
-- uid: azure.security.attestation.AttestationToken.serialize
-  name: serialize
+- uid: azure.security.attestation.AttestationToken.to_jwt_string
+  name: to_jwt_string
   summary: Returns a string serializing the JSON Web Token
-  signature: serialize()
+  signature: to_jwt_string()
   return:
     types:
     - <xref:str>
-- uid: azure.security.attestation.AttestationToken.validate_token
-  name: validate_token
-  summary: "Validate the attestation token based on the options specified in the\n\
-    \   <xref:azure.security.attestation.TokenValidationOptions>."
-  signature: validate_token(options=None, signers=None)
-  parameters:
-  - name: options
-    description: 'Options to be used when validating
-
-      the token.'
-    defaultValue: None
-    types:
-    - <xref:azure.security.attestation.TokenValidationOptions>
-  - name: signers
-    description: 'Potential signers for the token.
-
-      If the signers parameter is specified, validate_token will only
-
-      consider the signers as potential signatories for the token, otherwise
-
-      it will consider attributes in the header of the token.'
-    defaultValue: None
-    types:
-    - <xref:list>[<xref:azure.security.attestation.AttestationSigner>]
 attributes:
 - uid: azure.security.attestation.AttestationToken.algorithm
   name: algorithm
@@ -108,11 +83,11 @@ attributes:
 
     See [RFC 7515 Section 4.1.11](https://www.rfc-editor.org/rfc/rfc7515.html#section-4.1.11)
     for details.'
-- uid: azure.security.attestation.AttestationToken.expiration_time
-  name: expiration_time
+- uid: azure.security.attestation.AttestationToken.expires
+  name: expires
   summary: Expiration time for the token.
-- uid: azure.security.attestation.AttestationToken.issuance_time
-  name: issuance_time
+- uid: azure.security.attestation.AttestationToken.issued
+  name: issued
   summary: Time when the token was issued.
 - uid: azure.security.attestation.AttestationToken.issuer
   name: issuer
@@ -135,8 +110,8 @@ attributes:
 
     See [RFC 7515 Section 4.1.2](https://www.rfc-editor.org/rfc/rfc7515.html#section-4.1.2)
     for details.'
-- uid: azure.security.attestation.AttestationToken.not_before_time
-  name: not_before_time
+- uid: azure.security.attestation.AttestationToken.not_before
+  name: not_before
   summary: Time before which the token is invalid.
 - uid: azure.security.attestation.AttestationToken.type
   name: type

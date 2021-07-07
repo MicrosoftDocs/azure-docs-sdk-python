@@ -5,16 +5,12 @@ fullName: azure.appconfiguration.aio.AzureAppConfigurationClient
 module: azure.appconfiguration.aio
 inheritances:
 - builtins.object
-summary: "Represents an client that calls restful API of Azure App Configuration service.\n\
+summary: "Represents a client that calls restful API of Azure App Configuration service.\n\
   \n   param str base_url:\n      base url of the service\n\n   param credential:\n\
   \      An object which can provide secrets for the app configuration service\n\n\
-  \   type credential:\n      azure.AppConfigConnectionStringCredential\n\n   keyword\
-  \ Pipeline pipeline:\n      If omitted, the standard pipeline is used.\n\n   keyword\
-  \ HttpTransport transport:\n      If omitted, the standard pipeline is used.\n\n\
-  \   keyword list[HTTPPolicy] policies:\n      If omitted, the standard pipeline\
-  \ is used.\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
-constructor:
-  syntax: AzureAppConfigurationClient(base_url, credential, **kwargs)
+  \   type credential:\n      <xref:azure.appconfiguration.AppConfigConnectionStringCredential>\
+  \ or <xref:azure.core.credentials_async.AsyncTokenCredential>\n\nThis is the async\
+  \ version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
 methods:
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.add_configuration_setting
   name: add_configuration_setting
@@ -26,25 +22,20 @@ methods:
     MyKey\",\n       label=\"MyLabel\",\n       value=\"my value\",\n       content_type=\"\
     my content type\",\n       tags={\"my tag\": \"my tag value\"}\n   )\n   added_config_setting\
     \ = await async_client.add_configuration_setting(config_setting)\n   ````"
-  signature: add_configuration_setting(configuration_setting, **kwargs)
+  signature: 'add_configuration_setting(configuration_setting: azure.appconfiguration._models.ConfigurationSetting,
+    **kwargs: typing.Any) -> azure.appconfiguration._models.ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting object to be added
     isRequired: true
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request header
-    types:
-    - <xref:dict>
   return:
     description: The ConfigurationSetting object returned from the App Configuration
       service
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
-  - type: HttpResponseError
   - type: HttpResponseError
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.close
   name: close
@@ -58,7 +49,8 @@ methods:
     \ \"highlight_args\": {}} -->\n\n````python\n\n   # in async function\n   deleted_config_setting\
     \ = await async_client.delete_configuration_setting(\n       key=\"MyKey\", label=\"\
     MyLabel\"\n   )\n   ````"
-  signature: delete_configuration_setting(key, label=None, **kwargs)
+  signature: 'delete_configuration_setting(key: str, label: typing.Union[str, NoneType]
+    = None, **kwargs: typing.Any) -> azure.appconfiguration._models.ConfigurationSetting'
   parameters:
   - name: key
     description: key used to identify the ConfigurationSetting
@@ -66,7 +58,7 @@ methods:
     types:
     - <xref:str>
   - name: label
-    description: label used to identify the ConfigurationSetting
+    description: label used to identify the ConfigurationSetting. Default is *None*.
     isRequired: true
     types:
     - <xref:str>
@@ -79,11 +71,6 @@ methods:
     description: The match condition to use upon the etag
     types:
     - <xref:azure.core.MatchConditions>
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request
-    types:
-    - <xref:dict>
   return:
     description: The deleted ConfigurationSetting returned from the service, or None
       if it doesn't exist.
@@ -102,7 +89,8 @@ methods:
     \   from azure.appconfiguration.aio import AzureAppConfigurationClient\n   connection_str\
     \ = \"<my connection string>\"\n   async_client = AzureAppConfigurationClient.from_connection_string(connection_str)\n\
     \   ````"
-  signature: from_connection_string(connection_string, **kwargs)
+  signature: 'from_connection_string(connection_string: str, **kwargs: typing.Any)
+    -> azure.appconfiguration.aio._azure_configuration_client_async.AzureAppConfigurationClient'
   parameters:
   - name: connection_string
     description: 'Connection String
@@ -128,8 +116,10 @@ methods:
     : \"python\", \"linenos\": false, \"highlight_args\": {}} -->\n\n````python\n\n\
     \   # in async function\n   fetched_config_setting = await async_client.get_configuration_setting(\n\
     \       key=\"MyKey\", label=\"MyLabel\"\n   )\n   ````"
-  signature: 'get_configuration_setting(key, label=None, etag=''*'', match_condition=<MatchConditions.Unconditionally:
-    1>, **kwargs)'
+  signature: 'get_configuration_setting(key: str, label: typing.Union[str, NoneType]
+    = None, etag: typing.Union[str, NoneType] = ''*'', match_condition: typing.Union[azure.core._match_conditions.MatchConditions,
+    NoneType] = <MatchConditions.Unconditionally: 1>, **kwargs: typing.Any) -> typing.Union[NoneType,
+    azure.appconfiguration._models.ConfigurationSetting]'
   parameters:
   - name: key
     description: key of the ConfigurationSetting
@@ -137,7 +127,7 @@ methods:
     types:
     - <xref:str>
   - name: label
-    description: label of the ConfigurationSetting
+    description: label used to identify the ConfigurationSetting. Default is *None*.
     isRequired: true
     types:
     - <xref:str>
@@ -158,11 +148,6 @@ methods:
       datetime
     types:
     - <xref:datetime>
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request header
-    types:
-    - <xref:dict>
   return:
     description: The matched ConfigurationSetting object
     types:
@@ -183,7 +168,9 @@ methods:
     \       label_filter=\"Labe*\", key_filter=\"Ke*\", accept_datetime=accept_datetime\n\
     \   )\n   async for item in filtered_listed:\n       pass  # do something\n  \
     \ ````"
-  signature: list_configuration_settings(key_filter=None, label_filter=None, **kwargs)
+  signature: 'list_configuration_settings(key_filter: typing.Union[str, NoneType]
+    = None, label_filter: typing.Union[str, NoneType] = None, **kwargs: typing.Any)
+    -> azure.core.async_paging.AsyncItemPaged[azure.appconfiguration._models.ConfigurationSetting]'
   parameters:
   - name: key_filter
     description: 'filter results based on their keys. ''*'' can be
@@ -208,11 +195,6 @@ methods:
       all fields
     types:
     - <xref:list>[<xref:str>]
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request header
-    types:
-    - <xref:dict>
   return:
     description: An iterator of <xref:azure.appconfiguration.aio.ConfigurationSetting>
     types:
@@ -232,7 +214,8 @@ methods:
     \ = async_client.list_revisions(\n       label_filter=\"Labe*\", key_filter=\"\
     Ke*\", accept_datetime=accept_datetime\n   )\n   async for item in filtered_revisions:\n\
     \       pass  # do something\n   ````"
-  signature: list_revisions(key_filter=None, label_filter=None, **kwargs)
+  signature: 'list_revisions(key_filter: typing.Union[str, NoneType] = None, label_filter:
+    typing.Union[str, NoneType] = None, **kwargs: typing.Any) -> azure.core.async_paging.AsyncItemPaged[azure.appconfiguration._models.ConfigurationSetting]'
   parameters:
   - name: key_filter
     description: 'filter results based on their keys. ''*'' can be
@@ -257,11 +240,6 @@ methods:
       all fields
     types:
     - <xref:list>[<xref:str>]
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request header
-    types:
-    - <xref:dict>
   return:
     description: An iterator of <xref:azure.appconfiguration.aio.ConfigurationSetting>
     types:
@@ -281,8 +259,9 @@ methods:
     my set content type\",\n       tags={\"my set tag\": \"my set tag value\"}\n \
     \  )\n   returned_config_setting = await async_client.set_configuration_setting(config_setting)\n\
     \   ````"
-  signature: 'set_configuration_setting(configuration_setting, match_condition=<MatchConditions.Unconditionally:
-    1>, **kwargs)'
+  signature: 'set_configuration_setting(configuration_setting: azure.appconfiguration._models.ConfigurationSetting,
+    match_condition: azure.core._match_conditions.MatchConditions = <MatchConditions.Unconditionally:
+    1>, **kwargs: typing.Any) -> azure.appconfiguration._models.ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be added (if not exists)         or updated
@@ -295,11 +274,11 @@ methods:
     isRequired: true
     types:
     - <xref:azure.core.MatchConditions>
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request header
+  - name: etag
+    description: check if the ConfigurationSetting is changed. Set None to skip checking
+      etag
     types:
-    - <xref:dict>
+    - <xref:str>
   return:
     description: The ConfigurationSetting returned from the service
     types:
@@ -316,7 +295,8 @@ methods:
     \       key=\"MyKey\", label=\"MyLabel\"\n   )\n\n   read_only_config_setting\
     \ = await async_client.set_read_only(config_setting)\n   read_only_config_setting\
     \ = await client.set_read_only(config_setting, read_only=False)\n   ````"
-  signature: set_read_only(configuration_setting, read_only=True, **kwargs)
+  signature: 'set_read_only(configuration_setting: azure.appconfiguration._models.ConfigurationSetting,
+    read_only: typing.Union[bool, NoneType] = True, **kwargs: typing.Any) -> azure.appconfiguration._models.ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be set read only
@@ -332,11 +312,11 @@ methods:
     description: The match condition to use upon the etag
     types:
     - <xref:azure.core.MatchConditions>
-  - name: headers
-    description: if "headers" exists, its value (a dict) will be added to the http
-      request header
+  - name: etag
+    description: check if the ConfigurationSetting is changed. Set None to skip checking
+      etag
     types:
-    - <xref:dict>
+    - <xref:str>
   return:
     description: The ConfigurationSetting returned from the service
     types:
