@@ -3,7 +3,7 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: maggiepint
 ms.author: magpint
-ms.date: 06/08/2021
+ms.date: 07/08/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -11,14 +11,14 @@ ms.devlang: python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.7.0b1 
+# Azure Identity client library for Python - Version 1.7.0b2 
 
 
 The Azure Identity library provides a set of credential classes for use with
 Azure SDK clients which support Azure Active Directory (AAD) token authentication.
 This library does not support Azure Active Directory B2C.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [API reference documentation][ref_docs]
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
@@ -55,7 +55,7 @@ After installing the extension, sign in to Azure in Visual Studio Code by
 pressing `F1` to open the command palette and running the `Azure: Sign In`
 command.
 
-![Visual Studio Code Account Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/identity/azure-identity/images/VsCodeLoginCommand.png)
+![Visual Studio Code Account Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/identity/azure-identity/images/VsCodeLoginCommand.png)
 
 #### Authenticating via the Azure CLI
 
@@ -64,12 +64,12 @@ signed in to the [Azure CLI][azure_cli]. To sign in to the Azure CLI, run
 `az login`. On a system with a default web browser, the Azure CLI will launch
 the browser to authenticate a user.
 
-![Azure CLI Account Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/identity/azure-identity/images/AzureCliLogin.png)
+![Azure CLI Account Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/identity/azure-identity/images/AzureCliLogin.png)
 
 When no default browser is available, `az login` will use the device code
 authentication flow. This can also be selected manually by running `az login --use-device-code`.
 
-![Azure CLI Account Device Code Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/identity/azure-identity/images/AzureCliLoginDeviceCode.png)
+![Azure CLI Account Device Code Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/identity/azure-identity/images/AzureCliLoginDeviceCode.png)
 
 ## Key concepts
 
@@ -91,7 +91,7 @@ the Azure Cloud because it combines common production credentials with
 development credentials. `DefaultAzureCredential` attempts to authenticate via
 the following mechanisms in this order, stopping when one succeeds:
 
-![DefaultAzureCredential authentication flow](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/identity/azure-identity/images/DefaultAzureCredentialAuthenticationFlow.png)
+![DefaultAzureCredential authentication flow](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/identity/azure-identity/images/DefaultAzureCredentialAuthenticationFlow.png)
 
 - Environment - `DefaultAzureCredential` will read account information specified
   via [environment variables](#environment-variables "environment variables")
@@ -365,15 +365,15 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/appconfiguration/azure-appconfiguration
+[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/appconfiguration/azure-appconfiguration
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/eventhub/azure-eventhub
-[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk//keyvault/azure-keyvault-certificates
-[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/keyvault/azure-keyvault-keys
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/storage/azure-storage-blob
-[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b1/sdk/storage/azure-storage-queue
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/eventhub/azure-eventhub
+[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk//keyvault/azure-keyvault-certificates
+[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/keyvault/azure-keyvault-keys
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/storage/azure-storage-blob
+[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b2/sdk/storage/azure-storage-queue
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.CertificateCredential
 [chain_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.ChainedTokenCredential
 [cli_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureCliCredential

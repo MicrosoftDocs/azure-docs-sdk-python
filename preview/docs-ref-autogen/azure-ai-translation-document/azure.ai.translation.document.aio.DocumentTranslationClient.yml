@@ -65,12 +65,11 @@ methods:
     description: 'An instance of an AsyncDocumentTranslationLROPoller. Call *result()*
       on the poller
 
-      object to return a pageable of DocumentStatusResult. A DocumentStatusResult
-      will be
+      object to return a pageable of DocumentStatus. A DocumentStatus will be
 
       returned for each translation on a document.'
     types:
-    - <xref:AsyncDocumentTranslationLROPoller>[<xref:AsyncItemPaged>[<xref:azure.ai.translation.document.DocumentStatusResult>]]
+    - <xref:AsyncDocumentTranslationLROPoller>[<xref:AsyncItemPaged>[<xref:azure.ai.translation.document.DocumentStatus>]]
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError
@@ -78,7 +77,7 @@ methods:
   - "Translate the documents in your storage container.<!--[!code-python[Main](les\\\
     async_samples\\sample_begin_translation_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\44\\\\azure-ai-translation-document-1.0.0b2\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_begin_translation_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
@@ -133,18 +132,6 @@ methods:
   summary: Close the <xref:azure.ai.translation.document.aio.DocumentTranslationClient>
     session.
   signature: close() -> None
-- uid: azure.ai.translation.document.aio.DocumentTranslationClient.get_document_formats
-  name: get_document_formats
-  summary: Get the list of the document formats supported by the Document Translation
-    service.
-  signature: get_document_formats(**kwargs)
-  return:
-    description: A list of supported document formats for translation.
-    types:
-    - <xref:List>[<xref:FileFormat>]
-  exceptions:
-  - description: ''
-    type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.ai.translation.document.aio.DocumentTranslationClient.get_document_status
   name: get_document_status
   summary: Get the status of an individual document within a translation operation.
@@ -161,17 +148,29 @@ methods:
     types:
     - <xref:str>
   return:
-    description: A DocumentStatusResult with information on the status of the document.
+    description: A DocumentStatus with information on the status of the document.
     types:
-    - <xref:azure.ai.translation.document.DocumentStatusResult>
+    - <xref:azure.ai.translation.document.DocumentStatus>
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError or ~azure.core.exceptions.ResourceNotFoundError
-- uid: azure.ai.translation.document.aio.DocumentTranslationClient.get_glossary_formats
-  name: get_glossary_formats
+- uid: azure.ai.translation.document.aio.DocumentTranslationClient.get_supported_document_formats
+  name: get_supported_document_formats
+  summary: Get the list of the document formats supported by the Document Translation
+    service.
+  signature: get_supported_document_formats(**kwargs)
+  return:
+    description: A list of supported document formats for translation.
+    types:
+    - <xref:List>[<xref:FileFormat>]
+  exceptions:
+  - description: ''
+    type: ~azure.core.exceptions.HttpResponseError
+- uid: azure.ai.translation.document.aio.DocumentTranslationClient.get_supported_glossary_formats
+  name: get_supported_glossary_formats
   summary: Get the list of the glossary formats supported by the Document Translation
     service.
-  signature: get_glossary_formats(**kwargs)
+  signature: get_supported_glossary_formats(**kwargs)
   return:
     description: A list of supported glossary formats.
     types:
@@ -195,10 +194,10 @@ methods:
     types:
     - <xref:str>
   return:
-    description: A TranslationStatusResult with information on the status of the translation
+    description: A TranslationStatus with information on the status of the translation
       operation.
     types:
-    - <xref:azure.ai.translation.document.TranslationStatusResult>
+    - <xref:azure.ai.translation.document.TranslationStatus>
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError or ~azure.core.exceptions.ResourceNotFoundError
@@ -251,9 +250,9 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   return:
-    description: A pageable of DocumentStatusResult.
+    description: A pageable of DocumentStatus.
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:DocumentStatusResult>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:DocumentStatus>]
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError
@@ -261,7 +260,7 @@ methods:
   - "List all the document statuses as they are being translated.<!--[!code-python[Main](les\\\
     async_samples\\sample_check_document_statuses_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\44\\\\azure-ai-translation-document-1.0.0b2\\\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_check_document_statuses_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
@@ -271,13 +270,13 @@ methods:
     \ = os.environ[\"AZURE_SOURCE_CONTAINER_URL\"]\n   target_container_url = os.environ[\"\
     AZURE_TARGET_CONTAINER_URL\"]\n\n   client = DocumentTranslationClient(endpoint,\
     \ AzureKeyCredential(key))\n\n   async with client:\n       poller = await client.begin_translation(source_container_url,\
-    \ target_container_url, \"es\")\n\n       completed_docs = []\n       while not\
-    \ poller.done():\n           await asyncio.sleep(30)\n\n           doc_statuses\
-    \ = client.list_all_document_statuses(poller.id)\n           async for document\
-    \ in doc_statuses:\n               if document.id not in completed_docs:\n   \
-    \                if document.status == \"Succeeded\":\n                      \
-    \ print(\"Document at {} was translated to {} language. You can find translated\
-    \ document at {}\".format(\n                           document.source_document_url,\
+    \ target_container_url, \"es\")\n\n       completed_docs = []\n       while poller.status()\
+    \ in [\"Running\", \"NotStarted\"]:\n           await asyncio.sleep(30)\n\n  \
+    \         doc_statuses = client.list_all_document_statuses(poller.id)\n      \
+    \     async for document in doc_statuses:\n               if document.id not in\
+    \ completed_docs:\n                   if document.status == \"Succeeded\":\n \
+    \                      print(\"Document at {} was translated to {} language. You\
+    \ can find translated document at {}\".format(\n                           document.source_document_url,\
     \ document.translated_to, document.translated_document_url\n                 \
     \      ))\n                       completed_docs.append(document.id)\n       \
     \            if document.status == \"Failed\":\n                       print(\"\
@@ -336,9 +335,9 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   return:
-    description: A pageable of TranslationStatusResult.
+    description: A pageable of TranslationStatus.
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:TranslationStatusResult>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:TranslationStatus>]
   exceptions:
   - description: ''
     type: ~azure.core.exceptions.HttpResponseError
@@ -346,7 +345,7 @@ methods:
   - "List all submitted translations under the resource.<!--[!code-python[Main](les\\\
     async_samples\\sample_list_all_translations_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\44\\\\azure-ai-translation-document-1.0.0b2\\\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b3\\\
     \\samples\\\\async_samples\\\\sample_list_all_translations_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\
@@ -354,13 +353,12 @@ methods:
     \n   endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key =\
     \ os.environ[\"AZURE_DOCUMENT_TRANSLATION_KEY\"]\n\n   client = DocumentTranslationClient(endpoint,\
     \ AzureKeyCredential(key))\n   async with client:\n       operations = client.list_all_translation_statuses()\
-    \  # type: AsyncItemPaged[TranslationStatusResult]\n\n       async for operation\
-    \ in operations:\n           print(\"ID: {}\".format(operation.id))\n        \
-    \   print(\"Status: {}\".format(operation.status))\n           print(\"Created\
-    \ on: {}\".format(operation.created_on))\n           print(\"Last updated on:\
-    \ {}\".format(operation.last_updated_on))\n           print(\"Total number of\
-    \ operations on documents: {}\".format(operation.documents_total_count))\n   \
-    \        print(\"Total number of characters charged: {}\".format(operation.total_characters_charged))\n\
+    \  # type: AsyncItemPaged[TranslationStatus]\n\n       async for operation in\
+    \ operations:\n           print(\"ID: {}\".format(operation.id))\n           print(\"\
+    Status: {}\".format(operation.status))\n           print(\"Created on: {}\".format(operation.created_on))\n\
+    \           print(\"Last updated on: {}\".format(operation.last_updated_on))\n\
+    \           print(\"Total number of operations on documents: {}\".format(operation.documents_total_count))\n\
+    \           print(\"Total number of characters charged: {}\".format(operation.total_characters_charged))\n\
     \n           print(\"\\nOf total documents...\")\n           print(\"{} failed\"\
     .format(operation.documents_failed_count))\n           print(\"{} succeeded\"\
     .format(operation.documents_succeeded_count))\n           print(\"{} cancelled\\\
