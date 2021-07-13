@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservices, siterecovery
 author: maggiepint
 ms.author: magpint
-ms.date: 01/04/2021
+ms.date: 07/13/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
@@ -19,6 +19,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 # Usage
+
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
 
@@ -37,3 +38,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-recoveryservices%2FREADME.png)
+
