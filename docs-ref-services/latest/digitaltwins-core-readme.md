@@ -54,11 +54,16 @@ It attempts to use multiple credential types in an order until it finds a workin
 ##### Sample code
 
 ```python Snippet:dt_create_digitaltwins_service_client.py
+import os
+
+from azure.identity import InteractiveBrowserCredential
+from azure.digitaltwins.core import DigitalTwinsClient
+
 # DefaultAzureCredential supports different authentication mechanisms and determines the appropriate credential type based of the environment it is executing in.
 # It attempts to use multiple credential types in an order until it finds a working credential.
 
 # - AZURE_URL: The URL to the ADT in Azure
-url = os.getenv("AZURE_URL")
+url = os.getenv("https://<your-Azure-Digital-Twins-instance-hostName>")
 
 # DefaultAzureCredential expects the following three environment variables:
 # - AZURE_TENANT_ID: The tenant ID in Azure Active Directory
