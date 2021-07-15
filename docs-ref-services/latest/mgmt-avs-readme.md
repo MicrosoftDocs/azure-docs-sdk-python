@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-avs, avs
+keywords: Azure, python, SDK, API, azure-mgmt-avs, vmwaresolution
 author: maggiepint
 ms.author: magpint
-ms.date: 11/11/2020
+ms.date: 07/15/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: avs
+ms.service: vmwaresolution
 ---
 
 # Microsoft Azure SDK for Python
