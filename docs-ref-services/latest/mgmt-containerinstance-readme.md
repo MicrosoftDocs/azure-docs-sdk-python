@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-containerinstance, containerinstance
+keywords: Azure, python, SDK, API, azure-mgmt-containerinstance, containerinstances
 author: maggiepint
 ms.author: magpint
-ms.date: 11/25/2020
+ms.date: 07/20/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerinstance
+ms.service: containerinstances
 ---
 
 ## Microsoft Azure SDK for Python
@@ -29,15 +29,9 @@ For a more complete set of Azure libraries, see the
 
 ## Usage
 
-
-To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
-
-
-
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Container Instance Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
-Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
-
+For code examples, see [Container
+Instance](https://docs.microsoft.com/python/api/overview/azure/containerinstance)
+on docs.microsoft.com.
 
 ## Provide Feedback
 
