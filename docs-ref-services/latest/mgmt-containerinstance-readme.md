@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-containerinstance, containerinstance
+keywords: Azure, python, SDK, API, azure-mgmt-containerinstance, containerinstances
 author: maggiepint
 ms.author: magpint
-ms.date: 11/25/2020
+ms.date: 07/20/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerinstance
+ms.service: containerinstances
 ---
 
 ## Microsoft Azure SDK for Python
