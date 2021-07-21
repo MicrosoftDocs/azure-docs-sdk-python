@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-redis, redis
+keywords: Azure, python, SDK, API, azure-mgmt-redis, rediscache
 author: maggiepint
 ms.author: magpint
-ms.date: 11/25/2020
+ms.date: 07/21/2021
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: redis
+ms.service: rediscache
 ---
 
 ## Microsoft Azure SDK for Python
