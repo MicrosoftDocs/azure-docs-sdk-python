@@ -6,7 +6,7 @@ author: annatisch
 ms.author: antisch
 manager: mayurid
 ms.date: 01/15/2019
-ms.topic: article
+ms.topic: reference
 ms.devlang: python
 ms.service: service-bus
 ---

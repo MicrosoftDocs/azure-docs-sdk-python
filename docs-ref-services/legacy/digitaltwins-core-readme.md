@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-digitaltwins-core, digitaltwins
 author: maggiepint
 ms.author: magpint
 ms.date: 12/01/2020
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

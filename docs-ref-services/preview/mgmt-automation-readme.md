@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-mgmt-automation, automation
 author: maggiepint
 ms.author: magpint
 ms.date: 03/17/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

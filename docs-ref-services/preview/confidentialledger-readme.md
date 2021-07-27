@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-confidentialledger,
 author: maggiepint
 ms.author: magpint
 ms.date: 05/12/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

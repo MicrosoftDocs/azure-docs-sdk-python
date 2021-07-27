@@ -7,7 +7,7 @@ manager: jeconnoc
 
 ms.date: 04/15/2019
 ms.author: danlep
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, textanalytics, azure-ai-textanalytics
 author: maggiepint
 ms.author: magpint
 ms.date: 06/09/2020
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: Python

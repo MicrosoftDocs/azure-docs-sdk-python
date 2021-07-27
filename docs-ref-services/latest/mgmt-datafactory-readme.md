@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
 author: maggiepint
 ms.author: magpint
 ms.date: 03/15/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

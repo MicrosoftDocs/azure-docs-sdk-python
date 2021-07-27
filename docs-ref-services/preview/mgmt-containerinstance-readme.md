@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-mgmt-containerinstance, containerinstan
 author: maggiepint
 ms.author: magpint
 ms.date: 11/25/2020
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

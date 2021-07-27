@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-eventgrid, eventgrideventgrid
 author: maggiepint
 ms.author: magpint
 ms.date: 07/19/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

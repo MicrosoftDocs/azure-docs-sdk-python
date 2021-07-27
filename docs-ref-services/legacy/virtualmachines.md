@@ -6,7 +6,7 @@ author: lisawong19
 ms.author: routlaw
 manager: douge
 ms.date: 06/09/2017
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
