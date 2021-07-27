@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-monitor-nspkg,
 author: maggiepint
 ms.author: magpint
 ms.date: 06/05/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

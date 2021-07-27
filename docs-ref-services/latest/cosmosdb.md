@@ -6,7 +6,7 @@ author: Rodrigossz
 ms.author: rosouz
 manager: douge
 ms.date: 08/08/2020
-ms.topic: article
+ms.topic: reference
 ms.devlang: python
 ms.service: cosmos-db
 ---

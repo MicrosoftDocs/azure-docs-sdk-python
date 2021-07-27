@@ -7,7 +7,7 @@ ms.author: sttramer
 manager: douge
 
 ms.date: 07/10/2017
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-ai-translation-document, translator
 author: maggiepint
 ms.author: magpint
 ms.date: 07/07/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

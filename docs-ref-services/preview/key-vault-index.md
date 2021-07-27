@@ -5,7 +5,7 @@ author: sptramer
 manager: carmonm
 ms.author: sttramer
 ms.date: 11/25/2019
-ms.topic: conceptual
+ms.topic: reference
 ms.devlang: python
 ms.service: key-vault
 ---

@@ -6,7 +6,7 @@ author: garyericson
 ms.author: garye
 manager: cjgronlun
 ms.date: 03/26/2019
-ms.topic: article
+ms.topic: reference
 ms.devlang: python
 ms.service: batch-ai
 ---

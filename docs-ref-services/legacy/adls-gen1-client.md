@@ -6,7 +6,7 @@ author: akharit
 ms.author: akharit
 manager: pkasturi
 ms.date: 08/26/2019
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
