@@ -5,7 +5,7 @@ keywords: Azure, Python, SDK, API, Event Grid
 author: lisawong19
 ms.author: routlaw
 manager: routlaw
-ms.date: 08/21/2017
+ms.date: 03/29/2021
 ms.topic: article
 ms.devlang: python
 ms.service: event-grid
