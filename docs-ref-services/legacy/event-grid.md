@@ -6,7 +6,7 @@ author: lisawong19
 ms.author: routlaw
 manager: routlaw
 ms.date: 08/21/2017
-ms.topic: article
+ms.topic: reference
 ms.devlang: python
 ms.service: event-grid
 ---

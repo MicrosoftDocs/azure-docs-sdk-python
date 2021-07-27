@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-keyvault-administration, keyvault
 author: maggiepint
 ms.author: magpint
 ms.date: 02/09/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

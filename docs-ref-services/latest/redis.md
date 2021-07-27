@@ -6,7 +6,7 @@ author: sptramer
 ms.author: sttramer
 manager: douge
 ms.date: 06/26/2017
-ms.topic: article
+ms.topic: reference
 ms.devlang: python
 ms.service: redis
 ---

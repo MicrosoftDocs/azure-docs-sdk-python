@@ -4,7 +4,7 @@ keywords: Azure, Python, SDK, API, keyvault, azure-keyvault-certificates
 author: maggiepint
 ms.author: magpint
 ms.date: 04/16/2020
-ms.topic: article
+ms.topic: reference
 ms.devlang: Python
 ms.service: key-vault
 ---

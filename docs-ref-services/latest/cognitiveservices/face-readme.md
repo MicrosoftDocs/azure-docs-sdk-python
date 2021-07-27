@@ -3,7 +3,7 @@ title: Face API
 author: PatrickFarley
 ms.author: pafarley
 ms.date: 06/21/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

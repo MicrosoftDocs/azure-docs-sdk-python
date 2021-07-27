@@ -7,7 +7,7 @@ ms.author: routlaw
 manager: mbaldwin
 
 ms.date: 02/21/2018
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

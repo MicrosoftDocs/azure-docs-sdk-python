@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-mgmt-vmwarecloudsimple, vmwarebycloudsi
 author: maggiepint
 ms.author: magpint
 ms.date: 05/26/2021
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
