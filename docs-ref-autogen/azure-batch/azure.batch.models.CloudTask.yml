@@ -38,48 +38,41 @@ constructor:
     **kwargs) -> None'
   parameters:
   - name: id
-    description: 'A string that uniquely identifies the Task within the Job. The
+    description: 'The ID can contain any combination of alphanumeric characters
 
-      ID can contain any combination of alphanumeric characters including
+      including hyphens and underscores, and cannot contain more than 64
 
-      hyphens and underscores, and cannot contain more than 64 characters.'
+      characters.'
     isRequired: true
     types:
     - <xref:str>
   - name: display_name
-    description: 'A display name for the Task. The display name need
+    description: 'The display name need not be unique and can contain
 
-      not be unique and can contain any Unicode characters up to a maximum
-
-      length of 1024.'
+      any Unicode characters up to a maximum length of 1024.'
     isRequired: true
     types:
     - <xref:str>
   - name: url
-    description: The URL of the Task.
     isRequired: true
     types:
     - <xref:str>
   - name: e_tag
-    description: 'The ETag of the Task. This is an opaque string. You can use
+    description: 'This is an opaque string. You can use it to detect whether
 
-      it to detect whether the Task has changed between requests. In particular,
+      the Task has changed between requests. In particular, you can be pass the
 
-      you can be pass the ETag when updating a Task to specify that your changes
+      ETag when updating a Task to specify that your changes should take effect
 
-      should take effect only if nobody else has modified the Task in the
-
-      meantime.'
+      only if nobody else has modified the Task in the meantime.'
     isRequired: true
     types:
     - <xref:str>
   - name: last_modified
-    description: The last modified time of the Task.
     isRequired: true
     types:
     - <xref:datetime>
   - name: creation_time
-    description: The creation time of the Task.
     isRequired: true
     types:
     - <xref:datetime>
@@ -99,9 +92,6 @@ constructor:
     - <xref:str>
     - <xref:azure.batch.models.TaskState>
   - name: state_transition_time
-    description: 'The time at which the Task entered its
-
-      current state.'
     isRequired: true
     types:
     - <xref:datetime>
@@ -116,34 +106,32 @@ constructor:
     - <xref:str>
     - <xref:azure.batch.models.TaskState>
   - name: previous_state_transition_time
-    description: 'The time at which the Task entered
+    description: 'This property is not set if the
 
-      its previous state. This property is not set if the Task is in its initial
-
-      Active state.'
+      Task is in its initial Active state.'
     isRequired: true
     types:
     - <xref:datetime>
   - name: command_line
-    description: 'The command line of the Task. For multi-instance
+    description: 'For multi-instance Tasks, the command line is
 
-      Tasks, the command line is executed as the primary Task, after the primary
+      executed as the primary Task, after the primary Task and all subtasks have
 
-      Task and all subtasks have finished executing the coordination command
+      finished executing the coordination command line. The command line does
 
-      line. The command line does not run under a shell, and therefore cannot
+      not run under a shell, and therefore cannot take advantage of shell
 
-      take advantage of shell features such as environment variable expansion.
+      features such as environment variable expansion. If you want to take
 
-      If you want to take advantage of such features, you should invoke the
+      advantage of such features, you should invoke the shell in the command
 
-      shell in the command line, for example using "cmd /c MyCommand" in Windows
+      line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c
 
-      or "/bin/sh -c MyCommand" in Linux. If the command line refers to file
+      MyCommand" in Linux. If the command line refers to file paths, it should
 
-      paths, it should use a relative path (relative to the Task working
+      use a relative path (relative to the Task working directory), or use the
 
-      directory), or use the Batch provided environment variable
+      Batch provided environment variable
 
       ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
     isRequired: true
@@ -175,41 +163,30 @@ constructor:
     types:
     - <xref:azure.batch.models.TaskContainerSettings>
   - name: resource_files
-    description: 'A list of files that the Batch service will
+    description: 'For multi-instance Tasks, the resource files will
 
-      download to the Compute Node before running the command line. For
+      only be downloaded to the Compute Node on which the primary Task is
 
-      multi-instance Tasks, the resource files will only be downloaded to the
+      executed. There is a maximum size for the list of resource files.  When
 
-      Compute Node on which the primary Task is executed. There is a maximum
+      the max size is exceeded, the request will fail and the response error
 
-      size for the list of resource files.  When the max size is exceeded, the
+      code will be RequestEntityTooLarge. If this occurs, the collection of
 
-      request will fail and the response error code will be
+      ResourceFiles must be reduced in size. This can be achieved using .zip
 
-      RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
-
-      must be reduced in size. This can be achieved using .zip files,
-
-      Application Packages, or Docker Containers.'
+      files, Application Packages, or Docker Containers.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.ResourceFile>]
   - name: output_files
-    description: 'A list of files that the Batch service will upload
+    description: 'For multi-instance Tasks, the files will only be
 
-      from the Compute Node after running the command line. For multi-instance
-
-      Tasks, the files will only be uploaded from the Compute Node on which the
-
-      primary Task is executed.'
+      uploaded from the Compute Node on which the primary Task is executed.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.OutputFile>]
   - name: environment_settings
-    description: 'A list of environment variable settings for
-
-      the Task.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.EnvironmentSetting>]
@@ -281,21 +258,17 @@ constructor:
     types:
     - <xref:azure.batch.models.TaskDependencies>
   - name: application_package_references
-    description: 'A list of Packages that the Batch
+    description: 'Application packages are downloaded
 
-      service will deploy to the Compute Node before running the command line.
+      and deployed to a shared directory, not the Task working directory.
 
-      Application packages are downloaded and deployed to a shared directory,
+      Therefore, if a referenced package is already on the Node, and is up to
 
-      not the Task working directory. Therefore, if a referenced package is
+      date, then it is not re-downloaded; the existing copy on the Compute Node
 
-      already on the Node, and is up to date, then it is not re-downloaded; the
+      is used. If a referenced Package cannot be installed, for example because
 
-      existing copy on the Compute Node is used. If a referenced Package cannot
-
-      be installed, for example because the package has been deleted or because
-
-      download failed, the Task fails.'
+      the package has been deleted or because download failed, the Task fails.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.ApplicationPackageReference>]

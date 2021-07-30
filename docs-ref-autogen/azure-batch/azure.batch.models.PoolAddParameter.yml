@@ -20,35 +20,29 @@ constructor:
     **kwargs) -> None'
   parameters:
   - name: id
-    description: 'Required. A string that uniquely identifies the Pool within the
+    description: 'Required. The ID can contain any combination of alphanumeric
 
-      Account. The ID can contain any combination of alphanumeric characters
+      characters including hyphens and underscores, and cannot contain more than
 
-      including hyphens and underscores, and cannot contain more than 64
+      64 characters. The ID is case-preserving and case-insensitive (that is,
 
-      characters. The ID is case-preserving and case-insensitive (that is, you
-
-      may not have two Pool IDs within an Account that differ only by case).'
+      you may not have two Pool IDs within an Account that differ only by case).'
     isRequired: true
     types:
     - <xref:str>
   - name: display_name
-    description: 'The display name for the Pool. The display name need
+    description: 'The display name need not be unique and can contain
 
-      not be unique and can contain any Unicode characters up to a maximum
-
-      length of 1024.'
+      any Unicode characters up to a maximum length of 1024.'
     isRequired: true
     types:
     - <xref:str>
   - name: vm_size
-    description: 'Required. The size of virtual machines in the Pool. All
+    description: 'Required. For information about available sizes of virtual
 
-      virtual machines in a Pool are the same size. For information about
+      machines for Cloud Services Pools (pools created with
 
-      available sizes of virtual machines for Cloud Services Pools (pools
-
-      created with cloudServiceConfiguration), see Sizes for Cloud Services
+      cloudServiceConfiguration), see Sizes for Cloud Services
 
       ([https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/](https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/)).
 
@@ -95,17 +89,15 @@ constructor:
     types:
     - <xref:azure.batch.models.VirtualMachineConfiguration>
   - name: resize_timeout
-    description: 'The timeout for allocation of Compute Nodes to the
+    description: 'This timeout applies only to manual scaling; it has
 
-      Pool. This timeout applies only to manual scaling; it has no effect when
+      no effect when enableAutoScale is set to true. The default value is 15
 
-      enableAutoScale is set to true. The default value is 15 minutes. The
+      minutes. The minimum value is 5 minutes. If you specify a value less than
 
-      minimum value is 5 minutes. If you specify a value less than 5 minutes,
+      5 minutes, the Batch service returns an error; if you are calling the REST
 
-      the Batch service returns an error; if you are calling the REST API
-
-      directly, the HTTP status code is 400 (Bad Request).'
+      API directly, the HTTP status code is 400 (Bad Request).'
     isRequired: true
     types:
     - <xref:timedelta>
@@ -134,7 +126,7 @@ constructor:
   - name: enable_auto_scale
     description: 'Whether the Pool size should automatically
 
-      adjust over time. If false, at least one of targetDedicateNodes and
+      adjust over time. If false, at least one of targetDedicatedNodes and
 
       targetLowPriorityNodes must be specified. If true, the autoScaleFormula
 
@@ -145,36 +137,32 @@ constructor:
     types:
     - <xref:bool>
   - name: auto_scale_formula
-    description: 'A formula for the desired number of Compute
+    description: 'This property must not be specified if
 
-      Nodes in the Pool. This property must not be specified if enableAutoScale
+      enableAutoScale is set to false. It is required if enableAutoScale is set
 
-      is set to false. It is required if enableAutoScale is set to true. The
+      to true. The formula is checked for validity before the Pool is created.
 
-      formula is checked for validity before the Pool is created. If the formula
+      If the formula is not valid, the Batch service rejects the request with
 
-      is not valid, the Batch service rejects the request with detailed error
+      detailed error information. For more information about specifying this
 
-      information. For more information about specifying this formula, see
-
-      ''Automatically scale Compute Nodes in an Azure Batch Pool''
+      formula, see ''Automatically scale Compute Nodes in an Azure Batch Pool''
 
       ([https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/](https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/)).'
     isRequired: true
     types:
     - <xref:str>
   - name: auto_scale_evaluation_interval
-    description: 'The time interval at which to
+    description: 'The default value is 15 minutes.
 
-      automatically adjust the Pool size according to the autoscale formula. The
+      The minimum and maximum value are 5 minutes and 168 hours respectively. If
 
-      default value is 15 minutes. The minimum and maximum value are 5 minutes
+      you specify a value less than 5 minutes or greater than 168 hours, the
 
-      and 168 hours respectively. If you specify a value less than 5 minutes or
+      Batch service returns an error; if you are calling the REST API directly,
 
-      greater than 168 hours, the Batch service returns an error; if you are
-
-      calling the REST API directly, the HTTP status code is 400 (Bad Request).'
+      the HTTP status code is 400 (Bad Request).'
     isRequired: true
     types:
     - <xref:timedelta>
@@ -206,9 +194,7 @@ constructor:
     types:
     - <xref:azure.batch.models.StartTask>
   - name: certificate_references
-    description: 'The list of Certificates to be installed on
-
-      each Compute Node in the Pool. For Windows Nodes, the Batch service
+    description: 'For Windows Nodes, the Batch service
 
       installs the Certificates to the specified Certificate store and location.
 
@@ -227,9 +213,7 @@ constructor:
     types:
     - <xref:list>[<xref:azure.batch.models.CertificateReference>]
   - name: application_package_references
-    description: 'The list of Packages to be
-
-      installed on each Compute Node in the Pool. Changes to Package references
+    description: 'Changes to Package references
 
       affect all new Nodes joining the Pool, but do not affect Compute Nodes
 
@@ -240,15 +224,11 @@ constructor:
     types:
     - <xref:list>[<xref:azure.batch.models.ApplicationPackageReference>]
   - name: application_licenses
-    description: 'The list of application licenses the Batch
+    description: 'The list of application licenses must be a
 
-      service will make available on each Compute Node in the Pool. The list of
+      subset of available Batch service application licenses. If a license is
 
-      application licenses must be a subset of available Batch service
-
-      application licenses. If a license is requested which is not supported,
-
-      Pool creation will fail.'
+      requested which is not supported, Pool creation will fail.'
     isRequired: true
     types:
     - <xref:list>[<xref:str>]
@@ -271,27 +251,20 @@ constructor:
     types:
     - <xref:azure.batch.models.TaskSchedulingPolicy>
   - name: user_accounts
-    description: 'The list of user Accounts to be created on each
-
-      Compute Node in the Pool.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.UserAccount>]
   - name: metadata
-    description: 'A list of name-value pairs associated with the Pool as
+    description: 'The Batch service does not assign any meaning to
 
-      metadata. The Batch service does not assign any meaning to metadata; it is
-
-      solely for the use of user code.'
+      metadata; it is solely for the use of user code.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.MetadataItem>]
   - name: mount_configuration
-    description: 'Mount storage using specified file system for
+    description: 'Mount the storage using Azure fileshare, NFS,
 
-      the entire lifetime of the pool. Mount the storage using Azure fileshare,
-
-      NFS, CIFS or Blobfuse based file system.'
+      CIFS or Blobfuse based file system.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.MountConfiguration>]
