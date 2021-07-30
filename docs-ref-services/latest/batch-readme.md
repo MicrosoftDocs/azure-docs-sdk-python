@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-batch, batch
 author: maggiepint
 ms.author: magpint
-ms.date: 12/03/2020
+ms.date: 07/30/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -34,5 +34,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-batch%2FREADME.png)
-
 
