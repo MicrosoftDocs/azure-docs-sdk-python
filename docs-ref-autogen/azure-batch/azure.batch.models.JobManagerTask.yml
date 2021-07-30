@@ -65,9 +65,7 @@ constructor:
     -> None'
   parameters:
   - name: id
-    description: 'Required. A string that uniquely identifies the Job Manager
-
-      Task within the Job. The ID can contain any combination of alphanumeric
+    description: 'Required. The ID can contain any combination of alphanumeric
 
       characters including hyphens and underscores and cannot contain more than
 
@@ -76,30 +74,28 @@ constructor:
     types:
     - <xref:str>
   - name: display_name
-    description: 'The display name of the Job Manager Task. It need not
+    description: 'It need not be unique and can contain any Unicode
 
-      be unique and can contain any Unicode characters up to a maximum length of
-
-      1024.'
+      characters up to a maximum length of 1024.'
     isRequired: true
     types:
     - <xref:str>
   - name: command_line
-    description: 'Required. The command line of the Job Manager Task.
+    description: 'Required. The command line does not run under a
 
-      The command line does not run under a shell, and therefore cannot take
+      shell, and therefore cannot take advantage of shell features such as
 
-      advantage of shell features such as environment variable expansion. If you
+      environment variable expansion. If you want to take advantage of such
 
-      want to take advantage of such features, you should invoke the shell in
+      features, you should invoke the shell in the command line, for example
 
-      the command line, for example using "cmd /c MyCommand" in Windows or
+      using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If
 
-      "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths,
+      the command line refers to file paths, it should use a relative path
 
-      it should use a relative path (relative to the Task working directory), or
+      (relative to the Task working directory), or use the Batch provided
 
-      use the Batch provided environment variable
+      environment variable
 
       ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
     isRequired: true
@@ -131,39 +127,28 @@ constructor:
     types:
     - <xref:azure.batch.models.TaskContainerSettings>
   - name: resource_files
-    description: 'A list of files that the Batch service will
+    description: 'Files listed under this element are located in the
 
-      download to the Compute Node before running the command line. Files listed
+      Task''s working directory. There is a maximum size for the list of resource
 
-      under this element are located in the Task''s working directory. There is a
+      files.  When the max size is exceeded, the request will fail and the
 
-      maximum size for the list of resource files.  When the max size is
+      response error code will be RequestEntityTooLarge. If this occurs, the
 
-      exceeded, the request will fail and the response error code will be
+      collection of ResourceFiles must be reduced in size. This can be achieved
 
-      RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
-
-      must be reduced in size. This can be achieved using .zip files,
-
-      Application Packages, or Docker Containers.'
+      using .zip files, Application Packages, or Docker Containers.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.ResourceFile>]
   - name: output_files
-    description: 'A list of files that the Batch service will upload
+    description: 'For multi-instance Tasks, the files will only be
 
-      from the Compute Node after running the command line. For multi-instance
-
-      Tasks, the files will only be uploaded from the Compute Node on which the
-
-      primary Task is executed.'
+      uploaded from the Compute Node on which the primary Task is executed.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.OutputFile>]
   - name: environment_settings
-    description: 'A list of environment variable settings for
-
-      the Job Manager Task.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.EnvironmentSetting>]
@@ -179,7 +164,9 @@ constructor:
 
       a compute node if the node has enough free scheduling slots available. For
 
-      multi-instance Tasks, this must be 1.'
+      multi-instance Tasks, this property is not supported and must not be
+
+      specified.'
     isRequired: true
     types:
     - <xref:int>
@@ -241,23 +228,19 @@ constructor:
     types:
     - <xref:bool>
   - name: application_package_references
-    description: 'A list of Application Packages that
+    description: 'Application Packages are downloaded
 
-      the Batch service will deploy to the Compute Node before running the
+      and deployed to a shared directory, not the Task working directory.
 
-      command line. Application Packages are downloaded and deployed to a shared
+      Therefore, if a referenced Application Package is already on the Compute
 
-      directory, not the Task working directory. Therefore, if a referenced
+      Node, and is up to date, then it is not re-downloaded; the existing copy
 
-      Application Package is already on the Compute Node, and is up to date,
+      on the Compute Node is used. If a referenced Application Package cannot be
 
-      then it is not re-downloaded; the existing copy on the Compute Node is
+      installed, for example because the package has been deleted or because
 
-      used. If a referenced Application Package cannot be installed, for example
-
-      because the package has been deleted or because download failed, the Task
-
-      fails.'
+      download failed, the Task fails.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.batch.models.ApplicationPackageReference>]

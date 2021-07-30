@@ -11,52 +11,53 @@ summary: 'The Azure Batch service log files upload configuration for a Compute N
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'UploadBatchServiceLogsConfiguration(*, container_url: str, start_time,
-    end_time=None, **kwargs) -> None'
+    end_time=None, identity_reference=None, **kwargs) -> None'
   parameters:
   - name: container_url
-    description: 'Required. The URL of the container within Azure Blob
+    description: 'Required. If a user assigned managed identity is not
 
-      Storage to which to upload the Batch Service log file(s). The URL must
+      being used, the URL must include a Shared Access Signature (SAS) granting
 
-      include a Shared Access Signature (SAS) granting write permissions to the
+      write permissions to the container. The SAS duration must allow enough
 
-      container. The SAS duration must allow enough time for the upload to
+      time for the upload to finish. The start time for SAS is optional and
 
-      finish. The start time for SAS is optional and recommended to not be
-
-      specified.'
+      recommended to not be specified.'
     isRequired: true
     types:
     - <xref:str>
   - name: start_time
-    description: 'Required. The start of the time range from which to
+    description: 'Required. Any log file containing a log message in the
 
-      upload Batch Service log file(s). Any log file containing a log message in
+      time range will be uploaded. This means that the operation might retrieve
 
-      the time range will be uploaded. This means that the operation might
+      more logs than have been requested since the entire log file is always
 
-      retrieve more logs than have been requested since the entire log file is
+      uploaded, but the operation should not retrieve fewer logs than have been
 
-      always uploaded, but the operation should not retrieve fewer logs than
-
-      have been requested.'
+      requested.'
     isRequired: true
     types:
     - <xref:datetime>
   - name: end_time
-    description: 'The end of the time range from which to upload Batch
+    description: 'Any log file containing a log message in the time range
 
-      Service log file(s). Any log file containing a log message in the time
+      will be uploaded. This means that the operation might retrieve more logs
 
-      range will be uploaded. This means that the operation might retrieve more
+      than have been requested since the entire log file is always uploaded, but
 
-      logs than have been requested since the entire log file is always
+      the operation should not retrieve fewer logs than have been requested. If
 
-      uploaded, but the operation should not retrieve fewer logs than have been
-
-      requested. If omitted, the default is to upload all logs available after
-
-      the startTime.'
+      omitted, the default is to upload all logs available after the startTime.'
     isRequired: true
     types:
     - <xref:datetime>
+  - name: identity_reference
+    description: 'The reference to the user assigned identity to
+
+      use to access Azure Blob Storage specified by containerUrl. The identity
+
+      must have write access to the Azure Blob Storage container.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.ComputeNodeIdentityReference>
