@@ -74,9 +74,10 @@ methods:
     types:
     - <xref:str>
   - name: polling
-    description: 'True for ARMPolling, False for no polling, or a
+    description: 'By default, your polling method will be ARMPolling.
 
-      polling object for personal polling strategy'
+      Pass in False for this operation to not poll, or pass in your own initialized
+      polling object for a personal polling strategy.'
     types:
     - <xref:bool>
     - <xref:azure.core.polling.PollingMethod>
@@ -117,9 +118,10 @@ methods:
     types:
     - <xref:str>
   - name: polling
-    description: 'True for ARMPolling, False for no polling, or a
+    description: 'By default, your polling method will be ARMPolling.
 
-      polling object for personal polling strategy'
+      Pass in False for this operation to not poll, or pass in your own initialized
+      polling object for a personal polling strategy.'
     types:
     - <xref:bool>
     - <xref:azure.core.polling.PollingMethod>
@@ -164,15 +166,14 @@ methods:
   summary: 'Gets the account keys for the specified Batch account.
 
 
-    This operation applies only to Batch accounts created with a poolAllocationMode
-    of
+    This operation applies only to Batch accounts with allowedAuthenticationModes
+    containing
 
-    ''BatchService''. If the Batch account was created with a poolAllocationMode of
+    ''SharedKey''. If the Batch account doesn''t contain ''SharedKey'' in its allowedAuthenticationMode,
 
-    ''UserSubscription'', clients cannot use access to keys to authenticate, and must
-    use Azure
+    clients cannot use shared keys to authenticate, and must use another allowedAuthenticationModes
 
-    Active Directory instead. In this case, getting the keys will fail.'
+    instead. In this case, getting the keys will fail.'
   signature: get_keys(resource_group_name, account_name, **kwargs)
   parameters:
   - name: resource_group_name
@@ -227,9 +228,58 @@ methods:
       result of cls(response)
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.batch.models.BatchAccountListResult>]
+- uid: azure.mgmt.batch.operations.BatchAccountOperations.list_outbound_network_dependencies_endpoints
+  name: list_outbound_network_dependencies_endpoints
+  summary: 'Lists the endpoints that a Batch Compute Node under this Batch Account
+    may call as part of
+
+    Batch service administration. If you are deploying a Pool inside of a virtual
+    network that you
+
+    specify, you must make sure your network allows outbound access to these endpoints.
+    Failure to
+
+    allow access to these endpoints may cause Batch to mark the affected nodes as
+    unusable. For
+
+    more information about creating a pool inside of a virtual network, see
+
+    [https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network](https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network).'
+  signature: list_outbound_network_dependencies_endpoints(resource_group_name, account_name,
+    **kwargs)
+  parameters:
+  - name: resource_group_name
+    description: The name of the resource group that contains the Batch account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: account_name
+    description: The name of the Batch account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: cls
+    description: A custom type or function that will be passed the direct response
+    types:
+    - <xref:callable>
+  return:
+    description: An iterator like instance of either OutboundEnvironmentEndpointCollection
+      or the result of cls(response)
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.mgmt.batch.models.OutboundEnvironmentEndpointCollection>]
 - uid: azure.mgmt.batch.operations.BatchAccountOperations.regenerate_key
   name: regenerate_key
-  summary: Regenerates the specified account key for the Batch account.
+  summary: 'Regenerates the specified account key for the Batch account.
+
+
+    This operation applies only to Batch accounts with allowedAuthenticationModes
+    containing
+
+    ''SharedKey''. If the Batch account doesn''t contain ''SharedKey'' in its allowedAuthenticationMode,
+
+    clients cannot use shared keys to authenticate, and must use another allowedAuthenticationModes
+
+    instead. In this case, regenerating the keys will fail.'
   signature: regenerate_key(resource_group_name, account_name, parameters, **kwargs)
   parameters:
   - name: resource_group_name
@@ -260,7 +310,7 @@ methods:
   summary: 'Synchronizes access keys for the auto-storage account configured for the
     specified Batch
 
-    account.'
+    account, only if storage key authentication is being used.'
   signature: synchronize_auto_storage_keys(resource_group_name, account_name, **kwargs)
   parameters:
   - name: resource_group_name
