@@ -14,7 +14,8 @@ summary: 'The configuration for Compute Nodes in a Pool based on the Azure Virtu
 constructor:
   syntax: 'VirtualMachineConfiguration(*, image_reference, node_agent_sku_id: str,
     windows_configuration=None, data_disks=None, license_type: str = None, container_configuration=None,
-    disk_encryption_configuration=None, **kwargs) -> None'
+    disk_encryption_configuration=None, node_placement_configuration=None, extensions=None,
+    os_disk=None, **kwargs) -> None'
   parameters:
   - name: image_reference
     description: 'Required. A reference to the Azure Virtual
@@ -24,25 +25,23 @@ constructor:
     types:
     - <xref:azure.batch.models.ImageReference>
   - name: node_agent_sku_id
-    description: 'Required. The SKU of the Batch Compute Node
+    description: 'Required. The Batch Compute Node agent is a
 
-      agent to be provisioned on Compute Nodes in the Pool. The Batch Compute
+      program that runs on each Compute Node in the Pool, and provides the
 
-      Node agent is a program that runs on each Compute Node in the Pool, and
+      command-and-control interface between the Compute Node and the Batch
 
-      provides the command-and-control interface between the Compute Node and
+      service. There are different implementations of the Compute Node agent,
 
-      the Batch service. There are different implementations of the Compute Node
+      known as SKUs, for different operating systems. You must specify a Compute
 
-      agent, known as SKUs, for different operating systems. You must specify a
+      Node agent SKU which matches the selected Image reference. To get the list
 
-      Compute Node agent SKU which matches the selected Image reference. To get
+      of supported Compute Node agent SKUs along with their list of verified
 
-      the list of supported Compute Node agent SKUs along with their list of
+      Image references, see the ''List supported Compute Node agent SKUs''
 
-      verified Image references, see the ''List supported Compute Node agent
-
-      SKUs'' operation.'
+      operation.'
     isRequired: true
     types:
     - <xref:str>
@@ -56,21 +55,19 @@ constructor:
     types:
     - <xref:azure.batch.models.WindowsConfiguration>
   - name: data_disks
-    description: 'The configuration for data disks attached to the
+    description: 'This property must be specified if the Compute Nodes in
 
-      Compute Nodes in the Pool. This property must be specified if the Compute
+      the Pool need to have empty data disks attached to them. This cannot be
 
-      Nodes in the Pool need to have empty data disks attached to them. This
+      updated. Each Compute Node gets its own disk (the disk is not a file
 
-      cannot be updated. Each Compute Node gets its own disk (the disk is not a
+      share). Existing disks cannot be attached, each attached disk is empty.
 
-      file share). Existing disks cannot be attached, each attached disk is
+      When the Compute Node is removed from the Pool, the disk and all data
 
-      empty. When the Compute Node is removed from the Pool, the disk and all
+      associated with it is also deleted. The disk is not formatted after being
 
-      data associated with it is also deleted. The disk is not formatted after
-
-      being attached, it must be formatted before use - for more information see
+      attached, it must be formatted before use - for more information see
 
       [https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux)
 
@@ -81,15 +78,13 @@ constructor:
     types:
     - <xref:list>[<xref:azure.batch.models.DataDisk>]
   - name: license_type
-    description: 'The type of on-premises license to be used when
+    description: 'This only applies to Images that contain the Windows
 
-      deploying the operating system. This only applies to Images that contain
+      operating system, and should only be used when you hold valid on-premises
 
-      the Windows operating system, and should only be used when you hold valid
+      licenses for the Compute Nodes which will be deployed. If omitted, no
 
-      on-premises licenses for the Compute Nodes which will be deployed. If
-
-      omitted, no on-premises licensing discount is applied. Values are:
+      on-premises licensing discount is applied. Values are:
 
       Windows_Server - The on-premises license is for Windows Server.
 
@@ -119,3 +114,26 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.batch.models.DiskEncryptionConfiguration>
+  - name: node_placement_configuration
+    description: 'The node placement configuration for
+
+      the pool. This configuration will specify rules on how nodes in the pool
+
+      will be physically allocated.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.NodePlacementConfiguration>
+  - name: extensions
+    description: 'If specified, the extensions mentioned in this
+
+      configuration will be installed on each node.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.VMExtension>]
+  - name: os_disk
+    description: 'Settings for the operating system disk of the Virtual
+
+      Machine.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.OSDisk>

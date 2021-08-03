@@ -12,64 +12,60 @@ constructor:
     None'
   parameters:
   - name: subnet_id
-    description: 'The ARM resource identifier of the virtual network
+    description: 'The virtual network must be in the same region and
 
-      subnet which the Compute Nodes of the Pool will join. This is of the form
+      subscription as the Azure Batch Account. The specified subnet should have
 
-      /subscriptions/{subscription}/resourceGroups/{group}/providers/{provider}/virtualNetworks/{network}/subnets/{subnet}.
+      enough free IP addresses to accommodate the number of Compute Nodes in the
 
-      The virtual network must be in the same region and subscription as the
+      Pool. If the subnet doesn''t have enough free IP addresses, the Pool will
 
-      Azure Batch Account. The specified subnet should have enough free IP
+      partially allocate Nodes and a resize error will occur. The
 
-      addresses to accommodate the number of Compute Nodes in the Pool. If the
+      ''MicrosoftAzureBatch'' service principal must have the ''Classic Virtual
 
-      subnet doesn''t have enough free IP addresses, the Pool will partially
+      Machine Contributor'' Role-Based Access Control (RBAC) role for the
 
-      allocate Nodes and a resize error will occur. The ''MicrosoftAzureBatch''
+      specified VNet. The specified subnet must allow communication from the
 
-      service principal must have the ''Classic Virtual Machine Contributor''
+      Azure Batch service to be able to schedule Tasks on the Nodes. This can be
 
-      Role-Based Access Control (RBAC) role for the specified VNet. The
+      verified by checking if the specified VNet has any associated Network
 
-      specified subnet must allow communication from the Azure Batch service to
+      Security Groups (NSG). If communication to the Nodes in the specified
 
-      be able to schedule Tasks on the Nodes. This can be verified by checking
+      subnet is denied by an NSG, then the Batch service will set the state of
 
-      if the specified VNet has any associated Network Security Groups (NSG). If
+      the Compute Nodes to unusable. For Pools created with
 
-      communication to the Nodes in the specified subnet is denied by an NSG,
+      virtualMachineConfiguration only ARM virtual networks
 
-      then the Batch service will set the state of the Compute Nodes to
+      (''Microsoft.Network/virtualNetworks'') are supported, but for Pools created
 
-      unusable. For Pools created with virtualMachineConfiguration only ARM
+      with cloudServiceConfiguration both ARM and classic virtual networks are
 
-      virtual networks (''Microsoft.Network/virtualNetworks'') are supported, but
+      supported. If the specified VNet has any associated Network Security
 
-      for Pools created with cloudServiceConfiguration both ARM and classic
+      Groups (NSG), then a few reserved system ports must be enabled for inbound
 
-      virtual networks are supported. If the specified VNet has any associated
+      communication. For Pools created with a virtual machine configuration,
 
-      Network Security Groups (NSG), then a few reserved system ports must be
+      enable ports 29876 and 29877, as well as port 22 for Linux and port 3389
 
-      enabled for inbound communication. For Pools created with a virtual
+      for Windows. For Pools created with a cloud service configuration, enable
 
-      machine configuration, enable ports 29876 and 29877, as well as port 22
+      ports 10100, 20100, and 30100. Also enable outbound connections to Azure
 
-      for Linux and port 3389 for Windows. For Pools created with a cloud
-
-      service configuration, enable ports 10100, 20100, and 30100. Also enable
-
-      outbound connections to Azure Storage on port 443. For more details see:
+      Storage on port 443. For more details see:
 
       [https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration](https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration)'
     isRequired: true
     types:
     - <xref:str>
   - name: dynamic_vnet_assignment_scope
-    description: 'The scope of dynamic vnet
+    description: 'Possible values include: ''none'',
 
-      assignment. Possible values include: ''none'', ''job'''
+      ''job'''
     isRequired: true
     types:
     - <xref:str>

@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-databricks, databricks
 author: maggiepint
 ms.author: magpint
-ms.date: 12/08/2020
+ms.date: 08/03/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -46,5 +46,4 @@ the [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
 ![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-databricks%2FREADME.png)
-
 

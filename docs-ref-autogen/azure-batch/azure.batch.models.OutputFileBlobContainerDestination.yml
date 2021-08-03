@@ -11,14 +11,12 @@ summary: 'Specifies a file upload destination within an Azure blob storage conta
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'OutputFileBlobContainerDestination(*, container_url: str, path: str = None,
-    **kwargs) -> None'
+    identity_reference=None, **kwargs) -> None'
   parameters:
   - name: path
-    description: 'The destination blob or virtual directory within the Azure
+    description: 'If filePattern refers to a specific file (i.e. contains no
 
-      Storage container. If filePattern refers to a specific file (i.e. contains
-
-      no wildcards), then path is the name of the blob to which to upload that
+      wildcards), then path is the name of the blob to which to upload that
 
       file. If filePattern contains one or more wildcards (and therefore may
 
@@ -33,11 +31,20 @@ constructor:
     types:
     - <xref:str>
   - name: container_url
-    description: 'Required. The URL of the container within Azure Blob
+    description: 'Required. If not using a managed identity, the URL
 
-      Storage to which to upload the file(s). The URL must include a Shared
+      must include a Shared Access Signature (SAS) granting write permissions to
 
-      Access Signature (SAS) granting write permissions to the container.'
+      the container.'
     isRequired: true
     types:
     - <xref:str>
+  - name: identity_reference
+    description: 'The reference to the user assigned identity to
+
+      use to access Azure Blob Storage specified by containerUrl. The identity
+
+      must have write access to the Azure Blob Storage container'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.ComputeNodeIdentityReference>
