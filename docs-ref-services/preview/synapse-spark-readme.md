@@ -1,27 +1,29 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-spark, 
+keywords: Azure, python, SDK, API, azure-synapse-spark, synapseanalytics
 author: maggiepint
 ms.author: magpint
-ms.date: 07/03/2020
+ms.date: 03/09/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: synapseanalytics
 ---
 
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Spark Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
-For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
+This package has been tested with Python 2.7, 3.6, 3.7, 3.8 and 3.9.
+For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
 # Usage
 
-For code examples, see [Synapse Spark](https://docs.microsoft.com/python/api/overview/azure/)
-on docs.microsoft.com.
+
+
+
+For code examples, see [Synapse Spark](https://docs.microsoft.com/python/api/overview/azure/) on docs.microsoft.com.
 
 
 # Provide Feedback
