@@ -14,10 +14,11 @@ methods:
     in the given language. To perform a single translation from source to target,
     pass the *source_url*,
 
-    *target_url*, and *target_language_code* parameters. To pass multiple inputs for
-    translation, including
+    *target_url*, and *target_language_code* parameters including any optional keyword
+    arguments.
 
-    other translation options, pass the *inputs* parameter as a list of
+    To pass multiple inputs for translation, pass the *inputs* parameter as a list
+    of
 
     <xref:azure.ai.translation.document.DocumentTranslationInput>.
 
@@ -30,7 +31,10 @@ methods:
   - name: source_url
     description: 'The source SAS URL to the Azure Blob container containing the documents
 
-      to be translated. Requires read and list permissions at the minimum.'
+      to be translated. See the service documentation for the supported SAS permissions
+      for accessing
+
+      source storage containers/blobs: [https://aka.ms/azsdk/documenttranslation/sas-permissions](https://aka.ms/azsdk/documenttranslation/sas-permissions)'
     isRequired: true
     types:
     - <xref:str>
@@ -38,7 +42,10 @@ methods:
     description: 'The target SAS URL to the Azure Blob container where the translated
       documents
 
-      should be written. Requires write and list permissions at the minimum.'
+      should be written. See the service documentation for the supported SAS permissions
+      for accessing
+
+      target storage containers/blobs: [https://aka.ms/azsdk/documenttranslation/sas-permissions](https://aka.ms/azsdk/documenttranslation/sas-permissions)'
     isRequired: true
     types:
     - <xref:str>
@@ -61,6 +68,44 @@ methods:
     isRequired: true
     types:
     - <xref:List>[<xref:azure.ai.translation.document.DocumentTranslationInput>]
+  - name: source_language_code
+    description: 'Language code for the source documents.
+
+      If none is specified, the source language will be auto-detected for each document.'
+    types:
+    - <xref:str>
+  - name: prefix
+    description: 'A case-sensitive prefix string to filter documents in the source
+      path for
+
+      translation. For example, when using a Azure storage blob Uri, use the prefix
+      to restrict
+
+      sub folders for translation.'
+    types:
+    - <xref:str>
+  - name: suffix
+    description: 'A case-sensitive suffix string to filter documents in the source
+      path for
+
+      translation. This is most often use for file extensions.'
+    types:
+    - <xref:str>
+  - name: storage_type
+    description: 'Storage type of the input documents source string. Possible values
+
+      include: "Folder", "File".'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.translation.document.StorageInputType>
+  - name: category_id
+    description: Category / custom model ID for using custom translation.
+    types:
+    - <xref:str>
+  - name: glossaries
+    description: Glossaries to apply to translation.
+    types:
+    - <xref:list>[<xref:azure.ai.translation.document.TranslationGlossary>]
   return:
     description: 'An instance of an AsyncDocumentTranslationLROPoller. Call *result()*
       on the poller
@@ -77,7 +122,7 @@ methods:
   - "Translate the documents in your storage container.<!--[!code-python[Main](les\\\
     async_samples\\sample_begin_translation_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b3\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b4\\\
     \\samples\\\\async_samples\\\\sample_begin_translation_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
@@ -230,23 +275,29 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   - name: statuses
-    description: document statuses to filter by.
+    description: 'document statuses to filter by. Options include
+
+      ''NotStarted'', ''Running'', ''Succeeded'', ''Failed'', ''Cancelled'', ''Cancelling'',
+
+      and ''ValidationFailed''.'
     types:
     - <xref:list>[<xref:str>]
-  - name: translated_after
-    description: get document translated after certain datetime.
+  - name: created_after
+    description: get document created after certain datetime.
     types:
     - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
-  - name: translated_before
-    description: get document translated before certain datetime.
+  - name: created_before
+    description: get document created before certain datetime.
     types:
     - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
   - name: order_by
-    description: 'the sorting query for the documents.
+    description: 'the sorting query for the documents. Currently only
 
-      format: ["parm1 asc/desc", "parm2 asc/desc", ...]
+      ''created_on'' is supported.
 
-      (ex: ''createdDateTimeUtc asc'', ''createdDateTimeUtc desc'').'
+      format: ["param1 asc/desc", "param2 asc/desc", ...]
+
+      (ex: ''created_on asc'', ''created_on desc'').'
     types:
     - <xref:list>[<xref:str>]
   return:
@@ -260,7 +311,7 @@ methods:
   - "List all the document statuses as they are being translated.<!--[!code-python[Main](les\\\
     async_samples\\sample_check_document_statuses_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b3\\\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b4\\\
     \\samples\\\\async_samples\\\\sample_check_document_statuses_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
@@ -315,7 +366,11 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   - name: statuses
-    description: translation operation statuses to filter by.
+    description: 'translation operation statuses to filter by. Options include
+
+      ''NotStarted'', ''Running'', ''Succeeded'', ''Failed'', ''Cancelled'', ''Cancelling'',
+
+      and ''ValidationFailed''.'
     types:
     - <xref:list>[<xref:str>]
   - name: created_after
@@ -327,11 +382,13 @@ methods:
     types:
     - <xref:Union>[<xref:str>, <xref:datetime.datetime>]
   - name: order_by
-    description: 'the sorting query for the operations returned.
+    description: 'the sorting query for the operations returned. Currently only
 
-      format: ["parm1 asc/desc", "parm2 asc/desc", ...]
+      ''created_on'' supported.
 
-      (ex: ''createdDateTimeUtc asc'', ''createdDateTimeUtc desc'').'
+      format: ["param1 asc/desc", "param2 asc/desc", ...]
+
+      (ex: ''created_on asc'', ''created_on desc'').'
     types:
     - <xref:list>[<xref:str>]
   return:
@@ -345,7 +402,7 @@ methods:
   - "List all submitted translations under the resource.<!--[!code-python[Main](les\\\
     async_samples\\sample_list_all_translations_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b3\\\
+    : [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\40\\\\azure-ai-translation-document-1.0.0b4\\\
     \\samples\\\\async_samples\\\\sample_list_all_translations_async.py\", \"xml:space\"\
     : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
     : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.credentials import\

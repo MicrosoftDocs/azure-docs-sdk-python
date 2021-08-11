@@ -49,14 +49,20 @@ constructor:
     types:
     - <xref:int>
   - name: vm_size
-    description: Size of agent VMs.
+    description: 'VM size availability varies by region. If a node contains insufficient
+      compute
+
+      resources (memory, cpu, etc) pods might fail to run correctly. For more details
+      on restricted
+
+      VM sizes, see: [https://docs.microsoft.com/azure/aks/quotas-skus-regions](https://docs.microsoft.com/azure/aks/quotas-skus-regions).'
     isRequired: true
     types:
     - <xref:str>
   - name: os_disk_size_gb
     description: 'OS Disk Size in GB to be used to specify the disk size for every
 
-      machine in this master/agent pool. If you specify 0, it will apply the default
+      machine in the master/agent pool. If you specify 0, it will apply the default
       osDisk size
 
       according to the vmSize specified.'
@@ -64,81 +70,81 @@ constructor:
     types:
     - <xref:int>
   - name: os_disk_type
-    description: 'OS disk type to be used for machines in a given agent pool. Allowed
-      values
+    description: 'The default is ''Ephemeral'' if the VM supports it and has a cache
+      disk
 
-      are ''Ephemeral'' and ''Managed''. If unspecified, defaults to ''Ephemeral''
-      when the VM supports
+      larger than the requested OSDiskSizeGB. Otherwise, defaults to ''Managed''.
+      May not be changed
 
-      ephemeral OS and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
-      defaults
+      after creation. For more information see [Ephemeral OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
+      Possible values
 
-      to ''Managed''. May not be changed after creation. Possible values include:
-      "Managed",
-
-      "Ephemeral".'
+      include: "Managed", "Ephemeral".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.OSDiskType>
   - name: kubelet_disk_type
-    description: 'KubeletDiskType determines the placement of emptyDir volumes,
+    description: 'Determines the placement of emptyDir volumes, container runtime
+      data
 
-      container runtime data root, and Kubelet ephemeral storage. Currently allows
-      one value, OS,
-
-      resulting in Kubelet using the OS disk for data. Possible values include: "OS",
-      "Temporary".'
+      root, and Kubelet ephemeral storage. Possible values include: "OS", "Temporary".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.KubeletDiskType>
   - name: vnet_subnet_id
-    description: 'VNet SubnetID specifies the VNet''s subnet identifier for nodes
-      and maybe
+    description: 'If this is not specified, a VNET and subnet will be generated and
+      used.
 
-      pods.'
+      If no podSubnetID is specified, this applies to nodes and pods, otherwise it
+      applies to just
+
+      nodes. This is of the form:
+
+      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.'
     isRequired: true
     types:
     - <xref:str>
   - name: pod_subnet_id
-    description: Pod SubnetID specifies the VNet's subnet identifier for pods.
+    description: 'If omitted, pod IPs are statically assigned on the node subnet (see
+
+      vnetSubnetID for more details). This is of the form:
+
+      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.'
     isRequired: true
     types:
     - <xref:str>
   - name: max_pods
-    description: Maximum number of pods that can run on a node.
+    description: The maximum number of pods that can run on a node.
     isRequired: true
     types:
     - <xref:int>
   - name: os_type
-    description: 'OsType to be used to specify os type. Choose from Linux and Windows.
-      Default to
+    description: 'The operating system type. The default is Linux. Possible values
+      include:
 
-      Linux. Possible values include: "Linux", "Windows". Default value: "Linux".'
+      "Linux", "Windows". Default value: "Linux".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.OSType>
   - name: os_sku
-    description: 'OsSKU to be used to specify os sku. Choose from Ubuntu(default)
-      and CBLMariner
+    description: 'Specifies an OS SKU. This value must not be specified if OSType
+      is Windows.
 
-      for Linux OSType. Not applicable to Windows OSType. Possible values include:
-      "Ubuntu",
-
-      "CBLMariner".'
+      Possible values include: "Ubuntu", "CBLMariner".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.OSSKU>
   - name: max_count
-    description: Maximum number of nodes for auto-scaling.
+    description: The maximum number of nodes for auto-scaling.
     isRequired: true
     types:
     - <xref:int>
   - name: min_count
-    description: Minimum number of nodes for auto-scaling.
+    description: The minimum number of nodes for auto-scaling.
     isRequired: true
     types:
     - <xref:int>
@@ -148,17 +154,21 @@ constructor:
     types:
     - <xref:bool>
   - name: type
-    description: 'AgentPoolType represents types of an agent pool. Possible values
-      include:
+    description: 'The type of Agent Pool. Possible values include: "VirtualMachineScaleSets",
 
-      "VirtualMachineScaleSets", "AvailabilitySet".'
+      "AvailabilitySet".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.AgentPoolType>
   - name: mode
-    description: 'AgentPoolMode represents mode of an agent pool. Possible values
-      include: "System",
+    description: 'A cluster must have at least one ''System'' Agent Pool at all times.
+      For additional
+
+      information on agent pool restrictions and best practices, see:
+
+      [https://docs.microsoft.com/azure/aks/use-system-pools](https://docs.microsoft.com/azure/aks/use-system-pools).
+      Possible values include: "System",
 
       "User".'
     isRequired: true
@@ -166,9 +176,18 @@ constructor:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.AgentPoolMode>
   - name: orchestrator_version
-    description: 'Version of orchestrator specified when creating the managed
+    description: 'As a best practice, you should upgrade all node pools in an AKS
 
-      cluster.'
+      cluster to the same Kubernetes version. The node pool version must have the
+      same major version
+
+      as the control plane. The node pool minor version must be within two minor versions
+      of the
+
+      control plane version. The node pool version cannot be greater than the control
+      plane version.
+
+      For more information see [upgrading a node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).'
     isRequired: true
     types:
     - <xref:str>
@@ -178,39 +197,47 @@ constructor:
     types:
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.AgentPoolUpgradeSettings>
   - name: availability_zones
-    description: 'Availability zones for nodes. Must use VirtualMachineScaleSets
+    description: 'The list of Availability zones to use for nodes. This can only be
 
-      AgentPoolType.'
+      specified if the AgentPoolType property is ''VirtualMachineScaleSets''.'
     isRequired: true
     types:
     - <xref:list>[<xref:str>]
   - name: enable_node_public_ip
-    description: Enable public IP for nodes.
+    description: 'Some scenarios may require nodes in a node pool to receive their
+
+      own dedicated public IP addresses. A common scenario is for gaming workloads,
+      where a console
+
+      needs to make a direct connection to a cloud virtual machine to minimize hops.
+      For more
+
+      information see [assigning a public IP per node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
+
+      The default is false.'
     isRequired: true
     types:
     - <xref:bool>
   - name: node_public_ip_prefix_id
-    description: 'Public IP Prefix ID. VM nodes use IPs assigned from this
+    description: 'This is of the form:
 
-      Public IP Prefix.'
+      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.'
     isRequired: true
     types:
     - <xref:str>
   - name: scale_set_priority
-    description: 'ScaleSetPriority to be used to specify virtual machine scale set
+    description: 'The Virtual Machine Scale Set priority. If not specified, the
 
-      priority. Default to regular. Possible values include: "Spot", "Regular". Default
-      value:
-
-      "Regular".'
+      default is ''Regular''. Possible values include: "Spot", "Regular". Default
+      value: "Regular".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.ScaleSetPriority>
   - name: scale_set_eviction_policy
-    description: 'ScaleSetEvictionPolicy to be used to specify eviction policy
+    description: 'This cannot be specified unless the scaleSetPriority is
 
-      for Spot virtual machine scale set. Default to Delete. Possible values include:
+      ''Spot''. If not specified, the default is ''Delete''. Possible values include:
       "Delete",
 
       "Deallocate". Default value: "Delete".'
@@ -219,35 +246,33 @@ constructor:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.ScaleSetEvictionPolicy>
   - name: spot_max_price
-    description: 'SpotMaxPrice to be used to specify the maximum price you are willing
-      to
+    description: 'Possible values are any decimal value greater than zero or -1 which
 
-      pay in US Dollars. Possible values are any decimal value greater than zero or
-      -1 which
+      indicates the willingness to pay any on-demand price. For more details on spot
+      pricing, see
 
-      indicates default price to be up-to on-demand.'
+      [spot VMs pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).'
     isRequired: true
     types:
     - <xref:float>
   - name: tags
-    description: 'A set of tags. Agent pool tags to be persisted on the agent pool
-      virtual machine
+    description: 'A set of tags. The tags to be persisted on the agent pool virtual
+      machine scale
 
-      scale set.'
+      set.'
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: node_labels
-    description: Agent pool node labels to be persisted across all nodes in agent
-      pool.
+    description: The node labels to be persisted across all nodes in agent pool.
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: node_taints
-    description: 'Taints added to new nodes during node pool create and scale. For
-      example,
+    description: 'The taints added to new nodes during node pool create and scale.
+      For
 
-      key=value:NoSchedule.'
+      example, key=value:NoSchedule.'
     isRequired: true
     types:
     - <xref:list>[<xref:str>]
@@ -257,17 +282,21 @@ constructor:
     types:
     - <xref:str>
   - name: kubelet_config
-    description: KubeletConfig specifies the configuration of kubelet on agent nodes.
+    description: The Kubelet configuration on the agent pool nodes.
     isRequired: true
     types:
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.KubeletConfig>
   - name: linux_os_config
-    description: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+    description: The OS configuration of Linux agent nodes.
     isRequired: true
     types:
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.LinuxOSConfig>
   - name: enable_encryption_at_host
-    description: Whether to enable EncryptionAtHost.
+    description: 'This is only supported on certain VM sizes and in certain
+
+      Azure regions. For more information, see:
+
+      [https://docs.microsoft.com/azure/aks/enable-host-encryption](https://docs.microsoft.com/azure/aks/enable-host-encryption).'
     isRequired: true
     types:
     - <xref:bool>
@@ -277,29 +306,27 @@ constructor:
     types:
     - <xref:bool>
   - name: enable_fips
-    description: Whether to use FIPS enabled OS.
+    description: 'See [Add a FIPS-enabled node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview)
+
+      for more details.'
     isRequired: true
     types:
     - <xref:bool>
   - name: gpu_instance_profile
     description: 'GPUInstanceProfile to be used to specify GPU MIG instance profile
 
-      for supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and
-      MIG7g. Possible
-
-      values include: "MIG1g", "MIG2g", "MIG3g", "MIG4g", "MIG7g".'
+      for supported GPU VM SKU. Possible values include: "MIG1g", "MIG2g", "MIG3g",
+      "MIG4g", "MIG7g".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.containerservice.v2021_05_01.models.GPUInstanceProfile>
 variables:
-- description: Version of node image.
+- description: The version of node image.
   name: node_image_version
   types:
   - <xref:str>
-- description: 'The current deployment or provisioning state, which only appears in
-
-    the response.'
+- description: The current deployment or provisioning state.
   name: provisioning_state
   types:
   - <xref:str>
