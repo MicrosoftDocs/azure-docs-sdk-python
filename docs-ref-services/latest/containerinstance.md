@@ -137,11 +137,11 @@ This example deletes several container groups from a resource group, as well as 
 [samples-python]: https://azure.microsoft.com/resources/samples/?platform=python
 
 <!-- TYPES -->
-[AzureOperationPoller]: /python/api/msrestazure.azure_operation.AzureOperationPoller
-[client_factory]: /python/api/azure.common.client_factory
-[Container]: /python/api/azure.mgmt.containerinstance.models.container
-[ContainerGroupInstanceView]: /python/api/azure.mgmt.containerinstance.models.containergrouppropertiesinstanceview
-[containergroupoperations_get]: /python/api/azure.mgmt.containerinstance.operations.containergroupsoperations#get-resource-group-name--container-group-name--custom-headers-none--raw-false----operation-config-
-[ContainerInstanceManagementClient]: /python/api/azure.mgmt.containerinstance.containerinstancemanagementclient
-[instance_view]: /python/api/azure.mgmt.containerinstance.models.containergroup#variables
-[ResourceManagementClient]: /python/api/azure.mgmt.resource.resources.resourcemanagementclient
+[AzureOperationPoller]: /python/api/msrestazure/msrestazure.azure_operation.AzureOperationPoller
+[client_factory]: /python/api/azure-common/azure.common.client_factory
+[Container]: /python/api/azure-mgmt-containerinstance/azure.mgmt.containerinstance.models.container
+[ContainerGroupInstanceView]: /python/api/azure-mgmt-containerinstance/azure.mgmt.containerinstance.models.containergrouppropertiesinstanceview
+[containergroupoperations_get]: /python/api/azure-mgmt-containerinstance/azure.mgmt.containerinstance.operations.containergroupsoperations#get-resource-group-name--container-group-name--custom-headers-none--raw-false----operation-config-
+[ContainerInstanceManagementClient]: /python/api/azure-mgmt-containerinstance/azure.mgmt.containerinstance.containerinstancemanagementclient
+[instance_view]: /python/api/azure-mgmt-containerinstance/azure.mgmt.containerinstance.models.containergroup#variables
+[ResourceManagementClient]: /python/api/azure-mgmt-resource/azure.mgmt.resource.resources.resourcemanagementclient
