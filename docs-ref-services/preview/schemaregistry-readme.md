@@ -1,17 +1,17 @@
 ---
 title: Azure Schema Registry client library for Python
-keywords: Azure, python, SDK, API, azure-schemaregistry, 
+keywords: Azure, python, SDK, API, azure-schemaregistry, eventhubs
 author: maggiepint
 ms.author: magpint
-ms.date: 09/09/2020
+ms.date: 08/17/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: eventhubs
 ---
 
-# Azure Schema Registry client library for Python - Version 1.0.0b1 
+# Azure Schema Registry client library for Python - Version 1.0.0b2 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
@@ -30,14 +30,14 @@ Install the Azure Schema Registry client library and Azure Identity client libra
 pip install azure-schemaregistry azure-identity
 ```
 
-### Prerequisites: 
+### Prerequisites:
 To use this package, you must have:
 * Azure subscription - [Create a free account][azure_sub]
 * [Azure Schema Registry][schemaregistry_service]
-* Python 2.7, 3.5 or later - [Install Python][python]
+* Python 2.7, 3.6 or later - [Install Python][python]
 
 ### Authenticate the client
-Interaction with Schema Registry starts with an instance of SchemaRegistryClient class. You need the endpoint and AAD credential to instantiate the client object. 
+Interaction with Schema Registry starts with an instance of SchemaRegistryClient class. You need the endpoint and AAD credential to instantiate the client object.
 
 **Create client using the azure-identity library:**
 
@@ -54,7 +54,7 @@ schema_registry_client = SchemaRegistryClient(endpoint, credential)
 
 - Schema: Schema is the organization or structure for data.
 
-- SchemaRegistryClient: `SchemaRegistryClient ` provides the API for storing and retrieving schemas in schema registry.
+- SchemaRegistryClient: `SchemaRegistryClient` provides the API for storing and retrieving schemas in schema registry.
 
 ## Examples
 
@@ -65,6 +65,9 @@ The following sections provide several code snippets covering some of the most c
 - [Get the id of a schema](#get-the-id-of-a-schema)
 
 ### Register a schema
+
+Use `SchemaRegistryClient.register_schema` method to register a schema.
+When registering a schema, the `Schema` and `SchemaProperties` will be cached in the `SchemaRegistryClient` instance, so that any subsequent calls to `get_schema_id` and `get_schema` corresponding to the same schema can use the cached value rather than going to the service.
 
 ```python
 import os
@@ -97,6 +100,9 @@ with schema_registry_client:
 
 ### Get the schema by id
 
+Get the schema content and its properties by schema id.
+When looking up the schema content by schema id, the `Schema` will be cached in the `SchemaRegistryClient` instance so that subsequent requests for this schema id do not need to go the service.
+
 ```python
 import os
 
@@ -114,6 +120,9 @@ with schema_registry_client:
 ```
 
 ### Get the id of a schema
+
+Get the schema id of a schema by schema content and its properties.
+When looking up the schema id, the `Schema` and `SchemaProperties` will be cached in the `SchemaRegistryClient` instance, so that subsequent requests for this schema do not need to go the service.
 
 ```python
 import os
@@ -189,6 +198,13 @@ schema_registry_client.get_schema(schema_id, logging_enable=True)
 
 Please take a look at the [samples][sr_samples] directory for detailed examples of how to use this library to register and retrieve schema to/from Schema Registry.
 
+### Event Hubs and Avro Serializer
+
+We provide [azure-schemaregistry-avroserializer][schemaregistry_avroserializer_pypi] library as serializer
+implementation to serialize/deserialize avro data integrated with `azure-schemaregistry` for automatic schema registration and retrieval.
+It integrates nicely with the [EventHubs SDK][eventhubs_repo].
+For more information and sample codes, please refer to the [Azure Schema Registry Avro Serializer SDK][schemaregistry_avroserializer_repo].
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -207,11 +223,14 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-schemaregistry
 [python]: https://www.python.org/downloads/
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.0.0b1/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.0.0b2/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b1/sdk/schemaregistry/azure-schemaregistry/samples
+[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b2/sdk/schemaregistry/azure-schemaregistry/samples
 [api_reference]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-schemaregistry/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b1/sdk/schemaregistry/azure-schemaregistry
-[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b1/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b2/sdk/schemaregistry/azure-schemaregistry
+[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b2/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
 [schemaregistry_service]: https://aka.ms/schemaregistry
+[schemaregistry_avroserializer_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b2/sdk/schemaregistry/azure-schemaregistry-avroserializer
+[schemaregistry_avroserializer_pypi]: https://pypi.org/project/azure-schemaregistry-avroserializer/
+[eventhubs_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b2/sdk/eventhub/azure-eventhub
