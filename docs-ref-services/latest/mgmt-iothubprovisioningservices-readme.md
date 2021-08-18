@@ -3,8 +3,8 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-iothubprovisioningservices, iothub
 author: maggiepint
 ms.author: magpint
-ms.date: 08/17/2021
-ms.topic: article
+ms.date: 08/18/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
