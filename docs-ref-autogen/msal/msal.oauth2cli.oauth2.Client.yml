@@ -213,8 +213,8 @@ methods:
 
     Internally, it implements PKCE to mitigate the auth code interception attack.'
   signature: obtain_token_by_browser(scope=None, extra_scope_to_consent=None, redirect_uri=None,
-    timeout=None, welcome_template=None, success_template=None, auth_params=None,
-    auth_uri_callback=None, **kwargs)
+    timeout=None, welcome_template=None, success_template=None, error_template=None,
+    auth_params=None, auth_uri_callback=None, browser_name=None, **kwargs)
   parameters:
   - name: scope
     description: A list of scopes that you would like to obtain token for.
@@ -265,11 +265,26 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
-  - name: success_template
+  - name: browser_name
+    description: 'If you did
+
+      `webbrowser.register("xyz", None, BackgroundBrowser("/path/to/browser"))`
+
+      beforehand, you can pass in the name "xyz" to use that browser.
+
+      The default value `None` means using default browser,
+
+      which is customizable by env var $BROWSER.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: error_template
     defaultValue: None
   - name: auth_params
     defaultValue: None
   - name: auth_uri_callback
+    defaultValue: None
+  - name: browser_name
     defaultValue: None
   return:
     description: Same as <xref:msal.oauth2cli.oauth2.Client.obtain_token_by_auth_code_flow>
@@ -299,7 +314,7 @@ methods:
       \ turn off the loop. You can do so by using a callback as:\n\n   exit_condition\
       \ = lambda flow: True\n\nto make the loop run only once, i.e. no polling, hence\
       \ non-block."
-    defaultValue: <function Client.<lambda> at 0x000001750F6FDAE8>
+    defaultValue: <function Client.<lambda> at 0x000001B1AA6BEB70>
     types:
     - <xref:Callable>
 - uid: msal.oauth2cli.oauth2.Client.obtain_token_by_refresh_token
@@ -329,7 +344,7 @@ methods:
     defaultValue: None
   - name: rt_getter
     description: A callable to translate the token_item to a raw RT string
-    defaultValue: <function Client.<lambda> at 0x000001750F6FE488>
+    defaultValue: <function Client.<lambda> at 0x000001B1AA6BF510>
   - name: on_removing_rt
     description: If absent, fall back to the one defined in initialization
     defaultValue: None
