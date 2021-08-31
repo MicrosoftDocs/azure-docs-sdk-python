@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-iothub, iothub
 author: maggiepint
 ms.author: magpint
-ms.date: 05/17/2021
+ms.date: 08/26/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -20,8 +20,14 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 # Usage
 
-For code examples, see [IoTHub Management](https://docs.microsoft.com/python/api/overview/azure/iot)
-on docs.microsoft.com.
+
+To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
+
+
+
+For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
+Code samples for this package can be found at [IoTHub Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 # Provide Feedback
