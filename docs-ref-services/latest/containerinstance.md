@@ -114,7 +114,7 @@ The [get operation][containergroupoperations_get] returns a container group with
 This example deletes several container groups from a resource group, as well as the resource group.
 
 <!-- SOURCE REPO: https://github.com/Azure-Samples/aci-docs-sample-python -->
-[!code-python[delete_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L83-L91 "Delete container groups and resource group")]
+[!code-python[delete_container_group](~/aci-docs-sample-python/src/aci_docs_sample.py#L83-L92 "Delete container groups and resource group")]
 
 ## Next steps
 
