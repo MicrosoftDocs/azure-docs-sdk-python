@@ -15,7 +15,7 @@ summary: 'Volume resource.
 constructor:
   syntax: 'Volume(*, location: str, creation_token: str, usage_threshold: int = 107374182400,
     subnet_id: str, tags: typing.Union[typing.Dict[str, str], NoneType] = None, service_level:
-    typing.Union[str, _ForwardRef(''ServiceLevel''), NoneType] = None, export_policy:
+    typing.Union[str, _ForwardRef(''ServiceLevel''), NoneType] = ''Premium'', export_policy:
     typing.Union[_ForwardRef(''VolumePropertiesExportPolicy''), NoneType] = None,
     protocol_types: typing.Union[typing.List[str], NoneType] = None, snapshot_id:
     typing.Union[str, NoneType] = None, backup_id: typing.Union[str, NoneType] = None,
@@ -28,7 +28,10 @@ constructor:
     = 0, encryption_key_source: typing.Union[str, NoneType] = None, ldap_enabled:
     typing.Union[bool, NoneType] = False, cool_access: typing.Union[bool, NoneType]
     = False, coolness_period: typing.Union[int, NoneType] = None, unix_permissions:
-    typing.Union[str, NoneType] = None, **kwargs)'
+    typing.Union[str, NoneType] = ''0770'', avs_data_store: typing.Union[str, _ForwardRef(''AvsDataStore''),
+    NoneType] = ''Disabled'', is_default_quota_enabled: typing.Union[bool, NoneType]
+    = False, default_user_quota_in_ki_bs: typing.Union[int, NoneType] = 0, default_group_quota_in_ki_bs:
+    typing.Union[int, NoneType] = 0, **kwargs)'
   parameters:
   - name: location
     description: Required. Resource location.
@@ -51,7 +54,7 @@ constructor:
   - name: service_level
     description: 'The service level of the file system. Possible values include:
 
-      "Standard", "Premium", "Ultra".'
+      "Standard", "Premium", "Ultra", "StandardZRS". Default value: "Premium".'
     isRequired: true
     types:
     - <xref:str>
@@ -198,6 +201,35 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  - name: avs_data_store
+    description: 'Specifies whether the volume is enabled for Azure VMware Solution
+      (AVS)
+
+      datastore purpose. Possible values include: "Enabled", "Disabled". Default value:
+      "Disabled".'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.AvsDataStore>
+  - name: is_default_quota_enabled
+    description: Specifies if default quota is enabled for the volume.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: default_user_quota_in_ki_bs
+    description: 'Default user quota for volume in KiBs. If
+
+      isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .'
+    isRequired: true
+    types:
+    - <xref:long>
+  - name: default_group_quota_in_ki_bs
+    description: 'Default group quota for volume in KiBs. If
+
+      isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies.'
+    isRequired: true
+    types:
+    - <xref:long>
 variables:
 - description: Resource Id.
   name: id
@@ -205,6 +237,10 @@ variables:
   - <xref:str>
 - description: Resource name.
   name: name
+  types:
+  - <xref:str>
+- description: A unique read-only string that changes whenever the resource is updated.
+  name: etag
   types:
   - <xref:str>
 - description: Resource type.
@@ -227,3 +263,16 @@ variables:
   name: mount_targets
   types:
   - <xref:list>[<xref:azure.mgmt.netapp.models.MountTargetProperties>]
+- description: 'When a volume is being restored from another volume''s snapshot, will
+    show
+
+    the percentage completion of this cloning process. When this value is empty/null
+    there is no
+
+    cloning process currently happening on this volume. This value will update every
+    5 minutes
+
+    during cloning.'
+  name: clone_progress
+  types:
+  - <xref:int>
