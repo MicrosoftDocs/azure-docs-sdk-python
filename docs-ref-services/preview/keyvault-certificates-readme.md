@@ -1,24 +1,27 @@
 ---
 title: Azure Key Vault Certificates client library for Python
-keywords: Azure, Python, SDK, API, keyvault, azure-keyvault-certificates
+keywords: Azure, python, SDK, API, azure-keyvault-certificates, keyvault
 author: maggiepint
 ms.author: magpint
-ms.date: 04/16/2020
+ms.date: 09/09/2021
 ms.topic: reference
-ms.devlang: Python
-ms.service: key-vault
+ms.prod: azure
+ms.technology: azure
+ms.devlang: python
+ms.service: keyvault
 ---
 
-# Azure Key Vault Certificates client library for Python - Version 4.2.0b1 
+# Azure Key Vault Certificates client library for Python - Version 4.4.0b1 
 
 Azure Key Vault helps solve the following problems:
 - Certificate management (this library) - create, manage, and deploy public and private SSL/TLS certificates
 - Cryptographic key management
-([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-keys)) - create, store, and control access to the keys used to encrypt your data
+([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-keys)) - create, store, and control access to the keys used to encrypt your data
 - Secrets management
-([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-secrets)) -
+([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-secrets)) -
 securely store and control access to tokens, passwords, certificates, API keys,
 and other secrets
+- Vault administration ([azure-keyvault-administration](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-administration)) - role-based access control (RBAC), and vault-level backup and restore options
 
 [Source code][certificates_client_src] | [Package (PyPI)][pypi_package_certificates] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][certificates_samples]
 
@@ -120,6 +123,8 @@ az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --certificate-
 ```
 > Possible certificate permissions: backup, create, delete, deleteissuers, get, getissuers, import, list, listissuers, managecontacts, manageissuers, purge, recover, restore, setissuers, update
 
+If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Certificates Officer" in our [RBAC guide][rbac_guide].
+
 #### Create a client
 Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
 **AZURE_TENANT_ID** environment variables are set,
@@ -157,10 +162,10 @@ This section contains code snippets covering common tasks:
 * [Asynchronously list properties of Certificates](#asynchronously-list-properties-of-certificates "Asynchronously list properties of Certificates")
 
 ### Create a Certificate
-[begin_create_certificate](https://aka.ms/azsdk-python-keyvault-certificates-begincreatecert-ref) creates a certificate to be stored in the Azure Key Vault.
-If a certificate with the same name already exists, then a new version of the certificate is created.
-Before creating a certificate, a management policy for the certificate can be created or our default
-policy will be used. The [begin_create_certificate](https://aka.ms/azsdk-python-keyvault-certificates-begincreatecert-ref) operation returns a long running operation poller.
+[begin_create_certificate](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.begin_create_certificate)
+creates a certificate to be stored in the Azure Key Vault. If a certificate with the same name already exists, a new
+version of the certificate is created. Before creating a certificate, a management policy for the certificate can be
+created or our default policy will be used. This method returns a long running operation poller.
 ```python
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient, CertificatePolicy
@@ -175,11 +180,12 @@ create_certificate_poller = certificate_client.begin_create_certificate(
 print(create_certificate_poller.result())
 ```
 If you would like to check the status of your certificate creation, you can call `status()` on the poller or
-[get_certificate_operation](https://aka.ms/azsdk-python-keyvault-certificates-getcertop-ref) with the name of the certificate.
+[get_certificate_operation](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.get_certificate_operation)
+with the name of the certificate.
 
 ### Retrieve a Certificate
-[get_certificate](https://aka.ms/azsdk-python-keyvault-certificates-getcert-ref) retrieves a certificate previously stored in the Key Vault without
-having to specify version.
+[get_certificate](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.get_certificate)
+retrieves the latest version of a certificate previously stored in the Key Vault.
 ```python
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient
@@ -195,8 +201,8 @@ print(certificate.properties.version)
 print(certificate.policy.issuer_name)
 ```
 
-[get_certificate_version](https://aka.ms/azsdk-python-keyvault-certificates-getcertversion-ref) retrieves a certificate based on the certificate name and the version of the certificate.
-Version is required.
+[get_certificate_version](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.get_certificate_version)
+retrieves a specific version of a certificate.
 ```python
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient
@@ -211,7 +217,8 @@ print(certificate.properties.version)
 ```
 
 ### Update properties of an existing Certificate
-[update_certificate_properties](https://aka.ms/azsdk-python-keyvault-certificates-updatecertprops-ref) updates a certificate previously stored in the Key Vault.
+[update_certificate_properties](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.update_certificate_properties)
+updates a certificate previously stored in the Key Vault.
 ```python
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient
@@ -230,10 +237,11 @@ print(updated_certificate.properties.enabled)
 ```
 
 ### Delete a Certificate
-[begin_delete_certificate](https://aka.ms/azsdk-python-keyvault-certs-deletecert-ref) requests Key Vault delete a certificate, returning a poller which allows you to
-wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete]
-enabled, and you want to purge (permanently delete) the certificate as soon as possible.
-When [soft-delete][soft_delete] is disabled, [begin_delete_certificate](https://aka.ms/azsdk-python-keyvault-certs-deletecert-ref) itself is permanent.
+[begin_delete_certificate](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.begin_delete_certificate)
+requests Key Vault delete a certificate, returning a poller which allows you to wait for the deletion to finish.
+Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge
+(permanently delete) the certificate as soon as possible. When [soft-delete][soft_delete] is disabled,
+`begin_delete_certificate` itself is permanent.
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -243,13 +251,15 @@ credential = DefaultAzureCredential()
 
 certificate_client = CertificateClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 
-deleted_certificate = certificate_client.begin_delete_certificate("cert-name")
+deleted_certificate_poller = certificate_client.begin_delete_certificate("cert-name")
 
+deleted_certificate = deleted_certificate_poller.result()
 print(deleted_certificate.name)
 print(deleted_certificate.deleted_on)
 ```
 ### List properties of Certificates
-[list_properties_of_certificates](https://aka.ms/azsdk-python-keyvault-certs-listcerts-ref) lists the properties of all certificates in the specified Key Vault.
+[list_properties_of_certificates](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient.list_properties_of_certificates)
+lists the properties of all certificates in the specified Key Vault.
 ```python
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient
@@ -269,11 +279,11 @@ for certificate in certificates:
 This library includes a complete async API supported on Python 3.5+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
 for more information.
 
-Async clients should be closed when they're no longer needed. Each async
-client is an async context manager and defines an async `close` method. For
+Async clients and credentials should be closed when they're no longer needed. These
+objects are async context managers and define async `close` methods. For
 example:
 
 ```py
@@ -282,23 +292,27 @@ from azure.keyvault.certificates.aio import CertificateClient
 
 credential = DefaultAzureCredential()
 
-# call close when the client is no longer needed
+# call close when the client and credential are no longer needed
 client = CertificateClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 ...
 await client.close()
+await credential.close()
 
-# alternatively, use the client as an async context manager
+# alternatively, use them as async context managers (contextlib.AsyncExitStack can help)
 client = CertificateClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
 async with client:
-  ...
+  async with credential:
+    ...
 ```
 
 ### Asynchronously create a Certificate
-[create_certificate](https://aka.ms/azsdk-python-keyvault-certs-async-createcert) creates a certificate to be stored in the Azure Key Vault. If a certificate with the
-same name already exists, then a new version of the certificate is created.
-Before creating a certificate, a management policy for the certificate can be created or our default policy
-will be used. Awaiting the call to [create_certificate](https://aka.ms/azsdk-python-keyvault-certs-async-createcert) returns your created certificate if creation is successful,
-and a [CertificateOperation](https://aka.ms/azsdk-python-keyvault-certs-models-certop-ref) if creation is not.
+[create_certificate](https://aka.ms/azsdk/python/keyvault-certificates/aio/docs#azure.keyvault.certificates.aio.CertificateClient.create_certificate)
+creates a certificate to be stored in the Azure Key Vault. If a certificate with the same name already exists, a new
+version of the certificate is created. Before creating a certificate, a management policy for the certificate can be
+created or our default policy will be used. Awaiting `create_certificate` returns your created certificate if creation
+is successful, and a
+[CertificateOperation](https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateOperation)
+if it is not.
 ```python
 from azure.identity.aio import DefaultAzureCredential
 from azure.keyvault.certificates.aio import CertificateClient
@@ -315,8 +329,8 @@ print(create_certificate_result)
 ```
 
 ### Asynchronously list properties of Certificates
-[list_properties_of_certificates](https://aka.ms/azsdk-python-keyvault-certs-async-listcerts-ref) lists all the
-properties of the certificates in the client's vault:
+[list_properties_of_certificates](https://aka.ms/azsdk/python/keyvault-certificates/aio/docs#azure.keyvault.certificates.aio.CertificateClient.list_properties_of_certificates)
+lists all the properties of the certificates in the client's vault:
 ```python
 from azure.identity.aio import DefaultAzureCredential
 from azure.keyvault.certificates.aio import CertificateClient
@@ -405,40 +419,39 @@ you need to provide a CLA and decorate the PR appropriately (e.g., label,
 comment). Simply follow the instructions provided by the bot. You will only
 need to do this once across all repos using our CLA.
 
-This project has adopted the
-[Microsoft Open Source Code of Conduct][code_of_conduct]. For more information,
-see the Code of Conduct FAQ or contact opencode@microsoft.com with any
-additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct].
+For more information, see the
+[Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact opencode@microsoft.com with any additional questions or comments.
 
-[asyncio_package]: https://docs.python.org/3/library/asyncio.html
-[default_cred_ref]: https://aka.ms/azsdk-python-identity-default-cred-ref
+[default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
 [azure_cloud_shell]: https://shell.azure.com/bash
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/core/azure-core#azure-core-library-exceptions
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/backup_restore_operations.py
-[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/backup_restore_operations_async.py
-[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/hello_world.py
-[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/hello_world_async.py
+[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/backup_restore_operations.py
+[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/backup_restore_operations_async.py
+[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/hello_world.py
+[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/hello_world_async.py
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/list_operations.py
-[list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/list_operations_async.py
-[recover_purge_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/recover_purge_operations.py
-[recover_purge_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/recover_purge_operations_async.py
-[contacts_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/contacts.py
-[contacts_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/contacts_async.py
-[issuers_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/issuers.py
-[issuers_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/samples/issuers_async.py
+[list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/list_operations.py
+[list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/list_operations_async.py
+[recover_purge_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/recover_purge_operations.py
+[recover_purge_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/recover_purge_operations_async.py
+[contacts_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/contacts.py
+[contacts_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/contacts_async.py
+[issuers_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/issuers.py
+[issuers_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples/issuers_async.py
 [pip]: https://pypi.org/project/pip/
 [pypi_package_certificates]: https://pypi.org/project/azure-keyvault-certificates/
-[certificate_client_docs]: https://aka.ms/azsdk-python-keyvault-certificates-certificateclient-ref
-[reference_docs]: https://aka.ms/azsdk-python-keyvault-certificates-docs
-[certificates_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-certificates/azure/keyvault/certificates
-[certificates_samples]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-certificates/samples
-[soft_delete]: https://docs.microsoft.com/azure/key-vault/key-vault-ovw-soft-delete
-[test_example_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/tests/test_examples_certificates.py
-[test_example_certificates_async]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/keyvault/azure-keyvault-certificates/tests/test_examples_certificates_async.py
+[certificate_client_docs]: https://aka.ms/azsdk/python/keyvault-certificates/docs#azure.keyvault.certificates.CertificateClient
+[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
+[reference_docs]: https://aka.ms/azsdk/python/keyvault-certificates/docs
+[certificates_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/azure/keyvault/certificates
+[certificates_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.4.0b1/sdk/keyvault/azure-keyvault-certificates/samples
+[soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-certificates%2FFREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-certificates%2FREADME.png)
+
