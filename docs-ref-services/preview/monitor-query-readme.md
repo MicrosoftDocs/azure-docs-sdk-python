@@ -3,7 +3,7 @@ title: Azure Monitor Query client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-query, monitor
 author: maggiepint
 ms.author: magpint
-ms.date: 08/09/2021
+ms.date: 09/09/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: monitor
 ---
 
-# Azure Monitor Query client library for Python - Version 1.0.0b3 
+# Azure Monitor Query client library for Python - Version 1.0.0b4 
 
 
 Azure Monitor helps you maximize the availability and performance of your apps. It delivers a comprehensive solution for collecting, analyzing, and acting on telemetry from your cloud and on-premises environments.
@@ -114,7 +114,7 @@ Each set of metric values is a time series with the following characteristics:
 ## Examples
 
 - [Single logs query](#single-logs-query)
-  - [Specify duration](#specify-duration)
+  - [Specify timespan](#specify-timespan)
   - [Set logs query timeout](#set-logs-query-timeout)
 - [Batch logs query](#batch-logs-query)
 - [Query metrics](#query-metrics)
@@ -127,9 +127,9 @@ Each set of metric values is a time series with the following characteristics:
 
 This example shows getting a log query. To handle the response and view it in a tabular form, the [pandas](https://pypi.org/project/pandas/) library is used. See the [samples][python-query-samples] if you choose not to use pandas.
 
-#### Specify duration
+#### Specify timespan
 
-The `duration` parameter specifies the time duration for which to query the data. This argument can also be accompanied with either `start_time` or `end_time`. If either `start_time` or `end_time` aren't provided, the current time is used as the end time. As an alternative, the `start_time` and `end_time` arguments can be provided together instead of the `duration` argument. For example:
+The `timespan` parameter specifies the time duration for which to query the data. The timespan for which to query the data. This can be a timedelta, a timedelta and a start datetime, or a start datetime/end datetime. For example:
 
 ```python
 import os
@@ -146,12 +146,14 @@ client = LogsQueryClient(credential)
 query = """AppRequests |
 summarize avgRequestDuration=avg(DurationMs) by bin(TimeGenerated, 10m), _ResourceId"""
 
+start_time=datetime(2021, 7, 2)
+end_time=datetime.now()
+
 # returns LogsQueryResult
 response = client.query(
     os.environ['LOG_WORKSPACE_ID'],
     query,
-    start_time=datetime(2021, 6, 2),
-    end_time=datetime.now()
+    timespan=(start_time, end_time)
     )
 
 if not response.tables:
@@ -197,16 +199,15 @@ credential = DefaultAzureCredential()
 client = LogsQueryClient(credential)
 
 requests = [
-    LogsBatchQueryRequest(
+    LogsBatchQuery(
         query="AzureActivity | summarize count()",
-        duration=timedelta(hours=1),
+        timespan=timedelta(hours=1),
         workspace_id=os.environ['LOG_WORKSPACE_ID']
     ),
-    LogsBatchQueryRequest(
+    LogsBatchQuery(
         query= """AppRequests | take 10  |
             summarize avgRequestDuration=avg(DurationMs) by bin(TimeGenerated, 10m), _ResourceId""",
-        duration=timedelta(hours=1),
-        start_time=datetime(2021, 6, 2),
+        timespan=(datetime(2021, 6, 2), timedelta(hours=1)),
         workspace_id=os.environ['LOG_WORKSPACE_ID']
     ),
     LogsBatchQueryRequest(
@@ -214,7 +215,7 @@ requests = [
         workspace_id=os.environ['LOG_WORKSPACE_ID']
     ),
 ]
-response = client.batch_query(requests)
+response = client.query_batch(requests)
 
 for rsp in response:
     body = rsp.body
@@ -228,21 +229,19 @@ for rsp in response:
 
 #### Handling the response for Logs Query
 
-The `query` API returns the `LogsQueryResult` while the `batch_query` API returns the `LogsBatchQueryResult`.
+The `query` API returns the `LogsQueryResult` while the `batch_query` API returns list of `LogsQueryResult`.
 
 Here is a heirarchy of the response:
 
 ```
-LogsQueryResult / LogsBatchQueryResult
-|---id (this exists in `LogsBatchQueryResult` object only)
-|---status (this exists in `LogsBatchQueryResult` object only)
+LogsQueryResult
 |---statistics
-|---render
+|---visualization
 |---error
-|---tables (list of `LogsQueryResultTable` objects)
+|---tables (list of `LogsTable` objects)
     |---name
     |---rows
-    |---columns (list of `LogsQueryResultColumn` objects)
+    |---columns (list of `LogsTableColumn` objects)
         |---name
         |---type
 ```
@@ -253,7 +252,7 @@ So, to handle a response with tables and display it using pandas,
 table = response.tables[0]
 df = pd.DataFrame(table.rows, columns=[col.name for col in table.columns])
 ```
-A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b3/sdk/monitor/azure-monitor-query/samples/sample_log_query_client.py).
+A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b4/sdk/monitor/azure-monitor-query/samples/sample_log_query_client.py).
 
 In a very similar fashion, to handle a batch response, 
 
@@ -262,7 +261,7 @@ for result in response:
     table = result.tables[0]
     df = pd.DataFrame(table.rows, columns=[col.name for col in table.columns])
 ```
-A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b3/sdk/monitor/azure-monitor-query/samples/sample_batch_query.py).
+A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b4/sdk/monitor/azure-monitor-query/samples/sample_batch_query.py).
 
 ### Query metrics
 
@@ -284,13 +283,13 @@ from azure.identity import DefaultAzureCredential
 
 credential = DefaultAzureCredential()
 client = MetricsQueryClient(credential)
-
+start_time = datetime(2021, 5, 25)
+duration = timedelta(days=1)
 metrics_uri = os.environ['METRICS_RESOURCE_URI']
 response = client.query(
     metrics_uri,
     metric_names=["PublishSuccessCount"],
-    start_time=datetime(2021, 5, 25),
-    duration=timedelta(days=1),
+    timespan=(start_time, duration)
     )
 
 for metric in response.metrics:
@@ -302,15 +301,15 @@ for metric in response.metrics:
 
 ### Handle metrics response
 
-The metrics query API returns a `MetricsResult` object. The `MetricsResult` object contains properties such as a list of `Metric`-typed objects, `interval`, `namespace`, and `timespan`. The `Metric` objects list can be accessed using the `metrics` param. Each `Metric` object in this list contains a list of `TimeSeriesElement` objects. Each `TimeSeriesElement` contains `data` and `metadata_values` properties. In visual form, the object hierarchy of the response resembles the following structure:
+The metrics query API returns a `MetricsResult` object. The `MetricsResult` object contains properties such as a list of `Metric`-typed objects, `granularity`, `namespace`, and `timespan`. The `Metric` objects list can be accessed using the `metrics` param. Each `Metric` object in this list contains a list of `TimeSeriesElement` objects. Each `TimeSeriesElement` contains `data` and `metadata_values` properties. In visual form, the object hierarchy of the response resembles the following structure:
 
 ```
 MetricsResult
-|---interval
+|---granularity
 |---timespan
 |---cost
 |---namespace
-|---resourceregion
+|---resource_region
 |---metrics (list of `Metric` objects)
     |---id
     |---type
@@ -326,7 +325,7 @@ MetricsResult
 ```python
 import os
 from datetime import datetime, timedelta
-from azure.monitor.query import MetricsQueryClient, AggregationType
+from azure.monitor.query import MetricsQueryClient, MetricAggregationType
 from azure.identity import DefaultAzureCredential
 
 credential = DefaultAzureCredential()
@@ -336,9 +335,7 @@ metrics_uri = os.environ['METRICS_RESOURCE_URI']
 response = client.query(
     metrics_uri,
     metric_names=["MatchedEventCount"],
-    start_time=datetime(2021, 6, 21),
-    duration=timedelta(days=1),
-    aggregations=[AggregationType.COUNT]
+    aggregations=[MetricAggregationType.COUNT]
     )
 
 for metric in response.metrics:
@@ -376,7 +373,7 @@ client.query(
     )
 ```
 
-A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b3/sdk/monitor/azure-monitor-query/samples/sample_log_query_multiple_workspaces.py).
+A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b4/sdk/monitor/azure-monitor-query/samples/sample_log_query_multiple_workspaces.py).
 
 ## Troubleshooting
 
@@ -411,12 +408,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 
 [azure_cli_link]: https://pypi.org/project/azure-cli/
-[python-query-src]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b3/sdk/monitor/azure-monitor-query/
+[python-query-src]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.0b4/sdk/monitor/azure-monitor-query/
 [python-query-pypi]: https://aka.ms/azsdk-python-monitor-query-pypi
 [python-query-product-docs]: https://docs.microsoft.com/azure/azure-monitor/
 [python-query-ref-docs]: https://docs.microsoft.com/python/api/overview/azure/monitor-query-readme?view=azure-python-preview
-[python-query-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.0.0b3/sdk/monitor/azure-monitor-query/samples
-[python-query-changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.0.0b3/sdk/monitor/azure-monitor-query/CHANGELOG.md
+[python-query-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.0.0b4/sdk/monitor/azure-monitor-query/samples
+[python-query-changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.0.0b4/sdk/monitor/azure-monitor-query/CHANGELOG.md
 [pip]: https://pypi.org/project/pip/
 
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
