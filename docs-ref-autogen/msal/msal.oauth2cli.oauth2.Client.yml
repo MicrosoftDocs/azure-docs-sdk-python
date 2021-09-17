@@ -19,7 +19,7 @@ methods:
   summary: 'Generate an authorization uri to be visited by resource owner.
 
 
-    Parameters are the same as another method <xref:msal.oauth2cli.oauth2.initiate_auth_code_flow>,
+    Parameters are the same as another method <xref:msal.oauth2cli.oauth2.Client.initiate_auth_code_flow>,
 
     whose functionality is a superset of this method.'
   signature: build_auth_request_uri(response_type, redirect_uri=None, scope=None,
@@ -42,7 +42,7 @@ methods:
 
     Later when the response reaches your redirect_uri,
 
-    you can use <xref:msal.oauth2cli.oauth2.obtain_token_by_auth_code_flow>
+    you can use <xref:msal.oauth2cli.oauth2.Client.obtain_token_by_auth_code_flow>
 
     to complete the authentication/authorization.
 
@@ -54,11 +54,13 @@ methods:
     description: 'It is a list of case-sensitive strings.
 
       Some ID provider can accept empty string to represent default scope.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:list>
   - name: redirect_uri
-    description: 'Optional. If not specified, server will use the pre-registered one.'
+    description: Optional. If not specified, server will use the pre-registered one.
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
@@ -68,6 +70,7 @@ methods:
       maintain state between the request and callback.
 
       If absent, this library will automatically generate one internally.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
@@ -77,15 +80,15 @@ methods:
   return:
     description: "The auth code flow. It is a dict in this form:\n\n<!-- literal_block\
       \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-      : [], \"xml:space\": \"preserve\"} -->\n\n````\n\n   {\n       \"auth_uri\"\
-      : \"https://...\",  // Guide user to visit this\n       \"state\": \"...\",\
-      \  // You may choose to verify it by yourself,\n                        // or\
-      \ just let obtain_token_by_auth_code_flow()\n                        // do that\
-      \ for you.\n       \"...\": \"...\",  // Everything else are reserved and internal\n\
-      \   }\n   ````\n\nThe caller is expected to:\n\n1. somehow store this content,\
-      \ typically inside the current session, \n\n2. guide the end user (i.e. resource\
-      \ owner) to visit that auth_uri, \n\n3. and then relay this dict and subsequent\
-      \ auth response to <xref:msal.oauth2cli.oauth2.obtain_token_by_auth_code_flow>."
+      : [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+      \ \"linenos\": false} -->\n\n````default\n\n   {\n       \"auth_uri\": \"https://...\"\
+      ,  // Guide user to visit this\n       \"state\": \"...\",  // You may choose\
+      \ to verify it by yourself,\n                        // or just let obtain_token_by_auth_code_flow()\n\
+      \                        // do that for you.\n       \"...\": \"...\",  // Everything\
+      \ else are reserved and internal\n   }\n   ````\n\nThe caller is expected to:\n\
+      \n1. somehow store this content, typically inside the current session, \n\n\
+      2. guide the end user (i.e. resource owner) to visit that auth_uri, \n\n3. and\
+      \ then relay this dict and subsequent auth response to <xref:msal.oauth2cli.oauth2.Client.obtain_token_by_auth_code_flow>."
 - uid: msal.oauth2cli.oauth2.Client.initiate_device_flow
   name: initiate_device_flow
   summary: 'Initiate a device flow.
@@ -126,6 +129,7 @@ methods:
     isRequired: true
   - name: scope
     description: Optional. It must be a subset of previously granted scopes.
+    isRequired: true
     defaultValue: None
 - uid: msal.oauth2cli.oauth2.Client.obtain_token_by_auth_code_flow
   name: obtain_token_by_auth_code_flow
@@ -154,6 +158,7 @@ methods:
       Some Identity Provider allows you to provide
 
       a subset of what you specified during <xref:msal.oauth2cli.oauth2.Client.initiate_auth_code_flow>.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:collections.Iterable>[<xref:str>]
@@ -166,8 +171,9 @@ methods:
       \ data error would result in ValueError exception. So the usage pattern could\
       \ be without any protocol details: \n\n  <!-- literal_block {\"ids\": [], \"\
       classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
-      : \"preserve\"} -->\n\n  ````\n\n     def authorize():  # A controller in a\
-      \ web app\n         try:\n             result = client.obtain_token_by_auth_code_flow(\n\
+      : \"preserve\", \"language\": \"default\", \"force\": false, \"linenos\": false}\
+      \ -->\n\n  ````default\n\n     def authorize():  # A controller in a web app\n\
+      \         try:\n             result = client.obtain_token_by_auth_code_flow(\n\
       \                 session.get(\"flow\", {}), auth_resp)\n             if \"\
       error\" in result:\n                 return render_template(\"error.html\",\
       \ result)\n             store_tokens()\n         except ValueError:  # Usually\
@@ -198,6 +204,7 @@ methods:
     description: 'Required, if the "redirect_uri" parameter was included in the
 
       authorization request, and their values MUST be identical.'
+    isRequired: true
     defaultValue: None
   - name: scope
     description: 'It is both unnecessary and harmless to use scope here, per RFC 6749.
@@ -205,6 +212,7 @@ methods:
       We suggest to use the same scope already used in auth request uri,
 
       so that this library can link the obtained tokens with their scope.'
+    isRequired: true
     defaultValue: None
 - uid: msal.oauth2cli.oauth2.Client.obtain_token_by_browser
   name: obtain_token_by_browser
@@ -218,6 +226,7 @@ methods:
   parameters:
   - name: scope
     description: A list of scopes that you would like to obtain token for.
+    isRequired: true
     defaultValue: None
     types:
     - <xref:collections.Iterable>[<xref:str>]
@@ -228,10 +237,11 @@ methods:
 
       but the refresh token would record those extra consent,
 
-      so that your future <xref:msal.oauth2cli.oauth2.obtain_token_by_refresh_token>
+      so that your future <xref:msal.oauth2cli.oauth2.Client.obtain_token_by_refresh_token>
       call
 
       would be able to obtain token for those additional scopes, silently.'
+    isRequired: true
     defaultValue: None
   - name: redirect_uri
     description: 'The redirect_uri to be sent via auth request to Identity Provider
@@ -252,16 +262,19 @@ methods:
       Per HTTP convention, if port number is absent, it would mean port 80,
 
       although you probably want to specify port 0 in this context.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:string>
   - name: auth_params
     description: These parameters will be sent to authorization_endpoint.
+    isRequired: true
     defaultValue: None
     types:
     - <xref:dict>
   - name: timeout
     description: In seconds. None means wait indefinitely.
+    isRequired: true
     defaultValue: None
     types:
     - <xref:int>
@@ -275,6 +288,7 @@ methods:
       The default value `None` means using default browser,
 
       which is customizable by env var $BROWSER.'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:str>
@@ -314,7 +328,8 @@ methods:
       \ turn off the loop. You can do so by using a callback as:\n\n   exit_condition\
       \ = lambda flow: True\n\nto make the loop run only once, i.e. no polling, hence\
       \ non-block."
-    defaultValue: <function Client.<lambda> at 0x000001D307A2EB70>
+    isRequired: true
+    defaultValue: <function Client.<lambda> at 0x000001C7D38BA2F0>
     types:
     - <xref:Callable>
 - uid: msal.oauth2cli.oauth2.Client.obtain_token_by_refresh_token
@@ -341,12 +356,15 @@ methods:
       granted by the resource owner,
 
       according to [https://tools.ietf.org/html/rfc6749#section-6](https://tools.ietf.org/html/rfc6749#section-6)'
+    isRequired: true
     defaultValue: None
   - name: rt_getter
     description: A callable to translate the token_item to a raw RT string
-    defaultValue: <function Client.<lambda> at 0x000001D307A2F510>
+    isRequired: true
+    defaultValue: <function Client.<lambda> at 0x000001C7D38BABF8>
   - name: on_removing_rt
     description: If absent, fall back to the one defined in initialization
+    isRequired: true
     defaultValue: None
   - name: on_updating_rt
     description: 'Default to None, it will fall back to the one defined in initialization.
@@ -363,6 +381,7 @@ methods:
       This behavior is useful when you are migrating RTs from elsewhere
 
       into a token storage managed by this library.'
+    isRequired: true
     defaultValue: None
 - uid: msal.oauth2cli.oauth2.Client.obtain_token_by_username_password
   name: obtain_token_by_username_password
@@ -407,12 +426,12 @@ methods:
     description: 'REQUIRED if the state parameter was present in the client
 
       authorization request. This function will compare it with response.'
+    isRequired: true
     defaultValue: None
 attributes:
 - uid: msal.oauth2cli.oauth2.Client.DEVICE_FLOW
   name: DEVICE_FLOW
-  signature: 'DEVICE_FLOW = {''GRANT_TYPE'': ''urn:ietf:params:oauth:grant-type:device_code'',
-    ''DEVICE_CODE'': ''device_code''}'
+  signature: 'DEVICE_FLOW = {''DEVICE_CODE'': ''device_code'', ''GRANT_TYPE'': ''urn:ietf:params:oauth:grant-type:device_code''}'
 - uid: msal.oauth2cli.oauth2.Client.DEVICE_FLOW_RETRIABLE_ERRORS
   name: DEVICE_FLOW_RETRIABLE_ERRORS
   signature: DEVICE_FLOW_RETRIABLE_ERRORS = ('authorization_pending', 'slow_down')
