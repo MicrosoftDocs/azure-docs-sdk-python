@@ -13,10 +13,10 @@ summary: 'Auto lock renew.
   tokens of messages and/or sessions in the background.'
 constructor:
   syntax: 'AutoLockRenewer(max_lock_renewal_duration: float = 300, on_lock_renew_failure:
-    typing.Union[typing.Callable[[typing.Union[azure.servicebus.aio._servicebus_session_async.ServiceBusSession,
-    azure.servicebus._common.message.ServiceBusReceivedMessage], typing.Union[Exception,
-    NoneType]], typing.Awaitable[NoneType]], NoneType] = None, loop: typing.Union[asyncio.events.AbstractEventLoop,
-    NoneType] = None) -> None'
+    Optional[Callable[[Union[azure.servicebus.aio._servicebus_session_async.ServiceBusSession,
+    azure.servicebus._common.message.ServiceBusReceivedMessage], Optional[Exception]],
+    Awaitable[None]]] = None, loop: Optional[asyncio.events.AbstractEventLoop] = None)
+    -> None'
   parameters:
   - name: max_lock_renewal_duration
     description: 'A time in seconds that locks registered to this renewer
@@ -42,22 +42,22 @@ examples:
 - "Automatically renew a message lock<!--[!code-python[Main](les\\async_samples\\\
   sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.3.2\\\\samples\\\\async_samples\\\
-  \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"language\":\
-  \ \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-  \n````python\n\n   from azure.servicebus.aio import AutoLockRenewer\n\n   lock_renewal\
-  \ = AutoLockRenewer()\n   async with servicebus_receiver:\n       async for message\
-  \ in servicebus_receiver:\n           lock_renewal.register(servicebus_receiver,\
+  \\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.3.3\\\\samples\\\\async_samples\\\
+  \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.servicebus.aio import AutoLockRenewer\n\
+  \n   lock_renewal = AutoLockRenewer()\n   async with servicebus_receiver:\n    \
+  \   async for message in servicebus_receiver:\n           lock_renewal.register(servicebus_receiver,\
   \ message, max_lock_renewal_duration=60)\n           await process_message(message)\n\
   \           await servicebus_receiver.complete_message(message)\n\n   ````\n\nAutomatically\
   \ renew a session lock<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.3.2\\\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.3.3\\\
   \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\":\
-  \ \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-  : {\"linenostart\": 1}} -->\n\n````python\n\n       from azure.servicebus.aio import\
-  \ AutoLockRenewer\n\n       lock_renewal = AutoLockRenewer()\n       async with\
-  \ servicebus_client.get_queue_receiver(queue_name=queue_name, session_id=session_id)\
+  \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\":\
+  \ {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n       from azure.servicebus.aio\
+  \ import AutoLockRenewer\n\n       lock_renewal = AutoLockRenewer()\n       async\
+  \ with servicebus_client.get_queue_receiver(queue_name=queue_name, session_id=session_id)\
   \ as receiver:\n           session = receiver.session\n           # Auto renew session\
   \ lock for 2 minutes\n           lock_renewal.register(receiver, session, max_lock_renewal_duration=120)\n\
   \           async for message in receiver:\n               await process_message(message)\n\
@@ -71,11 +71,10 @@ methods:
   name: register
   summary: Register a renewable entity for automatic lock renewal.
   signature: 'register(receiver: azure.servicebus.aio._servicebus_receiver_async.ServiceBusReceiver,
-    renewable: typing.Union[azure.servicebus._common.message.ServiceBusReceivedMessage,
-    azure.servicebus.aio._servicebus_session_async.ServiceBusSession], max_lock_renewal_duration:
-    typing.Union[float, NoneType] = None, on_lock_renew_failure: typing.Union[typing.Callable[[typing.Union[azure.servicebus.aio._servicebus_session_async.ServiceBusSession,
-    azure.servicebus._common.message.ServiceBusReceivedMessage], typing.Union[Exception,
-    NoneType]], typing.Awaitable[NoneType]], NoneType] = None) -> None'
+    renewable: Union[azure.servicebus._common.message.ServiceBusReceivedMessage, azure.servicebus.aio._servicebus_session_async.ServiceBusSession],
+    max_lock_renewal_duration: Optional[float] = None, on_lock_renew_failure: Optional[Callable[[Union[azure.servicebus.aio._servicebus_session_async.ServiceBusSession,
+    azure.servicebus._common.message.ServiceBusReceivedMessage], Optional[Exception]],
+    Awaitable[None]]] = None) -> None'
   parameters:
   - name: receiver
     description: 'The ServiceBusReceiver instance that is associated with the message
@@ -94,6 +93,7 @@ methods:
     description: 'A time in seconds that locks registered to this renewer
 
       should be maintained for. Default value is 300 (5 minutes).'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:Optional>[<xref:float>]
@@ -104,6 +104,7 @@ methods:
       Default value is None (no callback).
 
       :rtype: None'
+    isRequired: true
     defaultValue: None
     types:
     - <xref:Optional>[<xref:AsyncLockRenewFailureCallback>]

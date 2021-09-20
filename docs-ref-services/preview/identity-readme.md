@@ -3,7 +3,7 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: maggiepint
 ms.author: magpint
-ms.date: 08/10/2021
+ms.date: 09/09/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -11,14 +11,14 @@ ms.devlang: python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.7.0b3 
+# Azure Identity client library for Python - Version 1.7.0b4 
 
 
 The Azure Identity library provides a set of credential classes for use with
 Azure SDK clients which support Azure Active Directory (AAD) token authentication.
 This library does not support Azure Active Directory B2C.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [API reference documentation][ref_docs]
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
@@ -234,6 +234,22 @@ default_credential = DefaultAzureCredential()
 client = SecretClient("https://my-vault.vault.azure.net", default_credential)
 ```
 
+## Cloud Configuration
+Credentials default to authenticating to the Azure Active Directory endpoint for
+Azure Public Cloud. To access resources in other clouds, such as Azure Government
+or a private cloud, configure credentials with the `authority` argument.
+[AzureAuthorityHosts](https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureAuthorityHosts)
+defines authorities for well-known clouds:
+```py
+from azure.identity import AzureAuthorityHosts
+
+DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_GOVERNMENT)
+```
+Not all credentials require this configuration. Credentials which authenticate
+through a development tool, such as `AzureCliCredential`, use that tool's
+configuration. Similarly, `VisualStudioCodeCredential` accepts an `authority`
+argument but defaults to the authority matching VS Code's "Azure: Cloud" setting.
+
 ## Credential Classes
 
 ### Authenticating Azure Hosted Applications
@@ -286,7 +302,7 @@ variables:
 |-|-
 |`AZURE_CLIENT_ID`|id of an Azure Active Directory application
 |`AZURE_TENANT_ID`|id of the application's Azure Active Directory tenant
-|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM-encoded certificate file including private key (without password protection)
+|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM or PKCS12 certificate file including private key (without password protection)
 
 #### Username and password
 |variable name|value
@@ -365,15 +381,15 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/appconfiguration/azure-appconfiguration
+[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/appconfiguration/azure-appconfiguration
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/eventhub/azure-eventhub
-[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk//keyvault/azure-keyvault-certificates
-[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/keyvault/azure-keyvault-keys
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/storage/azure-storage-blob
-[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b3/sdk/storage/azure-storage-queue
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/eventhub/azure-eventhub
+[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk//keyvault/azure-keyvault-certificates
+[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/keyvault/azure-keyvault-keys
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/storage/azure-storage-blob
+[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0b4/sdk/storage/azure-storage-queue
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.CertificateCredential
 [chain_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.ChainedTokenCredential
 [cli_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureCliCredential
