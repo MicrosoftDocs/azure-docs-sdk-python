@@ -5,33 +5,255 @@ fullName: azure.datalake.store.transfer.ADLTransferClient
 module: azure.datalake.store.transfer
 inheritances:
 - builtins.object
-summary: "Client for transferring data from/to Azure DataLake Store\n\nThis is intended\
-  \ as the underlying class for *ADLDownloader* and\n*ADLUploader*. If necessary,\
-  \ it can be used directly for additional\ncontrol.\n\n:param :\n:param *fn(adlfs:\n\
-  :param src:\n:param dst:\n:param offset:\n:param size:\n:param buffersize:\n:param\
-  \ blocksize:\n:param shutdown_event)*.:\n:param *adlfs* is the ADL filesystem instance.\
-  \ *src* and *dst* refer to the source:\n:param and destination of the respective\
-  \ file transfer. *offset* is the location:\n:param in *src* to read *size* bytes\
-  \ from. *buffersize* is the number of bytes:\n:param used for internal buffering\
-  \ before transfer. *blocksize* is the number of:\n:param bytes in a chunk to write\
-  \ at one time. The callable should return an:\n:param integer representing the number\
-  \ of bytes written.:\n:param The *merge* callable has the function signature:\n\
-  :param :\n:param *fn(adlfs:\n:param outfile:\n:param files:\n:param shutdown_event)*.\
-  \ *adlfs* is the ADL filesystem:\n:param instance. *outfile* is the result of merging\
-  \ *files*.:\n:param For both transfer callables:\n:param *shutdown_event* is optional.\
-  \ In particular:\n:param :\n:param *shutdown_event* is a *threading.Event* that\
-  \ is passed to the callable.:\n:param The event will be set when a shutdown is requested.\
-  \ It is good practice:\n:param to listen for this.:\n:param Internal State:\n:param\
-  \ \u2014\u2014\u2014\u2014\u2013:\n:param self._fstates: This captures the current\
-  \ state of each transferred file.\n:type self._fstates: StateManager\n:param self._files:\
-  \ Using a tuple of the file source/destination as the key, this\n\n   dictionary\
-  \ stores the file metadata and all chunk states. The\n   dictionary key is *(src,\
-  \ dst)* and the value is\n   *dict(length, cstates, exception)*."
+summary: 'Client for transferring data from/to Azure DataLake Store
+
+
+  This is intended as the underlying class for *ADLDownloader* and
+
+  *ADLUploader*. If necessary, it can be used directly for additional
+
+  control.'
 constructor:
   syntax: ADLTransferClient(adlfs, transfer, merge=None, nthreads=None, chunksize=268435456,
     blocksize=33554432, chunked=True, unique_temporary=True, delimiter=None, parent=None,
     verbose=False, buffersize=33554432, progress_callback=None, timeout=0)
   parameters:
+  - name: adlfs
+    isRequired: true
+    types:
+    - <xref:ADL filesystem instance>
+  - name: name
+    description: Unique ID used for persistence.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: transfer
+    description: 'Function or callable object invoked when transferring chunks. See
+
+      `Function Signatures`.'
+    isRequired: true
+    types:
+    - <xref:callable>
+  - name: merge
+    description: 'Function or callable object invoked when merging chunks. For each
+      file
+
+      containing only one chunk, no merge function will be called, even if
+
+      provided. If None, then merging is skipped. See
+
+      `Function Signatures`.'
+    isRequired: true
+    types:
+    - <xref:callable >[<xref:None>]
+  - name: nthreads
+    description: 'Number of threads to use (minimum is 1). If None, uses the number
+      of
+
+      cores.'
+    isRequired: true
+    types:
+    - <xref:int >[<xref:None>]
+  - name: chunksize
+    description: 'Number of bytes for a chunk. Large files are split into chunks.
+      Files
+
+      smaller than this number will always be transferred in a single thread.'
+    isRequired: true
+    types:
+    - <xref:int >[<xref:2**28>]
+  - name: buffersize
+    description: 'Number of bytes for internal buffer. This block cannot be bigger
+      than
+
+      a chunk and cannot be smaller than a block.'
+    isRequired: true
+    types:
+    - <xref:int >[<xref:2**25>]
+  - name: blocksize
+    description: 'Number of bytes for a block. Within each chunk, we write a smaller
+
+      block for each API call. This block cannot be bigger than a chunk.'
+    isRequired: true
+    types:
+    - <xref:int >[<xref:2**25>]
+  - name: chunked
+    description: 'If set, each transferred chunk is stored in a separate file until
+
+      chunks are gathered into a single file. Otherwise, each chunk will be
+
+      written into the same destination file.'
+    isRequired: true
+    types:
+    - <xref:bool >[<xref:True>]
+  - name: unique_temporary
+    description: 'If set, transferred chunks are written into a unique temporary
+
+      directory.'
+    isRequired: true
+    types:
+    - <xref:bool >[<xref:True>]
+  - name: persist_path
+    description: 'Path used for persisting a client''s state. If None, then *save()*
+
+      and *load()* will be empty operations.'
+    isRequired: true
+    types:
+    - <xref:str >[<xref:None>]
+  - name: delimiter
+    description: 'If set, will transfer blocks using delimiters, as well as split
+
+      files for transferring on that delimiter.'
+    isRequired: true
+    types:
+    - <xref:byte>(<xref:s>)
+    - <xref:None>
+  - name: parent
+    description: 'In typical usage, the transfer client is created in the context
+      of an
+
+      upload or download, which can be persisted between sessions.'
+    isRequired: true
+    types:
+    - <xref:ADLDownloader>, <xref:ADLUploader>
+    - <xref:None>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total) where
+
+      current is the number of bytes transferred so far, and total is the
+
+      size of the blob, or None if the total size is unknown.'
+    isRequired: true
+    types:
+    - <xref:callable >[<xref:None>]
+  - name: timeout
+    description: 'Default value 0 means infinite timeout. Otherwise time in seconds
+      before the
+
+      process will stop and raise an exception if  transfer is still in progress'
+    isRequired: true
+    types:
+    - <xref:int >(<xref:0>)
+  - name: Files
+    isRequired: true
+    types:
+    - <xref:Temporary>
+  - name: '---------------'
+    isRequired: true
+  - name: a merge step is available, the client will write chunks to temporary
+    isRequired: true
+    types:
+    - <xref:When>
+  - name: before merging. The exact temporary file looks like this in
+    isRequired: true
+    types:
+    - <xref:files>
+  - name: pseudo-BNF
+    isRequired: true
+  - name: '# {dirname}/{basename}.segments[.{unique_str}]/{basename}_{offset}'
+    isRequired: true
+    types:
+    - <xref:>>>>
+  - name: Signatures
+    isRequired: true
+    types:
+    - <xref:Function>
+  - name: '-------------------'
+    isRequired: true
+  - name: perform the actual work needed by the client, the user must pass in two
+    isRequired: true
+    types:
+    - <xref:To>
+  - name: transfer and merge. If merge is not provided, then the
+    isRequired: true
+    types:
+    - <xref:callables,>
+  - name: step will be skipped.
+    isRequired: true
+    types:
+    - <xref:merge>
+  - name: transfer callable has the function signature,
+    isRequired: true
+    types:
+    - <xref:The>
+  - name: src, dst, offset, size, buffersize, blocksize, shutdown_event).
+    isRequired: true
+    types:
+    - <xref:fn>(<xref:adlfs,>
+  - name: is the ADL filesystem instance. src and dst refer to the source
+    isRequired: true
+    types:
+    - <xref:adlfs>
+  - name: destination of the respective file transfer. offset is the location
+    isRequired: true
+    types:
+    - <xref:and>
+  - name: src to read size bytes from. buffersize is the number of bytes
+    isRequired: true
+    types:
+    - <xref:in>
+  - name: for internal buffering before transfer. blocksize is the number of
+    isRequired: true
+    types:
+    - <xref:used>
+  - name: in a chunk to write at one time. The callable should return an
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: representing the number of bytes written.
+    isRequired: true
+    types:
+    - <xref:integer>
+  - name: merge callable has the function signature,
+    isRequired: true
+    types:
+    - <xref:The>
+  - name: outfile, files, shutdown_event). adlfs is the ADL filesystem
+    isRequired: true
+    types:
+    - <xref:fn>(<xref:adlfs,>
+  - name: outfile is the result of merging files.
+    isRequired: true
+    types:
+    - <xref:instance.>
+  - name: both transfer callables, shutdown_event is optional. In particular,
+    isRequired: true
+    types:
+    - <xref:For>
+  - name: is a threading.Event that is passed to the callable.
+    isRequired: true
+    types:
+    - <xref:shutdown_event>
+  - name: event will be set when a shutdown is requested. It is good practice
+    isRequired: true
+    types:
+    - <xref:The>
+  - name: listen for this.
+    isRequired: true
+    types:
+    - <xref:to>
+  - name: State
+    isRequired: true
+    types:
+    - <xref:Internal>
+  - name: '--------------'
+    isRequired: true
+  - name: self._fstates
+    description: This captures the current state of each transferred file.
+    isRequired: true
+    types:
+    - <xref:StateManager>
+  - name: self._files
+    description: 'Using a tuple of the file source/destination as the key, this
+
+      dictionary stores the file metadata and all chunk states. The
+
+      dictionary key is *(src, dst)* and the value is
+
+      *dict(length, cstates, exception)*.'
+    isRequired: true
+    types:
+    - <xref:dict>
   - name: self._chunks
     description: 'Using a tuple of the chunk name/offset as the key, this dictionary
 
@@ -121,8 +343,6 @@ attributes:
 - uid: azure.datalake.store.transfer.ADLTransferClient.progress
   name: progress
   summary: Return a summary of all transferred file/chunks
-- uid: azure.datalake.store.transfer.ADLTransferClient.status
-  name: status
 - uid: azure.datalake.store.transfer.ADLTransferClient.successful
   name: successful
   summary: 'Return whether the transfer completed successfully.
