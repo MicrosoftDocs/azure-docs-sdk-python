@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-servicebus, servicebus
 author: maggiepint
 ms.author: magpint
-ms.date: 08/24/2021
+ms.date: 09/23/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
