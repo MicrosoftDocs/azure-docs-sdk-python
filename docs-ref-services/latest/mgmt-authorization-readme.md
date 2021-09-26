@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-authorization, authorization
 author: maggiepint
 ms.author: magpint
-ms.date: 11/25/2020
+ms.date: 09/26/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
