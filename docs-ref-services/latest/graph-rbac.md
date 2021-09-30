@@ -20,7 +20,7 @@ ms.service: multiple
 >
 > As of February 2019, we started the process to deprecate some earlier versions of Azure Active Directory Graph API in favor of the Microsoft Graph API. 
 >
-> For details, updates, and time frames, see [Microsoft Graph or the Azure AD Graph](https://dev.office.com/blogs/microsoft-graph-or-azure-ad-graph) in the Office Dev Center.
+> For details, updates, and time frames, see [Microsoft Graph or the Azure AD Graph](https://developer.microsoft.com/office/blogs/microsoft-graph-or-azure-ad-graph/) in the Office Dev Center.
 >
 > Moving forward, applications should use the Microsoft Graph API. 
 
