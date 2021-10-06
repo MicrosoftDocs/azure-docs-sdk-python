@@ -25,11 +25,11 @@ examples:
 - "Create a new instance of the SchemaRegistryClient.<!--[!code-python[Main](les\\\
   async_samples\\sample_code_schemaregistry_async.py )]-->\n\n<!-- literal_block {\"\
   ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"\
-  source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\4\\\\azure-schemaregistry-1.0.0b2\\\
+  source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\4\\\\azure-schemaregistry-1.0.0b3\\\
   \\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\", \"xml:space\"\
   : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-  : {\"linenostart\": 1}} -->\n\n````python\n\n   SCHEMA_REGISTRY_ENDPOINT = os.environ['SCHEMA_REGISTRY_ENDPOINT']\n\
-  \   token_credential = DefaultAzureCredential()\n   schema_registry_client = SchemaRegistryClient(endpoint=SCHEMA_REGISTRY_ENDPOINT,\
+  : {\"linenostart\": 1}} -->\n\n````python\n\n   SCHEMAREGISTRY_FQN = os.environ['SCHEMAREGISTRY_FULLY_QUALIFIED_NAMESPACE']\n\
+  \   token_credential = DefaultAzureCredential()\n   schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=SCHEMAREGISTRY_FQN,\
   \ credential=token_credential)\n\n   ````\n"
 methods:
 - uid: azure.schemaregistry.aio.SchemaRegistryClient.close
@@ -57,10 +57,10 @@ methods:
   - "Get schema by id.<!--[!code-python[Main](les\\async_samples\\sample_code_schemaregistry_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\4\\\\azure-schemaregistry-1.0.0b2\\\\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\"\
+    \\4\\\\azure-schemaregistry-1.0.0b3\\\\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   schema = await\
-    \ schema_registry_client.get_schema(schema_id)\n   schema_content = schema.schema_content\n\
+    \ schema_registry_client.get_schema(id)\n   schema_definition = schema.schema_definition\n\
     \n   ````\n"
 - uid: azure.schemaregistry.aio.SchemaRegistryClient.get_schema_id
   name: get_schema_id
@@ -98,11 +98,11 @@ methods:
   - "Get schema by id.<!--[!code-python[Main](les\\async_samples\\sample_code_schemaregistry_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\4\\\\azure-schemaregistry-1.0.0b2\\\\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\"\
+    \\4\\\\azure-schemaregistry-1.0.0b3\\\\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
     highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   schema_properties\
-    \ = await schema_registry_client.get_schema_id(schema_group, schema_name, serialization_type,\
-    \ schema_content)\n   schem_id = schema_properties.schema_id\n\n   ````\n"
+    \ = await schema_registry_client.get_schema_properties(group_name, name, schema_definition,\
+    \ format)\n   schema_id = schema_properties.id\n\n   ````\n"
 - uid: azure.schemaregistry.aio.SchemaRegistryClient.register_schema
   name: register_schema
   summary: 'Register new schema. If schema of specified name does not exist in specified
@@ -144,14 +144,13 @@ methods:
   - "Register a new schema.<!--[!code-python[Main](les\\async_samples\\sample_code_schemaregistry_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\4\\\\azure-schemaregistry-1.0.0b2\\\\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\"\
+    \\4\\\\azure-schemaregistry-1.0.0b3\\\\samples\\\\async_samples\\\\sample_code_schemaregistry_async.py\"\
     , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   SCHEMA_GROUP =\
-    \ os.environ['SCHEMA_REGISTRY_GROUP']\n   SCHEMA_NAME = 'your-schema-name'\n \
-    \  SERIALIZATION_TYPE = SerializationType.AVRO\n   SCHEMA_CONTENT = \"\"\"{\"\
-    namespace\":\"example.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\"\
-    :[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\"\
-    :[\"int\",\"null\"]},{\"name\":\"favorite_color\",\"type\":[\"string\",\"null\"\
-    ]}]}\"\"\"\n   schema_properties = await schema_registry_client.register_schema(SCHEMA_GROUP,\
-    \ SCHEMA_NAME, SERIALIZATION_TYPE, SCHEMA_CONTENT)\n   schem_id = schema_properties.schema_id\n\
-    \n   ````\n"
+    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   GROUP_NAME = os.environ['SCHEMAREGISTRY_GROUP']\n\
+    \   NAME = 'your-schema-name'\n   FORMAT = SchemaFormat.AVRO\n   SCHEMA_DEFINITION\
+    \ = \"\"\"{\"namespace\":\"example.avro\",\"type\":\"record\",\"name\":\"User\"\
+    ,\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\"\
+    ,\"type\":[\"int\",\"null\"]},{\"name\":\"favorite_color\",\"type\":[\"string\"\
+    ,\"null\"]}]}\"\"\"\n   schema_properties = await schema_registry_client.register_schema(GROUP_NAME,\
+    \ NAME, SCHEMA_DEFINITION, FORMAT)\n   schema_id = schema_properties.id\n\n  \
+    \ ````\n"
