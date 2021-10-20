@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-hybridkubernetes, hybridkubernetes
 author: maggiepint
 ms.author: magpint
-ms.date: 05/19/2021
+ms.date: 10/20/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
