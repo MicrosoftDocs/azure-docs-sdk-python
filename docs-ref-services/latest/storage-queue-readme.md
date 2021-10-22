@@ -271,11 +271,12 @@ Receive and process messages asynchronously
 from azure.storage.queue.aio import QueueClient
 
 queue = QueueClient.from_connection_string(conn_str="<connection_string>", queue_name="my_queue")
-response = queue.receive_messages()
 
-async for message in response:
-    print(message.content)
-    await queue.delete_message(message)
+async with queue:
+        messages = queue.receive_messages()
+        async for msg in messages:
+            print(msg.content)
+            await queue.delete_message(msg)
 ```
 
 ## Optional Configuration
