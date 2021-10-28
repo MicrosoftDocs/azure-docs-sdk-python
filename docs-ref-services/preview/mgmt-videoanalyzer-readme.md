@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-videoanalyzer, 
+keywords: Azure, python, SDK, API, azure-mgmt-videoanalyzer, videoanalyzer
 author: maggiepint
 ms.author: magpint
-ms.date: 05/24/2021
+ms.date: 10/28/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: videoanalyzer
 ---
 
 # Microsoft Azure SDK for Python
