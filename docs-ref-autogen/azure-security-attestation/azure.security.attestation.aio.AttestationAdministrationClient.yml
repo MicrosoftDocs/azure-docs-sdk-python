@@ -22,9 +22,11 @@ summary: "Provides administrative APIs for managing an instance of the Attestati
   \ and\n>\n> issuer keyword arguments are default values applied to each API call\
   \ within\n>\n> the <xref:azure.security.attestation.aio.AttestationAdministrationClient>\
   \ class. These values can be\n>\n> overridden on individual API calls as needed.\n\
-  >\n\n\nFor additional client creation configuration options, please see [Python\
-  \ Request\nOptions](https://aka.ms/azsdk/python/options)."
+  >\n\nFor additional client creation configuration options, please see [Python Request\n\
+  Options](https://aka.ms/azsdk/python/options)."
 constructor:
+  syntax: 'AttestationAdministrationClient(endpoint: str, credential: AsyncTokenCredential,
+    **kwargs: Any)'
   parameters:
   - name: credential
     description: Credentials for the caller used to interact with the service.
@@ -119,8 +121,7 @@ methods:
     for the certificate is the SHA1 hash of the DER encoding of the
 
     certificate.'
-  signature: 'add_policy_management_certificate(*args: str, **kwargs: typing.Any)
-    -> typing.Tuple[azure.security.attestation._models.AttestationPolicyCertificateResult,
+  signature: 'add_policy_management_certificate(*args: str, **kwargs: Any) -> Tuple[azure.security.attestation._models.AttestationPolicyCertificateResult,
     azure.security.attestation._models.AttestationToken]'
   parameters:
   - name: certificate_to_add
@@ -195,18 +196,17 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\169\\\\azure-security-attestation-1.0.0\\\\samples\\\\sample_get_set_policy_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n           async\
-    \ with DefaultAzureCredential() as credential, AttestationAdministrationClient(\n\
-    \               endpoint, credential\n           ) as admin_client:\n        \
-    \       new_key = create_rsa_key()\n               new_certificate = create_x509_certificate(new_key,\
-    \ u\"NewCertificateName\")\n\n               # Add the new certificate to the\
-    \ list.\n               add_result, _ = await admin_client.add_policy_management_certificate(\n\
-    \                   new_certificate,\n                   signing_key=self.isolated_key,\n\
-    \                   signing_certificate=self.isolated_certificate,\n         \
-    \          validation_slack=1.0,\n               )\n               if add_result.certificate_resolution\
-    \ != CertificateModification.IS_PRESENT:\n                   raise Exception(\"\
-    Certificate was not added!\")\n\n   ````\n"
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   async with DefaultAzureCredential() as credential, AttestationAdministrationClient(\n\
+    \       endpoint, credential\n   ) as admin_client:\n       new_key = create_rsa_key()\n\
+    \       new_certificate = create_x509_certificate(new_key, u\"NewCertificateName\"\
+    )\n\n       # Add the new certificate to the list.\n       add_result, _ = await\
+    \ admin_client.add_policy_management_certificate(\n           new_certificate,\n\
+    \           signing_key=self.isolated_key,\n           signing_certificate=self.isolated_certificate,\n\
+    \           validation_slack=1.0,\n       )\n       if add_result.certificate_resolution\
+    \ != CertificateModification.IS_PRESENT:\n           raise Exception(\"Certificate\
+    \ was not added!\")\n\n   ````\n"
 - uid: azure.security.attestation.aio.AttestationAdministrationClient.close
   name: close
   signature: close()
@@ -221,8 +221,7 @@ methods:
     > The Azure Attestation Policy language is defined [here](https://docs.microsoft.com/azure/attestation/author-sign-policy)
 
     >'
-  signature: 'get_policy(attestation_type: str, **kwargs: typing.Any) -> typing.Tuple[str,
-    azure.security.attestation._models.AttestationToken]'
+  signature: 'get_policy(attestation_type: str, **kwargs: Any) -> Tuple[str, azure.security.attestation._models.AttestationToken]'
   parameters:
   - name: attestation_type
     description: '<xref:azure.security.attestation.AttestationType> for which to
@@ -279,19 +278,20 @@ methods:
     types:
     - <xref:Tuple>[<xref:str>, <xref:azure.security.attestation.AttestationToken>]
   exceptions:
-  - description: 'Raised
+  - type: <xref:azure.security.attestation.AttestationTokenValidationException>
+    desc: 'Raised
 
       when an attestation token is invalid.'
-    type: ~azure.security.attestation.AttestationTokenValidationException
   examples:
   - "Getting the current policy document.<!--[!code-python[Main](les\\sample_get_set_policy_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\169\\\\azure-security-attestation-1.0.0\\\\samples\\\\sample_get_set_policy_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   async with DefaultAzureCredential()\
-    \ as credential, AttestationAdministrationClient(\n       os.environ.get(\"ATTESTATION_AAD_URL\"\
-    ), credential\n   ) as admin_client:\n       policy, _ = await admin_client.get_policy(AttestationType.SGX_ENCLAVE)\n\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   async with DefaultAzureCredential() as credential, AttestationAdministrationClient(\n\
+    \       os.environ.get(\"ATTESTATION_AAD_URL\"), credential\n   ) as admin_client:\n\
+    \       policy, _ = await admin_client.get_policy(AttestationType.SGX_ENCLAVE)\n\
     \       print(\"Current instance SGX Policy is: \", policy)\n\n   ````\n"
 - uid: azure.security.attestation.aio.AttestationAdministrationClient.get_policy_management_certificates
   name: get_policy_management_certificates
@@ -301,7 +301,7 @@ methods:
     The list of policy management certificates will only have values if the
 
     attestation service instance is in Isolated mode.'
-  signature: 'get_policy_management_certificates(**kwargs: typing.Any) -> typing.Tuple[typing.List[typing.List[str]],
+  signature: 'get_policy_management_certificates(**kwargs: Any) -> Tuple[List[List[str]],
     azure.security.attestation._models.AttestationToken]'
   parameters:
   - name: validate_token
@@ -367,11 +367,12 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\169\\\\azure-security-attestation-1.0.0\\\\samples\\\\sample_get_set_policy_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   print(\"Get the\
-    \ policy management certificates for a isolated instance.\")\n   async with DefaultAzureCredential()\
-    \ as credential, AttestationAdministrationClient(\n       os.environ.get(\"ATTESTATION_ISOLATED_URL\"\
-    ), credential\n   ) as admin_client:\n       certificates, _ = await admin_client.get_policy_management_certificates()\n\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   print(\"Get the policy management certificates for a isolated instance.\"\
+    )\n   async with DefaultAzureCredential() as credential, AttestationAdministrationClient(\n\
+    \       os.environ.get(\"ATTESTATION_ISOLATED_URL\"), credential\n   ) as admin_client:\n\
+    \       certificates, _ = await admin_client.get_policy_management_certificates()\n\
     \       print(\"Isolated instance has\", len(certificates), \"certificates\")\n\
     \n       # An Isolated attestation instance should have at least one signing\n\
     \       # certificate which is configured when the instance is created.\n    \
@@ -411,8 +412,7 @@ methods:
     for the certificate is the SHA1 hash of the DER encoding of the
 
     certificate.'
-  signature: 'remove_policy_management_certificate(*args: str, **kwargs: typing.Any)
-    -> typing.Tuple[azure.security.attestation._models.AttestationPolicyCertificateResult,
+  signature: 'remove_policy_management_certificate(*args: str, **kwargs: Any) -> Tuple[azure.security.attestation._models.AttestationPolicyCertificateResult,
     azure.security.attestation._models.AttestationToken]'
   parameters:
   - name: certificate_to_remove
@@ -485,15 +485,15 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
     \\169\\\\azure-security-attestation-1.0.0\\\\samples\\\\sample_get_set_policy_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   async with DefaultAzureCredential()\
-    \ as credential, AttestationAdministrationClient(\n       endpoint, credential\n\
-    \   ) as admin_client:\n       remove_result, _ = await admin_client.remove_policy_management_certificate(\n\
-    \           new_certificate,\n           signing_key=self.isolated_key,\n    \
-    \       signing_certificate=self.isolated_certificate,\n       )\n\n       if\
-    \ (\n           remove_result.certificate_resolution\n           != CertificateModification.IS_ABSENT\n\
-    \       ):\n           raise Exception(\"Certificate was not removed!\")\n\n \
-    \  ````\n"
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   async with DefaultAzureCredential() as credential, AttestationAdministrationClient(\n\
+    \       endpoint, credential\n   ) as admin_client:\n       remove_result, _ =\
+    \ await admin_client.remove_policy_management_certificate(\n           new_certificate,\n\
+    \           signing_key=self.isolated_key,\n           signing_certificate=self.isolated_certificate,\n\
+    \       )\n\n       if (\n           remove_result.certificate_resolution\n  \
+    \         != CertificateModification.IS_ABSENT\n       ):\n           raise Exception(\"\
+    Certificate was not removed!\")\n\n   ````\n"
 - uid: azure.security.attestation.aio.AttestationAdministrationClient.reset_policy
   name: reset_policy
   summary: "Resets the attestation policy for the specified attestation type to the\
@@ -502,7 +502,7 @@ methods:
     \ one of the\n>\n> certificates returned by <xref:azure.security.attestation.aio.AttestationAdministrationClient.get_policy_management_certificates>.\n\
     >\n> \n>\n> If the attestation instance is in AAD mode, then the signing_key\n\
     >\n> parameter does not need to be provided.\n>"
-  signature: 'reset_policy(attestation_type: str, **kwargs: typing.Any) -> typing.Tuple[azure.security.attestation._models.AttestationPolicyResult,
+  signature: 'reset_policy(attestation_type: str, **kwargs: Any) -> Tuple[azure.security.attestation._models.AttestationPolicyResult,
     azure.security.attestation._models.AttestationToken]'
   parameters:
   - name: attestation_type
@@ -571,10 +571,10 @@ methods:
     types:
     - <xref:Tuple>[<xref:azure.security.attestation.AttestationPolicyResult>, <xref:azure.security.attestation.AttestationToken>]
   exceptions:
-  - description: 'Raised when
+  - type: <xref:azure.security.attestation.AttestationTokenValidationException>
+    desc: 'Raised when
 
       an attestation token is invalid.'
-    type: azure.security.attestation.AttestationTokenValidationException
 - uid: azure.security.attestation.aio.AttestationAdministrationClient.set_policy
   name: set_policy
   summary: "Sets the attestation policy for the specified attestation type.\n\n\n\
@@ -584,8 +584,7 @@ methods:
     >\n> \n>\n> If the attestation instance is in AAD mode, then the signing_key\n\
     >\n> parameter does not need to be provided.\n>"
   signature: 'set_policy(attestation_type: str, attestation_policy: str, **kwargs:
-    typing.Any) -> typing.Tuple[azure.security.attestation._models.AttestationPolicyResult,
-    azure.security.attestation._models.AttestationToken]'
+    Any) -> Tuple[azure.security.attestation._models.AttestationPolicyResult, azure.security.attestation._models.AttestationToken]'
   parameters:
   - name: attestation_type
     description: '<xref:azure.security.attestation.AttestationType> for
@@ -657,20 +656,20 @@ methods:
     types:
     - <xref:Tuple>[<xref:azure.security.attestation.AttestationPolicyResult>, <xref:azure.security.attestation.AttestationToken>]
   exceptions:
-  - description: 'Raised
+  - type: <xref:azure.security.attestation.AttestationTokenValidationException>
+    desc: 'Raised
 
       when an attestation token is invalid.'
-    type: ~azure.security.attestation.AttestationTokenValidationException
   examples:
   - "Setting the attestation policy with hash verification.<!--[!code-python[Main](les\\\
     sample_get_set_policy_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
     a\\\\1\\\\s\\\\dist_temp\\\\169\\\\azure-security-attestation-1.0.0\\\\samples\\\
-    \\sample_get_set_policy_async.py\", \"xml:space\": \"preserve\", \"language\"\
-    : \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-    \n````python\n\n           from cryptography.hazmat.primitives import hashes\n\
-    \n           write_banner(\"set_policy_aad_secured\")\n           print(\"Set\
-    \ Secured Policy on an AAD mode attestation instance.\")\n           async with\
+    \\sample_get_set_policy_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n           from cryptography.hazmat.primitives import\
+    \ hashes\n\n           write_banner(\"set_policy_aad_secured\")\n           print(\"\
+    Set Secured Policy on an AAD mode attestation instance.\")\n           async with\
     \ DefaultAzureCredential() as credential, AttestationAdministrationClient(\n \
     \              os.environ.get(\"ATTESTATION_AAD_URL\"), credential\n         \
     \  ) as admin_client:\n               # Create an RSA Key and wrap an X.509 certificate\
