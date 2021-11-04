@@ -8,7 +8,6 @@ manager: jeconnoc
 ms.date: 04/15/2019
 ms.author: danlep
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: container-instances
 ---
