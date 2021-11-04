@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-quota, 
+keywords: Azure, python, SDK, API, azure-mgmt-quota, quota
 author: maggiepint
 ms.author: magpint
-ms.date: 09/30/2021
+ms.date: 11/04/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: quota
 ---
 
 # Microsoft Azure SDK for Python
