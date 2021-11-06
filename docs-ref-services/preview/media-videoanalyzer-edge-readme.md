@@ -1,8 +1,8 @@
 ---
 title: Azure Video Analyzer Edge client library for Python
 keywords: Azure, python, SDK, API, azure-media-videoanalyzer-edge, videoanalyzer
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/27/2021
 ms.topic: reference
 ms.prod: azure

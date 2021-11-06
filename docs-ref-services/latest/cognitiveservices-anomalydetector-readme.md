@@ -1,8 +1,8 @@
 ---
 title: Microsoft Azure SDK for Python
 keywords: Azure, python, SDK, API, azure-cognitiveservices-anomalydetector, 
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 07/23/2020
 ms.topic: reference
 ms.devlang: python

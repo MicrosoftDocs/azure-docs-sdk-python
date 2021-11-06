@@ -3,7 +3,7 @@ title: Azure Event Grid libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, Event Grid 
 author: lisawong19
-ms.author: routlaw
+ms.author: ramyar
 manager: routlaw
 ms.date: 08/21/2017
 ms.topic: reference

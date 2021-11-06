@@ -1,8 +1,8 @@
 ---
 title: Azure Communication Chat Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-chat, communication
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 08/16/2021
 ms.topic: reference
 ms.prod: azure

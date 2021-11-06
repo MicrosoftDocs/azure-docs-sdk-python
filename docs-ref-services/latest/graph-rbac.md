@@ -2,8 +2,8 @@
 title: Graph RBAC libraries for python
 description: Reference for Graph RBAC libraries for python
 keywords: Azure, python, SDK, API, Graph RBAC
-author: rloutlaw
-ms.author: routlaw
+author: ramya-rao-a
+ms.author: ramyar
 manager: jfriend
 
 ms.date: 05/10/2019

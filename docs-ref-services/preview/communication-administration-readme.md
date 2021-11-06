@@ -1,8 +1,8 @@
 ---
 title: Azure Communication Administration Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-administration, communication
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/05/2020
 ms.topic: reference
 ms.prod: azure
