@@ -1,8 +1,8 @@
 ---
 title: Azure QnA Maker Client Library - Azure SDK for Python
 keywords: Azure, python, SDK, API, azure-cognitiveservices-knowledge-qnamaker, qnamaker
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 11/09/2020
 ms.topic: reference
 ms.devlang: python

@@ -1,8 +1,8 @@
 ---
 title: Azure Data Factory libraries for Python
 description: Reference for  Azure Data Factory libraries for Python
-author: rloutlaw
-ms.author: routlaw
+author: ramya-rao-a
+ms.author: ramyar
 manager: angerobe
 
 ms.date: 05/10/2018

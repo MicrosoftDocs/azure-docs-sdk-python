@@ -1,8 +1,8 @@
 ---
 title: Azure Form Recognizer client library for Python
 keywords: Azure, python, SDK, API, azure-ai-formrecognizer, formrecognizer
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 08/20/2020
 ms.topic: reference
 ms.prod: azure

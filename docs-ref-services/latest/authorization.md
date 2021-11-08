@@ -3,7 +3,7 @@ title: Azure Authorization libraries for python
 description: Reference for Azure Authorization libraries for python
 keywords: Azure, python, SDK, API, Authorization
 author: lisawong19
-ms.author: routlaw
+ms.author: ramyar
 manager: routlaw
 
 ms.date: 02/21/2018

@@ -1,8 +1,8 @@
 ---
 title: Azure Schema Registry Avro Serializer client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry-avroserializer, schemaregistry
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/06/2021
 ms.topic: reference
 ms.prod: azure
