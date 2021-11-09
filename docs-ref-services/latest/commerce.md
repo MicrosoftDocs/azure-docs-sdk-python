@@ -3,7 +3,7 @@ title: Azure Commerce libraries for python
 description: Reference for Azure Commerce libraries for python
 keywords: Azure, python, SDK, API, Commerce
 author: lisawong19
-ms.author: routlaw
+ms.author: ramyar
 manager: routlaw
 
 ms.date: 02/21/2018

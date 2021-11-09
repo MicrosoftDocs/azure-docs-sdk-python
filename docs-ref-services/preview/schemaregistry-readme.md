@@ -1,8 +1,8 @@
 ---
 title: Azure Schema Registry client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry, schemaregistry
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/05/2021
 ms.topic: reference
 ms.prod: azure

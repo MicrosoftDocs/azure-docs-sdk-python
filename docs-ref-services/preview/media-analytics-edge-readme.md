@@ -1,8 +1,8 @@
 ---
 title: Azure Live Video Analytics for IoT Edge client library for Python
 keywords: Azure, python, SDK, API, azure-media-analytics-edge, 
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 01/14/2021
 ms.topic: reference
 ms.prod: azure

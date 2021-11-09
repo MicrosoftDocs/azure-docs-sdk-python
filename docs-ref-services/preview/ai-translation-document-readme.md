@@ -1,8 +1,8 @@
 ---
 title: Azure Document Translation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-translation-document, translator
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 09/08/2021
 ms.topic: reference
 ms.prod: azure

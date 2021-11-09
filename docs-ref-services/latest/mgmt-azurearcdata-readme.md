@@ -1,8 +1,8 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azurearcdata, azurearcdata
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/29/2021
 ms.topic: reference
 ms.prod: azure

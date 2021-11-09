@@ -1,8 +1,8 @@
 ---
 title: Azure Azure Digital Twins Core client library for Python
 keywords: Azure, python, SDK, API, azure-digitaltwins-core, 
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/22/2020
 ms.topic: reference
 ms.prod: azure

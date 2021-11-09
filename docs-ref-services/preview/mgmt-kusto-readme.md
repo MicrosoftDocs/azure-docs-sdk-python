@@ -1,8 +1,8 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-kusto, kusto
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/26/2020
 ms.topic: reference
 ms.prod: azure

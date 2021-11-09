@@ -1,8 +1,8 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-purview-nspkg, 
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 05/06/2021
 ms.topic: reference
 ms.prod: azure

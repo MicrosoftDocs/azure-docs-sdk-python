@@ -3,7 +3,7 @@ title: Azure Scheduler libraries for python
 description: Reference for Azure Scheduler libraries for python
 keywords: Azure, python, SDK, API, Scheduler
 author: lisawong19
-ms.author: routlaw
+ms.author: ramyar
 manager: mbaldwin
 
 ms.date: 02/21/2018

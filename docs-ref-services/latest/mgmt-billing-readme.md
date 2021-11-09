@@ -1,8 +1,8 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-billing, costmanagement+billing
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 05/12/2021
 ms.topic: reference
 ms.prod: azure

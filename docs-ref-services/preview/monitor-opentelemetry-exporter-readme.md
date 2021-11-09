@@ -1,8 +1,8 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry-exporter, monitor
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 ms.date: 10/06/2021
 ms.topic: reference
 ms.prod: azure
