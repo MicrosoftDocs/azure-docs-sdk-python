@@ -1,9 +1,9 @@
 ---
 title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/14/2021
+author: maggiepint
+ms.author: magpint
+ms.date: 11/09/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -11,14 +11,14 @@ ms.devlang: python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.7.0 
+# Azure Identity client library for Python - Version 1.7.1 
 
 
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It
 provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD
 token authentication.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [API reference documentation][ref_docs]
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
@@ -391,30 +391,30 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/appconfiguration/azure-appconfiguration
+[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/appconfiguration/azure-appconfiguration
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/eventhub/azure-eventhub
-[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk//keyvault/azure-keyvault-certificates
-[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/keyvault/azure-keyvault-keys
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/storage/azure-storage-blob
-[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/storage/azure-storage-queue
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/eventhub/azure-eventhub
+[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk//keyvault/azure-keyvault-certificates
+[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/keyvault/azure-keyvault-keys
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/storage/azure-storage-blob
+[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/storage/azure-storage-queue
 [b2c]: https://docs.microsoft.com/azure/active-directory-b2c/overview
-[cert_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.CertificateCredential
-[chain_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.ChainedTokenCredential
-[cli_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureCliCredential
-[client_secret_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.ClientSecretCredential
-[default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
-[device_code_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DeviceCodeCredential
-[environment_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.EnvironmentCredential
-[interactive_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.InteractiveBrowserCredential
-[managed_id_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.ManagedIdentityCredential
+[cert_cred_ref]: https://aka.ms/azsdk/python/identity/certificatecredential
+[chain_cred_ref]: https://aka.ms/azsdk/python/identity/chainedtokencredential
+[cli_cred_ref]: https://aka.ms/azsdk/python/identity/azclicredential
+[client_secret_cred_ref]: https://aka.ms/azsdk/python/identity/clientsecretcredential
+[default_cred_ref]: https://aka.ms/azsdk/python/identity/defaultazurecredential
+[device_code_cred_ref]: https://aka.ms/azsdk/python/identity/devicecodecredential
+[environment_cred_ref]: https://aka.ms/azsdk/python/identity/environmentcredential
+[interactive_cred_ref]: https://aka.ms/azsdk/python/identity/interactivebrowsercredential
+[managed_id_cred_ref]: https://aka.ms/azsdk/python/identity/managedidentitycredential
 [ref_docs]: https://aka.ms/azsdk/python/identity/docs
 [ref_docs_aio]: https://aka.ms/azsdk/python/identity/aio/docs
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.0/sdk/identity/azure-identity/Troubleshoot.md
-[userpass_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.UsernamePasswordCredential
-[vscode_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.VisualStudioCodeCredential
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.7.1/sdk/identity/azure-identity/Troubleshoot.md
+[userpass_cred_ref]: https://aka.ms/azsdk/python/identity/usernamepasswordcredential
+[vscode_cred_ref]: https://aka.ms/azsdk/python/identity/vscodecredential
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)
 
