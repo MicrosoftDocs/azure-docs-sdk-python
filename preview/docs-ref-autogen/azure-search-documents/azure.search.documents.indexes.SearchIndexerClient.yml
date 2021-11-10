@@ -47,7 +47,7 @@ methods:
   - "Create a Data Source<!--[!code-python[Main](les\\sample_data_source_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\53\\\\azure-search-documents-11.3.0b4\\\\samples\\\\sample_data_source_operations.py\"\
+    \\53\\\\azure-search-documents-11.3.0b5\\\\samples\\\\sample_data_source_operations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   container = SearchIndexerDataContainer(name='searchcontainer')\n   data_source_connection\
@@ -185,7 +185,7 @@ methods:
   - "Delete a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\sample_data_source_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\53\\\\azure-search-documents-11.3.0b4\\\\samples\\\\sample_data_source_operations.py\"\
+    \\53\\\\azure-search-documents-11.3.0b5\\\\samples\\\\sample_data_source_operations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   client.delete_data_source_connection(\"sample-data-source-connection\")\n\
@@ -223,7 +223,7 @@ methods:
     the name of the skillset to delete unconditionally'
   signature: delete_skillset(skillset, **kwargs)
   parameters:
-  - name: name
+  - name: skillset
     description: The SearchIndexerSkillset to delete
     isRequired: true
     types:
@@ -249,7 +249,7 @@ methods:
   - "Retrieve a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\sample_data_source_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\53\\\\azure-search-documents-11.3.0b4\\\\samples\\\\sample_data_source_operations.py\"\
+    \\53\\\\azure-search-documents-11.3.0b5\\\\samples\\\\sample_data_source_operations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   result = client.get_data_source_connection(\"sample-data-source-connection\"\
@@ -267,6 +267,16 @@ methods:
   name: get_data_source_connections
   summary: Lists all data source connections available for a search service.
   signature: get_data_source_connections(**kwargs)
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of all the data source connections.
     types:
@@ -275,7 +285,7 @@ methods:
   - "List all the SearchIndexerDataSourceConnections<!--[!code-python[Main](les\\\
     sample_data_source_operations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\53\\\\azure-search-documents-11.3.0b4\\\\\
+    \ \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\53\\\\azure-search-documents-11.3.0b5\\\\\
     samples\\\\sample_data_source_operations.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   result = client.get_data_source_connections()\n\
@@ -321,6 +331,16 @@ methods:
   name: get_indexers
   summary: Lists all indexers available for a search service.
   signature: get_indexers(**kwargs)
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of all the SearchIndexers.
     types:
@@ -355,10 +375,50 @@ methods:
   name: get_skillsets
   summary: List the SearchIndexerSkillsets in an Azure Search service.
   signature: get_skillsets(**kwargs)
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of SearchIndexerSkillsets
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexerSkillset>]
+  exceptions:
+  - type: ~azure.core.exceptions.HttpResponseError
+- uid: azure.search.documents.indexes.SearchIndexerClient.reset_documents
+  name: reset_documents
+  summary: Resets specific documents in the datasource to be selectively re-ingested
+    by the indexer.
+  signature: reset_documents(indexer, keys_or_ids, **kwargs)
+  parameters:
+  - name: indexer
+    description: The indexer to reset documents for.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.SearchIndexer>
+  - name: keys_or_ids
+    isRequired: true
+    types:
+    - <xref:azure.search.documents.indexes.models.DocumentKeysOrIds>
+  - name: overwrite
+    description: 'If false, keys or ids will be appended to existing ones. If true,
+      only the
+
+      keys or ids in this payload will be queued to be re-ingested. The default is
+      false.'
+    types:
+    - <xref:bool>
+  return:
+    description: None, or the result of cls(response)
+    types:
+    - <xref:None>
   exceptions:
   - type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.reset_indexer
@@ -375,6 +435,28 @@ methods:
     description: None
     types:
     - <xref:None>
+- uid: azure.search.documents.indexes.SearchIndexerClient.reset_skills
+  name: reset_skills
+  summary: Reset an existing skillset in a search service.
+  signature: reset_skills(skillset, skill_names, **kwargs)
+  parameters:
+  - name: skillset
+    description: The SearchIndexerSkillset to reset
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
+  - name: skill_names
+    description: the names of skills to be reset.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: None, or the result of cls(response)
+    types:
+    - <xref:None>
+  exceptions:
+  - type: ~azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.SearchIndexerClient.run_indexer
   name: run_indexer
   summary: Run an indexer.
