@@ -1,9 +1,9 @@
 ---
 title: Azure Schema Registry Avro Serializer client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry-avroserializer, schemaregistry
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/06/2021
+author: maggiepint
+ms.author: magpint
+ms.date: 11/11/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: schemaregistry
 ---
 
-# Azure Schema Registry Avro Serializer client library for Python - Version 1.0.0b3 
+# Azure Schema Registry Avro Serializer client library for Python - Version 1.0.0b4 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
@@ -41,9 +41,24 @@ To use this package, you must have:
 * Python 2.7, 3.6 or later - [Install Python][python]
 
 ### Authenticate the client
-Interaction with Schema Registry Avro Serializer starts with an instance of AvroSerializer class. You need the fully qualified namespace, AAD credential and schema group name to instantiate the client object.
+Interaction with the Schema Registry Avro Serializer starts with an instance of AvroSerializer class, which takes the schema group name and the [Schema Registry Client][schemaregistry_client] class. The client constructor takes the Event Hubs fully qualified namespace and and Azure Active Directory credential:
 
-**Create client using the azure-identity library:**
+* The fully qualified namespace of the Schema Registry instance should follow the format: `<yournamespace>.servicebus.windows.net`.
+
+* An AAD credential that implements the [TokenCredential][token_credential_interface] protocol should be passed to the constructor. There are implementations of the `TokenCredential` protocol available in the
+[azure-identity package][pypi_azure_identity]. To use the credential types provided by `azure-identity`, please install the Azure Identity client library for Python with [pip][pip]:
+
+```Bash
+pip install azure-identity
+```
+
+* Additionally, to use the async API supported on Python 3.6+, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/):
+
+```Bash
+pip install aiohttp
+```
+
+**Create AvroSerializer using the azure-schemaregistry library:**
 
 ```python
 from azure.schemaregistry import SchemaRegistryClient
@@ -51,6 +66,7 @@ from azure.schemaregistry.serializer.avroserializer import AvroSerializer
 from azure.identity import DefaultAzureCredential
 
 credential = DefaultAzureCredential()
+# Namespace should be similar to: '<your-eventhub-namespace>.servicebus.windows.net'
 fully_qualified_namespace = '<< FULLY QUALIFIED NAMESPACE OF THE SCHEMA REGISTRY >>'
 group_name = '<< GROUP NAME OF THE SCHEMA >>'
 schema_registry_client = SchemaRegistryClient(fully_qualified_namespace, credential)
@@ -100,7 +116,7 @@ The following sections provide several code snippets covering some of the most c
 ### Serialization
 
 Use `AvroSerializer.serialize` method to serialize dict data with the given avro schema.
-The method would automatically register the schema to the Schema Registry Service and keep the schema cached for future serialization usage.
+The method would use a schema previously registered to the Schema Registry service and keep the schema cached for future serialization usage. It is also possible to avoid pre-registering the schema to the service and automatically register with the `serialize` method by instantiating the `AvroSerializer` with the keyword argument `auto_register_schemas=True`.
 
 ```python
 import os
@@ -111,11 +127,10 @@ from azure.identity import DefaultAzureCredential
 token_credential = DefaultAzureCredential()
 fully_qualified_namespace = os.environ['SCHEMAREGISTRY_FULLY_QUALIFIED_NAMESPACE']
 group_name = "<your-group-name>"
+name = "example.avro.User"
+format = "Avro"
 
-schema_registry_client = SchemaRegistryClient(fully_qualified_namespace, token_credential)
-serializer = AvroSerializer(client=schema_registry_client, group_name=group_name)
-
-schema_string = """
+definition = """
 {"namespace": "example.avro",
  "type": "record",
  "name": "User",
@@ -126,15 +141,19 @@ schema_string = """
  ]
 }"""
 
+schema_registry_client = SchemaRegistryClient(fully_qualified_namespace, token_credential)
+schema_register_client.register(group_name, name, definition, format)
+serializer = AvroSerializer(client=schema_registry_client, group_name=group_name)
+
 with serializer:
     dict_data = {"name": "Ben", "favorite_number": 7, "favorite_color": "red"}
-    encoded_bytes = serializer.serialize(dict_data, schema=schema_string)
+    encoded_bytes = serializer.serialize(dict_data, schema=definition)
 ```
 
 ### Deserialization
 
 Use `AvroSerializer.deserialize` method to deserialize raw bytes into dict data.
-The method would automatically retrieve the schema from the Schema Registry Service and keep the schema cached for future deserialization usage.
+The method automatically retrieves the schema from the Schema Registry Service and keeps the schema cached for future deserialization usage.
 
 ```python
 import os
@@ -171,7 +190,7 @@ group_name = "<your-group-name>"
 eventhub_connection_str = os.environ['EVENT_HUB_CONN_STR']
 eventhub_name = os.environ['EVENT_HUB_NAME']
 
-schema_string = """
+definition = """
 {"namespace": "example.avro",
  "type": "record",
  "name": "User",
@@ -183,7 +202,7 @@ schema_string = """
 }"""
 
 schema_registry_client = SchemaRegistryClient(fully_qualified_namespace, token_credential)
-avro_serializer = AvroSerializer(client=schema_registry_client, group_name=group_name)
+avro_serializer = AvroSerializer(client=schema_registry_client, group_name=group_name, auto_register_schemas=True)
 
 eventhub_producer = EventHubProducerClient.from_connection_string(
     conn_str=eventhub_connection_str,
@@ -193,7 +212,7 @@ eventhub_producer = EventHubProducerClient.from_connection_string(
 with eventhub_producer, avro_serializer:
     event_data_batch = eventhub_producer.create_batch()
     dict_data = {"name": "Bob", "favorite_number": 7, "favorite_color": "red"}
-    payload_bytes = avro_serializer.serialize(dict_data, schema=schema_string)
+    payload_bytes = avro_serializer.serialize(dict_data, schema=definition)
     event_data_batch.add(EventData(body=payload_bytes))
     eventhub_producer.send_batch(event_data_batch)
 ```
@@ -297,13 +316,15 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-schemaregistry-avroserializer
 [python]: https://www.python.org/downloads/
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry-avroserializer_1.0.0b3/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry-avroserializer_1.0.0b4/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sr_avro_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b3/sdk/schemaregistry/azure-schemaregistry-avroserializer/samples
-[api_reference]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-schemaregistry-avroserializer/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b3/sdk/schemaregistry/azure-schemaregistry-avroserializer
-[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b3/sdk/schemaregistry/azure-schemaregistry-avroserializer/CHANGELOG.md
-[schemaregistry_client]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b3/sdk/schemaregistry/azure-schemaregistry
+[sr_avro_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/schemaregistry/azure-schemaregistry-avroserializer/samples
+[api_reference]: https://docs.microsoft.com/python/api/overview/azure/schemaregistry-avroserializer-readme
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/schemaregistry/azure-schemaregistry-avroserializer
+[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/schemaregistry/azure-schemaregistry-avroserializer/CHANGELOG.md
+[schemaregistry_client]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/schemaregistry/azure-schemaregistry
 [schemaregistry_service]: https://aka.ms/schemaregistry
-[eventhubs_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b3/sdk/eventhub/azure-eventhub
+[eventhubs_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/eventhub/azure-eventhub
+[token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/core/azure-core/azure/core/credentials.py
+[pypi_azure_identity]: https://pypi.org/project/azure-identity/
