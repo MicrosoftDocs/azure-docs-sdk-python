@@ -8,81 +8,112 @@ inheritances:
 summary: 'A private cloud resource.
 
 
-  Variables are only populated by the server, and will be ignored when
-
-  sending a request.
+  Variables are only populated by the server, and will be ignored when sending a request.
 
 
   All required parameters must be populated in order to send to Azure.'
 constructor:
-  syntax: 'PrivateCloud(*, sku, network_block: str, location: Optional[str] = None,
-    tags=None, management_cluster=None, internet=''Disabled'', identity_sources=None,
-    circuit=None, vcenter_password: Optional[str] = None, nsxt_password: Optional[str]
+  syntax: 'PrivateCloud(*, sku: azure.mgmt.avs.models._models_py3.Sku, location: Optional[str]
+    = None, tags: Optional[Dict[str, str]] = None, identity: Optional[azure.mgmt.avs.models._models_py3.PrivateCloudIdentity]
+    = None, management_cluster: Optional[azure.mgmt.avs.models._models_py3.ManagementCluster]
+    = None, internet: Optional[str] = ''Disabled'', identity_sources: Optional[List[azure.mgmt.avs.models._models_py3.IdentitySource]]
+    = None, availability: Optional[azure.mgmt.avs.models._models_py3.AvailabilityProperties]
+    = None, encryption: Optional[azure.mgmt.avs.models._models_py3.Encryption] = None,
+    circuit: Optional[azure.mgmt.avs.models._models_py3.Circuit] = None, network_block:
+    Optional[str] = None, vcenter_password: Optional[str] = None, nsxt_password: Optional[str]
+    = None, secondary_circuit: Optional[azure.mgmt.avs.models._models_py3.Circuit]
     = None, **kwargs)'
   parameters:
   - name: location
-    description: Resource location
+    description: Resource location.
     isRequired: true
     types:
     - <xref:str>
   - name: tags
-    description: Resource tags
+    description: A set of tags. Resource tags.
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: sku
-    description: Required. The private cloud SKU
+    description: Required. The private cloud SKU.
     isRequired: true
     types:
     - <xref:azure.mgmt.avs.models.Sku>
+  - name: identity
+    description: The identity of the private cloud, if configured.
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.avs.models.PrivateCloudIdentity>
   - name: management_cluster
-    description: The default cluster used for management
+    description: The default cluster used for management.
     isRequired: true
     types:
     - <xref:azure.mgmt.avs.models.ManagementCluster>
   - name: internet
-    description: 'Connectivity to internet is enabled or disabled. Possible
+    description: 'Connectivity to internet is enabled or disabled. Possible values
+      include:
 
-      values include: ''Enabled'', ''Disabled''. Default value: "Disabled" .'
+      "Enabled", "Disabled". Default value: "Disabled".'
     isRequired: true
     types:
     - <xref:str>
     - <xref:azure.mgmt.avs.models.InternetEnum>
   - name: identity_sources
-    description: vCenter Single Sign On Identity Sources
+    description: vCenter Single Sign On Identity Sources.
     isRequired: true
     types:
     - <xref:list>[<xref:azure.mgmt.avs.models.IdentitySource>]
+  - name: availability
+    description: 'Properties describing how the cloud is distributed across availability
+
+      zones.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.avs.models.AvailabilityProperties>
+  - name: encryption
+    description: Customer managed key encryption, can be enabled or disabled.
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.avs.models.Encryption>
   - name: circuit
-    description: An ExpressRoute Circuit
+    description: An ExpressRoute Circuit.
     isRequired: true
     types:
     - <xref:azure.mgmt.avs.models.Circuit>
   - name: network_block
-    description: 'Required. The block of addresses should be unique
+    description: 'The block of addresses should be unique across VNet in your subscription
 
-      across VNet in your subscription as well as on-premise. Make sure the CIDR
+      as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X)
+      where A,B,C,D are
 
-      format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255,
-
-      and X is between 0 and 22'
+      between 0 and 255, and X is between 0 and 22.'
     isRequired: true
     types:
     - <xref:str>
   - name: vcenter_password
-    description: 'Optionally, set the vCenter admin password when
+    description: 'Optionally, set the vCenter admin password when the private cloud
+      is
 
-      the private cloud is created'
+      created.'
     isRequired: true
     types:
     - <xref:str>
   - name: nsxt_password
-    description: 'Optionally, set the NSX-T Manager password when the
+    description: 'Optionally, set the NSX-T Manager password when the private cloud
+      is
 
-      private cloud is created'
+      created.'
     isRequired: true
     types:
     - <xref:str>
+  - name: secondary_circuit
+    description: 'A secondary expressRoute circuit from a separate AZ. Only present
+      in
+
+      a stretched private cloud.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.avs.models.Circuit>
 variables:
 - description: Resource ID.
   name: id
@@ -96,50 +127,40 @@ variables:
   name: type
   types:
   - <xref:str>
-- description: 'The provisioning state. Possible values include:
+- description: 'The provisioning state. Possible values include: "Succeeded",
 
-    ''Succeeded'', ''Failed'', ''Cancelled'', ''Pending'', ''Building'', ''Deleting'',
-
-    ''Updating'''
+    "Failed", "Cancelled", "Pending", "Building", "Deleting", "Updating".'
   name: provisioning_state
   types:
   - <xref:str>
   - <xref:azure.mgmt.avs.models.PrivateCloudProvisioningState>
-- description: The endpoints
+- description: The endpoints.
   name: endpoints
   types:
   - <xref:azure.mgmt.avs.models.Endpoints>
-- description: 'Network used to access vCenter Server and NSX-T
-
-    Manager'
+- description: Network used to access vCenter Server and NSX-T Manager.
   name: management_network
   types:
   - <xref:str>
-- description: 'Used for virtual machine cold migration,
+- description: 'Used for virtual machine cold migration, cloning, and snapshot
 
-    cloning, and snapshot migration'
+    migration.'
   name: provisioning_network
   types:
   - <xref:str>
-- description: Used for live migration of virtual machines
+- description: Used for live migration of virtual machines.
   name: vmotion_network
   types:
   - <xref:str>
-- description: 'Thumbprint of the vCenter Server SSL
-
-    certificate'
+- description: Thumbprint of the vCenter Server SSL certificate.
   name: vcenter_certificate_thumbprint
   types:
   - <xref:str>
-- description: 'Thumbprint of the NSX-T Manager SSL
-
-    certificate'
+- description: Thumbprint of the NSX-T Manager SSL certificate.
   name: nsxt_certificate_thumbprint
   types:
   - <xref:str>
-- description: 'Array of cloud link IDs from other clouds that
-
-    connect to this one'
+- description: Array of cloud link IDs from other clouds that connect to this one.
   name: external_cloud_links
   types:
   - <xref:list>[<xref:str>]
