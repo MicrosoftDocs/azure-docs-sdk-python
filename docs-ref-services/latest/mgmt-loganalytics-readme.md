@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, loganalytics
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 07/12/2021
+author: maggiepint
+ms.author: magpint
+ms.date: 11/17/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
