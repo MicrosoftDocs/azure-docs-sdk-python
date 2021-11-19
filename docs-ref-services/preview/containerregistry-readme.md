@@ -1,9 +1,9 @@
 ---
 title: Azure Container Registry client library for Python
 keywords: Azure, python, SDK, API, azure-containerregistry, containerregistry
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 09/09/2021
+author: maggiepint
+ms.author: magpint
+ms.date: 11/19/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: containerregistry
 ---
 
-# Azure Container Registry client library for Python - Version 1.0.0b6 
+# Azure Container Registry client library for Python - Version 1.0.0b7 
 
 
 Azure Container Registry allows you to store and manage container images and artifacts in a private registry for all types of container deployments.
@@ -49,15 +49,16 @@ az acr create --name MyContainerRegistry --resource-group MyResourceGroup --loca
 
 ### Authenticate the client
 
-The [Azure Identity library][identity] provides easy Azure Active Directory support for authentication. The `DefaultAzureCredential` assumes the `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET` environment variables are set, for more information refer to the [Azure Identity environment variables section](https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.0.0b6/sdk/identity/azure-identity#environment-variables)
+The [Azure Identity library][identity] provides easy Azure Active Directory support for authentication. The `DefaultAzureCredential` assumes the `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET` environment variables are set, for more information refer to the [Azure Identity environment variables section](https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.0.0b7/sdk/identity/azure-identity#environment-variables)
 
 ```python
 # Create a ContainerRegistryClient that will authenticate through Active Directory
 from azure.containerregistry import ContainerRegistryClient
 from azure.identity import DefaultAzureCredential
 
-account_url = "https://MYCONTAINERREGISTRY.azurecr.io"
-client = ContainerRegistryClient(account_url, DefaultAzureCredential())
+account_url = "https://mycontainerregistry.azurecr.io"
+audience = "https://management.azure.com"
+client = ContainerRegistryClient(account_url, DefaultAzureCredential(), audience=audience)
 ```
 
 ## Key concepts
@@ -112,7 +113,7 @@ additional questions or comments.
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fcontainerregistry%2Fazure-containerregistry%2FREADME.png)
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.0.0b6/sdk/containerregistry/azure-containerregistry
+[source]: https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.0.0b7/sdk/containerregistry/azure-containerregistry
 [package]: https://pypi.org/project/azure-containerregistry/
 [docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-containerregistry/1.0.0b1/index.html
 [rest_docs]: https://docs.microsoft.com/rest/api/containerregistry/
