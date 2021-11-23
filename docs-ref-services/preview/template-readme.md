@@ -1,9 +1,9 @@
 ---
 title: Azure Template Package client library for Python
 keywords: Azure, python, SDK, API, azure-template, template
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/18/2021
+author: maggiepint
+ms.author: magpint
+ms.date: 11/21/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -13,7 +13,7 @@ ms.service: template
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Template Package client library for Python - Version 0.1.0b1147355 
+# Azure Template Package client library for Python - Version 0.1.0b1206681 
 
 
 This template package matches necessary patterns that the development team has established to create a unified sdk functional from Python 2.7 onwards. The packages contained herein can be installed singly or as part of the `azure` namespace. Any other introductory text should go here.

@@ -1,24 +1,24 @@
 ---
 title: Azure Communication Network Traversal Package client library for Python
-keywords: Azure, python, SDK, API, azure-communication-networktraversal, 
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 08/16/2021
+keywords: Azure, python, SDK, API, azure-communication-networktraversal, communication
+author: maggiepint
+ms.author: magpint
+ms.date: 11/18/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: communication
 ---
 
-# Azure Communication Network Traversal Package client library for Python - Version 1.0.0b1 
+# Azure Communication Network Traversal Package client library for Python - Version 1.0.0b2 
 
 
 Azure Communication Network Traversal is managing TURN credentials for Azure Communication Services.
 
 It will provide TURN credentials to a user.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/communication) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/communication)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.0.0b2/sdk/communication) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.0.0b2/sdk/communication)
 
 # Getting started
 
@@ -72,12 +72,48 @@ identity_client = CommunicationIdentityClient.from_connection_string(self.connec
 relay_client = CommunicationRelayClient.from_connection_string(self.connection_string)
 ```
 
-### Getting the relay configuration 
+### Getting the relay configuration providing a user
 
 ```python
 # We need a user from Identity
 user = identity_client.create_user()
 relay_configuration = relay_client.get_relay_configuration(user)
+
+for iceServer in config.ice_servers:
+    assert iceServer.username is not None
+    print('Username: ' + iceServer.username)
+
+    assert iceServer.credential is not None
+    print('Credential: ' + iceServer.credential)
+    
+    assert iceServer.urls is not None
+    for url in iceServer.urls:
+        print('Url:' + url)
+```
+
+### Getting the relay configuration without providing a user
+
+```python
+relay_configuration = relay_client.get_relay_configuration()
+
+for iceServer in config.ice_servers:
+    assert iceServer.username is not None
+    print('Username: ' + iceServer.username)
+
+    assert iceServer.credential is not None
+    print('Credential: ' + iceServer.credential)
+    
+    assert iceServer.urls is not None
+    for url in iceServer.urls:
+        print('Url:' + url)
+```
+
+### Getting the relay configuration without providing a RouteType
+
+```python
+# We need a user from Identity
+user = identity_client.create_user()
+relay_configuration = relay_client.get_relay_configuration(user, RouteType.NEAREST)
 
 for iceServer in config.ice_servers:
     assert iceServer.username is not None
@@ -115,5 +151,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.0.0b2/sdk/core/azure-core/README.md
 
