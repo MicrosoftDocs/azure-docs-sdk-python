@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-containerservice, containerservice
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/18/2021
+author: samkreter
+ms.author: samkreter
+ms.date: 11/29/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
