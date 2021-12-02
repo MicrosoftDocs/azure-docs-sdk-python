@@ -8,8 +8,6 @@ manager: jeconnoc
 ms.date: 04/15/2019
 ms.author: danlep
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: container-instances
 ---
@@ -40,7 +38,9 @@ One of the easiest ways to authenticate SDK clients (like the Azure Container In
 
 1. Create a credentials file with the [Azure CLI](/cli/azure) or [Cloud Shell](https://shell.azure.com/):
 
-   `az ad sp create-for-rbac --sdk-auth > my.azureauth`
+   ```azurecli
+   az ad sp create-for-rbac --role Contributor --sdk-auth > my.azureauth
+   ```
 
    If you use the [Cloud Shell](https://shell.azure.com/) to generate the credentials file, copy its contents into a local file that your Python application can access.
 
