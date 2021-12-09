@@ -24,7 +24,8 @@ constructor:
   - name: auto_register_schemas
     description: 'When true, register new schemas passed to serialize.
 
-      Otherwise, and by default, fail if it has not been pre-registered in the registry.'
+      Otherwise, and by default, serialization will fail if the schema has not been
+      pre-registered in the registry.'
     types:
     - <xref:bool>
 methods:
@@ -36,7 +37,12 @@ methods:
   signature: close()
 - uid: azure.schemaregistry.serializer.avroserializer.AvroSerializer.deserialize
   name: deserialize
-  summary: Decode bytes data.
+  summary: 'Decode bytes data.
+
+
+    Data must follow format of associated Avro RecordSchema:
+
+    [https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)'
   signature: deserialize(value, **kwargs)
   parameters:
   - name: value
@@ -47,6 +53,11 @@ methods:
   return:
     types:
     - <xref:Dict>[<xref:str>, <xref:Any>]
+  exceptions:
+  - description: Indicates an issue with parsing schema.
+    type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaParseError
+  - description: Indicates an issue with deserializing value.
+    type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaDeserializationError
 - uid: azure.schemaregistry.serializer.avroserializer.AvroSerializer.serialize
   name: serialize
   summary: 'Encode data with the given schema. The returns bytes are consisted of:
@@ -55,7 +66,12 @@ methods:
     denoting record format identifier. The following 32 bytes denoting schema id returned
     by schema registry
 
-    service. The remaining bytes are the real data payload.'
+    service. The remaining bytes are the real data payload.
+
+
+    Schema must be an Avro RecordSchema:
+
+    [https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)'
   signature: serialize(value, **kwargs)
   parameters:
   - name: value
@@ -70,3 +86,8 @@ methods:
   return:
     types:
     - <xref:bytes>
+  exceptions:
+  - description: Indicates an issue with parsing schema.
+    type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaParseError
+  - description: Indicates an issue with serializing data for provided schema.
+    type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaSerializationError

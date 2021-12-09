@@ -1,0 +1,153 @@
+### YamlMime:PythonClass
+uid: azure.monitor.query.LogsQueryClient
+name: LogsQueryClient
+fullName: azure.monitor.query.LogsQueryClient
+module: azure.monitor.query
+inheritances:
+- builtins.object
+summary: 'LogsQueryClient. Use this client to collect and organize log and performance
+  data from
+
+  monitored resources. Data from different sources such as platform logs from Azure
+  services,
+
+  log and performance data from virtual machines agents, and usage and performance
+  data from
+
+  apps can be consolidated into a single Azure Log Analytics workspace.
+
+
+  The various data types can be analyzed together using the
+
+  [Kusto Query Language]([https://docs.microsoft.com/azure/data-explorer/kusto/query/](https://docs.microsoft.com/azure/data-explorer/kusto/query/))'
+constructor:
+  syntax: LogsQueryClient(credential, **kwargs)
+  parameters:
+  - name: credential
+    description: The credential to authenticate the client.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: endpoint
+    description: The endpoint to connect to. Defaults to '[https://api.loganalytics.io](https://api.loganalytics.io)'.
+    types:
+    - <xref:str>
+methods:
+- uid: azure.monitor.query.LogsQueryClient.close
+  name: close
+  summary: Close the <xref:azure.monitor.query.LogsQueryClient> session.
+  signature: close()
+- uid: azure.monitor.query.LogsQueryClient.query_batch
+  name: query_batch
+  summary: "Execute a list of Kusto queries. Each request can be either a LogsBatchQuery\n\
+    object or an equivalent serialized model.\n\n**NOTE**: The response is returned\
+    \ in the same order as that of the requests sent.\n\nGet a response for multiple\
+    \ Log Queries.<!--[!code-python[Main](les\\sample_batch_query.py )]-->\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\179\\\\azure-monitor-query-1.0.1\\\
+    \\samples\\\\sample_batch_query.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   requests = [\n       LogsBatchQuery(\n\
+    \           query=\"AzureActivity | summarize count()\",\n           timespan=timedelta(hours=1),\n\
+    \           workspace_id= os.environ['LOGS_WORKSPACE_ID']\n       ),\n       LogsBatchQuery(\n\
+    \           query= \"\"\"bad query\"\"\",\n           timespan=timedelta(days=1),\n\
+    \           workspace_id= os.environ['LOGS_WORKSPACE_ID']\n       ),\n       LogsBatchQuery(\n\
+    \           query= \"\"\"let Weight = 92233720368547758;\n           range x from\
+    \ 1 to 3 step 1\n           | summarize percentilesw(x, Weight * 100, 50)\"\"\"\
+    ,\n           workspace_id= os.environ['LOGS_WORKSPACE_ID'],\n           timespan=(datetime(2021,\
+    \ 6, 2, tzinfo=timezone.utc), datetime(2021, 6, 5, tzinfo=timezone.utc)), # (start,\
+    \ end)\n           include_statistics=True\n       ),\n   ]\n   results = client.query_batch(requests)\n\
+    \n   for res in results:\n       if res.status == LogsQueryStatus.FAILURE:\n \
+    \          # this will be a LogsQueryError\n           print(res.message)\n  \
+    \     elif res.status == LogsQueryStatus.PARTIAL:\n           ## this will be\
+    \ a LogsQueryPartialResult\n           print(res.partial_error.message)\n    \
+    \       for table in res.partial_data:\n               df = pd.DataFrame(table.rows,\
+    \ columns=table.columns)\n               print(df)\n       elif res.status ==\
+    \ LogsQueryStatus.SUCCESS:\n           ## this will be a LogsQueryResult\n   \
+    \        table = res.tables[0]\n           df = pd.DataFrame(table.rows, columns=table.columns)\n\
+    \           print(df)\n\n\n\n   ````"
+  signature: query_batch(queries, **kwargs)
+  parameters:
+  - name: queries
+    description: The list of Kusto queries to execute.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:dict>]
+    - <xref:list>[<xref:azure.monitor.query.LogsBatchQuery>]
+  return:
+    description: 'List of LogsQueryResult, LogsQueryPartialResult and LogsQueryError.
+
+      For a given query, a LogsQueryResult is returned if the response is a success,
+      LogsQueryPartialResult
+
+      is returned when there is a partial success and a LogsQueryError is returned
+      when there is a failure.
+
+      The status of each response can be checked using *LogsQueryStatus* enum.'
+    types:
+    - <xref:list>[<xref:Union>[<xref:azure.monitor.query.LogsQueryResult>, <xref:azure.monitor.query.LogsQueryPartialResult,azure.monitor.query.LogsQueryError>]
+  exceptions:
+  - type: ~azure.core.exceptions.HttpResponseError
+- uid: azure.monitor.query.LogsQueryClient.query_workspace
+  name: query_workspace
+  summary: 'Execute a Kusto query.
+
+
+    Executes a Kusto query for data.'
+  signature: query_workspace(workspace_id, query, **kwargs)
+  parameters:
+  - name: workspace_id
+    description: 'ID of the workspace. This is Workspace ID from the Properties blade
+      in the
+
+      Azure portal.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: query
+    description: The Kusto query. Learn more about the [Kusto query syntax](https://docs.microsoft.com/azure/data-explorer/kusto/query/).
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timespan
+    description: 'Required. The timespan for which to query the data. This can be
+      a timedelta,
+
+      a timedelta and a start datetime, or a start datetime/end datetime.'
+    types:
+    - <xref:datetime.timedelta>
+    - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.timedelta>]
+    - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.datetime>]
+  - name: server_timeout
+    description: 'the server timeout in seconds. The default timeout is 3 minutes,
+
+      and the maximum timeout is 10 minutes.'
+    types:
+    - <xref:int>
+  - name: include_statistics
+    description: To get information about query statistics.
+    types:
+    - <xref:bool>
+  - name: include_visualization
+    description: 'In the query language, it is possible to specify different
+
+      visualization options. By default, the API does not return information regarding
+      the type of
+
+      visualization to show. If your client requires this information, specify the
+      preference'
+    types:
+    - <xref:bool>
+  - name: additional_workspaces
+    description: 'A list of workspaces that are included in the query.
+
+      These can be qualified workspace names, workspace Ids, or Azure resource Ids.'
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: LogsQueryResult if there is a success or LogsQueryPartialResult when
+      there is a partial success.
+    types:
+    - <xref:Union>[<xref:azure.monitor.query.LogsQueryResult>, <xref:azure.monitor.query.LogsQueryPartialResult>]
+  exceptions:
+  - type: ~azure.core.exceptions.HttpResponseError
