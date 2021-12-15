@@ -8,12 +8,13 @@ inheritances:
 summary: Information about a cluster upgrade.
 constructor:
   syntax: 'ClusterUpgradeProgressObject(*, code_version: Optional[str] = None, config_version:
-    Optional[str] = None, upgrade_domains=None, upgrade_state=None, next_upgrade_domain:
-    Optional[str] = None, rolling_upgrade_mode=''UnmonitoredAuto'', upgrade_description=None,
-    upgrade_duration_in_milliseconds: Optional[str] = None, upgrade_domain_duration_in_milliseconds:
-    Optional[str] = None, unhealthy_evaluations=None, current_upgrade_domain_progress=None,
-    start_timestamp_utc: Optional[str] = None, failure_timestamp_utc: Optional[str]
-    = None, failure_reason=None, upgrade_domain_progress_at_failure=None, **kwargs)'
+    Optional[str] = None, upgrade_domains=None, upgrade_units=None, upgrade_state=None,
+    next_upgrade_domain: Optional[str] = None, rolling_upgrade_mode=''UnmonitoredAuto'',
+    upgrade_description=None, upgrade_duration_in_milliseconds: Optional[str] = None,
+    upgrade_domain_duration_in_milliseconds: Optional[str] = None, unhealthy_evaluations=None,
+    current_upgrade_domain_progress=None, current_upgrade_units_progress=None, start_timestamp_utc:
+    Optional[str] = None, failure_timestamp_utc: Optional[str] = None, failure_reason=None,
+    upgrade_domain_progress_at_failure=None, is_node_by_node: bool = False, **kwargs)'
   parameters:
   - name: code_version
     description: The ServiceFabric code version of the cluster.
@@ -28,10 +29,17 @@ constructor:
     types:
     - <xref:str>
   - name: upgrade_domains
-    description: List of upgrade domains and their statuses.
+    description: 'List of upgrade domains and their statuses. Not
+
+      applicable to node-by-node upgrades.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.servicefabric.models.UpgradeDomainInfo>]
+  - name: upgrade_units
+    description: List of upgrade units and their statuses.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.servicefabric.models.UpgradeUnitInfo>]
   - name: upgrade_state
     description: 'The state of the upgrade domain. Possible values
 
@@ -47,18 +55,20 @@ constructor:
   - name: next_upgrade_domain
     description: 'The name of the next upgrade domain to be
 
-      processed.'
+      processed. Not applicable to node-by-node upgrades.'
     isRequired: true
     types:
     - <xref:str>
   - name: rolling_upgrade_mode
     description: 'The mode used to monitor health during a
 
-      rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and
+      rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual,
 
-      Monitored. Possible values include: ''Invalid'', ''UnmonitoredAuto'',
+      Monitored, and UnmonitoredDeferred. Possible values include: ''Invalid'',
 
-      ''UnmonitoredManual'', ''Monitored''. Default value: "UnmonitoredAuto" .'
+      ''UnmonitoredAuto'', ''UnmonitoredManual'', ''Monitored'',
+
+      ''UnmonitoredDeferred''. Default value: "UnmonitoredAuto" .'
     isRequired: true
     types:
     - <xref:str>
@@ -78,7 +88,9 @@ constructor:
   - name: upgrade_domain_duration_in_milliseconds
     description: 'The estimated elapsed time
 
-      spent processing the current upgrade domain.'
+      spent processing the current upgrade domain. Not applicable to
+
+      node-by-node upgrades.'
     isRequired: true
     types:
     - <xref:str>
@@ -92,10 +104,17 @@ constructor:
   - name: current_upgrade_domain_progress
     description: 'Information about the current
 
-      in-progress upgrade domain.'
+      in-progress upgrade domain. Not applicable to node-by-node upgrades.'
     isRequired: true
     types:
     - <xref:azure.servicefabric.models.CurrentUpgradeDomainProgressInfo>
+  - name: current_upgrade_units_progress
+    description: 'Information about the current
+
+      in-progress upgrade units.'
+    isRequired: true
+    types:
+    - <xref:azure.servicefabric.models.CurrentUpgradeUnitsProgressInfo>
   - name: start_timestamp_utc
     description: The start time of the upgrade in UTC.
     isRequired: true
@@ -121,7 +140,16 @@ constructor:
   - name: upgrade_domain_progress_at_failure
     description: 'The detailed upgrade progress
 
-      for nodes in the current upgrade domain at the point of failure.'
+      for nodes in the current upgrade domain at the point of failure. Not
+
+      applicable to node-by-node upgrades.'
     isRequired: true
     types:
     - <xref:azure.servicefabric.models.FailedUpgradeDomainProgressObject>
+  - name: is_node_by_node
+    description: 'Indicates whether this upgrade is node-by-node.
+
+      Default value: False .'
+    isRequired: true
+    types:
+    - <xref:bool>
