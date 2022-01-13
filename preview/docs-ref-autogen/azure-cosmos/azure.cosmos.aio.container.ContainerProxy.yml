@@ -21,7 +21,8 @@ summary: 'An interface to interact with a specific DB Container.
 
   documents, each of which is represented as an Item.'
 constructor:
-  syntax: ContainerProxy(client_connection, database_link, id, properties=None)
+  syntax: 'ContainerProxy(client_connection: azure.cosmos.aio._cosmos_client_connection_async.CosmosClientConnection,
+    database_link: str, id: str, properties: Optional[Dict[str, Any]] = None)'
 variables:
 - description: ID (name) of the container
   name: id
@@ -40,7 +41,7 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.aio.container.ContainerProxy.upsert_item> method.'
-  signature: create_item(body, **kwargs)
+  signature: 'create_item(body: Dict[str, Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -92,7 +93,8 @@ methods:
 
 
     If the conflict does not already exist in the container, an exception is raised.'
-  signature: delete_conflict(conflict, partition_key, **kwargs)
+  signature: 'delete_conflict(conflict: Union[str, Dict[str, Any]], partition_key:
+    Any, **kwargs: Any) -> None'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to be deleted.
@@ -118,8 +120,9 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: delete_item(item, partition_key, pre_trigger_include=None, post_trigger_include=None,
-    **kwargs)
+  signature: 'delete_item(item: Union[str, Dict[str, Any]], partition_key: Any, pre_trigger_include:
+    Optional[str] = None, post_trigger_include: Optional[str] = None, **kwargs: Any)
+    -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
@@ -168,7 +171,8 @@ methods:
 - uid: azure.cosmos.aio.container.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: list_conflicts(max_item_count=None, **kwargs)
+  signature: 'list_conflicts(max_item_count: Optional[int] = None, **kwargs: Any)
+    -> azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -184,8 +188,9 @@ methods:
 - uid: azure.cosmos.aio.container.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: query_conflicts(query, parameters=None, partition_key=None, max_item_count=None,
-    **kwargs)
+  signature: 'query_conflicts(query: str, parameters: Optional[List[Dict[str, Any]]]
+    = None, partition_key: Optional[Any] = None, max_item_count: Optional[int] = None,
+    **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -223,8 +228,10 @@ methods:
     name is "products," and is aliased as "p" for easier referencing in
 
     the WHERE clause.'
-  signature: query_items(query, parameters=None, partition_key=None, max_item_count=None,
-    enable_scan_in_query=None, populate_query_metrics=None, **kwargs)
+  signature: 'query_items(query: str, parameters: Optional[List[Dict[str, Any]]] =
+    None, partition_key: Optional[Any] = None, max_item_count: Optional[int] = None,
+    enable_scan_in_query: Optional[bool] = None, populate_query_metrics: Optional[bool]
+    = None, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -272,7 +279,7 @@ methods:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\\
-    s\\\\dist_temp\\\\85\\\\azure-cosmos-4.3.0b1\\\\samples\\\\examples_async.py\"\
+    s\\\\dist_temp\\\\83\\\\azure-cosmos-4.3.0b1\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import json\n\n   async for item in container.query_items(\n       query='SELECT\
@@ -281,7 +288,7 @@ methods:
     \ query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\\
-    s\\\\dist_temp\\\\85\\\\azure-cosmos-4.3.0b1\\\\samples\\\\examples_async.py\"\
+    s\\\\dist_temp\\\\83\\\\azure-cosmos-4.3.0b1\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   discontinued_items = container.query_items(\n       query='SELECT * FROM\
@@ -293,8 +300,10 @@ methods:
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: query_items_change_feed(partition_key_range_id=None, is_start_from_beginning=False,
-    continuation=None, max_item_count=None, **kwargs)
+  signature: 'query_items_change_feed(partition_key_range_id: Optional[str] = None,
+    is_start_from_beginning: bool = False, continuation: Optional[str] = None, max_item_count:
+    Optional[int] = None, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
+    Any]]'
   parameters:
   - name: partition_key_range_id
     description: 'ChangeFeed requests can be executed against specific partition key
@@ -328,8 +337,8 @@ methods:
 - uid: azure.cosmos.aio.container.ContainerProxy.read
   name: read
   summary: Read the container properties.
-  signature: read(populate_partition_key_range_statistics=None, populate_quota_info=None,
-    **kwargs)
+  signature: 'read(populate_partition_key_range_statistics: Optional[bool] = None,
+    populate_quota_info: Optional[bool] = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
@@ -364,7 +373,8 @@ methods:
 - uid: azure.cosmos.aio.container.ContainerProxy.read_all_items
   name: read_all_items
   summary: List all the items in the container.
-  signature: read_all_items(max_item_count=None, **kwargs)
+  signature: 'read_all_items(max_item_count: Optional[int] = None, **kwargs: Any)
+    -> azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -388,7 +398,8 @@ methods:
 - uid: azure.cosmos.aio.container.ContainerProxy.read_conflict
   name: read_conflict
   summary: Get the conflict identified by *conflict*.
-  signature: read_conflict(conflict, partition_key, **kwargs)
+  signature: 'read_conflict(conflict: Union[str, Dict[str, Any]], partition_key: Any,
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
@@ -410,7 +421,8 @@ methods:
 - uid: azure.cosmos.aio.container.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
-  signature: read_item(item, partition_key, **kwargs)
+  signature: 'read_item(item: Union[str, Dict[str, Any]], partition_key: Any, **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
@@ -441,7 +453,7 @@ methods:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\\
-    s\\\\dist_temp\\\\85\\\\azure-cosmos-4.3.0b1\\\\samples\\\\examples_async.py\"\
+    s\\\\dist_temp\\\\83\\\\azure-cosmos-4.3.0b1\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   item = await container.read_item(\"item2\", partition_key=\"Widget\")\n \
@@ -453,7 +465,7 @@ methods:
 
 
     If no Offer already exists for the container, an exception is raised.'
-  signature: read_offer(**kwargs)
+  signature: 'read_offer(**kwargs: Any) -> azure.cosmos.offer.Offer'
   parameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -474,8 +486,9 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: replace_item(item, body, pre_trigger_include=None, post_trigger_include=None,
-    **kwargs)
+  signature: 'replace_item(item: Union[str, Dict[str, Any]], body: Dict[str, Any],
+    pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
+    = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -528,7 +541,7 @@ methods:
 
 
     If no Offer already exists for the container, an exception is raised.'
-  signature: replace_throughput(throughput, **kwargs)
+  signature: 'replace_throughput(throughput: int, **kwargs: Any) -> azure.cosmos.offer.Offer'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
@@ -554,8 +567,9 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: upsert_item(body, pre_trigger_include=None, post_trigger_include=None,
-    **kwargs)
+  signature: 'upsert_item(body: Dict[str, Any], pre_trigger_include: Optional[str]
+    = None, post_trigger_include: Optional[str] = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
