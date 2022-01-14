@@ -7,7 +7,7 @@ inheritances:
 - azure.keyvault.keys._shared.client_base.KeyVaultClientBase
 summary: A high-level interface for managing a vault's keys.
 constructor:
-  syntax: 'KeyClient(vault_url: str, credential: TokenCredential, **kwargs: Any)'
+  syntax: KeyClient(vault_url, credential, **kwargs)
   parameters:
   - name: vault_url
     description: URL of the vault the client will access. This is also called the
@@ -55,7 +55,7 @@ methods:
     For example, a backup
 
     from a vault in a USA region cannot be restored to a vault in an EU region.'
-  signature: 'backup_key(name: str, **kwargs: Any) -> bytes'
+  signature: backup_key(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key to back up
@@ -90,7 +90,7 @@ methods:
     returns a poller enabling you to
 
     wait for deletion to complete.'
-  signature: 'begin_delete_key(name: str, **kwargs: Any) -> LROPoller'
+  signature: begin_delete_key(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key to delete.
@@ -145,7 +145,7 @@ methods:
     Waiting is only necessary when
 
     you want to use the recovered key in another operation immediately.'
-  signature: 'begin_recover_deleted_key(name: str, **kwargs: Any) -> LROPoller'
+  signature: begin_recover_deleted_key(name, **kwargs)
   parameters:
   - name: name
     description: The name of the deleted key to recover
@@ -186,7 +186,7 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'create_ec_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: create_ec_key(name, **kwargs)
   parameters:
   - name: name
     description: The name for the new key.
@@ -257,8 +257,7 @@ methods:
 
 
     Requires keys/create permission.'
-  signature: 'create_key(name: str, key_type: Union[str, KeyType], **kwargs: Any)
-    -> KeyVaultKey'
+  signature: create_key(name, key_type, **kwargs)
   parameters:
   - name: name
     description: The name of the new key.
@@ -346,7 +345,7 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'create_oct_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: create_oct_key(name, **kwargs)
   parameters:
   - name: name
     description: The name for the new key.
@@ -414,7 +413,7 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'create_rsa_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: create_rsa_key(name, **kwargs)
   parameters:
   - name: name
     description: The name for the new key.
@@ -487,7 +486,7 @@ methods:
   name: get_cryptography_client
   summary: Gets a <xref:azure.keyvault.keys.crypto.CryptographyClient> for the given
     key.
-  signature: 'get_cryptography_client(key_name: str, **kwargs: Any) -> CryptographyClient'
+  signature: get_cryptography_client(key_name, **kwargs)
   parameters:
   - name: key_name
     description: The name of the key used to perform cryptographic operations.
@@ -511,7 +510,7 @@ methods:
 
 
     Requires keys/get permission.'
-  signature: 'get_deleted_key(name: str, **kwargs: Any) -> DeletedKey'
+  signature: get_deleted_key(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key
@@ -543,8 +542,7 @@ methods:
 
 
     Requires keys/get permission.'
-  signature: 'get_key(name: str, version: Optional[str] = None, **kwargs: Any) ->
-    KeyVaultKey'
+  signature: get_key(name, version=None, **kwargs)
   parameters:
   - name: name
     description: The name of the key to get.
@@ -580,7 +578,7 @@ methods:
 - uid: azure.keyvault.keys.KeyClient.get_key_rotation_policy
   name: get_key_rotation_policy
   summary: Get the rotation policy of a Key Vault key.
-  signature: 'get_key_rotation_policy(name: str, **kwargs: Any) -> KeyRotationPolicy'
+  signature: get_key_rotation_policy(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key.
@@ -596,7 +594,7 @@ methods:
 - uid: azure.keyvault.keys.KeyClient.get_random_bytes
   name: get_random_bytes
   summary: Get the requested number of random bytes from a managed HSM.
-  signature: 'get_random_bytes(count: int, **kwargs: Any) -> bytes'
+  signature: get_random_bytes(count, **kwargs)
   parameters:
   - name: count
     description: The requested number of random bytes.
@@ -626,7 +624,7 @@ methods:
 
     Requires keys/import permission. If `name` is already in use, the key will be
     imported as a new version.'
-  signature: 'import_key(name: str, key: JsonWebKey, **kwargs: Any) -> KeyVaultKey'
+  signature: import_key(name, key, **kwargs)
   parameters:
   - name: name
     description: Name for the imported key
@@ -679,7 +677,7 @@ methods:
 
 
     Requires keys/list permission.'
-  signature: 'list_deleted_keys(**kwargs: Any) -> ItemPaged[DeletedKey]'
+  signature: list_deleted_keys(**kwargs)
   return:
     description: An iterator of deleted keys
     types:
@@ -701,7 +699,7 @@ methods:
 
 
     Requires keys/list permission.'
-  signature: 'list_properties_of_key_versions(name: str, **kwargs: Any) -> ItemPaged[KeyProperties]'
+  signature: list_properties_of_key_versions(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key
@@ -728,7 +726,7 @@ methods:
 
 
     Requires keys/list permission.'
-  signature: 'list_properties_of_keys(**kwargs: Any) -> ItemPaged[KeyProperties]'
+  signature: list_properties_of_keys(**kwargs)
   return:
     description: An iterator of keys without their cryptographic material or version
       information
@@ -760,7 +758,7 @@ methods:
 
 
     Requires keys/purge permission.'
-  signature: 'purge_deleted_key(name: str, **kwargs: Any) -> None'
+  signature: purge_deleted_key(name, **kwargs)
   parameters:
   - name: name
     description: The name of the deleted key to purge
@@ -787,8 +785,7 @@ methods:
     be marked
 
     exportable. This operation requires the keys/release permission.'
-  signature: 'release_key(name: str, target_attestation_token: str, version: Optional[str]
-    = None, **kwargs: Any) -> ReleaseKeyResult'
+  signature: release_key(name, target_attestation_token, version=None, **kwargs)
   parameters:
   - name: name
     description: The name of the key to get.
@@ -837,7 +834,7 @@ methods:
     by the same Microsoft Azure
 
     subscription as the source vault.'
-  signature: 'restore_key_backup(backup: bytes, **kwargs: Any) -> KeyVaultKey'
+  signature: restore_key_backup(backup, **kwargs)
   parameters:
   - name: backup
     description: A key backup as returned by <xref:azure.keyvault.keys.KeyClient.backup_key>
@@ -869,7 +866,7 @@ methods:
 
 
     This operation requires the keys/rotate permission.'
-  signature: 'rotate_key(name: str, **kwargs: Any) -> KeyVaultKey'
+  signature: rotate_key(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key to rotate.
@@ -888,8 +885,7 @@ methods:
 
 
     Requires keys/update permission.'
-  signature: 'update_key_properties(name: str, version: Optional[str] = None, **kwargs:
-    Any) -> KeyVaultKey'
+  signature: update_key_properties(name, version=None, **kwargs)
   parameters:
   - name: name
     description: The name of key to update
@@ -953,7 +949,7 @@ methods:
 
 
     This operation requires the keys/update permission.'
-  signature: 'update_key_rotation_policy(name: str, **kwargs: Any) -> KeyRotationPolicy'
+  signature: update_key_rotation_policy(name, **kwargs)
   parameters:
   - name: name
     description: The name of the key in the given vault.
