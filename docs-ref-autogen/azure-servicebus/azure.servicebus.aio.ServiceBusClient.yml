@@ -11,7 +11,8 @@ summary: 'The ServiceBusClient class defines a high level interface for
 constructor:
   syntax: 'ServiceBusClient(fully_qualified_namespace: str, credential: Union[AsyncTokenCredential,
     azure.core.credentials.AzureSasCredential, azure.core.credentials.AzureNamedKeyCredential],
-    **kwargs: Any)'
+    *, retry_total: int = 3, retry_backoff_factor: float = 0.8, retry_backoff_max:
+    int = 120, retry_mode: str = ''exponential'', **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -83,6 +84,13 @@ constructor:
       120.
     types:
     - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    types:
+    - <xref:str>
 variables:
 - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -94,7 +102,7 @@ examples:
 - "Create a new instance of the ServiceBusClient.<!--[!code-python[Main](les\\async_samples\\\
   sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\
+  \\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.5.0\\\\samples\\\\async_samples\\\
   \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   import os\n   from azure.identity.aio import DefaultAzureCredential\n\
@@ -114,7 +122,9 @@ methods:
 - uid: azure.servicebus.aio.ServiceBusClient.from_connection_string
   name: from_connection_string
   summary: Create a ServiceBusClient from a connection string.
-  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> azure.servicebus.aio._servicebus_client_async.ServiceBusClient'
+  signature: 'from_connection_string(conn_str: str, *, retry_total: int = 3, retry_backoff_factor:
+    float = 0.8, retry_backoff_max: int = 120, retry_mode: str = ''exponential'',
+    **kwargs: Any) -> azure.servicebus.aio._servicebus_client_async.ServiceBusClient'
   parameters:
   - name: conn_str
     description: The connection string of a Service Bus.
@@ -169,6 +179,13 @@ methods:
       120.
     types:
     - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    types:
+    - <xref:str>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusClient>
@@ -176,7 +193,7 @@ methods:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.5.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
@@ -186,7 +203,12 @@ methods:
 - uid: azure.servicebus.aio.ServiceBusClient.get_queue_receiver
   name: get_queue_receiver
   summary: Get ServiceBusReceiver for the specific queue.
-  signature: 'get_queue_receiver(queue_name: str, **kwargs: Any) -> azure.servicebus.aio._servicebus_receiver_async.ServiceBusReceiver'
+  signature: 'get_queue_receiver(queue_name: str, *, session_id: Optional[Union[str,
+    Literal[<ServiceBusSessionFilter.NEXT_AVAILABLE: 0>]]] = None, sub_queue: Optional[Union[azure.servicebus._common.constants.ServiceBusSubQueue,
+    str]] = None, receive_mode: Union[azure.servicebus._common.constants.ServiceBusReceiveMode,
+    str] = <ServiceBusReceiveMode.PEEK_LOCK: ''peeklock''>, max_wait_time: Optional[float]
+    = None, auto_lock_renewer: Optional[azure.servicebus._common.auto_lock_renewer.AutoLockRenewer]
+    = None, prefetch_count: int = 0, **kwargs: Any) -> azure.servicebus.aio._servicebus_receiver_async.ServiceBusReceiver'
   parameters:
   - name: queue_name
     description: The path of specific Service Bus Queue the client connects to.
@@ -202,8 +224,9 @@ methods:
 
       session, set this to ~azure.servicebus.NEXT_AVAILABLE_SESSION.'
     types:
-    - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
-  - name: str]] sub_queue
+    - <xref:str>
+    - <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>
+  - name: sub_queue
     description: 'If specified, the subqueue this receiver will
 
       connect to.
@@ -218,7 +241,8 @@ methods:
 
       enum or equivalent string values "deadletter" and "transferdeadletter".'
     types:
-    - <xref:Optional>[<xref:Union>[<xref:azure.servicebus.ServiceBusSubQueue,>
+    - <xref:str>
+    - <xref:azure.servicebus.ServiceBusSubQueue>
   - name: receive_mode
     description: 'The mode with which messages will be retrieved from the entity.
       The two options
@@ -280,7 +304,7 @@ methods:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.5.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
@@ -306,7 +330,7 @@ methods:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.5.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
@@ -318,8 +342,13 @@ methods:
 - uid: azure.servicebus.aio.ServiceBusClient.get_subscription_receiver
   name: get_subscription_receiver
   summary: Get ServiceBusReceiver for the specific subscription under the topic.
-  signature: 'get_subscription_receiver(topic_name: str, subscription_name: str, **kwargs:
-    Any) -> azure.servicebus.aio._servicebus_receiver_async.ServiceBusReceiver'
+  signature: 'get_subscription_receiver(topic_name: str, subscription_name: str, *,
+    session_id: Optional[Union[str, Literal[<ServiceBusSessionFilter.NEXT_AVAILABLE:
+    0>]]] = None, sub_queue: Optional[Union[azure.servicebus._common.constants.ServiceBusSubQueue,
+    str]] = None, receive_mode: Union[azure.servicebus._common.constants.ServiceBusReceiveMode,
+    str] = <ServiceBusReceiveMode.PEEK_LOCK: ''peeklock''>, max_wait_time: Optional[float]
+    = None, auto_lock_renewer: Optional[azure.servicebus._common.auto_lock_renewer.AutoLockRenewer]
+    = None, prefetch_count: int = 0, **kwargs: Any) -> azure.servicebus.aio._servicebus_receiver_async.ServiceBusReceiver'
   parameters:
   - name: topic_name
     description: The name of specific Service Bus Topic the client connects to.
@@ -342,8 +371,9 @@ methods:
 
       session, set this to ~azure.servicebus.NEXT_AVAILABLE_SESSION.'
     types:
-    - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
-  - name: str]] sub_queue
+    - <xref:str>
+    - <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>
+  - name: sub_queue
     description: 'If specified, the subqueue this receiver will
 
       connect to.
@@ -358,7 +388,8 @@ methods:
 
       enum or equivalent string values "deadletter" and "transferdeadletter".'
     types:
-    - <xref:Optional>[<xref:Union>[<xref:azure.servicebus.ServiceBusSubQueue,>
+    - <xref:str>
+    - <xref:azure.servicebus.ServiceBusSubQueue>
   - name: receive_mode
     description: 'The mode with which messages will be retrieved from the entity.
       The two options
@@ -420,7 +451,7 @@ methods:
   - "Create a new instance of the ServiceBusReceiver from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.5.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
@@ -448,7 +479,7 @@ methods:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.5.0\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
