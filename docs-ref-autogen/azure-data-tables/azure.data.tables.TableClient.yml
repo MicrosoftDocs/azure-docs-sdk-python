@@ -7,7 +7,7 @@ inheritances:
 - azure.data.tables._base_client.TablesBaseClient
 summary: A client to interact with a specific Table in an Azure Tables account.
 constructor:
-  syntax: TableClient(endpoint, table_name, **kwargs)
+  syntax: 'TableClient(endpoint: str, table_name: str, **kwargs: Any)'
 variables:
 - description: The name of the Tables account.
   name: account_name
@@ -25,7 +25,8 @@ methods:
 - uid: azure.data.tables.TableClient.create_entity
   name: create_entity
   summary: Insert entity in a table.
-  signature: create_entity(entity, **kwargs)
+  signature: 'create_entity(entity: Union[azure.data.tables._entity.TableEntity, Mapping[str,
+    Any]], **kwargs: Any) -> Dict[str, str]'
   parameters:
   - name: entity
     description: The properties for the table entity.
@@ -52,13 +53,14 @@ methods:
 - uid: azure.data.tables.TableClient.create_table
   name: create_table
   summary: Creates a new table under the current account.
-  signature: create_table(**kwargs)
+  signature: 'create_table(**kwargs: Any) -> azure.data.tables._models.TableItem'
   return:
     description: A TableItem representing the created table.
     types:
     - <xref:azure.data.tables.TableItem>
   exceptions:
-  - type: azure.core.exceptions.ResourceExistsError If the entity already exists
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the entity already exists
   examples:
   - "Creating a table from the TableClient object<!--[!code-python[Main](les\\sample_create_delete_table.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -125,7 +127,7 @@ methods:
   summary: 'Deletes the table under the current account. No error will be raised
 
     if the table does not exist'
-  signature: delete_table(**kwargs)
+  signature: 'delete_table(**kwargs: Any) -> None'
   return:
     description: None
     types:
@@ -145,7 +147,8 @@ methods:
 - uid: azure.data.tables.TableClient.from_connection_string
   name: from_connection_string
   summary: Create TableClient from a Connection String.
-  signature: from_connection_string(conn_str, table_name, **kwargs)
+  signature: 'from_connection_string(conn_str: str, table_name: str, **kwargs: Any)
+    -> azure.data.tables._table_client.TableClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Tables account.
@@ -176,7 +179,7 @@ methods:
 - uid: azure.data.tables.TableClient.from_table_url
   name: from_table_url
   summary: A client to interact with a specific Table.
-  signature: from_table_url(table_url, **kwargs)
+  signature: 'from_table_url(table_url: str, **kwargs: Any) -> azure.data.tables._table_client.TableClient'
   parameters:
   - name: table_url
     description: The full URI to the table, including SAS token if used.
@@ -200,7 +203,7 @@ methods:
 - uid: azure.data.tables.TableClient.get_entity
   name: get_entity
   summary: Get a single entity in a table.
-  signature: get_entity(partition_key, row_key, **kwargs)
+  signature: 'get_entity(partition_key: str, row_key: str, **kwargs: Any) -> azure.data.tables._entity.TableEntity'
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -239,7 +242,7 @@ methods:
     that may be
 
     used with Shared Access Signatures.'
-  signature: get_table_access_policy(**kwargs)
+  signature: 'get_table_access_policy(**kwargs: Any) -> Dict[str, Optional[azure.data.tables._models.TableAccessPolicy]]'
   return:
     description: Dictionary of SignedIdentifiers
     types:
@@ -249,7 +252,7 @@ methods:
 - uid: azure.data.tables.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
-  signature: list_entities(**kwargs)
+  signature: 'list_entities(**kwargs: Any) -> azure.core.paging.ItemPaged[azure.data.tables._entity.TableEntity]'
   parameters:
   - name: results_per_page
     description: Number of entities returned per service request.
@@ -279,7 +282,7 @@ methods:
 - uid: azure.data.tables.TableClient.query_entities
   name: query_entities
   summary: Lists entities in a table.
-  signature: query_entities(query_filter, **kwargs)
+  signature: 'query_entities(query_filter: str, **kwargs: Dict[str, Any]) -> azure.core.paging.ItemPaged[azure.data.tables._entity.TableEntity]'
   parameters:
   - name: query_filter
     description: Specify a filter to return certain entities
@@ -322,7 +325,8 @@ methods:
   name: set_table_access_policy
   summary: Sets stored access policies for the table that may be used with Shared
     Access Signatures.
-  signature: set_table_access_policy(signed_identifiers, **kwargs)
+  signature: 'set_table_access_policy(signed_identifiers: Dict[str, Optional[azure.data.tables._models.TableAccessPolicy]],
+    **kwargs) -> None'
   parameters:
   - name: signed_identifiers
     description: Access policies to set for the table
@@ -341,7 +345,10 @@ methods:
 
 
     If any one of these operations fails, the entire transaction will be rejected.'
-  signature: submit_transaction(operations, **kwargs)
+  signature: 'submit_transaction(operations: Iterable[Union[Tuple[Union[azure.data.tables._models.TransactionOperation,
+    str], Union[azure.data.tables._entity.TableEntity, Mapping[str, Any]]], Tuple[Union[azure.data.tables._models.TransactionOperation,
+    str], Union[azure.data.tables._entity.TableEntity, Mapping[str, Any]], Mapping[str,
+    Any]]]], **kwargs: Any) -> List[Mapping[str, Any]]'
   parameters:
   - name: operations
     description: "The list of operations to commit in a transaction. This should be\
@@ -385,7 +392,9 @@ methods:
 - uid: azure.data.tables.TableClient.update_entity
   name: update_entity
   summary: Update entity in a table.
-  signature: 'update_entity(entity, mode=<UpdateMode.MERGE: ''merge''>, **kwargs)'
+  signature: 'update_entity(entity: Union[azure.data.tables._entity.TableEntity, Mapping[str,
+    Any]], mode: azure.data.tables._models.UpdateMode = <UpdateMode.MERGE: ''merge''>,
+    **kwargs: Any) -> Dict[str, str]'
   parameters:
   - name: entity
     description: The properties for the table entity.
@@ -434,7 +443,9 @@ methods:
 - uid: azure.data.tables.TableClient.upsert_entity
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
-  signature: 'upsert_entity(entity, mode=<UpdateMode.MERGE: ''merge''>, **kwargs)'
+  signature: 'upsert_entity(entity: Union[azure.data.tables._entity.TableEntity, Mapping[str,
+    Any]], mode: azure.data.tables._models.UpdateMode = <UpdateMode.MERGE: ''merge''>,
+    **kwargs: Any) -> Dict[str, str]'
   parameters:
   - name: entity
     description: The properties for the table entity.

@@ -21,7 +21,8 @@ summary: 'An interface to interact with a specific DB Container.
 
   documents, each of which is represented as an Item.'
 constructor:
-  syntax: ContainerProxy(client_connection, database_link, id, properties=None)
+  syntax: 'ContainerProxy(client_connection: azure.cosmos._cosmos_client_connection.CosmosClientConnection,
+    database_link: str, id: str, properties: Optional[Dict[str, Any]] = None)'
 variables:
 - description: ID (name) of the container
   name: id
@@ -40,8 +41,10 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.container.ContainerProxy.upsert_item> method.'
-  signature: create_item(body, populate_query_metrics=None, pre_trigger_include=None,
-    post_trigger_include=None, indexing_directive=None, **kwargs)
+  signature: 'create_item(body: Dict[str, Any], populate_query_metrics: Optional[bool]
+    = None, pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
+    = None, indexing_directive: Optional[Any] = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -91,15 +94,16 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: Item with the given ID already exists.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: Item with the given ID already exists.
 - uid: azure.cosmos.container.ContainerProxy.delete_conflict
   name: delete_conflict
   summary: 'Delete a specified conflict from the container.
 
 
     If the conflict does not already exist in the container, an exception is raised.'
-  signature: delete_conflict(conflict, partition_key, **kwargs)
+  signature: 'delete_conflict(conflict: Union[str, Dict[str, Any]], partition_key:
+    Any, **kwargs: Any) -> None'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to be deleted.
@@ -115,18 +119,19 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: The conflict wasn't deleted successfully.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
-  - description: The conflict does not exist in the container.
-    type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: "The conflict wasn\u2019t deleted successfully."
+  - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+    description: The conflict does not exist in the container.
 - uid: azure.cosmos.container.ContainerProxy.delete_item
   name: delete_item
   summary: 'Delete the specified item from the container.
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: delete_item(item, partition_key, populate_query_metrics=None, pre_trigger_include=None,
-    post_trigger_include=None, **kwargs)
+  signature: 'delete_item(item: Union[Dict[str, Any], str], partition_key: Any, populate_query_metrics:
+    Optional[bool] = None, pre_trigger_include: Optional[str] = None, post_trigger_include:
+    Optional[str] = None, **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
@@ -171,14 +176,15 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - description: The item wasn't deleted successfully.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
-  - description: The item does not exist in the container.
-    type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: "The item wasn\u2019t deleted successfully."
+  - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+    description: The item does not exist in the container.
 - uid: azure.cosmos.container.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
-  signature: get_conflict(conflict, partition_key, **kwargs)
+  signature: 'get_conflict(conflict: Union[str, Dict[str, Any]], partition_key: Any,
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
@@ -195,12 +201,13 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: The given conflict couldn't be retrieved.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: "The given conflict couldn\u2019t be retrieved."
 - uid: azure.cosmos.container.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: list_conflicts(max_item_count=None, **kwargs)
+  signature: 'list_conflicts(max_item_count: Optional[int] = None, **kwargs: Any)
+    -> Iterable[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -216,8 +223,10 @@ methods:
 - uid: azure.cosmos.container.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: query_conflicts(query, parameters=None, enable_cross_partition_query=None,
-    partition_key=None, max_item_count=None, **kwargs)
+  signature: 'query_conflicts(query: str, parameters: Optional[List[str]] = None,
+    enable_cross_partition_query: Optional[bool] = None, partition_key: Optional[Any]
+    = None, max_item_count: Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -260,8 +269,11 @@ methods:
     name is "products," and is aliased as "p" for easier referencing in
 
     the WHERE clause.'
-  signature: query_items(query, parameters=None, partition_key=None, enable_cross_partition_query=None,
-    max_item_count=None, enable_scan_in_query=None, populate_query_metrics=None, **kwargs)
+  signature: 'query_items(query: str, parameters: Optional[List[Dict[str, object]]]
+    = None, partition_key: Optional[Any] = None, enable_cross_partition_query: Optional[bool]
+    = None, max_item_count: Optional[int] = None, enable_scan_in_query: Optional[bool]
+    = None, populate_query_metrics: Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -335,8 +347,9 @@ methods:
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: query_items_change_feed(partition_key_range_id=None, is_start_from_beginning=False,
-    continuation=None, max_item_count=None, **kwargs)
+  signature: 'query_items_change_feed(partition_key_range_id: Optional[str] = None,
+    is_start_from_beginning: bool = False, continuation: Optional[str] = None, max_item_count:
+    Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: partition_key_range_id
     description: 'ChangeFeed requests can be executed against specific partition key
@@ -370,8 +383,9 @@ methods:
 - uid: azure.cosmos.container.ContainerProxy.read
   name: read
   summary: Read the container properties.
-  signature: read(populate_query_metrics=None, populate_partition_key_range_statistics=None,
-    populate_quota_info=None, **kwargs)
+  signature: 'read(populate_query_metrics: Optional[bool] = None, populate_partition_key_range_statistics:
+    Optional[bool] = None, populate_quota_info: Optional[bool] = None, **kwargs: Any)
+    -> Dict[str, Any]'
   parameters:
   - name: populate_query_metrics
     description: Enable returning query metrics in response headers.
@@ -402,14 +416,14 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: 'Raised if the container couldn''t be retrieved.
-
-      This includes if the container does not exist.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: "Raised if the container couldn\u2019t be retrieved.\nThis includes\
+      \ if the container does not exist."
 - uid: azure.cosmos.container.ContainerProxy.read_all_items
   name: read_all_items
   summary: List all the items in the container.
-  signature: read_all_items(max_item_count=None, populate_query_metrics=None, **kwargs)
+  signature: 'read_all_items(max_item_count: Optional[int] = None, populate_query_metrics:
+    Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -436,8 +450,9 @@ methods:
 - uid: azure.cosmos.container.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
-  signature: read_item(item, partition_key, populate_query_metrics=None, post_trigger_include=None,
-    **kwargs)
+  signature: 'read_item(item: Union[str, Dict[str, Any]], partition_key: Any, populate_query_metrics:
+    Optional[bool] = None, post_trigger_include: Optional[str] = None, **kwargs: Any)
+    -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
@@ -468,8 +483,8 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: The given item couldn't be retrieved.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: "The given item couldn\u2019t be retrieved."
   examples:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
@@ -485,7 +500,7 @@ methods:
 
 
     If no Offer already exists for the container, an exception is raised.'
-  signature: read_offer(**kwargs)
+  signature: 'read_offer(**kwargs: Any) -> azure.cosmos.offer.Offer'
   parameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -496,18 +511,20 @@ methods:
     types:
     - <xref:azure.cosmos.Offer>
   exceptions:
-  - description: 'No offer exists for the container or
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'No offer exists for the container or
 
       the offer could not be retrieved.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
 - uid: azure.cosmos.container.ContainerProxy.replace_item
   name: replace_item
   summary: 'Replaces the specified item if it exists in the container.
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: replace_item(item, body, populate_query_metrics=None, pre_trigger_include=None,
-    post_trigger_include=None, **kwargs)
+  signature: 'replace_item(item: Union[str, Dict[str, Any]], body: Dict[str, Any],
+    populate_query_metrics: Optional[bool] = None, pre_trigger_include: Optional[str]
+    = None, post_trigger_include: Optional[str] = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -553,17 +570,17 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: 'The replace failed or the item with
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'The replace failed or the item with
 
       given id does not exist.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
 - uid: azure.cosmos.container.ContainerProxy.replace_throughput
   name: replace_throughput
   summary: 'Replace the container''s throughput.
 
 
     If no Offer already exists for the container, an exception is raised.'
-  signature: replace_throughput(throughput, **kwargs)
+  signature: 'replace_throughput(throughput: int, **kwargs: Any) -> azure.cosmos.offer.Offer'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
@@ -577,10 +594,10 @@ methods:
     types:
     - <xref:azure.cosmos.Offer>
   exceptions:
-  - description: 'No offer exists for the container
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'No offer exists for the container
 
       or the offer could not be updated.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
 - uid: azure.cosmos.container.ContainerProxy.upsert_item
   name: upsert_item
   summary: 'Insert or update the specified item.
@@ -589,8 +606,9 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: upsert_item(body, populate_query_metrics=None, pre_trigger_include=None,
-    post_trigger_include=None, **kwargs)
+  signature: 'upsert_item(body: Dict[str, Any], populate_query_metrics: Optional[bool]
+    = None, pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
+    = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -633,8 +651,8 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: The given item could not be upserted.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The given item could not be upserted.
 attributes:
 - uid: azure.cosmos.container.ContainerProxy.is_system_key
   name: is_system_key

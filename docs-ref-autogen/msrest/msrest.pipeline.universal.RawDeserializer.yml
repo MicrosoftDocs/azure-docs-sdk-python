@@ -6,7 +6,7 @@ module: msrest.pipeline.universal
 inheritances:
 - msrest.pipeline.SansIOHTTPPolicy
 constructor:
-  syntax: RawDeserializer(*args, **kwds)
+  syntax: RawDeserializer()
 methods:
 - uid: msrest.pipeline.universal.RawDeserializer.deserialize_from_http_generics
   name: deserialize_from_http_generics
@@ -18,7 +18,8 @@ methods:
     specific implementation.
 
     Headers will tested for "content-type"'
-  signature: deserialize_from_http_generics(body_bytes, headers)
+  signature: 'deserialize_from_http_generics(body_bytes: Optional[Union[AnyStr, IO]],
+    headers: Mapping) -> Any'
   parameters:
   - name: cls
     isRequired: true
@@ -35,7 +36,8 @@ methods:
 
 
     If no content-type, will return the string version (not bytes, not stream)'
-  signature: deserialize_from_text(data, content_type=None)
+  signature: 'deserialize_from_text(data: Optional[Union[AnyStr, IO]], content_type:
+    Optional[str] = None) -> Any'
   parameters:
   - name: data
     description: Input, could be bytes or stream (will be decoded with UTF8) or text
@@ -62,7 +64,8 @@ methods:
     Will follow Content-Type to parse.
 
     We assume everything is UTF8 (BOM acceptable).'
-  signature: on_response(request, response, **kwargs)
+  signature: 'on_response(request: Request, response: Response, **kwargs: Any) ->
+    None'
   parameters:
   - name: raw_data
     description: Data to be processed.
@@ -71,12 +74,12 @@ methods:
     description: How to parse if raw_data is a string/bytes.
     isRequired: true
   exceptions:
-  - description: If JSON is requested and parsing is impossible.
-    type: JSONDecodeError
-  - description: If bytes is not UTF8
-    type: UnicodeDecodeError
-  - description: If bytes is not valid XML
-    type: xml.etree.ElementTree.ParseError
+  - type: JSONDecodeError
+    description: If JSON is requested and parsing is impossible.
+  - type: UnicodeDecodeError
+    description: If bytes is not UTF8
+  - type: xml.etree.ElementTree.ParseError
+    description: If bytes is not valid XML
 attributes:
 - uid: msrest.pipeline.universal.RawDeserializer.CONTEXT_NAME
   name: CONTEXT_NAME
