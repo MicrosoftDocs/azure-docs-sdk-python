@@ -17,7 +17,8 @@ summary: 'A client to interact with a specific container, although that containe
   retrieved using the <xref:azure.storage.blob.aio.ContainerClient.get_blob_client>
   function.'
 constructor:
-  syntax: ContainerClient(account_url, container_name, credential=None, **kwargs)
+  syntax: 'ContainerClient(account_url: str, container_name: str, credential: Optional[Any]
+    = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -133,7 +134,8 @@ methods:
     the Blob service creates a lease on the container and returns a new
 
     lease ID.'
-  signature: acquire_lease(lease_duration=-1, lease_id=None, **kwargs)
+  signature: 'acquire_lease(lease_duration: int = -1, lease_id: Optional[str] = None,
+    **kwargs) -> azure.storage.blob.aio._lease_async.BlobLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -211,7 +213,8 @@ methods:
   summary: 'Creates a new container under the specified account. If the container
 
     with the same name already exists, the operation fails.'
-  signature: create_container(metadata=None, public_access=None, **kwargs)
+  signature: 'create_container(metadata: Optional[Dict[str, str]] = None, public_access:
+    Optional[Union[PublicAccess, str]] = None, **kwargs: Any) -> None'
   parameters:
   - name: metadata
     description: 'A dict with name_value pairs to associate with the
@@ -277,7 +280,8 @@ methods:
     specifying *include=["deleted"]*
 
     option. Soft-deleted blob or snapshot can be restored using <xref:BlobClient.undelete>'
-  signature: delete_blob(blob, delete_snapshots=None, **kwargs)
+  signature: 'delete_blob(blob: Union[str, azure.storage.blob._models.BlobProperties],
+    delete_snapshots: Optional[str] = None, **kwargs) -> None'
   parameters:
   - name: blob
     description: 'The blob with which to interact. If specified, this value will override
@@ -485,7 +489,7 @@ methods:
   summary: 'Marks the specified container for deletion. The container and any blobs
 
     contained within it are later deleted during garbage collection.'
-  signature: delete_container(**kwargs)
+  signature: 'delete_container(**kwargs: Any) -> None'
   parameters:
   - name: lease
     description: 'If specified, delete_container only succeeds if the
@@ -556,7 +560,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: download_blob(blob, offset=None, length=None, **kwargs)
+  signature: 'download_blob(blob: Union[str, BlobProperties], offset: Optional[int]
+    = None, length: Optional[int] = None, **kwargs: Any) -> StorageStreamDownloader'
   parameters:
   - name: blob
     description: 'The blob with which to interact. If specified, this value will override
@@ -688,7 +693,7 @@ methods:
 - uid: azure.storage.blob.aio.ContainerClient.exists
   name: exists
   summary: Returns True if a container exists and returns False otherwise.
-  signature: exists(**kwargs)
+  signature: 'exists(**kwargs: Any) -> bool'
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
@@ -705,7 +710,7 @@ methods:
     blob.
 
     The keys in the returned dictionary include ''sku_name'' and ''account_kind''.'
-  signature: get_account_information(**kwargs)
+  signature: 'get_account_information(**kwargs: Any) -> Dict[str, str]'
   return:
     description: A dict of account information (SKU and account type).
     types:
@@ -716,7 +721,8 @@ methods:
 
 
     The blob need not already exist.'
-  signature: get_blob_client(blob, snapshot=None)
+  signature: 'get_blob_client(blob: Union[azure.storage.blob._models.BlobProperties,
+    str], snapshot: Optional[str] = None) -> azure.storage.blob.aio._blob_client_async.BlobClient'
   parameters:
   - name: blob
     description: The blob with which to interact.
@@ -751,7 +757,7 @@ methods:
   summary: 'Gets the permissions for the specified container.
 
     The permissions indicate whether container data may be accessed publicly.'
-  signature: get_container_access_policy(**kwargs)
+  signature: 'get_container_access_policy(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: lease
     description: 'If specified, get_container_access_policy only succeeds if the
@@ -781,7 +787,7 @@ methods:
   summary: 'Returns all user-defined metadata and system properties for the specified
 
     container. The data returned does not include the container''s list of blobs.'
-  signature: get_container_properties(**kwargs)
+  signature: 'get_container_properties(**kwargs: Any) -> azure.storage.blob._models.ContainerProperties'
   parameters:
   - name: lease
     description: 'If specified, get_container_properties only succeeds if the
@@ -813,7 +819,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: list_blobs(name_starts_with=None, include=None, **kwargs)
+  signature: 'list_blobs(name_starts_with: Optional[str] = None, include: Optional[Union[str,
+    List[str]]] = None, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.storage.blob._models.BlobProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
@@ -856,7 +863,9 @@ methods:
     policies that may be used with Shared Access Signatures. The permissions
 
     indicate whether blobs in a container may be accessed publicly.'
-  signature: set_container_access_policy(signed_identifiers, public_access=None, **kwargs)
+  signature: 'set_container_access_policy(signed_identifiers: Dict[str, AccessPolicy],
+    public_access: Optional[Union[str, PublicAccess]] = None, **kwargs: Any) -> Dict[str,
+    Union[str, datetime]]'
   parameters:
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the container.
@@ -937,7 +946,8 @@ methods:
     attached to the container. To remove all metadata from the container,
 
     call this operation with no metadata dict.'
-  signature: set_container_metadata(metadata=None, **kwargs)
+  signature: 'set_container_metadata(metadata: Optional[Dict[str, str]] = None, **kwargs)
+    -> Dict[str, Union[str, datetime]]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the container
@@ -1139,8 +1149,10 @@ methods:
 - uid: azure.storage.blob.aio.ContainerClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'upload_blob(name, data, blob_type=<BlobType.BlockBlob: ''BlockBlob''>,
-    length=None, metadata=None, **kwargs)'
+  signature: 'upload_blob(name: Union[str, azure.storage.blob._models.BlobProperties],
+    data: Union[Iterable, IO], blob_type: Union[str, azure.storage.blob._models.BlobType]
+    = <BlobType.BlockBlob: ''BlockBlob''>, length: Optional[int] = None, metadata:
+    Optional[Dict[str, str]] = None, **kwargs) -> azure.storage.blob.aio._blob_client_async.BlobClient'
   parameters:
   - name: name
     description: 'The blob with which to interact. If specified, this value will override
@@ -1365,7 +1377,8 @@ methods:
     the service. This operation will list blobs in accordance with a hierarchy,
 
     as delimited by the specified delimiter character.'
-  signature: walk_blobs(name_starts_with=None, include=None, delimiter='/', **kwargs)
+  signature: 'walk_blobs(name_starts_with: Optional[str] = None, include: Optional[Any]
+    = None, delimiter: str = ''/'', **kwargs: Optional[Any]) -> azure.core.async_paging.AsyncItemPaged[azure.storage.blob._models.BlobProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
