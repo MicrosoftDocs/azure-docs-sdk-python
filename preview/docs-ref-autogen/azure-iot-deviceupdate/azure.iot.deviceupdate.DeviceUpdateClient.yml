@@ -13,15 +13,10 @@ summary: Device Update for IoT Hub is an Azure service that enables customers to
   enabling customers to focus on their business goals and let Device Update for IoT
   Hub handle the updates.
 constructor:
-  syntax: 'DeviceUpdateClient(credential: "TokenCredential", account_endpoint: str,
-    instance_id: str, **kwargs: Any)'
+  syntax: 'DeviceUpdateClient(endpoint: str, instance_id: str, credential: TokenCredential,
+    **kwargs: Any)'
   parameters:
-  - name: credential
-    description: Credential needed for the client to connect to Azure.
-    isRequired: true
-    types:
-    - <xref:azure.core.credentials.TokenCredential>
-  - name: account_endpoint
+  - name: endpoint
     description: Account endpoint.
     isRequired: true
     types:
@@ -31,20 +26,72 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  - name: credential
+    description: Credential needed for the client to connect to Azure.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: api_version
+    description: 'Api Version. The default value is "2021-06-01-preview". Note that
+
+      overriding this default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+  - name: polling_interval
+    description: 'Default waiting time between two polls for LRO operations if no
+
+      Retry-After header is present.'
+    types:
+    - <xref:int>
 variables:
-- description: UpdatesOperations operations
-  name: updates
+- description: DeviceUpdateOperations operations
+  name: device_update
   types:
-  - <xref:azure.iot.deviceupdate.operations.UpdatesOperations>
-- description: DevicesOperations operations
-  name: devices
+  - <xref:azure.iot.deviceupdate.operations.DeviceUpdateOperations>
+- description: DeviceManagementOperations operations
+  name: device_management
   types:
-  - <xref:azure.iot.deviceupdate.operations.DevicesOperations>
-- description: DeploymentsOperations operations
-  name: deployments
-  types:
-  - <xref:azure.iot.deviceupdate.operations.DeploymentsOperations>
+  - <xref:azure.iot.deviceupdate.operations.DeviceManagementOperations>
 methods:
 - uid: azure.iot.deviceupdate.DeviceUpdateClient.close
   name: close
   signature: close() -> None
+- uid: azure.iot.deviceupdate.DeviceUpdateClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/python/protocol/quickstart](https://aka.ms/azsdk/python/protocol/quickstart)'
+  signature: 'send_request(request, **kwargs: Any) -> azure.core.rest._rest_py3.HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
