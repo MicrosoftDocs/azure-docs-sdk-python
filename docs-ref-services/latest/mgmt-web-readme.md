@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-web, appservice
 author: mayurid
 ms.author: mayurid
-ms.date: 01/13/2022
+ms.date: 01/25/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
