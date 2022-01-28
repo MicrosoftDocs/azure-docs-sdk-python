@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
 author: mayurid
 ms.author: mayurid
-ms.date: 01/20/2022
+ms.date: 01/28/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
