@@ -1,297 +1,238 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children: []
-  class: azure.batch.models.TaskAddParameter
-  fullName: azure.batch.models.TaskAddParameter
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: msrest.serialization.Model
-  langs:
-  - python
-  module: azure.batch.models
-  name: TaskAddParameter
-  summary: 'An Azure Batch Task to add.
+### YamlMime:PythonClass
+uid: azure.batch.models.TaskAddParameter
+name: TaskAddParameter
+fullName: azure.batch.models.TaskAddParameter
+module: azure.batch.models
+inheritances:
+- msrest.serialization.Model
+summary: 'An Azure Batch Task to add.
 
 
-    Batch will retry Tasks when a recovery operation is triggered on a Node.
+  Batch will retry Tasks when a recovery operation is triggered on a Node.
 
-    Examples of recovery operations include (but are not limited to) when an
+  Examples of recovery operations include (but are not limited to) when an
 
-    unhealthy Node is rebooted or a Compute Node disappeared due to host
+  unhealthy Node is rebooted or a Compute Node disappeared due to host
 
-    failure. Retries due to recovery operations are independent of and are not
+  failure. Retries due to recovery operations are independent of and are not
 
-    counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
+  counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
 
-    an internal retry due to a recovery operation may occur. Because of this,
+  an internal retry due to a recovery operation may occur. Because of this,
 
-    all Tasks should be idempotent. This means Tasks need to tolerate being
+  all Tasks should be idempotent. This means Tasks need to tolerate being
 
-    interrupted and restarted without causing any corruption or duplicate data.
+  interrupted and restarted without causing any corruption or duplicate data.
 
-    The best practice for long running Tasks is to use some form of
+  The best practice for long running Tasks is to use some form of
 
-    checkpointing.
+  checkpointing.
 
 
-    All required parameters must be populated in order to send to Azure.'
-  syntax:
-    content: 'TaskAddParameter(*, id: str, command_line: str, display_name: str =
-      None, container_settings=None, exit_conditions=None, resource_files=None, output_files=None,
-      environment_settings=None, affinity_info=None, constraints=None, user_identity=None,
-      multi_instance_settings=None, depends_on=None, application_package_references=None,
-      authentication_token_settings=None, **kwargs) -> None'
-    parameters:
-    - description: 'Required. A string that uniquely identifies the Task within the
+  All required parameters must be populated in order to send to Azure.'
+constructor:
+  syntax: 'TaskAddParameter(*, id: str, command_line: str, display_name: Optional[str]
+    = None, container_settings=None, exit_conditions=None, resource_files=None, output_files=None,
+    environment_settings=None, affinity_info=None, constraints=None, required_slots:
+    Optional[int] = None, user_identity=None, multi_instance_settings=None, depends_on=None,
+    application_package_references=None, authentication_token_settings=None, **kwargs)'
+  parameters:
+  - name: id
+    description: 'Required. The ID can contain any combination of alphanumeric
 
-        Job. The ID can contain any combination of alphanumeric characters
+      characters including hyphens and underscores, and cannot contain more than
 
-        including hyphens and underscores, and cannot contain more than 64
+      64 characters. The ID is case-preserving and case-insensitive (that is,
 
-        characters. The ID is case-preserving and case-insensitive (that is, you
+      you may not have two IDs within a Job that differ only by case).'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: display_name
+    description: 'The display name need not be unique and can contain
 
-        may not have two IDs within a Job that differ only by case).'
-      id: id
-      type:
-      - str
-    - description: 'A display name for the Task. The display name need
+      any Unicode characters up to a maximum length of 1024.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: command_line
+    description: 'Required. For multi-instance Tasks, the command line
 
-        not be unique and can contain any Unicode characters up to a maximum
+      is executed as the primary Task, after the primary Task and all subtasks
 
-        length of 1024.'
-      id: display_name
-      type:
-      - str
-    - description: 'Required. The command line of the Task. For
+      have finished executing the coordination command line. The command line
 
-        multi-instance Tasks, the command line is executed as the primary Task,
+      does not run under a shell, and therefore cannot take advantage of shell
 
-        after the primary Task and all subtasks have finished executing the
+      features such as environment variable expansion. If you want to take
 
-        coordination command line. The command line does not run under a shell,
+      advantage of such features, you should invoke the shell in the command
 
-        and therefore cannot take advantage of shell features such as environment
+      line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c
 
-        variable expansion. If you want to take advantage of such features, you
+      MyCommand" in Linux. If the command line refers to file paths, it should
 
-        should invoke the shell in the command line, for example using "cmd /c
+      use a relative path (relative to the Task working directory), or use the
 
-        MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command
+      Batch provided environment variable
 
-        line refers to file paths, it should use a relative path (relative to the
+      ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: container_settings
+    description: 'The settings for the container under which the
 
-        Task working directory), or use the Batch provided environment variable
+      Task runs. If the Pool that will run this Task has containerConfiguration
 
-        ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
-      id: command_line
-      type:
-      - str
-    - description: 'The settings for the container under which the
+      set, this must be set as well. If the Pool that will run this Task doesn''t
 
-        Task runs. If the Pool that will run this Task has containerConfiguration
+      have containerConfiguration set, this must not be set. When this is
 
-        set, this must be set as well. If the Pool that will run this Task doesn''t
+      specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR
 
-        have containerConfiguration set, this must not be set. When this is
+      (the root of Azure Batch directories on the node) are mapped into the
 
-        specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR
+      container, all Task environment variables are mapped into the container,
 
-        (the root of Azure Batch directories on the node) are mapped into the
+      and the Task command line is executed in the container. Files produced in
 
-        container, all Task environment variables are mapped into the container,
+      the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to
 
-        and the Task command line is executed in the container. Files produced in
+      the host disk, meaning that Batch file APIs will not be able to access
+
+      those files.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskContainerSettings>
+  - name: exit_conditions
+    description: 'How the Batch service should respond when the Task
 
-        the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to
+      completes.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.ExitConditions>
+  - name: resource_files
+    description: 'For multi-instance Tasks, the resource files will
 
-        the host disk, meaning that Batch file APIs will not be able to access
+      only be downloaded to the Compute Node on which the primary Task is
 
-        those files.'
-      id: container_settings
-      type:
-      - azure.batch.models.TaskContainerSettings
-    - description: 'How the Batch service should respond when the Task
+      executed. There is a maximum size for the list of resource files.  When
 
-        completes.'
-      id: exit_conditions
-      type:
-      - azure.batch.models.ExitConditions
-    - description: 'A list of files that the Batch service will
+      the max size is exceeded, the request will fail and the response error
 
-        download to the Compute Node before running the command line. For
+      code will be RequestEntityTooLarge. If this occurs, the collection of
 
-        multi-instance Tasks, the resource files will only be downloaded to the
+      ResourceFiles must be reduced in size. This can be achieved using .zip
 
-        Compute Node on which the primary Task is executed. There is a maximum
+      files, Application Packages, or Docker Containers.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.ResourceFile>]
+  - name: output_files
+    description: 'For multi-instance Tasks, the files will only be
 
-        size for the list of resource files.  When the max size is exceeded, the
+      uploaded from the Compute Node on which the primary Task is executed.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.OutputFile>]
+  - name: environment_settings
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.EnvironmentSetting>]
+  - name: affinity_info
+    description: 'A locality hint that can be used by the Batch
 
-        request will fail and the response error code will be
+      service to select a Compute Node on which to start the new Task.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.AffinityInformation>
+  - name: constraints
+    description: 'The execution constraints that apply to this Task. If
 
-        RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
+      you do not specify constraints, the maxTaskRetryCount is the
 
-        must be reduced in size. This can be achieved using .zip files,
+      maxTaskRetryCount specified for the Job, the maxWallClockTime is infinite,
 
-        Application Packages, or Docker Containers.'
-      id: resource_files
-      type:
-      - list[azure.batch.models.ResourceFile]
-    - description: 'A list of files that the Batch service will upload
+      and the retentionTime is 7 days.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskConstraints>
+  - name: required_slots
+    description: 'The number of scheduling slots that the Task
 
-        from the Compute Node after running the command line. For multi-instance
+      required to run. The default is 1. A Task can only be scheduled to run on
 
-        Tasks, the files will only be uploaded from the Compute Node on which the
+      a compute node if the node has enough free scheduling slots available. For
 
-        primary Task is executed.'
-      id: output_files
-      type:
-      - list[azure.batch.models.OutputFile]
-    - description: 'A list of environment variable settings for
+      multi-instance Tasks, this must be 1.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: user_identity
+    description: 'The user identity under which the Task runs. If
 
-        the Task.'
-      id: environment_settings
-      type:
-      - list[azure.batch.models.EnvironmentSetting]
-    - description: 'A locality hint that can be used by the Batch
+      omitted, the Task runs as a non-administrative user unique to the Task.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.UserIdentity>
+  - name: multi_instance_settings
+    description: 'An object that indicates that the Task is
 
-        service to select a Compute Node on which to start the new Task.'
-      id: affinity_info
-      type:
-      - azure.batch.models.AffinityInformation
-    - description: 'The execution constraints that apply to this Task. If
+      a multi-instance Task, and contains information about how to run the
 
-        you do not specify constraints, the maxTaskRetryCount is the
+      multi-instance Task.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.MultiInstanceSettings>
+  - name: depends_on
+    description: 'The Tasks that this Task depends on. This Task will not
 
-        maxTaskRetryCount specified for the Job, the maxWallClockTime is infinite,
+      be scheduled until all Tasks that it depends on have completed
 
-        and the retentionTime is 7 days.'
-      id: constraints
-      type:
-      - azure.batch.models.TaskConstraints
-    - description: 'The user identity under which the Task runs. If
+      successfully. If any of those Tasks fail and exhaust their retry counts,
 
-        omitted, the Task runs as a non-administrative user unique to the Task.'
-      id: user_identity
-      type:
-      - azure.batch.models.UserIdentity
-    - description: 'An object that indicates that the Task is
+      this Task will never be scheduled. If the Job does not have
 
-        a multi-instance Task, and contains information about how to run the
-
-        multi-instance Task.'
-      id: multi_instance_settings
-      type:
-      - azure.batch.models.MultiInstanceSettings
-    - description: 'The Tasks that this Task depends on. This Task will not
-
-        be scheduled until all Tasks that it depends on have completed
-
-        successfully. If any of those Tasks fail and exhaust their retry counts,
-
-        this Task will never be scheduled. If the Job does not have
-
-        usesTaskDependencies set to true, and this element is present, the request
-
-        fails with error code TaskDependenciesNotSpecifiedOnJob.'
-      id: depends_on
-      type:
-      - azure.batch.models.TaskDependencies
-    - description: 'A list of Packages that the Batch
-
-        service will deploy to the Compute Node before running the command line.
-
-        Application packages are downloaded and deployed to a shared directory,
-
-        not the Task working directory. Therefore, if a referenced package is
-
-        already on the Node, and is up to date, then it is not re-downloaded; the
-
-        existing copy on the Compute Node is used. If a referenced Package cannot
-
-        be installed, for example because the package has been deleted or because
-
-        download failed, the Task fails.'
-      id: application_package_references
-      type:
-      - list[azure.batch.models.ApplicationPackageReference]
-    - description: 'The settings for an authentication
-
-        token that the Task can use to perform Batch service operations. If this
-
-        property is set, the Batch service provides the Task with an
-
-        authentication token which can be used to authenticate Batch service
-
-        operations without requiring an Account access key. The token is provided
-
-        via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations
-
-        that the Task can carry out using the token depend on the settings. For
-
-        example, a Task can request Job permissions in order to add other Tasks to
-
-        the Job, or check the status of the Job or of other Tasks under the Job.'
-      id: authentication_token_settings
-      type:
-      - azure.batch.models.AuthenticationTokenSettings
-  type: class
-  uid: azure.batch.models.TaskAddParameter
-references:
-- fullName: list[azure.batch.models.ResourceFile]
-  name: list[ResourceFile]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.ResourceFile
-    name: ResourceFile
-    uid: azure.batch.models.ResourceFile
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.ResourceFile]
-- fullName: list[azure.batch.models.OutputFile]
-  name: list[OutputFile]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.OutputFile
-    name: OutputFile
-    uid: azure.batch.models.OutputFile
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.OutputFile]
-- fullName: list[azure.batch.models.EnvironmentSetting]
-  name: list[EnvironmentSetting]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.EnvironmentSetting
-    name: EnvironmentSetting
-    uid: azure.batch.models.EnvironmentSetting
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.EnvironmentSetting]
-- fullName: list[azure.batch.models.ApplicationPackageReference]
-  name: list[ApplicationPackageReference]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.ApplicationPackageReference
-    name: ApplicationPackageReference
-    uid: azure.batch.models.ApplicationPackageReference
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.ApplicationPackageReference]
+      usesTaskDependencies set to true, and this element is present, the request
+
+      fails with error code TaskDependenciesNotSpecifiedOnJob.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskDependencies>
+  - name: application_package_references
+    description: 'Application packages are downloaded
+
+      and deployed to a shared directory, not the Task working directory.
+
+      Therefore, if a referenced package is already on the Node, and is up to
+
+      date, then it is not re-downloaded; the existing copy on the Compute Node
+
+      is used. If a referenced Package cannot be installed, for example because
+
+      the package has been deleted or because download failed, the Task fails.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.ApplicationPackageReference>]
+  - name: authentication_token_settings
+    description: 'The settings for an authentication
+
+      token that the Task can use to perform Batch service operations. If this
+
+      property is set, the Batch service provides the Task with an
+
+      authentication token which can be used to authenticate Batch service
+
+      operations without requiring an Account access key. The token is provided
+
+      via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations
+
+      that the Task can carry out using the token depend on the settings. For
+
+      example, a Task can request Job permissions in order to add other Tasks to
+
+      the Job, or check the status of the Job or of other Tasks under the Job.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.AuthenticationTokenSettings>

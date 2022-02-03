@@ -1,0 +1,438 @@
+### YamlMime:PythonClass
+uid: azure.eventhub.EventHubProducerClient
+name: EventHubProducerClient
+fullName: azure.eventhub.EventHubProducerClient
+module: azure.eventhub
+inheritances:
+- azure.eventhub._client_base.ClientBase
+summary: 'The EventHubProducerClient class defines a high level interface for
+
+  sending events to the Azure Event Hubs service.'
+constructor:
+  syntax: 'EventHubProducerClient(fully_qualified_namespace: str, eventhub_name: str,
+    credential: Union[AzureSasCredential, TokenCredential, AzureNamedKeyCredential],
+    **kwargs: Any)'
+  parameters:
+  - name: fully_qualified_namespace
+    description: 'The fully qualified host name for the Event Hubs namespace.
+
+      This is likely to be similar to <yournamespace>.servicebus.windows.net'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: eventhub_name
+    description: The path of the specific Event Hub to connect the client to.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credential object used for authentication which
+
+      implements a particular interface for getting tokens. It accepts
+
+      <xref:azure.eventhub.EventHubSharedKeyCredential>, or credential objects generated
+
+      by the azure-identity library and objects that implement the *get_token(self,
+      *scopes)* method.'
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+  - name: logging_enable
+    description: Whether to output network trace logs to the logger. Default is *False*.
+    types:
+    - <xref:bool>
+  - name: auth_timeout
+    description: 'The time in seconds to wait for a token to be authorized by the
+      service.
+
+      The default value is 60 seconds. If set to 0, no timeout will be enforced from
+      the client.'
+    types:
+    - <xref:float>
+  - name: user_agent
+    description: If specified, this will be added in front of the user agent string.
+    types:
+    - <xref:str>
+  - name: retry_total
+    description: 'The total number of attempts to redo a failed operation when an
+      error occurs. Default
+
+      value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_backoff_factor
+    description: 'A backoff factor to apply between attempts after the second try
+
+      (most errors are resolved immediately by a second try without a delay).
+
+      In fixed mode, retry policy will always sleep for {backoff factor}.
+
+      In ''exponential'' mode, retry policy will sleep for: *{backoff factor} * (2
+      ** ({number of total retries} - 1))*
+
+      seconds. If the backoff_factor is 0.1, then the retry will sleep
+
+      for [0.0s, 0.2s, 0.4s, ...] between retries. The default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: The maximum back off time. Default value is 120 seconds (2 minutes).
+    types:
+    - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    types:
+    - <xref:str>
+  - name: idle_timeout
+    description: 'Timeout, in seconds, after which this client will close the underlying
+      connection
+
+      if there is no activity. By default the value is None, meaning that the client
+      will not shutdown due to inactivity
+
+      unless initiated by the service.'
+    types:
+    - <xref:float>
+examples:
+- "Create a new instance of the EventHubProducerClient.<!--[!code-python[Main](les\\\
+  sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+  \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\85\\\\azure-eventhub-5.8.0a1\\\\samples\\\\\
+  sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub import\
+  \ EventHubProducerClient, EventHubSharedKeyCredential\n\n   fully_qualified_namespace\
+  \ = os.environ['EVENT_HUB_HOSTNAME']\n   eventhub_name = os.environ['EVENT_HUB_NAME']\n\
+  \   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n   shared_access_key\
+  \ = os.environ['EVENT_HUB_SAS_KEY']\n\n   credential = EventHubSharedKeyCredential(shared_access_policy,\
+  \ shared_access_key)\n   producer = EventHubProducerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+  \       eventhub_name=eventhub_name,  # EventHub name should be specified if it\
+  \ doesn't show up in connection string.\n       credential=credential\n   )\n\n\
+  \   ````\n"
+methods:
+- uid: azure.eventhub.EventHubProducerClient.close
+  name: close
+  summary: Close the Producer client underlying AMQP connection and links.
+  signature: close() -> None
+  return:
+    types:
+    - <xref:None>
+  examples:
+  - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\85\\\\azure-eventhub-5.8.0a1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n   from azure.eventhub import EventHubProducerClient, EventData\n\
+    \n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
+    \ = os.environ['EVENT_HUB_NAME']\n\n   producer = EventHubProducerClient.from_connection_string(\n\
+    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
+    \  # EventHub name should be specified if it doesn't show up in connection string.\n\
+    \   )\n   try:\n       event_data_batch = producer.create_batch()\n\n       while\
+    \ True:\n           try:\n               event_data_batch.add(EventData('Message\
+    \ inside EventBatchData'))\n           except ValueError:\n               # EventDataBatch\
+    \ object reaches max_size.\n               # New EventDataBatch object can be\
+    \ created here to send more data\n               break\n\n       producer.send_batch(event_data_batch)\n\
+    \   finally:\n       # Close down the producer handler.\n       producer.close()\n\
+    \n   ````\n"
+- uid: azure.eventhub.EventHubProducerClient.create_batch
+  name: create_batch
+  summary: 'Create an EventDataBatch object with the max size of all content being
+    constrained by max_size_in_bytes.
+
+
+    The max_size_in_bytes should be no greater than the max allowed message size defined
+    by the service.'
+  signature: 'create_batch(**kwargs: Any) -> azure.eventhub._common.EventDataBatch'
+  parameters:
+  - name: partition_id
+    description: 'The specific partition ID to send to. Default is None, in which
+      case the service
+
+      will assign to all partitions using round-robin.'
+    types:
+    - <xref:str>
+  - name: partition_key
+    description: 'With the given partition_key, event data will be sent to
+
+      a particular partition of the Event Hub decided by the service.
+
+      If both partition_id and partition_key are provided, the partition_id will take
+      precedence.
+
+      **WARNING: Setting partition_key of non-string value on the events to be sent
+      is discouraged
+
+      as the partition_key will be ignored by the Event Hub service and events will
+      be assigned
+
+      to all partitions using round-robin. Furthermore, there are SDKs for consuming
+      events which expect
+
+      partition_key to only be string type, they might fail to parse the non-string
+      value.**'
+    types:
+    - <xref:str>
+  - name: max_size_in_bytes
+    description: 'The maximum size of bytes data that an EventDataBatch object can
+      hold. By
+
+      default, the value is determined by your Event Hubs tier.'
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.eventhub.EventDataBatch>
+  examples:
+  - "Create EventDataBatch object within limited size<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\85\\\\azure-eventhub-5.8.0a1\\\\samples\\\
+    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n       event_data_batch = producer.create_batch()\n\
+    \       while True:\n           try:\n               event_data_batch.add(EventData('Message\
+    \ inside EventBatchData'))\n           except ValueError:\n               # The\
+    \ EventDataBatch object reaches its max_size.\n               # You can send the\
+    \ full EventDataBatch object and create a new one here.\n               break\n\
+    \n   ````\n"
+- uid: azure.eventhub.EventHubProducerClient.from_connection_string
+  name: from_connection_string
+  summary: Create an EventHubProducerClient from a connection string.
+  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> azure.eventhub._producer_client.EventHubProducerClient'
+  parameters:
+  - name: conn_str
+    description: The connection string of an Event Hub.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: eventhub_name
+    description: The path of the specific Event Hub to connect the client to.
+    types:
+    - <xref:str>
+  - name: logging_enable
+    description: Whether to output network trace logs to the logger. Default is *False*.
+    types:
+    - <xref:bool>
+  - name: auth_timeout
+    description: 'The time in seconds to wait for a token to be authorized by the
+      service.
+
+      The default value is 60 seconds. If set to 0, no timeout will be enforced from
+      the client.'
+    types:
+    - <xref:float>
+  - name: user_agent
+    description: If specified, this will be added in front of the user agent string.
+    types:
+    - <xref:str>
+  - name: retry_total
+    description: 'The total number of attempts to redo a failed operation when an
+      error occurs.
+
+      Default value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_backoff_factor
+    description: 'A backoff factor to apply between attempts after the second try
+
+      (most errors are resolved immediately by a second try without a delay).
+
+      In fixed mode, retry policy will always sleep for {backoff factor}.
+
+      In ''exponential'' mode, retry policy will sleep for: *{backoff factor} * (2
+      ** ({number of total retries} - 1))*
+
+      seconds. If the backoff_factor is 0.1, then the retry will sleep
+
+      for [0.0s, 0.2s, 0.4s, ...] between retries. The default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: The maximum back off time. Default value is 120 seconds (2 minutes).
+    types:
+    - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    types:
+    - <xref:str>
+  - name: idle_timeout
+    description: 'Timeout, in seconds, after which this client will close the underlying
+      connection
+
+      if there is no activity. By default the value is None, meaning that the client
+      will not shutdown due to
+
+      inactivity unless initiated by the service.'
+    types:
+    - <xref:float>
+  return:
+    types:
+    - <xref:azure.eventhub.EventHubProducerClient>
+  examples:
+  - "Create a new instance of the EventHubProducerClient from connection string.<!--[!code-python[Main](les\\\
+    sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\85\\\\azure-eventhub-5.8.0a1\\\\samples\\\
+    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub import\
+    \ EventHubProducerClient\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
+    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(\n\
+    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
+    \  # EventHub name should be specified if it doesn't show up in connection string.\n\
+    \   )\n\n   ````\n"
+- uid: azure.eventhub.EventHubProducerClient.get_eventhub_properties
+  name: get_eventhub_properties
+  summary: "Get properties of the Event Hub.\n\nKeys in the returned dictionary include:\n\
+    \n   * *eventhub_name* (str) \n\n   * *created_at* (UTC datetime.datetime) \n\n\
+    \   * *partition_ids* (list[str])"
+  signature: get_eventhub_properties() -> Dict[str, Any]
+  return:
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
+- uid: azure.eventhub.EventHubProducerClient.get_partition_ids
+  name: get_partition_ids
+  summary: Get partition IDs of the Event Hub.
+  signature: get_partition_ids() -> List[str]
+  return:
+    types:
+    - <xref:list>[<xref:str>]
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
+- uid: azure.eventhub.EventHubProducerClient.get_partition_properties
+  name: get_partition_properties
+  summary: "Get properties of the specified partition.\n\nKeys in the properties dictionary\
+    \ include:\n\n   * *eventhub_name* (str) \n\n   * *id* (str) \n\n   * *beginning_sequence_number*\
+    \ (int) \n\n   * *last_enqueued_sequence_number* (int) \n\n   * *last_enqueued_offset*\
+    \ (str) \n\n   * *last_enqueued_time_utc* (UTC datetime.datetime) \n\n   * *is_empty*\
+    \ (bool)"
+  signature: 'get_partition_properties(partition_id: str) -> Dict[str, Any]'
+  parameters:
+  - name: partition_id
+    description: The target partition ID.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
+- uid: azure.eventhub.EventHubProducerClient.send_batch
+  name: send_batch
+  summary: 'Sends event data and blocks until acknowledgement is received or operation
+    times out.
+
+
+    If you''re sending a finite list of *EventData* or *AmqpAnnotatedMessage* and
+    you know it''s within the
+
+    event hub frame size limit, you can send them with a *send_batch* call. Otherwise,
+    use <xref:azure.eventhub.EventHubProducerClient.create_batch>
+
+    to create *EventDataBatch* and add either *EventData* or *AmqpAnnotatedMessage*
+    into the batch one by one
+
+    until the size limit, and then call this method to send out the batch.'
+  signature: 'send_batch(event_data_batch: Union[azure.eventhub._common.EventDataBatch,
+    List[Union[azure.eventhub._common.EventData, azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage]]],
+    **kwargs: Any) -> None'
+  parameters:
+  - name: event_data_batch
+    description: 'The *EventDataBatch* object to be sent or a list of *EventData*
+      to be sent in a batch.
+
+      All *EventData* or *AmqpAnnotatedMessage* in the list or *EventDataBatch* will
+      land on the same partition.'
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:azure.eventhub.EventDataBatch>, <xref:List>[<xref:Union>[<xref:azure.eventhub.EventData,azure.eventhub.amqp.AmqpAnnotatedMessage>]]
+  - name: timeout
+    description: 'The maximum wait time to send the event data.
+
+      If not specified, the default wait time specified when the producer was created
+      will be used.'
+    types:
+    - <xref:float>
+  - name: partition_id
+    description: 'The specific partition ID to send to. Default is None, in which
+      case the service
+
+      will assign to all partitions using round-robin.
+
+      A *TypeError* will be raised if partition_id is specified and event_data_batch
+      is an *EventDataBatch* because
+
+      *EventDataBatch* itself has partition_id.'
+    types:
+    - <xref:str>
+  - name: partition_key
+    description: 'With the given partition_key, event data will be sent to
+
+      a particular partition of the Event Hub decided by the service.
+
+      A *TypeError* will be raised if partition_key is specified and event_data_batch
+      is an *EventDataBatch* because
+
+      *EventDataBatch* itself has partition_key.
+
+      If both partition_id and partition_key are provided, the partition_id will take
+      precedence.
+
+      **WARNING: Setting partition_key of non-string value on the events to be sent
+      is discouraged
+
+      as the partition_key will be ignored by the Event Hub service and events will
+      be assigned
+
+      to all partitions using round-robin. Furthermore, there are SDKs for consuming
+      events which expect
+
+      partition_key to only be string type, they might fail to parse the non-string
+      value.**'
+    types:
+    - <xref:str>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: 'azure.eventhub.exceptions.AuthenticationError
+
+      azure.eventhub.exceptions.ConnectError
+
+      azure.eventhub.exceptions.ConnectionLostError
+
+      azure.eventhub.exceptions.EventDataError
+
+      azure.eventhub.exceptions.EventDataSendError
+
+      azure.eventhub.exceptions.EventHubError
+
+      azure.eventhub.ValueError
+
+      azure.eventhub.TypeError'
+  examples:
+  - "Sends event data<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\85\\\\azure-eventhub-5.8.0a1\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n       with producer:\n           event_data_batch = producer.create_batch()\n\
+    \n           while True:\n               try:\n                   event_data_batch.add(EventData('Message\
+    \ inside EventBatchData'))\n               except ValueError:\n              \
+    \     # EventDataBatch object reaches max_size.\n                   # New EventDataBatch\
+    \ object can be created here to send more data\n                   break\n\n \
+    \          producer.send_batch(event_data_batch)\n\n   ````\n"

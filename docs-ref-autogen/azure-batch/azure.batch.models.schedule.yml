@@ -1,107 +1,84 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children: []
-  class: azure.batch.models.Schedule
-  fullName: azure.batch.models.Schedule
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: msrest.serialization.Model
-  langs:
-  - python
-  module: azure.batch.models
-  name: Schedule
-  summary: The schedule according to which Jobs will be created.
-  syntax:
-    content: Schedule(*, do_not_run_until=None, do_not_run_after=None, start_window=None,
-      recurrence_interval=None, **kwargs) -> None
-    parameters:
-    - description: 'The earliest time at which any Job may be created
+### YamlMime:PythonClass
+uid: azure.batch.models.Schedule
+name: Schedule
+fullName: azure.batch.models.Schedule
+module: azure.batch.models
+inheritances:
+- msrest.serialization.Model
+summary: The schedule according to which Jobs will be created.
+constructor:
+  syntax: Schedule(*, do_not_run_until=None, do_not_run_after=None, start_window=None,
+    recurrence_interval=None, **kwargs)
+  parameters:
+  - name: do_not_run_until
+    description: 'If you do not specify a doNotRunUntil time, the
 
-        under this Job Schedule. If you do not specify a doNotRunUntil time, the
+      schedule becomes ready to create Jobs immediately.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: do_not_run_after
+    description: 'If you do not specify a doNotRunAfter time, and
 
-        schedule becomes ready to create Jobs immediately.'
-      id: do_not_run_until
-      type:
-      - datetime
-    - description: 'A time after which no Job will be created under
+      you are creating a recurring Job Schedule, the Job Schedule will remain
 
-        this Job Schedule. The schedule will move to the completed state as soon
+      active until you explicitly terminate it.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: start_window
+    description: 'If a Job is not created within the startWindow
 
-        as this deadline is past and there is no active Job under this Job
+      interval, then the ''opportunity'' is lost; no Job will be created until the
 
-        Schedule. If you do not specify a doNotRunAfter time, and you are creating
+      next recurrence of the schedule. If the schedule is recurring, and the
 
-        a recurring Job Schedule, the Job Schedule will remain active until you
+      startWindow is longer than the recurrence interval, then this is
 
-        explicitly terminate it.'
-      id: do_not_run_after
-      type:
-      - datetime
-    - description: 'The time interval, starting from the time at which
+      equivalent to an infinite startWindow, because the Job that is ''due'' in
 
-        the schedule indicates a Job should be created, within which a Job must be
+      one recurrenceInterval is not carried forward into the next recurrence
 
-        created. If a Job is not created within the startWindow interval, then the
+      interval. The default is infinite. The minimum value is 1 minute. If you
 
-        ''opportunity'' is lost; no Job will be created until the next recurrence
-        of
+      specify a lower value, the Batch service rejects the schedule with an
 
-        the schedule. If the schedule is recurring, and the startWindow is longer
+      error; if you are calling the REST API directly, the HTTP status code is
 
-        than the recurrence interval, then this is equivalent to an infinite
+      400 (Bad Request).'
+    isRequired: true
+    types:
+    - <xref:timedelta>
+  - name: recurrence_interval
+    description: 'Because a Job Schedule can have at most one
 
-        startWindow, because the Job that is ''due'' in one recurrenceInterval is
+      active Job under it at any given time, if it is time to create a new Job
 
-        not carried forward into the next recurrence interval. The default is
+      under a Job Schedule, but the previous Job is still running, the Batch
 
-        infinite. The minimum value is 1 minute. If you specify a lower value, the
+      service will not create the new Job until the previous Job finishes. If
 
-        Batch service rejects the schedule with an error; if you are calling the
+      the previous Job does not finish within the startWindow period of the new
 
-        REST API directly, the HTTP status code is 400 (Bad Request).'
-      id: start_window
-      type:
-      - timedelta
-    - description: 'The time interval between the start times of
+      recurrenceInterval, then no new Job will be scheduled for that interval.
 
-        two successive Jobs under the Job Schedule. A Job Schedule can have at
+      For recurring Jobs, you should normally specify a jobManagerTask in the
 
-        most one active Job under it at any given time. Because a Job Schedule can
+      jobSpecification. If you do not use jobManagerTask, you will need an
 
-        have at most one active Job under it at any given time, if it is time to
+      external process to monitor when Jobs are created, add Tasks to the Jobs
 
-        create a new Job under a Job Schedule, but the previous Job is still
+      and terminate the Jobs ready for the next recurrence. The default is that
 
-        running, the Batch service will not create the new Job until the previous
+      the schedule does not recur: one Job is created, within the startWindow
 
-        Job finishes. If the previous Job does not finish within the startWindow
+      after the doNotRunUntil time, and the schedule is complete as soon as that
 
-        period of the new recurrenceInterval, then no new Job will be scheduled
+      Job finishes. The minimum value is 1 minute. If you specify a lower value,
 
-        for that interval. For recurring Jobs, you should normally specify a
+      the Batch service rejects the schedule with an error; if you are calling
 
-        jobManagerTask in the jobSpecification. If you do not use jobManagerTask,
-
-        you will need an external process to monitor when Jobs are created, add
-
-        Tasks to the Jobs and terminate the Jobs ready for the next recurrence.
-
-        The default is that the schedule does not recur: one Job is created,
-
-        within the startWindow after the doNotRunUntil time, and the schedule is
-
-        complete as soon as that Job finishes. The minimum value is 1 minute. If
-
-        you specify a lower value, the Batch service rejects the schedule with an
-
-        error; if you are calling the REST API directly, the HTTP status code is
-
-        400 (Bad Request).'
-      id: recurrence_interval
-      type:
-      - timedelta
-  type: class
-  uid: azure.batch.models.Schedule
-references: []
+      the REST API directly, the HTTP status code is 400 (Bad Request).'
+    isRequired: true
+    types:
+    - <xref:timedelta>

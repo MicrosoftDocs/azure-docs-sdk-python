@@ -1,198 +1,152 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children: []
-  class: azure.batch.models.StartTask
-  fullName: azure.batch.models.StartTask
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: msrest.serialization.Model
-  langs:
-  - python
-  module: azure.batch.models
-  name: StartTask
-  summary: 'A Task which is run when a Node joins a Pool in the Azure Batch service,
-    or
+### YamlMime:PythonClass
+uid: azure.batch.models.StartTask
+name: StartTask
+fullName: azure.batch.models.StartTask
+module: azure.batch.models
+inheritances:
+- msrest.serialization.Model
+summary: 'A Task which is run when a Node joins a Pool in the Azure Batch service,
+  or
 
-    when the Compute Node is rebooted or reimaged.
+  when the Compute Node is rebooted or reimaged.
 
 
-    Batch will retry Tasks when a recovery operation is triggered on a Node.
+  Batch will retry Tasks when a recovery operation is triggered on a Node.
 
-    Examples of recovery operations include (but are not limited to) when an
+  Examples of recovery operations include (but are not limited to) when an
 
-    unhealthy Node is rebooted or a Compute Node disappeared due to host
+  unhealthy Node is rebooted or a Compute Node disappeared due to host
 
-    failure. Retries due to recovery operations are independent of and are not
+  failure. Retries due to recovery operations are independent of and are not
 
-    counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
+  counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
 
-    an internal retry due to a recovery operation may occur. Because of this,
+  an internal retry due to a recovery operation may occur. Because of this,
 
-    all Tasks should be idempotent. This means Tasks need to tolerate being
+  all Tasks should be idempotent. This means Tasks need to tolerate being
 
-    interrupted and restarted without causing any corruption or duplicate data.
+  interrupted and restarted without causing any corruption or duplicate data.
 
-    The best practice for long running Tasks is to use some form of
+  The best practice for long running Tasks is to use some form of
 
-    checkpointing. In some cases the StartTask may be re-run even though the
+  checkpointing. In some cases the StartTask may be re-run even though the
 
-    Compute Node was not rebooted. Special care should be taken to avoid
+  Compute Node was not rebooted. Special care should be taken to avoid
 
-    StartTasks which create breakaway process or install/launch services from
+  StartTasks which create breakaway process or install/launch services from
 
-    the StartTask working directory, as this will block Batch from being able
+  the StartTask working directory, as this will block Batch from being able
 
-    to re-run the StartTask.
+  to re-run the StartTask.
 
 
-    All required parameters must be populated in order to send to Azure.'
-  syntax:
-    content: 'StartTask(*, command_line: str, container_settings=None, resource_files=None,
-      environment_settings=None, user_identity=None, max_task_retry_count: int = None,
-      wait_for_success: bool = None, **kwargs) -> None'
-    parameters:
-    - description: 'Required. The command line of the StartTask. The
+  All required parameters must be populated in order to send to Azure.'
+constructor:
+  syntax: 'StartTask(*, command_line: str, container_settings=None, resource_files=None,
+    environment_settings=None, user_identity=None, max_task_retry_count: Optional[int]
+    = None, wait_for_success: Optional[bool] = None, **kwargs)'
+  parameters:
+  - name: command_line
+    description: 'Required. The command line does not run under a
 
-        command line does not run under a shell, and therefore cannot take
+      shell, and therefore cannot take advantage of shell features such as
 
-        advantage of shell features such as environment variable expansion. If you
+      environment variable expansion. If you want to take advantage of such
 
-        want to take advantage of such features, you should invoke the shell in
+      features, you should invoke the shell in the command line, for example
 
-        the command line, for example using "cmd /c MyCommand" in Windows or
+      using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If
 
-        "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths,
+      the command line refers to file paths, it should use a relative path
 
-        it should use a relative path (relative to the Task working directory), or
+      (relative to the Task working directory), or use the Batch provided
 
-        use the Batch provided environment variable
+      environment variable
 
-        ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
-      id: command_line
-      type:
-      - str
-    - description: 'The settings for the container under which the
+      ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: container_settings
+    description: 'The settings for the container under which the
 
-        StartTask runs. When this is specified, all directories recursively below
+      StartTask runs. When this is specified, all directories recursively below
 
-        the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the
+      the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the
 
-        node) are mapped into the container, all Task environment variables are
+      node) are mapped into the container, all Task environment variables are
 
-        mapped into the container, and the Task command line is executed in the
+      mapped into the container, and the Task command line is executed in the
 
-        container. Files produced in the container outside of
+      container. Files produced in the container outside of
 
-        AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning
+      AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning
 
-        that Batch file APIs will not be able to access those files.'
-      id: container_settings
-      type:
-      - azure.batch.models.TaskContainerSettings
-    - description: 'A list of files that the Batch service will
+      that Batch file APIs will not be able to access those files.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskContainerSettings>
+  - name: resource_files
+    description: 'Files listed under this element are located in the
 
-        download to the Compute Node before running the command line.  There is a
+      Task''s working directory.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.ResourceFile>]
+  - name: environment_settings
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.EnvironmentSetting>]
+  - name: user_identity
+    description: 'The user identity under which the StartTask runs. If
 
-        maximum size for the list of resource files. When the max size is
+      omitted, the Task runs as a non-administrative user unique to the Task.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.UserIdentity>
+  - name: max_task_retry_count
+    description: 'The maximum number of times the Task may be
 
-        exceeded, the request will fail and the response error code will be
+      retried. The Batch service retries a Task if its exit code is nonzero.
 
-        RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
+      Note that this value specifically controls the number of retries. The
 
-        must be reduced in size. This can be achieved using .zip files,
+      Batch service will try the Task once, and may then retry up to this limit.
 
-        Application Packages, or Docker Containers. Files listed under this
+      For example, if the maximum retry count is 3, Batch tries the Task up to 4
 
-        element are located in the Task''s working directory.'
-      id: resource_files
-      type:
-      - list[azure.batch.models.ResourceFile]
-    - description: 'A list of environment variable settings for
+      times (one initial try and 3 retries). If the maximum retry count is 0,
 
-        the StartTask.'
-      id: environment_settings
-      type:
-      - list[azure.batch.models.EnvironmentSetting]
-    - description: 'The user identity under which the StartTask runs. If
+      the Batch service does not retry the Task. If the maximum retry count is
 
-        omitted, the Task runs as a non-administrative user unique to the Task.'
-      id: user_identity
-      type:
-      - azure.batch.models.UserIdentity
-    - description: 'The maximum number of times the Task may be
+      -1, the Batch service retries the Task without limit.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: wait_for_success
+    description: 'Whether the Batch service should wait for the
 
-        retried. The Batch service retries a Task if its exit code is nonzero.
+      StartTask to complete successfully (that is, to exit with exit code 0)
 
-        Note that this value specifically controls the number of retries. The
+      before scheduling any Tasks on the Compute Node. If true and the StartTask
 
-        Batch service will try the Task once, and may then retry up to this limit.
+      fails on a Node, the Batch service retries the StartTask up to its maximum
 
-        For example, if the maximum retry count is 3, Batch tries the Task up to 4
+      retry count (maxTaskRetryCount). If the Task has still not completed
 
-        times (one initial try and 3 retries). If the maximum retry count is 0,
+      successfully after all retries, then the Batch service marks the Node
 
-        the Batch service does not retry the Task. If the maximum retry count is
+      unusable, and will not schedule Tasks to it. This condition can be
 
-        -1, the Batch service retries the Task without limit.'
-      id: max_task_retry_count
-      type:
-      - int
-    - description: 'Whether the Batch service should wait for the
+      detected via the Compute Node state and failure info details. If false,
 
-        StartTask to complete successfully (that is, to exit with exit code 0)
+      the Batch service will not wait for the StartTask to complete. In this
 
-        before scheduling any Tasks on the Compute Node. If true and the StartTask
+      case, other Tasks can start executing on the Compute Node while the
 
-        fails on a Node, the Batch service retries the StartTask up to its maximum
+      StartTask is still running; and even if the StartTask fails, new Tasks
 
-        retry count (maxTaskRetryCount). If the Task has still not completed
-
-        successfully after all retries, then the Batch service marks the Node
-
-        unusable, and will not schedule Tasks to it. This condition can be
-
-        detected via the Compute Node state and failure info details. If false,
-
-        the Batch service will not wait for the StartTask to complete. In this
-
-        case, other Tasks can start executing on the Compute Node while the
-
-        StartTask is still running; and even if the StartTask fails, new Tasks
-
-        will continue to be scheduled on the Compute Node. The default is true.'
-      id: wait_for_success
-      type:
-      - bool
-  type: class
-  uid: azure.batch.models.StartTask
-references:
-- fullName: list[azure.batch.models.ResourceFile]
-  name: list[ResourceFile]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.ResourceFile
-    name: ResourceFile
-    uid: azure.batch.models.ResourceFile
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.ResourceFile]
-- fullName: list[azure.batch.models.EnvironmentSetting]
-  name: list[EnvironmentSetting]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: azure.batch.models.EnvironmentSetting
-    name: EnvironmentSetting
-    uid: azure.batch.models.EnvironmentSetting
-  - fullName: ']'
-    name: ']'
-  uid: list[azure.batch.models.EnvironmentSetting]
+      will continue to be scheduled on the Compute Node. The default is true.'
+    isRequired: true
+    types:
+    - <xref:bool>

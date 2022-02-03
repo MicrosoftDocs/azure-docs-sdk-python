@@ -1,141 +1,137 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children: []
-  class: azure.batch.models.TaskExecutionInformation
-  fullName: azure.batch.models.TaskExecutionInformation
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: msrest.serialization.Model
-  langs:
-  - python
-  module: azure.batch.models
-  name: TaskExecutionInformation
-  summary: 'Information about the execution of a Task.
+### YamlMime:PythonClass
+uid: azure.batch.models.TaskExecutionInformation
+name: TaskExecutionInformation
+fullName: azure.batch.models.TaskExecutionInformation
+module: azure.batch.models
+inheritances:
+- msrest.serialization.Model
+summary: 'Information about the execution of a Task.
 
 
-    All required parameters must be populated in order to send to Azure.'
-  syntax:
-    content: 'TaskExecutionInformation(*, retry_count: int, requeue_count: int, start_time=None,
-      end_time=None, exit_code: int = None, container_info=None, failure_info=None,
-      last_retry_time=None, last_requeue_time=None, result=None, **kwargs) -> None'
-    parameters:
-    - description: 'The time at which the Task started running. ''Running''
+  All required parameters must be populated in order to send to Azure.'
+constructor:
+  syntax: 'TaskExecutionInformation(*, retry_count: int, requeue_count: int, start_time=None,
+    end_time=None, exit_code: Optional[int] = None, container_info=None, failure_info=None,
+    last_retry_time=None, last_requeue_time=None, result=None, **kwargs)'
+  parameters:
+  - name: start_time
+    description: '''Running'' corresponds to the running state, so if the
 
-        corresponds to the running state, so if the Task specifies resource files
+      Task specifies resource files or Packages, then the start time reflects
 
-        or Packages, then the start time reflects the time at which the Task
+      the time at which the Task started downloading or deploying these. If the
 
-        started downloading or deploying these. If the Task has been restarted or
+      Task has been restarted or retried, this is the most recent time at which
 
-        retried, this is the most recent time at which the Task started running.
+      the Task started running. This property is present only for Tasks that are
 
-        This property is present only for Tasks that are in the running or
+      in the running or completed state.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: end_time
+    description: 'This property is set only if the Task is in the Completed
 
-        completed state.'
-      id: start_time
-      type:
-      - datetime
-    - description: 'The time at which the Task completed. This property is
+      state.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: exit_code
+    description: 'The exit code of the program specified on the Task
 
-        set only if the Task is in the Completed state.'
-      id: end_time
-      type:
-      - datetime
-    - description: 'The exit code of the program specified on the Task
+      command line. This property is set only if the Task is in the completed
 
-        command line. This property is set only if the Task is in the completed
+      state. In general, the exit code for a process reflects the specific
 
-        state. In general, the exit code for a process reflects the specific
+      convention implemented by the application developer for that process. If
 
-        convention implemented by the application developer for that process. If
+      you use the exit code value to make decisions in your code, be sure that
 
-        you use the exit code value to make decisions in your code, be sure that
+      you know the exit code convention used by the application process.
 
-        you know the exit code convention used by the application process.
+      However, if the Batch service terminates the Task (due to timeout, or user
 
-        However, if the Batch service terminates the Task (due to timeout, or user
+      termination via the API) you may see an operating system-defined exit
 
-        termination via the API) you may see an operating system-defined exit
+      code.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: container_info
+    description: 'Information about the container under which the
 
-        code.'
-      id: exit_code
-      type:
-      - int
-    - description: 'Information about the container under which the
+      Task is executing. This property is set only if the Task runs in a
 
-        Task is executing. This property is set only if the Task runs in a
+      container context.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskContainerExecutionInformation>
+  - name: failure_info
+    description: 'Information describing the Task failure, if any. This
 
-        container context.'
-      id: container_info
-      type:
-      - azure.batch.models.TaskContainerExecutionInformation
-    - description: 'Information describing the Task failure, if any. This
+      property is set only if the Task is in the completed state and encountered
 
-        property is set only if the Task is in the completed state and encountered
+      a failure.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskFailureInformation>
+  - name: retry_count
+    description: 'Required. The number of times the Task has been
 
-        a failure.'
-      id: failure_info
-      type:
-      - azure.batch.models.TaskFailureInformation
-    - description: 'Required. The number of times the Task has been
+      retried by the Batch service. Task application failures (non-zero exit
 
-        retried by the Batch service. Task application failures (non-zero exit
+      code) are retried, pre-processing errors (the Task could not be run) and
 
-        code) are retried, pre-processing errors (the Task could not be run) and
+      file upload errors are not retried. The Batch service will retry the Task
 
-        file upload errors are not retried. The Batch service will retry the Task
+      up to the limit specified by the constraints.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: last_retry_time
+    description: 'This element is present only if the Task was
 
-        up to the limit specified by the constraints.'
-      id: retry_count
-      type:
-      - int
-    - description: 'The most recent time at which a retry of the Task
+      retried (i.e. retryCount is nonzero). If present, this is typically the
 
-        started running. This element is present only if the Task was retried
+      same as startTime, but may be different if the Task has been restarted for
 
-        (i.e. retryCount is nonzero). If present, this is typically the same as
+      reasons other than retry; for example, if the Compute Node was rebooted
 
-        startTime, but may be different if the Task has been restarted for reasons
+      during a retry, then the startTime is updated but the lastRetryTime is
 
-        other than retry; for example, if the Compute Node was rebooted during a
+      not.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: requeue_count
+    description: 'Required. The number of times the Task has been
 
-        retry, then the startTime is updated but the lastRetryTime is not.'
-      id: last_retry_time
-      type:
-      - datetime
-    - description: 'Required. The number of times the Task has been
+      requeued by the Batch service as the result of a user request. When the
 
-        requeued by the Batch service as the result of a user request. When the
+      user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or
 
-        user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or
+      when the Job is being disabled, the user can specify that running Tasks on
 
-        when the Job is being disabled, the user can specify that running Tasks on
+      the Compute Nodes be requeued for execution. This count tracks how many
 
-        the Compute Nodes be requeued for execution. This count tracks how many
+      times the Task has been requeued for these reasons.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: last_requeue_time
+    description: 'This property is set only if the requeueCount is
 
-        times the Task has been requeued for these reasons.'
-      id: requeue_count
-      type:
-      - int
-    - description: 'The most recent time at which the Task has been
+      nonzero.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: result
+    description: 'The result of the Task execution. If the value is ''failed'',
 
-        requeued by the Batch service as the result of a user request. This
+      then the details of the failure can be found in the failureInfo property.
 
-        property is set only if the requeueCount is nonzero.'
-      id: last_requeue_time
-      type:
-      - datetime
-    - description: 'The result of the Task execution. If the value is ''failed'',
-
-        then the details of the failure can be found in the failureInfo property.
-
-        Possible values include: ''success'', ''failure'''
-      id: result
-      type:
-      - str
-      - azure.batch.models.TaskExecutionResult
-  type: class
-  uid: azure.batch.models.TaskExecutionInformation
-references: []
+      Possible values include: ''success'', ''failure'''
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.batch.models.TaskExecutionResult>

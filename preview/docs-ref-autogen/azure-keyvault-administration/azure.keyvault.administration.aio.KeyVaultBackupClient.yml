@@ -1,0 +1,126 @@
+### YamlMime:PythonClass
+uid: azure.keyvault.administration.aio.KeyVaultBackupClient
+name: KeyVaultBackupClient
+fullName: azure.keyvault.administration.aio.KeyVaultBackupClient
+module: azure.keyvault.administration.aio
+inheritances:
+- azure.keyvault.administration._internal.async_client_base.AsyncKeyVaultClientBase
+summary: Performs Key Vault backup and restore operations.
+constructor:
+  syntax: 'KeyVaultBackupClient(vault_url: str, credential: AsyncTokenCredential,
+    **kwargs: Any)'
+  parameters:
+  - name: vault_url
+    description: URL of the vault on which the client will operate. This is also called
+      the vault's "DNS Name".
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'an object which can provide an access token for the vault, such
+      as a credential from
+
+      <xref:azure.identity.aio>'
+    isRequired: true
+methods:
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.begin_backup
+  name: begin_backup
+  summary: Begin a full backup of the Key Vault.
+  signature: 'begin_backup(blob_storage_url: str, sas_token: str, **kwargs: Any) ->
+    AsyncLROPoller[KeyVaultBackupResult]'
+  parameters:
+  - name: blob_storage_url
+    description: 'URL of the blob storage container in which the backup will be stored,
+      for example
+
+      [https:/](https:/)/<account>.blob.core.windows.net/backup'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: a Shared Access Signature (SAS) token authorizing access to the blob
+      storage resource
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: continuation_token
+    description: a continuation token to restart polling from a saved state
+    types:
+    - <xref:str>
+  return:
+    description: An AsyncLROPoller. Call *result()* on this object to get a <xref:azure.keyvault.administration.aio.KeyVaultBackupResult>.
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.keyvault.administration.KeyVaultBackupResult>]
+  examples:
+  - "Create a vault backup<!--[!code-python[Main](s\\test_examples_administration_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\61\\\\azure-keyvault-administration-4.1.0b2\\\\tests\\\\test_examples_administration_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # begin a vault backup\n   backup_poller = await backup_client.begin_backup(container_uri,\
+    \ sas_token)\n\n   # check if the backup completed\n   done = backup_poller.done()\n\
+    \n   # yield until the backup completes\n   # result() returns an object with\
+    \ a URL of the backup\n   backup_operation = await backup_poller.result()\n\n\
+    \   ````\n"
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.begin_restore
+  name: begin_restore
+  summary: 'Restore a Key Vault backup.
+
+
+    This method restores either a complete Key Vault backup or when `key_name` has
+    a value, a single key.'
+  signature: 'begin_restore(folder_url: str, sas_token: str, **kwargs: Any) -> AsyncLROPoller'
+  parameters:
+  - name: folder_url
+    description: 'URL for the blob storage resource, including the path to the blob
+      holding the
+
+      backup. This would be the *folder_url* of a <xref:azure.keyvault.administration.aio.KeyVaultBackupResult>
+      returned by
+
+      <xref:azure.keyvault.administration.aio.KeyVaultBackupClient.begin_backup>,
+      for example
+
+      [https:/](https:/)/<account>.blob.core.windows.net/backup/mhsm-account-2020090117323313'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: a Shared Access Signature (SAS) token authorizing access to the blob
+      storage resource
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: continuation_token
+    description: a continuation token to restart polling from a saved state
+    types:
+    - <xref:str>
+  - name: key_name
+    description: name of a single key in the backup. When set, only this key will
+      be restored.
+    types:
+    - <xref:str>
+  return:
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>
+  examples:
+  - "Restore a vault backup<!--[!code-python[Main](s\\test_examples_administration_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\61\\\\azure-keyvault-administration-4.1.0b2\\\\tests\\\\test_examples_administration_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # begin a full vault restore\n   restore_poller = await backup_client.begin_restore(folder_url,\
+    \ sas_token)\n\n   # check if the restore completed\n   done = restore_poller.done()\n\
+    \n   # wait for the restore to complete\n   await restore_poller.wait()\n\n  \
+    \ ````\n\nRestore a single key<!--[!code-python[Main](s\\test_examples_administration_async.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
+    \\61\\\\azure-keyvault-administration-4.1.0b2\\\\tests\\\\test_examples_administration_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # begin a restore of a single key from a backed up vault\n   restore_poller\
+    \ = await backup_client.begin_restore(folder_url, sas_token, key_name=key_name)\n\
+    \n   # check if the restore completed\n   done = restore_poller.done()\n\n   #\
+    \ wait for the restore to complete\n   await restore_poller.wait()\n\n   ````\n"

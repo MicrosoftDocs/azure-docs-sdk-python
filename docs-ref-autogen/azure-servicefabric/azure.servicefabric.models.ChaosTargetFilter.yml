@@ -1,136 +1,105 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children: []
-  class: azure.servicefabric.models.ChaosTargetFilter
-  fullName: azure.servicefabric.models.ChaosTargetFilter
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: msrest.serialization.Model
-  langs:
-  - python
-  module: azure.servicefabric.models
-  name: ChaosTargetFilter
-  summary: 'Defines all filters for targeted Chaos faults, for example, faulting only
+### YamlMime:PythonClass
+uid: azure.servicefabric.models.ChaosTargetFilter
+name: ChaosTargetFilter
+fullName: azure.servicefabric.models.ChaosTargetFilter
+module: azure.servicefabric.models
+inheritances:
+- msrest.serialization.Model
+summary: 'specification. NodeTypeInclusionList and ApplicationInclusionList allow
+  a
 
-    certain node types or faulting only certain applications.
+  union semantics only. It is not possible to specify an intersection
 
-    If ChaosTargetFilter is not used, Chaos faults all cluster entities. If
+  of NodeTypeInclusionList and ApplicationInclusionList. For example, it is
 
-    ChaosTargetFilter is used, Chaos faults only the entities that meet the
+  not possible to specify "fault this application only when it is on that
 
-    ChaosTargetFilter
+  node type."
 
-    specification. NodeTypeInclusionList and ApplicationInclusionList allow a
+  Once an entity is included in either NodeTypeInclusionList or
 
-    union semantics only. It is not possible to specify an intersection
+  ApplicationInclusionList, that entity cannot be excluded using
 
-    of NodeTypeInclusionList and ApplicationInclusionList. For example, it is
+  ChaosTargetFilter. Even if
 
-    not possible to specify "fault this application only when it is on that
+  applicationX does not appear in ApplicationInclusionList, in some Chaos
 
-    node type."
+  iteration applicationX can be faulted because it happens to be on a node of
 
-    Once an entity is included in either NodeTypeInclusionList or
+  nodeTypeY that is included
 
-    ApplicationInclusionList, that entity cannot be excluded using
+  in NodeTypeInclusionList. If both NodeTypeInclusionList and
 
-    ChaosTargetFilter. Even if
+  ApplicationInclusionList are null or empty, an ArgumentException is thrown.'
+constructor:
+  syntax: ChaosTargetFilter(*, node_type_inclusion_list=None, application_inclusion_list=None,
+    **kwargs)
+  parameters:
+  - name: node_type_inclusion_list
+    description: 'A list of node types to include in Chaos
 
-    applicationX does not appear in ApplicationInclusionList, in some Chaos
+      faults.
 
-    iteration applicationX can be faulted because it happens to be on a node of
+      All types of faults (restart node, restart code package, remove replica,
 
-    nodeTypeY that is included
+      restart replica, move primary, and move secondary) are enabled for the
 
-    in NodeTypeInclusionList. If both NodeTypeInclusionList and
+      nodes of these node types.
 
-    ApplicationInclusionList are null or empty, an ArgumentException is thrown.'
-  syntax:
-    content: ChaosTargetFilter(*, node_type_inclusion_list=None, application_inclusion_list=None,
-      **kwargs) -> None
-    parameters:
-    - description: 'A list of node types to include in Chaos
+      If a node type (say NodeTypeX) does not appear in the
 
-        faults.
+      NodeTypeInclusionList, then node level faults (like NodeRestart) will
 
-        All types of faults (restart node, restart code package, remove replica,
+      never be enabled for the nodes of
 
-        restart replica, move primary, and move secondary) are enabled for the
+      NodeTypeX, but code package and replica faults can still be enabled for
 
-        nodes of these node types.
+      NodeTypeX if an application in the ApplicationInclusionList.
 
-        If a node type (say NodeTypeX) does not appear in the
+      happens to reside on a node of NodeTypeX.
 
-        NodeTypeInclusionList, then node level faults (like NodeRestart) will
+      At most 100 node type names can be included in this list, to increase this
 
-        never be enabled for the nodes of
+      number, a config upgrade is required for
 
-        NodeTypeX, but code package and replica faults can still be enabled for
+      MaxNumberOfNodeTypesInChaosEntityFilter configuration.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  - name: application_inclusion_list
+    description: 'A list of application URIs to include
 
-        NodeTypeX if an application in the ApplicationInclusionList.
+      in Chaos faults.
 
-        happens to reside on a node of NodeTypeX.
+      All replicas belonging to services of these applications are amenable to
 
-        At most 100 node type names can be included in this list, to increase this
+      replica faults (restart replica, remove replica, move primary, and move
 
-        number, a config upgrade is required for
+      secondary) by Chaos.
 
-        MaxNumberOfNodeTypesInChaosEntityFilter configuration.'
-      id: node_type_inclusion_list
-      type:
-      - list[str]
-    - description: 'A list of application URIs to include
+      Chaos may restart a code package only if the code package hosts replicas
 
-        in Chaos faults.
+      of these applications only.
 
-        All replicas belonging to services of these applications are amenable to
+      If an application does not appear in this list, it can still be faulted in
 
-        replica faults (restart replica, remove replica, move primary, and move
+      some Chaos iteration if the application ends up on a node of a node type
 
-        secondary) by Chaos.
+      that is included in NodeTypeInclusionList.
 
-        Chaos may restart a code package only if the code package hosts replicas
+      However, if applicationX is tied to nodeTypeY through placement
 
-        of these applications only.
+      constraints and applicationX is absent from ApplicationInclusionList and
 
-        If an application does not appear in this list, it can still be faulted in
+      nodeTypeY is absent from NodeTypeInclusionList, then applicationX will
 
-        some Chaos iteration if the application ends up on a node of a node type
+      never be faulted.
 
-        that is included in NodeTypeInclusionList.
+      At most 1000 application names can be included in this list, to increase
 
-        However, if applicationX is tied to nodeTypeY through placement
+      this number, a config upgrade is required for
 
-        constraints and applicationX is absent from ApplicationInclusionList and
-
-        nodeTypeY is absent from NodeTypeInclusionList, then applicationX will
-
-        never be faulted.
-
-        At most 1000 application names can be included in this list, to increase
-
-        this number, a config upgrade is required for
-
-        MaxNumberOfApplicationsInChaosEntityFilter configuration.'
-      id: application_inclusion_list
-      type:
-      - list[str]
-  type: class
-  uid: azure.servicefabric.models.ChaosTargetFilter
-references:
-- fullName: list[str]
-  name: list[str]
-  spec.python:
-  - fullName: list
-    name: list
-    uid: list
-  - fullName: '['
-    name: '['
-  - fullName: str
-    name: str
-    uid: str
-  - fullName: ']'
-    name: ']'
-  uid: list[str]
+      MaxNumberOfApplicationsInChaosEntityFilter configuration.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]

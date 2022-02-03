@@ -1,124 +1,119 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children: []
-  class: azure.batch.models.StartTaskInformation
-  fullName: azure.batch.models.StartTaskInformation
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: msrest.serialization.Model
-  langs:
-  - python
-  module: azure.batch.models
-  name: StartTaskInformation
-  summary: 'Information about a StartTask running on a Compute Node.
+### YamlMime:PythonClass
+uid: azure.batch.models.StartTaskInformation
+name: StartTaskInformation
+fullName: azure.batch.models.StartTaskInformation
+module: azure.batch.models
+inheritances:
+- msrest.serialization.Model
+summary: 'Information about a StartTask running on a Compute Node.
 
 
-    All required parameters must be populated in order to send to Azure.'
-  syntax:
-    content: 'StartTaskInformation(*, state, start_time, retry_count: int, end_time=None,
-      exit_code: int = None, container_info=None, failure_info=None, last_retry_time=None,
-      result=None, **kwargs) -> None'
-    parameters:
-    - description: 'Required. The state of the StartTask on the Compute Node.
+  All required parameters must be populated in order to send to Azure.'
+constructor:
+  syntax: 'StartTaskInformation(*, state, start_time, retry_count: int, end_time=None,
+    exit_code: Optional[int] = None, container_info=None, failure_info=None, last_retry_time=None,
+    result=None, **kwargs)'
+  parameters:
+  - name: state
+    description: 'Required. Possible values include: ''running'', ''completed'''
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.batch.models.StartTaskState>
+  - name: start_time
+    description: 'Required. This value is reset every time the Task is
 
-        Possible values include: ''running'', ''completed'''
-      id: state
-      type:
-      - str
-      - azure.batch.models.StartTaskState
-    - description: 'Required. The time at which the StartTask started
+      restarted or retried (that is, this is the most recent time at which the
 
-        running. This value is reset every time the Task is restarted or retried
+      StartTask started running).'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: end_time
+    description: 'This is the end time of the most recent run of the
 
-        (that is, this is the most recent time at which the StartTask started
+      StartTask, if that run has completed (even if that run failed and a retry
 
-        running).'
-      id: start_time
-      type:
-      - datetime
-    - description: 'The time at which the StartTask stopped running. This is
+      is pending). This element is not present if the StartTask is currently
 
-        the end time of the most recent run of the StartTask, if that run has
+      running.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: exit_code
+    description: 'The exit code of the program specified on the StartTask
 
-        completed (even if that run failed and a retry is pending). This element
+      command line. This property is set only if the StartTask is in the
 
-        is not present if the StartTask is currently running.'
-      id: end_time
-      type:
-      - datetime
-    - description: 'The exit code of the program specified on the StartTask
+      completed state. In general, the exit code for a process reflects the
 
-        command line. This property is set only if the StartTask is in the
+      specific convention implemented by the application developer for that
 
-        completed state. In general, the exit code for a process reflects the
+      process. If you use the exit code value to make decisions in your code, be
 
-        specific convention implemented by the application developer for that
+      sure that you know the exit code convention used by the application
 
-        process. If you use the exit code value to make decisions in your code, be
+      process. However, if the Batch service terminates the StartTask (due to
 
-        sure that you know the exit code convention used by the application
+      timeout, or user termination via the API) you may see an operating
 
-        process. However, if the Batch service terminates the StartTask (due to
+      system-defined exit code.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: container_info
+    description: 'Information about the container under which the
 
-        timeout, or user termination via the API) you may see an operating
+      Task is executing. This property is set only if the Task runs in a
 
-        system-defined exit code.'
-      id: exit_code
-      type:
-      - int
-    - description: 'Information about the container under which the
+      container context.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskContainerExecutionInformation>
+  - name: failure_info
+    description: 'Information describing the Task failure, if any. This
 
-        Task is executing. This property is set only if the Task runs in a
+      property is set only if the Task is in the completed state and encountered
 
-        container context.'
-      id: container_info
-      type:
-      - azure.batch.models.TaskContainerExecutionInformation
-    - description: 'Information describing the Task failure, if any. This
+      a failure.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskFailureInformation>
+  - name: retry_count
+    description: 'Required. The number of times the Task has been
 
-        property is set only if the Task is in the completed state and encountered
+      retried by the Batch service. Task application failures (non-zero exit
 
-        a failure.'
-      id: failure_info
-      type:
-      - azure.batch.models.TaskFailureInformation
-    - description: 'Required. The number of times the Task has been
+      code) are retried, pre-processing errors (the Task could not be run) and
 
-        retried by the Batch service. Task application failures (non-zero exit
+      file upload errors are not retried. The Batch service will retry the Task
 
-        code) are retried, pre-processing errors (the Task could not be run) and
+      up to the limit specified by the constraints.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: last_retry_time
+    description: 'This element is present only if the Task was
 
-        file upload errors are not retried. The Batch service will retry the Task
+      retried (i.e. retryCount is nonzero). If present, this is typically the
 
-        up to the limit specified by the constraints.'
-      id: retry_count
-      type:
-      - int
-    - description: 'The most recent time at which a retry of the Task
+      same as startTime, but may be different if the Task has been restarted for
 
-        started running. This element is present only if the Task was retried
+      reasons other than retry; for example, if the Compute Node was rebooted
 
-        (i.e. retryCount is nonzero). If present, this is typically the same as
+      during a retry, then the startTime is updated but the lastRetryTime is
 
-        startTime, but may be different if the Task has been restarted for reasons
+      not.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: result
+    description: 'The result of the Task execution. If the value is ''failed'',
 
-        other than retry; for example, if the Compute Node was rebooted during a
+      then the details of the failure can be found in the failureInfo property.
 
-        retry, then the startTime is updated but the lastRetryTime is not.'
-      id: last_retry_time
-      type:
-      - datetime
-    - description: 'The result of the Task execution. If the value is ''failed'',
-
-        then the details of the failure can be found in the failureInfo property.
-
-        Possible values include: ''success'', ''failure'''
-      id: result
-      type:
-      - str
-      - azure.batch.models.TaskExecutionResult
-  type: class
-  uid: azure.batch.models.StartTaskInformation
-references: []
+      Possible values include: ''success'', ''failure'''
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.batch.models.TaskExecutionResult>

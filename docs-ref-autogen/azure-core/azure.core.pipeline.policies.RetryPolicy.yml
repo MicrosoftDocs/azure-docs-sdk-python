@@ -1,277 +1,125 @@
-### YamlMime:UniversalReference
-api_name: []
-items:
-- children:
-  - azure.core.pipeline.policies.RetryPolicy.configure_retries
-  - azure.core.pipeline.policies.RetryPolicy.get_backoff_time
-  - azure.core.pipeline.policies.RetryPolicy.get_retry_after
-  - azure.core.pipeline.policies.RetryPolicy.increment
-  - azure.core.pipeline.policies.RetryPolicy.is_exhausted
-  - azure.core.pipeline.policies.RetryPolicy.is_retry
-  - azure.core.pipeline.policies.RetryPolicy.no_retries
-  - azure.core.pipeline.policies.RetryPolicy.parse_retry_after
-  - azure.core.pipeline.policies.RetryPolicy.send
-  - azure.core.pipeline.policies.RetryPolicy.sleep
-  - azure.core.pipeline.policies.RetryPolicy.update_context
-  - azure.core.pipeline.policies.RetryPolicy.BACKOFF_MAX
-  class: azure.core.pipeline.policies.RetryPolicy
-  example:
-  - "Configuring a retry policy.<!--[!code-python[Main](les\\test_example_sync.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\source_code\\\
-    \\103\\\\azure-core-1.1.1\\\\samples\\\\test_example_sync.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.core.pipeline.policies\
-    \ import RetryPolicy\n\n   retry_policy = RetryPolicy()\n\n   # Total number of\
-    \ retries to allow. Takes precedence over other counts.\n   # Default value is\
-    \ 10.\n   retry_policy.total_retries = 5\n\n   # How many connection-related errors\
-    \ to retry on.\n   # These are errors raised before the request is sent to the\
-    \ remote server,\n   # which we assume has not triggered the server to process\
-    \ the request. Default value is 3\n   retry_policy.connect_retries = 2\n\n   #\
-    \ How many times to retry on read errors.\n   # These errors are raised after\
-    \ the request was sent to the server, so the\n   # request may have side-effects.\
-    \ Default value is 3.\n   retry_policy.read_retries = 4\n\n   # How many times\
-    \ to retry on bad status codes. Default value is 3.\n   retry_policy.status_retries\
-    \ = 3\n\n   # A backoff factor to apply between attempts after the second try\n\
-    \   # (most errors are resolved immediately by a second try without a delay).\n\
-    \   # Retry policy will sleep for:\n   #    {backoff factor} * (2 ** ({number\
-    \ of total retries} - 1))\n   # seconds. If the backoff_factor is 0.1, then the\
-    \ retry will sleep\n   # for [0.0s, 0.2s, 0.4s, ...] between retries.\n   # The\
-    \ default value is 0.8.\n   retry_policy.backoff_factor = 0.5\n\n   # The maximum\
-    \ back off time. Default value is 120 seconds (2 minutes).\n   retry_policy.backoff_max\
-    \ = 120\n\n   # Alternatively you can disable redirects entirely\n   retry_policy\
-    \ = RetryPolicy.no_retries()\n\n   # All of these settings can also be configured\
-    \ per operation.\n   policies.append(retry_policy)\n   client = PipelineClient(base_url=url,\
-    \ policies=policies)\n   request = client.get(url)\n   pipeline_response = client._pipeline.run(\n\
-    \       request,\n       retry_total=10,\n       retry_connect=1,\n       retry_read=1,\n\
-    \       retry_status=5,\n       retry_backoff_factor=0.5,\n       retry_backoff_max=120,\n\
-    \       retry_on_methods=['GET']\n   )\n\n   ````\n"
-  fullName: azure.core.pipeline.policies.RetryPolicy
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - type: builtins.object
-      type: abc.ABC
-    - inheritance:
-      - type: builtins.object
-      type: typing.Generic
-    type: azure.core.pipeline.policies._base.HTTPPolicy
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: RetryPolicy
-  summary: 'A retry policy.
+### YamlMime:PythonClass
+uid: azure.core.pipeline.policies.RetryPolicy
+name: RetryPolicy
+fullName: azure.core.pipeline.policies.RetryPolicy
+module: azure.core.pipeline.policies
+inheritances:
+- azure.core.pipeline.policies._retry.RetryPolicyBase
+- azure.core.pipeline.policies._base.HTTPPolicy
+summary: 'A retry policy.
 
 
-    The retry policy in the pipeline can be configured directly, or tweaked on a per-call
-    basis.'
-  syntax:
-    content: RetryPolicy(**kwargs)
-  type: class
-  uid: azure.core.pipeline.policies.RetryPolicy
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.configure_retries
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: configure_retries(options)
-  summary: Configures the retry settings.
-  syntax:
-    content: configure_retries(options)
-    parameters:
-    - description: keyword arguments from context.
-      id: options
-    return:
-      description: A dict containing settings and history for retries.
-      type:
-      - dict
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.configure_retries
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.get_backoff_time
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: get_backoff_time(settings)
-  summary: Returns the current backoff time.
-  syntax:
-    content: get_backoff_time(settings)
-    parameters:
-    - description: The retry settings.
-      id: settings
-      type:
-      - dict
-    return:
-      description: The current backoff value.
-      type:
-      - float
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.get_backoff_time
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.get_retry_after
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: get_retry_after(response)
-  summary: Get the value of Retry-After in seconds.
-  syntax:
-    content: get_retry_after(response)
-    parameters:
-    - description: The PipelineResponse object
-      id: response
-      type:
-      - azure.core.pipeline.PipelineResponse
-    return:
-      description: Value of Retry-After in seconds.
-      type:
-      - int
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.get_retry_after
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.increment
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: increment(settings, response=None, error=None)
-  summary: Increment the retry counters.
-  syntax:
-    content: increment(settings, response=None, error=None)
-    parameters:
-    - description: The retry settings.
-      id: settings
-    - defaultValue: None
-      description: A pipeline response object.
-      id: response
-      type:
-      - azure.core.pipeline.PipelineResponse
-    - defaultValue: None
-      description: 'An error encountered during the request, or
+  The retry policy in the pipeline can be configured directly, or tweaked on a per-call
+  basis.'
+constructor:
+  syntax: RetryPolicy(**kwargs)
+  parameters:
+  - name: retry_total
+    description: 'Total number of retries to allow. Takes precedence over other counts.
 
-        None if the response was received successfully.'
-      id: error
-    return:
-      description: 'Whether any retry attempt is available
+      Default value is 10.'
+    types:
+    - <xref:int>
+  - name: retry_connect
+    description: 'How many connection-related errors to retry on.
 
-        True if more retry attempts available, False otherwise'
-      type:
-      - bool
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.increment
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.is_exhausted
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: is_exhausted(settings)
-  summary: Checks if any retries left.
-  syntax:
-    content: is_exhausted(settings)
-    parameters:
-    - description: the retry settings
-      id: settings
-      type:
-      - dict
-    return:
-      description: False if have more retries. True if retries exhausted.
-      type:
-      - bool
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.is_exhausted
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.is_retry
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: is_retry(settings, response)
-  summary: 'Checks if method/status code is retryable.
+      These are errors raised before the request is sent to the remote server,
 
+      which we assume has not triggered the server to process the request. Default
+      value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_read
+    description: 'How many times to retry on read errors.
 
-    Based on whitelists and control variables such as the number of
+      These errors are raised after the request was sent to the server, so the
 
-    total retries to allow, whether to respect the Retry-After header,
+      request may have side-effects. Default value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_status
+    description: How many times to retry on bad status codes. Default value is 3.
+    types:
+    - <xref:int>
+  - name: retry_backoff_factor
+    description: 'A backoff factor to apply between attempts after the second try
 
-    whether this header is present, and whether the returned status
+      (most errors are resolved immediately by a second try without a delay).
 
-    code is on the list of status codes to be retried upon on the
+      In fixed mode, retry policy will alwasy sleep for {backoff factor}.
 
-    presence of the aforementioned header.'
-  syntax:
-    content: is_retry(settings, response)
-    parameters:
-    - description: The retry settings.
-      id: settings
-      type:
-      - dict
-    - description: The PipelineResponse object
-      id: response
-      type:
-      - azure.core.pipeline.PipelineResponse
-    return:
-      description: True if method/status code is retryable. False if not retryable.
-      type:
-      - bool
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.is_retry
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.no_retries
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: no_retries()
-  summary: Disable retries.
-  syntax:
-    content: no_retries()
-    parameters:
-    - id: cls
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.no_retries
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.parse_retry_after
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: parse_retry_after(retry_after)
-  summary: Helper to parse Retry-After and get value in seconds.
-  syntax:
-    content: parse_retry_after(retry_after)
-    parameters:
-    - description: Retry-After header
-      id: retry_after
-      type:
-      - str
-    return:
-      type:
-      - int
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.parse_retry_after
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.send
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: send(request)
+      In ''exponential'' mode, retry policy will sleep for: *{backoff factor} * (2
+      ** ({number of total retries} - 1))*
+
+      seconds. If the backoff_factor is 0.1, then the retry will sleep
+
+      for [0.0s, 0.2s, 0.4s, ...] between retries. The default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: The maximum back off time. Default value is 120 seconds (2 minutes).
+    types:
+    - <xref:int>
+  - name: retry_mode
+    description: Fixed or exponential delay between attemps, default is exponential.
+    types:
+    - <xref:azure.core.pipeline.policies.RetryMode>
+  - name: timeout
+    description: Timeout setting for the operation in seconds, default is 604800s
+      (7 days).
+    types:
+    - <xref:int>
+examples:
+- "Configuring a retry policy.<!--[!code-python[Main](les\\test_example_sync.py )]-->\n\
+  \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\100\\\\\
+  azure-core-1.21.1\\\\samples\\\\test_example_sync.py\", \"xml:space\": \"preserve\"\
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.policies\
+  \ import RetryPolicy\n\n   retry_policy = RetryPolicy()\n\n   # Total number of\
+  \ retries to allow. Takes precedence over other counts.\n   # Default value is 10.\n\
+  \   retry_policy.total_retries = 5\n\n   # How many connection-related errors to\
+  \ retry on.\n   # These are errors raised before the request is sent to the remote\
+  \ server,\n   # which we assume has not triggered the server to process the request.\
+  \ Default value is 3\n   retry_policy.connect_retries = 2\n\n   # How many times\
+  \ to retry on read errors.\n   # These errors are raised after the request was sent\
+  \ to the server, so the\n   # request may have side-effects. Default value is 3.\n\
+  \   retry_policy.read_retries = 4\n\n   # How many times to retry on bad status\
+  \ codes. Default value is 3.\n   retry_policy.status_retries = 3\n\n   # A backoff\
+  \ factor to apply between attempts after the second try\n   # (most errors are resolved\
+  \ immediately by a second try without a delay).\n   # Retry policy will sleep for:\n\
+  \   #    {backoff factor} * (2 ** ({number of total retries} - 1))\n   # seconds.\
+  \ If the backoff_factor is 0.1, then the retry will sleep\n   # for [0.0s, 0.2s,\
+  \ 0.4s, ...] between retries.\n   # The default value is 0.8.\n   retry_policy.backoff_factor\
+  \ = 0.5\n\n   # The maximum back off time. Default value is 120 seconds (2 minutes).\n\
+  \   retry_policy.backoff_max = 120\n\n   # Alternatively you can disable redirects\
+  \ entirely\n   retry_policy = RetryPolicy.no_retries()\n\n   # All of these settings\
+  \ can also be configured per operation.\n   policies.append(retry_policy)\n   client\
+  \ = PipelineClient(base_url=url, policies=policies)\n   request = client.get(url)\n\
+  \   pipeline_response = client._pipeline.run(\n       request,\n       retry_total=10,\n\
+  \       retry_connect=1,\n       retry_read=1,\n       retry_status=5,\n       retry_backoff_factor=0.5,\n\
+  \       retry_backoff_max=120,\n       retry_on_methods=['GET']\n   )\n\n   ````\n"
+methods:
+- uid: azure.core.pipeline.policies.RetryPolicy.send
+  name: send
   summary: Sends the PipelineRequest object to the next policy. Uses retry settings
     if necessary.
-  syntax:
-    content: send(request)
-    parameters:
-    - description: The PipelineRequest object
-      id: request
-      type:
-      - azure.core.pipeline.PipelineRequest
-    return:
-      description: Returns the PipelineResponse or raises error if maximum retries
-        exceeded.
-      type:
-      - azure.core.pipeline.PipelineResponse
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.send
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.sleep
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: sleep(settings, transport, response=None)
+  signature: send(request)
+  parameters:
+  - name: request
+    description: The PipelineRequest object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  return:
+    description: Returns the PipelineResponse or raises error if maximum retries exceeded.
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  exceptions:
+  - type: ~azure.core.exceptions.AzureError if maximum retries exceeded.
+  - type: ~azure.core.exceptions.ClientAuthenticationError if authentication
+- uid: azure.core.pipeline.policies.RetryPolicy.sleep
+  name: sleep
   summary: 'Sleep between retry attempts.
 
 
@@ -282,110 +130,18 @@ items:
     will use an exponential backoff. By default, the backoff factor is 0 and
 
     this method will return immediately.'
-  syntax:
-    content: sleep(settings, transport, response=None)
-    parameters:
-    - description: The retry settings.
-      id: settings
-      type:
-      - dict
-    - description: The HTTP transport type.
-      id: transport
-    - defaultValue: None
-      description: The PipelineResponse object.
-      id: response
-      type:
-      - azure.core.pipeline.PipelineResponse
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.sleep
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.update_context
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: update_context(context, retry_settings)
-  summary: Updates retry history in pipeline context.
-  syntax:
-    content: update_context(context, retry_settings)
-    parameters:
-    - description: The pipeline context.
-      id: context
-      type:
-      - azure.core.pipeline.PipelineContext
-    - description: The retry settings.
-      id: retry_settings
-      type:
-      - dict
-  type: method
-  uid: azure.core.pipeline.policies.RetryPolicy.update_context
-- class: azure.core.pipeline.policies.RetryPolicy
-  fullName: azure.core.pipeline.policies.RetryPolicy.BACKOFF_MAX
-  langs:
-  - python
-  module: azure.core.pipeline.policies
-  name: BACKOFF_MAX
-  syntax:
-    content: BACKOFF_MAX = 120
-  type: attribute
-  uid: azure.core.pipeline.policies.RetryPolicy.BACKOFF_MAX
-references:
-- fullName: azure.core.pipeline.policies.RetryPolicy.configure_retries
-  isExternal: false
-  name: configure_retries(options)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.configure_retries
-- fullName: azure.core.pipeline.policies.RetryPolicy.get_backoff_time
-  isExternal: false
-  name: get_backoff_time(settings)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.get_backoff_time
-- fullName: azure.core.pipeline.policies.RetryPolicy.get_retry_after
-  isExternal: false
-  name: get_retry_after(response)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.get_retry_after
-- fullName: azure.core.pipeline.policies.RetryPolicy.increment
-  isExternal: false
-  name: increment(settings, response=None, error=None)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.increment
-- fullName: azure.core.pipeline.policies.RetryPolicy.is_exhausted
-  isExternal: false
-  name: is_exhausted(settings)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.is_exhausted
-- fullName: azure.core.pipeline.policies.RetryPolicy.is_retry
-  isExternal: false
-  name: is_retry(settings, response)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.is_retry
-- fullName: azure.core.pipeline.policies.RetryPolicy.no_retries
-  isExternal: false
-  name: no_retries()
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.no_retries
-- fullName: azure.core.pipeline.policies.RetryPolicy.parse_retry_after
-  isExternal: false
-  name: parse_retry_after(retry_after)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.parse_retry_after
-- fullName: azure.core.pipeline.policies.RetryPolicy.send
-  isExternal: false
-  name: send(request)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.send
-- fullName: azure.core.pipeline.policies.RetryPolicy.sleep
-  isExternal: false
-  name: sleep(settings, transport, response=None)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.sleep
-- fullName: azure.core.pipeline.policies.RetryPolicy.update_context
-  isExternal: false
-  name: update_context(context, retry_settings)
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.update_context
-- fullName: azure.core.pipeline.policies.RetryPolicy.BACKOFF_MAX
-  isExternal: false
-  name: BACKOFF_MAX
-  parent: azure.core.pipeline.policies.RetryPolicy
-  uid: azure.core.pipeline.policies.RetryPolicy.BACKOFF_MAX
+  signature: sleep(settings, transport, response=None)
+  parameters:
+  - name: settings
+    description: The retry settings.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: transport
+    description: The HTTP transport type.
+    isRequired: true
+  - name: response
+    description: The PipelineResponse object.
+    defaultValue: None
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
