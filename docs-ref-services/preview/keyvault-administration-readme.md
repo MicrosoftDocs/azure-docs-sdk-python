@@ -14,7 +14,7 @@ ms.custom: devx-track-azurecli
 # Azure Key Vault Administration client library for Python - Version 4.1.0b3 
 
 
->**Note:** The Administration library only works with [Managed HSM][managed_hsm] ??? functions targeting a Key Vault will fail.
+>**Note:** The Administration library only works with [Managed HSM][managed_hsm] - functions targeting a Key Vault will fail.
 
 Azure Key Vault helps solve the following problems:
 - Vault administration (this library) - role-based access control (RBAC), and vault-level backup and restore options
@@ -135,7 +135,7 @@ Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
 [DefaultAzureCredential][default_cred_ref] will be able to authenticate the
 clients.
 
-There are two clients available in this package ??? below are snippets demonstrating how to construct
+There are two clients available in this package - below are snippets demonstrating how to construct
 each one of these clients. Constructing a client also requires your managed HSM's URL, which you can
 get from the Azure CLI (shown above).
 
