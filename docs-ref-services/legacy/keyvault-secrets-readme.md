@@ -5,8 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 08/11/2020
 ms.topic: reference
-ms.devlang: python
-ms.service: key-vault
+ms.devlang: python, azurecli
+ms.service: key-vault 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Key Vault Secret client library for Python - Version 4.2.0 

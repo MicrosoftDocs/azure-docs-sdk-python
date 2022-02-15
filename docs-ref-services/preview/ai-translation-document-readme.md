@@ -7,8 +7,9 @@ ms.date: 02/08/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: translator
+ms.devlang: python, azurecli
+ms.service: translator 
+ms.custom: devx-track-azurecli
 ---
 # Azure Document Translation client library for Python - Version 1.0.0b6 
 

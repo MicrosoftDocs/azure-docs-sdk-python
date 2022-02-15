@@ -7,8 +7,9 @@ ms.date: 08/10/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: formrecognizer
+ms.devlang: python, azurecli
+ms.service: formrecognizer 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Form Recognizer client library for Python - Version 3.1.2 

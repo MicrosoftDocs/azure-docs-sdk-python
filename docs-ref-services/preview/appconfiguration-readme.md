@@ -7,8 +7,9 @@ ms.date: 06/08/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: appconfiguration
+ms.devlang: python, azurecli
+ms.service: appconfiguration 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure App Configuration client library for Python - Version 1.2.0b2 

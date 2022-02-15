@@ -7,8 +7,9 @@ ms.date: 10/05/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: keyvault
+ms.devlang: python, azurecli
+ms.service: keyvault 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Key Vault Keys client library for Python - Version 4.5.0a20211005001 

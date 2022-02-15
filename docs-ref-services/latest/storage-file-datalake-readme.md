@@ -7,7 +7,7 @@ ms.date: 09/21/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
+ms.devlang: python, azurecli
 ms.service: datalakestorage(gen2)
 ---
 

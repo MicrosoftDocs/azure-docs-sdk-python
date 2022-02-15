@@ -6,7 +6,8 @@ author: tylerfox
 ms.author: tyfox
 ms.date: 04/10/2019
 ms.topic: reference
-ms.devlang: python
+ms.devlang: python, azurecli
+ms.custom: devx-track-azurecli
 ---
 
 # HDInsight SDK for Python

@@ -7,8 +7,9 @@ ms.date: 10/08/2020
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: cognitiveservices
+ms.devlang: python, azurecli
+ms.service: cognitiveservices 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Cognitive Services Computer Vision SDK for Python

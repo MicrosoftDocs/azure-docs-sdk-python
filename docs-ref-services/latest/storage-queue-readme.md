@@ -7,8 +7,9 @@ ms.date: 04/22/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: storagestorage
+ms.devlang: python, azurecli
+ms.service: storagestorage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Storage Queues client library for Python - Version 12.1.6 

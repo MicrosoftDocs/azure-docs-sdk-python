@@ -7,8 +7,9 @@ ms.date: 11/19/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: containerregistry
+ms.devlang: python, azurecli
+ms.service: containerregistry 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Container Registry client library for Python - Version 1.0.0b7 

@@ -9,8 +9,9 @@ ms.date: 03/12/2020
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: storage
+ms.devlang: python, azurecli
+ms.service: storage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Files for Python Readme - Version 12.1.1

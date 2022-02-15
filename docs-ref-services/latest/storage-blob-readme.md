@@ -7,8 +7,9 @@ ms.date: 09/21/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: storagestorage
+ms.devlang: python, azurecli
+ms.service: storagestorage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Storage Blobs client library for Python - Version 12.9.0 

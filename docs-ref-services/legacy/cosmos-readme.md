@@ -7,8 +7,9 @@ ms.date: 10/09/2020
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: cosmos
+ms.devlang: python, azurecli
+ms.service: cosmos 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Cosmos DB SQL API client library for Python - Version 4.2.0 

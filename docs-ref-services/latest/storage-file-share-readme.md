@@ -7,8 +7,9 @@ ms.date: 09/21/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: storage
+ms.devlang: python, azurecli
+ms.service: storage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Storage File Share client library for Python - Version 12.6.0 

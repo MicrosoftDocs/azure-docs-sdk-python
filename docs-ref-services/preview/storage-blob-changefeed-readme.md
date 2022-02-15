@@ -7,8 +7,9 @@ ms.date: 11/18/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: storage
+ms.devlang: python, azurecli
+ms.service: storage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Storage Blob ChangeFeed client library for Python - Version 12.0.0b3 

@@ -7,8 +7,9 @@ ms.date: 02/08/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python
-ms.service: search
+ms.devlang: python, azurecli
+ms.service: search 
+ms.custom: devx-track-azurecli
 ---
 # Azure Cognitive Search client library for Python - Version 11.3.0b7 
 
