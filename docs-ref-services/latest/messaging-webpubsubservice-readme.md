@@ -1,17 +1,16 @@
 ---
 title: Azure Web PubSub service client library for Python
 keywords: Azure, python, SDK, API, azure-messaging-webpubsubservice, webpubsub
-author: maggiepint
-ms.author: magpint
-ms.date: 11/11/2021
+author: msyyc
+ms.author: yuchaoyan
+ms.date: 02/15/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: webpubsub
 ---
-
-# Azure Web PubSub service client library for Python - Version 1.0.0 
+# Azure Web PubSub service client library for Python - Version 1.0.1 
 
 
 [Azure Web PubSub Service](https://aka.ms/awps/doc) is an Azure-managed service that helps developers easily build web applications with real-time features and publish-subscribe pattern. Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients can use Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP requests can also use Azure Web PubSub service.
@@ -27,17 +26,17 @@ Use this library to:
 - Close connections
 - Grant, revoke, and check permissions for an existing connection
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubservice_1.0.0/sdk/webpubsub/azure-messaging-webpubsubservice) | [Package (Pypi)][package] | [API reference documentation](https://aka.ms/awps/sdk/python) | [Product documentation][webpubsubservice_docs]
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubservice_1.0.1/sdk/webpubsub/azure-messaging-webpubsubservice) | [Package (Pypi)][package] | [API reference documentation](https://aka.ms/awps/sdk/python) | [Product documentation][webpubsubservice_docs]
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
 ### Prerequisites
 
-- Python 2.7, or 3.6 or later is required to use this package.
+- Python 3.6 or later is required to use this package.
 - You need an [Azure subscription][azure_sub], and a [Azure WebPubSub service instance][webpubsubservice_docs] to use this package.
 - An existing Azure Web PubSub service instance.
 
@@ -204,9 +203,9 @@ additional questions or comments.
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [authenticate_with_token]: https://docs.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubservice_1.0.0/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubservice_1.0.1/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubservice_1.0.0/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubservice_1.0.1/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [enable_aad]: https://docs.microsoft.com/azure/azure-web-pubsub/howto-develop-create-instance
 [api_key]: https://docs.microsoft.com/azure/azure-web-pubsub/howto-websocket-connect?tabs=browser#authorization
@@ -214,5 +213,5 @@ additional questions or comments.
 [azure_portal]: https://docs.microsoft.com/azure/azure-web-pubsub/howto-develop-create-instance
 [azure-key-credential]: https://aka.ms/azsdk-python-core-azurekeycredential
 [aad_doc]: https://aka.ms/awps/aad
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubservice_1.0.0/sdk/webpubsub/azure-messaging-webpubsubservice/samples
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-messaging-webpubsubservice_1.0.1/sdk/webpubsub/azure-messaging-webpubsubservice/samples
 
