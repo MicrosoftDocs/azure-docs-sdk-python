@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure App Configuration client library for Python
 keywords: Azure, python, SDK, API, azure-appconfiguration, appconfiguration
 author: maggiepint
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: appconfiguration
+ms.service: appconfiguration 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure App Configuration client library for Python - Version 1.3.0 

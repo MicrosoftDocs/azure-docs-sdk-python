@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure DataLake service client library for Python
 keywords: Azure, python, SDK, API, azure-storage-file-datalake, storage
 author: ramya-rao-a
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: storage
+ms.service: storage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure DataLake service client library for Python - Version 12.2.0 

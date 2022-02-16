@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure Key Vault Certificates client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-certificates, keyvault
 author: schaabs
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: keyvault
+ms.service: keyvault 
+ms.custom: devx-track-azurecli
 ---
 # Azure Key Vault Certificates client library for Python - Version 4.4.0b3 
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure Text Analytics client library for Python
 keywords: Azure, python, SDK, API, azure-ai-textanalytics, textanalytics
 author: ramya-rao-a
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: textanalytics
+ms.service: textanalytics 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Text Analytics client library for Python - Version 5.2.0b2 

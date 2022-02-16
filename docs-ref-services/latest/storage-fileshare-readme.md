@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure Storage File
 description: 
 keywords: Azure, Python, SDK, API, Storage, File
@@ -10,7 +10,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: storage
+ms.service: storage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Files for Python Readme - Version 12.1.1

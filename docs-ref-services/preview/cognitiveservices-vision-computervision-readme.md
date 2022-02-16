@@ -1,4 +1,4 @@
----
+﻿---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-computervision, cognitiveservices
 author: ramya-rao-a
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: cognitiveservices
+ms.service: cognitiveservices 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Cognitive Services Computer Vision SDK for Python

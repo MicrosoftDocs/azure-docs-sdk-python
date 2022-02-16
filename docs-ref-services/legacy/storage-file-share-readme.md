@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure Storage File Share client library for Python
 keywords: Azure, python, SDK, API, azure-storage-file-share, storage
 author: ramya-rao-a
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: storage
+ms.service: storage 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Storage File Share client library for Python - Version 12.3.0 

@@ -1,4 +1,4 @@
----
+﻿---
 title: Azure Container Registry client library for Python
 keywords: Azure, python, SDK, API, azure-containerregistry, containerregistry
 author: maggiepint
@@ -8,7 +8,8 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerregistry
+ms.service: containerregistry 
+ms.custom: devx-track-azurecli
 ---
 
 # Azure Container Registry client library for Python - Version 1.0.0b7 
