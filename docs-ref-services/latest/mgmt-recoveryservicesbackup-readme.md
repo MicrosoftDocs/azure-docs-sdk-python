@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicesbackup, recoveryservices
 author: DheerendraRathor
 ms.author: DheerendraRathor
-ms.date: 12/23/2021
+ms.date: 02/16/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -16,6 +16,10 @@ This is the Microsoft Azure Recovery Services Backup Management Client Library.
 This package has been tested with Python 2.7, 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 
