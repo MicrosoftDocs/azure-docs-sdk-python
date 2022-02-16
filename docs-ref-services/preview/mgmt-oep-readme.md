@@ -1,21 +1,20 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
-author: hvermis
-ms.author: hvermis
+keywords: Azure, python, SDK, API, azure-mgmt-oep, oep
+author: mayurid
+ms.author: mayurid
 ms.date: 02/16/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: datafactory
+ms.service: oep
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Data Factory Management Client Library.
-This package has been tested with Python 2.7, 3.6+.
+This is the Microsoft Azure Oep Management Client Library.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
-
 
 ## _Disclaimer_
 
@@ -28,8 +27,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/datafactory)
-Code samples for this package can be found at [Data Factory Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
+Code samples for this package can be found at [Oep Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
@@ -40,5 +39,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-datafactory%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-oep%2FREADME.png)
 
