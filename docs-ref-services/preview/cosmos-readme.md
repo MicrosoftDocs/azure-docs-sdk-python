@@ -7,7 +7,7 @@ ms.date: 01/25/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python, azurecli
+ms.devlang: python
 ms.service: cosmosdb 
 ms.custom: devx-track-azurecli
 ---

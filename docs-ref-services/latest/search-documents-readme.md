@@ -7,7 +7,7 @@ ms.date: 01/11/2022
 ms.topic: article
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python, azurecli
+ms.devlang: python
 ms.service: search 
 ms.custom: devx-track-azurecli
 ---

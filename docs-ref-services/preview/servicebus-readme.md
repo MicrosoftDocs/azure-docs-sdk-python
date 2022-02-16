@@ -7,7 +7,7 @@ ms.date: 10/07/2021
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python, azurecli
+ms.devlang: python
 ms.service: servicebusservicebus 
 ms.custom: devx-track-azurecli
 ---

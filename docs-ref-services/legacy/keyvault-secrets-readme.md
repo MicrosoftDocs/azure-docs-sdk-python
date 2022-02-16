@@ -5,7 +5,7 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 08/11/2020
 ms.topic: reference
-ms.devlang: python, azurecli
+ms.devlang: python
 ms.service: key-vault 
 ms.custom: devx-track-azurecli
 ---

@@ -7,7 +7,7 @@ ms.date: 06/09/2020
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: Python, azurecli
+ms.devlang: Python
 ms.service: textanalytics 
 ms.custom: devx-track-azurecli
 ---

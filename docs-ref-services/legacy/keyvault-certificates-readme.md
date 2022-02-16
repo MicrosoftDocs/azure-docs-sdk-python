@@ -7,7 +7,7 @@ ms.date: 09/08/2020
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: python, azurecli
+ms.devlang: python
 ms.service: keyvault 
 ms.custom: devx-track-azurecli
 ---

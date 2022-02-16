@@ -7,7 +7,6 @@ ms.date: 11/24/2020
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
-ms.devlang: azurecli
 ms.service: servicebus 
 ms.custom: devx-track-azurecli
 ---
