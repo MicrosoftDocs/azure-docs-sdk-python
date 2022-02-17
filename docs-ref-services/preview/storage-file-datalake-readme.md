@@ -1,4 +1,4 @@
-﻿---
+---
 title: Azure DataLake service client library for Python
 keywords: Azure, python, SDK, API, azure-storage-file-datalake, datalakestorage(gen2)
 author: amishra-dev
