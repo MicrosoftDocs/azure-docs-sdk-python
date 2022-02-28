@@ -7,7 +7,6 @@ inheritances:
 - abc.ABC
 summary: 'CheckpointStore deals with the interaction with the chosen storage service.
 
-
   It can list and claim partition ownerships as well as list and save checkpoints.'
 constructor:
   syntax: CheckpointStore()
@@ -15,8 +14,8 @@ methods:
 - uid: azure.eventhub.aio.CheckpointStore.claim_ownership
   name: claim_ownership
   summary: Tries to claim ownership for a list of specified partitions.
-  signature: 'claim_ownership(ownership_list: Iterable[Dict[str, Any]], **kwargs:
-    Any) -> Iterable[Dict[str, Any]]'
+  signature: 'abstract async claim_ownership(ownership_list: Iterable[Dict[str, Any]],
+    **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: ownership_list
     description: Iterable of dictionaries containing all the ownerships to claim.
@@ -41,8 +40,8 @@ methods:
 - uid: azure.eventhub.aio.CheckpointStore.list_checkpoints
   name: list_checkpoints
   summary: List the updated checkpoints from the chosen storage service.
-  signature: 'list_checkpoints(fully_qualified_namespace: str, eventhub_name: str,
-    consumer_group: str, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'abstract async list_checkpoints(fully_qualified_namespace: str, eventhub_name:
+    str, consumer_group: str, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified namespace that the Event Hub belongs to.
@@ -79,8 +78,8 @@ methods:
 - uid: azure.eventhub.aio.CheckpointStore.list_ownership
   name: list_ownership
   summary: Retrieves a complete ownership list from the chosen storage service.
-  signature: 'list_ownership(fully_qualified_namespace: str, eventhub_name: str, consumer_group:
-    str, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'abstract async list_ownership(fully_qualified_namespace: str, eventhub_name:
+    str, consumer_group: str, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified namespace that the Event Hub belongs to.
@@ -124,14 +123,13 @@ methods:
 
     consumer group in the chosen storage service.
 
-
     Note: If you plan to implement a custom checkpoint store with the intention of
     running between
 
     cross-language EventHubs SDKs, it is recommended to persist the offset value as
     an integer.'
-  signature: 'update_checkpoint(checkpoint: Dict[str, Optional[Union[str, int]]],
-    **kwargs: Any) -> None'
+  signature: 'abstract async update_checkpoint(checkpoint: Dict[str, Optional[Union[str,
+    int]]], **kwargs: Any) -> None'
   parameters:
   - name: checkpoint
     description: "A dict containing checkpoint information:\n\n* *fully_qualified_namespace*\

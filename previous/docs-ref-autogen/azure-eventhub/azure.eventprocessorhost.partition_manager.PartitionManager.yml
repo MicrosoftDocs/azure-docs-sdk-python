@@ -25,7 +25,7 @@ methods:
   summary: 'Attempts to renew a potential lease if possible and
 
     marks in the queue as none adds to adds to the queue.'
-  signature: attempt_renew_lease_async(lease_task, owned_by_others_q, lease_manager)
+  signature: async attempt_renew_lease_async(lease_task, owned_by_others_q, lease_manager)
   parameters:
   - name: lease_task
     isRequired: true
@@ -36,7 +36,7 @@ methods:
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.check_and_add_pump_async
   name: check_and_add_pump_async
   summary: Updates the lease on an exisiting pump.
-  signature: check_and_add_pump_async(partition_id, lease)
+  signature: async check_and_add_pump_async(partition_id, lease)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -58,7 +58,7 @@ methods:
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.create_new_pump_async
   name: create_new_pump_async
   summary: Create a new pump thread with a given lease.
-  signature: create_new_pump_async(partition_id, lease)
+  signature: async create_new_pump_async(partition_id, lease)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -73,7 +73,7 @@ methods:
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.get_partition_ids_async
   name: get_partition_ids_async
   summary: Returns a list of all the event hub partition IDs.
-  signature: get_partition_ids_async()
+  signature: async get_partition_ids_async()
   return:
     types:
     - <xref:list>[<xref:str>]
@@ -84,7 +84,7 @@ methods:
     exists for all partitions. Note in this case checkpoint and lease stores are
 
     the same storage manager construct.'
-  signature: initialize_stores_async()
+  signature: async initialize_stores_async()
   return:
     description: Returns the number of partitions.
     types:
@@ -94,7 +94,7 @@ methods:
   summary: 'Stops all partition pumps
 
     (Note this might be wrong and need to await all tasks before returning done).'
-  signature: remove_all_pumps_async(reason)
+  signature: async remove_all_pumps_async(reason)
   parameters:
   - name: reason
     description: A reason for closing.
@@ -107,7 +107,7 @@ methods:
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.remove_pump_async
   name: remove_pump_async
   summary: Stops a single partiton pump.
-  signature: remove_pump_async(partition_id, reason)
+  signature: async remove_pump_async(partition_id, reason)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -140,7 +140,7 @@ methods:
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.retry_async
   name: retry_async
   summary: Throws if it runs out of retries. If it returns, action succeeded.
-  signature: retry_async(func, partition_id, retry_message, final_failure_message,
+  signature: async retry_async(func, partition_id, retry_message, final_failure_message,
     max_retries, host_id)
   parameters:
   - name: func
@@ -158,20 +158,20 @@ methods:
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.run_async
   name: run_async
   summary: Starts the run loop and manages exceptions and cleanup.
-  signature: run_async()
+  signature: async run_async()
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.run_loop_async
   name: run_loop_async
   summary: This is the main execution loop for allocating and manging pumps.
-  signature: run_loop_async()
+  signature: async run_loop_async()
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.start_async
   name: start_async
   summary: Intializes the partition checkpoint and lease store and then calls run
     async.
-  signature: start_async()
+  signature: async start_async()
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.stop_async
   name: stop_async
   summary: Terminiates the partition manger.
-  signature: stop_async()
+  signature: async stop_async()
 - uid: azure.eventprocessorhost.partition_manager.PartitionManager.which_lease_to_steal
   name: which_lease_to_steal
   summary: 'Determines and return which lease to steal
@@ -181,7 +181,6 @@ methods:
     configuration is that all hosts own the name number of leases, and the
 
     difference between the "biggest" owner and any other is 0.
-
 
     If the number of leases is not a multiple of the number of hosts, then the most
 
@@ -194,7 +193,6 @@ methods:
 
     possible reorderings.
 
-
     In either case, if the difference between this host and the biggest owner is 2
     or more,
 
@@ -205,7 +203,6 @@ methods:
     in the
 
     list because it doesn''t really matter which "biggest" is trimmed down.
-
 
     Stealing one at a time prevents flapping because it reduces the difference between
     the

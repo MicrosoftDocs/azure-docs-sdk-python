@@ -11,13 +11,11 @@ summary: 'The ServiceBusReceiver class defines a high level interface for
 
   receiving messages from the Azure Service Bus Queue or Topic Subscription.
 
-
   The two primary channels for message receipt are *receive()* to make a single request
   for messages,
 
   and *async for message in receiver:* to continuously receive incoming messages in
   an ongoing fashion.
-
 
   **Please use the `get_<queue/subscription>_receiver` method of ~azure.servicebus.aio.ServiceBusClient
   to create a
@@ -161,9 +159,8 @@ methods:
   name: abandon_message
   summary: 'Abandon the message.
 
-
     This message will be returned to the queue and made available to be received again.'
-  signature: abandon_message(message)
+  signature: async abandon_message(message)
   parameters:
   - name: message
     description: The received message to be abandoned.
@@ -193,12 +190,11 @@ methods:
   name: close
   summary: 'Close down the handler connection.
 
-
     If the handler has already closed, this operation will do nothing. An optional
     exception can be passed in to
 
     indicate that the handler was shutdown due to error.'
-  signature: close() -> None
+  signature: async close() -> None
   return:
     types:
     - <xref:None>
@@ -206,9 +202,8 @@ methods:
   name: complete_message
   summary: 'Complete the message.
 
-
     This removes the message from the queue.'
-  signature: complete_message(message)
+  signature: async complete_message(message)
   parameters:
   - name: message
     description: The received message to be completed.
@@ -238,7 +233,6 @@ methods:
   name: dead_letter_message
   summary: 'Move the message to the Dead Letter queue.
 
-
     The Dead Letter queue is a sub-queue that can be
 
     used to store messages that failed to process correctly, or otherwise require
@@ -246,7 +240,7 @@ methods:
 
     or processing. The queue can also be configured to send expired messages to the
     Dead Letter queue.'
-  signature: dead_letter_message(message, reason=None, error_description=None)
+  signature: async dead_letter_message(message, reason=None, error_description=None)
   parameters:
   - name: message
     description: The received message to be dead-lettered.
@@ -286,11 +280,10 @@ methods:
   name: defer_message
   summary: 'Defers the message.
 
-
     This message will remain in the queue but must be requested
 
     specifically by its sequence number in order to be received.'
-  signature: defer_message(message)
+  signature: async defer_message(message)
   parameters:
   - name: message
     description: The received message to be deferred.
@@ -320,12 +313,11 @@ methods:
   name: peek_messages
   summary: 'Browse messages currently pending in the queue.
 
-
     Peeked messages are not removed from queue, nor are they locked. They cannot be
     completed,
 
     deferred or dead-lettered.'
-  signature: 'peek_messages(max_message_count: int = 1, **kwargs: Any) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
+  signature: 'async peek_messages(max_message_count: int = 1, **kwargs: Any) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
   parameters:
   - name: max_message_count
     description: 'The maximum number of messages to try and peek. The default
@@ -361,12 +353,11 @@ methods:
   name: receive_deferred_messages
   summary: 'Receive messages that have previously been deferred.
 
-
     When receiving deferred messages from a partitioned entity, all of the supplied
 
     sequence numbers must be messages from the same partition.'
-  signature: 'receive_deferred_messages(sequence_numbers: Union[int, List[int]], **kwargs:
-    Any) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
+  signature: 'async receive_deferred_messages(sequence_numbers: Union[int, List[int]],
+    **kwargs: Any) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
   parameters:
   - name: list[int]] sequence_numbers
     description: 'A list of the sequence numbers of messages that have been
@@ -404,12 +395,10 @@ methods:
   name: receive_messages
   summary: 'Receive a batch of messages at once.
 
-
     This approach is optimal if you wish to process multiple messages simultaneously,
     or
 
     perform an ad-hoc receive as a single call.
-
 
     Note that the number of messages retrieved in a single batch will be dependent
     on
@@ -420,7 +409,6 @@ methods:
     the receiver would try to cache max_message_count (if provided) messages within
     the request to the service.
 
-
     This call will prioritize returning quickly over meeting a specified batch size,
     and so will
 
@@ -428,7 +416,7 @@ methods:
     messages regardless
 
     of the specified batch size.'
-  signature: 'receive_messages(max_message_count: Optional[int] = 1, max_wait_time:
+  signature: 'async receive_messages(max_message_count: Optional[int] = 1, max_wait_time:
     Optional[float] = None) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
   parameters:
   - name: max_message_count
@@ -471,23 +459,20 @@ methods:
   name: renew_message_lock
   summary: 'Renew the message lock.
 
-
     This will maintain the lock on the message to ensure it is not returned to the
     queue
 
     to be reprocessed.
 
-
     In order to complete (or otherwise settle) the message, the lock must be maintained,
 
     and cannot already have expired; an expired lock cannot be renewed.
-
 
     Messages received via RECEIVE_AND_DELETE mode are not locked, and therefore cannot
     be renewed.
 
     This operation is only available for non-sessionful messages as well.'
-  signature: 'renew_message_lock(message: azure.servicebus._common.message.ServiceBusReceivedMessage,
+  signature: 'async renew_message_lock(message: azure.servicebus._common.message.ServiceBusReceivedMessage,
     **kwargs: Any) -> datetime.datetime'
   parameters:
   - name: message

@@ -8,7 +8,6 @@ inheritances:
 - azure.iot.device.iothub.abstract_clients.AbstractIoTHubDeviceClient
 summary: 'An asynchronous device client that connects to an Azure IoT Hub instance.
 
-
   Intended for usage with Python 3.5.3+'
 constructor:
   syntax: IoTHubDeviceClient(mqtt_pipeline, http_pipeline)
@@ -17,12 +16,11 @@ methods:
   name: connect
   summary: 'Connects the client to an Azure IoT Hub or Azure IoT Edge Hub instance.
 
-
     The destination is chosen based on the credentials passed via the auth_provider
     parameter
 
     that was provided when this object was initialized.'
-  signature: connect()
+  signature: async connect()
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
     description: 'if credentials are invalid
@@ -413,12 +411,11 @@ methods:
   name: disconnect
   summary: 'Disconnect the client from the Azure IoT Hub or Azure IoT Edge Hub instance.
 
-
     It is recommended that you make sure to call this coroutine when you are completely
     done
 
     with the your client instance.'
-  signature: disconnect()
+  signature: async disconnect()
   exceptions:
   - type: azure.iot.device.exceptions.ClientError
     description: 'if there is an unexpected failure
@@ -429,7 +426,7 @@ methods:
   summary: Sends a POST request over HTTP to an IoTHub endpoint that will return information
     for uploading via the Azure Storage Account linked to the IoTHub your device is
     connected to.
-  signature: get_storage_info_for_blob(blob_name)
+  signature: async get_storage_info_for_blob(blob_name)
   parameters:
   - name: blob_name
     description: The name in string format of the blob that will be uploaded using
@@ -446,7 +443,7 @@ methods:
   name: get_twin
   summary: Gets the device or module twin from the Azure IoT Hub or Azure IoT Edge
     Hub service.
-  signature: get_twin()
+  signature: async get_twin()
   return:
     description: Complete Twin as a JSON dict
     types:
@@ -481,7 +478,8 @@ methods:
   summary: When the upload is complete, the device sends a POST request to the IoT
     Hub endpoint with information on the status of an upload to blob attempt. This
     is used by IoT Hub to notify listening clients.
-  signature: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
+  signature: async notify_blob_upload_status(correlation_id, is_success, status_code,
+    status_description)
   parameters:
   - name: correlation_id
     description: Provided by IoT Hub on get_storage_info_for_blob request.
@@ -509,12 +507,11 @@ methods:
   summary: 'Update reported properties with the Azure IoT Hub or Azure IoT Edge Hub
     service.
 
-
     If the service returns an error on the patch operation, this function will raise
     the
 
     appropriate error.'
-  signature: patch_twin_reported_properties(reported_properties_patch)
+  signature: async patch_twin_reported_properties(reported_properties_patch)
   parameters:
   - name: reported_properties_patch
     description: Twin Reported Properties patch as a JSON dict
@@ -550,9 +547,7 @@ methods:
   name: receive_message
   summary: 'Receive a message that has been sent from the Azure IoT Hub.
 
-
     If no message is yet available, will wait until an item is available.
-
 
     Deprecated since version 2.3.0: We recommend that you use the .on_message_received
     property to set a handler instead'
@@ -565,9 +560,7 @@ methods:
   name: receive_method_request
   summary: 'Receive a method request via the Azure IoT Hub or Azure IoT Edge Hub.
 
-
     If no method request is yet available, will wait until it is available.
-
 
     Deprecated since version 2.3.0: We recommend that you use the .on_method_request_received
     property to set a handler instead'
@@ -592,9 +585,7 @@ methods:
   summary: 'Receive a desired property patch via the Azure IoT Hub or Azure IoT Edge
     Hub.
 
-
     If no method request is yet available, will wait until it is available.
-
 
     Deprecated since version 2.3.0: We recommend that you use the .on_twin_desired_properties_patch_received
     property to set a handler instead'
@@ -608,12 +599,11 @@ methods:
   summary: 'Sends a message to the default events endpoint on the Azure IoT Hub or
     Azure IoT Edge Hub instance.
 
-
     If the connection to the service has not previously been opened by a call to connect,
     this
 
     function will open the connection before sending the event.'
-  signature: send_message(message)
+  signature: async send_message(message)
   parameters:
   - name: message
     description: 'The actual message to send. Anything passed that is not an instance
@@ -655,12 +645,11 @@ methods:
   summary: 'Send a response to a method request via the Azure IoT Hub or Azure IoT
     Edge Hub.
 
-
     If the connection to the service has not previously been opened by a call to connect,
     this
 
     function will open the connection before sending the event.'
-  signature: send_method_response(method_response)
+  signature: async send_method_response(method_response)
   parameters:
   - name: method_response
     description: The MethodResponse to send
@@ -696,12 +685,11 @@ methods:
   name: shutdown
   summary: 'Shut down the client for graceful exit.
 
-
     Once this method is called, any attempts at further client calls will result in
     a
 
     ClientError being raised'
-  signature: shutdown()
+  signature: async shutdown()
   exceptions:
   - type: azure.iot.device.exceptions.ClientError
     description: 'if there is an unexpected failure
@@ -712,9 +700,8 @@ methods:
   summary: 'Update the client''s SAS Token used for authentication, then reauthorizes
     the connection.
 
-
     This API can only be used if the client was initially created with a SAS Token.'
-  signature: update_sastoken(sastoken)
+  signature: async update_sastoken(sastoken)
   parameters:
   - name: sastoken
     description: The new SAS Token string for the client to use
@@ -756,7 +743,6 @@ attributes:
   summary: 'The handler function or coroutine will be called when a background exception
     occurs.
 
-
     The function or coroutine definition should take one positional argument (the
     exception
 
@@ -766,13 +752,11 @@ attributes:
   summary: 'The handler function or coroutine that will be called when the connection
     state changes.
 
-
     The function or coroutine definition should take no positional arguments.'
 - uid: azure.iot.device.aio.IoTHubDeviceClient.on_message_received
   name: on_message_received
   summary: 'The handler function or coroutine that will be called when a message is
     received.
-
 
     The function or coroutine definition should take one positional argument (the
 
@@ -782,12 +766,10 @@ attributes:
   summary: 'The handler function or coroutine that will be called when a method request
     is received.
 
-
     Remember to acknowledge the method request in your function or coroutine via use
     of the
 
     client''s .send_method_response() method.
-
 
     The function or coroutine definition should take one positional argument (the
 
@@ -804,16 +786,13 @@ attributes:
 
     be required after those 49 days regardless of how long the SAS lifespan is.
 
-
     Note that this handler is ONLY necessary when using a client created via the
 
     .create_from_sastoken() method.
 
-
     The new token can be provided in your function or coroutine via use of the client''s
 
     .update_sastoken() method.
-
 
     The function or coroutine definition should take no positional arguments.'
 - uid: azure.iot.device.aio.IoTHubDeviceClient.on_twin_desired_properties_patch_received
@@ -822,7 +801,6 @@ attributes:
     properties
 
     patch is received.
-
 
     The function or coroutine definition should take one positional argument (the
     twin patch
