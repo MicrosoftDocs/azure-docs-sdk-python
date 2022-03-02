@@ -46,7 +46,7 @@ The client requires an instance of [TokenCredential](https://docs.microsoft.com/
 In this samples, we illustrate how to use one derived class: [DefaultAzureCredentials](https://docs.microsoft.com/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet).
 
 > Note: In order to access the data plane for the Digital Twins service, the entity must be given permissions.
-> To do this, use the Azure CLI command: `az dt rbac assign-role --assignee '<user-email | application-id>' --role owner -n '<your-digital-twins-instance>'`
+> To do this, use the Azure CLI command: `az dt role-assignment create -n {instance_name} --assignee "owneruser@microsoft.com" --role "Azure Digital Twins Data Owner"'`
 
 DefaultAzureCredential supports different authentication mechanisms and determines the appropriate credential type based of the environment it is executing in.
 It attempts to use multiple credential types in an order until it finds a working credential.
