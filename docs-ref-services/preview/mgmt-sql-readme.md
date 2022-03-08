@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-sql, sql
-author: mayurid
-ms.author: mayurid
-ms.date: 12/21/2021
+author: lmazuel
+ms.author: lmazuel
+ms.date: 03/08/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -13,9 +13,12 @@ ms.service: sql
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure SQL Management Client Library.
-This package has been tested with Python 2.7, 3.6+.
+This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 
