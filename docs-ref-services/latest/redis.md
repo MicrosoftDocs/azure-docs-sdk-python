@@ -10,19 +10,19 @@ ms.devlang: python
 ms.service: cache
 ---
 
-# Azure Redis Cache libraries for Python
+# Azure Cache for Redis libraries for Python
 
 ## Overview
 
-Azure Redis Cache is based on the popular open source Redis project. It gives you access to a secure, dedicated Redis instance, managed by Microsoft and accessible from your Azure apps.
+Azure Cache for Redis is based on the popular open-source Redis project. It gives you access to a secure, dedicated Redis server, managed by Microsoft and accessible from your Azure apps.
 
-Redis is an advanced key-value store, where keys can contain data structures such as strings, hashes, lists, sets, and sorted sets. Redis supports a set of atomic operations on these data types.
+Redis server is an advanced key-value store, where keys can contain data structures such as strings, hashes, lists, sets, and sorted sets. A Redis server supports a set of atomic operations on these data types.
 
-Learn more about [Azure Redis Cache](https://docs.microsoft.com/azure/redis-cache/).
+To learn more, see [Azure Cache for Redis](/azure/azure-cache-for-redis/).
 
 ## Management API
 
-Create and manage your Redis resources in your subscription with the Redis management API.
+Create and manage your Azure Cache for Redis resources in your subscription with the Redis management API.
 
 ```bash
 pip install redis
@@ -31,7 +31,7 @@ pip install azure-mgmt-redis
 
 ### Example
 
-The following example creates a new Redis cache:
+The following example creates a new cache:
 
 ```python
 from azure.mgmt.redis import RedisManagementClient
