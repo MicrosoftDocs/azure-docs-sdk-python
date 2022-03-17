@@ -1,17 +1,16 @@
 ---
 title: Azure Purview Catalog client library for Python
 keywords: Azure, python, SDK, API, azure-purview-catalog, purview
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/15/2021
+author: lmazuel
+ms.author: lmazuel
+ms.date: 03/17/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: purview
 ---
-
-# Azure Purview Catalog client library for Python - Version 1.0.0b2 
+# Azure Purview Catalog client library for Python - Version 1.0.0b3 
 
 
 Azure Purview Catalog is a fully managed cloud service whose users can discover the data sources they need and understand the data sources they find. At the same time, Data Catalog helps organizations get more value from their existing investments.
@@ -32,7 +31,7 @@ _Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For
 
 ### Prerequisites
 
-- Python 2.7, or 3.6 or later is required to use this package.
+- Python 3.6 or later is required to use this package.
 - You must have an [Azure subscription][azure_subscription] and a [Purview][purview_resource] to use this package.
 
 #### Create a Purview Resource
@@ -70,7 +69,7 @@ from azure.purview.catalog import PurviewCatalogClient
 from azure.identity import DefaultAzureCredential
 
 credential = DefaultAzureCredential()
-client = PurviewCatalogClient(endpoint="https://<my-account-name>.catalog.purview.azure.com", credential=credential)
+client = PurviewCatalogClient(endpoint="https://<my-account-name>.purview.azure.com", credential=credential)
 ```
 
 ## Key concepts
@@ -94,7 +93,7 @@ from azure.identity import DefaultAzureCredential
 from azure.core.exceptions import HttpResponseError
 
 credential = DefaultAzureCredential()
-client = PurviewCatalogClient(endpoint="https://<my-account-name>.catalog.purview.azure.com", credential=credential)
+client = PurviewCatalogClient(endpoint="https://<my-account-name>.purview.azure.com", credential=credential)
 try:
     response = client.types.get_all_type_definitions()
     # print out all of your entity definitions
@@ -134,7 +133,7 @@ logger.setLevel(logging.DEBUG)
 handler = logging.StreamHandler(stream=sys.stdout)
 logger.addHandler(handler)
 
-endpoint = "https://<my-account-name>.catalog.purview.azure.com"
+endpoint = "https://<my-account-name>.purview.azure.com"
 credential = DefaultAzureCredential()
 
 # This client will log detailed information about its HTTP sessions, at DEBUG level
@@ -162,7 +161,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b2/sdk/purview/azure-purview-catalog/azure/purview/catalog
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b3/sdk/purview/azure-purview-catalog/azure/purview/catalog
 [catalog_pypi]: https://aka.ms/azsdk/python/purviewcatalog/pypi
 [catalog_ref_docs]: https://aka.ms/azsdk/python/purviewcatalog/ref-docs
 [catalog_product_documentation]: https://azure.microsoft.com/services/purview/
@@ -170,11 +169,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [purview_resource]: https://docs.microsoft.com/azure/purview/create-catalog-portal
 [pip]: https://pypi.org/project/pip/
 [authenticate_with_token]: https://docs.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b2/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b3/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b3/sdk/identity/azure-identity#defaultazurecredential
 [request_builders_and_client]: https://aka.ms/azsdk/python/protocol/quickstart
 [enable_aad]: https://docs.microsoft.com/azure/purview/create-catalog-portal#add-a-security-principal-to-a-data-plane-role
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-purview-catalog_1.0.0b3/sdk/core/azure-core/README.md
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
