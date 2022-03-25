@@ -8,7 +8,7 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: apimanagement
+ms.service: api-management
 ---
 # Microsoft Azure SDK for Python
 
