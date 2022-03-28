@@ -1,6 +1,6 @@
 ---
-title: Python client librarty for API Management
-description Reference documentation for the Python library for Azure API Management
+title: Python client library for API Management
+description: Reference documentation for the Python library for Azure API Management
 keywords: Azure, python, SDK, API, azure-mgmt-apimanagement, apimanagement
 author: dlepow
 ms.author: danlep
