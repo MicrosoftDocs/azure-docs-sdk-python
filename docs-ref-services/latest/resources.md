@@ -23,7 +23,7 @@ Use the management API to create resource groups and deploy resources from templ
 ```bash
 pip install azure-mgmt-resource
 ```
-### Example 
+### Example
 Create a new resource group in the Azure Eastern US region.
 
 ```python
