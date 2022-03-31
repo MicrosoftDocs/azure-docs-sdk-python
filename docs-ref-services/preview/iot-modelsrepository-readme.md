@@ -1,17 +1,16 @@
 ---
 title: Azure IoT Models Repository client library for Python
-keywords: Azure, python, SDK, API, azure-iot-modelsrepository, 
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 04/27/2021
+keywords: Azure, python, SDK, API, azure-iot-modelsrepository, modelsrepository
+author: cartertinney
+ms.author: catinney
+ms.date: 03/31/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: modelsrepository
 ---
-
-# Azure IoT Models Repository client library for Python - Version 1.0.0b1 
+# Azure IoT Models Repository client library for Python - Version 1.0.0a20220330001 
 
 
 The Azure IoT Models Repository Library for Python provides functionality for working with the Azure IoT Models Repository
@@ -47,9 +46,9 @@ The repository defines a pattern to store DTDL interfaces in a directory structu
 
 ## Examples
 The following sections provide several snippets covering common Models Repository tasks:
-* [Initializing the ModelsRepositoryClient](#initializing-the-modelsrepositoryclient, "Initializing the ModelsRepositoryClient")
-* [Get Models](#modelsrepositoryclient---get-models, "Get models")
-* [DTMI Conventions](#dtmi-conventions, "DTMI Conventions")
+* [Initializing the ModelsRepositoryClient](#initializing-the-modelsrepositoryclient "Initializing the ModelsRepositoryClient")
+* [Get Models](#modelsrepositoryclient---get-models "Get models")
+* [DTMI Conventions](#dtmi-conventions "DTMI Conventions")
 
 ### Initializing the ModelsRepositoryClient
 
@@ -102,7 +101,7 @@ with ModelsRepositoryClient() as client:
 ```
 
 ### ModelsRepositoryClient - Get Models
-Note that you must first [publish models to your repository](#publishing-models, "Publishing models") before you can fetch them. The following examples assume you are using the global Azure IoT Models Repository.
+Note that you must first [publish models to your repository](#publishing-models "Publishing models") before you can fetch them. The following examples assume you are using the global Azure IoT Models Repository.
 
 Calling `.get_models()` will fetch the model at the provided DTMI and potentially its dependencies (depending on the dependency resolution mode). It will return a `dict` that maps DTMIs to model definitions.
 
@@ -121,7 +120,7 @@ with ModelsRepositoryClient() as client:
 print("{} resolved in {} interfaces".format(dtmi, len(models)))
 ```
 
-By default the client will use whichever [dependency resolution mode](#dependency-resolution-mode, "Dependency resolution mode") it was configured with at instantiation when retrieving models. However, this behavior can be overridden by passing any of the valid options in as an optional keyword argument to `.get_models()`
+By default the client will use whichever [dependency resolution mode](#dependency-resolution-mode "Dependency resolution mode") it was configured with at instantiation when retrieving models. However, this behavior can be overridden by passing any of the valid options in as an optional keyword argument to `.get_models()`
 
 ```python
 dtmi = "dtmi:com:example:TemperatureController;1"
@@ -189,7 +188,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_core_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/latest/azure.core.html
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-modelsrepository_1.0.0b1/sdk/core/azure-core#azure-core-library-exceptions
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core#azure-core-library-exceptions
 [azure_core_kwargs]: https://aka.ms/azsdk/python/options
 [dtdl_spec]: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
 [global_azure_repo]: https://devicemodels.azure.com/
@@ -197,4 +196,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [logging_doc]: https://docs.python.org/3.5/library/logging.html
 [pip]: https://pypi.org/project/pip/
 [repo_conventions]: https://github.com/Azure/iot-plugandplay-models-tools/wiki
-[samples_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-iot-modelsrepository_1.0.0b1/sdk/modelsrepository/azure-iot-modelsrepository/samples/
+[samples_repo]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/modelsrepository/azure-iot-modelsrepository/samples/
