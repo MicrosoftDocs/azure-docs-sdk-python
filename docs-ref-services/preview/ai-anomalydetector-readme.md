@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-anomalydetector, anomalydetector
-author: mayurid
-ms.author: mayurid
-ms.date: 01/21/2022
+author: conhua
+ms.author: conhua
+ms.date: 03/31/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
