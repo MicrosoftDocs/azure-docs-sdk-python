@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-cognitiveservices-knowledge-qnamaker, cognitiveservices
+keywords: Azure, python, SDK, API, azure-cognitiveservices-search-newssearch, cognitiveservices
 author: lmazuel
 ms.author: lmazuel
 ms.date: 03/31/2022
@@ -12,7 +12,7 @@ ms.service: cognitiveservices
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure QnA Maker Client Library.
+This is the Microsoft Azure Cognitive Services News Search Client Library.
 This package has been tested with Python 2.7, 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -22,7 +22,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 
-For code examples, see [QnA Maker](https://docs.microsoft.com/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
+For code examples, see [Cognitive Services News Search](https://docs.microsoft.com/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
 
 
 # Provide Feedback
@@ -32,5 +32,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-cognitiveservices-knowledge-qnamaker%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-cognitiveservices-search-newssearch%2FREADME.png)
 
