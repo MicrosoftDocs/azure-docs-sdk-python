@@ -1,20 +1,19 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-face, cognitiveservices
-author: mayurid
-ms.author: mayurid
-ms.date: 12/04/2021
+author: lmazuel
+ms.author: lmazuel
+ms.date: 03/31/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: cognitiveservices
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Cognitive Services Face Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
+This package has been tested with Python 2.7, 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 

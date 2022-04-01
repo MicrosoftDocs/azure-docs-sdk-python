@@ -1,21 +1,20 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-synapse, synapseanalytics
+keywords: Azure, python, SDK, API, azure-mgmt-synapse, synapse
 author: wonner
-ms.author: wonner
-ms.date: 01/14/2022
+ms.author: wanyang
+ms.date: 03/31/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: synapseanalytics
+ms.service: synapse
 ---
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Management Client Library.
-This package has been tested with Python 2.7, 3.6+.
+This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
-
 
 ## _Disclaimer_
 

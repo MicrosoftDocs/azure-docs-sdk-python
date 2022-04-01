@@ -1,16 +1,15 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storagesync, storage
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 12/10/2020
+author: amishra-dev
+ms.author: amishra
+ms.date: 03/31/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: storage
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Storage Sync Client Library.
@@ -26,6 +25,10 @@ library.
 
 For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Usage
 
@@ -46,5 +49,4 @@ the [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
 ![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-storagesync%2FREADME.png)
-
 
