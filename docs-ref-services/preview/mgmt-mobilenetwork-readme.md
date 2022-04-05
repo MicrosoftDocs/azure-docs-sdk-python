@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-mobilenetwork, mobilenetwork
-author: mayurid
-ms.author: mayurid
-ms.date: 02/28/2022
+author: lmazuel
+ms.author: lmazuel
+ms.date: 04/02/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
