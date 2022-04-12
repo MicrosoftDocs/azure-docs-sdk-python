@@ -1,17 +1,16 @@
 ---
 title: Azure Event Grid client library for Python
 keywords: Azure, python, SDK, API, azure-eventgrid, eventgrid
-author: maggiepint
-ms.author: magpint
-ms.date: 11/18/2021
+author: lmazuel
+ms.author: lmazuel
+ms.date: 04/07/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: eventgrid
 ---
-
-# Azure Event Grid client library for Python - Version 4.7.1 
+# Azure Event Grid client library for Python - Version 4.8.0 
 
 
 Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.
@@ -20,12 +19,12 @@ Azure Event Grid is a fully-managed intelligent event routing service that allow
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended on 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
 ### Prerequisites
-* Python 2.7, or 3.6 or later is required to use this package.
+* Python 3.6 or later is required to use this package.
 * You must have an [Azure subscription][azure_subscription] and an Event Grid Topic resource to use this package. Follow this [step-by-step tutorial](https://docs.microsoft.com/azure/event-grid/custom-event-quickstart-portal) to register the Event Grid resource provider and create Event Grid topics using the [Azure portal](https://portal.azure.com/). There is a [similar tutorial](https://docs.microsoft.com/azure/event-grid/custom-event-quickstart) using [Azure CLI](https://docs.microsoft.com/cli/azure).
 
 
@@ -62,7 +61,7 @@ Azure Event Grid provides integration with Azure Active Directory (Azure AD) for
 
 To send events to a topic or domain with a `TokenCredential`, the authenticated identity should have the "EventGrid Data Sender" role assigned.
 
-With the `azure-identity` package, you can seamlessly authorize requests in both development and production environments. To learn more about Azure Active Directory, see the [`azure-identity` README](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/identity/azure-identity/README.md).
+With the `azure-identity` package, you can seamlessly authorize requests in both development and production environments. To learn more about Azure Active Directory, see the [`azure-identity` README](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/identity/azure-identity/README.md).
 
 For example, you can use `DefaultAzureCredential` to construct a client which will authenticate using Azure Active Directory:
 
@@ -141,7 +140,7 @@ The following formats of events are allowed to be sent:
 
 - A dict representation of any Custom Schema.
 
-Please have a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples) for detailed examples.
+Please have a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples) for detailed examples.
 
 
  **Note:** It is important to know if your topic supports CloudEvents or EventGridEvents before publishing. If you send to a topic that does not support the schema of the event you are sending, send() will throw an exception.
@@ -460,44 +459,44 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 
 [azure_cli_link]: https://pypi.org/project/azure-cli/
-[python-eg-src]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/
+[python-eg-src]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/
 [python-eg-pypi]: https://pypi.org/project/azure-eventgrid
 [python-eg-product-docs]: https://docs.microsoft.com/azure/event-grid/overview
 [python-eg-ref-docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-eventgrid/latest/index.html
 [publisher-service-doc]: https://docs.microsoft.com/azure/event-grid/concepts
-[python-eg-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples
-[python-eg-changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/CHANGELOG.md
+[python-eg-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples
+[python-eg-changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/CHANGELOG.md
 [pip]: https://pypi.org/project/pip/
 
 [azure_portal_create_EG_resource]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.EventGrid%2Ftopics
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [python_logging]: https://docs.python.org/3/library/logging.html
-[azure_core_ref_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.7.1/sdk/core/azure-core#configurations
+[azure_core_ref_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventgrid_4.8.0/sdk/core/azure-core#configurations
 [azure_subscription]: https://azure.microsoft.com/free/
 
-[python-eg-auth]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_authentication.py
-[python-eg-generate-sas]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_generate_sas.py
-[python-eg-sample-send-using-sas]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_events_to_a_topic_using_sas_credential.py
-[python-eg-sample-eg-event]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_eg_events_to_a_topic.py
-[python-eg-sample-eg-event-to-domain]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_eg_events_to_a_domain.py
-[python-eg-sample-send-cloudevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_events_using_cloud_events_1.0_schema.py
-[python-eg-publish-custom-schema]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_custom_schema_to_a_topic.py
-[python-eg-sample-send-eg-as-dict]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_eg_event_using_dict.py
-[python-eg-sample-send-cloudevent-as-dict]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_cloud_event_using_dict.py
+[python-eg-auth]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_authentication.py
+[python-eg-generate-sas]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_generate_sas.py
+[python-eg-sample-send-using-sas]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_events_to_a_topic_using_sas_credential.py
+[python-eg-sample-eg-event]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_eg_events_to_a_topic.py
+[python-eg-sample-eg-event-to-domain]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_eg_events_to_a_domain.py
+[python-eg-sample-send-cloudevent]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_events_using_cloud_events_1.0_schema.py
+[python-eg-publish-custom-schema]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_custom_schema_to_a_topic.py
+[python-eg-sample-send-eg-as-dict]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_eg_event_using_dict.py
+[python-eg-sample-send-cloudevent-as-dict]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_publish_cloud_event_using_dict.py
 
-[python-eg-auth-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_authentication_async.py
-[python-eg-sample-send-using-sas-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_events_to_a_topic_using_sas_credential_async.py
-[python-eg-sample-eg-event-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_eg_events_to_a_topic_async.py
-[python-eg-sample-eg-event-to-domain-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_eg_events_to_a_domain_async.py
-[python-eg-sample-send-cloudevent-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_events_using_cloud_events_1.0_schema_async.py
-[python-eg-publish-custom-schema-async]:https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_custom_schema_to_a_topic_async.py
-[python-eg-sample-send-eg-as-dict-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_eg_event_using_dict_async.py
-[python-eg-sample-send-cloudevent-as-dict-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_cloud_event_using_dict_async.py
+[python-eg-auth-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_authentication_async.py
+[python-eg-sample-send-using-sas-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_events_to_a_topic_using_sas_credential_async.py
+[python-eg-sample-eg-event-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_eg_events_to_a_topic_async.py
+[python-eg-sample-eg-event-to-domain-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_eg_events_to_a_domain_async.py
+[python-eg-sample-send-cloudevent-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_events_using_cloud_events_1.0_schema_async.py
+[python-eg-publish-custom-schema-async]:https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_custom_schema_to_a_topic_async.py
+[python-eg-sample-send-eg-as-dict-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_eg_event_using_dict_async.py
+[python-eg-sample-send-cloudevent-as-dict-async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/async_samples/sample_publish_cloud_event_using_dict_async.py
 
-[python-eg-publish-samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/publish_samples
-[python-eg-consume-samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/consume_samples
-[python-eg-sample-consume-custom-payload]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.7.1/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_consume_custom_payload.py
+[python-eg-publish-samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/publish_samples
+[python-eg-consume-samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/consume_samples
+[python-eg-sample-consume-custom-payload]: https://github.com/Azure/azure-sdk-for-python/blob/azure-eventgrid_4.8.0/sdk/eventgrid/azure-eventgrid/samples/sync_samples/sample_consume_custom_payload.py
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

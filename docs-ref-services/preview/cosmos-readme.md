@@ -1,19 +1,19 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
-keywords: Azure, python, SDK, API, azure-cosmos, cosmosdb
+keywords: Azure, python, SDK, API, azure-cosmos, cosmos
 author: kushagraThapar
 ms.author: kuthapar
-ms.date: 03/10/2022
+ms.date: 04/07/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: cosmosdb
+ms.service: cosmos
 ---
 ## _Disclaimer_
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Azure Cosmos DB SQL API client library for Python - Version 4.3.0b3 
+# Azure Cosmos DB SQL API client library for Python - Version 4.3.0b4 
 
 
 Azure Cosmos DB is a globally distributed, multi-model database service that supports document, key-value, wide-column, and graph databases.
@@ -33,7 +33,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.3.0b3/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.3.0b4/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -89,6 +89,35 @@ KEY = os.environ['ACCOUNT_KEY']
 client = CosmosClient(URL, credential=KEY)
 ```
 
+### AAD Authentication
+
+You can also authenticate a client utilizing your service principal's AAD credentials and the azure identity package. 
+You can directly pass in the credentials information to ClientSecretCrednetial, or use the DefaultAzureCredential:
+```Python
+from azure.cosmos import CosmosClient
+from azure.identity import ClientSecretCredential, DefaultAzureCredential
+
+import os
+url = os.environ['ACCOUNT_URI']
+tenant_id = os.environ['TENANT_ID']
+client_id = os.environ['CLIENT_ID']
+client_secret = os.environ['CLIENT_SECRET']
+
+# Using ClientSecretCredential
+aad_credentials = ClientSecretCredential(
+    tenant_id=tenant_id,
+    client_id=client_id,
+    client_secret=client_secret)
+
+# Using DefaultAzureCredential (recommended)
+aad_credentials = DefaultAzureCredential()
+
+client = CosmosClient(url, aad_credentials)
+```
+Always ensure that the managed identity you use for AAD authentication has `readMetadata` permissions. <br>
+More information on how to set up AAD authentication: [Set up RBAC for AAD authentication](https://docs.microsoft.com/azure/cosmos-db/how-to-setup-rbac) <br>
+More information on allowed operations for AAD authenticated clients: [RBAC Permission Model](https://aka.ms/cosmos-native-rbac)
+
 ## Key concepts
 
 Once you've initialized a [CosmosClient][ref_cosmosclient], you can interact with the primary resource types in Cosmos DB:
@@ -138,7 +167,7 @@ Currently the features below are **not supported**. For alternatives options, ch
 * Change Feed: Processor
 * Change Feed: Read multiple partitions key values
 * Change Feed: Read specific time
-* Change Feed: Read from the beggining
+* Change Feed: Read from the beginning
 * Change Feed: Pull model
 * Cross-partition ORDER BY for mixed types
 
@@ -152,10 +181,6 @@ Currently the features below are **not supported**. For alternatives options, ch
 * Get the connection string
 * Get the minimum RU/s of a container
 
-### Security Limitations:
-
-* AAD support
-
 ## Workarounds
 
 ### Bulk processing Limitation Workaround
@@ -165,10 +190,6 @@ If you want to use Python SDK to perform bulk inserts to Cosmos DB, the best alt
 ### Control Plane Limitations Workaround
 
 Typically, you can use [Azure Portal](https://portal.azure.com/), [Azure Cosmos DB Resource Provider REST API](https://docs.microsoft.com/rest/api/cosmos-db-resource-provider), [Azure CLI](https://docs.microsoft.com/cli/azure/azure-cli-reference-for-cosmos-db) or [PowerShell](https://docs.microsoft.com/azure/cosmos-db/manage-with-powershell) for the control plane unsupported limitations.
-
-### AAD Support Workaround
-
-A possible workaround is to use managed identities to [programmatically](https://docs.microsoft.com/azure/cosmos-db/managed-identity-based-authentication) get the keys.
 
 ## Boolean Data Type
 
@@ -609,7 +630,7 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: https://docs.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: https://docs.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b3/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b4/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: https://docs.microsoft.com/rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: https://docs.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-items
@@ -627,10 +648,10 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b3/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b3/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b3/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b3/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b4/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b4/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b4/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.3.0b4/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
 
