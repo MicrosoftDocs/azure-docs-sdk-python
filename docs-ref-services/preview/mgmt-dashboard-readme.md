@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-dashboard, dashboard
 author: lmazuel
 ms.author: lmazuel
-ms.date: 04/11/2022
+ms.date: 04/14/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
