@@ -74,7 +74,7 @@ az account set -s <name or ID of subscription>
 Next, choose a name for your service principal and create it with the following command:
 
 ```azurecli-interactive
-az ad sp create-for-rbac --name <Service Principal Name> --role Contributor --sdk-auth
+az ad sp create-for-rbac --name <Service Principal Name> --role Contributor --scopes <name or ID of subscription> --sdk-auth
 ```
 
 The service principal information is displayed as JSON.
