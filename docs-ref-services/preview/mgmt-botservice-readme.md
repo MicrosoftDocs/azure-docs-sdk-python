@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-botservice, botservice
-author: mayurid
-ms.author: mayurid
-ms.date: 01/13/2022
+author: lmazuel
+ms.author: lmazuel
+ms.date: 04/15/2022
 ms.topic: reference
 ms.prod: azure
 ms.technology: azure
@@ -13,9 +13,8 @@ ms.service: botservice
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Bot Service Client Library.
-This package has been tested with Python 2.7, 3.6+.
+This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
-
 
 ## _Disclaimer_
 
