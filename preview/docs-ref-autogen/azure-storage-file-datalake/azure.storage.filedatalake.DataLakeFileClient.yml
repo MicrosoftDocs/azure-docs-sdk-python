@@ -44,6 +44,14 @@ constructor:
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
     defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
 variables:
 - description: The full endpoint URL to the file system, including SAS token if used.
   name: url
@@ -61,7 +69,7 @@ examples:
 - "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
   datalake_samples_instantiate_client.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\
+  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\
   \\samples\\\\datalake_samples_instantiate_client.py\", \"xml:space\": \"preserve\"\
   , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
   : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake\
@@ -106,13 +114,19 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   return:
     description: dict of the response header
   examples:
   - "Append data to the file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_upload_download.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_client.append_data(data=file_content[2048:3072], offset=2048, length=1024)\n\
@@ -210,6 +224,12 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -220,7 +240,7 @@ methods:
   - "Create file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_upload_download.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_client = filesystem_client.get_file_client(file_name)\n   file_client.create_file()\n\
@@ -283,7 +303,7 @@ methods:
   - "Delete file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_upload_download.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   new_client.delete_file()\n\n   ````\n"
@@ -298,7 +318,7 @@ methods:
     a stream. Using chunks() returns an iterator which allows the user to iterate
     over the content in chunks.'
   signature: 'download_file(offset: Optional[int] = None, length: Optional[int] =
-    None, **kwargs: Any) -> StorageStreamDownloader'
+    None, **kwargs: Any) -> azure.storage.filedatalake._download.StorageStreamDownloader'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the file.
@@ -356,6 +376,14 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the file was created with a Customer-Provided Key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: max_concurrency
     description: The number of parallel connections with which to download.
     types:
@@ -376,7 +404,7 @@ methods:
   - "Return the downloaded data.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_upload_download.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   download = file_client.download_file()\n   downloaded_bytes = download.readall()\n\
@@ -489,13 +517,19 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   return:
     description: response header in dict
   examples:
   - "Commit the previous appended data.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_file_system.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(SOURCE_FILE, \"rb\") as data:\n       file_client = file_system_client.get_file_client(\"\
@@ -596,6 +630,14 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the file was created with a customer-provided key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -607,7 +649,7 @@ methods:
   - "Getting the properties for a file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_upload_download.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = file_client.get_file_properties()\n\n   ````\n"
@@ -710,6 +752,14 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the file was created with a Customer-Provided Key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -722,11 +772,11 @@ methods:
   - "select/project on datalake file data by providing simple query expressions.<!--[!code-python[Main](les\\\
     datalake_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\
-    \\samples\\\\datalake_samples_query.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   errors = []\n   def on_error(error):\n\
-    \       errors.append(error)\n\n   # upload the csv file\n   file_client = datalake_service_client.get_file_client(filesystem_name,\
+    a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\
+    \\datalake_samples_query.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   errors = []\n   def on_error(error):\n      \
+    \ errors.append(error)\n\n   # upload the csv file\n   file_client = datalake_service_client.get_file_client(filesystem_name,\
     \ \"csvfile\")\n   file_client.upload_data(CSV_DATA, overwrite=True)\n\n   # select\
     \ the second column of the csv file\n   query_expression = \"SELECT _2 from DataLakeStorage\"\
     \n   input_format = DelimitedTextDialect(delimiter=',', quotechar='\"', lineterminator='\\\
@@ -845,7 +895,7 @@ methods:
   - "Rename the source file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-storage-file-datalake-12.7.0a20220330001\\\\samples\\\\datalake_samples_upload_download.py\"\
+    \\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   new_client = file_client.rename_file(file_client.file_system_name + '/' +\
@@ -883,9 +933,8 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.upload_data
   name: upload_data
   summary: Upload data to a file.
-  signature: 'upload_data(data: Union[AnyStr, Iterable[AnyStr], IO[AnyStr]], length:
-    Optional[int] = None, overwrite: Optional[bool] = False, **kwargs) -> Dict[str,
-    Any]'
+  signature: 'upload_data(data: Union[AnyStr, Iterable, IO], length: Optional[int]
+    = None, overwrite: Optional[bool] = False, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: data
     description: Content to be uploaded to file
@@ -1003,6 +1052,12 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
