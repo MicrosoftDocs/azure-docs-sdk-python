@@ -6,7 +6,7 @@ ms.author: ramyar
 ms.date: 07/07/2020
 ms.topic: reference
 ms.devlang: python
-ms.service: search
+ms.service: cognitive-search
 ---
 
 # Azure Cognitive Search client library for Python - Version 11.0.0 
