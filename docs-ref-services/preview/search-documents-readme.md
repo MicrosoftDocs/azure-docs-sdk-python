@@ -8,7 +8,7 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: search
+ms.service: cognitive-search
 ---
 # Azure Cognitive Search client library for Python - Version 11.3.0b8 
 
