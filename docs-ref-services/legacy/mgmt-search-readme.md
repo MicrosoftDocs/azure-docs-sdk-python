@@ -8,7 +8,7 @@ ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: search
+ms.service: cognitive-search
 ---
 
 # Microsoft Azure SDK for Python
