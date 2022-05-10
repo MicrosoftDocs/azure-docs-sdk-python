@@ -1,22 +1,22 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-chaos, chaos
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/26/2021
+author: lmazuel
+ms.author: lmazuel
+ms.date: 05/07/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: chaos
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Chaos Management Client Library.
-This package has been tested with Python 2.7, 3.6+.
+This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 
@@ -25,8 +25,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Chaos Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](/python/api/overview/azure/)
+Code samples for this package can be found at [Chaos Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
