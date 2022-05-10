@@ -1,17 +1,14 @@
 ---
 title: Azure Schema Registry client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry, schemaregistry
-author: maggiepint
-ms.author: magpint
-ms.date: 11/10/2021
+author: yunhaoling
+ms.author: yunhaoling
+ms.date: 05/10/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: schemaregistry
 ---
-
-# Azure Schema Registry client library for Python - Version 1.0.0 
+# Azure Schema Registry client library for Python - Version 1.1.0 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
@@ -22,7 +19,7 @@ schema identifiers rather than full schemas.
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended on 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
@@ -37,8 +34,8 @@ pip install azure-schemaregistry
 ### Prerequisites:
 To use this package, you must have:
 * Azure subscription - [Create a free account][azure_sub]
-* [Azure Schema Registry][schemaregistry_service]
-* Python 2.7, 3.6 or later - [Install Python][python]
+* [Azure Schema Registry][schemaregistry_service] - [Here is the quickstart guide][quickstart_guide] to create a Schema Registry group using the Azure portal.
+* Python 3.6 or later - [Install Python][python]
 
 ### Authenticate the client
 
@@ -53,7 +50,7 @@ Interaction with Schema Registry starts with an instance of SchemaRegistryClient
 pip install azure-identity
 ```
 
-* Additionally, to use the async API supported on Python 3.6+, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/):
+* Additionally, to use the async API,  you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/):
 
 ```Bash
 pip install aiohttp
@@ -237,16 +234,17 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-schemaregistry
 [python]: https://www.python.org/downloads/
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.0.0/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.1.0/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0/sdk/schemaregistry/azure-schemaregistry/samples
-[api_reference]: https://docs.microsoft.com/python/api/overview/azure/schemaregistry-readme
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0/sdk/schemaregistry/azure-schemaregistry
-[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
-[schemas]: https://docs.microsoft.com/azure/event-hubs/schema-registry-overview#schemas
-[schema_groups]: https://docs.microsoft.com/azure/event-hubs/schema-registry-overview#schema-groups
+[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/schemaregistry/azure-schemaregistry/samples
+[api_reference]: /python/api/overview/azure/schemaregistry-readme
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/schemaregistry/azure-schemaregistry
+[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
+[schemas]: /azure/event-hubs/schema-registry-overview#schemas
+[schema_groups]: /azure/event-hubs/schema-registry-overview#schema-groups
 [schemaregistry_service]: https://aka.ms/schemaregistry
 [schemaregistry_avroserializer_pypi]: https://pypi.org/project/azure-schemaregistry-avroserializer/
-[token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0/sdk/core/azure-core/azure/core/credentials.py
+[token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/core/azure-core/azure/core/credentials.py
 [pypi_azure_identity]: https://pypi.org/project/azure-identity/
+[quickstart_guide]: /azure/event-hubs/create-schema-registry
