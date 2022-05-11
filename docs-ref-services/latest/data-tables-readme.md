@@ -3,14 +3,12 @@ title: Azure Tables client library for Python
 keywords: Azure, python, SDK, API, azure-data-tables, tables
 author: annatisch
 ms.author: antisch
-ms.date: 03/11/2022
+ms.date: 05/11/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: tables
 ---
-# Azure Tables client library for Python - Version 12.3.0 
+# Azure Tables client library for Python - Version 12.4.0 
 
 
 Azure Tables is a NoSQL data storage service that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.
@@ -101,7 +99,7 @@ service = TableServiceClient.from_connection_string(conn_str=connection_string)
 ```
 
 ##### Creating the client from a SAS token
-To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use one of the `generate_*_sas()`
+To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](/rest/api/storageservices/create-service-sas) or use one of the `generate_*_sas()`
    functions to create a sas token for the account or table:
 
 ```python
@@ -328,12 +326,12 @@ Several Azure Tables Python SDK samples are available to you in the SDK's GitHub
 ### Common Scenarios
 These code samples show common scenario operations with the Azure Tables client library. The async versions of the samples (the python sample files appended with _async) show asynchronous operations with Tables and require Python 3.6 or later.
 
-* Create and delete tables: [sample_create_delete_table.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_create_delete_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/async_samples/sample_create_delete_table_async.py))
-* List and query tables: [sample_query_tables.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_query_tables.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/async_samples/sample_query_tables_async.py))
-* Insert and delete entities: [sample_insert_delete_entities.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/async_samples/sample_insert_delete_entities_async.py))
-* Query and list entities: [sample_query_table.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_query_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/async_samples/sample_query_table_async.py))
-* Update, upsert, and merge entities: [sample_update_upsert_merge_entities.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/async_samples/sample_update_upsert_merge_entities_async.py))
-* Committing many requests in a single transaction: [sample_batching.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_batching.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/async_samples/sample_batching_async.py))
+* Create and delete tables: [sample_create_delete_table.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_create_delete_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/async_samples/sample_create_delete_table_async.py))
+* List and query tables: [sample_query_tables.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_query_tables.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/async_samples/sample_query_tables_async.py))
+* Insert and delete entities: [sample_insert_delete_entities.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/async_samples/sample_insert_delete_entities_async.py))
+* Query and list entities: [sample_query_table.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_query_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/async_samples/sample_query_table_async.py))
+* Update, upsert, and merge entities: [sample_update_upsert_merge_entities.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/async_samples/sample_update_upsert_merge_entities_async.py))
+* Committing many requests in a single transaction: [sample_batching.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_batching.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/async_samples/sample_batching_async.py))
 
 ### Additional documentation
 For more extensive documentation on Azure Tables, see the [Azure Tables documentation][Tables_product_doc] on docs.microsoft.com.
@@ -349,52 +347,52 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_coc]. For more information see the [Code of Conduct FAQ][msft_oss_coc_faq] or contact [opencode@microsoft.com][contact_msft_oss] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]:https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables
+[source_code]:https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables
 [Tables_pypi]:https://aka.ms/azsdk/python/tablespypi
-[Tables_ref_docs]:https://docs.microsoft.com/python/api/overview/azure/data-tables-readme?view=azure-python
-[Tables_product_doc]:https://docs.microsoft.com/azure/cosmos-db/table-introduction
-[Tables_samples]:https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples
-[migration_guide]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/migration_guide.md
+[Tables_ref_docs]:/python/api/overview/azure/data-tables-readme?view=azure-python
+[Tables_product_doc]:/azure/cosmos-db/table-introduction
+[Tables_samples]:https://github.com/Azure/azure-sdk-for-python/tree/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples
+[migration_guide]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/migration_guide.md
 
 [azure_subscription]:https://azure.microsoft.com/free/
-[azure_storage_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
-[azure_cosmos_account]:https://docs.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
+[azure_storage_account]:/azure/storage/common/storage-account-create?tabs=azure-portal
+[azure_cosmos_account]:/azure/cosmos-db/create-cosmosdb-resources-portal
 [pip_link]:https://pypi.org/project/pip/
 
-[azure_create_cosmos]:https://docs.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
-[azure_cli_create_cosmos]:https://docs.microsoft.com/azure/cosmos-db/scripts/cli/table/create
-[azure_portal_create_cosmos]:https://docs.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
-[azure_portal_create_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
-[azure_powershell_create_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-powershell
-[azure_cli_create_account]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
+[azure_create_cosmos]:/azure/cosmos-db/create-cosmosdb-resources-portal
+[azure_cli_create_cosmos]:/azure/cosmos-db/scripts/cli/table/create
+[azure_portal_create_cosmos]:/azure/cosmos-db/create-cosmosdb-resources-portal
+[azure_portal_create_account]:/azure/storage/common/storage-account-create?tabs=azure-portal
+[azure_powershell_create_account]:/azure/storage/common/storage-account-create?tabs=azure-powershell
+[azure_cli_create_account]: /azure/storage/common/storage-account-create?tabs=azure-cli
 
-[azure_cli_account_url]:https://docs.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show
-[azure_powershell_account_url]:https://docs.microsoft.com/powershell/module/az.storage/get-azstorageaccount?view=azps-4.6.1
-[azure_portal_account_url]:https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints
+[azure_cli_account_url]:/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show
+[azure_powershell_account_url]:/powershell/module/az.storage/get-azstorageaccount?view=azps-4.6.1
+[azure_portal_account_url]:/azure/storage/common/storage-account-overview#storage-account-endpoints
 
-[azure_sas_token]:https://docs.microsoft.com/azure/storage/common/storage-sas-overview
-[azure_shared_key]:https://docs.microsoft.com/rest/api/storageservices/authorize-with-shared-key
+[azure_sas_token]:/azure/storage/common/storage-sas-overview
+[azure_shared_key]:/rest/api/storageservices/authorize-with-shared-key
 
-[odata_syntax]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/README.md#writing-filters
+[odata_syntax]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/README.md#writing-filters
 
 [azure_core_ref_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/latest/azure.core.html
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/core/azure-core/README.md
 
 [python_logging]: https://docs.python.org/3/library/logging.html
-[tables_error_codes]: https://docs.microsoft.com/rest/api/storageservices/table-service-error-codes
+[tables_error_codes]: /rest/api/storageservices/table-service-error-codes
 
 [msft_oss_coc]:https://opensource.microsoft.com/codeofconduct/
 [msft_oss_coc_faq]:https://opensource.microsoft.com/codeofconduct/faq/
 [contact_msft_oss]:mailto:opencode@microsoft.com
 
-[tables_rest]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
+[tables_rest]: /rest/api/storageservices/table-service-rest-api
 
-[create_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L67-L73
-[delete_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L89-L92
-[update_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L165-L181
-[query_entities]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_query_table.py#L75-L89
-[get_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L67-L71
-[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.3.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L155-L163
+[create_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L67-L73
+[delete_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L89-L92
+[update_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L165-L181
+[query_entities]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_query_table.py#L75-L89
+[get_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L67-L71
+[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/azure-data-tables_12.4.0/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L155-L163
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/tables/azure-data-tables/README.png)
 
