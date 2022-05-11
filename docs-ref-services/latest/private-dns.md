@@ -13,7 +13,7 @@ Create, configure and manage and scale private dns in Azure from your code with 
 Install the library via pip.
 
 ```bash
-pip install azure.mgmt.privatedns
+pip install azure-mgmt-privatedns
 ```
 
 > [!div class="nextstepaction"]
