@@ -27,13 +27,13 @@ Manage Azure resources in resource groups.
 |[azure.mgmt.resource.resources][6]| Provides operations for working with resources and resource groups.|
 |[azure.mgmt.resource.subscriptions][7]|All resource groups and resources exist within subscriptions. These operation enable you get information about your subscriptions and tenants.|
 
-[1]: /python/api/azure.mgmt.resource.features
-[2]: /python/api/azure.mgmt.resource.links
-[3]: /python/api/azure.mgmt.resource.locks
-[4]: /python/api/azure.mgmt.resource.managedapplications
-[5]: /python/api/azure.mgmt.resource.policy
-[6]: /python/api/azure.mgmt.resource.resources
-[7]: /python/api/azure.mgmt.resource.subscriptions
+[1]: /python/api/azure-mgmt-resource/azure.mgmt.resource.features
+[2]: /python/api/azure.mgmt.resource/azure.mgmt.resource.links
+[3]: /python/api/azure.mgmt.resource/azure.mgmt.resource.locks
+[4]: /python/api/azure.mgmt.resource/azure.mgmt.resource.managedapplications
+[5]: /python/api/azure.mgmt.resource/azure.mgmt.resource.policy
+[6]: /python/api/azure.mgmt.resource/azure.mgmt.resource.resources
+[7]: /python/api/azure.mgmt.resource/azure.mgmt.resource.subscriptions
 
 ## Install the libraries 
 ```bash
