@@ -3,14 +3,12 @@ title: Azure Container Registry client library for Python
 keywords: Azure, python, SDK, API, azure-containerregistry, containerregistry
 author: YalinLi0312
 ms.author: yall
-ms.date: 03/31/2022
+ms.date: 05/11/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: containerregistry
 ---
-# Azure Container Registry client library for Python - Version 1.0.1a20220330002 
+# Azure Container Registry client library for Python - Version 1.1.0b1 
 
 
 Azure Container Registry allows you to store and manage container images and artifacts in a private registry for all types of container deployments.
@@ -53,7 +51,7 @@ az acr create --name MyContainerRegistry --resource-group MyResourceGroup --loca
 
 ### Authenticate the client
 
-The [Azure Identity library][identity] provides easy Azure Active Directory support for authentication. The `DefaultAzureCredential` assumes the `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET` environment variables are set, for more information refer to the [Azure Identity environment variables section](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#environment-variables)
+The [Azure Identity library][identity] provides easy Azure Active Directory support for authentication. The `DefaultAzureCredential` assumes the `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_SECRET` environment variables are set, for more information refer to the [Azure Identity environment variables section](https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.1.0b1/sdk/identity/azure-identity#environment-variables)
 
 ```python
 # Create a ContainerRegistryClient that will authenticate through Active Directory
@@ -69,7 +67,7 @@ client = ContainerRegistryClient(endpoint, DefaultAzureCredential(), audience=au
 
 A **registry** stores Docker images and [OCI Artifacts](https://opencontainers.org/).  An image or artifact consists of a **manifest** and **layers**.  An image's manifest describes the layers that make up the image, and is uniquely identified by its **digest**.  An image can also be "tagged" to give it a human-readable alias.  An image or artifact can have zero or more **tags** associated with it, and each tag uniquely identifies the image.  A collection of images that share the same name but have different tags, is referred to as a **repository**.
 
-For more information please see [Container Registry Concepts](https://docs.microsoft.com/azure/container-registry/container-registry-concepts).
+For more information please see [Container Registry Concepts](/azure/container-registry/container-registry-concepts).
 
 
 ## Examples
@@ -170,7 +168,7 @@ describes available configurations for retries, logging, transport protocols, an
 
 - Go further with azure.containerregistry and our [samples][samples].
 - Watch a [demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?service=container-registry).
-- Read more about the [Azure Container Registry service](https://docs.microsoft.com/azure/container-registry/container-registry-intro).
+- Read more about the [Azure Container Registry service](/azure/container-registry/container-registry-intro).
 
 ## Contributing
 
@@ -187,21 +185,21 @@ additional questions or comments.
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fcontainerregistry%2Fazure-containerregistry%2FREADME.png)
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/containerregistry/azure-containerregistry
+[source]: https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.1.0b1/sdk/containerregistry/azure-containerregistry
 [package]: https://pypi.org/project/azure-containerregistry/
 [docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-containerregistry/1.0.0b1/index.html
-[rest_docs]: https://docs.microsoft.com/rest/api/containerregistry/
-[product_docs]:  https://docs.microsoft.com/azure/container-registry
+[rest_docs]: /rest/api/containerregistry/
+[product_docs]:  /azure/container-registry
 [pip_link]: https://pypi.org
-[container_registry_docs]: https://docs.microsoft.com/azure/container-registry/container-registry-intro
-[container_registry_create_ps]: https://docs.microsoft.com/azure/container-registry/container-registry-get-started-powershell
-[container_registry_create_cli]: https://docs.microsoft.com/azure/container-registry/container-registry-get-started-azure-cli
-[container_registry_create_portal]: https://docs.microsoft.com/azure/container-registry/container-registry-get-started-portal
-[container_registry_concepts]: https://docs.microsoft.com/azure/container-registry/container-registry-concepts
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[container_registry_docs]: /azure/container-registry/container-registry-intro
+[container_registry_create_ps]: /azure/container-registry/container-registry-get-started-powershell
+[container_registry_create_cli]: /azure/container-registry/container-registry-get-started-azure-cli
+[container_registry_create_portal]: /azure/container-registry/container-registry-get-started-portal
+[container_registry_concepts]: /azure/container-registry/container-registry-concepts
+[azure_cli]: /cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
-[identity]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/README.md
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/containerregistry/azure-containerregistry/samples
+[identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-containerregistry_1.1.0b1/sdk/identity/azure-identity/README.md
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-containerregistry_1.1.0b1/sdk/containerregistry/azure-containerregistry/samples
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
@@ -209,5 +207,5 @@ additional questions or comments.
 [azure_core_ref_docs]: https://aka.ms/azsdk/python/core/docs
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
+[sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
 
