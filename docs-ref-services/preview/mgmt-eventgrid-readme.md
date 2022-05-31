@@ -3,10 +3,8 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-eventgrid, eventgrid
 author: lmazuel
 ms.author: lmazuel
-ms.date: 04/07/2022
+ms.date: 05/30/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: eventgrid
 ---
@@ -27,8 +25,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/event-grid)
-Code samples for this package can be found at [Event Grid Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](/python/api/overview/azure/event-grid)
+Code samples for this package can be found at [Event Grid Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
