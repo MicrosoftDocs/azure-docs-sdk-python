@@ -13,10 +13,10 @@ ms.service: face-api
 # Azure Face API
 
 > [!IMPORTANT]
-> Access to Face recognition features is limited and requires approval for responsible use in line with Microsoft's principles for face recognition. Use the [Face Recognition Limited Access Review](https://aka.ms/facerecognition) form to get access.
+> Face service access is limited based on eligibility and usage criteria in order to support our Responsible AI principles. Face service is only available to Microsoft managed customers and partners. Use the [Face Recognition intake form](https://aka.ms/facerecognition) to apply for access.
 
 > [!IMPORTANT]
-> The following Face attributes have been categorized as **sensitive attributes**: `age`, `gender`, `emotion`, `smile`, `hair`, `facial hair`, `makeup`. New Face customers won't be able to use these attributes unless they get approved for a corresponding scenario through the [Face Recognition Limited Access Review](https://aka.ms/facerecognition) form. Existing customers will have access to **sensitive attributes** until November 2022, after which they must also request access.
+> The following Face attributes have been categorized as **sensitive attributes**: `age`, `gender`, `emotion`, `smile`, `hair`, `facial hair`, `makeup`. New Face customers won't be able to use these attributes unless they get approved for a corresponding scenario through the [Face Recognition Limited Access Review](https://aka.ms/facerecognition) form. Existing customers will have access to **sensitive attributes** until June 21 2023, after which they must also request access.
 
 The Azure Face service provides AI algorithms that detect, recognize, and analyze human faces in images.
 
