@@ -7,13 +7,20 @@ inheritances:
 - azure.core.polling.base_polling.LongRunningOperation
 summary: Implements a operation resource polling, typically from Operation-Location.
 constructor:
-  syntax: OperationResourcePolling(operation_location_header='operation-location')
+  syntax: OperationResourcePolling(operation_location_header='operation-location',
+    *, lro_options=None)
   parameters:
   - name: operation_location_header
     description: Name of the header to return operation format (default 'operation-location')
-    isRequired: true
+    defaultValue: operation-location
     types:
     - <xref:str>
+  - name: any] lro_options
+    description: 'Additional options for LRO. For more information, see
+
+      [https://aka.ms/azsdk/autorest/openapi/lro-options](https://aka.ms/azsdk/autorest/openapi/lro-options)'
+    types:
+    - <xref:dict>[<xref:str,>
 methods:
 - uid: azure.core.polling.base_polling.OperationResourcePolling.can_poll
   name: can_poll
@@ -25,7 +32,7 @@ methods:
 - uid: azure.core.polling.base_polling.OperationResourcePolling.get_final_get_url
   name: get_final_get_url
   summary: If a final GET is needed, returns the URL.
-  signature: get_final_get_url(pipeline_response)
+  signature: 'get_final_get_url(pipeline_response: PipelineResponseType) -> Optional[str]'
   parameters:
   - name: pipeline_response
     isRequired: true
@@ -35,22 +42,25 @@ methods:
 - uid: azure.core.polling.base_polling.OperationResourcePolling.get_polling_url
   name: get_polling_url
   summary: Return the polling URL.
-  signature: get_polling_url()
+  signature: get_polling_url() -> str
 - uid: azure.core.polling.base_polling.OperationResourcePolling.get_status
   name: get_status
   summary: Process the latest status update retrieved from an "Operation-Location"
     header.
-  signature: get_status(pipeline_response)
+  signature: 'get_status(pipeline_response: PipelineResponseType) -> str'
   parameters:
   - name: response
     description: The response to extract the status.
     isRequired: true
     types:
     - <xref:azure.core.pipeline.PipelineResponse>
+  exceptions:
+  - type: <xref:BadResponse if response has no body>, <xref:or body does not contain
+      status.>
 - uid: azure.core.polling.base_polling.OperationResourcePolling.set_initial_status
   name: set_initial_status
   summary: Process first response after initiating long running operation.
-  signature: set_initial_status(pipeline_response)
+  signature: 'set_initial_status(pipeline_response: PipelineResponseType) -> str'
   parameters:
   - name: response
     description: initial REST call response.

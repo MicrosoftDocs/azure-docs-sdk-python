@@ -16,13 +16,13 @@ summary: 'A client to interact with a specific directory, although it may not ye
   and <xref:azure.storage.fileshare.ShareDirectoryClient.get_file_client> functions.
 
 
-
   For more optional configuration, please click
 
-  [here](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-storage-file-share#optional-configuration).'
+  [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
-  syntax: ShareDirectoryClient(account_url, share_name, directory_path, snapshot=None,
-    credential=None, **kwargs)
+  syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
+    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any]
+    = None, **kwargs: Optional[Any])'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -50,8 +50,8 @@ constructor:
     description: 'An optional share snapshot on which to operate. This can be the
       snapshot ID string
 
-      or the response returned from <xref:ShareClient.create_snapshot>.'
-    isRequired: true
+      or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
@@ -62,11 +62,13 @@ constructor:
       an instance of a AzureSasCredential from azure.core.credentials or an account
 
       shared access key.'
-    isRequired: true
+    defaultValue: None
   - name: api_version
-    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
 
-      Setting to an older version may result in reduced feature compatibility.
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.
 
 
       New in version 12.1.0.'
@@ -87,7 +89,8 @@ methods:
 
 
     This operation will block until the service has closed all open handles.'
-  signature: close_all_handles(recursive=False, **kwargs)
+  signature: 'close_all_handles(recursive: bool = False, **kwargs: Any) -> Dict[str,
+    int]'
   parameters:
   - name: recursive
     description: 'Boolean that specifies if operation should apply to the directory
@@ -111,7 +114,8 @@ methods:
 - uid: azure.storage.fileshare.ShareDirectoryClient.close_handle
   name: close_handle
   summary: Close an open file handle.
-  signature: close_handle(handle, **kwargs)
+  signature: 'close_handle(handle: Union[str, HandleItem], **kwargs: Any) -> Dict[str,
+    int]'
   parameters:
   - name: handle
     description: A specific handle to close.
@@ -132,11 +136,14 @@ methods:
     - <xref:dict>[<xref:str>, <xref:int>]
 - uid: azure.storage.fileshare.ShareDirectoryClient.create_directory
   name: create_directory
-  summary: Creates a new directory under the directory referenced by the client.
-  signature: create_directory(**kwargs)
+  summary: "Creates a new directory under the directory referenced by the client.\n\
+    \n:keyword ~datetime.datetime file_change_time\n   Change time for the directory.\
+    \ If not specified, change time will be set to the current date/time.\n\n   New\
+    \ in version 12.8.0: This parameter was introduced in API version '2021-06-08'."
+  signature: 'create_directory(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: metadata
-    description: 'Name-value pairs associated with the directory as metadata.'
+    description: Name-value pairs associated with the directory as metadata.
     types:
     - <xref:dict>(<xref:str,str>)
   - name: timeout
@@ -150,17 +157,17 @@ methods:
   examples:
   - "Creates a directory.<!--[!code-python[Main](les\\file_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\103\\\\\
-    azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   my_directory.create_directory()\n\
-    \n   ````\n"
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   my_directory.create_directory()\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareDirectoryClient.create_subdirectory
   name: create_subdirectory
   summary: 'Creates a new subdirectory and returns a client to interact
 
     with the subdirectory.'
-  signature: create_subdirectory(directory_name, **kwargs)
+  signature: 'create_subdirectory(directory_name: str, **kwargs) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -168,7 +175,7 @@ methods:
     types:
     - <xref:str>
   - name: metadata
-    description: 'Name-value pairs associated with the subdirectory as metadata.'
+    description: Name-value pairs associated with the subdirectory as metadata.
     types:
     - <xref:dict>(<xref:str,str>)
   - name: timeout
@@ -182,18 +189,18 @@ methods:
   examples:
   - "Create a subdirectory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create the directory\n\
-    \   parent_dir.create_directory()\n\n   # Create a subdirectory\n   subdir = parent_dir.create_subdirectory(\"\
-    subdir\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Create the directory\n   parent_dir.create_directory()\n\n   # Create a\
+    \ subdirectory\n   subdir = parent_dir.create_subdirectory(\"subdir\")\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareDirectoryClient.delete_directory
   name: delete_directory
   summary: 'Marks the directory for deletion. The directory is
 
     later deleted during garbage collection.'
-  signature: delete_directory(**kwargs)
+  signature: 'delete_directory(**kwargs: Any) -> None'
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
@@ -205,17 +212,17 @@ methods:
   examples:
   - "Deletes a directory.<!--[!code-python[Main](les\\file_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\103\\\\\
-    azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\", \"\
-    xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   my_directory.delete_directory()\n\
-    \n   ````\n"
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   my_directory.delete_directory()\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareDirectoryClient.delete_file
   name: delete_file
   summary: 'Marks the specified file for deletion. The file is later
 
     deleted during garbage collection.'
-  signature: delete_file(file_name, **kwargs)
+  signature: 'delete_file(file_name: str, **kwargs: Optional[Any]) -> None'
   parameters:
   - name: file_name
     description: The name of the file to delete.
@@ -232,15 +239,16 @@ methods:
   examples:
   - "Delete a file in a directory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Delete the file\
-    \ in the directory\n   my_directory.delete_file(file_name=\"sample\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Delete the file in the directory\n   my_directory.delete_file(file_name=\"\
+    sample\")\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareDirectoryClient.delete_subdirectory
   name: delete_subdirectory
   summary: Deletes a subdirectory.
-  signature: delete_subdirectory(directory_name, **kwargs)
+  signature: 'delete_subdirectory(directory_name: str, **kwargs) -> None'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -257,16 +265,29 @@ methods:
   examples:
   - "Delete a subdirectory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   parent_dir.delete_subdirectory(\"\
-    subdir\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   parent_dir.delete_subdirectory(\"subdir\")\n\n   ````\n"
+- uid: azure.storage.fileshare.ShareDirectoryClient.exists
+  name: exists
+  summary: Returns True if a directory exists and returns False otherwise.
+  signature: 'exists(**kwargs: Any) -> bool'
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: True if the directory exists, False otherwise.
+    types:
+    - <xref:bool>
 - uid: azure.storage.fileshare.ShareDirectoryClient.from_connection_string
   name: from_connection_string
   summary: Create ShareDirectoryClient from a Connection String.
-  signature: from_connection_string(conn_str, share_name, directory_path, credential=None,
-    **kwargs)
+  signature: 'from_connection_string(conn_str: str, share_name: str, directory_path:
+    str, credential: Optional[Any] = None, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -301,7 +322,9 @@ methods:
 - uid: azure.storage.fileshare.ShareDirectoryClient.from_directory_url
   name: from_directory_url
   summary: Create a ShareDirectoryClient from a directory url.
-  signature: from_directory_url(directory_url, snapshot=None, credential=None, **kwargs)
+  signature: 'from_directory_url(directory_url: str, snapshot: Optional[Union[str,
+    Dict[str, Any]]] = None, credential: Optional[Any] = None, **kwargs: Optional[Any])
+    -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
   parameters:
   - name: directory_url
     description: The full URI to the directory.
@@ -312,7 +335,7 @@ methods:
     description: 'An optional share snapshot on which to operate. This can be the
       snapshot ID string
 
-      or the response returned from <xref:ShareClient.create_snapshot>.'
+      or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     isRequired: true
     types:
     - <xref:str>
@@ -338,7 +361,7 @@ methods:
     specified directory. The data returned does not include the directory''s
 
     list of files.'
-  signature: get_directory_properties(**kwargs)
+  signature: 'get_directory_properties(**kwargs: Any) -> DirectoryProperties'
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
@@ -354,7 +377,7 @@ methods:
 
 
     The file need not already exist.'
-  signature: get_file_client(file_name, **kwargs)
+  signature: 'get_file_client(file_name: str, **kwargs: Any) -> azure.storage.fileshare._file_client.ShareFileClient'
   parameters:
   - name: file_name
     description: The name of the file.
@@ -369,7 +392,7 @@ methods:
 
 
     The subdirectory need not already exist.'
-  signature: get_subdirectory_client(directory_name, **kwargs)
+  signature: 'get_subdirectory_client(directory_name: str, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -383,18 +406,19 @@ methods:
   examples:
   - "Gets the subdirectory client.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Get a directory\
-    \ client and create the directory\n   parent = share.get_directory_client(\"dir1\"\
-    )\n   parent.create_directory()\n\n   # Get a subdirectory client and create the\
-    \ subdirectory \"dir1/dir2\"\n   subdirectory = parent.get_subdirectory_client(\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Get a directory client and create the directory\n   parent = share.get_directory_client(\"\
+    dir1\")\n   parent.create_directory()\n\n   # Get a subdirectory client and create\
+    \ the subdirectory \"dir1/dir2\"\n   subdirectory = parent.get_subdirectory_client(\"\
     dir2\")\n   subdirectory.create_directory()\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareDirectoryClient.list_directories_and_files
   name: list_directories_and_files
   summary: Lists all the directories and files under the directory.
-  signature: list_directories_and_files(name_starts_with=None, **kwargs)
+  signature: 'list_directories_and_files(name_starts_with: Optional[str] = None, **kwargs:
+    Any) -> azure.core.paging.ItemPaged'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only entities whose names
@@ -403,6 +427,29 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: include
+    description: 'Include this parameter to specify one or more datasets to include
+      in the response.
+
+      Possible str values are "timestamps", "Etag", "Attributes", "PermissionKey".
+
+
+      New in version 12.6.0.
+
+
+      This keyword argument was introduced in API version ''2020-10-02''.'
+    types:
+    - <xref:list>[<xref:str>]
+  - name: include_extended_info
+    description: 'If this is set to true, file id will be returned in listed results.
+
+
+      New in version 12.6.0.
+
+
+      This keyword argument was introduced in API version ''2020-10-02''.'
+    types:
+    - <xref:bool>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -414,16 +461,16 @@ methods:
   examples:
   - "List directories and files.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # List the directories\
-    \ and files under the parent directory\n   my_list = list(parent_dir.list_directories_and_files())\n\
-    \   print(my_list)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # List the directories and files under the parent directory\n   my_list =\
+    \ list(parent_dir.list_directories_and_files())\n   print(my_list)\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareDirectoryClient.list_handles
   name: list_handles
   summary: Lists opened handles on a directory or a file under the directory.
-  signature: list_handles(recursive=False, **kwargs)
+  signature: 'list_handles(recursive: bool = False, **kwargs: Any) -> azure.core.paging.ItemPaged'
   parameters:
   - name: recursive
     description: 'Boolean that specifies if operation should apply to the directory
@@ -441,6 +488,33 @@ methods:
     description: An auto-paging iterable of HandleItem
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.fileshare.HandleItem>]
+- uid: azure.storage.fileshare.ShareDirectoryClient.rename_directory
+  name: rename_directory
+  summary: "Rename the source directory.\n\n:paramtype file_attributes:~azure.storage.fileshare.NTFSAttributes\
+    \ or str\n:keyword file_creation_time:\n\n   Creation time for the directory.\n\
+    \n:paramtype file_creation_time:~datetime.datetime or str\n:keyword file_last_write_time:\n\
+    \n   Last write time for the file.\n\n:paramtype file_last_write_time:~datetime.datetime\
+    \ or str\n:keyword ~datetime.datetime file_change_time\n\n   Change time for the\
+    \ directory. If not specified, change time will be set to the current date/time.\n\
+    \n   New in version 12.8.0: This parameter was introduced in API version '2021-06-08'."
+  signature: 'rename_directory(new_name: str, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+  parameters:
+  - name: metadata
+    description: A name-value pair to associate with a file storage object.
+    types:
+    - <xref:Dict>[<xref:str,str>]
+  - name: destination_lease
+    description: 'Required if the destination file has an active lease. Value can
+      be a ShareLeaseClient object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  return:
+    description: The new Directory Client.
+    types:
+    - <xref:azure.storage.fileshare.ShareDirectoryClient>
 - uid: azure.storage.fileshare.ShareDirectoryClient.set_directory_metadata
   name: set_directory_metadata
   summary: 'Sets the metadata for the directory.
@@ -451,10 +525,11 @@ methods:
     attached to the directory. To remove all metadata from the directory,
 
     call this operation with an empty metadata dict.'
-  signature: set_directory_metadata(metadata, **kwargs)
+  signature: 'set_directory_metadata(metadata: Dict[str, Any], **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: metadata
-    description: 'Name-value pairs associated with the directory as metadata.'
+    description: Name-value pairs associated with the directory as metadata.
     isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
@@ -468,66 +543,21 @@ methods:
     - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.ShareDirectoryClient.set_http_headers
   name: set_http_headers
-  summary: Sets HTTP headers on the directory.
-  signature: set_http_headers(file_attributes='none', file_creation_time='preserve',
-    file_last_write_time='preserve', file_permission=None, permission_key=None, **kwargs)
+  summary: "Sets HTTP headers on the directory.\n\n:keyword ~datetime.datetime file_change_time\n\
+    \   Change time for the directory. If not specified, change time will be set to\
+    \ the current date/time.\n\n   New in version 12.8.0: This parameter was introduced\
+    \ in API version '2021-06-08'."
+  signature: 'set_http_headers(file_attributes: Union[str, NTFSAttributes] = ''none'',
+    file_creation_time: Optional[Union[str, datetime]] = ''preserve'', file_last_write_time:
+    Optional[Union[str, datetime]] = ''preserve'', file_permission: Optional[str]
+    = None, permission_key: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
-  - name: file_attributes
-    description: 'The file system attributes for files and directories.
-
-      If not set, indicates preservation of existing values.
-
-      Here is an example for when the var type is str: ''Temporary|Archive'''
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:azure.storage.fileshare.NTFSAttributes>
-  - name: file_creation_time
-    description: 'Creation time for the file
-
-      Default value: Preserve.'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:datetime>
-  - name: file_last_write_time
-    description: 'Last write time for the file
-
-      Default value: Preserve.'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:datetime>
-  - name: file_permission
-    description: 'If specified the permission (security
-
-      descriptor) shall be set for the directory/file. This header can be
-
-      used if Permission size is <= 8KB, else x-ms-file-permission-key
-
-      header shall be used. Default value: Inherit. If SDDL is specified as
-
-      input, it must have owner, group and dacl. Note: Only one of the
-
-      x-ms-file-permission or x-ms-file-permission-key should be specified.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: permission_key
-    description: 'Key of the permission to be set for the
-
-      directory/file. Note: Only one of the x-ms-file-permission or
-
-      x-ms-file-permission-key should be specified.'
-    isRequired: true
-    types:
-    - <xref:str>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>
   return:
-    description: 'File-updated property dict (Etag and last modified).'
+    description: File-updated property dict (Etag and last modified).
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.ShareDirectoryClient.upload_file
@@ -535,7 +565,8 @@ methods:
   summary: 'Creates a new file in the directory and returns a ShareFileClient
 
     to interact with the file.'
-  signature: upload_file(file_name, data, length=None, **kwargs)
+  signature: 'upload_file(file_name: str, data: Any, length: Optional[int] = None,
+    **kwargs: Any) -> azure.storage.fileshare._file_client.ShareFileClient'
   parameters:
   - name: file_name
     description: The name of the file.
@@ -553,7 +584,7 @@ methods:
     types:
     - <xref:int>
   - name: metadata
-    description: 'Name-value pairs associated with the file as metadata.'
+    description: Name-value pairs associated with the file as metadata.
     types:
     - <xref:dict>(<xref:str,str>)
   - name: content_settings
@@ -597,9 +628,9 @@ methods:
   examples:
   - "Upload a file to a directory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.5.0\\\\samples\\\\file_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Upload a file\
-    \ to the directory\n   with open(SOURCE_FILE, \"rb\") as source:\n       my_directory.upload_file(file_name=\"\
-    sample\", data=source)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.8.0\\\\samples\\\\file_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Upload a file to the directory\n   with open(SOURCE_FILE, \"rb\") as source:\n\
+    \       my_directory.upload_file(file_name=\"sample\", data=source)\n\n   ````\n"

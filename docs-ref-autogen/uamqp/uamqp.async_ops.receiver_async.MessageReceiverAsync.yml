@@ -48,7 +48,7 @@ constructor:
       will assume successful receipt of the message and clear it from the queue. The
 
       default is *PeekLock*.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:uamqp.constants.ReceiverSettleMode>
   - name: send_settle_mode
@@ -59,7 +59,7 @@ constructor:
       from the service that the message was successfully sent. If set to ''Settled'',
 
       the client will not wait for confirmation and assume success.'
-    isRequired: true
+    defaultValue: ReceiverSettleMode.PeekLock
     types:
     - <xref:uamqp.constants.SenderSettleMode>
   - name: desired_capabilities
@@ -67,52 +67,51 @@ constructor:
       \ a desired_capabilities object, please do as follows:\n\n   * 1. Create an\
       \ array of desired capability symbols: *capabilities_symbol_array = [types.AMQPSymbol(string)]*\
       \ \n\n\n   * 2. Transform the array to AMQPValue object: *utils.data_factory(types.AMQPArray(capabilities_symbol_array))*"
-    isRequired: true
+    defaultValue: SenderSettleMode.Unsettled
     types:
     - <xref:uamqp.c_uamqp.AMQPValue>
   - name: max_message_size
     description: The maximum allowed message size negotiated for the Link.
-    isRequired: true
+    defaultValue: '1048576'
     types:
     - <xref:int>
   - name: prefetch
     description: 'The receiver Link credit that determines how many
 
       messages the Link will attempt to handle per connection iteration.'
-    isRequired: true
+    defaultValue: '300'
     types:
     - <xref:int>
   - name: properties
     description: Metadata to be sent in the Link ATTACH frame.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>
   - name: error_policy
     description: 'A policy for parsing errors on link, connection and message
 
       disposition to determine whether the error should be retryable.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:uamqp.errors.ErrorPolicy>
   - name: debug
     description: 'Whether to turn on network trace logs. If *True*, trace logs
 
       will be logged at INFO level. Default is *False*.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: encoding
     description: 'The encoding to use for parameters supplied as strings.
 
       Default is ''UTF-8'''
-    isRequired: true
+    defaultValue: UTF-8
     types:
     - <xref:str>
+  - name: desired_capabilities
+    defaultValue: None
   - name: loop
-    description: A user specified event loop.
-    isRequired: true
-    types:
-    - <xref:asycnio.AbstractEventLoop>
+    defaultValue: None
 variables:
 - description: 'The mode by which to settle message receive
 
@@ -145,22 +144,25 @@ methods:
 - uid: uamqp.async_ops.receiver_async.MessageReceiverAsync.close_async
   name: close_async
   summary: Close the Receiver asynchronously, leaving the link intact.
-  signature: close_async()
+  signature: async close_async()
 - uid: uamqp.async_ops.receiver_async.MessageReceiverAsync.destroy_async
   name: destroy_async
   summary: Asynchronously close both the Receiver and the Link. Clean up any C objects.
-  signature: destroy_async()
+  signature: async destroy_async()
 - uid: uamqp.async_ops.receiver_async.MessageReceiverAsync.open_async
   name: open_async
   summary: 'Asynchronously open the MessageReceiver in order to start
 
     processing messages.'
-  signature: open_async()
+  signature: async open_async()
+  exceptions:
+  - type: uamqp.errors.AMQPConnectionError if the Receiver raisesan error on opening.
+      This can happen if the source URI is invalidor the credentials are rejected.
 - uid: uamqp.async_ops.receiver_async.MessageReceiverAsync.reset_link_credit_async
   name: reset_link_credit_async
   summary: Asynchronously reset the link credit. This method would send flow control
     frame to the sender.
-  signature: reset_link_credit_async(link_credit, **kwargs)
+  signature: async reset_link_credit_async(link_credit, **kwargs)
   parameters:
   - name: link_credit
     description: The link credit amount that is requested.
@@ -170,4 +172,7 @@ methods:
 - uid: uamqp.async_ops.receiver_async.MessageReceiverAsync.work_async
   name: work_async
   summary: Update the link status.
-  signature: work_async()
+  signature: async work_async()
+attributes:
+- uid: uamqp.async_ops.receiver_async.MessageReceiverAsync.loop
+  name: loop

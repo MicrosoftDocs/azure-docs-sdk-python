@@ -17,7 +17,7 @@ summary: 'A client to interact with the Table Service at the account level.
   can be retrieved using the <xref:azure.data.tables.TableServiceClient.get_table_client>
   function.'
 constructor:
-  syntax: TableServiceClient(endpoint, **kwargs)
+  syntax: 'TableServiceClient(endpoint: str, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: 'The URL to the table service endpoint. Any other entities included
@@ -33,41 +33,43 @@ constructor:
       the
 
       account URL already has a SAS token. The value can be one of AzureNamedKeyCredential
+      (azure-core),
 
-      or AzureSasCredential from azure-core.'
+      AzureSasCredential (azure-core), or TokenCredentials from azure-identity.'
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
   - name: api_version
     description: "The Storage API version to use for requests. Default value is '2019-02-02'.\n\
       Setting to an older version may result in reduced feature compatibility.\n\n\
       \n\n## Example:Authenticating a TableServiceClient from a Shared Access Key<!--[!code-python[Main](les\\\
       sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
       : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-      a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_authentication.py\"\
-      , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false,\
-      \ \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.data.tables\
-      \ import TableServiceClient\n   from azure.core.credentials import AzureNamedKeyCredential,\
-      \ AzureSasCredential\n\n   # Create a SAS token to use for authentication of\
-      \ a client\n   from azure.data.tables import generate_account_sas, ResourceTypes,\
-      \ AccountSasPermissions\n\n   print(\"Account name: {}\".format(self.account_name))\n\
-      \   credential = AzureNamedKeyCredential(self.account_name, self.access_key)\n\
-      \   sas_token = generate_account_sas(\n       credential,\n       resource_types=ResourceTypes(service=True),\n\
-      \       permission=AccountSasPermissions(read=True),\n       expiry=datetime.utcnow()\
-      \ + timedelta(hours=1),\n   )\n\n   with TableServiceClient(endpoint=self.endpoint,\
+      a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+      \\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
+      \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+      : false} -->\n\n````python\n\n   from azure.data.tables import TableServiceClient\n\
+      \   from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential\n\
+      \n   # Create a SAS token to use for authentication of a client\n   from azure.data.tables\
+      \ import generate_account_sas, ResourceTypes, AccountSasPermissions\n\n   print(\"\
+      Account name: {}\".format(self.account_name))\n   credential = AzureNamedKeyCredential(self.account_name,\
+      \ self.access_key)\n   sas_token = generate_account_sas(\n       credential,\n\
+      \       resource_types=ResourceTypes(service=True),\n       permission=AccountSasPermissions(read=True),\n\
+      \       expiry=datetime.utcnow() + timedelta(hours=1),\n   )\n\n   with TableServiceClient(endpoint=self.endpoint,\
       \ credential=AzureSasCredential(sas_token)) as token_auth_table_service:\n \
       \      properties = token_auth_table_service.get_service_properties()\n    \
       \   print(\"Shared Access Signature: {}\".format(properties))\n\n   ````\n\n\
       Authenticating a TableServiceClient from a Shared Account Key<!--[!code-python[Main](les\\\
       sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
       : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-      a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_authentication.py\"\
-      , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false,\
-      \ \"highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.data.tables\
-      \ import TableServiceClient\n   from azure.core.credentials import AzureNamedKeyCredential\n\
-      \n   credential = AzureNamedKeyCredential(self.account_name, self.access_key)\n\
-      \   with TableServiceClient(endpoint=self.endpoint, credential=credential) as\
-      \ table_service:\n       properties = table_service.get_service_properties()\n\
+      a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+      \\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
+      \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+      : false} -->\n\n````python\n\n   from azure.data.tables import TableServiceClient\n\
+      \   from azure.core.credentials import AzureNamedKeyCredential\n\n   credential\
+      \ = AzureNamedKeyCredential(self.account_name, self.access_key)\n   with TableServiceClient(endpoint=self.endpoint,\
+      \ credential=credential) as table_service:\n       properties = table_service.get_service_properties()\n\
       \       print(\"Shared Key: {}\".format(properties))\n\n   ````"
     types:
     - <xref:str>
@@ -84,7 +86,7 @@ methods:
 - uid: azure.data.tables.TableServiceClient.create_table
   name: create_table
   summary: Creates a new table under the current account.
-  signature: create_table(table_name, **kwargs)
+  signature: 'create_table(table_name: str, **kwargs: Any) -> azure.data.tables._table_client.TableClient'
   parameters:
   - name: table_name
     description: The Table name.
@@ -101,9 +103,10 @@ methods:
   - "Creating a table from the TableServiceClient object<!--[!code-python[Main](les\\\
     sample_create_delete_table.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_create_delete_table.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   with TableServiceClient.from_connection_string(self.connection_string)\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+    \\sample_create_delete_table.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   with TableServiceClient.from_connection_string(self.connection_string)\
     \ as table_service_client:\n       try:\n           table_client = table_service_client.create_table(table_name=\"\
     myTable\")\n           print(\"Created table {}!\".format(table_client.table_name))\n\
     \       except ResourceExistsError:\n           print(\"Table already exists\"\
@@ -115,7 +118,7 @@ methods:
     If the table currently exists, the current table is
 
     returned.'
-  signature: create_table_if_not_exists(table_name, **kwargs)
+  signature: 'create_table_if_not_exists(table_name: str, **kwargs: Any) -> azure.data.tables._table_client.TableClient'
   parameters:
   - name: table_name
     description: The Table name.
@@ -129,13 +132,14 @@ methods:
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
-  - "Deleting a table from the TableServiceClient object<!--[!code-python[Main](les\\\
+  - "Creating a table if it doesn't exist, from the TableServiceClient object<!--[!code-python[Main](les\\\
     sample_create_delete_table.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_create_delete_table.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   with TableServiceClient.from_connection_string(self.connection_string)\
-    \ as table_service_client:\n       table_client = TableServiceClient.create_table_if_not_exists(table_name=\"\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+    \\sample_create_delete_table.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   with TableServiceClient.from_connection_string(self.connection_string)\
+    \ as table_service_client:\n       table_client = table_service_client.create_table_if_not_exists(table_name=\"\
     myTable\")\n       print(\"Table name: {}\".format(table_client.table_name))\n\
     \n   ````\n"
 - uid: azure.data.tables.TableServiceClient.delete_table
@@ -143,7 +147,7 @@ methods:
   summary: 'Deletes the table under the current account. No error will be raised
 
     if the given table is not found.'
-  signature: delete_table(table_name, **kwargs)
+  signature: 'delete_table(table_name: str, **kwargs: Any) -> None'
   parameters:
   - name: table_name
     description: The Table name.
@@ -160,15 +164,16 @@ methods:
   - "Deleting a table from the TableServiceClient object<!--[!code-python[Main](les\\\
     sample_create_delete_table.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_create_delete_table.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   with TableServiceClient.from_connection_string(self.connection_string)\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+    \\sample_create_delete_table.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   with TableServiceClient.from_connection_string(self.connection_string)\
     \ as table_service_client:\n       table_service_client.delete_table(table_name=\"\
     myTable\")\n       print(\"Deleted table {}!\".format(\"myTable\"))\n\n   ````\n"
 - uid: azure.data.tables.TableServiceClient.from_connection_string
   name: from_connection_string
   summary: Create TableServiceClient from a connection string.
-  signature: from_connection_string(conn_str, **kwargs)
+  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> azure.data.tables._table_service_client.TableServiceClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage or Cosmos account.
@@ -185,10 +190,11 @@ methods:
   - "Authenticating a TableServiceClient from a connection_string<!--[!code-python[Main](les\\\
     sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_authentication.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.data.tables\
-    \ import TableServiceClient\n\n   with TableServiceClient.from_connection_string(conn_str=self.connection_string)\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+    \\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
+    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.data.tables import TableServiceClient\n\
+    \n   with TableServiceClient.from_connection_string(conn_str=self.connection_string)\
     \ as table_service:\n       properties = table_service.get_service_properties()\n\
     \       print(\"Connection String: {}\".format(properties))\n\n   ````\n"
 - uid: azure.data.tables.TableServiceClient.get_service_properties
@@ -196,11 +202,13 @@ methods:
   summary: 'Gets the properties of an account''s Table service,
 
     including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.'
-  signature: get_service_properties(**kwargs)
+  signature: 'get_service_properties(**kwargs: Any) -> Dict[str, object]'
   return:
     description: Dictionary of service properties
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.TableServiceClient.get_service_stats
   name: get_service_stats
   summary: 'Retrieves statistics related to replication for the Table service. It
@@ -208,18 +216,20 @@ methods:
 
     location endpoint when read-access geo-redundant replication is enabled for the
     account.'
-  signature: get_service_stats(**kwargs)
+  signature: 'get_service_stats(**kwargs: Any) -> Dict[str, object]'
   return:
     description: Dictionary of service stats
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
+  exceptions:
+  - type: 'azure.core.exceptions.HttpResponseError:'
 - uid: azure.data.tables.TableServiceClient.get_table_client
   name: get_table_client
   summary: 'Get a client to interact with the specified table.
 
 
     The table need not already exist.'
-  signature: get_table_client(table_name, **kwargs)
+  signature: 'get_table_client(table_name: str, **kwargs: Any) -> azure.data.tables._table_client.TableClient'
   parameters:
   - name: table_name
     description: The table name
@@ -233,7 +243,7 @@ methods:
 - uid: azure.data.tables.TableServiceClient.list_tables
   name: list_tables
   summary: Queries tables under the given account.
-  signature: list_tables(**kwargs)
+  signature: 'list_tables(**kwargs: Any) -> azure.core.paging.ItemPaged[azure.data.tables._models.TableItem]'
   parameters:
   - name: results_per_page
     description: Number of tables per page in returned ItemPaged
@@ -248,17 +258,17 @@ methods:
   examples:
   - "Listing all tables in a storage account<!--[!code-python[Main](les\\sample_query_tables.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_query_tables.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   # List all the tables in the service\n\
-    \   list_tables = table_service.list_tables()\n   print(\"Listing tables:\")\n\
-    \   for table in list_tables:\n       print(\"\\t{}\".format(table.name))\n\n\
-    \   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\\sample_query_tables.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # List all the tables in the service\n   list_tables = table_service.list_tables()\n\
+    \   print(\"Listing tables:\")\n   for table in list_tables:\n       print(\"\\\
+    t{}\".format(table.name))\n\n   ````\n"
 - uid: azure.data.tables.TableServiceClient.query_tables
   name: query_tables
   summary: Queries tables under the given account.
-  signature: query_tables(query_filter, **kwargs)
+  signature: 'query_tables(query_filter: str, **kwargs: Any) -> azure.core.paging.ItemPaged[azure.data.tables._models.TableItem]'
   parameters:
   - name: query_filter
     description: Specify a filter to return certain tables.
@@ -279,23 +289,22 @@ methods:
     - <xref:azure.core.paging.ItemPaged>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Querying tables in a storage account<!--[!code-python[Main](les\\sample_query_tables.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\173\\\\azure-data-tables-12.0.0\\\\samples\\\\sample_query_tables.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   table_name = \"mytable1\"\n  \
-    \ name_filter = \"TableName eq '{}'\".format(table_name)\n   queried_tables =\
-    \ table_service.query_tables(name_filter)\n\n   print(\"Queried_tables\")\n  \
-    \ for table in queried_tables:\n       print(\"\\t{}\".format(table.name))\n\n\
-    \   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\\sample_query_tables.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   table_name = \"mytable1\"\n   name_filter = \"TableName eq '{}'\".format(table_name)\n\
+    \   queried_tables = table_service.query_tables(name_filter)\n\n   print(\"Queried_tables\"\
+    )\n   for table in queried_tables:\n       print(\"\\t{}\".format(table.name))\n\
+    \n   ````\n"
 - uid: azure.data.tables.TableServiceClient.set_service_properties
   name: set_service_properties
   summary: "Sets properties for an account's Table service endpoint,\n   including\
     \ properties for Analytics and CORS (Cross-Origin Resource Sharing) rules."
-  signature: set_service_properties(**kwargs)
+  signature: 'set_service_properties(**kwargs: Any) -> None'
   parameters:
   - name: analytics_logging
     description: Properties for analytics

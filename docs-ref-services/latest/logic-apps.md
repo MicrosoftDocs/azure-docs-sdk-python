@@ -7,7 +7,7 @@ ms.author: sttramer
 manager: douge
 
 ms.date: 07/10/2017
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
@@ -25,4 +25,4 @@ ms.service: multiple
 pip install azure-mgmt-logic
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/logicapps/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-logic)

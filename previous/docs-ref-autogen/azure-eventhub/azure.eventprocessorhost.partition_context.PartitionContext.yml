@@ -8,6 +8,13 @@ inheritances:
 summary: Encapsulates information related to an Event Hubs partition used by AbstractEventProcessor.
 constructor:
   syntax: PartitionContext(host, partition_id, eh_path, consumer_group_name, pump_loop=None)
+  parameters:
+  - name: host
+  - name: partition_id
+  - name: eh_path
+  - name: consumer_group_name
+  - name: pump_loop
+    defaultValue: None
 methods:
 - uid: azure.eventprocessorhost.partition_context.PartitionContext.checkpoint_async
   name: checkpoint_async
@@ -15,7 +22,7 @@ methods:
     \ for\nand persists to the checkpoint manager.\n\n:param event_processor_context\
     \ An optional custom state value for the Event Processor.\n   This data must be\
     \ in a JSON serializable format."
-  signature: checkpoint_async(event_processor_context=None)
+  signature: async checkpoint_async(event_processor_context=None)
   parameters:
   - name: event_processor_context
     defaultValue: None
@@ -24,27 +31,30 @@ methods:
   summary: "Stores the offset and sequenceNumber from the provided received EventData\
     \ instance,\nthen writes those values to the checkpoint store via the checkpoint\
     \ manager.\nOptionally stores the state of the Event Processor along the checkpoint.\n\
-    \n\n:param event_processor_context An optional custom state value for the Event\
+    \n:param event_processor_context An optional custom state value for the Event\
     \ Processor.\n   This data must be in a JSON serializable format."
-  signature: checkpoint_async_event_data(event_data, event_processor_context=None)
+  signature: async checkpoint_async_event_data(event_data, event_processor_context=None)
   parameters:
   - name: event_data
     isRequired: true
   - name: event_processor_context
     defaultValue: None
+  exceptions:
+  - type: ValueError if suplied event_data is None.
+  - type: ValueError if the sequenceNumber is less than the last checkpointed value.
 - uid: azure.eventprocessorhost.partition_context.PartitionContext.get_initial_offset_async
   name: get_initial_offset_async
   summary: Gets the initial offset for processing the partition.
-  signature: get_initial_offset_async()
+  signature: async get_initial_offset_async()
   return:
     types:
     - <xref:str>
 - uid: azure.eventprocessorhost.partition_context.PartitionContext.persist_checkpoint_async
   name: persist_checkpoint_async
   summary: "Persists the checkpoint, and - optionally - the state of the Event Processor.\n\
-    \n\n:param event_processor_context An optional custom state value for the Event\
+    \n:param event_processor_context An optional custom state value for the Event\
     \ Processor.\n   This data must be in a JSON serializable format."
-  signature: persist_checkpoint_async(checkpoint, event_processor_context=None)
+  signature: async persist_checkpoint_async(checkpoint, event_processor_context=None)
   parameters:
   - name: checkpoint
     isRequired: true

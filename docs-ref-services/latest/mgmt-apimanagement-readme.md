@@ -1,21 +1,25 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-apimanagement, apimanagement
-author: maggiepint
-ms.author: magpint
-ms.date: 04/02/2021
-ms.topic: article
+author: mayurid
+ms.author: mayurid
+ms.date: 01/13/2022
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: apimanagement
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure API Management Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
+This package has been tested with Python 2.7, 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
+
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 
@@ -33,7 +37,7 @@ Additional code samples for different Azure services are available at [Samples R
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
-section of the project.
+section of the project. 
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-apimanagement%2FREADME.png)

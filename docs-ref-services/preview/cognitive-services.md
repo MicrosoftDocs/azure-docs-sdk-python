@@ -2,12 +2,12 @@
 title: Azure Cognitive Services modules for Python
 description: Reference for Azure Cognitive Services modules for Python
 keywords: Azure, python, SDK, API, Cognitive Services
-author: rloutlaw
-ms.author: routlaw
+author: ramya-rao-a
+ms.author: ramyar
 manager: angerobe
 
 ms.date: 04/04/2018
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

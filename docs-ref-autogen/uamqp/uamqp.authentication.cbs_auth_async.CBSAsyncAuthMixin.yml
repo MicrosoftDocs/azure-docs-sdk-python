@@ -6,17 +6,20 @@ module: uamqp.authentication.cbs_auth_async
 inheritances:
 - uamqp.authentication.cbs_auth.CBSAuthMixin
 summary: Mixin to handle sending and refreshing CBS auth tokens asynchronously.
+constructor:
+  syntax: CBSAsyncAuthMixin()
 methods:
 - uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.close_authenticator_async
   name: close_authenticator_async
   summary: Close the CBS auth channel and session asynchronously.
-  signature: close_authenticator_async()
+  signature: async close_authenticator_async()
 - uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.create_authenticator_async
   name: create_authenticator_async
   summary: 'Create the async AMQP session and the CBS channel with which
 
     to negotiate the token.'
-  signature: create_authenticator_async(connection, debug=False, loop=None, **kwargs)
+  signature: async create_authenticator_async(connection, debug=False, loop=None,
+    **kwargs)
   parameters:
   - name: connection
     description: 'The underlying AMQP connection on which
@@ -33,10 +36,7 @@ methods:
     types:
     - <xref:bool>
   - name: loop
-    description: A user specified event loop.
     defaultValue: None
-    types:
-    - <xref:asycnio.AbstractEventLoop>
   return:
     types:
     - <xref:uamqp.c_uamqp.CBSTokenAuth>
@@ -57,7 +57,13 @@ methods:
     The
 
     second indicates whether the token negotiation is still in progress.'
-  signature: handle_token_async()
+  signature: async handle_token_async()
   return:
     types:
     - <xref:tuple>[<xref:bool>, <xref:bool>]
+  exceptions:
+  - type: uamqp.errors.AuthenticationException if the token authentication fails.
+  - type: uamqp.errors.TokenExpired if the token has expired and cannot berefreshed.
+attributes:
+- uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.loop
+  name: loop

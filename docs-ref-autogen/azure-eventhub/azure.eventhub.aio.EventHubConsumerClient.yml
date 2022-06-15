@@ -41,6 +41,8 @@ summary: 'The EventHubConsumerClient class defines a high level interface for
 
   is set.'
 constructor:
+  syntax: 'EventHubConsumerClient(fully_qualified_namespace: str, eventhub_name: str,
+    consumer_group: str, credential: CredentialTypes, **kwargs)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Event Hubs namespace.
@@ -114,6 +116,32 @@ constructor:
       receiving.'
     types:
     - <xref:int>
+  - name: retry_backoff_factor
+    description: 'A backoff factor to apply between attempts after the second try
+
+      (most errors are resolved immediately by a second try without a delay).
+
+      In fixed mode, retry policy will always sleep for {backoff factor}.
+
+      In ''exponential'' mode, retry policy will sleep for: *{backoff factor} * (2
+      ** ({number of total retries} - 1))*
+
+      seconds. If the backoff_factor is 0.1, then the retry will sleep
+
+      for [0.0s, 0.2s, 0.4s, ...] between retries. The default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: The maximum back off time. Default value is 120 seconds (2 minutes).
+    types:
+    - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    types:
+    - <xref:str>
   - name: idle_timeout
     description: 'Timeout, in seconds, after which this client will close the underlying
       connection
@@ -144,7 +172,7 @@ constructor:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:Dict>
   - name: checkpoint_store
     description: 'A manager that stores the partition load-balancing and checkpoint
       data
@@ -234,13 +262,14 @@ examples:
 - "Create a new instance of the EventHubConsumerClient.<!--[!code-python[Main](les\\\
   async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.5.0\\\\samples\\\\\
-  async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"\
-  language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-  : 1}} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubConsumerClient,\
-  \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n\
-  \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
-  \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   consumer = EventHubConsumerClient(fully_qualified_namespace=fully_qualified_namespace,\n\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-eventhub-5.10.0\\\\\
+  samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio\
+  \ import EventHubConsumerClient, EventHubSharedKeyCredential\n\n   fully_qualified_namespace\
+  \ = os.environ['EVENT_HUB_HOSTNAME']\n   eventhub_name = os.environ['EVENT_HUB_NAME']\n\
+  \   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n   shared_access_key\
+  \ = os.environ['EVENT_HUB_SAS_KEY']\n\n   consumer = EventHubConsumerClient(fully_qualified_namespace=fully_qualified_namespace,\n\
   \                                     consumer_group='$Default',\n             \
   \                        eventhub_name=eventhub_name,\n                        \
   \             credential=EventHubSharedKeyCredential(shared_access_policy, shared_access_key))\n\
@@ -250,28 +279,29 @@ methods:
   name: close
   summary: Stop retrieving events from the Event Hub and close the underlying AMQP
     connection and links.
-  signature: close() -> None
+  signature: async close() -> None
   return:
     types:
     - <xref:None>
   examples:
   - "Close down the client.<!--[!code-python[Main](les\\async_samples\\sample_code_eventhub_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\106\\\\azure-eventhub-5.5.0\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   import os\n\n\
-    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
-    \ = os.environ['EVENT_HUB_NAME']\n\n   from azure.eventhub.aio import EventHubConsumerClient\n\
-    \   consumer = EventHubConsumerClient.from_connection_string(\n       conn_str=event_hub_connection_str,\n\
-    \       consumer_group='$Default',\n       eventhub_name=eventhub_name  # EventHub\
-    \ name should be specified if it doesn't show up in connection string.\n   )\n\
-    \n   logger = logging.getLogger(\"azure.eventhub\")\n\n   async def on_event(partition_context,\
-    \ event):\n       # Put your code here.\n       # If the operation is i/o intensive,\
-    \ async will have better performance.\n       logger.info(\"Received event from\
-    \ partition: {}\".format(partition_context.partition_id))\n\n   # The receive\
-    \ method is a coroutine which will be blocking when awaited.\n   # It can be executed\
-    \ in an async task for non-blocking behavior, and combined with the 'close' method.\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\104\\\\azure-eventhub-5.10.0\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
+    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n\n   from azure.eventhub.aio\
+    \ import EventHubConsumerClient\n   consumer = EventHubConsumerClient.from_connection_string(\n\
+    \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
+    \       eventhub_name=eventhub_name  # EventHub name should be specified if it\
+    \ doesn't show up in connection string.\n   )\n\n   logger = logging.getLogger(\"\
+    azure.eventhub\")\n\n   async def on_event(partition_context, event):\n      \
+    \ # Put your code here.\n       # If the operation is i/o intensive, async will\
+    \ have better performance.\n       logger.info(\"Received event from partition:\
+    \ {}\".format(partition_context.partition_id))\n\n   # The receive method is a\
+    \ coroutine which will be blocking when awaited.\n   # It can be executed in an\
+    \ async task for non-blocking behavior, and combined with the 'close' method.\n\
     \n   recv_task = asyncio.ensure_future(consumer.receive(on_event=on_event))\n\
     \   await asyncio.sleep(3)  # keep receiving for 3 seconds\n   recv_task.cancel()\
     \  # stop receiving\n\n   # Close down the consumer handler explicitly.\n   await\
@@ -279,6 +309,12 @@ methods:
 - uid: azure.eventhub.aio.EventHubConsumerClient.from_connection_string
   name: from_connection_string
   summary: Create an EventHubConsumerClient from a connection string.
+  signature: 'from_connection_string(conn_str: str, consumer_group: str, *, eventhub_name:
+    Optional[str] = None, logging_enable: bool = False, http_proxy: Optional[Dict[str,
+    Union[str, int]]] = None, auth_timeout: float = 60, user_agent: Optional[str]
+    = None, retry_total: int = 3, transport_type: Optional[TransportType] = None,
+    checkpoint_store: Optional[CheckpointStore] = None, load_balancing_interval: float
+    = 10, **kwargs: Any) -> EventHubConsumerClient'
   parameters:
   - name: conn_str
     description: The connection string of an Event Hub.
@@ -305,7 +341,7 @@ methods:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:Dict>
   - name: auth_timeout
     description: 'The time in seconds to wait for a token to be authorized by the
       service.
@@ -343,6 +379,32 @@ methods:
       provided) to resume receiving.'
     types:
     - <xref:int>
+  - name: retry_backoff_factor
+    description: 'A backoff factor to apply between attempts after the second try
+
+      (most errors are resolved immediately by a second try without a delay).
+
+      In fixed mode, retry policy will always sleep for {backoff factor}.
+
+      In ''exponential'' mode, retry policy will sleep for: *{backoff factor} * (2
+      ** ({number of total retries} - 1))*
+
+      seconds. If the backoff_factor is 0.1, then the retry will sleep
+
+      for [0.0s, 0.2s, 0.4s, ...] between retries. The default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: The maximum back off time. Default value is 120 seconds (2 minutes).
+    types:
+    - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    types:
+    - <xref:str>
   - name: idle_timeout
     description: 'Timeout, in seconds, after which this client will close the underlying
       connection
@@ -458,31 +520,36 @@ methods:
   - "Create a new instance of the EventHubConsumerClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.5.0\\\\samples\\\
-    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubConsumerClient\n\
-    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
-    \ = os.environ['EVENT_HUB_NAME']\n   consumer = EventHubConsumerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
-    \       eventhub_name=eventhub_name  # EventHub name should be specified if it\
-    \ doesn't show up in connection string.\n   )\n\n   ````\n"
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-eventhub-5.10.0\\\\\
+    samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from\
+    \ azure.eventhub.aio import EventHubConsumerClient\n   event_hub_connection_str\
+    \ = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name = os.environ['EVENT_HUB_NAME']\n\
+    \   consumer = EventHubConsumerClient.from_connection_string(\n       conn_str=event_hub_connection_str,\n\
+    \       consumer_group='$Default',\n       eventhub_name=eventhub_name  # EventHub\
+    \ name should be specified if it doesn't show up in connection string.\n   )\n\
+    \n   ````\n"
 - uid: azure.eventhub.aio.EventHubConsumerClient.get_eventhub_properties
   name: get_eventhub_properties
   summary: "Get properties of the Event Hub.\n\nKeys in the returned dictionary include:\n\
     \n   * *eventhub_name* (str) \n\n   * *created_at* (UTC datetime.datetime) \n\n\
     \   * *partition_ids* (list[str])"
-  signature: get_eventhub_properties() -> typing.Dict[str, typing.Any]
+  signature: async get_eventhub_properties() -> Dict[str, Any]
   return:
     types:
-    - <xref:dict>
+    - <xref:Dict>
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.aio.EventHubConsumerClient.get_partition_ids
   name: get_partition_ids
   summary: Get partition IDs of the Event Hub.
-  signature: get_partition_ids() -> typing.List[str]
+  signature: async get_partition_ids() -> List[str]
   return:
     types:
     - <xref:list>[<xref:str>]
+  exceptions:
+  - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.aio.EventHubConsumerClient.get_partition_properties
   name: get_partition_properties
   summary: "Get properties of the specified partition.\n\nKeys in the properties dictionary\
@@ -490,7 +557,7 @@ methods:
     \ (int) \n\n   * *last_enqueued_sequence_number* (int) \n\n   * *last_enqueued_offset*\
     \ (str) \n\n   * *last_enqueued_time_utc* (UTC datetime.datetime) \n\n   * *is_empty*\
     \ (bool)"
-  signature: 'get_partition_properties(partition_id: str) -> typing.Dict[str, typing.Any]'
+  signature: 'async get_partition_properties(partition_id: str) -> Dict[str, Any]'
   parameters:
   - name: partition_id
     description: The target partition ID.
@@ -499,12 +566,21 @@ methods:
     - <xref:str>
   return:
     types:
-    - <xref:dict>
+    - <xref:Dict>
   exceptions:
   - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.aio.EventHubConsumerClient.receive
   name: receive
   summary: Receive events from partition(s), with optional load-balancing and checkpointing.
+  signature: 'async receive(on_event: Callable[[PartitionContext, Optional[EventData]],
+    Awaitable[None]], *, max_wait_time: Optional[float] = None, partition_id: Optional[str]
+    = None, owner_level: Optional[int] = None, prefetch: int = 300, track_last_enqueued_event_properties:
+    bool = False, starting_position: Optional[Union[str, int, datetime.datetime, Dict[str,
+    Any]]] = None, starting_position_inclusive: Union[bool, Dict[str, bool]] = False,
+    on_error: Optional[Callable[[PartitionContext, Exception], Awaitable[None]]] =
+    None, on_partition_initialize: Optional[Callable[[PartitionContext], Awaitable[None]]]
+    = None, on_partition_close: Optional[Callable[[PartitionContext, CloseReason],
+    Awaitable[None]]] = None) -> None'
   parameters:
   - name: on_event
     description: 'The callback function for handling a received event. The callback
@@ -591,7 +667,7 @@ methods:
       receiving only new events.'
     types:
     - <xref:str>, <xref:int>, <xref:datetime.datetime>
-    - <xref:dict>[<xref:str,Any>]
+    - <xref:Dict>[<xref:str,Any>]
   - name: starting_position_inclusive
     description: 'Determine whether the given starting_position is inclusive(>=) or
 
@@ -605,7 +681,7 @@ methods:
       value is False.'
     types:
     - <xref:bool>
-    - <xref:dict>[<xref:str,bool>]
+    - <xref:Dict>[<xref:str,bool>]
   - name: on_error
     description: 'The callback function that will be called when an error is raised
       during receiving
@@ -668,20 +744,30 @@ methods:
   - "Receive events from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.5.0\\\\samples\\\\async_samples\\\
-    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"language\":\
-    \ \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-    \n````python\n\n       logger = logging.getLogger(\"azure.eventhub\")\n\n    \
-    \   async def on_event(partition_context, event):\n           # Put your code\
-    \ here.\n           # If the operation is i/o intensive, async will have better\
-    \ performance.\n           logger.info(\"Received event from partition: {}\".format(partition_context.partition_id))\n\
-    \n       async with consumer:\n           await consumer.receive(\n          \
-    \     on_event=on_event,\n               starting_position=\"-1\",  # \"-1\" is\
-    \ from the beginning of the partition.\n           )\n\n   ````\n"
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-eventhub-5.10.0\\\\samples\\\
+    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n       logger = logging.getLogger(\"\
+    azure.eventhub\")\n\n       async def on_event(partition_context, event):\n  \
+    \         # Put your code here.\n           # If the operation is i/o intensive,\
+    \ async will have better performance.\n           logger.info(\"Received event\
+    \ from partition: {}\".format(partition_context.partition_id))\n\n       async\
+    \ with consumer:\n           await consumer.receive(\n               on_event=on_event,\n\
+    \               starting_position=\"-1\",  # \"-1\" is from the beginning of the\
+    \ partition.\n           )\n\n   ````\n"
 - uid: azure.eventhub.aio.EventHubConsumerClient.receive_batch
   name: receive_batch
   summary: Receive events from partition(s) in batches, with optional load-balancing
     and checkpointing.
+  signature: 'async receive_batch(on_event_batch: Callable[[PartitionContext, List[EventData]],
+    Awaitable[None]], *, max_batch_size: int = 300, max_wait_time: Optional[float]
+    = None, partition_id: Optional[str] = None, owner_level: Optional[int] = None,
+    prefetch: int = 300, track_last_enqueued_event_properties: bool = False, starting_position:
+    Optional[Union[str, int, datetime.datetime, Dict[str, Any]]] = None, starting_position_inclusive:
+    Union[bool, Dict[str, bool]] = False, on_error: Optional[Callable[[PartitionContext,
+    Exception], Awaitable[None]]] = None, on_partition_initialize: Optional[Callable[[PartitionContext],
+    Awaitable[None]]] = None, on_partition_close: Optional[Callable[[PartitionContext,
+    CloseReason], Awaitable[None]]] = None) -> None'
   parameters:
   - name: on_event_batch
     description: 'The callback function for handling a batch of received events. The
@@ -785,7 +871,7 @@ methods:
       receiving only new events.'
     types:
     - <xref:str>, <xref:int>, <xref:datetime.datetime>
-    - <xref:dict>[<xref:str,Any>]
+    - <xref:Dict>[<xref:str,Any>]
   - name: starting_position_inclusive
     description: 'Determine whether the given starting_position is inclusive(>=) or
 
@@ -799,7 +885,7 @@ methods:
       value is False.'
     types:
     - <xref:bool>
-    - <xref:dict>[<xref:str,bool>]
+    - <xref:Dict>[<xref:str,bool>]
   - name: on_error
     description: 'The callback function that will be called when an error is raised
       during receiving
@@ -862,14 +948,14 @@ methods:
   - "Receive events in batches from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.5.0\\\\samples\\\\async_samples\\\
-    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"language\":\
-    \ \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\
-    \n````python\n\n       logger = logging.getLogger(\"azure.eventhub\")\n\n    \
-    \   async def on_event_batch(partition_context, event_batch):\n           # Put\
-    \ your code here.\n           # If the operation is i/o intensive, async will\
-    \ have better performance.\n           logger.info(\n               \"{} events\
-    \ received from partition: {}\".format(len(event_batch), partition_context.partition_id)\n\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\104\\\\azure-eventhub-5.10.0\\\\samples\\\
+    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n       logger = logging.getLogger(\"\
+    azure.eventhub\")\n\n       async def on_event_batch(partition_context, event_batch):\n\
+    \           # Put your code here.\n           # If the operation is i/o intensive,\
+    \ async will have better performance.\n           logger.info(\n             \
+    \  \"{} events received from partition: {}\".format(len(event_batch), partition_context.partition_id)\n\
     \           )\n\n       async with consumer:\n           await consumer.receive_batch(\n\
     \               on_event_batch=on_event_batch,\n               starting_position=\"\
     -1\",  # \"-1\" is from the beginning of the partition.\n           )\n\n   ````\n"

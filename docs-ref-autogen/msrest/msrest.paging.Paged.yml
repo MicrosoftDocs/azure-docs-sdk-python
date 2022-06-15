@@ -8,13 +8,14 @@ inheritances:
 - collections.abc.Iterator
 summary: A container for paged REST responses.
 constructor:
-  syntax: Paged(command, classes, raw_headers=None, **kwargs)
+  syntax: 'Paged(command: Callable[[str], ClientResponse], classes: Dict[str, Model],
+    raw_headers: Dict[str, str] = None, **kwargs: Any)'
   parameters:
   - name: response
     description: server response object.
     isRequired: true
     types:
-    - <xref:ClientResponse>
+    - '[<xref:ClientResponse>](<xref:msrest.universal_http#msrest.universal_http.ClientResponse>)'
   - name: command
     description: Function to retrieve the next page of items.
     isRequired: true
@@ -24,7 +25,7 @@ constructor:
     description: 'A dictionary of class dependencies for
 
       deserialization.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>
   - name: raw_headers
@@ -38,12 +39,14 @@ methods:
   summary: 'Force moving the cursor to the next azure call.
 
 
-    This method is for advanced usage, iterator protocol is prefered.'
-  signature: advance_page()
+    This method is for advanced usage, iterator protocol is preferred.'
+  signature: advance_page() -> List[Model]
   return:
     description: The current page list
     types:
     - <xref:list>
+  exceptions:
+  - type: StopIteration if no further page
 - uid: msrest.paging.Paged.get
   name: get
   summary: 'Get an arbitrary page.
@@ -52,7 +55,7 @@ methods:
     This resets the iterator and then fully consumes it to return the
 
     specific page **only**.'
-  signature: get(url)
+  signature: 'get(url: str) -> List[Model]'
   parameters:
   - name: url
     description: URL to arbitrary page results.
@@ -66,11 +69,11 @@ methods:
 - uid: msrest.paging.Paged.reset
   name: reset
   summary: Reset iterator to first page.
-  signature: reset()
+  signature: reset() -> None
 attributes:
 - uid: msrest.paging.Paged.raw
   name: raw
   summary: Get current page as ClientRawResponse.
   return:
     types:
-    - <xref:ClientRawResponse>
+    - <xref:msrest.pipeline.ClientRawResponse>

@@ -1,35 +1,34 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-artifacts, 
-author: maggiepint
-ms.author: magpint
-ms.date: 07/03/2020
-ms.topic: article
+keywords: Azure, python, SDK, API, azure-synapse-artifacts, synapse
+author: wonner
+ms.author: wanyang
+ms.date: 04/22/2022
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: synapse
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Artifacts Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
-For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
+This package has been tested with Python 3.6, 3.7, 3.8, 3.9 and 3.10.
+For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 
-For code examples, see [Synapse Artifacts](https://docs.microsoft.com/python/api/overview/azure/)
-on docs.microsoft.com.
-
+For code examples, see [Synapse Artifacts](https://docs.microsoft.com/python/api/overview/azure/) on docs.microsoft.com.
 
 # Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
-
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-synapse-artifacts%2FREADME.png)
 

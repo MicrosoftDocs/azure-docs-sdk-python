@@ -15,8 +15,8 @@ summary: 'A client to interact with the DataLake directory, even if the director
   can be retrieved using the <xref:azure.storage.filedatalake.DataLakeDirectoryClient.get_sub_directory_client>
   or <xref:azure.storage.filedatalake.DataLakeDirectoryClient.get_file_client> functions.'
 constructor:
-  syntax: DataLakeDirectoryClient(account_url, file_system_name, directory_name, credential=None,
-    **kwargs)
+  syntax: 'DataLakeDirectoryClient(account_url: str, file_system_name: str, directory_name:
+    str, credential: Optional[Any] = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -49,7 +49,15 @@ constructor:
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
-    isRequired: true
+    defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
 variables:
 - description: The full endpoint URL to the file system, including SAS token if used.
   name: url
@@ -67,20 +75,21 @@ examples:
 - "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
   datalake_samples_instantiate_client.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
   \\samples\\\\datalake_samples_instantiate_client.py\", \"xml:space\": \"preserve\"\
-  , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-  : 1}} -->\n\n````python\n\n   from azure.storage.filedatalake import DataLakeDirectoryClient\n\
-  \   DataLakeDirectoryClient.from_connection_string(connection_string, \"myfilesystem\"\
-  , \"mydirectory\")\n\n   ````\n"
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake\
+  \ import DataLakeDirectoryClient\n   DataLakeDirectoryClient.from_connection_string(connection_string,\
+  \ \"myfilesystem\", \"mydirectory\")\n\n   ````\n"
 methods:
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_directory
   name: create_directory
   summary: Create a new directory.
-  signature: create_directory(metadata=None, **kwargs)
+  signature: 'create_directory(metadata: Optional[Dict[str, str]] = None, **kwargs)
+    -> Dict[str, Union[str, datetime]]'
   parameters:
   - name: metadata
-    description: 'Name-value pairs associated with the file as metadata.'
+    description: Name-value pairs associated with the file as metadata.
     defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
@@ -165,6 +174,12 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -174,15 +189,16 @@ methods:
   examples:
   - "Create directory.<!--[!code-python[Main](les\\datalake_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\\
-    azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   directory_client.create_directory()\n\
-    \n   ````\n"
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   directory_client.create_directory()\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_file
   name: create_file
   summary: Create a new file and return the file client to be interacted with.
-  signature: create_file(file, **kwargs)
+  signature: 'create_file(file: Union[azure.storage.filedatalake._models.FileProperties,
+    str], **kwargs) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -198,7 +214,7 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   - name: metadata
-    description: 'Name-value pairs associated with the file as metadata.'
+    description: Name-value pairs associated with the file as metadata.
   - name: lease
     description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
       object
@@ -276,6 +292,12 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -286,7 +308,8 @@ methods:
   name: create_sub_directory
   summary: Create a subdirectory and return the subdirectory client to be interacted
     with.
-  signature: create_sub_directory(sub_directory, metadata=None, **kwargs)
+  signature: 'create_sub_directory(sub_directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str], metadata: Optional[Dict[str, str]] = None, **kwargs) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -298,7 +321,7 @@ methods:
     - <xref:str>
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   - name: metadata
-    description: 'Name-value pairs associated with the file as metadata.'
+    description: Name-value pairs associated with the file as metadata.
     defaultValue: None
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
@@ -383,6 +406,12 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -392,7 +421,7 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.delete_directory
   name: delete_directory
   summary: Marks the specified directory for deletion.
-  signature: delete_directory(**kwargs)
+  signature: delete_directory(**kwargs) -> None
   parameters:
   - name: lease
     description: 'Required if the file has an active lease. Value can be a LeaseClient
@@ -446,15 +475,16 @@ methods:
   examples:
   - "Delete directory.<!--[!code-python[Main](les\\datalake_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\\
-    azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   new_directory.delete_directory()\n\
-    \n   ````\n"
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   new_directory.delete_directory()\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.delete_sub_directory
   name: delete_sub_directory
   summary: Marks the specified subdirectory for deletion.
-  signature: delete_sub_directory(sub_directory, **kwargs)
+  signature: 'delete_sub_directory(sub_directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str], **kwargs) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -517,7 +547,7 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.exists
   name: exists
   summary: Returns True if a directory exists and returns False otherwise.
-  signature: exists(**kwargs)
+  signature: 'exists(**kwargs: Any) -> bool'
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
@@ -530,12 +560,11 @@ methods:
   summary: 'Create DataLakeDirectoryClient from a Connection String.
 
 
-
     :return a DataLakeDirectoryClient
 
     :rtype ~azure.storage.filedatalake.DataLakeDirectoryClient'
-  signature: from_connection_string(conn_str, file_system_name, directory_name, credential=None,
-    **kwargs)
+  signature: 'from_connection_string(conn_str: str, file_system_name: str, directory_name:
+    str, credential: Optional[Any] = None, **kwargs: Any) -> ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -576,7 +605,7 @@ methods:
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the directory. It does not return the content of the directory.'
-  signature: get_directory_properties(**kwargs)
+  signature: 'get_directory_properties(**kwargs: Any) -> azure.storage.filedatalake._models.DirectoryProperties'
   parameters:
   - name: lease
     description: 'Required if the directory or file has an active lease. Value can
@@ -621,28 +650,37 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the directory was created with a customer-provided key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>
   return:
     types:
-    - <xref:DirectoryProperties>
+    - <xref:azure.storage.filedatalake.DirectoryProperties>
   examples:
   - "Getting the properties for a file/directory.<!--[!code-python[Main](les\\datalake_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   props = new_directory.get_directory_properties()\n\
-    \n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   props = new_directory.get_directory_properties()\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.get_file_client
   name: get_file_client
   summary: 'Get a client to interact with the specified file.
 
 
     The file need not already exist.'
-  signature: get_file_client(file)
+  signature: 'get_file_client(file: Union[azure.storage.filedatalake._models.FileProperties,
+    str]) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -664,7 +702,8 @@ methods:
 
 
     The sub subdirectory need not already exist.'
-  signature: get_sub_directory_client(sub_directory)
+  signature: 'get_sub_directory_client(sub_directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str]) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -682,7 +721,7 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.rename_directory
   name: rename_directory
   summary: Rename the source directory.
-  signature: rename_directory(new_name, **kwargs)
+  signature: 'rename_directory(new_name: str, **kwargs: Any) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
   parameters:
   - name: new_name
     description: 'the new directory name the user want to rename to.
@@ -787,10 +826,11 @@ methods:
   examples:
   - "Rename the source directory.<!--[!code-python[Main](les\\datalake_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_directory.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   new_dir_name =\
-    \ \"testdir2\"\n   print(\"Renaming the directory named '{}' to '{}'.\".format(dir_name,\
-    \ new_dir_name))\n   new_directory = directory_client\\\n       .rename_directory(new_name=directory_client.file_system_name\
-    \ + '/' + new_dir_name)\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_directory.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   new_dir_name = \"testdir2\"\n   print(\"Renaming the directory named '{}'\
+    \ to '{}'.\".format(dir_name, new_dir_name))\n   new_directory = directory_client\\\
+    \n       .rename_directory(new_name=directory_client.file_system_name + '/' +\
+    \ new_dir_name)\n\n   ````\n"

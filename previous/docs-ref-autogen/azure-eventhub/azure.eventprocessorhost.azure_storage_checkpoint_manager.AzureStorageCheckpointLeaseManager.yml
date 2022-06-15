@@ -22,7 +22,7 @@ constructor:
       authenticate requests signed with an account key and to construct the storage
 
       endpoint. It is required unless a connection string is given.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: storage_account_key
@@ -32,28 +32,28 @@ constructor:
       access
 
       will be used.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: lease_container_name
     description: 'The name of the container that will be used to store
 
       leases. If it does not already exist it will be created. Default value is ''eph-leases''.'
-    isRequired: true
+    defaultValue: eph-leases
     types:
     - <xref:str>
   - name: lease_renew_interval
     description: 'The interval in seconds at which EPH will attempt to
 
       renew the lease of a particular partition. Default value is 10.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: lease_duration
     description: 'The duration in seconds of a lease on a partition.
 
       Default value is 30.'
-    isRequired: true
+    defaultValue: '10'
     types:
     - <xref:int>
   - name: sas_token
@@ -63,14 +63,14 @@ constructor:
 
       account key will be used to sign. If neither are specified, anonymous access
       will be used.'
-    isRequired: true
+    defaultValue: '30'
     types:
     - <xref:str>
   - name: endpoint_suffix
     description: 'The host base component of the url, minus the account name.
 
       Defaults to Azure (core.windows.net). Override this to use a National Cloud.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: connection_string
@@ -79,9 +79,11 @@ constructor:
       See [http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/](http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/)
 
       for the connection string format.'
-    isRequired: true
+    defaultValue: core.windows.net
     types:
     - <xref:str>
+  - name: connection_string
+    defaultValue: None
 methods:
 - uid: azure.eventprocessorhost.azure_storage_checkpoint_manager.AzureStorageCheckpointLeaseManager.acquire_lease_async
   name: acquire_lease_async
@@ -90,7 +92,7 @@ methods:
     Note that it is legal to acquire a lease that is already owned by another host.
 
     Lease-stealing is how partitions are redistributed when additional hosts are started.'
-  signature: acquire_lease_async(lease)
+  signature: async acquire_lease_async(lease)
   parameters:
   - name: lease
     description: The stored lease to be acquired.
@@ -107,7 +109,7 @@ methods:
     if it does exist.
 
     The offset/sequenceNumber for a freshly-created checkpoint should be set to StartOfStream/0.'
-  signature: create_checkpoint_if_not_exists_async(partition_id)
+  signature: async create_checkpoint_if_not_exists_async(partition_id)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -123,7 +125,7 @@ methods:
   name: create_checkpoint_store_if_not_exists_async
   summary: Create the checkpoint store if it doesn't exist. Do nothing if it does
     exist.
-  signature: create_checkpoint_store_if_not_exists_async()
+  signature: async create_checkpoint_store_if_not_exists_async()
   return:
     description: '*True* if the checkpoint store already exists or was created OK,
       *False*
@@ -137,7 +139,7 @@ methods:
     not exist.
 
     Do nothing if it does exist in the store already.'
-  signature: create_lease_if_not_exists_async(partition_id)
+  signature: async create_lease_if_not_exists_async(partition_id)
   parameters:
   - name: partition_id
     description: The ID of a given parition.
@@ -151,7 +153,7 @@ methods:
 - uid: azure.eventprocessorhost.azure_storage_checkpoint_manager.AzureStorageCheckpointLeaseManager.create_lease_store_if_not_exists_async
   name: create_lease_store_if_not_exists_async
   summary: Create the lease store if it does not exist, do nothing if it does exist.
-  signature: create_lease_store_if_not_exists_async()
+  signature: async create_lease_store_if_not_exists_async()
   return:
     description: '*True* if the lease store already exists or was created successfully,
       *False* if not.'
@@ -163,7 +165,7 @@ methods:
     checkpoint
 
     for the given partition, that is treated as success.'
-  signature: delete_checkpoint_async(partition_id)
+  signature: async delete_checkpoint_async(partition_id)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -175,7 +177,7 @@ methods:
   summary: 'Delete the lease info for the given partition from the store.
 
     If there is no stored lease for the given partition, that is treated as success.'
-  signature: delete_lease_async(lease)
+  signature: async delete_lease_async(lease)
   parameters:
   - name: lease
     description: The stored lease to be deleted.
@@ -185,7 +187,7 @@ methods:
 - uid: azure.eventprocessorhost.azure_storage_checkpoint_manager.AzureStorageCheckpointLeaseManager.delete_lease_store_async
   name: delete_lease_store_async
   summary: Not used by EventProcessorHost, but a convenient function to have for testing.
-  signature: delete_lease_store_async()
+  signature: async delete_lease_store_async()
   return:
     description: '*True* if the lease store was deleted successfully, *False* if not.'
     types:
@@ -195,7 +197,7 @@ methods:
   summary: 'Return the lease info for all partitions.
 
     A typical implementation could just call get_lease_async() on all partitions.'
-  signature: get_all_leases()
+  signature: async get_all_leases()
   return:
     description: A list of lease info.
     types:
@@ -205,7 +207,7 @@ methods:
   summary: 'Get the checkpoint data associated with the given partition.
 
     Could return null if no checkpoint has been created for that partition.'
-  signature: get_checkpoint_async(partition_id)
+  signature: async get_checkpoint_async(partition_id)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -222,7 +224,7 @@ methods:
   summary: 'Return the lease info for the specified partition.
 
     Can return null if no lease has been created in the store for the specified partition.'
-  signature: get_lease_async(partition_id)
+  signature: async get_lease_async(partition_id)
   parameters:
   - name: partition_id
     description: The partition ID.
@@ -250,7 +252,7 @@ methods:
     or expired,
 
     releasing it is unnecessary, and will fail if attempted.'
-  signature: release_lease_async(lease)
+  signature: async release_lease_async(lease)
   parameters:
   - name: lease
     description: The stored lease to be released.
@@ -269,7 +271,7 @@ methods:
     it.
 
     You will have to call getLease() and then acquireLease() again.'
-  signature: renew_lease_async(lease)
+  signature: async renew_lease_async(lease)
   parameters:
   - name: lease
     description: The stored lease to be renewed.
@@ -286,7 +288,7 @@ methods:
     provided checkpoint
 
     checkpoint:offset/sequeceNumber to update the store with.'
-  signature: update_checkpoint_async(lease, checkpoint)
+  signature: async update_checkpoint_async(lease, checkpoint)
   parameters:
   - name: lease
     description: The stored lease to be updated.
@@ -310,7 +312,7 @@ methods:
     to
 
     avoid lease expiration during the process.'
-  signature: update_lease_async(lease)
+  signature: async update_lease_async(lease)
   parameters:
   - name: lease
     description: The stored lease to be updated.

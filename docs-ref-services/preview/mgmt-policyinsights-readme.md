@@ -1,16 +1,15 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-policyinsights, policyinsights
-author: maggiepint
-ms.author: magpint
-ms.date: 11/18/2020
-ms.topic: article
+author: mayurid
+ms.author: mayurid
+ms.date: 12/08/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: policyinsights
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Policy Insights Client Library.

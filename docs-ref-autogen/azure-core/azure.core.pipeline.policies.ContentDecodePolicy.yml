@@ -7,11 +7,12 @@ inheritances:
 - azure.core.pipeline.policies._base.SansIOHTTPPolicy
 summary: Policy for decoding unstreamed response content.
 constructor:
-  syntax: ContentDecodePolicy(response_encoding=None, **kwargs)
+  syntax: 'ContentDecodePolicy(response_encoding: Optional[str] = None, **kwargs:
+    Any)'
   parameters:
   - name: response_encoding
     description: The encoding to use if known for this service (will disable auto-detection)
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
 methods:
@@ -32,10 +33,10 @@ methods:
   - name: encoding
     defaultValue: None
   return:
-    description: 'A dict or XML tree, depending of the mime-type'
+    description: A dict or XML tree, depending of the mime-type
   exceptions:
-  - description: If deserialization fails
-    type: ~azure.core.exceptions.DecodeError
+  - type: azure.core.exceptions.DecodeError
+    description: If deserialization fails
 - uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_text
   name: deserialize_from_text
   summary: 'Decode response data according to content-type.
@@ -59,21 +60,23 @@ methods:
   - name: response
     description: If passed, exception will be annotated with that response
     defaultValue: None
-    types:
-    - <xref:azure.core.pipeline.transport.HttpResponse>
   - name: response
     defaultValue: None
   return:
     description: A dict or XML tree, depending of the mime_type
   exceptions:
-  - description: If deserialization fails
-    type: ~azure.core.exceptions.DecodeError
+  - type: azure.core.exceptions.DecodeError
+    description: If deserialization fails
 - uid: azure.core.pipeline.policies.ContentDecodePolicy.on_request
   name: on_request
-  signature: on_request(request)
+  summary: Is executed before sending the request from next policy.
+  signature: 'on_request(request: azure.core.pipeline.PipelineRequest) -> None'
   parameters:
   - name: request
+    description: Request to be modified before sent from next policy.
     isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
 - uid: azure.core.pipeline.policies.ContentDecodePolicy.on_response
   name: on_response
   summary: 'Extract data from the body of a REST response object.
@@ -83,7 +86,8 @@ methods:
     Will follow Content-Type to parse.
 
     We assume everything is UTF8 (BOM acceptable).'
-  signature: on_response(request, response)
+  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
+    Union[HttpResponse, AsyncHttpResponse]]) -> None'
   parameters:
   - name: request
     description: The PipelineRequest object.
@@ -102,14 +106,14 @@ methods:
     description: How to parse if raw_data is a string/bytes.
     isRequired: true
   exceptions:
-  - description: If JSON is requested and parsing is impossible.
-    type: JSONDecodeError
-  - description: If bytes is not UTF8
-    type: UnicodeDecodeError
-  - description: If bytes is not valid XML
-    type: xml.etree.ElementTree.ParseError
-  - description: If deserialization fails
-    type: ~azure.core.exceptions.DecodeError
+  - type: JSONDecodeError
+    description: If JSON is requested and parsing is impossible.
+  - type: UnicodeDecodeError
+    description: If bytes is not UTF8
+  - type: xml.etree.ElementTree.ParseError
+    description: If bytes is not valid XML
+  - type: azure.core.exceptions.DecodeError
+    description: If deserialization fails
 attributes:
 - uid: azure.core.pipeline.policies.ContentDecodePolicy.CONTEXT_NAME
   name: CONTEXT_NAME

@@ -1,17 +1,16 @@
 ---
 title: Azure Confidential Ledger client library for Python
-keywords: Azure, python, SDK, API, azure-confidentialledger, 
-author: maggiepint
-ms.author: magpint
-ms.date: 05/12/2021
-ms.topic: article
+keywords: Azure, python, SDK, API, azure-confidentialledger, confidentialledger
+author: lmazuel
+ms.author: lmazuel
+ms.date: 03/31/2022
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: confidentialledger
 ---
-
-# Azure Confidential Ledger client library for Python - Version 1.0.0b1 
+# Azure Confidential Ledger client library for Python - Version 1.0.0a20220330001 
 
 
 Azure Confidential Ledger provides a service for logging to an immutable, tamper-proof ledger. As part of the [Azure Confidential Computing][azure_confidential_computing] portfolio, Azure Confidential Ledger runs in secure, hardware-based trusted execution environments, also known as enclaves. It is built on Microsoft Research's [Confidential Consortium Framework][ccf].
@@ -69,7 +68,7 @@ with open(ledger_tls_cert_file_name, "w") as cert_file:
 
 credential = DefaultAzureCredential()
 ledger_client = ConfidentialLedgerClient(
-    endpoint="https://my-ledger-url.confidential-ledger.azure.com", 
+    endpoint="https://my-ledger-url.confidential-ledger.azure.com",
     credential=credential,
     ledger_certificate_path=ledger_tls_cert_file_name
 )
@@ -264,7 +263,7 @@ with open(ledger_tls_cert_file_name, "w") as cert_file:
 
 credential = ConfidentialLedgerCertificateCredential("path to user certificate PEM")
 ledger_client = ConfidentialLedgerClient(
-    endpoint="https://my-ledger-url.confidential-ledger.azure.com", 
+    endpoint="https://my-ledger-url.confidential-ledger.azure.com",
     credential=credential,
     ledger_certificate_path=ledger_tls_cert_file_name
 )
@@ -306,7 +305,7 @@ for node_id, quote in ledger_enclaves.quotes.items():
 [Microsoft Azure Attestation Service](https://azure.microsoft.com/services/azure-attestation/) is one provider of enclave quotes.
 
 ### Async API
-This library includes a complete async API supported on Python 3.5+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp). See the [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-confidentialledger_1.0.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+This library includes a complete async API supported on Python 3.5+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp). See the [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 An async client is obtained from `azure.confidentialledger.aio`. Methods have the same names and signatures as the synchronous client.
 
@@ -328,7 +327,7 @@ with open(ledger_tls_cert_file_name, "w") as cert_file:
 
 credential = DefaultAzureCredential()
 ledger_client = ConfidentialLedgerClient(
-    endpoint="https://my-ledger-url.confidential-ledger.azure.com", 
+    endpoint="https://my-ledger-url.confidential-ledger.azure.com",
     credential=credential,
     ledger_certificate_path=ledger_tls_cert_file_name
 )
@@ -339,7 +338,7 @@ await credential.close()
 
 # Alternatively, use them as async context managers (contextlib.AsyncExitStack can help).
 ledger_client = ConfidentialLedgerClient(
-    endpoint="https://my-ledger-url.confidential-ledger.azure.com", 
+    endpoint="https://my-ledger-url.confidential-ledger.azure.com",
     credential=credential,
     ledger_certificate_path=ledger_tls_cert_file_name
 )
@@ -388,7 +387,7 @@ with open(ledger_tls_cert_file_name, "w") as cert_file:
 
 credential = DefaultAzureCredential()
 ledger_client = ConfidentialLedgerClient(
-    endpoint="https://my-ledger-url.confidential-ledger.azure.com", 
+    endpoint="https://my-ledger-url.confidential-ledger.azure.com",
     credential=credential,
     ledger_certificate_path=ledger_tls_cert_file_name
 )
@@ -433,7 +432,7 @@ credential = DefaultAzureCredential()
 
 # This client will log detailed information about its HTTP sessions, at DEBUG level
 ledger_client = ConfidentialLedgerClient(
-    endpoint="https://my-ledger-url.confidential-ledger.azure.com", 
+    endpoint="https://my-ledger-url.confidential-ledger.azure.com",
     credential=credential,
     ledger_certificate_path=ledger_tls_cert_file_name,
     logging_enable=True
@@ -470,8 +469,8 @@ contact opencode@microsoft.com with any additional questions or comments.
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_cloud_shell]: https://shell.azure.com/bash
 [azure_confidential_computing]: https://azure.microsoft.com/solutions/confidential-compute
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-confidentialledger_1.0.0b1/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-confidentialledger_1.0.0b1/sdk/identity/azure-identity
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core#azure-core-library-exceptions
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_resource_manager]: https://docs.microsoft.com/azure/azure-resource-manager/management/overview
 [azure_sub]: https://azure.microsoft.com/free

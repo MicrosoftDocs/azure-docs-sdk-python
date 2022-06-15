@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-healthcareapis, apiforfhir
-author: maggiepint
-ms.author: magpint
-ms.date: 12/08/2020
-ms.topic: article
+author: ramya-rao-a
+ms.author: ramyar
+ms.date: 08/26/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
@@ -13,7 +13,7 @@ ms.service: apiforfhir
 
 ## Microsoft Azure SDK for Python
 
-This is the Microsoft Azure MyService Management Client Library.
+This is the Microsoft Azure Healthcareapis Management Client Library.
 
 Azure Resource Manager (ARM) is the next generation of management APIs
 that replace the old Azure Service Management (ASM).
@@ -46,5 +46,4 @@ the [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
 ![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-healthcareapis%2FREADME.png)
-
 

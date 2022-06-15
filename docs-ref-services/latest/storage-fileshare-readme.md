@@ -2,11 +2,11 @@
 title: Azure Storage File
 description: 
 keywords: Azure, Python, SDK, API, Storage, File
-author: maggiepint
-ms.author: magpint
+author: ramya-rao-a
+ms.author: ramyar
 manager: twolley
 ms.date: 03/12/2020
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-managedprivateendpoints, synapseanalytics
-author: maggiepint
-ms.author: magpint
-ms.date: 03/09/2021
-ms.topic: article
+author: ramya-rao-a
+ms.author: ramyar
+ms.date: 08/10/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python

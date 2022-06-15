@@ -6,7 +6,7 @@ author: xiangyul
 ms.author: xiangyul
 manager: dgriff
 ms.date: 04/16/2019
-ms.topic: article
+ms.topic: reference
 ms.devlang: python
 ms.service: mixed-reality
 ---

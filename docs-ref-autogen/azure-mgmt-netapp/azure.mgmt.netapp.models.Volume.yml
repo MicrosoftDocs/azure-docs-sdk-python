@@ -14,19 +14,23 @@ summary: 'Volume resource.
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'Volume(*, location: str, creation_token: str, usage_threshold: int = 107374182400,
-    subnet_id: str, tags: typing.Union[typing.Dict[str, str], NoneType] = None, service_level:
-    typing.Union[str, _ForwardRef(''ServiceLevel''), NoneType] = None, export_policy:
-    typing.Union[_ForwardRef(''VolumePropertiesExportPolicy''), NoneType] = None,
-    protocol_types: typing.Union[typing.List[str], NoneType] = None, snapshot_id:
-    typing.Union[str, NoneType] = None, backup_id: typing.Union[str, NoneType] = None,
-    volume_type: typing.Union[str, NoneType] = None, data_protection: typing.Union[_ForwardRef(''VolumePropertiesDataProtection''),
-    NoneType] = None, is_restoring: typing.Union[bool, NoneType] = None, snapshot_directory_visible:
-    typing.Union[bool, NoneType] = True, kerberos_enabled: typing.Union[bool, NoneType]
-    = False, security_style: typing.Union[str, _ForwardRef(''SecurityStyle''), NoneType]
-    = ''unix'', smb_encryption: typing.Union[bool, NoneType] = False, smb_continuously_available:
-    typing.Union[bool, NoneType] = False, throughput_mibps: typing.Union[float, NoneType]
-    = 0, encryption_key_source: typing.Union[str, NoneType] = None, ldap_enabled:
-    typing.Union[bool, NoneType] = False, **kwargs)'
+    subnet_id: str, tags: Optional[Dict[str, str]] = None, service_level: Optional[Union[str,
+    azure.mgmt.netapp.models._net_app_management_client_enums.ServiceLevel]] = ''Premium'',
+    export_policy: Optional[azure.mgmt.netapp.models._models_py3.VolumePropertiesExportPolicy]
+    = None, protocol_types: Optional[List[str]] = None, snapshot_id: Optional[str]
+    = None, backup_id: Optional[str] = None, network_features: Optional[Union[str,
+    azure.mgmt.netapp.models._net_app_management_client_enums.NetworkFeatures]] =
+    ''Basic'', volume_type: Optional[str] = None, data_protection: Optional[azure.mgmt.netapp.models._models_py3.VolumePropertiesDataProtection]
+    = None, is_restoring: Optional[bool] = None, snapshot_directory_visible: Optional[bool]
+    = True, kerberos_enabled: Optional[bool] = False, security_style: Optional[Union[str,
+    azure.mgmt.netapp.models._net_app_management_client_enums.SecurityStyle]] = ''unix'',
+    smb_encryption: Optional[bool] = False, smb_continuously_available: Optional[bool]
+    = False, throughput_mibps: Optional[float] = 0, encryption_key_source: Optional[str]
+    = None, ldap_enabled: Optional[bool] = False, cool_access: Optional[bool] = False,
+    coolness_period: Optional[int] = None, unix_permissions: Optional[str] = ''0770'',
+    avs_data_store: Optional[Union[str, azure.mgmt.netapp.models._net_app_management_client_enums.AvsDataStore]]
+    = ''Disabled'', is_default_quota_enabled: Optional[bool] = False, default_user_quota_in_ki_bs:
+    Optional[int] = 0, default_group_quota_in_ki_bs: Optional[int] = 0, **kwargs)'
   parameters:
   - name: location
     description: Required. Resource location.
@@ -49,7 +53,7 @@ constructor:
   - name: service_level
     description: 'The service level of the file system. Possible values include:
 
-      "Standard", "Premium", "Ultra".'
+      "Standard", "Premium", "Ultra", "StandardZRS". Default value: "Premium".'
     isRequired: true
     types:
     - <xref:str>
@@ -92,8 +96,18 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  - name: network_features
+    description: 'Basic network, or Standard features available to the volume. Possible
+
+      values include: "Basic", "Standard". Default value: "Basic".'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.NetworkFeatures>
   - name: volume_type
-    description: What type of volume is this.
+    description: 'What type of volume is this. For destination volumes in Cross Region
+
+      Replication, set type to DataProtection.'
     isRequired: true
     types:
     - <xref:str>
@@ -164,6 +178,67 @@ constructor:
     isRequired: true
     types:
     - <xref:bool>
+  - name: cool_access
+    description: Specifies whether Cool Access(tiering) is enabled for the volume.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: coolness_period
+    description: 'Specifies the number of days after which data that is not accessed
+      by
+
+      clients will be tiered.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: unix_permissions
+    description: 'UNIX permissions for NFS volume accepted in octal 4 digit format.
+
+      First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes.
+      Second
+
+      digit selects permission for the owner of the file: read (4), write (2) and
+      execute (1). Third
+
+      selects permissions for other users in the same group. the fourth for other
+      users not in the
+
+      group. 0755 - gives read/write/execute permissions to owner and read/execute
+      to group and other
+
+      users.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: avs_data_store
+    description: 'Specifies whether the volume is enabled for Azure VMware Solution
+      (AVS)
+
+      datastore purpose. Possible values include: "Enabled", "Disabled". Default value:
+      "Disabled".'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.AvsDataStore>
+  - name: is_default_quota_enabled
+    description: Specifies if default quota is enabled for the volume.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: default_user_quota_in_ki_bs
+    description: 'Default user quota for volume in KiBs. If
+
+      isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .'
+    isRequired: true
+    types:
+    - <xref:long>
+  - name: default_group_quota_in_ki_bs
+    description: 'Default group quota for volume in KiBs. If
+
+      isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies.'
+    isRequired: true
+    types:
+    - <xref:long>
 variables:
 - description: Resource Id.
   name: id
@@ -171,6 +246,10 @@ variables:
   - <xref:str>
 - description: Resource name.
   name: name
+  types:
+  - <xref:str>
+- description: A unique read-only string that changes whenever the resource is updated.
+  name: etag
   types:
   - <xref:str>
 - description: Resource type.
@@ -189,7 +268,33 @@ variables:
   name: baremetal_tenant_id
   types:
   - <xref:str>
+- description: 'Network Sibling Set ID for the the group of volumes sharing
+
+    networking resources.'
+  name: network_sibling_set_id
+  types:
+  - <xref:str>
+- description: 'Provides storage to network proximity information for the
+
+    volume. Possible values include: "Default", "T1", "T2".'
+  name: storage_to_network_proximity
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.VolumeStorageToNetworkProximity>
 - description: List of mount targets.
   name: mount_targets
   types:
   - <xref:list>[<xref:azure.mgmt.netapp.models.MountTargetProperties>]
+- description: 'When a volume is being restored from another volume''s snapshot, will
+    show
+
+    the percentage completion of this cloning process. When this value is empty/null
+    there is no
+
+    cloning process currently happening on this volume. This value will update every
+    5 minutes
+
+    during cloning.'
+  name: clone_progress
+  types:
+  - <xref:int>

@@ -9,13 +9,14 @@ summary: "This serialization can be a starting point to implement your own persi
   \nThis class does NOT actually persist the cache on disk/db/etc..\nDepending on\
   \ your need,\nthe following simple recipe for file-based persistence may be sufficient:\n\
   \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"xml:space\": \"preserve\"} -->\n\n````\n\n   import os,\
-  \ atexit, msal\n   cache = msal.SerializableTokenCache()\n   if os.path.exists(\"\
-  my_cache.bin\"):\n       cache.deserialize(open(\"my_cache.bin\", \"r\").read())\n\
-  \   atexit.register(lambda:\n       open(\"my_cache.bin\", \"w\").write(cache.serialize())\n\
-  \       # Hint: The following optional line persists only when state changed\n \
-  \      if cache.has_state_changed else None\n       )\n   app = msal.ClientApplication(...,\
-  \ token_cache=cache)\n   ...\n   ````"
+  : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\",\
+  \ \"force\": false, \"linenos\": false} -->\n\n````default\n\n   import os, atexit,\
+  \ msal\n   cache = msal.SerializableTokenCache()\n   if os.path.exists(\"my_cache.bin\"\
+  ):\n       cache.deserialize(open(\"my_cache.bin\", \"r\").read())\n   atexit.register(lambda:\n\
+  \       open(\"my_cache.bin\", \"w\").write(cache.serialize())\n       # Hint: The\
+  \ following optional line persists only when state changed\n       if cache.has_state_changed\
+  \ else None\n       )\n   app = msal.ClientApplication(..., token_cache=cache)\n\
+  \   ...\n   ````"
 constructor:
   syntax: SerializableTokenCache()
 variables:
@@ -30,6 +31,10 @@ variables:
 methods:
 - uid: msal.token_cache.SerializableTokenCache.add
   name: add
+  summary: 'Handle a token obtaining event, and add tokens into cache.
+
+
+    Known side effects: This function modifies the input event in place.'
   signature: add(event, **kwargs)
   parameters:
   - name: event
@@ -37,7 +42,7 @@ methods:
 - uid: msal.token_cache.SerializableTokenCache.deserialize
   name: deserialize
   summary: Deserialize the cache from a state previously obtained by serialize()
-  signature: deserialize(state)
+  signature: 'deserialize(state: Optional[str]) -> None'
   parameters:
   - name: state
     isRequired: true
@@ -54,7 +59,7 @@ methods:
 - uid: msal.token_cache.SerializableTokenCache.serialize
   name: serialize
   summary: Serialize the current cache state into a string.
-  signature: serialize()
+  signature: serialize() -> str
 attributes:
 - uid: msal.token_cache.SerializableTokenCache.has_state_changed
   name: has_state_changed

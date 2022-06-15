@@ -22,18 +22,27 @@ summary: "A client to interact with a specific file system, even if that file sy
   \ an account\n      shared access key, or an instance of a TokenCredentials class\
   \ from azure.identity.\n      If the resource URI already contains a SAS token,\
   \ this will be ignored in favor of an explicit credential\n      - except in the\
-  \ case of AzureSasCredential, where the conflicting SAS tokens will raise a ValueError."
+  \ case of AzureSasCredential, where the conflicting SAS tokens will raise a ValueError.\n\
+  \n   keyword str api_version:\n      The Storage API version to use for requests.\
+  \ Default value is the most recent service version that is\n      compatible with\
+  \ the current SDK. Setting to an older version may result in reduced feature compatibility."
 constructor:
-  syntax: FileSystemClient(account_url, file_system_name, credential=None, **kwargs)
+  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: Optional[Any]
+    = None, **kwargs: Any)'
+  parameters:
+  - name: account_url
+  - name: file_system_name
+  - name: credential
+    defaultValue: None
 examples:
 - "Get a FileSystemClient from an existing DataLakeServiceClient.<!--[!code-python[Main](les\\\
   datalake_samples_file_system_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
   \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
-  , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-  : 1}} -->\n\n````python\n\n   # Instantiate a DataLakeServiceClient using a connection\
-  \ string\n   from azure.storage.filedatalake.aio import DataLakeServiceClient\n\
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   # Instantiate a DataLakeServiceClient\
+  \ using a connection string\n   from azure.storage.filedatalake.aio import DataLakeServiceClient\n\
   \   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
   \n   async with datalake_service_client:\n       # Instantiate a FileSystemClient\n\
   \       file_system_client = datalake_service_client.get_file_system_client(\"mynewfilesystems\"\
@@ -46,7 +55,8 @@ methods:
     the DataLake service creates a lease on the file system and returns a new
 
     lease ID.'
-  signature: acquire_lease(lease_duration=-1, lease_id=None, **kwargs)
+  signature: 'async acquire_lease(lease_duration: int = - 1, lease_id: Optional[str]
+    = None, **kwargs) -> azure.storage.filedatalake.aio._data_lake_lease_async.DataLakeLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -113,23 +123,24 @@ methods:
   examples:
   - "Acquiring a lease on the file_system.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Acquire a lease\
-    \ on the file system\n   lease = await file_system_client.acquire_lease()\n\n\
-    \   # Delete file system by passing in the lease\n   await file_system_client.delete_file_system(lease=lease)\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Acquire a lease on the file system\n   lease = await file_system_client.acquire_lease()\n\
+    \n   # Delete file system by passing in the lease\n   await file_system_client.delete_file_system(lease=lease)\n\
     \n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.close
   name: close
   summary: 'This method is to close the sockets opened by the client.
 
     It need not be used when using with a context manager.'
-  signature: close()
+  signature: async close() -> None
 - uid: azure.storage.filedatalake.aio.FileSystemClient.create_directory
   name: create_directory
   summary: Create directory
-  signature: create_directory(directory, metadata=None, **kwargs)
+  signature: 'async create_directory(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str], metadata: Optional[Dict[str, str]] = None, **kwargs) -> azure.storage.filedatalake.aio._data_lake_directory_client_async.DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -141,7 +152,7 @@ methods:
     - <xref:str>
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   - name: metadata
-    description: 'Name-value pairs associated with the file as metadata.'
+    description: Name-value pairs associated with the file as metadata.
     isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
@@ -235,15 +246,17 @@ methods:
   examples:
   - "Create directory in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   directory_client\
-    \ = await file_system_client.create_directory(\"mydirectory\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   directory_client = await file_system_client.create_directory(\"mydirectory\"\
+    )\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.create_file
   name: create_file
   summary: Create file
-  signature: create_file(file, **kwargs)
+  signature: 'async create_file(file: Union[azure.storage.filedatalake._models.FileProperties,
+    str], **kwargs) -> azure.storage.filedatalake.aio._data_lake_file_client_async.DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -260,7 +273,7 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   - name: metadata
-    description: 'Name-value pairs associated with the file as metadata.'
+    description: Name-value pairs associated with the file as metadata.
     isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
@@ -350,11 +363,11 @@ methods:
   examples:
   - "Create file in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   file_client =\
-    \ await file_system_client.create_file(\"myfile\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   file_client = await file_system_client.create_file(\"myfile\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.create_file_system
   name: create_file_system
   summary: 'Creates a new file system under the specified account.
@@ -365,7 +378,9 @@ methods:
     be raised. This method returns a client with which to interact with the newly
 
     created file system.'
-  signature: create_file_system(metadata=None, public_access=None, **kwargs)
+  signature: 'async create_file_system(metadata: Optional[Dict[str, str]] = None,
+    public_access: Optional[PublicAccess] = None, **kwargs) -> Dict[str, Union[str,
+    datetime]]'
   parameters:
   - name: metadata
     description: 'A dict with name-value pairs to associate with the
@@ -385,21 +400,23 @@ methods:
     types:
     - <xref:int>
   return:
+    description: A dictionary of response headers.
     types:
-    - <xref:azure.storage.filedatalake.aio.FileSystemClient>
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:datetime>]]
   examples:
   - "Creating a file system in the datalake service.<!--[!code-python[Main](les\\\
     datalake_samples_file_system_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
     \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   await file_system_client.create_file_system()\n\n\
-    \   ````\n"
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await file_system_client.create_file_system()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.delete_directory
   name: delete_directory
   summary: Marks the specified path for deletion.
-  signature: delete_directory(directory, **kwargs)
+  signature: 'async delete_directory(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str], **kwargs) -> azure.storage.filedatalake.aio._data_lake_directory_client_async.DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -462,22 +479,23 @@ methods:
   examples:
   - "Delete directory in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   await file_system_client.delete_directory(\"\
-    mydirectory\")\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   await file_system_client.delete_directory(\"mydirectory\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.delete_file
   name: delete_file
   summary: "Marks the specified file for deletion.\n\nDelete file in the file system.<!--[!code-python[Main](les\\\
     datalake_samples_file_system_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
     \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   await file_system_client.delete_file(\"myfile\"\
-    )\n\n   ````"
-  signature: delete_file(file, **kwargs)
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await file_system_client.delete_file(\"\
+    myfile\")\n\n   ````"
+  signature: 'async delete_file(file: Union[azure.storage.filedatalake._models.FileProperties,
+    str], **kwargs) -> azure.storage.filedatalake.aio._data_lake_file_client_async.DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -546,7 +564,7 @@ methods:
     collection.
 
     If the file system is not found, a ResourceNotFoundError will be raised.'
-  signature: delete_file_system(**kwargs)
+  signature: 'async delete_file_system(**kwargs: Any) -> None'
   parameters:
   - name: lease
     description: 'If specified, delete_file_system only succeeds if the
@@ -603,15 +621,15 @@ methods:
   - "Deleting a file system in the datalake service.<!--[!code-python[Main](les\\\
     datalake_samples_file_system_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
     \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   await file_system_client.delete_file_system()\n\n\
-    \   ````\n"
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await file_system_client.delete_file_system()\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.exists
   name: exists
   summary: Returns True if a file system exists and returns False otherwise.
-  signature: exists(**kwargs)
+  signature: 'async exists(**kwargs: Any) -> bool'
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
@@ -625,7 +643,8 @@ methods:
 
 
     The directory need not already exist.'
-  signature: get_directory_client(directory)
+  signature: 'get_directory_client(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str]) -> azure.storage.filedatalake.aio._data_lake_directory_client_async.DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -644,19 +663,20 @@ methods:
   - "Getting the directory client to interact with a specific directory.<!--[!code-python[Main](les\\\
     datalake_samples_file_system_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
     \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   # Get the DataLakeDirectoryClient from the FileSystemClient\
-    \ to interact with a specific file\n   directory_client = file_system_client.get_directory_client(\"\
-    mynewdirectory\")\n\n   ````\n"
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # Get the DataLakeDirectoryClient\
+    \ from the FileSystemClient to interact with a specific file\n   directory_client\
+    \ = file_system_client.get_directory_client(\"mynewdirectory\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.get_file_client
   name: get_file_client
   summary: 'Get a client to interact with the specified file.
 
 
     The file need not already exist.'
-  signature: get_file_client(file_path)
+  signature: 'get_file_client(file_path: Union[azure.storage.filedatalake._models.FileProperties,
+    str]) -> azure.storage.filedatalake.aio._data_lake_file_client_async.DataLakeFileClient'
   parameters:
   - name: file_path
     description: 'The file with which to interact. This can either be the path of
@@ -675,18 +695,18 @@ methods:
   - "Getting the file client to interact with a specific file.<!--[!code-python[Main](les\\\
     datalake_samples_file_system_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\112\\\\azure-storage-file-datalake-12.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\
     \\samples\\\\datalake_samples_file_system_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   # Get the FileClient from the FileSystemClient to\
-    \ interact with a specific file\n   file_client = file_system_client.get_file_client(\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # Get the FileClient from the\
+    \ FileSystemClient to interact with a specific file\n   file_client = file_system_client.get_file_client(\"\
     mynewfile\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.get_file_system_access_policy
   name: get_file_system_access_policy
   summary: 'Gets the permissions for the specified file system.
 
     The permissions indicate whether file system data may be accessed publicly.'
-  signature: get_file_system_access_policy(**kwargs)
+  signature: 'async get_file_system_access_policy(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: lease
     description: 'If specified, get_file_system_access_policy only succeeds if the
@@ -708,7 +728,7 @@ methods:
   summary: 'Returns all user-defined metadata and system properties for the specified
 
     file system. The data returned does not include the file system''s list of paths.'
-  signature: get_file_system_properties(**kwargs)
+  signature: 'async get_file_system_properties(**kwargs: Any) -> azure.storage.filedatalake._models.FileSystemProperties'
   parameters:
   - name: lease
     description: 'If specified, get_file_system_properties only succeeds if the
@@ -728,11 +748,12 @@ methods:
   examples:
   - "Getting properties on the file system.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   properties = await\
-    \ file_system_client.get_file_system_properties()\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   properties = await file_system_client.get_file_system_properties()\n\n  \
+    \ ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.get_paths
   name: get_paths
   summary: 'Returns a generator to list the paths(could be files or directories) under
@@ -741,7 +762,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: get_paths(path=None, recursive=True, max_results=None, **kwargs)
+  signature: 'get_paths(path: Optional[str] = None, recursive: Optional[bool] = True,
+    max_results: Optional[int] = None, **kwargs) -> AsyncItemPaged[PathProperties]'
   parameters:
   - name: path
     description: Filters the results to return only paths under the specified path.
@@ -784,11 +806,12 @@ methods:
   examples:
   - "List the blobs in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   path_list = file_system_client.get_paths()\n\
-    \   async for path in path_list:\n       print(path.name + '\\n')\n\n   ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   path_list = file_system_client.get_paths()\n   async for path in path_list:\n\
+    \       print(path.name + '\\n')\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.FileSystemClient.list_deleted_paths
   name: list_deleted_paths
   summary: 'Returns a generator to list the deleted (file or directory) paths under
@@ -800,7 +823,7 @@ methods:
 
 
     New in version 12.4.0: This operation was introduced in API version ''2020-06-12''.'
-  signature: list_deleted_paths(**kwargs)
+  signature: 'list_deleted_paths(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.storage.filedatalake._models.DeletedPathProperties]'
   parameters:
   - name: path_prefix
     description: Filters the results to return only paths under the specified path.
@@ -829,8 +852,9 @@ methods:
     policies that may be used with Shared Access Signatures. The permissions
 
     indicate whether files in a file system may be accessed publicly.'
-  signature: set_file_system_access_policy(signed_identifiers, public_access=None,
-    **kwargs)
+  signature: 'async set_file_system_access_policy(signed_identifiers: Dict[str, AccessPolicy],
+    public_access: Optional[Union[str, PublicAccess]] = None, **kwargs) -> Dict[str,
+    Union[str, datetime]]'
   parameters:
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the file system.
@@ -898,7 +922,8 @@ methods:
     attached to the file system. To remove all metadata from the file system,
 
     call this operation with no metadata dict.'
-  signature: set_file_system_metadata(metadata, **kwargs)
+  signature: 'async set_file_system_metadata(metadata: Dict[str, str], **kwargs) ->
+    Dict[str, Union[str, datetime]]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the file system
@@ -959,10 +984,10 @@ methods:
   examples:
   - "Setting metadata on the container.<!--[!code-python[Main](les\\datalake_samples_file_system_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\112\\\\azure-storage-file-datalake-12.4.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   # Create key,\
-    \ value pairs for metadata\n   metadata = {'type': 'test'}\n\n   # Set metadata\
-    \ on the file system\n   await file_system_client.set_file_system_metadata(metadata=metadata)\n\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.7.0\\\\samples\\\\datalake_samples_file_system_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Create key, value pairs for metadata\n   metadata = {'type': 'test'}\n\n\
+    \   # Set metadata on the file system\n   await file_system_client.set_file_system_metadata(metadata=metadata)\n\
     \n   ````\n"

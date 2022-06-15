@@ -1,22 +1,24 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-msi, managedserviceidentity
-author: maggiepint
-ms.author: magpint
-ms.date: 05/20/2021
-ms.topic: article
+keywords: Azure, python, SDK, API, azure-mgmt-msi, resources
+author: lmazuel
+ms.author: lmazuel
+ms.date: 03/24/2022
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: managedserviceidentity
+ms.service: resources
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Msi Management Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
+This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 

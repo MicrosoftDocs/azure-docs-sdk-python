@@ -13,12 +13,12 @@ summary: 'Describes a node type in the cluster, each node type represents sub se
 constructor:
   syntax: 'NodeTypeDescription(*, name: str, client_connection_endpoint_port: int,
     http_gateway_endpoint_port: int, is_primary: bool, vm_instance_count: int, placement_properties:
-    typing.Union[typing.Dict[str, str], NoneType] = None, capacities: typing.Union[typing.Dict[str,
-    str], NoneType] = None, durability_level: typing.Union[str, _ForwardRef(''DurabilityLevel''),
-    NoneType] = None, application_ports: typing.Union[_ForwardRef(''EndpointRangeDescription''),
-    NoneType] = None, ephemeral_ports: typing.Union[_ForwardRef(''EndpointRangeDescription''),
-    NoneType] = None, reverse_proxy_endpoint_port: typing.Union[int, NoneType] = None,
-    **kwargs)'
+    Optional[Dict[str, str]] = None, capacities: Optional[Dict[str, str]] = None,
+    durability_level: Optional[Union[str, azure.mgmt.servicefabric.models._service_fabric_management_client_enums.DurabilityLevel]]
+    = None, application_ports: Optional[azure.mgmt.servicefabric.models._models_py3.EndpointRangeDescription]
+    = None, ephemeral_ports: Optional[azure.mgmt.servicefabric.models._models_py3.EndpointRangeDescription]
+    = None, reverse_proxy_endpoint_port: Optional[int] = None, is_stateless: Optional[bool]
+    = None, multiple_availability_zones: Optional[bool] = None, **kwargs)'
   parameters:
   - name: name
     description: Required. The name of the node type.
@@ -88,9 +88,18 @@ constructor:
     types:
     - <xref:bool>
   - name: vm_instance_count
-    description: 'Required. The number of nodes in the node type. This count should
+    description: 'Required. VMInstanceCount should be 1 to n, where n indicates the
 
-      match the capacity property in the corresponding VirtualMachineScaleSet resource.'
+      number of VM instances corresponding to this nodeType. VMInstanceCount = 0 can
+      be done only in
+
+      these scenarios: NodeType is a secondary nodeType. Durability = Bronze or Durability
+      >= Bronze
+
+      and InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the
+      VMs for this
+
+      nodeType will not be used for the initial cluster size computation.'
     isRequired: true
     types:
     - <xref:int>
@@ -99,3 +108,15 @@ constructor:
     isRequired: true
     types:
     - <xref:int>
+  - name: is_stateless
+    description: Indicates if the node type can only host Stateless workloads.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: multiple_availability_zones
+    description: 'Indicates if the node type is enabled to support multiple
+
+      zones.'
+    isRequired: true
+    types:
+    - <xref:bool>

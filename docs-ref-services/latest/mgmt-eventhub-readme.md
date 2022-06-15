@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-eventhub, eventhubs
-author: maggiepint
-ms.author: magpint
-ms.date: 05/27/2021
-ms.topic: article
+author: ramya-rao-a
+ms.author: ramyar
+ms.date: 11/01/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
@@ -20,7 +20,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 # Usage
 
-For code examples, see [EventHub Management](https://docs.microsoft.com/python/api/overview/azure/event-hub)
+For code examples, see [EventHub Management](https://docs.microsoft.com/python/api/overview/azure/event-hub?view=azure-python-preview)
 on docs.microsoft.com.
 
 

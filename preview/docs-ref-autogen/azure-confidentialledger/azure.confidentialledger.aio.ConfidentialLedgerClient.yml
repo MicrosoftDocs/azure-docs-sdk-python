@@ -9,10 +9,12 @@ summary: "An asynchronous client for putting data into and querying data from th
   \ Confidential Ledger\nservice.\n\nThe *transport* parameter is typically accepted\
   \ by Azure SDK clients to provide a custom\ntransport stage in the pipeline. Since\
   \ this client makes modifications to the default transport,\nusing a custom transport\
-  \ will override and remove the following functionality:\n\n\n   1. Authentication\
+  \ will override and remove the following functionality:\n\n   1. Authentication\
   \ using a client certificate. \n\n   2. TLS verification using the Confidential\
   \ Ledger TLS certificate."
 constructor:
+  syntax: 'ConfidentialLedgerClient(endpoint: str, credential: Union[azure.confidentialledger._shared.credential.ConfidentialLedgerCertificateCredential,
+    TokenCredential], ledger_certificate_path: str, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: URL of the Confidential Ledger service.
@@ -36,8 +38,8 @@ methods:
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.append_to_ledger
   name: append_to_ledger
   summary: Appends an entry to the Confidential Ledger.
-  signature: 'append_to_ledger(entry_contents: str, *, sub_ledger_id: typing.Union[str,
-    NoneType] = None, wait_for_commit: bool = False, **kwargs: typing.Any) -> azure.confidentialledger._models.AppendResult'
+  signature: 'async append_to_ledger(entry_contents: str, *, sub_ledger_id: Optional[str]
+    = None, wait_for_commit: bool = False, **kwargs: Any) -> azure.confidentialledger._models.AppendResult'
   parameters:
   - name: entry_contents
     description: Text to write to the ledger.
@@ -63,11 +65,13 @@ methods:
     description: Details about the write transaction.
     types:
     - <xref:azure.confidentialledger.AppendResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.create_or_update_user
   name: create_or_update_user
   summary: Creates a new Confidential Ledger user, or updates an existing one.
-  signature: 'create_or_update_user(user_id: str, role: typing.Union[str, azure.confidentialledger._enums.LedgerUserRole],
-    **kwargs: typing.Any) -> azure.confidentialledger._models.LedgerUser'
+  signature: 'async create_or_update_user(user_id: str, role: Union[str, azure.confidentialledger._enums.LedgerUserRole],
+    **kwargs: Any) -> azure.confidentialledger._models.LedgerUser'
   parameters:
   - name: user_id
     description: 'Identifies the user to delete. This should be an AAD object id or
@@ -81,15 +85,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:LedgerUserRole>
+    - <xref:azure.confidentialledger.LedgerUserRole>
   return:
     description: Details of the updated ledger user.
     types:
     - <xref:azure.confidentialledger.LedgerUser>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.delete_user
   name: delete_user
   summary: Deletes a user from the Confidential Ledger.
-  signature: 'delete_user(user_id: str, **kwargs: typing.Any) -> None'
+  signature: 'async delete_user(user_id: str, **kwargs: Any) -> None'
   parameters:
   - name: user_id
     description: 'Identifies the user to delete. This should be an AAD object id or
@@ -102,17 +108,21 @@ methods:
     description: None
     types:
     - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_consortium
   name: get_consortium
   summary: 'Gets the consortium members.
 
 
     Consortium members can manage the Confidential Ledger.'
-  signature: 'get_consortium(**kwargs: typing.Any) -> azure.confidentialledger._models.Consortium'
+  signature: 'async get_consortium(**kwargs: Any) -> azure.confidentialledger._models.Consortium'
   return:
     description: Details about the consortium.
     types:
     - <xref:azure.confidentialledger.Consortium>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_constitution
   name: get_constitution
   summary: 'Gets the constitution used for governance.
@@ -120,19 +130,23 @@ methods:
 
     The constitution is a script that assesses and applies proposals from consortium
     members.'
-  signature: 'get_constitution(**kwargs: typing.Any) -> azure.confidentialledger._models.Constitution'
+  signature: 'async get_constitution(**kwargs: Any) -> azure.confidentialledger._models.Constitution'
   return:
     description: The contents of the constitution and its digest.
     types:
     - <xref:azure.confidentialledger.Constitution>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_enclave_quotes
   name: get_enclave_quotes
   summary: Gets enclave quotes from all nodes in the Confidential Ledger network.
-  signature: 'get_enclave_quotes(**kwargs: typing.Any) -> azure.confidentialledger._models.LedgerEnclaves'
+  signature: 'async get_enclave_quotes(**kwargs: Any) -> azure.confidentialledger._models.LedgerEnclaves'
   return:
     description: Enclave quotes for nodes in the Confidential Ledger.
     types:
     - <xref:azure.confidentialledger.LedgerEnclaves>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_ledger_entries
   name: get_ledger_entries
   summary: Gets a range of entries in the ledger.
@@ -162,13 +176,15 @@ methods:
   return:
     description: An iterable for iterating over the entries in the range.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:LedgerEntry>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.confidentialledger.LedgerEntry>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_ledger_entry
   name: get_ledger_entry
   summary: Gets an entry in the ledger.
-  signature: 'get_ledger_entry(*, transaction_id: typing.Union[str, NoneType] = None,
-    sub_ledger_id: typing.Union[str, NoneType] = None, interval: float = 0.5, max_tries:
-    int = 6, **kwargs: typing.Any) -> azure.confidentialledger._models.LedgerEntry'
+  signature: 'async get_ledger_entry(*, transaction_id: Optional[str] = None, sub_ledger_id:
+    Optional[str] = None, interval: float = 0.5, max_tries: int = 6, **kwargs: Any)
+    -> azure.confidentialledger._models.LedgerEntry'
   parameters:
   - name: transaction_id
     description: 'Transaction identifier, defaults to None. If this is None, the latest
@@ -202,11 +218,13 @@ methods:
     description: The corresponding ledger entry.
     types:
     - <xref:azure.confidentialledger.LedgerEntry>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_transaction_receipt
   name: get_transaction_receipt
   summary: Get a receipt for a specific transaction.
-  signature: 'get_transaction_receipt(transaction_id: str, *, interval: float = 0.5,
-    max_tries: int = 6, **kwargs: typing.Any) -> azure.confidentialledger._models.TransactionReceipt'
+  signature: 'async get_transaction_receipt(transaction_id: str, *, interval: float
+    = 0.5, max_tries: int = 6, **kwargs: Any) -> azure.confidentialledger._models.TransactionReceipt'
   parameters:
   - name: transaction_id
     description: Transaction identifier.
@@ -230,10 +248,12 @@ methods:
     description: Receipt certifying the specified transaction.
     types:
     - <xref:azure.confidentialledger.TransactionReceipt>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_transaction_status
   name: get_transaction_status
   summary: Gets the status of a transaction.
-  signature: 'get_transaction_status(transaction_id: str, **kwargs: typing.Any) ->
+  signature: 'async get_transaction_status(transaction_id: str, **kwargs: Any) ->
     azure.confidentialledger._models.TransactionStatus'
   parameters:
   - name: transaction_id
@@ -245,10 +265,12 @@ methods:
     description: Status object describing the transaction status.
     types:
     - <xref:azure.confidentialledger.TransactionStatus>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.get_user
   name: get_user
   summary: Gets a Confidential Ledger user.
-  signature: 'get_user(user_id: str, **kwargs: typing.Any) -> azure.confidentialledger._models.LedgerUser'
+  signature: 'async get_user(user_id: str, **kwargs: Any) -> azure.confidentialledger._models.LedgerUser'
   parameters:
   - name: user_id
     description: 'Identifies the user to delete. This should be an AAD object id or
@@ -261,6 +283,8 @@ methods:
     description: Details about the user.
     types:
     - <xref:azure.confidentialledger.LedgerUser>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.confidentialledger.aio.ConfidentialLedgerClient.wait_until_durable
   name: wait_until_durable
   summary: 'Queries the status of the specified transaction until it is Committed,
@@ -270,7 +294,8 @@ methods:
     not reached
 
     by *max_queries*, a TimeoutError is raised.'
-  signature: wait_until_durable(transaction_id, *, interval=0.5, max_queries=3, **kwargs)
+  signature: 'async wait_until_durable(transaction_id: str, *, interval: float = 0.5,
+    max_queries: int = 3, **kwargs: Any) -> None'
   parameters:
   - name: transaction_id
     description: Identifies the transaction to wait for.
@@ -291,3 +316,5 @@ methods:
     description: None.
     types:
     - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError

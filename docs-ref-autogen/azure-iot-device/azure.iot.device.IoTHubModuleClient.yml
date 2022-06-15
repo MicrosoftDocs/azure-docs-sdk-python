@@ -6,13 +6,13 @@ module: azure.iot.device
 inheritances:
 - azure.iot.device.iothub.sync_clients.GenericIoTHubClient
 - azure.iot.device.iothub.abstract_clients.AbstractIoTHubModuleClient
-summary: 'A synchronous module client that connects to an Azure IoT Hub or Azure IoT
+summary: A synchronous module client that connects to an Azure IoT Hub or Azure IoT
   Edge instance.
-
-
-  Intended for usage with Python 2.7 or compatibility scenarios for Python 3.5.3+.'
 constructor:
   syntax: IoTHubModuleClient(mqtt_pipeline, http_pipeline)
+  parameters:
+  - name: mqtt_pipeline
+  - name: http_pipeline
 methods:
 - uid: azure.iot.device.IoTHubModuleClient.connect
   name: connect
@@ -30,6 +30,25 @@ methods:
 
     to the service has been completely established.'
   signature: connect()
+  exceptions:
+  - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
+  - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
+  - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: if the connection times out.
+  - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 - uid: azure.iot.device.IoTHubModuleClient.create_from_connection_string
   name: create_from_connection_string
   summary: Instantiate the client from a IoTHub device or module connection string.
@@ -80,7 +99,7 @@ methods:
   - name: sastoken_ttl
     description: 'The time to live (in seconds) for the created SasToken used for
 
-      authentication. Default is 3600 seconds (1 hour)'
+      authentication. Default is 3600 seconds (1 hour).'
     isRequired: true
     types:
     - <xref:int>
@@ -117,6 +136,9 @@ methods:
   return:
     description: An instance of an IoTHub client that uses a connection string for
       authentication.
+  exceptions:
+  - type: ValueError if given an invalid connection_string.
+  - type: TypeError if given an unsupported parameter.
 - uid: azure.iot.device.IoTHubModuleClient.create_from_edge_environment
   name: create_from_edge_environment
   summary: 'Instantiate the client from the IoT Edge environment.
@@ -197,9 +219,13 @@ methods:
       for
 
       authentication.'
+  exceptions:
+  - type: OSError if the IoT Edge container is not configured correctly.
+  - type: ValueError if debug variables are invalid.
+  - type: TypeError if given an unsupported parameter.
 - uid: azure.iot.device.IoTHubModuleClient.create_from_sastoken
   name: create_from_sastoken
-  summary: 'Instantiate the client from a pre-created SAS Token string'
+  summary: Instantiate the client from a pre-created SAS Token string
   signature: create_from_sastoken(sastoken, **kwargs)
   parameters:
   - name: sastoken
@@ -214,6 +240,13 @@ methods:
       of trust,
 
       such as a protocol gateway.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: gateway_hostname
+    description: 'Configuration Option. The gateway hostname for the gateway
+
+      device.'
     isRequired: true
     types:
     - <xref:str>
@@ -274,6 +307,9 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  exceptions:
+  - type: TypeError if given an unsupported parameter.
+  - type: ValueError if the sastoken parameter is invalid.
 - uid: azure.iot.device.IoTHubModuleClient.create_from_x509_certificate
   name: create_from_x509_certificate
   summary: Instantiate a client using X509 certificate authentication.
@@ -314,6 +350,13 @@ methods:
       of trust,
 
       such as a protocol gateway.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: gateway_hostname
+    description: 'Configuration Option. The gateway hostname for the gateway
+
+      device.'
     isRequired: true
     types:
     - <xref:str>
@@ -377,6 +420,8 @@ methods:
   return:
     description: An instance of an IoTHub client that uses an X509 certificate for
       authentication.
+  exceptions:
+  - type: TypeError if given an unsupported parameter.
 - uid: azure.iot.device.IoTHubModuleClient.disconnect
   name: disconnect
   summary: 'Disconnect the client from the Azure IoT Hub or Azure IoT Edge Hub instance.
@@ -393,6 +438,11 @@ methods:
 
     to the service has been completely closed.'
   signature: disconnect()
+  exceptions:
+  - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 - uid: azure.iot.device.IoTHubModuleClient.get_twin
   name: get_twin
   summary: 'Gets the device or module twin from the Azure IoT Hub or Azure IoT Edge
@@ -408,6 +458,31 @@ methods:
     description: Complete Twin as a JSON dict
     types:
     - <xref:dict>
+  exceptions:
+  - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
+  - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
+  - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if connection attempt
+
+      times out'
+  - type: azure.iot.device.exceptions.NoConnectionError
+    description: 'if the client is not
+
+      connected (and there is no auto-connect enabled)'
+  - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 - uid: azure.iot.device.IoTHubModuleClient.invoke_method
   name: invoke_method
   summary: Invoke a method from your client onto a device or module client, and receive
@@ -461,10 +536,29 @@ methods:
     - <xref:dict>
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
   - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
   - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if connection attempt
+
+      times out'
   - type: azure.iot.device.exceptions.NoConnectionError
+    description: 'if the client is not
+
+      connected (and there is no auto-connect enabled)'
   - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 - uid: azure.iot.device.IoTHubModuleClient.receive_message_on_input
   name: receive_message_on_input
   summary: 'Receive an input message that has been sent from another Module to a specific
@@ -532,14 +626,14 @@ methods:
   name: receive_twin_desired_properties_patch
   summary: "Receive a desired property patch via the Azure IoT Hub or Azure IoT Edge\
     \ Hub.\n\nThis is a synchronous call, which means the following:\n1. If block=True,\
-    \ this function will block until one of the following happens:\n\n\n   * a desired\
+    \ this function will block until one of the following happens:\n\n   * a desired\
     \ property patch is received from the Azure IoT Hub or Azure IoT Edge Hub. \n\n\
     \   * the timeout period, if provided, elapses.  If a timeout happens, this function\
-    \ will raise a InboxEmpty exception \n\n\n2. If block=False, this function will\
+    \ will raise a InboxEmpty exception \n\n2. If block=False, this function will\
     \ return any desired property patches which may have been received by the pipeline,\
     \ but not yet returned to the application.  If no desired property patches have\
     \ been received by the pipeline, this function will raise an InboxEmpty exception\
-    \ \n\n\nDeprecated since version 2.3.0: We recommend that you use the .on_twin_desired_properties_patch_received\
+    \ \n\nDeprecated since version 2.3.0: We recommend that you use the .on_twin_desired_properties_patch_received\
     \ property to set a handler instead"
   signature: receive_twin_desired_properties_patch(block=True, timeout=None)
   parameters:
@@ -590,10 +684,30 @@ methods:
     - <xref:str>
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
   - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
   - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if connection attempt
+
+      times out'
   - type: azure.iot.device.exceptions.NoConnectionError
+    description: 'if the client is not
+
+      connected (and there is no auto-connect enabled)'
   - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
+  - type: ValueError if the message fails size validation.
 - uid: azure.iot.device.IoTHubModuleClient.send_message_to_output
   name: send_message_to_output
   summary: 'Sends an event/message to the given module output.
@@ -630,10 +744,30 @@ methods:
     - <xref:str>
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
   - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
   - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if connection attempt
+
+      times out'
   - type: azure.iot.device.exceptions.NoConnectionError
+    description: 'if the client is not
+
+      connected (and there is no auto-connect enabled)'
   - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
+  - type: ValueError if the message fails size validation.
 - uid: azure.iot.device.IoTHubModuleClient.send_method_response
   name: send_method_response
   summary: 'Send a response to a method request via the Azure IoT Hub or Azure IoT
@@ -659,10 +793,29 @@ methods:
     - <xref:azure.iot.device.MethodResponse>
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
   - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
   - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if connection attempt
+
+      times out'
   - type: azure.iot.device.exceptions.NoConnectionError
+    description: 'if the client is not
+
+      connected (and there is no auto-connect enabled)'
   - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 - uid: azure.iot.device.IoTHubModuleClient.shutdown
   name: shutdown
   summary: 'Shut down the client for graceful exit.
@@ -673,21 +826,18 @@ methods:
 
     ClientError being raised'
   signature: shutdown()
+  exceptions:
+  - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 - uid: azure.iot.device.IoTHubModuleClient.update_sastoken
   name: update_sastoken
   summary: 'Update the client''s SAS Token used for authentication, then reauthorizes
     the connection.
 
 
-    This API can only be used if the client was initially created with a SAS Token.
-
-    Note also that this API may return before the reauthorization/reconnection is
-    completed.
-
-    This means that some errors that may occur as part of the reconnection could occur
-    in the
-
-    background, and will not be raised by this method.'
+    This API can only be used if the client was initially created with a SAS Token.'
   signature: update_sastoken(sastoken)
   parameters:
   - name: sastoken
@@ -696,37 +846,109 @@ methods:
     types:
     - <xref:str>
   exceptions:
+  - type: ValueError if the sastoken parameter is invalid
+  - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be re-established.'
+  - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a re-establishing
+
+      the connection results in failure.'
+  - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if the reauthorization
+
+      attempt times out.'
   - type: azure.iot.device.exceptions.ClientError
+    description: 'if the client was not initially
+
+      created with a SAS token.'
   - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
 attributes:
 - uid: azure.iot.device.IoTHubModuleClient.connected
   name: connected
   summary: Read-only property to indicate if the transport is connected or not.
+- uid: azure.iot.device.IoTHubModuleClient.on_background_exception
+  name: on_background_exception
+  summary: 'The handler function or coroutine will be called when a background exception
+    occurs.
+
+
+    The function or coroutine definition should take one positional argument (the
+    exception
+
+    object)'
+- uid: azure.iot.device.IoTHubModuleClient.on_connection_state_change
+  name: on_connection_state_change
+  summary: 'The handler function or coroutine that will be called when the connection
+    state changes.
+
+
+    The function or coroutine definition should take no positional arguments.'
 - uid: azure.iot.device.IoTHubModuleClient.on_message_received
   name: on_message_received
-  summary: 'The handler function that will be called when an input message is received.
+  summary: 'The handler function or coroutine that will be called when an input message
+    is received.
 
 
-    The function definition should take one positional argument (the
+    The function definition or coroutine should take one positional argument (the
 
     <xref:azure.iot.device.Message> object)'
 - uid: azure.iot.device.IoTHubModuleClient.on_method_request_received
   name: on_method_request_received
-  summary: 'The handler function that will be called when a method request is received.
-
-
-    The function definition should take one positional argument (the
-
-    <xref:azure.iot.device.MethodRequest> object)'
-- uid: azure.iot.device.IoTHubModuleClient.on_twin_desired_properties_patch_received
-  name: on_twin_desired_properties_patch_received
-  summary: 'The handler function that will be called when a twin desired properties
-    patch
-
+  summary: 'The handler function or coroutine that will be called when a method request
     is received.
 
 
-    The function definition should take one positional argument (the twin patch in
-    the form
+    Remember to acknowledge the method request in your function or coroutine via use
+    of the
 
-    of a JSON dictionary object)'
+    client''s .send_method_response() method.
+
+
+    The function or coroutine definition should take one positional argument (the
+
+    <xref:azure.iot.device.MethodRequest> object)'
+- uid: azure.iot.device.IoTHubModuleClient.on_new_sastoken_required
+  name: on_new_sastoken_required
+  summary: 'The handler function or coroutine that will be called when the client
+    requires a new
+
+    SAS token. This will happen approximately 2 minutes before the SAS Token expires.
+
+    On Windows platforms, if the lifespan exceeds approximately 49 days, a new token
+    will
+
+    be required after those 49 days regardless of how long the SAS lifespan is.
+
+
+    Note that this handler is ONLY necessary when using a client created via the
+
+    .create_from_sastoken() method.
+
+
+    The new token can be provided in your function or coroutine via use of the client''s
+
+    .update_sastoken() method.
+
+
+    The function or coroutine definition should take no positional arguments.'
+- uid: azure.iot.device.IoTHubModuleClient.on_twin_desired_properties_patch_received
+  name: on_twin_desired_properties_patch_received
+  summary: 'The handler function or coroutine that will be called when a twin desired
+    properties
+
+    patch is received.
+
+
+    The function or coroutine definition should take one positional argument (the
+    twin patch
+
+    in the form of a JSON dictionary object)'

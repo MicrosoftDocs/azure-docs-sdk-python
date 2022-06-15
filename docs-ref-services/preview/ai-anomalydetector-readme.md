@@ -1,16 +1,15 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-ai-anomalydetector, anomalydetector
-author: maggiepint
-ms.author: magpint
-ms.date: 04/16/2021
-ms.topic: article
+author: conhua
+ms.author: conhua
+ms.date: 03/31/2022
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: anomalydetector
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Cognitive Services Anomaly Detector Client Library.

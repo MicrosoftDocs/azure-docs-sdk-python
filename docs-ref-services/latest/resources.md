@@ -3,11 +3,11 @@ title: Azure Resources libraries for python
 description: Reference for Azure Resources libraries for python
 keywords: Azure, python, SDK, API, Resources
 author: lisawong19
-ms.author: routlaw
+ms.author: ramyar
 manager: routlaw
 
 ms.date: 08/11/2017
-ms.topic: article
+ms.topic: reference
 ms.service: azure
 ms.devlang: python
 ---
@@ -23,7 +23,7 @@ Use the management API to create resource groups and deploy resources from templ
 ```bash
 pip install azure-mgmt-resource
 ```
-### Example 
+### Example
 Create a new resource group in the Azure Eastern US region.
 
 ```python

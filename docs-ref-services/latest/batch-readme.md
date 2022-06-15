@@ -1,16 +1,15 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-batch, batch
-author: maggiepint
-ms.author: magpint
-ms.date: 12/03/2020
-ms.topic: article
+author: cRui861
+ms.author: rechen
+ms.date: 02/02/2022
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: batch
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Batch Client Library.
@@ -34,5 +33,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-batch%2FREADME.png)
-
 

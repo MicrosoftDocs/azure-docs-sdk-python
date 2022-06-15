@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azurestackhci, stackhci
-author: maggiepint
-ms.author: magpint
-ms.date: 12/10/2020
-ms.topic: article
+author: ramya-rao-a
+ms.author: ramyar
+ms.date: 06/29/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
@@ -38,5 +38,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-azurestackhci%2FREADME.png)
-
 

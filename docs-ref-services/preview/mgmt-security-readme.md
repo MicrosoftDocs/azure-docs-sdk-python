@@ -1,14 +1,14 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-security, security
-author: maggiepint
-ms.author: magpint
-ms.date: 11/18/2020
-ms.topic: article
+keywords: Azure, python, SDK, API, azure-mgmt-security, securitycenter
+author: ramya-rao-a
+ms.author: ramyar
+ms.date: 08/10/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: security
+ms.service: securitycenter
 ---
 
 ## Microsoft Azure SDK for Python

@@ -3,15 +3,15 @@ title: Azure App Configuration client library for Python
 keywords: Azure, python, SDK, API, azure-appconfiguration, appconfiguration
 author: maggiepint
 ms.author: magpint
-ms.date: 10/05/2020
-ms.topic: article
+ms.date: 11/11/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: appconfiguration
 ---
 
-# Azure App Configuration client library for Python - Version 1.1.1 
+# Azure App Configuration client library for Python - Version 1.3.0 
 
 
 Azure App Configuration is a managed service that helps developers centralize their application configurations simply and securely.
@@ -20,7 +20,7 @@ Modern programs, especially programs running in a cloud, generally have many com
 
 Use the client library for App Configuration to create and manage application configuration settings.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration) | [Product documentation][appconfig_docs]
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration) | [Product documentation][appconfig_docs]
 
 ## Getting started
 
@@ -47,8 +47,8 @@ az appconfig create --name <config-store-name> --resource-group <resource-group-
 
 ### Authenticate the client
 
-In order to interact with the App Configuration service, you'll need to create an instance of the 
-[AzureAppConfigurationClient][configuration_client_class] class. To make this possible, 
+In order to interact with the App Configuration service, you'll need to create an instance of the
+[AzureAppConfigurationClient][configuration_client_class] class. To make this possible,
 you can either use the connection string of the Configuration Store or use an AAD token.
 
 #### Use connection string
@@ -112,7 +112,7 @@ export AZURE_CLIENT_SECRET="random password"
 export AZURE_TENANT_ID="tenant id"
 ```
 
-Assign one of the applicable [App Configuration roles](https://github.com/Azure/AppConfiguration/blob/master/docs/REST/authorization/aad.md) to the service principal.
+Assign one of the applicable [App Configuration roles](https://docs.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad) to the service principal.
 
 ##### Create a client
 Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
@@ -231,7 +231,7 @@ for item in filtered_listed:
 
 ### Async APIs
 
-Async client is supported for python 3.5+. 
+Async client is supported for python 3.5+.
 To use the async client library, import the AzureAppConfigurationClient from package azure.appconfiguration.aio instead of azure.appconfiguration
 
 ```python
@@ -250,7 +250,7 @@ fetched_config_setting = await async_client.get_configuration_setting(
 )
 ```
 
-To use list_configuration_settings, call it synchronously and iterate over the returned async iterator asynchronously 
+To use list_configuration_settings, call it synchronously and iterate over the returned async iterator asynchronously
 
 ```python
 
@@ -281,14 +281,14 @@ Http request and response details are printed to stdout with this logging config
 
 ### More sample code
 
-Several App Configuration client library samples are available to you in this GitHub repository.  These include: 
-- [Hello world](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_async_sample.py)
-- [Hello world with labels](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_advanced_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_advanced_async_sample.py)
-- [Make a configuration setting readonly](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/read_only_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_async_sample.py)
-- [Read revision history](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_async_sample.py)
-- [Get a setting if changed](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_async_sample.py)
+Several App Configuration client library samples are available to you in this GitHub repository.  These include:
+- [Hello world](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample_async.py)
+- [Hello world with labels](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_advanced_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_advanced_sample_async.py)
+- [Make a configuration setting readonly](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/read_only_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/hello_world_sample_async.py)
+- [Read revision history](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/list_revision_sample_async.py)
+- [Get a setting if changed](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample.py) / [Async version](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/conditional_operation_sample_async.py)
 
- For more details see the [samples README](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/samples/README.md).
+ For more details see the [samples README](https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/samples/README.md).
 
 ## Contributing
 
@@ -312,11 +312,11 @@ additional questions or comments.
 [appconfig_rest]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
-[configuration_client_class]: https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.1.1/sdk/appconfiguration/azure-appconfiguration/azure/appconfiguration/_azure_appconfiguration_client.py
+[configuration_client_class]: https://github.com/Azure/azure-sdk-for-python/blob/azure-appconfiguration_1.3.0/sdk/appconfiguration/azure-appconfiguration/azure/appconfiguration/_azure_appconfiguration_client.py
 [package]: https://pypi.org/project/azure-appconfiguration/
 [configuration_store]: https://azure.microsoft.com/services/app-configuration/
 [default_cred_ref]: https://aka.ms/azsdk-python-identity-default-cred-ref
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-appconfiguration_1.1.1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-appconfiguration_1.3.0/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

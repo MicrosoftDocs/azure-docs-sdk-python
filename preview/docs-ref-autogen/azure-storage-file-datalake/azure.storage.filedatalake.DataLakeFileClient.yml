@@ -1,0 +1,1072 @@
+### YamlMime:PythonClass
+uid: azure.storage.filedatalake.DataLakeFileClient
+name: DataLakeFileClient
+fullName: azure.storage.filedatalake.DataLakeFileClient
+module: azure.storage.filedatalake
+inheritances:
+- azure.storage.filedatalake._path_client.PathClient
+summary: A client to interact with the DataLake file, even if the file may not yet
+  exist.
+constructor:
+  syntax: 'DataLakeFileClient(account_url: str, file_system_name: str, file_path:
+    str, credential: Optional[Any] = None, **kwargs: Any)'
+  parameters:
+  - name: account_url
+    description: The URI to the storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_system_name
+    description: The file system for the directory or files.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_path
+    description: 'The whole file path, so that to interact with a specific file.
+
+      eg. "{directory}/{subdirectory}/{file}"'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential from azure.core.credentials, an account
+
+      shared access key, or an instance of a TokenCredentials class from azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.'
+    defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
+variables:
+- description: The full endpoint URL to the file system, including SAS token if used.
+  name: url
+  types:
+  - <xref:str>
+- description: The full primary endpoint URL.
+  name: primary_endpoint
+  types:
+  - <xref:str>
+- description: The hostname of the primary endpoint.
+  name: primary_hostname
+  types:
+  - <xref:str>
+examples:
+- "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
+  datalake_samples_instantiate_client.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+  \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\
+  \\samples\\\\datalake_samples_instantiate_client.py\", \"xml:space\": \"preserve\"\
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake\
+  \ import DataLakeFileClient\n   DataLakeFileClient.from_connection_string(connection_string,\
+  \ \"myfilesystem\", \"mydirectory\", \"myfile\")\n\n   ````\n"
+methods:
+- uid: azure.storage.filedatalake.DataLakeFileClient.append_data
+  name: append_data
+  summary: Append data to the file.
+  signature: 'append_data(data: Union[AnyStr, Iterable[AnyStr], IO[AnyStr]], offset:
+    int, length: Optional[int] = None, **kwargs) -> Dict[str, Union[str, datetime,
+    int]]'
+  parameters:
+  - name: data
+    description: Content to be appended to file
+    isRequired: true
+  - name: offset
+    description: start position of the data to be appended to.
+    isRequired: true
+  - name: length
+    description: Size of the data in bytes.
+    defaultValue: None
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash of the block content. The storage
+
+      service checks the hash of the content that has arrived
+
+      with the hash that was sent. This is primarily valuable for detecting
+
+      bitflips on the wire if using http instead of https as https (the default)
+
+      will already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  return:
+    description: dict of the response header
+  examples:
+  - "Append data to the file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   file_client.append_data(data=file_content[2048:3072], offset=2048, length=1024)\n\
+    \n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.create_file
+  name: create_file
+  summary: Create a new file.
+  signature: 'create_file(content_settings: Optional[ContentSettings] = None, metadata:
+    Optional[Dict[str, str]] = None, **kwargs) -> Dict[str, Union[str, datetime]]'
+  parameters:
+  - name: content_settings
+    description: ContentSettings object used to set path properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.filedatalake.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: umask
+    description: 'Optional and only valid if Hierarchical Namespace is enabled for
+      the account.
+
+      When creating a file or directory and the parent folder does not have a default
+      ACL,
+
+      the umask restricts the permissions of the file or directory to be created.
+
+      The resulting permission is given by p & ^u, where p is the permission and u
+      is the umask.
+
+      For example, if p is 0777 and u is 0057, then the resulting permission is 0720.
+
+      The default permission is 0777 for a directory and 0666 for a file. The default
+      umask is 0027.
+
+      The umask must be specified in 4-digit octal notation (e.g. 0766).'
+    types:
+    - <xref:str>
+  - name: permissions
+    description: 'Optional and only valid if Hierarchical Namespace
+
+      is enabled for the account. Sets POSIX access permissions for the file
+
+      owner, the file owning group, and others. Each class may be granted
+
+      read, write, or execute permission.  The sticky bit is also supported.
+
+      Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are
+
+      supported.'
+    types:
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: response dict (Etag and last modified).
+  examples:
+  - "Create file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   file_client = filesystem_client.get_file_client(file_name)\n   file_client.create_file()\n\
+    \n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.delete_file
+  name: delete_file
+  summary: Marks the specified file for deletion.
+  signature: delete_file(**kwargs) -> None
+  parameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a LeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: None
+  examples:
+  - "Delete file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   new_client.delete_file()\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.download_file
+  name: download_file
+  summary: 'Downloads a file to the StorageStreamDownloader. The readall() method
+    must
+
+    be used to read all the content, or readinto() must be used to download the file
+    into
+
+    a stream. Using chunks() returns an iterator which allows the user to iterate
+    over the content in chunks.'
+  signature: 'download_file(offset: Optional[int] = None, length: Optional[int] =
+    None, **kwargs: Any) -> azure.storage.filedatalake._download.StorageStreamDownloader'
+  parameters:
+  - name: offset
+    description: 'Start of byte range to use for downloading a section of the file.
+
+      Must be set if length is provided.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: length
+    description: 'Number of bytes to read from the stream. This is optional, but
+
+      should be supplied for optimal performance.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: lease
+    description: 'If specified, download only succeeds if the file''s lease is active
+
+      and matches this ID. Required if the file has an active lease.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the file was created with a Customer-Provided Key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  - name: max_concurrency
+    description: The number of parallel connections with which to download.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    types:
+    - <xref:int>
+  return:
+    description: A streaming object (StorageStreamDownloader)
+    types:
+    - <xref:azure.storage.filedatalake.StorageStreamDownloader>
+  examples:
+  - "Return the downloaded data.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   download = file_client.download_file()\n   downloaded_bytes = download.readall()\n\
+    \n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.exists
+  name: exists
+  summary: Returns True if a file exists and returns False otherwise.
+  signature: 'exists(**kwargs: Any) -> bool'
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: boolean
+- uid: azure.storage.filedatalake.DataLakeFileClient.flush_data
+  name: flush_data
+  summary: Commit the previous appended data.
+  signature: 'flush_data(offset: int, retain_uncommitted_data: Optional[bool] = False,
+    **kwargs) -> Dict[str, Union[str, datetime]]'
+  parameters:
+  - name: offset
+    description: 'offset is equal to the length of the file after commit the
+
+      previous appended data.'
+    isRequired: true
+  - name: retain_uncommitted_data
+    description: 'Valid only for flush operations.  If
+
+      "true", uncommitted data is retained after the flush operation
+
+      completes; otherwise, the uncommitted data is deleted after the flush
+
+      operation.  The default is false.  Data at offsets less than the
+
+      specified position are written to the file when flush succeeds, but
+
+      this optional parameter allows data after the flush position to be
+
+      retained for a future flush operation.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: content_settings
+    description: ContentSettings object used to set path properties.
+    types:
+    - <xref:azure.storage.filedatalake.ContentSettings>
+  - name: close
+    description: 'Azure Storage Events allow applications to receive
+
+      notifications when files change. When Azure Storage Events are
+
+      enabled, a file changed event is raised. This event has a property
+
+      indicating whether this is the final change to distinguish the
+
+      difference between an intermediate flush to a file stream and the
+
+      final close of a file stream. The close query parameter is valid only
+
+      when the action is "flush" and change notifications are enabled. If
+
+      the value of close is "true" and the flush operation completes
+
+      successfully, the service raises a file change notification with a
+
+      property indicating that this is the final update (the file stream has
+
+      been closed). If "false" a change notification is raised indicating
+
+      the file has changed. The default is false. This query parameter is
+
+      set to true by the Hadoop ABFS driver to indicate that the file stream
+
+      has been closed."'
+    types:
+    - <xref:bool>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  return:
+    description: response header in dict
+  examples:
+  - "Commit the previous appended data.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   with open(SOURCE_FILE, \"rb\") as data:\n       file_client = file_system_client.get_file_client(\"\
+    myfile\")\n       file_client.create_file()\n       file_client.append_data(data,\
+    \ 0)\n       file_client.flush_data(data.tell())\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.from_connection_string
+  name: from_connection_string
+  summary: 'Create DataLakeFileClient from a Connection String.
+
+
+    :return a DataLakeFileClient
+
+    :rtype ~azure.storage.filedatalake.DataLakeFileClient'
+  signature: 'from_connection_string(conn_str: str, file_system_name: str, file_path:
+    str, credential: Optional[Any] = None, **kwargs: Any) -> ClassType'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_system_name
+    description: The name of file system to interact with.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The name of directory to interact with. The directory is under file
+      system.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: The name of file to interact with. The file is under directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential from azure.core.credentials, an account
+      shared access
+
+      key, or an instance of a TokenCredentials class from azure.identity.
+
+      Credentials provided here will take precedence over those in the connection
+      string.'
+    defaultValue: None
+- uid: azure.storage.filedatalake.DataLakeFileClient.get_file_properties
+  name: get_file_properties
+  summary: 'Returns all user-defined metadata, standard HTTP properties, and
+
+    system properties for the file. It does not return the content of the file.'
+  signature: 'get_file_properties(**kwargs: Any) -> azure.storage.filedatalake._models.FileProperties'
+  parameters:
+  - name: lease
+    description: 'Required if the directory or file has an active lease. Value can
+      be a DataLakeLeaseClient object
+
+      or the lease ID as a string.'
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the file was created with a customer-provided key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.storage.filedatalake.FileProperties>
+  examples:
+  - "Getting the properties for a file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   properties = file_client.get_file_properties()\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.query_file
+  name: query_file
+  summary: 'Enables users to select/project on datalake file data by providing simple
+    query expressions.
+
+    This operations returns a DataLakeFileQueryReader, users need to use readall()
+    or readinto() to get query data.'
+  signature: 'query_file(query_expression: str, **kwargs: Any) -> azure.storage.filedatalake._quick_query_helper.DataLakeFileQueryReader'
+  parameters:
+  - name: query_expression
+    description: 'Required. a query statement.
+
+      eg. Select * from DataLakeStorage'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: on_error
+    description: A function to be called on any processing errors returned by the
+      service.
+    types:
+    - <xref:Callable>[<xref:azure.storage.filedatalake.DataLakeFileQueryError>]
+  - name: file_format
+    description: 'Optional. Defines the serialization of the data currently stored
+      in the file. The default is to
+
+      treat the file data as CSV data formatted in the default dialect. This can be
+      overridden with
+
+      a custom DelimitedTextDialect, or DelimitedJsonDialect or "ParquetDialect" (passed
+      as a string or enum).
+
+      These dialects can be passed through their respective classes, the QuickQueryDialect
+      enum or as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DelimitedTextDialect>
+    - <xref:azure.storage.filedatalake.DelimitedJsonDialect>
+    - <xref:azure.storage.filedatalake.QuickQueryDialect>
+    - <xref:str>
+  - name: output_format
+    description: 'Optional. Defines the output serialization for the data stream.
+      By default the data will be returned
+
+      as it is represented in the file. By providing an output format,
+
+      the file data will be reformatted according to that profile.
+
+      This value can be a DelimitedTextDialect or a DelimitedJsonDialect or ArrowDialect.
+
+      These dialects can be passed through their respective classes, the QuickQueryDialect
+      enum or as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DelimitedTextDialect>
+    - <xref:azure.storage.filedatalake.DelimitedJsonDialect>
+    - <xref:list>[<xref:azure.storage.filedatalake.ArrowDialect>]
+    - <xref:azure.storage.filedatalake.QuickQueryDialect>
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the file was created with a Customer-Provided Key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: A streaming object (DataLakeFileQueryReader)
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeFileQueryReader>
+  examples:
+  - "select/project on datalake file data by providing simple query expressions.<!--[!code-python[Main](les\\\
+    datalake_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\
+    \\samples\\\\datalake_samples_query.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   errors = []\n   def on_error(error):\n\
+    \       errors.append(error)\n\n   # upload the csv file\n   file_client = datalake_service_client.get_file_client(filesystem_name,\
+    \ \"csvfile\")\n   file_client.upload_data(CSV_DATA, overwrite=True)\n\n   # select\
+    \ the second column of the csv file\n   query_expression = \"SELECT _2 from DataLakeStorage\"\
+    \n   input_format = DelimitedTextDialect(delimiter=',', quotechar='\"', lineterminator='\\\
+    n', escapechar=\"\", has_header=False)\n   output_format = DelimitedJsonDialect(delimiter='\\\
+    n')\n   reader = file_client.query_file(query_expression, on_error=on_error, file_format=input_format,\
+    \ output_format=output_format)\n   content = reader.readall()\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.rename_file
+  name: rename_file
+  summary: Rename the source file.
+  signature: 'rename_file(new_name: str, **kwargs: Any) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
+  parameters:
+  - name: new_name
+    description: 'the new file name the user want to rename to.
+
+      The value must have the following format: "{filesystem}/{directory}/{subdirectory}/{file}".'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content_settings
+    description: ContentSettings object used to set path properties.
+    types:
+    - <xref:azure.storage.filedatalake.ContentSettings>
+  - name: source_lease
+    description: 'A lease ID for the source path. If specified,
+
+      the source path must have an active lease and the leaase ID must
+
+      match.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file/directory has an active lease. Value can be
+      a LeaseClient object
+
+      or the lease ID as a string.'
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: source_if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: source_if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: source_etag
+    description: 'The source ETag value, or the wildcard character (*). Used to check
+      if the resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: source_match_condition
+    description: The source match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: the renamed file client
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeFileClient>
+  examples:
+  - "Rename the source file.<!--[!code-python[Main](les\\datalake_samples_upload_download.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\63\\\\azure-storage-file-datalake-12.7.0b1\\\\samples\\\\datalake_samples_upload_download.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   new_client = file_client.rename_file(file_client.file_system_name + '/' +\
+    \ 'newname')\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeFileClient.set_file_expiry
+  name: set_file_expiry
+  summary: Sets the time a file will expire and be deleted.
+  signature: 'set_file_expiry(expiry_options: str, expires_on: Optional[Union[datetime,
+    int]] = None, **kwargs) -> None'
+  parameters:
+  - name: expiry_options
+    description: 'Required. Indicates mode of the expiry time.
+
+      Possible values include: ''NeverExpire'', ''RelativeToCreation'', ''RelativeToNow'',
+      ''Absolute'''
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: or int expires_on
+    description: 'The time to set the file to expiry.
+
+      When expiry_options is RelativeTo*, expires_on should be an int in milliseconds.
+
+      If the type of expires_on is datetime, it should be in UTC time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:None>
+- uid: azure.storage.filedatalake.DataLakeFileClient.upload_data
+  name: upload_data
+  summary: Upload data to a file.
+  signature: 'upload_data(data: Union[AnyStr, Iterable, IO], length: Optional[int]
+    = None, overwrite: Optional[bool] = False, **kwargs) -> Dict[str, Any]'
+  parameters:
+  - name: data
+    description: Content to be uploaded to file
+    isRequired: true
+  - name: length
+    description: Size of the data in bytes.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: overwrite
+    description: to overwrite an existing file or not.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: content_settings
+    description: ContentSettings object used to set path properties.
+    types:
+    - <xref:azure.storage.filedatalake.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the blob as metadata.
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: or str lease
+    description: 'Required if the blob has an active lease. Value can be a DataLakeLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+  - name: umask
+    description: 'Optional and only valid if Hierarchical Namespace is enabled for
+      the account.
+
+      When creating a file or directory and the parent folder does not have a default
+      ACL,
+
+      the umask restricts the permissions of the file or directory to be created.
+
+      The resulting permission is given by p & ^u, where p is the permission and u
+      is the umask.
+
+      For example, if p is 0777 and u is 0057, then the resulting permission is 0720.
+
+      The default permission is 0777 for a directory and 0666 for a file. The default
+      umask is 0027.
+
+      The umask must be specified in 4-digit octal notation (e.g. 0766).'
+    types:
+    - <xref:str>
+  - name: permissions
+    description: 'Optional and only valid if Hierarchical Namespace
+
+      is enabled for the account. Sets POSIX access permissions for the file
+
+      owner, the file owning group, and others. Each class may be granted
+
+      read, write, or execute permission.  The sticky bit is also supported.
+
+      Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are
+
+      supported.'
+    types:
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each chunk of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https, as https (the default), will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      blob. Also note that if enabled, the memory-efficient upload algorithm
+
+      will not be used because computing the MD5 hash requires buffering
+
+      entire blocks, and doing so defeats the purpose of the memory-efficient algorithm.'
+    types:
+    - <xref:bool>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  - name: chunk_size
+    description: 'The maximum chunk size for uploading a file in chunks.
+
+      Defaults to 100*1024*1024, or 100MB.'
+    types:
+    - <xref:int>
+  return:
+    description: response dict (Etag and last modified).

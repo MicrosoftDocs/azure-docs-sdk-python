@@ -51,8 +51,8 @@ methods:
 - uid: azure.eventhub.extensions.checkpointstoreblobaio.BlobCheckpointStore.claim_ownership
   name: claim_ownership
   summary: Tries to claim ownership for a list of specified partitions.
-  signature: 'claim_ownership(ownership_list: typing.Iterable[typing.Dict[str, typing.Any]],
-    **kwargs: typing.Any) -> typing.Iterable[typing.Dict[str, typing.Any]]'
+  signature: 'async claim_ownership(ownership_list: Iterable[Dict[str, Any]], **kwargs:
+    Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: ownership_list
     description: Iterable of dictionaries containing all the ownerships to claim.
@@ -64,7 +64,7 @@ methods:
     - '<xref:Iterable>[<xref:Dict>[<xref:str,Any>]], <xref:Iterable of dictionaries
       containing partition ownership information:* *fully_qualified_namespace* >(<xref:str>)<xref::
       The fully qualified namespace that the Event Hub belongs to. The format is like
-      "<namespace>.servicebus.windows.net". * *eventhub_name* >(<xref:str>)<xref::
+      "<namespace.servicebus.windows.net". * *eventhub_name* >(<xref:str>)<xref::
       The name of the specific Event Hub the checkpoint is associated with>, <xref:relative
       to the Event Hubs namespace that contains it. * *consumer_group* >(<xref:str>)<xref::
       The name of the consumer group the ownership are associated with. * *partition_id*
@@ -73,16 +73,16 @@ methods:
       claim this partition. * *last_modified_time* >(<xref:UTC datetime.datetime>)<xref::
       The last time this ownership was claimed. * *etag* >(<xref:str>)<xref:: The
       Etag value for the last time this ownership was modified. Optional depending
-      on storage implementation. >'
+      on storage implementation.>'
 - uid: azure.eventhub.extensions.checkpointstoreblobaio.BlobCheckpointStore.close
   name: close
   summary: Close an open HTTP session and connection.
-  signature: close() -> None
+  signature: async close() -> None
 - uid: azure.eventhub.extensions.checkpointstoreblobaio.BlobCheckpointStore.from_connection_string
   name: from_connection_string
   summary: Create BlobCheckpointStore from a storage connection string.
-  signature: from_connection_string(conn_str, container_name, *, credential=None,
-    **kwargs)
+  signature: 'from_connection_string(conn_str: str, container_name: str, *, credential:
+    Optional[Any] = None, **kwargs: Optional[Any]) -> azure.eventhub.extensions.checkpointstoreblobaio._blobstoragecsaio.BlobCheckpointStore'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -122,7 +122,7 @@ methods:
 - uid: azure.eventhub.extensions.checkpointstoreblobaio.BlobCheckpointStore.list_checkpoints
   name: list_checkpoints
   summary: List the updated checkpoints from the storage blob.
-  signature: list_checkpoints(fully_qualified_namespace, eventhub_name, consumer_group,
+  signature: async list_checkpoints(fully_qualified_namespace, eventhub_name, consumer_group,
     **kwargs)
   parameters:
   - name: fully_qualified_namespace
@@ -150,19 +150,18 @@ methods:
     - '<xref:Iterable>[<xref:Dict>[<xref:str,Any>]], <xref:Iterable of dictionaries
       containing partition checkpoint information:* *fully_qualified_namespace* >(<xref:str>)<xref::
       The fully qualified namespace that the Event Hub belongs to. The format is like
-      "<namespace>.servicebus.windows.net". * *eventhub_name* >(<xref:str>)<xref::
+      "<namespace.servicebus.windows.net". * *eventhub_name* >(<xref:str>)<xref::
       The name of the specific Event Hub the checkpoints are associated with>, <xref:relative
       to the Event Hubs namespace that contains it. * *consumer_group* >(<xref:str>)<xref::
       The name of the consumer group the checkpoints are associated with. * *partition_id*
       >(<xref:str>)<xref:: The partition ID which the checkpoint is created for. *
-      *sequence_number* >(<xref:int>)<xref:: The sequence number of the <xref:azure.eventhub.EventData>.
-      * *offset* >(<xref:str>)<xref:: The offset of the <xref:azure.eventhub.EventData>.
-      >'
+      *sequence_number* >(<xref:int>)<xref:: The sequence number of the azure.eventhub.EventData.
+      * *offset* >(<xref:str>)<xref:: The offset of the azure.eventhub.EventData.>'
 - uid: azure.eventhub.extensions.checkpointstoreblobaio.BlobCheckpointStore.list_ownership
   name: list_ownership
   summary: Retrieves a complete ownership list from the storage blob.
-  signature: 'list_ownership(fully_qualified_namespace: str, eventhub_name: str, consumer_group:
-    str, **kwargs: typing.Any) -> typing.Iterable[typing.Dict[str, typing.Any]]'
+  signature: 'async list_ownership(fully_qualified_namespace: str, eventhub_name:
+    str, consumer_group: str, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified namespace that the Event Hub belongs to.
@@ -189,7 +188,7 @@ methods:
     - '<xref:Iterable>[<xref:Dict>[<xref:str>, <xref:Any>]], <xref:Iterable of dictionaries
       containing partition ownership information:* *fully_qualified_namespace* >(<xref:str>)<xref::
       The fully qualified namespace that the Event Hub belongs to. The format is like
-      "<namespace>.servicebus.windows.net". * *eventhub_name* >(<xref:str>)<xref::
+      "<namespace.servicebus.windows.net". * *eventhub_name* >(<xref:str>)<xref::
       The name of the specific Event Hub the checkpoint is associated with>, <xref:relative
       to the Event Hubs namespace that contains it. * *consumer_group* >(<xref:str>)<xref::
       The name of the consumer group the ownership are associated with. * *partition_id*
@@ -198,7 +197,7 @@ methods:
       partition. * *last_modified_time* >(<xref:UTC datetime.datetime>)<xref:: The
       last time this ownership was claimed. * *etag* >(<xref:str>)<xref:: The Etag
       value for the last time this ownership was modified. Optional depending on storage
-      implementation. >'
+      implementation.>'
 - uid: azure.eventhub.extensions.checkpointstoreblobaio.BlobCheckpointStore.update_checkpoint
   name: update_checkpoint
   summary: 'Updates the checkpoint using the given information for the offset, associated
@@ -212,8 +211,8 @@ methods:
 
     cross-language EventHubs SDKs, it is recommended to persist the offset value as
     an integer.'
-  signature: 'update_checkpoint(checkpoint: typing.Dict[str, typing.Any], **kwargs:
-    typing.Any) -> None'
+  signature: 'async update_checkpoint(checkpoint: Dict[str, Any], **kwargs: Any) ->
+    None'
   parameters:
   - name: checkpoint
     description: "A dict containing checkpoint information:\n\n* *fully_qualified_namespace*\

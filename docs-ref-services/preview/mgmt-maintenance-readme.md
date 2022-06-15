@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-maintenance, maintenance
-author: maggiepint
-ms.author: magpint
-ms.date: 12/08/2020
-ms.topic: article
+author: mayurid
+ms.author: mayurid
+ms.date: 11/24/2021
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
@@ -13,7 +13,7 @@ ms.service: maintenance
 
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure MyService Management Client Library.
+This is the Microsoft Azure Maintenance Management Client Library.
 This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -38,5 +38,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-maintenance%2FREADME.png)
-
 

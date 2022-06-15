@@ -22,15 +22,16 @@ constructor:
     description: "Authentication for the connection. This should be one of the subclasses\
       \ of\nuamqp.authentication.AMQPAuth. Currently this includes:\n\n   * uamqp.authentication.SASLAnonymous\
       \ \n\n   * uamqp.authentication.SASLPlain \n\n   * uamqp.authentication.SASTokenAuth\
-      \ \n\nIf no authentication is supplied, SASLAnnoymous will be used by default."
-    isRequired: true
+      \ \n\n   * uamqp.authentication.JWTTokenAuth \n\nIf no authentication is supplied,\
+      \ SASLAnnoymous will be used by default."
+    defaultValue: None
     types:
     - <xref:uamqp.authentication.common.AMQPAuth>
   - name: client_name
     description: 'The name for the client, also known as the Container ID.
 
       If no name is provided, a random GUID will be used.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:bytes>
@@ -38,7 +39,7 @@ constructor:
     description: 'Whether to turn on network trace logs. If *True*, trace logs
 
       will be logged at INFO level. Default is *False*.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: msg_timeout
@@ -49,14 +50,14 @@ constructor:
 
       expired data from being sent. If set to 0, messages will not expire. Default
       is 0.'
-    isRequired: true
+    defaultValue: '0'
     types:
     - <xref:int>
   - name: error_policy
     description: 'A policy for parsing errors on link, connection and message
 
       disposition to determine whether the error should be retryable.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:uamqp.errors.ErrorPolicy>
   - name: keep_alive_interval
@@ -68,7 +69,7 @@ constructor:
       no
 
       thread will be started.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: send_settle_mode
@@ -198,7 +199,7 @@ methods:
   summary: "Add one or more messages to the send queue.\nNo further action will be\
     \ taken until either *SendClient.wait()*\nor *SendClient.send_all_messages()*\
     \ has been called.\nThe client does not need to be open yet for messages to be\
-    \ added\nto the queue. Multiple messages can be queued at once:\n\n\n   * *send_client.queue_message(my_message)*\
+    \ added\nto the queue. Multiple messages can be queued at once:\n\n   * *send_client.queue_message(my_message)*\
     \ \n\n   * *send_client.queue_message(message_1, message_2, message_3)* \n\n \
     \  * *send_client.queue_message(*my_message_list)*"
   signature: queue_message(*messages)
@@ -261,6 +262,9 @@ methods:
     defaultValue: 'False'
     types:
     - <xref:bool>
+  exceptions:
+  - type: uamqp.errors.MessageException if message fails to send after retry policyis
+      exhausted.
 - uid: uamqp.client.SendClient.wait
   name: wait
   summary: 'Run the client until all pending message in the queue
@@ -272,3 +276,6 @@ methods:
   return:
     types:
     - <xref:bool>
+attributes:
+- uid: uamqp.client.SendClient.pending_messages
+  name: pending_messages

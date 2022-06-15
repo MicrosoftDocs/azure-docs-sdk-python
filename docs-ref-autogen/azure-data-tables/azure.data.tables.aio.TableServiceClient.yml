@@ -17,9 +17,9 @@ summary: 'A client to interact with the Table Service at the account level.
   can be retrieved using the <xref:azure.data.tables.aio.TableServiceClient.get_table_client>
   function.'
 constructor:
-  syntax: 'TableServiceClient(endpoint: str, *, credential: typing.Union[azure.core.credentials.AzureSasCredential,
-    azure.core.credentials.AzureNamedKeyCredential, NoneType] = None, **kwargs: typing.Any)
-    -> None'
+  syntax: 'TableServiceClient(endpoint: str, *, credential: Optional[Union[azure.core.credentials.AzureSasCredential,
+    azure.core.credentials.AzureNamedKeyCredential, AsyncTokenCredential]] = None,
+    **kwargs: Any)'
   parameters:
   - name: endpoint
     description: 'The URL to the table service endpoint. Any other entities included
@@ -35,11 +35,13 @@ constructor:
       the
 
       account URL already has a SAS token. The value can be one of AzureNamedKeyCredential
+      (azure-core),
 
-      or AzureSasCredential from azure-core.'
+      AzureSasCredential (azure-core), or TokenCredentials from azure-identity.'
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is ''2019-02-02''.
 
@@ -59,24 +61,24 @@ examples:
 - "Creating the tableServiceClient with an account url and credential.<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\
-  \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
-  , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-  : 1}} -->\n\n````python\n\n   from azure.data.tables.aio import TableServiceClient\n\
-  \n   async with TableServiceClient.from_connection_string(conn_str=self.connection_string)\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\
+  \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.data.tables.aio\
+  \ import TableServiceClient\n\n   async with TableServiceClient.from_connection_string(conn_str=self.connection_string)\
   \ as table_service:\n       properties = await table_service.get_service_properties()\n\
   \       print(\"Shared Key: {}\".format(properties))\n\n   ````\n\nCreating the\
   \ tableServiceClient with Shared Access Signature.<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\
-  \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
-  , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-  : 1}} -->\n\n````python\n\n   from azure.data.tables.aio import TableServiceClient\n\
-  \   from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential\n\
-  \n   # Create a SAS token to use for authentication of a client\n   from azure.data.tables\
-  \ import generate_account_sas, ResourceTypes, AccountSasPermissions\n\n   print(\"\
-  Account name: {}\".format(self.account_name))\n   credential = AzureNamedKeyCredential(self.account_name,\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\
+  \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.data.tables.aio\
+  \ import TableServiceClient\n   from azure.core.credentials import AzureNamedKeyCredential,\
+  \ AzureSasCredential\n\n   # Create a SAS token to use for authentication of a client\n\
+  \   from azure.data.tables import generate_account_sas, ResourceTypes, AccountSasPermissions\n\
+  \n   print(\"Account name: {}\".format(self.account_name))\n   credential = AzureNamedKeyCredential(self.account_name,\
   \ self.access_key)\n   sas_token = generate_account_sas(\n       credential,\n \
   \      resource_types=ResourceTypes(service=True),\n       permission=AccountSasPermissions(read=True),\n\
   \       expiry=datetime.utcnow() + timedelta(hours=1),\n   )\n\n   async with TableServiceClient(endpoint=self.endpoint,\
@@ -87,7 +89,7 @@ methods:
 - uid: azure.data.tables.aio.TableServiceClient.create_table
   name: create_table
   summary: Creates a new table under the given account.
-  signature: 'create_table(table_name: str, **kwargs) -> azure.data.tables.aio._table_client_async.TableClient'
+  signature: 'async create_table(table_name: str, **kwargs) -> azure.data.tables.aio._table_client_async.TableClient'
   parameters:
   - name: headers
     isRequired: true
@@ -106,11 +108,12 @@ methods:
   - "Creating a table from TableServiceClient.<!--[!code-python[Main](les\\async_samples\\\
     sample_create_delete_table_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\
-    \\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   async with TableServiceClient.from_connection_string(self.connection_string)\
-    \ as table_service_client:\n       try:\n           table_item = await table_service_client.create_table(table_name=self.table_name)\n\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\
+    \\samples\\\\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
+    \ TableServiceClient.from_connection_string(self.connection_string) as table_service_client:\n\
+    \       try:\n           table_item = await table_service_client.create_table(table_name=self.table_name)\n\
     \           print(\"Created table {}!\".format(table_item.table_name))\n     \
     \  except ResourceExistsError:\n           print(\"Table already exists\")\n\n\
     \   ````\n"
@@ -121,7 +124,7 @@ methods:
     If the table currently exists, the current table is
 
     returned.'
-  signature: 'create_table_if_not_exists(table_name: str, **kwargs) -> azure.data.tables.aio._table_client_async.TableClient'
+  signature: 'async create_table_if_not_exists(table_name: str, **kwargs) -> azure.data.tables.aio._table_client_async.TableClient'
   parameters:
   - name: table_name
     description: The Table name.
@@ -136,18 +139,19 @@ methods:
   - "Creating a table if it does not already exist<!--[!code-python[Main](les\\async_samples\\\
     sample_create_delete_table_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\
-    \\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   async with TableServiceClient.from_connection_string(self.connection_string)\
-    \ as table_service_client:\n       table_item = await table_service_client.create_table_if_not_exists(table_name=self.table_name)\n\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\
+    \\samples\\\\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
+    \ TableServiceClient.from_connection_string(self.connection_string) as table_service_client:\n\
+    \       table_item = await table_service_client.create_table_if_not_exists(table_name=self.table_name)\n\
     \       print(\"Table name: {}\".format(table_item.table_name))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableServiceClient.delete_table
   name: delete_table
   summary: 'Deletes a table under the current account. No error will be raised if
 
     the table is not found.'
-  signature: 'delete_table(table_name: str, **kwargs) -> None'
+  signature: 'async delete_table(table_name: str, **kwargs) -> None'
   parameters:
   - name: table_name
     description: The Table name.
@@ -163,10 +167,11 @@ methods:
   examples:
   - "Deleting a table<!--[!code-python[Main](les\\async_samples\\sample_create_delete_table_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\173\\\\azure-data-tables-12.0.0\\\\samples\\\\async_samples\\\\sample_create_delete_table_async.py\"\
-    , \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false, \"\
-    highlight_args\": {\"linenostart\": 1}} -->\n\n````python\n\n   async with TableServiceClient.from_connection_string(self.connection_string)\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\\async_samples\\\\sample_create_delete_table_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   async with TableServiceClient.from_connection_string(self.connection_string)\
     \ as table_service_client:\n       await table_service_client.delete_table(table_name=self.table_name)\n\
     \       print(\"Deleted table {}!\".format(self.table_name))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableServiceClient.from_connection_string
@@ -189,11 +194,11 @@ methods:
   - "Creating the tableServiceClient from a connection string<!--[!code-python[Main](les\\\
     async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\
     \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false, \"highlight_args\"\
-    : {\"linenostart\": 1}} -->\n\n````python\n\n   from azure.data.tables.aio import\
-    \ TableServiceClient\n\n   async with TableServiceClient.from_connection_string(conn_str=self.connection_string)\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.data.tables.aio\
+    \ import TableServiceClient\n\n   async with TableServiceClient.from_connection_string(conn_str=self.connection_string)\
     \ as table_service:\n       properties = await table_service.get_service_properties()\n\
     \       print(\"Connection String: {}\".format(properties))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableServiceClient.get_service_properties
@@ -201,7 +206,7 @@ methods:
   summary: 'Gets the properties of an account''s Table service,
 
     including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.'
-  signature: get_service_properties(**kwargs) -> typing.Dict[str, object]
+  signature: async get_service_properties(**kwargs) -> Dict[str, object]
   parameters:
   - name: cls
     description: A custom type or function that will be passed the direct response
@@ -220,11 +225,13 @@ methods:
 
     location endpoint when read-access geo-redundant replication is enabled for the
     account.'
-  signature: get_service_stats(**kwargs) -> typing.Dict[str, object]
+  signature: async get_service_stats(**kwargs) -> Dict[str, object]
   return:
     description: Dictionary of service stats
     types:
     - <xref:Dict>[<xref:str>, <xref:object>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.data.tables.aio.TableServiceClient.get_table_client
   name: get_table_client
   summary: 'Get a client to interact with the specified table.
@@ -261,12 +268,12 @@ methods:
   - "Listing all tables in an account<!--[!code-python[Main](les\\async_samples\\\
     sample_query_tables_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\\async_samples\\\
-    \\sample_query_tables_async.py\", \"xml:space\": \"preserve\", \"language\": \"\
-    python\", \"linenos\": false, \"highlight_args\": {\"linenostart\": 1}} -->\n\n\
-    ````python\n\n   # List all the tables in the service\n   print(\"Listing tables:\"\
-    )\n   async for table in table_service.list_tables():\n       print(\"\\t{}\"\
-    .format(table.name))\n\n   ````\n"
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\\samples\\\
+    \\async_samples\\\\sample_query_tables_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # List all the tables in the\
+    \ service\n   print(\"Listing tables:\")\n   async for table in table_service.list_tables():\n\
+    \       print(\"\\t{}\".format(table.name))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableServiceClient.query_tables
   name: query_tables
   summary: Queries tables under the given account.
@@ -291,22 +298,25 @@ methods:
     - <xref:azure.core.async_paging.AsyncItemPaged>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Querying tables in an account given specific parameters<!--[!code-python[Main](les\\\
     async_samples\\sample_query_tables_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\173\\\\azure-data-tables-12.0.0\\\\samples\\\
-    \\async_samples\\\\sample_query_tables_async.py\", \"xml:space\": \"preserve\"\
-    , \"language\": \"python\", \"linenos\": false, \"highlight_args\": {\"linenostart\"\
-    : 1}} -->\n\n````python\n\n   # Query for \"table1\" in the tables created\n \
-    \  table_name = \"mytableasync1\"\n   name_filter = \"TableName eq '{}'\".format(table_name)\n\
-    \   print(\"Queried_tables\")\n   async for table in table_service.query_tables(name_filter):\n\
-    \       print(\"\\t{}\".format(table.name))\n\n   ````\n"
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\165\\\\azure-data-tables-12.4.0\\\
+    \\samples\\\\async_samples\\\\sample_query_tables_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Query for \"\
+    table1\" in the tables created\n   table_name = \"mytableasync1\"\n   name_filter\
+    \ = \"TableName eq '{}'\".format(table_name)\n   print(\"Queried_tables\")\n \
+    \  async for table in table_service.query_tables(name_filter):\n       print(\"\
+    \\t{}\".format(table.name))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableServiceClient.set_service_properties
   name: set_service_properties
   summary: "Sets properties for an account's Table service endpoint,\n   including\
     \ properties for Analytics and CORS (Cross-Origin Resource Sharing) rules."
+  signature: 'async set_service_properties(*, analytics_logging: Optional[TableAnalyticsLogging]
+    = None, hour_metrics: Optional[TableMetrics] = None, minute_metrics: Optional[TableMetrics]
+    = None, cors: Optional[List[TableCorsRule]] = None, **kwargs) -> None'
   parameters:
   - name: analytics_logging
     description: Properties for analytics

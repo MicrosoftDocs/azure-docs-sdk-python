@@ -3,7 +3,7 @@ title: Bing Video Search
 author: PatrickFarley
 ms.author: pafarley
 ms.date: 10/26/2020
-ms.topic: article
+ms.topic: reference
 ms.prod: azure
 ms.technology: azure
 ms.devlang: python
