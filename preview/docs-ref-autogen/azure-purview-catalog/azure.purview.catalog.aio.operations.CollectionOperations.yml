@@ -23,8 +23,8 @@ methods:
     Map and array of collections are not well supported. E.g., array<array:code:*<int>*>,
 
     array<map<string, int>>.'
-  signature: 'async create_or_update(collection: str, entity: Any, **kwargs: Any)
-    -> Any'
+  signature: 'async create_or_update(collection: str, entity: collections.abc.MutableMapping[str,
+    Any], **kwargs: Any) -> collections.abc.MutableMapping[str, Any]'
   parameters:
   - name: collection
     description: the collection unique name.
@@ -35,11 +35,11 @@ methods:
     description: Atlas entity with extended information.
     isRequired: true
     types:
-    - <xref:JSONType>
+    - <xref:JSON>
   return:
     description: JSON object
     types:
-    - <xref:JSONType>
+    - <xref:JSON>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -49,383 +49,86 @@ methods:
     \   # JSON input template you can fill out and use as your body input.\n   entity\
     \ = {\n       \"entity\": {\n           \"attributes\": {\n               \"str\"\
     : {}  # Optional. The attributes of the struct.\n           },\n           \"\
-    classifications\": [\n               {\n                   \"attributes\": {\n\
-    \                       \"str\": {}  # Optional. The attributes of the\n     \
-    \                    struct.\n                   },\n                   \"entityGuid\"\
-    : \"str\",  # Optional. The GUID of the\n                     entity.\n      \
-    \             \"entityStatus\": \"str\",  # Optional. Status of the\n        \
-    \             entity - can be active or deleted. Deleted entities are not removed\n\
-    \                     from Atlas store. Possible values include: \"ACTIVE\", \"\
-    DELETED\".\n                   \"lastModifiedTS\": \"str\",  # Optional. ETag\
-    \ for\n                     concurrency control.\n                   \"removePropagationsOnEntityDelete\"\
-    : bool,  #\n                     Optional. Determines if propagations will be\
-    \ removed on entity\n                     deletion.\n                   \"source\"\
-    : \"str\",  # Optional. indicate the source who\n                     create the\
-    \ classification detail.\n                   \"sourceDetails\": {\n          \
-    \             \"str\": {}  # Optional. more detail on source\n               \
-    \          information.\n                   },\n                   \"typeName\"\
-    : \"str\",  # Optional. The name of the type.\n                   \"validityPeriods\"\
-    : [\n                       {\n                           \"endTime\": \"str\"\
-    ,  # Optional. The\n                             end of the time boundary.\n \
-    \                          \"startTime\": \"str\",  # Optional. The\n        \
-    \                     start of the time boundary.\n                          \
-    \ \"timeZone\": \"str\"  # Optional. The\n                             timezone\
-    \ of the time boundary.\n                       }\n                   ]\n    \
-    \           }\n           ],\n           \"contacts\": {\n               \"str\"\
-    : [\n                   {\n                       \"id\": \"str\",  # Optional.\
-    \ Azure Active\n                         Directory object Id.\n              \
-    \         \"info\": \"str\"  # Optional. additional\n                        \
-    \ information to describe this contact.\n                   }\n              \
-    \ ]\n           },\n           \"createTime\": 0.0,  # Optional. The created time\
-    \ of the record.\n           \"createdBy\": \"str\",  # Optional. The user who\
-    \ created the record.\n           \"guid\": \"str\",  # Optional. The GUID of\
-    \ the entity.\n           \"homeId\": \"str\",  # Optional. The home ID of the\
-    \ entity.\n           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\
-    \ control.\n           \"meanings\": [\n               {\n                   \"\
-    confidence\": 0,  # Optional. The confidence of the\n                     term\
-    \ assignment.\n                   \"createdBy\": \"str\",  # Optional. The user\
-    \ who created\n                     the record.\n                   \"description\"\
-    : \"str\",  # Optional. The description of\n                     the term assignment.\n\
-    \                   \"displayText\": \"str\",  # Optional. The display text.\n\
-    \                   \"expression\": \"str\",  # Optional. The expression of\n\
-    \                     the term assignment.\n                   \"relationGuid\"\
-    : \"str\",  # Optional. The GUID of the\n                     relationship.\n\
-    \                   \"source\": \"str\",  # Optional. The source of the term.\n\
-    \                   \"status\": \"str\",  # Optional. The status of terms\n  \
-    \                   assignment. Possible values include: \"DISCOVERED\", \"PROPOSED\"\
-    ,\n                     \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
-    , \"OTHER\".\n                   \"steward\": \"str\",  # Optional. The steward\
-    \ of the\n                     term.\n                   \"termGuid\": \"str\"\
-    \  # Optional. The GUID of the term.\n               }\n           ],\n      \
-    \     \"provenanceType\": 0.0,  # Optional. Used to record the provenance of\n\
-    \             an instance of an entity or relationship.\n           \"proxy\"\
-    : bool,  # Optional. Determines if there's a proxy.\n           \"relationshipAttributes\"\
-    : {\n               \"str\": {}  # Optional. The attributes of relationship.\n\
-    \           },\n           \"source\": \"str\",  # Optional. indicate the source\
-    \ who create the\n             classification detail.\n           \"sourceDetails\"\
-    : {\n               \"str\": {}  # Optional. more detail on source information.\n\
-    \           },\n           \"status\": \"str\",  # Optional. Status of the entity\
-    \ - can be active or\n             deleted. Deleted entities are not removed from\
-    \ Atlas store. Possible values\n             include: \"ACTIVE\", \"DELETED\"\
-    .\n           \"typeName\": \"str\",  # Optional. The name of the type.\n    \
-    \       \"updateTime\": 0.0,  # Optional. The update time of the record.\n   \
-    \        \"updatedBy\": \"str\",  # Optional. The user who updated the record.\n\
-    \           \"version\": 0.0  # Optional. The version of the entity.\n       },\n\
-    \       \"referredEntities\": {\n           \"str\": {\n               \"attributes\"\
-    : {\n                   \"str\": {}  # Optional. The attributes of the struct.\n\
-    \               },\n               \"classifications\": [\n                  \
-    \ {\n                       \"attributes\": {\n                           \"str\"\
-    : {}  # Optional. The attributes\n                             of the struct.\n\
-    \                       },\n                       \"entityGuid\": \"str\",  #\
-    \ Optional. The GUID of\n                         the entity.\n              \
-    \         \"entityStatus\": \"str\",  # Optional. Status of\n                \
-    \         the entity - can be active or deleted. Deleted entities are not\n  \
-    \                       removed from Atlas store. Possible values include: \"\
-    ACTIVE\",\n                         \"DELETED\".\n                       \"lastModifiedTS\"\
-    : \"str\",  # Optional. ETag\n                         for concurrency control.\n\
-    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
-    \                    Optional. Determines if propagations will be removed on entity\n\
-    \                         deletion.\n                       \"source\": \"str\"\
-    ,  # Optional. indicate the\n                         source who create the classification\
-    \ detail.\n                       \"sourceDetails\": {\n                     \
-    \      \"str\": {}  # Optional. more detail on\n                             source\
-    \ information.\n                       },\n                       \"typeName\"\
-    : \"str\",  # Optional. The name of\n                         the type.\n    \
-    \                   \"validityPeriods\": [\n                           {\n   \
-    \                            \"endTime\": \"str\",  #\n                      \
-    \           Optional. The end of the time boundary.\n                        \
-    \       \"startTime\": \"str\",  #\n                                 Optional.\
-    \ The start of the time boundary.\n                               \"timeZone\"\
-    : \"str\"  #\n                                 Optional. The timezone of the time\
-    \ boundary.\n                           }\n                       ]\n        \
-    \           }\n               ],\n               \"contacts\": {\n           \
-    \        \"str\": [\n                       {\n                           \"id\"\
-    : \"str\",  # Optional. Azure\n                             Active Directory object\
-    \ Id.\n                           \"info\": \"str\"  # Optional. additional\n\
-    \                             information to describe this contact.\n        \
-    \               }\n                   ]\n               },\n               \"\
-    createTime\": 0.0,  # Optional. The created time of the\n                 record.\n\
-    \               \"createdBy\": \"str\",  # Optional. The user who created the\n\
-    \                 record.\n               \"guid\": \"str\",  # Optional. The\
-    \ GUID of the entity.\n               \"homeId\": \"str\",  # Optional. The home\
-    \ ID of the entity.\n               \"lastModifiedTS\": \"str\",  # Optional.\
-    \ ETag for concurrency\n                 control.\n               \"meanings\"\
-    : [\n                   {\n                       \"confidence\": 0,  # Optional.\
-    \ The confidence\n                         of the term assignment.\n         \
-    \              \"createdBy\": \"str\",  # Optional. The user who\n           \
-    \              created the record.\n                       \"description\": \"\
-    str\",  # Optional. The\n                         description of the term assignment.\n\
-    \                       \"displayText\": \"str\",  # Optional. The\n         \
-    \                display text.\n                       \"expression\": \"str\"\
-    ,  # Optional. The\n                         expression of the term assignment.\n\
-    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
-    \                      of the relationship.\n                       \"source\"\
-    : \"str\",  # Optional. The source of\n                         the term.\n  \
-    \                     \"status\": \"str\",  # Optional. The status of\n      \
-    \                   terms assignment. Possible values include: \"DISCOVERED\"\
-    ,\n                         \"PROPOSED\", \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\"\
-    , \"OBSOLETE\",\n                         \"OTHER\".\n                       \"\
-    steward\": \"str\",  # Optional. The steward of\n                         the\
-    \ term.\n                       \"termGuid\": \"str\"  # Optional. The GUID of\n\
-    \                         the term.\n                   }\n               ],\n\
-    \               \"provenanceType\": 0.0,  # Optional. Used to record the\n   \
-    \              provenance of an instance of an entity or relationship.\n     \
-    \          \"proxy\": bool,  # Optional. Determines if there's a proxy.\n    \
-    \           \"relationshipAttributes\": {\n                   \"str\": {}  # Optional.\
-    \ The attributes of\n                     relationship.\n               },\n \
-    \              \"source\": \"str\",  # Optional. indicate the source who create\n\
-    \                 the classification detail.\n               \"sourceDetails\"\
-    : {\n                   \"str\": {}  # Optional. more detail on source\n     \
-    \                information.\n               },\n               \"status\": \"\
-    str\",  # Optional. Status of the entity - can be\n                 active or\
-    \ deleted. Deleted entities are not removed from Atlas store.\n              \
-    \   Possible values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\"\
-    : \"str\",  # Optional. The name of the type.\n               \"updateTime\":\
-    \ 0.0,  # Optional. The update time of the\n                 record.\n       \
-    \        \"updatedBy\": \"str\",  # Optional. The user who updated the\n     \
-    \            record.\n               \"version\": 0.0  # Optional. The version\
-    \ of the entity.\n           }\n       }\n   }\n\n   # response body for status\
-    \ code(s): 200\n   response.json() == {\n       \"guidAssignments\": {\n     \
-    \      \"str\": \"str\"  # Optional. A map of GUID assignments with entities.\n\
-    \       },\n       \"mutatedEntities\": {\n           \"str\": [\n           \
-    \    {\n                   \"attributes\": {\n                       \"str\":\
-    \ {}  # Optional. The attributes of the\n                         struct.\n  \
-    \                 },\n                   \"classificationNames\": [\n        \
-    \               \"str\"  # Optional. An array of classification\n            \
-    \             names.\n                   ],\n                   \"classifications\"\
-    : [\n                       {\n                           \"attributes\": {\n\
-    \                               \"str\": {}  # Optional. The\n               \
-    \                  attributes of the struct.\n                           },\n\
-    \                           \"entityGuid\": \"str\",  # Optional. The\n      \
-    \                       GUID of the entity.\n                           \"entityStatus\"\
-    : \"str\",  # Optional.\n                             Status of the entity - can\
-    \ be active or deleted. Deleted\n                             entities are not\
-    \ removed from Atlas store. Possible values\n                             include:\
-    \ \"ACTIVE\", \"DELETED\".\n                           \"lastModifiedTS\": \"\
-    str\",  # Optional.\n                             ETag for concurrency control.\n\
-    \                           \"removePropagationsOnEntityDelete\":\n          \
-    \                   bool,  # Optional. Determines if propagations will be removed\n\
-    \                             on entity deletion.\n                          \
-    \ \"source\": \"str\",  # Optional.\n                             indicate the\
-    \ source who create the classification detail.\n                           \"\
-    sourceDetails\": {\n                               \"str\": {}  # Optional. more\n\
-    \                                 detail on source information.\n            \
-    \               },\n                           \"typeName\": \"str\",  # Optional.\
-    \ The\n                             name of the type.\n                      \
-    \     \"validityPeriods\": [\n                               {\n             \
-    \                      \"endTime\": \"str\",  #\n                            \
-    \         Optional. The end of the time boundary.\n                          \
-    \         \"startTime\": \"str\",\n                                     # Optional.\
-    \ The start of the time boundary.\n                                   \"timeZone\"\
-    : \"str\"  #\n                                     Optional. The timezone of the\
-    \ time boundary.\n                               }\n                         \
-    \  ]\n                       }\n                   ],\n                   \"displayText\"\
-    : \"str\",  # Optional. The display text.\n                   \"guid\": \"str\"\
-    ,  # Optional. The GUID of the record.\n                   \"lastModifiedTS\"\
+    businessAttributes\": {\n               \"str\": {}  # Optional. Business Attributes.\n\
+    \           },\n           \"classifications\": [\n               {\n        \
+    \           \"attributes\": {\n                       \"str\": {}  # Optional.\
+    \ The attributes of the\n                         struct.\n                  \
+    \ },\n                   \"entityGuid\": \"str\",  # Optional. The GUID of the\n\
+    \                     entity.\n                   \"entityStatus\": \"str\", \
+    \ # Optional. Status of the\n                     entity - can be active or deleted.\
+    \ Deleted entities are not removed\n                     from Atlas store. Known\
+    \ values are: \"ACTIVE\", \"DELETED\".\n                   \"lastModifiedTS\"\
     : \"str\",  # Optional. ETag for\n                     concurrency control.\n\
-    \                   \"meaningNames\": [\n                       \"str\"  # Optional.\
-    \ An array of meanings.\n                   ],\n                   \"meanings\"\
-    : [\n                       {\n                           \"confidence\": 0, \
-    \ # Optional. The\n                             confidence of the term assignment.\n\
-    \                           \"createdBy\": \"str\",  # Optional. The\n       \
-    \                      user who created the record.\n                        \
-    \   \"description\": \"str\",  # Optional.\n                             The description\
-    \ of the term assignment.\n                           \"displayText\": \"str\"\
-    ,  # Optional.\n                             The display text.\n             \
-    \              \"expression\": \"str\",  # Optional. The\n                   \
-    \          expression of the term assignment.\n                           \"relationGuid\"\
-    : \"str\",  # Optional.\n                             The GUID of the relationship.\n\
-    \                           \"source\": \"str\",  # Optional. The\n          \
-    \                   source of the term.\n                           \"status\"\
-    : \"str\",  # Optional. The\n                             status of terms assignment.\
-    \ Possible values include:\n                             \"DISCOVERED\", \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\",\n                             \"DEPRECATED\", \"\
-    OBSOLETE\", \"OTHER\".\n                           \"steward\": \"str\",  # Optional.\
-    \ The\n                             steward of the term.\n                   \
-    \        \"termGuid\": \"str\"  # Optional. The\n                            \
-    \ GUID of the term.\n                       }\n                   ],\n       \
-    \            \"status\": \"str\",  # Optional. Status of the entity -\n      \
-    \               can be active or deleted. Deleted entities are not removed from\
-    \ Atlas\n                     store. Possible values include: \"ACTIVE\", \"DELETED\"\
-    .\n                   \"typeName\": \"str\"  # Optional. The name of the type.\n\
-    \               }\n           ]\n       },\n       \"partialUpdatedEntities\"\
-    : [\n           {\n               \"attributes\": {\n                   \"str\"\
-    : {}  # Optional. The attributes of the struct.\n               },\n         \
-    \      \"classificationNames\": [\n                   \"str\"  # Optional. An\
-    \ array of classification names.\n               ],\n               \"classifications\"\
-    : [\n                   {\n                       \"attributes\": {\n        \
-    \                   \"str\": {}  # Optional. The attributes\n                \
-    \             of the struct.\n                       },\n                    \
-    \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
-    \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
-    \ Status of\n                         the entity - can be active or deleted. Deleted\
-    \ entities are not\n                         removed from Atlas store. Possible\
-    \ values include: \"ACTIVE\",\n                         \"DELETED\".\n       \
-    \                \"lastModifiedTS\": \"str\",  # Optional. ETag\n            \
-    \             for concurrency control.\n                       \"removePropagationsOnEntityDelete\"\
-    : bool,  #\n                         Optional. Determines if propagations will\
-    \ be removed on entity\n                         deletion.\n                 \
-    \      \"source\": \"str\",  # Optional. indicate the\n                      \
-    \   source who create the classification detail.\n                       \"sourceDetails\"\
-    : {\n                           \"str\": {}  # Optional. more detail on\n    \
-    \                         source information.\n                       },\n   \
-    \                    \"typeName\": \"str\",  # Optional. The name of\n       \
-    \                  the type.\n                       \"validityPeriods\": [\n\
-    \                           {\n                               \"endTime\": \"\
-    str\",  #\n                                 Optional. The end of the time boundary.\n\
-    \                               \"startTime\": \"str\",  #\n                 \
-    \                Optional. The start of the time boundary.\n                 \
-    \              \"timeZone\": \"str\"  #\n                                 Optional.\
-    \ The timezone of the time boundary.\n                           }\n         \
-    \              ]\n                   }\n               ],\n               \"displayText\"\
-    : \"str\",  # Optional. The display text.\n               \"guid\": \"str\", \
-    \ # Optional. The GUID of the record.\n               \"lastModifiedTS\": \"str\"\
-    ,  # Optional. ETag for concurrency\n                 control.\n             \
-    \  \"meaningNames\": [\n                   \"str\"  # Optional. An array of meanings.\n\
-    \               ],\n               \"meanings\": [\n                   {\n   \
-    \                    \"confidence\": 0,  # Optional. The confidence\n        \
-    \                 of the term assignment.\n                       \"createdBy\"\
-    : \"str\",  # Optional. The user who\n                         created the record.\n\
-    \                       \"description\": \"str\",  # Optional. The\n         \
-    \                description of the term assignment.\n                       \"\
-    displayText\": \"str\",  # Optional. The\n                         display text.\n\
-    \                       \"expression\": \"str\",  # Optional. The\n          \
-    \               expression of the term assignment.\n                       \"\
-    relationGuid\": \"str\",  # Optional. The GUID\n                         of the\
-    \ relationship.\n                       \"source\": \"str\",  # Optional. The\
-    \ source of\n                         the term.\n                       \"status\"\
-    : \"str\",  # Optional. The status of\n                         terms assignment.\
-    \ Possible values include: \"DISCOVERED\",\n                         \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\",\n               \
-    \          \"OTHER\".\n                       \"steward\": \"str\",  # Optional.\
-    \ The steward of\n                         the term.\n                       \"\
-    termGuid\": \"str\"  # Optional. The GUID of\n                         the term.\n\
-    \                   }\n               ],\n               \"status\": \"str\",\
-    \  # Optional. Status of the entity - can be\n                 active or deleted.\
-    \ Deleted entities are not removed from Atlas store.\n                 Possible\
-    \ values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\": \"str\"\
-    \  # Optional. The name of the type.\n           }\n       ]\n   }\n   ````\n"
-- uid: azure.purview.catalog.aio.operations.CollectionOperations.create_or_update_bulk
-  name: create_or_update_bulk
-  summary: 'Creates or updates entities in bulk to a collection.
-
-    Existing entity is matched using its unique guid if supplied or by its unique
-    attributes eg:
-
-    qualifiedName.
-
-    Map and array of collections are not well supported. E.g., array<array:code:*<int>*>,
-
-    array<map<string, int>>.'
-  signature: 'async create_or_update_bulk(collection: str, entities: Any, **kwargs:
-    Any) -> Any'
-  parameters:
-  - name: collection
-    description: the collection unique name.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: entities
-    description: Atlas entities with extended information.
-    isRequired: true
-    types:
-    - <xref:JSONType>
-  return:
-    description: JSON object
-    types:
-    - <xref:JSONType>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # JSON input template you can fill out and use as your body input.\n   entities\
-    \ = {\n       \"entities\": [\n           {\n               \"attributes\": {\n\
-    \                   \"str\": {}  # Optional. The attributes of the struct.\n \
-    \              },\n               \"classifications\": [\n                   {\n\
-    \                       \"attributes\": {\n                           \"str\"\
-    : {}  # Optional. The attributes\n                             of the struct.\n\
-    \                       },\n                       \"entityGuid\": \"str\",  #\
+    \                   \"removePropagationsOnEntityDelete\": bool,  #\n         \
+    \            Optional. Determines if propagations will be removed on entity\n\
+    \                     deletion.\n                   \"source\": \"str\",  # Optional.\
+    \ indicate the source who\n                     create the classification detail.\n\
+    \                   \"sourceDetails\": {\n                       \"str\": {} \
+    \ # Optional. more detail on source\n                         information.\n \
+    \                  },\n                   \"typeName\": \"str\",  # Optional.\
+    \ The name of the type.\n                   \"validityPeriods\": [\n         \
+    \              {\n                           \"endTime\": \"str\",  # Optional.\
+    \ The\n                             end of the time boundary.\n              \
+    \             \"startTime\": \"str\",  # Optional. The\n                     \
+    \        start of the time boundary.\n                           \"timeZone\"\
+    : \"str\"  # Optional. The\n                             timezone of the time\
+    \ boundary.\n                       }\n                   ]\n               }\n\
+    \           ],\n           \"contacts\": {\n               \"str\": [\n      \
+    \             {\n                       \"id\": \"str\",  # Optional. Azure Active\n\
+    \                         Directory object Id.\n                       \"info\"\
+    : \"str\"  # Optional. additional\n                         information to describe\
+    \ this contact.\n                   }\n               ]\n           },\n     \
+    \      \"createTime\": 0.0,  # Optional. The created time of the record.\n   \
+    \        \"createdBy\": \"str\",  # Optional. The user who created the record.\n\
+    \           \"customAttributes\": {\n               \"str\": \"str\"  # Optional.\
+    \ Custom Attribute.\n           },\n           \"guid\": \"str\",  # Optional.\
+    \ The GUID of the entity.\n           \"homeId\": \"str\",  # Optional. The home\
+    \ ID of the entity.\n           \"isIncomplete\": bool,  # Optional. Whether it\
+    \ is a shell entity.\n           \"labels\": [\n               \"str\"  # Optional.\
+    \ labels.\n           ],\n           \"lastModifiedTS\": \"str\",  # Optional.\
+    \ ETag for concurrency control.\n           \"meanings\": [\n               {\n\
+    \                   \"confidence\": 0,  # Optional. The confidence of the\n  \
+    \                   term assignment.\n                   \"createdBy\": \"str\"\
+    ,  # Optional. The user who created\n                     the record.\n      \
+    \             \"description\": \"str\",  # Optional. The description of\n    \
+    \                 the term assignment.\n                   \"displayText\": \"\
+    str\",  # Optional. The display text.\n                   \"expression\": \"str\"\
+    ,  # Optional. The expression of\n                     the term assignment.\n\
+    \                   \"relationGuid\": \"str\",  # Optional. The GUID of the\n\
+    \                     relationship.\n                   \"source\": \"str\", \
+    \ # Optional. The source of the term.\n                   \"status\": \"str\"\
+    ,  # Optional. The status of terms\n                     assignment. Known values\
+    \ are: \"DISCOVERED\", \"PROPOSED\", \"IMPORTED\",\n                     \"VALIDATED\"\
+    , \"DEPRECATED\", \"OBSOLETE\", \"OTHER\".\n                   \"steward\": \"\
+    str\",  # Optional. The steward of the\n                     term.\n         \
+    \          \"termGuid\": \"str\"  # Optional. The GUID of the term.\n        \
+    \       }\n           ],\n           \"provenanceType\": 0.0,  # Optional. Used\
+    \ to record the provenance of\n             an instance of an entity or relationship.\n\
+    \           \"proxy\": bool,  # Optional. Determines if there's a proxy.\n   \
+    \        \"relationshipAttributes\": {\n               \"str\": {}  # Optional.\
+    \ The attributes of relationship.\n           },\n           \"source\": \"str\"\
+    ,  # Optional. indicate the source who create the\n             classification\
+    \ detail.\n           \"sourceDetails\": {\n               \"str\": {}  # Optional.\
+    \ more detail on source information.\n           },\n           \"status\": \"\
+    str\",  # Optional. Status of the entity - can be active or\n             deleted.\
+    \ Deleted entities are not removed from Atlas store. Known values are:\n     \
+    \        \"ACTIVE\", \"DELETED\".\n           \"typeName\": \"str\",  # Optional.\
+    \ The name of the type.\n           \"updateTime\": 0.0,  # Optional. The update\
+    \ time of the record.\n           \"updatedBy\": \"str\",  # Optional. The user\
+    \ who updated the record.\n           \"version\": 0.0  # Optional. The version\
+    \ of the entity.\n       },\n       \"referredEntities\": {\n           \"str\"\
+    : {\n               \"attributes\": {\n                   \"str\": {}  # Optional.\
+    \ The attributes of the struct.\n               },\n               \"businessAttributes\"\
+    : {\n                   \"str\": {}  # Optional. Business Attributes.\n      \
+    \         },\n               \"classifications\": [\n                   {\n  \
+    \                     \"attributes\": {\n                           \"str\": {}\
+    \  # Optional. The attributes\n                             of the struct.\n \
+    \                      },\n                       \"entityGuid\": \"str\",  #\
     \ Optional. The GUID of\n                         the entity.\n              \
     \         \"entityStatus\": \"str\",  # Optional. Status of\n                \
     \         the entity - can be active or deleted. Deleted entities are not\n  \
-    \                       removed from Atlas store. Possible values include: \"\
-    ACTIVE\",\n                         \"DELETED\".\n                       \"lastModifiedTS\"\
-    : \"str\",  # Optional. ETag\n                         for concurrency control.\n\
-    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
-    \                    Optional. Determines if propagations will be removed on entity\n\
-    \                         deletion.\n                       \"source\": \"str\"\
-    ,  # Optional. indicate the\n                         source who create the classification\
-    \ detail.\n                       \"sourceDetails\": {\n                     \
-    \      \"str\": {}  # Optional. more detail on\n                             source\
-    \ information.\n                       },\n                       \"typeName\"\
-    : \"str\",  # Optional. The name of\n                         the type.\n    \
-    \                   \"validityPeriods\": [\n                           {\n   \
-    \                            \"endTime\": \"str\",  #\n                      \
-    \           Optional. The end of the time boundary.\n                        \
-    \       \"startTime\": \"str\",  #\n                                 Optional.\
-    \ The start of the time boundary.\n                               \"timeZone\"\
-    : \"str\"  #\n                                 Optional. The timezone of the time\
-    \ boundary.\n                           }\n                       ]\n        \
-    \           }\n               ],\n               \"contacts\": {\n           \
-    \        \"str\": [\n                       {\n                           \"id\"\
-    : \"str\",  # Optional. Azure\n                             Active Directory object\
-    \ Id.\n                           \"info\": \"str\"  # Optional. additional\n\
-    \                             information to describe this contact.\n        \
-    \               }\n                   ]\n               },\n               \"\
-    createTime\": 0.0,  # Optional. The created time of the\n                 record.\n\
-    \               \"createdBy\": \"str\",  # Optional. The user who created the\n\
-    \                 record.\n               \"guid\": \"str\",  # Optional. The\
-    \ GUID of the entity.\n               \"homeId\": \"str\",  # Optional. The home\
-    \ ID of the entity.\n               \"lastModifiedTS\": \"str\",  # Optional.\
-    \ ETag for concurrency\n                 control.\n               \"meanings\"\
-    : [\n                   {\n                       \"confidence\": 0,  # Optional.\
-    \ The confidence\n                         of the term assignment.\n         \
-    \              \"createdBy\": \"str\",  # Optional. The user who\n           \
-    \              created the record.\n                       \"description\": \"\
-    str\",  # Optional. The\n                         description of the term assignment.\n\
-    \                       \"displayText\": \"str\",  # Optional. The\n         \
-    \                display text.\n                       \"expression\": \"str\"\
-    ,  # Optional. The\n                         expression of the term assignment.\n\
-    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
-    \                      of the relationship.\n                       \"source\"\
-    : \"str\",  # Optional. The source of\n                         the term.\n  \
-    \                     \"status\": \"str\",  # Optional. The status of\n      \
-    \                   terms assignment. Possible values include: \"DISCOVERED\"\
-    ,\n                         \"PROPOSED\", \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\"\
-    , \"OBSOLETE\",\n                         \"OTHER\".\n                       \"\
-    steward\": \"str\",  # Optional. The steward of\n                         the\
-    \ term.\n                       \"termGuid\": \"str\"  # Optional. The GUID of\n\
-    \                         the term.\n                   }\n               ],\n\
-    \               \"provenanceType\": 0.0,  # Optional. Used to record the\n   \
-    \              provenance of an instance of an entity or relationship.\n     \
-    \          \"proxy\": bool,  # Optional. Determines if there's a proxy.\n    \
-    \           \"relationshipAttributes\": {\n                   \"str\": {}  # Optional.\
-    \ The attributes of\n                     relationship.\n               },\n \
-    \              \"source\": \"str\",  # Optional. indicate the source who create\n\
-    \                 the classification detail.\n               \"sourceDetails\"\
-    : {\n                   \"str\": {}  # Optional. more detail on source\n     \
-    \                information.\n               },\n               \"status\": \"\
-    str\",  # Optional. Status of the entity - can be\n                 active or\
-    \ deleted. Deleted entities are not removed from Atlas store.\n              \
-    \   Possible values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\"\
-    : \"str\",  # Optional. The name of the type.\n               \"updateTime\":\
-    \ 0.0,  # Optional. The update time of the\n                 record.\n       \
-    \        \"updatedBy\": \"str\",  # Optional. The user who updated the\n     \
-    \            record.\n               \"version\": 0.0  # Optional. The version\
-    \ of the entity.\n           }\n       ],\n       \"referredEntities\": {\n  \
-    \         \"str\": {\n               \"attributes\": {\n                   \"\
-    str\": {}  # Optional. The attributes of the struct.\n               },\n    \
-    \           \"classifications\": [\n                   {\n                   \
-    \    \"attributes\": {\n                           \"str\": {}  # Optional. The\
-    \ attributes\n                             of the struct.\n                  \
-    \     },\n                       \"entityGuid\": \"str\",  # Optional. The GUID\
-    \ of\n                         the entity.\n                       \"entityStatus\"\
-    : \"str\",  # Optional. Status of\n                         the entity - can be\
-    \ active or deleted. Deleted entities are not\n                         removed\
-    \ from Atlas store. Possible values include: \"ACTIVE\",\n                   \
-    \      \"DELETED\".\n                       \"lastModifiedTS\": \"str\",  # Optional.\
+    \                       removed from Atlas store. Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n                       \"lastModifiedTS\": \"str\",  # Optional.\
     \ ETag\n                         for concurrency control.\n                  \
     \     \"removePropagationsOnEntityDelete\": bool,  #\n                       \
     \  Optional. Determines if propagations will be removed on entity\n          \
@@ -450,47 +153,50 @@ methods:
     \               }\n                   ]\n               },\n               \"\
     createTime\": 0.0,  # Optional. The created time of the\n                 record.\n\
     \               \"createdBy\": \"str\",  # Optional. The user who created the\n\
-    \                 record.\n               \"guid\": \"str\",  # Optional. The\
-    \ GUID of the entity.\n               \"homeId\": \"str\",  # Optional. The home\
-    \ ID of the entity.\n               \"lastModifiedTS\": \"str\",  # Optional.\
-    \ ETag for concurrency\n                 control.\n               \"meanings\"\
-    : [\n                   {\n                       \"confidence\": 0,  # Optional.\
-    \ The confidence\n                         of the term assignment.\n         \
-    \              \"createdBy\": \"str\",  # Optional. The user who\n           \
-    \              created the record.\n                       \"description\": \"\
-    str\",  # Optional. The\n                         description of the term assignment.\n\
-    \                       \"displayText\": \"str\",  # Optional. The\n         \
-    \                display text.\n                       \"expression\": \"str\"\
-    ,  # Optional. The\n                         expression of the term assignment.\n\
+    \                 record.\n               \"customAttributes\": {\n          \
+    \         \"str\": \"str\"  # Optional. Custom Attribute.\n               },\n\
+    \               \"guid\": \"str\",  # Optional. The GUID of the entity.\n    \
+    \           \"homeId\": \"str\",  # Optional. The home ID of the entity.\n   \
+    \            \"isIncomplete\": bool,  # Optional. Whether it is a shell\n    \
+    \             entity.\n               \"labels\": [\n                   \"str\"\
+    \  # Optional. labels.\n               ],\n               \"lastModifiedTS\":\
+    \ \"str\",  # Optional. ETag for concurrency\n                 control.\n    \
+    \           \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
     \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
     \                      of the relationship.\n                       \"source\"\
     : \"str\",  # Optional. The source of\n                         the term.\n  \
     \                     \"status\": \"str\",  # Optional. The status of\n      \
-    \                   terms assignment. Possible values include: \"DISCOVERED\"\
-    ,\n                         \"PROPOSED\", \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\"\
-    , \"OBSOLETE\",\n                         \"OTHER\".\n                       \"\
-    steward\": \"str\",  # Optional. The steward of\n                         the\
-    \ term.\n                       \"termGuid\": \"str\"  # Optional. The GUID of\n\
-    \                         the term.\n                   }\n               ],\n\
-    \               \"provenanceType\": 0.0,  # Optional. Used to record the\n   \
-    \              provenance of an instance of an entity or relationship.\n     \
-    \          \"proxy\": bool,  # Optional. Determines if there's a proxy.\n    \
-    \           \"relationshipAttributes\": {\n                   \"str\": {}  # Optional.\
-    \ The attributes of\n                     relationship.\n               },\n \
-    \              \"source\": \"str\",  # Optional. indicate the source who create\n\
-    \                 the classification detail.\n               \"sourceDetails\"\
-    : {\n                   \"str\": {}  # Optional. more detail on source\n     \
-    \                information.\n               },\n               \"status\": \"\
-    str\",  # Optional. Status of the entity - can be\n                 active or\
-    \ deleted. Deleted entities are not removed from Atlas store.\n              \
-    \   Possible values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\"\
-    : \"str\",  # Optional. The name of the type.\n               \"updateTime\":\
-    \ 0.0,  # Optional. The update time of the\n                 record.\n       \
-    \        \"updatedBy\": \"str\",  # Optional. The user who updated the\n     \
-    \            record.\n               \"version\": 0.0  # Optional. The version\
-    \ of the entity.\n           }\n       }\n   }\n\n   # response body for status\
-    \ code(s): 200\n   response.json() == {\n       \"guidAssignments\": {\n     \
-    \      \"str\": \"str\"  # Optional. A map of GUID assignments with entities.\n\
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"provenanceType\": 0.0, \
+    \ # Optional. Used to record the\n                 provenance of an instance of\
+    \ an entity or relationship.\n               \"proxy\": bool,  # Optional. Determines\
+    \ if there's a proxy.\n               \"relationshipAttributes\": {\n        \
+    \           \"str\": {}  # Optional. The attributes of\n                     relationship.\n\
+    \               },\n               \"source\": \"str\",  # Optional. indicate\
+    \ the source who create\n                 the classification detail.\n       \
+    \        \"sourceDetails\": {\n                   \"str\": {}  # Optional. more\
+    \ detail on source\n                     information.\n               },\n   \
+    \            \"status\": \"str\",  # Optional. Status of the entity - can be\n\
+    \                 active or deleted. Deleted entities are not removed from Atlas\
+    \ store.\n                 Known values are: \"ACTIVE\", \"DELETED\".\n      \
+    \         \"typeName\": \"str\",  # Optional. The name of the type.\n        \
+    \       \"updateTime\": 0.0,  # Optional. The update time of the\n           \
+    \      record.\n               \"updatedBy\": \"str\",  # Optional. The user who\
+    \ updated the\n                 record.\n               \"version\": 0.0  # Optional.\
+    \ The version of the entity.\n           }\n       }\n   }\n\n   # response body\
+    \ for status code(s): 200\n   response.json() == {\n       \"guidAssignments\"\
+    : {\n           \"str\": \"str\"  # Optional. A map of GUID assignments with entities.\n\
     \       },\n       \"mutatedEntities\": {\n           \"str\": [\n           \
     \    {\n                   \"attributes\": {\n                       \"str\":\
     \ {}  # Optional. The attributes of the\n                         struct.\n  \
@@ -504,11 +210,11 @@ methods:
     \                       GUID of the entity.\n                           \"entityStatus\"\
     : \"str\",  # Optional.\n                             Status of the entity - can\
     \ be active or deleted. Deleted\n                             entities are not\
-    \ removed from Atlas store. Possible values\n                             include:\
-    \ \"ACTIVE\", \"DELETED\".\n                           \"lastModifiedTS\": \"\
-    str\",  # Optional.\n                             ETag for concurrency control.\n\
-    \                           \"removePropagationsOnEntityDelete\":\n          \
-    \                   bool,  # Optional. Determines if propagations will be removed\n\
+    \ removed from Atlas store. Known values are:\n                             \"\
+    ACTIVE\", \"DELETED\".\n                           \"lastModifiedTS\": \"str\"\
+    ,  # Optional.\n                             ETag for concurrency control.\n \
+    \                          \"removePropagationsOnEntityDelete\":\n           \
+    \                  bool,  # Optional. Determines if propagations will be removed\n\
     \                             on entity deletion.\n                          \
     \ \"source\": \"str\",  # Optional.\n                             indicate the\
     \ source who create the classification detail.\n                           \"\
@@ -525,32 +231,35 @@ methods:
     \ time boundary.\n                               }\n                         \
     \  ]\n                       }\n                   ],\n                   \"displayText\"\
     : \"str\",  # Optional. The display text.\n                   \"guid\": \"str\"\
-    ,  # Optional. The GUID of the record.\n                   \"lastModifiedTS\"\
-    : \"str\",  # Optional. ETag for\n                     concurrency control.\n\
-    \                   \"meaningNames\": [\n                       \"str\"  # Optional.\
-    \ An array of meanings.\n                   ],\n                   \"meanings\"\
-    : [\n                       {\n                           \"confidence\": 0, \
-    \ # Optional. The\n                             confidence of the term assignment.\n\
-    \                           \"createdBy\": \"str\",  # Optional. The\n       \
-    \                      user who created the record.\n                        \
-    \   \"description\": \"str\",  # Optional.\n                             The description\
-    \ of the term assignment.\n                           \"displayText\": \"str\"\
-    ,  # Optional.\n                             The display text.\n             \
-    \              \"expression\": \"str\",  # Optional. The\n                   \
-    \          expression of the term assignment.\n                           \"relationGuid\"\
-    : \"str\",  # Optional.\n                             The GUID of the relationship.\n\
-    \                           \"source\": \"str\",  # Optional. The\n          \
-    \                   source of the term.\n                           \"status\"\
+    ,  # Optional. The GUID of the record.\n                   \"isIncomplete\": bool,\
+    \  # Optional. Whether it is a\n                     shell entity.\n         \
+    \          \"labels\": [\n                       \"str\"  # Optional. labels.\n\
+    \                   ],\n                   \"lastModifiedTS\": \"str\",  # Optional.\
+    \ ETag for\n                     concurrency control.\n                   \"meaningNames\"\
+    : [\n                       \"str\"  # Optional. An array of meanings.\n     \
+    \              ],\n                   \"meanings\": [\n                      \
+    \ {\n                           \"confidence\": 0,  # Optional. The\n        \
+    \                     confidence of the term assignment.\n                   \
+    \        \"createdBy\": \"str\",  # Optional. The\n                          \
+    \   user who created the record.\n                           \"description\":\
+    \ \"str\",  # Optional.\n                             The description of the term\
+    \ assignment.\n                           \"displayText\": \"str\",  # Optional.\n\
+    \                             The display text.\n                           \"\
+    expression\": \"str\",  # Optional. The\n                             expression\
+    \ of the term assignment.\n                           \"relationGuid\": \"str\"\
+    ,  # Optional.\n                             The GUID of the relationship.\n \
+    \                          \"source\": \"str\",  # Optional. The\n           \
+    \                  source of the term.\n                           \"status\"\
     : \"str\",  # Optional. The\n                             status of terms assignment.\
-    \ Possible values include:\n                             \"DISCOVERED\", \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\",\n                             \"DEPRECATED\", \"\
+    \ Known values are: \"DISCOVERED\",\n                             \"PROPOSED\"\
+    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\",\n                             \"\
     OBSOLETE\", \"OTHER\".\n                           \"steward\": \"str\",  # Optional.\
     \ The\n                             steward of the term.\n                   \
     \        \"termGuid\": \"str\"  # Optional. The\n                            \
     \ GUID of the term.\n                       }\n                   ],\n       \
     \            \"status\": \"str\",  # Optional. Status of the entity -\n      \
     \               can be active or deleted. Deleted entities are not removed from\
-    \ Atlas\n                     store. Possible values include: \"ACTIVE\", \"DELETED\"\
+    \ Atlas\n                     store. Known values are: \"ACTIVE\", \"DELETED\"\
     .\n                   \"typeName\": \"str\"  # Optional. The name of the type.\n\
     \               }\n           ]\n       },\n       \"partialUpdatedEntities\"\
     : [\n           {\n               \"attributes\": {\n                   \"str\"\
@@ -563,10 +272,104 @@ methods:
     \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
     \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
     \ Status of\n                         the entity - can be active or deleted. Deleted\
-    \ entities are not\n                         removed from Atlas store. Possible\
-    \ values include: \"ACTIVE\",\n                         \"DELETED\".\n       \
-    \                \"lastModifiedTS\": \"str\",  # Optional. ETag\n            \
-    \             for concurrency control.\n                       \"removePropagationsOnEntityDelete\"\
+    \ entities are not\n                         removed from Atlas store. Known values\
+    \ are: \"ACTIVE\", \"DELETED\".\n                       \"lastModifiedTS\": \"\
+    str\",  # Optional. ETag\n                         for concurrency control.\n\
+    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
+    \                    Optional. Determines if propagations will be removed on entity\n\
+    \                         deletion.\n                       \"source\": \"str\"\
+    ,  # Optional. indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"displayText\": \"str\",  #\
+    \ Optional. The display text.\n               \"guid\": \"str\",  # Optional.\
+    \ The GUID of the record.\n               \"isIncomplete\": bool,  # Optional.\
+    \ Whether it is a shell\n                 entity.\n               \"labels\":\
+    \ [\n                   \"str\"  # Optional. labels.\n               ],\n    \
+    \           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\n \
+    \                control.\n               \"meaningNames\": [\n              \
+    \     \"str\"  # Optional. An array of meanings.\n               ],\n        \
+    \       \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"status\": \"str\",  # Optional.\
+    \ Status of the entity - can be\n                 active or deleted. Deleted entities\
+    \ are not removed from Atlas store.\n                 Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n               \"typeName\": \"str\"  # Optional. The name of\
+    \ the type.\n           }\n       ]\n   }\n   ````\n"
+- uid: azure.purview.catalog.aio.operations.CollectionOperations.create_or_update_bulk
+  name: create_or_update_bulk
+  summary: 'Creates or updates entities in bulk to a collection.
+
+    Existing entity is matched using its unique guid if supplied or by its unique
+    attributes eg:
+
+    qualifiedName.
+
+    Map and array of collections are not well supported. E.g., array<array:code:*<int>*>,
+
+    array<map<string, int>>.'
+  signature: 'async create_or_update_bulk(collection: str, entities: collections.abc.MutableMapping[str,
+    Any], **kwargs: Any) -> collections.abc.MutableMapping[str, Any]'
+  parameters:
+  - name: collection
+    description: the collection unique name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: entities
+    description: Atlas entities with extended information.
+    isRequired: true
+    types:
+    - <xref:JSON>
+  return:
+    description: JSON object
+    types:
+    - <xref:JSON>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   entities\
+    \ = {\n       \"entities\": [\n           {\n               \"attributes\": {\n\
+    \                   \"str\": {}  # Optional. The attributes of the struct.\n \
+    \              },\n               \"businessAttributes\": {\n                \
+    \   \"str\": {}  # Optional. Business Attributes.\n               },\n       \
+    \        \"classifications\": [\n                   {\n                      \
+    \ \"attributes\": {\n                           \"str\": {}  # Optional. The attributes\n\
+    \                             of the struct.\n                       },\n    \
+    \                   \"entityGuid\": \"str\",  # Optional. The GUID of\n      \
+    \                   the entity.\n                       \"entityStatus\": \"str\"\
+    ,  # Optional. Status of\n                         the entity - can be active\
+    \ or deleted. Deleted entities are not\n                         removed from\
+    \ Atlas store. Known values are: \"ACTIVE\", \"DELETED\".\n                  \
+    \     \"lastModifiedTS\": \"str\",  # Optional. ETag\n                       \
+    \  for concurrency control.\n                       \"removePropagationsOnEntityDelete\"\
     : bool,  #\n                         Optional. Determines if propagations will\
     \ be removed on entity\n                         deletion.\n                 \
     \      \"source\": \"str\",  # Optional. indicate the\n                      \
@@ -581,39 +384,265 @@ methods:
     \                Optional. The start of the time boundary.\n                 \
     \              \"timeZone\": \"str\"  #\n                                 Optional.\
     \ The timezone of the time boundary.\n                           }\n         \
-    \              ]\n                   }\n               ],\n               \"displayText\"\
-    : \"str\",  # Optional. The display text.\n               \"guid\": \"str\", \
-    \ # Optional. The GUID of the record.\n               \"lastModifiedTS\": \"str\"\
-    ,  # Optional. ETag for concurrency\n                 control.\n             \
-    \  \"meaningNames\": [\n                   \"str\"  # Optional. An array of meanings.\n\
-    \               ],\n               \"meanings\": [\n                   {\n   \
-    \                    \"confidence\": 0,  # Optional. The confidence\n        \
-    \                 of the term assignment.\n                       \"createdBy\"\
-    : \"str\",  # Optional. The user who\n                         created the record.\n\
-    \                       \"description\": \"str\",  # Optional. The\n         \
-    \                description of the term assignment.\n                       \"\
-    displayText\": \"str\",  # Optional. The\n                         display text.\n\
-    \                       \"expression\": \"str\",  # Optional. The\n          \
-    \               expression of the term assignment.\n                       \"\
-    relationGuid\": \"str\",  # Optional. The GUID\n                         of the\
-    \ relationship.\n                       \"source\": \"str\",  # Optional. The\
-    \ source of\n                         the term.\n                       \"status\"\
-    : \"str\",  # Optional. The status of\n                         terms assignment.\
-    \ Possible values include: \"DISCOVERED\",\n                         \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\",\n               \
-    \          \"OTHER\".\n                       \"steward\": \"str\",  # Optional.\
-    \ The steward of\n                         the term.\n                       \"\
-    termGuid\": \"str\"  # Optional. The GUID of\n                         the term.\n\
-    \                   }\n               ],\n               \"status\": \"str\",\
-    \  # Optional. Status of the entity - can be\n                 active or deleted.\
-    \ Deleted entities are not removed from Atlas store.\n                 Possible\
-    \ values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\": \"str\"\
-    \  # Optional. The name of the type.\n           }\n       ]\n   }\n   ````\n"
+    \              ]\n                   }\n               ],\n               \"contacts\"\
+    : {\n                   \"str\": [\n                       {\n               \
+    \            \"id\": \"str\",  # Optional. Azure\n                           \
+    \  Active Directory object Id.\n                           \"info\": \"str\" \
+    \ # Optional. additional\n                             information to describe\
+    \ this contact.\n                       }\n                   ]\n            \
+    \   },\n               \"createTime\": 0.0,  # Optional. The created time of the\n\
+    \                 record.\n               \"createdBy\": \"str\",  # Optional.\
+    \ The user who created the\n                 record.\n               \"customAttributes\"\
+    : {\n                   \"str\": \"str\"  # Optional. Custom Attribute.\n    \
+    \           },\n               \"guid\": \"str\",  # Optional. The GUID of the\
+    \ entity.\n               \"homeId\": \"str\",  # Optional. The home ID of the\
+    \ entity.\n               \"isIncomplete\": bool,  # Optional. Whether it is a\
+    \ shell\n                 entity.\n               \"labels\": [\n            \
+    \       \"str\"  # Optional. labels.\n               ],\n               \"lastModifiedTS\"\
+    : \"str\",  # Optional. ETag for concurrency\n                 control.\n    \
+    \           \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"provenanceType\": 0.0, \
+    \ # Optional. Used to record the\n                 provenance of an instance of\
+    \ an entity or relationship.\n               \"proxy\": bool,  # Optional. Determines\
+    \ if there's a proxy.\n               \"relationshipAttributes\": {\n        \
+    \           \"str\": {}  # Optional. The attributes of\n                     relationship.\n\
+    \               },\n               \"source\": \"str\",  # Optional. indicate\
+    \ the source who create\n                 the classification detail.\n       \
+    \        \"sourceDetails\": {\n                   \"str\": {}  # Optional. more\
+    \ detail on source\n                     information.\n               },\n   \
+    \            \"status\": \"str\",  # Optional. Status of the entity - can be\n\
+    \                 active or deleted. Deleted entities are not removed from Atlas\
+    \ store.\n                 Known values are: \"ACTIVE\", \"DELETED\".\n      \
+    \         \"typeName\": \"str\",  # Optional. The name of the type.\n        \
+    \       \"updateTime\": 0.0,  # Optional. The update time of the\n           \
+    \      record.\n               \"updatedBy\": \"str\",  # Optional. The user who\
+    \ updated the\n                 record.\n               \"version\": 0.0  # Optional.\
+    \ The version of the entity.\n           }\n       ],\n       \"referredEntities\"\
+    : {\n           \"str\": {\n               \"attributes\": {\n               \
+    \    \"str\": {}  # Optional. The attributes of the struct.\n               },\n\
+    \               \"businessAttributes\": {\n                   \"str\": {}  # Optional.\
+    \ Business Attributes.\n               },\n               \"classifications\"\
+    : [\n                   {\n                       \"attributes\": {\n        \
+    \                   \"str\": {}  # Optional. The attributes\n                \
+    \             of the struct.\n                       },\n                    \
+    \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
+    \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
+    \ Status of\n                         the entity - can be active or deleted. Deleted\
+    \ entities are not\n                         removed from Atlas store. Known values\
+    \ are: \"ACTIVE\", \"DELETED\".\n                       \"lastModifiedTS\": \"\
+    str\",  # Optional. ETag\n                         for concurrency control.\n\
+    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
+    \                    Optional. Determines if propagations will be removed on entity\n\
+    \                         deletion.\n                       \"source\": \"str\"\
+    ,  # Optional. indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"contacts\": {\n           \
+    \        \"str\": [\n                       {\n                           \"id\"\
+    : \"str\",  # Optional. Azure\n                             Active Directory object\
+    \ Id.\n                           \"info\": \"str\"  # Optional. additional\n\
+    \                             information to describe this contact.\n        \
+    \               }\n                   ]\n               },\n               \"\
+    createTime\": 0.0,  # Optional. The created time of the\n                 record.\n\
+    \               \"createdBy\": \"str\",  # Optional. The user who created the\n\
+    \                 record.\n               \"customAttributes\": {\n          \
+    \         \"str\": \"str\"  # Optional. Custom Attribute.\n               },\n\
+    \               \"guid\": \"str\",  # Optional. The GUID of the entity.\n    \
+    \           \"homeId\": \"str\",  # Optional. The home ID of the entity.\n   \
+    \            \"isIncomplete\": bool,  # Optional. Whether it is a shell\n    \
+    \             entity.\n               \"labels\": [\n                   \"str\"\
+    \  # Optional. labels.\n               ],\n               \"lastModifiedTS\":\
+    \ \"str\",  # Optional. ETag for concurrency\n                 control.\n    \
+    \           \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"provenanceType\": 0.0, \
+    \ # Optional. Used to record the\n                 provenance of an instance of\
+    \ an entity or relationship.\n               \"proxy\": bool,  # Optional. Determines\
+    \ if there's a proxy.\n               \"relationshipAttributes\": {\n        \
+    \           \"str\": {}  # Optional. The attributes of\n                     relationship.\n\
+    \               },\n               \"source\": \"str\",  # Optional. indicate\
+    \ the source who create\n                 the classification detail.\n       \
+    \        \"sourceDetails\": {\n                   \"str\": {}  # Optional. more\
+    \ detail on source\n                     information.\n               },\n   \
+    \            \"status\": \"str\",  # Optional. Status of the entity - can be\n\
+    \                 active or deleted. Deleted entities are not removed from Atlas\
+    \ store.\n                 Known values are: \"ACTIVE\", \"DELETED\".\n      \
+    \         \"typeName\": \"str\",  # Optional. The name of the type.\n        \
+    \       \"updateTime\": 0.0,  # Optional. The update time of the\n           \
+    \      record.\n               \"updatedBy\": \"str\",  # Optional. The user who\
+    \ updated the\n                 record.\n               \"version\": 0.0  # Optional.\
+    \ The version of the entity.\n           }\n       }\n   }\n\n   # response body\
+    \ for status code(s): 200\n   response.json() == {\n       \"guidAssignments\"\
+    : {\n           \"str\": \"str\"  # Optional. A map of GUID assignments with entities.\n\
+    \       },\n       \"mutatedEntities\": {\n           \"str\": [\n           \
+    \    {\n                   \"attributes\": {\n                       \"str\":\
+    \ {}  # Optional. The attributes of the\n                         struct.\n  \
+    \                 },\n                   \"classificationNames\": [\n        \
+    \               \"str\"  # Optional. An array of classification\n            \
+    \             names.\n                   ],\n                   \"classifications\"\
+    : [\n                       {\n                           \"attributes\": {\n\
+    \                               \"str\": {}  # Optional. The\n               \
+    \                  attributes of the struct.\n                           },\n\
+    \                           \"entityGuid\": \"str\",  # Optional. The\n      \
+    \                       GUID of the entity.\n                           \"entityStatus\"\
+    : \"str\",  # Optional.\n                             Status of the entity - can\
+    \ be active or deleted. Deleted\n                             entities are not\
+    \ removed from Atlas store. Known values are:\n                             \"\
+    ACTIVE\", \"DELETED\".\n                           \"lastModifiedTS\": \"str\"\
+    ,  # Optional.\n                             ETag for concurrency control.\n \
+    \                          \"removePropagationsOnEntityDelete\":\n           \
+    \                  bool,  # Optional. Determines if propagations will be removed\n\
+    \                             on entity deletion.\n                          \
+    \ \"source\": \"str\",  # Optional.\n                             indicate the\
+    \ source who create the classification detail.\n                           \"\
+    sourceDetails\": {\n                               \"str\": {}  # Optional. more\n\
+    \                                 detail on source information.\n            \
+    \               },\n                           \"typeName\": \"str\",  # Optional.\
+    \ The\n                             name of the type.\n                      \
+    \     \"validityPeriods\": [\n                               {\n             \
+    \                      \"endTime\": \"str\",  #\n                            \
+    \         Optional. The end of the time boundary.\n                          \
+    \         \"startTime\": \"str\",\n                                     # Optional.\
+    \ The start of the time boundary.\n                                   \"timeZone\"\
+    : \"str\"  #\n                                     Optional. The timezone of the\
+    \ time boundary.\n                               }\n                         \
+    \  ]\n                       }\n                   ],\n                   \"displayText\"\
+    : \"str\",  # Optional. The display text.\n                   \"guid\": \"str\"\
+    ,  # Optional. The GUID of the record.\n                   \"isIncomplete\": bool,\
+    \  # Optional. Whether it is a\n                     shell entity.\n         \
+    \          \"labels\": [\n                       \"str\"  # Optional. labels.\n\
+    \                   ],\n                   \"lastModifiedTS\": \"str\",  # Optional.\
+    \ ETag for\n                     concurrency control.\n                   \"meaningNames\"\
+    : [\n                       \"str\"  # Optional. An array of meanings.\n     \
+    \              ],\n                   \"meanings\": [\n                      \
+    \ {\n                           \"confidence\": 0,  # Optional. The\n        \
+    \                     confidence of the term assignment.\n                   \
+    \        \"createdBy\": \"str\",  # Optional. The\n                          \
+    \   user who created the record.\n                           \"description\":\
+    \ \"str\",  # Optional.\n                             The description of the term\
+    \ assignment.\n                           \"displayText\": \"str\",  # Optional.\n\
+    \                             The display text.\n                           \"\
+    expression\": \"str\",  # Optional. The\n                             expression\
+    \ of the term assignment.\n                           \"relationGuid\": \"str\"\
+    ,  # Optional.\n                             The GUID of the relationship.\n \
+    \                          \"source\": \"str\",  # Optional. The\n           \
+    \                  source of the term.\n                           \"status\"\
+    : \"str\",  # Optional. The\n                             status of terms assignment.\
+    \ Known values are: \"DISCOVERED\",\n                             \"PROPOSED\"\
+    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\",\n                             \"\
+    OBSOLETE\", \"OTHER\".\n                           \"steward\": \"str\",  # Optional.\
+    \ The\n                             steward of the term.\n                   \
+    \        \"termGuid\": \"str\"  # Optional. The\n                            \
+    \ GUID of the term.\n                       }\n                   ],\n       \
+    \            \"status\": \"str\",  # Optional. Status of the entity -\n      \
+    \               can be active or deleted. Deleted entities are not removed from\
+    \ Atlas\n                     store. Known values are: \"ACTIVE\", \"DELETED\"\
+    .\n                   \"typeName\": \"str\"  # Optional. The name of the type.\n\
+    \               }\n           ]\n       },\n       \"partialUpdatedEntities\"\
+    : [\n           {\n               \"attributes\": {\n                   \"str\"\
+    : {}  # Optional. The attributes of the struct.\n               },\n         \
+    \      \"classificationNames\": [\n                   \"str\"  # Optional. An\
+    \ array of classification names.\n               ],\n               \"classifications\"\
+    : [\n                   {\n                       \"attributes\": {\n        \
+    \                   \"str\": {}  # Optional. The attributes\n                \
+    \             of the struct.\n                       },\n                    \
+    \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
+    \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
+    \ Status of\n                         the entity - can be active or deleted. Deleted\
+    \ entities are not\n                         removed from Atlas store. Known values\
+    \ are: \"ACTIVE\", \"DELETED\".\n                       \"lastModifiedTS\": \"\
+    str\",  # Optional. ETag\n                         for concurrency control.\n\
+    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
+    \                    Optional. Determines if propagations will be removed on entity\n\
+    \                         deletion.\n                       \"source\": \"str\"\
+    ,  # Optional. indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"displayText\": \"str\",  #\
+    \ Optional. The display text.\n               \"guid\": \"str\",  # Optional.\
+    \ The GUID of the record.\n               \"isIncomplete\": bool,  # Optional.\
+    \ Whether it is a shell\n                 entity.\n               \"labels\":\
+    \ [\n                   \"str\"  # Optional. labels.\n               ],\n    \
+    \           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\n \
+    \                control.\n               \"meaningNames\": [\n              \
+    \     \"str\"  # Optional. An array of meanings.\n               ],\n        \
+    \       \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"status\": \"str\",  # Optional.\
+    \ Status of the entity - can be\n                 active or deleted. Deleted entities\
+    \ are not removed from Atlas store.\n                 Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n               \"typeName\": \"str\"  # Optional. The name of\
+    \ the type.\n           }\n       ]\n   }\n   ````\n"
 - uid: azure.purview.catalog.aio.operations.CollectionOperations.move_entities_to_collection
   name: move_entities_to_collection
   summary: Move existing entities to the target collection.
   signature: 'async move_entities_to_collection(collection: str, move_entities_request:
-    Any, **kwargs: Any) -> Any'
+    collections.abc.MutableMapping[str, Any], **kwargs: Any) -> collections.abc.MutableMapping[str,
+    Any]'
   parameters:
   - name: collection
     description: the collection unique name.
@@ -624,11 +653,11 @@ methods:
     description: Entity guids to be moved to target collection.
     isRequired: true
     types:
-    - <xref:JSONType>
+    - <xref:JSON>
   return:
     description: JSON object
     types:
-    - <xref:JSONType>
+    - <xref:JSON>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -653,10 +682,10 @@ methods:
     \ The\n                             GUID of the entity.\n                    \
     \       \"entityStatus\": \"str\",  # Optional.\n                            \
     \ Status of the entity - can be active or deleted. Deleted\n                 \
-    \            entities are not removed from Atlas store. Possible values\n    \
-    \                         include: \"ACTIVE\", \"DELETED\".\n                \
-    \           \"lastModifiedTS\": \"str\",  # Optional.\n                      \
-    \       ETag for concurrency control.\n                           \"removePropagationsOnEntityDelete\"\
+    \            entities are not removed from Atlas store. Known values are:\n  \
+    \                           \"ACTIVE\", \"DELETED\".\n                       \
+    \    \"lastModifiedTS\": \"str\",  # Optional.\n                             ETag\
+    \ for concurrency control.\n                           \"removePropagationsOnEntityDelete\"\
     :\n                             bool,  # Optional. Determines if propagations\
     \ will be removed\n                             on entity deletion.\n        \
     \                   \"source\": \"str\",  # Optional.\n                      \
@@ -675,87 +704,92 @@ methods:
     \                      ]\n                       }\n                   ],\n  \
     \                 \"displayText\": \"str\",  # Optional. The display text.\n \
     \                  \"guid\": \"str\",  # Optional. The GUID of the record.\n \
-    \                  \"lastModifiedTS\": \"str\",  # Optional. ETag for\n      \
-    \               concurrency control.\n                   \"meaningNames\": [\n\
-    \                       \"str\"  # Optional. An array of meanings.\n         \
-    \          ],\n                   \"meanings\": [\n                       {\n\
-    \                           \"confidence\": 0,  # Optional. The\n            \
-    \                 confidence of the term assignment.\n                       \
-    \    \"createdBy\": \"str\",  # Optional. The\n                             user\
-    \ who created the record.\n                           \"description\": \"str\"\
-    ,  # Optional.\n                             The description of the term assignment.\n\
-    \                           \"displayText\": \"str\",  # Optional.\n         \
-    \                    The display text.\n                           \"expression\"\
-    : \"str\",  # Optional. The\n                             expression of the term\
-    \ assignment.\n                           \"relationGuid\": \"str\",  # Optional.\n\
-    \                             The GUID of the relationship.\n                \
-    \           \"source\": \"str\",  # Optional. The\n                          \
-    \   source of the term.\n                           \"status\": \"str\",  # Optional.\
-    \ The\n                             status of terms assignment. Possible values\
-    \ include:\n                             \"DISCOVERED\", \"PROPOSED\", \"IMPORTED\"\
-    , \"VALIDATED\",\n                             \"DEPRECATED\", \"OBSOLETE\", \"\
-    OTHER\".\n                           \"steward\": \"str\",  # Optional. The\n\
-    \                             steward of the term.\n                         \
-    \  \"termGuid\": \"str\"  # Optional. The\n                             GUID of\
-    \ the term.\n                       }\n                   ],\n               \
-    \    \"status\": \"str\",  # Optional. Status of the entity -\n              \
-    \       can be active or deleted. Deleted entities are not removed from Atlas\n\
-    \                     store. Possible values include: \"ACTIVE\", \"DELETED\"\
-    .\n                   \"typeName\": \"str\"  # Optional. The name of the type.\n\
-    \               }\n           ]\n       },\n       \"partialUpdatedEntities\"\
-    : [\n           {\n               \"attributes\": {\n                   \"str\"\
-    : {}  # Optional. The attributes of the struct.\n               },\n         \
-    \      \"classificationNames\": [\n                   \"str\"  # Optional. An\
-    \ array of classification names.\n               ],\n               \"classifications\"\
-    : [\n                   {\n                       \"attributes\": {\n        \
-    \                   \"str\": {}  # Optional. The attributes\n                \
-    \             of the struct.\n                       },\n                    \
-    \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
-    \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
-    \ Status of\n                         the entity - can be active or deleted. Deleted\
-    \ entities are not\n                         removed from Atlas store. Possible\
-    \ values include: \"ACTIVE\",\n                         \"DELETED\".\n       \
-    \                \"lastModifiedTS\": \"str\",  # Optional. ETag\n            \
-    \             for concurrency control.\n                       \"removePropagationsOnEntityDelete\"\
-    : bool,  #\n                         Optional. Determines if propagations will\
-    \ be removed on entity\n                         deletion.\n                 \
-    \      \"source\": \"str\",  # Optional. indicate the\n                      \
-    \   source who create the classification detail.\n                       \"sourceDetails\"\
-    : {\n                           \"str\": {}  # Optional. more detail on\n    \
-    \                         source information.\n                       },\n   \
-    \                    \"typeName\": \"str\",  # Optional. The name of\n       \
-    \                  the type.\n                       \"validityPeriods\": [\n\
-    \                           {\n                               \"endTime\": \"\
-    str\",  #\n                                 Optional. The end of the time boundary.\n\
-    \                               \"startTime\": \"str\",  #\n                 \
-    \                Optional. The start of the time boundary.\n                 \
-    \              \"timeZone\": \"str\"  #\n                                 Optional.\
-    \ The timezone of the time boundary.\n                           }\n         \
-    \              ]\n                   }\n               ],\n               \"displayText\"\
-    : \"str\",  # Optional. The display text.\n               \"guid\": \"str\", \
-    \ # Optional. The GUID of the record.\n               \"lastModifiedTS\": \"str\"\
-    ,  # Optional. ETag for concurrency\n                 control.\n             \
-    \  \"meaningNames\": [\n                   \"str\"  # Optional. An array of meanings.\n\
-    \               ],\n               \"meanings\": [\n                   {\n   \
-    \                    \"confidence\": 0,  # Optional. The confidence\n        \
-    \                 of the term assignment.\n                       \"createdBy\"\
-    : \"str\",  # Optional. The user who\n                         created the record.\n\
-    \                       \"description\": \"str\",  # Optional. The\n         \
-    \                description of the term assignment.\n                       \"\
-    displayText\": \"str\",  # Optional. The\n                         display text.\n\
-    \                       \"expression\": \"str\",  # Optional. The\n          \
-    \               expression of the term assignment.\n                       \"\
-    relationGuid\": \"str\",  # Optional. The GUID\n                         of the\
-    \ relationship.\n                       \"source\": \"str\",  # Optional. The\
-    \ source of\n                         the term.\n                       \"status\"\
-    : \"str\",  # Optional. The status of\n                         terms assignment.\
-    \ Possible values include: \"DISCOVERED\",\n                         \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\",\n               \
-    \          \"OTHER\".\n                       \"steward\": \"str\",  # Optional.\
-    \ The steward of\n                         the term.\n                       \"\
-    termGuid\": \"str\"  # Optional. The GUID of\n                         the term.\n\
-    \                   }\n               ],\n               \"status\": \"str\",\
-    \  # Optional. Status of the entity - can be\n                 active or deleted.\
-    \ Deleted entities are not removed from Atlas store.\n                 Possible\
-    \ values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\": \"str\"\
-    \  # Optional. The name of the type.\n           }\n       ]\n   }\n   ````\n"
+    \                  \"isIncomplete\": bool,  # Optional. Whether it is a\n    \
+    \                 shell entity.\n                   \"labels\": [\n          \
+    \             \"str\"  # Optional. labels.\n                   ],\n          \
+    \         \"lastModifiedTS\": \"str\",  # Optional. ETag for\n               \
+    \      concurrency control.\n                   \"meaningNames\": [\n        \
+    \               \"str\"  # Optional. An array of meanings.\n                 \
+    \  ],\n                   \"meanings\": [\n                       {\n        \
+    \                   \"confidence\": 0,  # Optional. The\n                    \
+    \         confidence of the term assignment.\n                           \"createdBy\"\
+    : \"str\",  # Optional. The\n                             user who created the\
+    \ record.\n                           \"description\": \"str\",  # Optional.\n\
+    \                             The description of the term assignment.\n      \
+    \                     \"displayText\": \"str\",  # Optional.\n               \
+    \              The display text.\n                           \"expression\": \"\
+    str\",  # Optional. The\n                             expression of the term assignment.\n\
+    \                           \"relationGuid\": \"str\",  # Optional.\n        \
+    \                     The GUID of the relationship.\n                        \
+    \   \"source\": \"str\",  # Optional. The\n                             source\
+    \ of the term.\n                           \"status\": \"str\",  # Optional. The\n\
+    \                             status of terms assignment. Known values are: \"\
+    DISCOVERED\",\n                             \"PROPOSED\", \"IMPORTED\", \"VALIDATED\"\
+    , \"DEPRECATED\",\n                             \"OBSOLETE\", \"OTHER\".\n   \
+    \                        \"steward\": \"str\",  # Optional. The\n            \
+    \                 steward of the term.\n                           \"termGuid\"\
+    : \"str\"  # Optional. The\n                             GUID of the term.\n \
+    \                      }\n                   ],\n                   \"status\"\
+    : \"str\",  # Optional. Status of the entity -\n                     can be active\
+    \ or deleted. Deleted entities are not removed from Atlas\n                  \
+    \   store. Known values are: \"ACTIVE\", \"DELETED\".\n                   \"typeName\"\
+    : \"str\"  # Optional. The name of the type.\n               }\n           ]\n\
+    \       },\n       \"partialUpdatedEntities\": [\n           {\n             \
+    \  \"attributes\": {\n                   \"str\": {}  # Optional. The attributes\
+    \ of the struct.\n               },\n               \"classificationNames\": [\n\
+    \                   \"str\"  # Optional. An array of classification names.\n \
+    \              ],\n               \"classifications\": [\n                   {\n\
+    \                       \"attributes\": {\n                           \"str\"\
+    : {}  # Optional. The attributes\n                             of the struct.\n\
+    \                       },\n                       \"entityGuid\": \"str\",  #\
+    \ Optional. The GUID of\n                         the entity.\n              \
+    \         \"entityStatus\": \"str\",  # Optional. Status of\n                \
+    \         the entity - can be active or deleted. Deleted entities are not\n  \
+    \                       removed from Atlas store. Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n                       \"lastModifiedTS\": \"str\",  # Optional.\
+    \ ETag\n                         for concurrency control.\n                  \
+    \     \"removePropagationsOnEntityDelete\": bool,  #\n                       \
+    \  Optional. Determines if propagations will be removed on entity\n          \
+    \               deletion.\n                       \"source\": \"str\",  # Optional.\
+    \ indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"displayText\": \"str\",  #\
+    \ Optional. The display text.\n               \"guid\": \"str\",  # Optional.\
+    \ The GUID of the record.\n               \"isIncomplete\": bool,  # Optional.\
+    \ Whether it is a shell\n                 entity.\n               \"labels\":\
+    \ [\n                   \"str\"  # Optional. labels.\n               ],\n    \
+    \           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\n \
+    \                control.\n               \"meaningNames\": [\n              \
+    \     \"str\"  # Optional. An array of meanings.\n               ],\n        \
+    \       \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"status\": \"str\",  # Optional.\
+    \ Status of the entity - can be\n                 active or deleted. Deleted entities\
+    \ are not removed from Atlas store.\n                 Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n               \"typeName\": \"str\"  # Optional. The name of\
+    \ the type.\n           }\n       ]\n   }\n   ````\n"
