@@ -41,18 +41,18 @@ Create a virtual network and an associated subnet.
 ```python
 from azure.mgmt.network import NetworkManagementClient
 
-GROUP_NAME = 'resource-group'
-VNET_NAME = 'your-vnet-identifier'
-LOCATION = 'region'
-SUBNET_NAME = 'your-subnet-identifier'
+group_name = 'resource-group'
+vnet_name = 'your-vnet-identifier'
+location = 'region'
+subnet_name = 'your-subnet-identifier'
 
 network_client = NetworkManagementClient(credentials, 'your-subscription-id')
 
 async_vnet_creation = network_client.virtual_networks.create_or_update(
-    GROUP_NAME,
-    VNET_NAME,
+    group_name,
+    vnet_name,
     {
-        'location': LOCATION,
+        'location': location,
         'address_space': {
             'address_prefixes': ['10.0.0.0/16']
         }
@@ -62,9 +62,9 @@ async_vnet_creation.wait()
 
 # Create Subnet
 async_subnet_creation = network_client.subnets.create_or_update(
-    GROUP_NAME,
-    VNET_NAME,
-    SUBNET_NAME,
+    group_name,
+    vnet_name,
+    subnet_name,
     {'address_prefix': '10.0.0.0/24'}
 )
 subnet_info = async_subnet_creation.result()
