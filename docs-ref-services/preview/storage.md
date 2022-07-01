@@ -16,10 +16,10 @@ ms.service: storage
 
 | Package Name | Reference                                     | Package Manager                                   | Source                                                 |
 |--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| Storage Blob | [Reference](storage-blob-readme) | [PyPi](https://pypi.org/project/azure-storage-blob/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob) |
-| Storage Queue | [Reference](storage-queue-readme) | [PyPi](https://pypi.org/project/azure-storage-queue/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue/azure/storage/queue) |
-| Storage File Share | [Reference](storage-file-share-readme) | [PyPi](https://pypi.org/project/azure-storage-file-share/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
-| Storage File Data Lake (Preview) | [Reference](storage-file-datalake-readme) | [PyPi](https://pypi.org/project/azure-storage-file-datalake/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake/azure/storage/filedatalake) |
+| Storage Blob | [Reference](storage-blob-readme.md) | [PyPi](https://pypi.org/project/azure-storage-blob/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob) |
+| Storage Queue | [Reference](storage-queue-readme.md) | [PyPi](https://pypi.org/project/azure-storage-queue/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue/azure/storage/queue) |
+| Storage File Share | [Reference](storage-file-share-readme.md) | [PyPi](https://pypi.org/project/azure-storage-file-share/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share/azure/storage/fileshare) |
+| Storage File Data Lake (Preview) | [Reference](storage-file-datalake-readme.md) | [PyPi](https://pypi.org/project/azure-storage-file-datalake/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake/azure/storage/filedatalake) |
 |              |                                               |                                                   |                                                        |
 
 ## Client Packages (2.X.X) - Legacy
