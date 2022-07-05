@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: databasemigrationservice
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Data Migration SDK for Python
 
 This is the Microsoft Azure Data Migration Client Library.
 
