@@ -10,6 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: anomalydetector
 ---
+
 # Microsoft Azure Cognitive Services Anomaly Detector SDK for Python
 
 This is the Microsoft Azure Cognitive Services Anomaly Detector Client Library.

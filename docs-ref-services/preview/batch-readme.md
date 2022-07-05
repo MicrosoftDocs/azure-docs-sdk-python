@@ -10,7 +10,8 @@ ms.technology: azure
 ms.devlang: python
 ms.service: batch
 ---
-# Microsoft Azure Batch SDK for Python
+
+# Microsoft Azure Batch SDK for Python (Preview)
 
 This is the Microsoft Azure Batch Client Library.
 
