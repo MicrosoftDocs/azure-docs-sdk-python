@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: automation
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Automation SDK for Python
 
 This is the Microsoft Azure Automation Client Library.
 

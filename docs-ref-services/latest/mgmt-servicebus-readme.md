@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: servicebus
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Service Bus SDK for Python
 
 This is the Microsoft Azure Service Bus Management Client Library.
 

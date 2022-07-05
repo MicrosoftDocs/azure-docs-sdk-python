@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: commerce
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Commerce SDK for Python
 
 This is the Microsoft Azure Commerce Client Library.
 

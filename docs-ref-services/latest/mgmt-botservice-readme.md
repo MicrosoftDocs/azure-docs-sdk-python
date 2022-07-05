@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: botservice
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Bot Service SDK for Python
 
 This is the Microsoft Azure Bot Service Client Library.
 

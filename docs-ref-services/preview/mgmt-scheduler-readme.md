@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: scheduler
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Scheduler SDK for Python
 
 This is the Microsoft Azure Scheduler Management Client Library.
 

@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: core
 ---
-# Microsoft Azure SDK for Python
+# Microsoft Azure Common Code SDK for Python
 
 This is the Microsoft Azure common code.
 

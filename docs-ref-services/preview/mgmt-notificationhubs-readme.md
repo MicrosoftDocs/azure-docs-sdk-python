@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: notificationhubs
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Notification Hubs SDK for Python
 
 This is the Microsoft Azure Notification Hubs Management Client Library.
 

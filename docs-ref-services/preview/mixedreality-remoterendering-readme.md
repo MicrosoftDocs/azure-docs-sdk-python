@@ -34,15 +34,15 @@ This SDK supports version "2021-01-01" of the [Remote Rendering REST API](https:
 
 _Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Getting started
+## Getting started
 
-## Prerequisites
+### Prerequisites
 
 You will need an [Azure subscription](https://azure.microsoft.com/free/dotnet/) and an [Azure Remote Rendering account](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account) to use this package.
 
 In order to follow this tutorial it is highly recommended that you [link your storage account with your ARR account](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
 
-## Install the package
+### Install the package
 
 Install the Azure Remote Rendering client library for Python with [pip][pip]:
 
@@ -50,7 +50,7 @@ Install the Azure Remote Rendering client library for Python with [pip][pip]:
 pip install --pre azure-mixedreality-remoterendering
 ```
 
-## Create and authenticate the client
+### Create and authenticate the client
 
 Constructing a remote rendering client requires an authenticated account, and a remote rendering endpoint.
 For an account created in the eastus region, the account domain will have the form "eastus.mixedreality.azure.com".
@@ -75,7 +75,7 @@ A full list of endpoints in supported regions can be found in the [Azure Remote 
 > NOTE: For rendering, it is strongly recommended that you pick the closest region to the devices using the service.
 > The time taken to communicate with the server impacts the quality of the experience.
 
-### Authenticating with account key authentication
+#### Authenticating with account key authentication
 
 Use the `AzureKeyCredential` object to use an account identifier and account key to authenticate:
 
@@ -97,7 +97,7 @@ client = RemoteRenderingClient(
 )
 ```
 
-### Authenticating with a static access token
+#### Authenticating with a static access token
 
 You can pass a Mixed Reality access token as an `AccessToken` previously retrieved from the
 [Mixed Reality STS service](https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b1/sdk/mixedreality/azure-mixedreality-authentication)
@@ -124,7 +124,7 @@ client = RemoteRenderingClient(
 )
 ```
 
-### Authenticating with an Azure Active Directory Credential
+#### Authenticating with an Azure Active Directory Credential
 
 Account key authentication is used in most of the examples, but you can also authenticate with Azure Active Directory
 using the [Azure Identity library][azure_identity]. This is the recommended method for production applications. To use
@@ -150,14 +150,14 @@ client = RemoteRenderingClient(
 )
 ```
 
-## Key concepts
+### Key concepts
 
-### RemoteRenderingClient
+#### RemoteRenderingClient
 
 The `RemoteRenderingClient` is the client library used to access the RemoteRenderingService.
 It provides methods to create and manage asset conversions and rendering sessions.
 
-### Long-Running Operations
+#### Long-Running Operations
 Long-running operations are operations which consist of an initial request sent to the service to start an operation,
 followed by polling the service at intervals to determine whether the operation has completed or failed, and if it has
 succeeded, to get the result.
@@ -168,7 +168,7 @@ Callers should wait for the operation to complete by calling result() on the pol
 `begin_<method-name>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#examples "Examples").
 
-## Examples
+### Examples
 
 - [Convert an asset](#convert-an-asset)
 - [List conversions](#list-conversions)
@@ -177,7 +177,7 @@ Callers should wait for the operation to complete by calling result() on the pol
 - [List sessions](#list-sessions)
 - [Stop a session](#stop-a-session)
 
-### Convert an asset
+#### Convert an asset
 
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
 The following snippet describes how to request that "box.fbx", found at at a path of "/input/box/box.fbx" of the blob container at the given storage container URI, gets converted.
@@ -218,7 +218,7 @@ The path can be retrieved from the output.asset_uri of a successful conversion.
         print("Conversion failed", e)
 ```
 
-### List conversions
+#### List conversions
 
 You can get information about your conversions using the `list_asset_conversions` method.
 This method may return conversions which have yet to start, conversions which are running and conversions which have finished.
@@ -239,7 +239,7 @@ In this example, we list all conversions and print id and creation ad as well as
             print("\t\tconversion result URI:", c.output.asset_uri)
 ```
 
-### Create a session
+#### Create a session
 
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
 The following snippet describes how to request that a new rendering session be started.
@@ -266,7 +266,7 @@ The following snippet describes how to request that a new rendering session be s
         print("Session startup failed", e)
 ```
 
-### Extend the lease time of a session
+#### Extend the lease time of a session
 
 If a session is approaching its maximum lease time, but you want to keep it alive, you will need to make a call to 
 increase its maximum lease time.
@@ -283,7 +283,7 @@ This example shows how to query the current properties and then extend the lease
         )
 ```
 
-### List sessions
+#### List sessions
 
 You can get information about your sessions using the `list_rendering_sessions` method of the client.
 This method may return sessions which have yet to start and sessions which are ready.
@@ -302,7 +302,7 @@ This method may return sessions which have yet to start and sessions which are r
         )
 ```
 
-### Stop a Session
+#### Stop a Session
 
 The following code will stop a running session with given id. Since running sessions incur ongoing costs it is
 recommended to stop sessions which are not needed anymore.
@@ -312,7 +312,7 @@ recommended to stop sessions which are not needed anymore.
     print("session with id:", session_id, "stopped")
 ```
 
-## Troubleshooting
+### Troubleshooting
 
 For general troubleshooting advice concerning Azure Remote Rendering, see [the Troubleshoot page](https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot) for remote rendering at docs.microsoft.com.
 
@@ -326,7 +326,7 @@ Similarly, sometimes when a session is requested, the session ends up in an erro
 The poller will throw an exception containing details of the error in this case. Session errors are usually transient
 and requesting a new session should succeed.
 
-### Logging
+#### Logging
 
 This library uses the standard
 [logging][python_logging] library for logging.
@@ -338,17 +338,17 @@ headers, can be enabled on the client or per-operation with the `logging_enable`
 
 See full SDK logging documentation with examples [here][sdk_logging_docs].
 
-### Optional Configuration
+#### Optional Configuration
 
 Optional keyword arguments can be passed in at the client and per-operation level.
 The azure-core [reference documentation][azure_core_ref_docs]
 describes available configurations for retries, logging, transport protocols, and more.
 
-### Exceptions
+#### Exceptions
 
 The Remote Rendering client library will raise exceptions defined in [Azure Core][azure_core_exceptions].
 
-### Async APIs
+#### Async APIs
 
 This library also includes a complete async API supported on Python 3.5+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/). Async clients
@@ -356,14 +356,14 @@ are found under the `azure.mixedreality.remoterendering.aio` namespace.
 
 
 
-## Next steps
+### Next steps
 
 - Read the [Product documentation](https://docs.microsoft.com/azure/remote-rendering/)
 - Learn about the runtime SDKs:
   - .NET: https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering
   - C++: https://docs.microsoft.com/cpp/api/remote-rendering/
 
-## Contributing
+### Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us

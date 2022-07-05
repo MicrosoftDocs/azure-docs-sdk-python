@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: marketplaceordering
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Market Place Ordering SDK for Python
 
 This is the Microsoft Azure Market Place Ordering Client Library.
 

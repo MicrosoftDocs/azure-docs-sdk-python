@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: authorization
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Authorization SDK for Python
 
 This is the Microsoft Azure Authorization Management Client Library.
 

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: costmanagement+billing
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Billing SDK for Python
 
 This is the Microsoft Azure Billing Client Library.
 

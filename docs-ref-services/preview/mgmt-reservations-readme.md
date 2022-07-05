@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: reservations
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Reservations SDK for Python
 
 This is the Microsoft Azure Reservations Client Library.
 

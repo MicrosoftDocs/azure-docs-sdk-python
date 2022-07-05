@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: mixedreality
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Mixed Reality SDK for Python
 
 This is the Microsoft Azure Mixed Reality Management Client Library.
 

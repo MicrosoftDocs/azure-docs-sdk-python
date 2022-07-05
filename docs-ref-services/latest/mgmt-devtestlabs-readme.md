@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: devtestlabs
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure DevTestLabs SDK for Python
 
 This is the Microsoft Azure DevTestLabs Management Client Library.
 
@@ -28,7 +28,7 @@ For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)

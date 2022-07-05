@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: frontdoor
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Front Door SDK for Python
 
 This is the Microsoft Azure Front Door Service Client Library.
 
@@ -27,7 +27,7 @@ library.
 For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)

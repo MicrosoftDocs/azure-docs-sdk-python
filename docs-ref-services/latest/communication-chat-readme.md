@@ -19,14 +19,14 @@ Read more about Azure Communication Services [here](https://docs.microsoft.com/a
 
 [Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-chat_1.1.0/sdk/communication/azure-communication-chat) | [Package (Pypi)](https://pypi.org/project/azure-communication-chat/) | [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-communication-chat/1.0.0b5/index.html) | [Product documentation](https://docs.microsoft.com/azure/communication-services/)
 
-# Getting started
+## Getting started
 
-## Prerequisites
+### Prerequisites
 
 - Python 2.7, or 3.6 or later is required to use this package.
 - A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
-## Install the package
+### Install the package
 
 Install the Azure Communication Service Chat SDK.
 
@@ -34,7 +34,7 @@ Install the Azure Communication Service Chat SDK.
 pip install --pre azure-communication-chat
 ```
 
-## User Access Tokens
+### User Access Tokens
 
 User access tokens enable you to build client applications that directly authenticate to Azure Communication Services. You can generate these tokens with azure.communication.identity module, and then use them to initialize the Communication Services SDKs. Example of using azure.communication.identity:
 
@@ -53,7 +53,7 @@ token = tokenresponse.token
 The `user` created above will be used later, because that user should be added as a participant of new chat thread when you creating
 it with this token. It is because the initiator of the create request must be in the list of the participants of the chat thread.
 
-## Create the Chat Client
+### Create the Chat Client
 
 This will allow you to create, get, list or delete chat threads.
 
@@ -65,7 +65,7 @@ endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com"
 chat_client = ChatClient(endpoint, CommunicationTokenCredential(token))
 ```
 
-## Create Chat Thread Client
+### Create Chat Thread Client
 
 The ChatThreadClient will allow you to perform operations specific to a chat thread, like send message, get message, update
 the chat thread topic, add participants to chat thread, etc.
@@ -97,7 +97,7 @@ Alternatively, if you have created a chat thread before and you have its thread_
 chat_thread_client = chat_client.get_chat_thread_client(thread_id) # thread_id is the id of an existing chat thread
 ```
 
-# Key concepts
+## Key concepts
 
 A chat conversation is represented by a chat thread. Each user in the thread is called a thread participant.
 Thread participants can chat with one another privately in a 1:1 chat or huddle up in a 1:N group chat.
@@ -105,7 +105,7 @@ Users also get near real-time updates for when others are typing and when they h
 
 Once you initialized a `ChatClient` class, you can do the following chat operations:
 
-## Create, get, update, and delete threads
+### Create, get, update, and delete threads
 
 Perform CRD(Create-Read-Delete) operations on threads
 
@@ -117,7 +117,7 @@ delete_chat_thread(thread_id, **kwargs)
 
 Once you initialized a `ChatThreadClient` class, you can do the following chat operations:
 
-## Update thread
+### Update thread
 
 Perform Update operation on thread topic
 
@@ -125,12 +125,13 @@ Perform Update operation on thread topic
 update_topic(topic, **kwargs)
 ```
 
-## Get Chat thread properties
+### Get Chat thread properties
+
 ```python
 get_properties(**kwargs)
 ```
 
-## Send, get, update, and delete messages
+### Send, get, update, and delete messages
 
 Perform CRUD(Create-Read-Update-Delete) operations on messages
 
@@ -142,7 +143,7 @@ update_message(message_id, content, **kwargs)
 delete_message(message_id, **kwargs)
 ```
 
-## Get, add, and remove participants
+### Get, add, and remove participants
 
 Perform CRD(Create-Read-Delete) operations on thread participants
 
@@ -152,7 +153,7 @@ add_participants(thread_participants, **kwargs)
 remove_participant(participant_identifier, **kwargs)
 ```
 
-## Send typing notification
+### Send typing notification
 
 Notify the service of typing notification
 
@@ -160,7 +161,7 @@ Notify the service of typing notification
 send_typing_notification(**kwargs)
 ```
 
-## Send and get read receipt
+### Send and get read receipt
 
 Notify the service that a message is read and get list of read messages.
 
@@ -169,7 +170,7 @@ send_read_receipt(message_id, **kwargs)
 list_read_receipts(**kwargs)
 ```
 
-# Examples
+## Examples
 
 The following sections provide several code snippets covering some of the most common tasks, including:
 
@@ -178,9 +179,9 @@ The following sections provide several code snippets covering some of the most c
 - [Thread Participant Operations](#thread-participant-operations)
 - [Events Operations](#events-operations)
 
-## Thread Operations
+### Thread Operations
 
-### Create a thread
+#### Create a thread
 
 Use the `create_chat_thread` method to create a chat thread.
 
@@ -267,7 +268,7 @@ if retry:
 ```
 
 
-### Get a thread
+#### Get a thread
 
 Use `get_properties` method retrieves a `ChatThreadProperties` from the service; `thread_id` is the unique ID of the thread.
 
@@ -275,7 +276,8 @@ Use `get_properties` method retrieves a `ChatThreadProperties` from the service;
 chat_thread_properties = chat_thread_client.get_properties()
 ```
 
-### List chat threads
+#### List chat threads
+
 Use `list_chat_threads` method retrieves the list of created chat threads
 
 - Use `results_per_page`, optional, The maximum number of messages to be returned per page.
@@ -298,7 +300,7 @@ for chat_thread_item_page in chat_threads.by_page():
         print("thread id:", chat_thread_item.id)
 ```
 
-### Update a thread topic
+#### Update a thread topic
 
 Use `update_topic` method to update a thread's properties. `topic` is used to describe the change of the thread topic
 - Use `topic` to give thread a new topic;
@@ -312,7 +314,7 @@ chat_thread = chat_thread_client.get_properties(thread_id)
 assert chat_thread.topic == topic
 ```
 
-### Delete a thread
+#### Delete a thread
 
 Use `delete_chat_thread` method to delete a thread; `thread_id` is the unique ID of the thread.
 - Use `thread_id`, required, to specify the unique ID of the thread.
@@ -320,9 +322,9 @@ Use `delete_chat_thread` method to delete a thread; `thread_id` is the unique ID
 chat_client.delete_chat_thread(thread_id=thread_id)
 ```
 
-## Message Operations
+### Message Operations
 
-### Send a message
+#### Send a message
 
 Use `send_message` method to sends a message to a thread identified by `thread_id`.
 
@@ -360,7 +362,7 @@ send_message_result_w_type_id = send_message_result_w_type.id
 print("Message sent: id: ", send_message_result_w_type_id)
 ```
 
-### Get a message
+#### Get a message
 
 Use `get_message` method retrieves a message from the service; `message_id` is the unique ID of the message.
 - Use `message_id`,required, to specify message id of an existing message
@@ -371,7 +373,7 @@ chat_message = chat_thread_client.get_message(message_id=send_message_result_id)
 print("get_chat_message succeeded, message id:", chat_message.id, "content: ", chat_message.content)
 ```
 
-### List messages
+#### List messages
 
 Use `list_messages` method retrieves messages from the service.
 - Use `results_per_page`, optional, The maximum number of messages to be returned per page.
@@ -390,7 +392,7 @@ for chat_message_page in chat_messages.by_page():
         print("ChatMessage: Id=", chat_message.id, "; Content=", chat_message.content.message)
 ```
 
-### Update a message
+#### Update a message
 
 Use `update_message` to update a message identified by threadId and messageId.
 - Use `message_id`,required, is the unique ID of the message.
@@ -405,7 +407,7 @@ chat_message = chat_thread_client.get_message(message_id=send_message_result_id)
 assert chat_message.content.message == content
 ```
 
-### Delete a message
+#### Delete a message
 
 Use `delete_message` to delete a message.
 - Use `message_id`, required, is the unique ID of the message.
@@ -414,9 +416,9 @@ Use `delete_message` to delete a message.
 chat_thread_client.delete_message(message_id=send_message_result_id)
 ```
 
-## Thread Participant Operations
+### Thread Participant Operations
 
-### List thread participants
+#### List thread participants
 
 Use `list_participants` to retrieve the participants of the thread.
 - Use `results_per_page`, optional, The maximum number of participants to be returned per page.
@@ -431,7 +433,7 @@ for chat_participant_page in chat_participants.by_page():
         print("ChatParticipant: ", chat_participant)
 ```
 
-### Add thread participants
+#### Add thread participants
 
 Use `add_participants` method to add thread participants to the thread.
 
@@ -489,7 +491,7 @@ if retry:
     chat_thread_client.add_participants(retry)
 ```
 
-### Remove thread participant
+#### Remove thread participant
 
 Use `remove_participant` method to remove thread participant from the thread identified by threadId.
 `identifier` is the `CommunicationUserIdentifier` you created by CommunicationIdentityClient.create_user() from `azure-communication-identity`
@@ -507,9 +509,9 @@ chat_thread_client.remove_participant(identifier=new_user)
 
 ```
 
-## Events Operations
+### Events Operations
 
-### Send typing notification
+#### Send typing notification
 
 Use `send_typing_notification` method to post a typing notification event to a thread, on behalf of a user.
 
@@ -517,7 +519,7 @@ Use `send_typing_notification` method to post a typing notification event to a t
 chat_thread_client.send_typing_notification()
 ```
 
-### Send read receipt
+#### Send read receipt
 
 Use `send_read_receipt` method to post a read receipt event to a thread, on behalf of a user.
 - Use `message_id` to specify the id of the message whose read receipt is to be sent
@@ -528,7 +530,7 @@ send_message_result_id = send_message_result.id
 chat_thread_client.send_read_receipt(message_id=send_message_result_id)
 ```
 
-### List read receipts
+#### List read receipts
 
 Use `list_read_receipts` method retrieves read receipts for a thread.
 - Use `results_per_page`, optional, The maximum number of read receipts to be returned per page.
@@ -547,7 +549,7 @@ for read_receipt_page in read_receipts.by_page():
         print(read_receipt.read_on)
 ```
 
-## Sample Code
+### Sample Code
 
 These are code samples that show common scenario operations with the Azure Communication Chat client library.
 The async versions of the samples (the python sample files appended with `_async`) show asynchronous operations,
@@ -568,15 +570,15 @@ python samples\chat_thread_client_sample.py
 python samples\chat_thread_client_sample_async.py
 ```
 
-# Troubleshooting
+## Troubleshooting
 
 Running into issues? This section should contain details as to what to do there.
 
-# Next steps
+## Next steps
 
 More sample code should go [here](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-chat_1.1.0/sdk/communication/azure-communication-chat/samples), along with links out to the appropriate example tests.
 
-# Contributing
+## Contributing
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](<https://github.com/Azure/azure-sdk-for-python/issues>) section of the project.
 

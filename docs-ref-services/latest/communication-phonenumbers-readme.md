@@ -16,12 +16,16 @@ ms.service: communication
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers. 
 
-# Getting started
+## Getting started
+
 ### Prerequisites
+
 - Python 2.7, or 3.6 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
 - A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+
 ### Install the package
+
 Install the Azure Communication Phone Numbers client library for Python with [pip](https://pypi.org/project/pip/):
 
 ```bash
@@ -31,6 +35,7 @@ pip install azure-communication-phonenumbers
 ## Key concepts
 
 ### Initializing Phone Numbers Client
+
 ```python
 # You can find your connection string from your resource in the Azure Portal
 import os
@@ -43,7 +48,9 @@ endpoint = "https://<RESOURCE_NAME>.communication.azure.com"
 phone_numbers_client = PhoneNumbersClient(endpoint, DefaultAzureCredential())
 
 ```
+
 ### Initializing the Client Using Your Connection String
+
 Connection string authentication is also available for Phone Numbers Client.
 
 ```python
@@ -153,19 +160,22 @@ poller = self.phone_number_client.begin_update_phone_number_capabilities(
 )
 ```
 
-# Troubleshooting
+## Troubleshooting
+
 The Phone Numbers Administration client will raise exceptions defined in [Azure Core][azure_core].
 
-# Next steps
-## More sample code
+## Next steps
+
+### More sample code
 
 Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.0.1/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
 
-## Provide Feedback
+### Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project
 
-# Contributing
+## Contributing
+
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 

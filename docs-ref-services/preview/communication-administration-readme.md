@@ -18,7 +18,7 @@ ms.service: communication
 
 Azure Communication Administration client package is intended to be used to setup the basics for opening a way to use Azure Communication Service offerings. This package helps to create identities user tokens to be used by other client packages such as chat, calling, sms. 
 
-# Getting started
+## Getting started
 ### Prerequisites
 * Python 2.7, or 3.5 or later is required to use this package.
 * You must have an [Azure subscription](https://azure.microsoft.com/free/)
@@ -30,16 +30,16 @@ Install the Azure Communication Administration client library for Python with [p
 pip install azure-communication-administration
 ```
 
-# Key concepts
-## CommunicationIdentityClient
+## Key concepts
+### CommunicationIdentityClient
 `CommunicationIdentityClient` provides operations for:
 
 - Create/delete identities to be used in Azure Communication Services. Those identities can be used to make use of Azure Communication offerings and can be scoped to have limited abilities through token scopes.
 
 - Create/revoke scoped user access tokens to access services such as chat, calling, sms. Tokens are issued for a valid Azure Communication identity and can be revoked at any time.
 
-## CommunicationPhoneNumberClient
-### Initializing Phone Number Client
+### CommunicationPhoneNumberClient
+#### Initializing Phone Number Client
 ```python
 # You can find your endpoint and access token from your resource in the Azure Portal
 import os
@@ -48,29 +48,29 @@ from azure.communication.administration import PhoneNumberAdministrationClient
 connection_str = os.getenv('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING')
 phone_number_administration_client = PhoneNumberAdministrationClient.from_connection_string(connection_str)
 ```
-### Phone plans overview
+#### Phone plans overview
 
 Phone plans come in two types; Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
 
 All geographic phone plans within the same country are grouped into a phone plan group with a Geographic phone number type. All Toll-Free phone plans within the same country are grouped into a phone plan group.
 
-### Searching and Acquiring numbers
+#### Searching and Acquiring numbers
 
 Phone numbers search can be search through the search creation API by providing a phone plan id, an area code and quantity of phone numbers. The provided quantity of phone numbers will be reserved for ten minutes. This search of phone numbers can either be cancelled or purchased. If the search is cancelled, then the phone numbers will become available to others. If the search is purchased, then the phone numbers are acquired for the Azure resources.
 
-### Configuring / Assigning numbers
+#### Configuring / Assigning numbers
 
 Phone numbers can be assigned to a callback URL via the configure number API. As part of the configuration, you will need an acquired phone number, callback URL and application id.
 
-# Examples
+## Examples
 The following section provides several code snippets covering some of the most common Azure Communication Services tasks, including:
 
 [Create/delete Azure Communication Service identities][identitysamples] 
 
 [Create/revoke scoped user access tokens][identitysamples]
 
-## Communication Phone number
-### Get Countries
+### Communication Phone number
+#### Get Countries
 
 ```python
 phone_number_administration_client = PhoneNumberAdministrationClient.from_connection_string(connection_str)
@@ -80,7 +80,7 @@ for supported_country in supported_countries:
     print(supported_country)
 ```
 
-### Get Phone Plan Groups
+#### Get Phone Plan Groups
 
 Phone plan groups come in two types, Geographic and Toll-Free.
 
@@ -94,7 +94,7 @@ for phone_plan_group in phone_plan_groups_response:
     print(phone_plan_group)
 ```
 
-### Get Phone Plans
+#### Get Phone Plans
 
 Unlike Toll-Free phone plans, area codes for Geographic Phone Plans are empty. Area codes are found in the Area Codes API.
 
@@ -109,7 +109,7 @@ for phone_plan in phone_plans_response:
     print(phone_plan)
 ```
 
-### Get Location Options
+#### Get Location Options
 
 For Geographic phone plans, you can query the available geographic locations. The locations options are structured like the geographic hierarchy of a country. For example, the US has states and within each state are cities.
 
@@ -124,7 +124,7 @@ location_options_response = phone_number_administration_client.get_phone_plan_lo
 print(location_options_response)
 ```
 
-### Get Area Codes
+#### Get Area Codes
 
 Fetching area codes for geographic phone plans will require the the location options queries set. You must include the chain of geographic locations traversing down the location options object returned by the GetLocationOptions API.
 
@@ -139,7 +139,7 @@ all_area_codes = phone_number_administration_client.get_all_area_codes(
 print(all_area_codes)
 ```
 
-### Create Search
+#### Create Search
 
 ```python
 from azure.communication.administration import CreateSearchOptions
@@ -158,7 +158,7 @@ search_response = phone_number_administration_client.create_search(
 print(search_response)
 ```
 
-### Get search by id
+#### Get search by id
 ```python
 phone_number_administration_client = PhoneNumberAdministrationClient.from_connection_string(connection_str)
 
@@ -168,7 +168,7 @@ phone_number_search_response = phone_number_administration_client.get_search_by_
 print(phone_number_search_response)
 ```
 
-### Purchase Search
+#### Purchase Search
 
 ```python
 phone_number_administration_client = PhoneNumberAdministrationClient.from_connection_string(connection_str)
@@ -178,11 +178,11 @@ phone_number_administration_client.purchase_search(
 )
 ```
 
-# Troubleshooting
+## Troubleshooting
 The Azure Communication Service Identity client will raise exceptions defined in [Azure Core][azure_core].
 
-# Next steps
-## More sample code
+### Next steps
+#### More sample code
 
 Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-administration_1.0.0b2/sdk/communication/azure-communication-administration/samples) directory for detailed examples of how to use this library to manage identities and tokens.
 
@@ -190,7 +190,7 @@ Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-pytho
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project
 
-# Contributing
+## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 

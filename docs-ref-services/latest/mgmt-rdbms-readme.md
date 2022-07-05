@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: databaseformysql/postgresql
 ---
-# Microsoft Azure SDK for Python
+# Microsoft Azure RDBMS SDK for Python
 
 This is the Microsoft Azure RDBMS Management Client Library.
 This package has been tested with Python 2.7, 3.6+.
@@ -21,7 +21,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
@@ -33,7 +33,7 @@ Code samples for this package can be found at [RDBMS Management](https://docs.mi
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
-# Provide Feedback
+## Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: 
 ---
 
-# Microsoft Azure SDK for Python
+# Microsoft Azure monitor Services SDK for Python
 
 This is the Microsoft Azure monitor Services namespace package.
 
