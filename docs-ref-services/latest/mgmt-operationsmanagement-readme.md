@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: operationsmanagement
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure OperationsManagement SDK for Python
 
 This is the Microsoft Azure OperationsManagement Management Client Library.
 

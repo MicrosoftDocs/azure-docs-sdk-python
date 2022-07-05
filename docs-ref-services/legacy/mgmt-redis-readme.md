@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: redis
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Redis SDK for Python (Legacy)
 
 This is the Microsoft Azure Redis Cache Management Client Library.
 

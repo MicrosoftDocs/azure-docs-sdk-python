@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: search
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Search SDK for Python (Preivew)
 
 This is the Microsoft Azure Search Management Client Library.
 

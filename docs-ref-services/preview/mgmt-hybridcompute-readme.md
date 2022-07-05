@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: hybridcompute
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Hybrid Compute SDK for Python (Preview)
 
 This is the Microsoft Azure Hybrid Compute Management Client Library.
 

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: managementgroups
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Management Groups SDK for Python
 
 This is the Microsoft Azure Management Groups Client Library.
 

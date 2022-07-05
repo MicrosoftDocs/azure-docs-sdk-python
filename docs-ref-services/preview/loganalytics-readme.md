@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: loganalytics
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Log Analytics SDK for Python
 
 This package is no longer being maintained. Please use our latest package [azure-monitor-query](https://pypi.org/project/azure-monitor-query/).
 
