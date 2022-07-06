@@ -19,27 +19,27 @@ This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8
 
 For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all
 
-# Getting started
+## Getting started
 
 For a rich example of a well formatted readme, please check [here.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md) In addition, this is an [example readme](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-EXAMPLE.md) that should be emulated. Note that the top-level sections in this template align with that of the [template.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md)
 
-# Key concepts
+## Key concepts
 
 Bullet point list of your library's main concepts.
 
-# Examples
+## Examples
 
 Examples of some of the key concepts for your library.
 
-# Troubleshooting
+## Troubleshooting
 
 Running into issues? This section should contain details as to what to do there.
 
-# Next steps
+## Next steps
 
 More sample code should go here, along with links out to the appropriate example tests.
 
-# Contributing
+## Contributing
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](<https://github.com/Azure/azure-sdk-for-python/issues>) section of the project.
 

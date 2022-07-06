@@ -23,7 +23,7 @@ It will provide TURN credentials to a user.
 
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Getting started
+## Getting started
 
 ### Prerequisites
 
@@ -41,11 +41,11 @@ pip install azure-communication-identity
 pip install azure-communication-networktraversal
 ```
 
-# Key concepts
+## Key concepts
 
-## Examples
+### Examples
 
-### Initializing Relay Client
+#### Initializing Relay Client
 
 The following section provides code snippets covering some of the most common Azure Communication Network Traversal tasks, including:
 
@@ -68,14 +68,14 @@ identity_client = CommunicationIdentityClient(endpoint, DefaultAzureCredential()
 relay_client = CommunicationRelayClient(endpoint, DefaultAzureCredential())
 ```
 
-#You can also authenticate using your connection string
+You can also authenticate using your connection string
 
 ```python
 identity_client = CommunicationIdentityClient.from_connection_string(self.connection_string)
 relay_client = CommunicationRelayClient.from_connection_string(self.connection_string)
 ```
 
-### Getting the relay configuration providing a user
+#### Getting the relay configuration providing a user
 
 ```python
 # We need a user from Identity
@@ -94,7 +94,7 @@ for iceServer in config.ice_servers:
         print('Url:' + url)
 ```
 
-### Getting the relay configuration without providing a user
+#### Getting the relay configuration without providing a user
 
 ```python
 relay_configuration = relay_client.get_relay_configuration()
@@ -111,7 +111,7 @@ for iceServer in config.ice_servers:
         print('Url:' + url)
 ```
 
-### Getting the relay configuration without providing a RouteType
+#### Getting the relay configuration without providing a RouteType
 
 ```python
 # We need a user from Identity
@@ -130,19 +130,19 @@ for iceServer in config.ice_servers:
         print('Url:' + url)
 ```
 
-# Troubleshooting
+## Troubleshooting
 
 The Azure Communication Relay client will raise exceptions defined in [Azure Core][azure_core].
 
-# Next steps
+## Next steps
 
-## More sample code
+### More sample code
 
-## Provide Feedback
+### Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

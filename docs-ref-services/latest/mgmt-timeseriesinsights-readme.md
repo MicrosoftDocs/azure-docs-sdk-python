@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: timeseriesinsights
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Time Series Insights SDK for Python
 
 This is the Microsoft Azure TimeSeriesInsights Management Client
 Library.

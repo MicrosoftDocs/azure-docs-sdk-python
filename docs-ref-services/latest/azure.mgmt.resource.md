@@ -15,6 +15,7 @@ ms.service: resources
 # Azure Resources libraries for Python 
 
 ## Overview 
+
 Manage Azure resources in resource groups.
 
 | Package  |  Description |

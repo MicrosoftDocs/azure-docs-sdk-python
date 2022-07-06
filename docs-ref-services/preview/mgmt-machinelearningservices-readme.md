@@ -11,8 +11,8 @@ ms.devlang: python
 ms.service: machinelearning
 ---
 
-## Microsoft Azure SDK for Python
-    
+# Microsoft Azure Machine Learning Services SDK for Python
+
 This is the Microsoft Azure Machine Learning Services Management Client
 Library.
 
@@ -28,7 +28,7 @@ library.
 For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)

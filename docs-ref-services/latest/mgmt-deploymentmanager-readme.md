@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: deploymentmanager
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Deployment Manager SDK for Python
 
 This is the Microsoft Azure Deployment Manager Client Library.
 

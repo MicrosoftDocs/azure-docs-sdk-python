@@ -19,7 +19,7 @@ Azure Communication Identity client package is intended to be used to setup the 
 [Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.1.0b1/sdk/communication/azure-communication-identity) | [Package (Pypi)](https://pypi.org/project/azure-communication-identity/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.1.0b1/sdk/communication/azure-communication-identity) | [Product documentation](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
 
 
-# Getting started
+## Getting started
 ### Prerequisites
 - Python 2.7, or 3.6 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
@@ -31,15 +31,15 @@ Install the Azure Communication Identity client library for Python with [pip](ht
 pip install azure-communication-identity
 ```
 
-# Key concepts
-## CommunicationIdentityClient
+## Key concepts
+### CommunicationIdentityClient
 `CommunicationIdentityClient` provides operations for:
 
 - Create/delete identities to be used in Azure Communication Services. Those identities can be used to make use of Azure Communication offerings and can be scoped to have limited abilities through token scopes.
 
 - Create/revoke scoped user access tokens to access services such as chat, calling, sms. Tokens are issued for a valid Azure Communication identity and can be revoked at any time.
 
-### Initializing Identity Client
+#### Initializing Identity Client
 ```python
 # You can find your endpoint and access token from your resource in the Azure Portal
 import os
@@ -58,7 +58,7 @@ identity_client = CommunicationIdentityClient.from_connection_string(connection_
 
 ```
 
-## Examples
+### Examples
 The following section provides several code snippets covering some of the most common Azure Communication Services tasks, including:
 
 - [Creating a new user](#creating-a-new-user)
@@ -68,7 +68,7 @@ The following section provides several code snippets covering some of the most c
 - [Deleting a user](#deleting-a-user)
 - [Exchanging AAD access token of a Teams User for a Communication Identity access token](#exchanging-aad-access-token-of-a-teams-user-for-a-communication-identity-access-token)
 
-### Creating a new user
+#### Creating a new user
 
 Use the `create_user` method to create a new user.
 ```python
@@ -76,7 +76,7 @@ user = identity_client.create_user()
 print("User created with id:" + user.properties['id'])
 ```
 
-### Issuing or Refreshing an access token for a user
+#### Issuing or Refreshing an access token for a user
 
 Use the `get_token` method to issue or refresh a scoped access token for the user. \
 Pass in the user object as a parameter, and a list of `CommunicationTokenScope`. Scope options are:
@@ -87,7 +87,7 @@ Pass in the user object as a parameter, and a list of `CommunicationTokenScope`.
 tokenresponse = identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])
 print("Token issued with value: " + tokenresponse.token)
 ```
-### Creating a user and a token in a single request
+#### Creating a user and a token in a single request
 For convenience, use `create_user_and_token` to create a new user and issue a token with one function call. This translates into a single web request as opposed to creating a user first and then issuing a token.
 
 ```python
@@ -96,32 +96,32 @@ print("User id:" + user.properties['id'])
 print("Token issued with value: " + tokenresponse.token)
 ```
 
-### Revoking a user's access tokens
+#### Revoking a user's access tokens
 
 Use `revoke_tokens` to revoke all access tokens for a user. Pass in the user object as a parameter
 ```python
 identity_client.revoke_tokens(user)
 ```
 
-### Deleting a user
+#### Deleting a user
 
 Use the `delete_user` method to delete a user. Pass in the user object as a parameter
 ```python
 identity_client.delete_user(user)
 ```
 
-### Exchanging AAD access token of a Teams User for a Communication Identity access token
+#### Exchanging AAD access token of a Teams User for a Communication Identity access token
 
 Use the `get_token_for_teams_user` method to exchange an AAD access token of a Teams User for a new Communication Identity access token.
 ```python
 identity_client.get_token_for_teams_user(add_token)
 ```
 
-# Troubleshooting
+## Troubleshooting
 The Azure Communication Service Identity client will raise exceptions defined in [Azure Core][azure_core].
 
-# Next steps
-## More sample code
+## Next steps
+### More sample code
 
 Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.1.0b1/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
 
@@ -129,7 +129,7 @@ Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-pytho
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project
 
-# Contributing
+## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: securitycenter
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Security SDK for Python (Preview)
 
 This is the Microsoft Azure Security Center Management Client Library.
 

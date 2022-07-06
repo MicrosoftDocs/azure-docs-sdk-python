@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: servicefabric
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Service Fabric SDK for Python
 
 This is the Microsoft Azure Service Fabric Management Client Library.
 

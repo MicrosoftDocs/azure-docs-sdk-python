@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: managedservices
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Managed Service SDK for Python (Preview)
 
 This is the Microsoft Azure Managed Services Client Library.
 

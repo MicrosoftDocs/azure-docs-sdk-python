@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: stackedge
 ---
 
-# Microsoft Azure Data Box Edge SDK for Python
+# Microsoft Azure Databoxedge SDK for Python
 
 This is the Microsoft Azure Databoxedge Management Client Library.
 

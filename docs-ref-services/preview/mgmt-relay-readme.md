@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: relay
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Relay SDK for Python
 
 This is the Microsoft Azure Relay Client Library.
 

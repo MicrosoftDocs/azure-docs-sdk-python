@@ -10,7 +10,8 @@ ms.technology: azure
 ms.devlang: python
 ms.service: applicationinsights
 ---
-## Microsoft Azure SDK for Python
+
+# Microsoft Azure Monitor Query SDK for Python
 
 This package is no longer being maintained. Use the [azure-monitor-query](https://pypi.org/project/azure-monitor-query/) package instead.
 

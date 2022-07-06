@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: managementpartner
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure ManagementPartner SDK for Python
 
 This is the Microsoft Azure ManagementPartner Management Client Library.
 

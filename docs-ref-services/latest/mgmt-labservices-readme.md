@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: labservices
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Lab Services SDK for Python
 
 This is the Microsoft Azure Lab Services Client Library.
 

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: dns
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure DNS SDK for Python (Preview)
 
 This is the Microsoft Azure DNS Management Client Library.
 

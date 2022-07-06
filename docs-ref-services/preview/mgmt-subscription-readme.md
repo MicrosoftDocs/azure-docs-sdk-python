@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: subscription
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Subscription SDK for Python
 
 This is the Microsoft Azure Subscription Management Client Library.
 

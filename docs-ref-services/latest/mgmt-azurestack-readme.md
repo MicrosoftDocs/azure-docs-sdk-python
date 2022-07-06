@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: stack
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure AzureStack SDK for Python
 
 This is the Microsoft Azure AzureStack Management Client Library.
 

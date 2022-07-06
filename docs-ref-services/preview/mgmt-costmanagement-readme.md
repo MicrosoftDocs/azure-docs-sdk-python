@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: costmanagement
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Cost SDK for Python
 
 This is the Microsoft Azure Cost Management Client Library.
 

@@ -10,7 +10,8 @@ ms.technology: azure
 ms.devlang: python
 ms.service: storage
 ---
-## Microsoft Azure SDK for Python
+
+# Microsoft Azure Storage Sync SDK for Python (Preview)
 
 This is the Microsoft Azure Storage Sync Client Library.
 
