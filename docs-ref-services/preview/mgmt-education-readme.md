@@ -1,16 +1,16 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, loganalytics
-author: alexeldeib
-ms.author: aleldeib
-ms.date: 07/06/2022
+keywords: Azure, python, SDK, API, azure-mgmt-education, education
+author: lmazuel
+ms.author: lmazuel
+ms.date: 07/07/2022
 ms.topic: reference
 ms.devlang: python
-ms.service: loganalytics
+ms.service: education
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Log Analytics Management Client Library.
+This is the Microsoft Azure Education Management Client Library.
 This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -26,7 +26,7 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
  
 For docs and references, see [Python SDK References](/python/api/overview/azure/)
-Code samples for this package can be found at [Log Analytics Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+Code samples for this package can be found at [Education Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
@@ -37,5 +37,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-loganalytics%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-education%2FREADME.png)
 
