@@ -125,5 +125,5 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 )
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](python/api/overview/azure/mgmt-sql-readme)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-sql-readme)
 
