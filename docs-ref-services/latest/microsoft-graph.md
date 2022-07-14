@@ -1,19 +1,13 @@
 ---
-title: Graph RBAC libraries for python
-description: Reference for Graph RBAC libraries for python
-keywords: Azure, python, SDK, API, Graph RBAC
-author: ramya-rao-a
-ms.author: ramyar
-manager: jfriend
-
-ms.date: 05/10/2019
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
+author: lmazuel
+ms.author: lmazuel
+ms.data: 07/14/2022
+title: Azure Microsoft Graph SDK for Python
 ms.devlang: python
-ms.service: multiple
+description: Reference for Azure Microsoft Graph SDK for Python
+ms.service: microsoftgraph
 ---
-
 # Azure Active Directory Graph libraries for Python
 
 > [!IMPORTANT]

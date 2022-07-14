@@ -1,19 +1,13 @@
 ---
-title: Azure Event Hubs libraries for python
-description: Reference for Azure Event Hubs libraries for python
-keywords: Azure, python, SDK, API, Event Hubs
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
+author: annatisch
+ms.author: antisch
+ms.data: 07/14/2022
+title: Azure Event Hubs SDK for Python
 ms.devlang: python
-ms.service: multiple
+description: Reference for Azure Event Hubs SDK for Python
+ms.service: eventhubs
 ---
-
 # Azure Event Hubs libraries for Python
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected devices and applications. Once Event Hubs has collected the data, you can retrieve, transform, and store it by using any real-time analytics provider or with batching/storage adapters. If you would like to know more about Azure Event Hubs, you may wish to review: [What is Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-about).
