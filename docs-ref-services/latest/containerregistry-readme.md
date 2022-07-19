@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: containerregistry
 ---
-# Azure Container Registry client library for Python - Version 1.0.0 
+# Azure Container Registry client library for Python - version 1.0.0 
 
 
 Azure Container Registry allows you to store and manage container images and artifacts in a private registry for all types of container deployments.

@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: schemaregistry
 ---
-# Azure Schema Registry Avro Encoder client library for Python - Version 1.0.0 
+# Azure Schema Registry Avro Encoder client library for Python - version 1.0.0 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,

@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: eventhub
 ---
-# Azure Event Hubs client library for Python - Version 5.8.0a4 
+# Azure Event Hubs client library for Python - version 5.8.0a4 
 
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: search
 ---
 
-# Azure Cognitive Search client library for Python - Version 11.2.2 
+# Azure Cognitive Search client library for Python - version 11.2.2 
 
 
 [Azure Cognitive Search](https://docs.microsoft.com/azure/search/) is a

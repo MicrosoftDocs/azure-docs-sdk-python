@@ -10,7 +10,7 @@ ms.service: cognitivelanguage
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=main)
 
-# Azure Conversational Language Understanding client library for Python - Version 1.0.0 
+# Azure Conversational Language Understanding client library for Python - version 1.0.0 
 
 Conversational Language Understanding - aka **CLU** for short - is a cloud-based conversational AI service which provides many language understanding capabilities like:
 - Conversation App: It's used in extracting intents and entities in conversations

@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Query client library for Python - Version 1.0.3 
+# Azure Monitor Query client library for Python - version 1.0.3 
 
 
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:

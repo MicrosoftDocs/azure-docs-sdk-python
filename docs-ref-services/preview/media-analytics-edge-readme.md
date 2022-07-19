@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: media
 ---
-# Azure Live Video Analytics for IoT Edge client library for Python - Version 1.0.0b2 
+# Azure Live Video Analytics for IoT Edge client library for Python - version 1.0.0b2 
 
 
 This package is no longer maintained. Please use [Azure Video Analyzer Edge client library for Python](https://pypi.org/project/azure-media-videoanalyzer-edge)

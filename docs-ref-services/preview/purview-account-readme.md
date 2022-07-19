@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: 
 ---
 
-# Azure Purview Account client library for Python - Version 1.0.0b1 
+# Azure Purview Account client library for Python - version 1.0.0b1 
 
 
 Azure Purview Account is a fully managed cloud service.
