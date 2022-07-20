@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: cosmos
 ---
 
-# Azure Cosmos DB SQL API client library for Python - Version 4.2.0 
+# Azure Cosmos DB SQL API client library for Python - version 4.2.0 
 
 
 Azure Cosmos DB is a globally distributed, multi-model database service that supports document, key-value, wide-column, and graph databases.

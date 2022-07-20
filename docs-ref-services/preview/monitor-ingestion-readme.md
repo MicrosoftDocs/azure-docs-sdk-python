@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Ingestion client library for Python - Version 1.0.0b1 
+# Azure Monitor Ingestion client library for Python - version 1.0.0b1 
 
 
 The Azure Monitor Ingestion client library is used to send custom logs to [Azure Monitor][azure_monitor_overview].

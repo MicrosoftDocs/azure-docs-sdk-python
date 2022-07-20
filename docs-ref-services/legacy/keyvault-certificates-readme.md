@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: keyvault
 ---
 
-# Azure Key Vault Certificates client library for Python - Version 4.2.1 
+# Azure Key Vault Certificates client library for Python - version 4.2.1 
 
 Azure Key Vault helps solve the following problems:
 - Certificate management (this library) - create, manage, and deploy public and private SSL/TLS certificates

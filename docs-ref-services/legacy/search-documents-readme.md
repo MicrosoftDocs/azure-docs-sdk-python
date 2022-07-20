@@ -9,7 +9,7 @@ ms.devlang: python
 ms.service: search
 ---
 
-# Azure Cognitive Search client library for Python - Version 11.0.0 
+# Azure Cognitive Search client library for Python - version 11.0.0 
 
 
 [Azure Cognitive Search](https://docs.microsoft.com/azure/search/) is a
@@ -57,7 +57,7 @@ Use the Azure.Search.Documents client library to:
 
 ### Install the package
 
-Install the Azure Cognitive Search client library for Python - Version 11.0.0 
+Install the Azure Cognitive Search client library for Python - version 11.0.0 
  with [pip](https://pypi.org/project/pip/):
 
 ```bash

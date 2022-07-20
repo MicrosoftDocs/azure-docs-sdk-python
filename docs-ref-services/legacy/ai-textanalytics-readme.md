@@ -11,7 +11,7 @@ ms.devlang: Python
 ms.service: textanalytics
 ---
 
-# Azure Text Analytics client library for Python - Version 5.0.0 
+# Azure Text Analytics client library for Python - version 5.0.0 
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, and includes six main functions:
 
 * Sentiment Analysis

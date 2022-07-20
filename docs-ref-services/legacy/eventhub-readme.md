@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: eventhubs
 ---
 
-# Azure Event Hubs client library for Python - Version 5.2.0 
+# Azure Event Hubs client library for Python - version 5.2.0 
 
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream
@@ -43,7 +43,7 @@ There, you can also find detailed instructions for using the Azure CLI, Azure Po
 
 ### Install the package
 
-Install the Azure Event Hubs client library for Python - Version 5.2.0 
+Install the Azure Event Hubs client library for Python - version 5.2.0 
  with pip:
 
 ```

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: monitor
 ---
 
-# Azure Monitor Query client library for Python - Version 1.0.0b4 
+# Azure Monitor Query client library for Python - version 1.0.0b4 
 
 
 Azure Monitor helps you maximize the availability and performance of your apps. It delivers a comprehensive solution for collecting, analyzing, and acting on telemetry from your cloud and on-premises environments.
