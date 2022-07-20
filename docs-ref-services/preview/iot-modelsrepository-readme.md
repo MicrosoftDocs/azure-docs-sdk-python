@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: modelsrepository
 ---
-# Azure IoT Models Repository client library for Python - Version 1.0.0a20220330001 
+# Azure IoT Models Repository client library for Python - version 1.0.0a20220330001 
 
 
 The Azure IoT Models Repository Library for Python provides functionality for working with the Azure IoT Models Repository

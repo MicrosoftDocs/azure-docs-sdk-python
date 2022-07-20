@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: metricsadvisor
 ---
 
-# Azure Metrics Advisor client library for Python - Version 1.0.0b4 
+# Azure Metrics Advisor client library for Python - version 1.0.0b4 
 
 Metrics Advisor is a scalable real-time time series monitoring, alerting, and root cause analysis platform. Use Metrics Advisor to:
 

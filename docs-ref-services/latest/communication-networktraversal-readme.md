@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Network Traversal Package client library for Python - Version 1.0.0 
+# Azure Communication Network Traversal Package client library for Python - version 1.0.0 
 
 
 Azure Communication Network Traversal is managing TURN credentials for Azure Communication Services.

@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: deviceupdate
 ---
-# Azure Device Update for IoT Hub client library for Python - Version 1.0.0b3 
+# Azure Device Update for IoT Hub client library for Python - version 1.0.0b3 
 
 
 The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub).

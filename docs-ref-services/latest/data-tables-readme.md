@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: tables
 ---
-# Azure Tables client library for Python - Version 12.4.0 
+# Azure Tables client library for Python - version 12.4.0 
 
 
 Azure Tables is a NoSQL data storage service that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.

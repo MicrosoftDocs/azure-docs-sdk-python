@@ -13,7 +13,7 @@ ms.service: mixedreality
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Mixed Reality Authentication Package client library for Python - Version 1.0.0b1 
+# Azure Mixed Reality Authentication Package client library for Python - version 1.0.0b1 
 
 
 Mixed Reality services, like Azure Spatial Anchors, Azure Remote Rendering, and others, use the Mixed Reality security
