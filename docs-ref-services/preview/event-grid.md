@@ -2,11 +2,11 @@
 ms.devlang: python
 ms.topic: reference
 ms.author: lmazuel
-ms.data: 07/21/2022
-ms.service: eventgrid
-title: Azure Event Grid SDK for Python
 author: lmazuel
+ms.service: eventgrid
 description: Reference for Azure Event Grid SDK for Python
+title: Azure Event Grid SDK for Python
+ms.data: 07/22/2022
 ---
 # Event Grid libraries for Python
 

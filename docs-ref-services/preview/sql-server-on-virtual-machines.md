@@ -2,11 +2,11 @@
 ms.devlang: python
 ms.topic: reference
 ms.author: lmazuel
-ms.data: 07/21/2022
-ms.service: sqlserveronvirtualmachines
-title: Azure SQL Server on Virtual Machines SDK for Python
 author: lmazuel
+ms.service: sqlserveronvirtualmachines
 description: Reference for Azure SQL Server on Virtual Machines SDK for Python
+title: Azure SQL Server on Virtual Machines SDK for Python
+ms.data: 07/22/2022
 ---
 # Azure SQL Server on Virtual Machines SDK for Python - preview
 

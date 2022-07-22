@@ -2,11 +2,11 @@
 ms.devlang: python
 ms.topic: reference
 ms.author: QingChenmsft
-ms.data: 07/21/2022
-ms.service: servicefabric
-title: Azure Service Fabric SDK for Python
 author: QingChenmsft
+ms.service: servicefabric
 description: Reference for Azure Service Fabric SDK for Python
+title: Azure Service Fabric SDK for Python
+ms.data: 07/22/2022
 ---
 # Azure Service Fabric SDK for Python - latest
 

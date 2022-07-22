@@ -2,11 +2,11 @@
 ms.devlang: python
 ms.topic: reference
 ms.author: lmazuel
-ms.data: 07/21/2022
-ms.service: monitor
-title: Azure Monitor SDK for Python
 author: lmazuel
+ms.service: monitor
 description: Reference for Azure Monitor SDK for Python
+title: Azure Monitor SDK for Python
+ms.data: 07/22/2022
 ---
 # Azure Monitoring libraries for python
 

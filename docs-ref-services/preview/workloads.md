@@ -2,11 +2,11 @@
 ms.devlang: python
 ms.topic: reference
 ms.author: lmazuel
-ms.data: 07/21/2022
-ms.service: workloads
-title: Azure Workloads SDK for Python
 author: lmazuel
+ms.service: workloads
 description: Reference for Azure Workloads SDK for Python
+title: Azure Workloads SDK for Python
+ms.data: 07/22/2022
 ---
 # Azure Workloads SDK for Python - preview
 
