@@ -1,12 +1,12 @@
 ---
 ms.devlang: python
-ms.topic: reference
-ms.author: lmazuel
-author: lmazuel
-ms.service: databaseformysql-postgresql
+ms.data: 07/25/2022
 description: Reference for Azure Database for MySQL/PostgreSQL SDK for Python
 title: Azure Database for MySQL/PostgreSQL SDK for Python
-ms.data: 07/22/2022
+ms.author: lmazuel
+ms.topic: reference
+author: lmazuel
+ms.service: databaseformysql-postgresql
 ---
 # Azure Database for MySQL/PostgreSQL SDK for Python - latest
 

@@ -1,12 +1,12 @@
 ---
 ms.devlang: python
-ms.topic: reference
-ms.author: lmazuel
-author: lmazuel
-ms.service: netappfiles
+ms.data: 07/25/2022
 description: Reference for Azure NetApp Files SDK for Python
 title: Azure NetApp Files SDK for Python
-ms.data: 07/22/2022
+ms.author: lmazuel
+ms.topic: reference
+author: lmazuel
+ms.service: netappfiles
 ---
 # Azure NetApp Files SDK for Python - latest
 

@@ -1,12 +1,12 @@
 ---
 ms.devlang: python
-ms.topic: reference
-ms.author: lmazuel
-author: lmazuel
-ms.service: guestconfig
+ms.data: 07/25/2022
 description: Reference for Azure Guest Config SDK for Python
 title: Azure Guest Config SDK for Python
-ms.data: 07/22/2022
+ms.author: lmazuel
+ms.topic: reference
+author: lmazuel
+ms.service: guestconfig
 ---
 # Azure Guest Config SDK for Python - preview
 
