@@ -1,12 +1,12 @@
 ---
-ms.devlang: python
-ms.data: 07/25/2022
-description: Reference for Azure Data Lake Storage (Gen 2) SDK for Python
-title: Azure Data Lake Storage (Gen 2) SDK for Python
 ms.author: ro-joowan
-ms.topic: reference
+title: Azure Data Lake Storage (Gen 2) SDK for Python
 author: ro-joowan
+description: Reference for Azure Data Lake Storage (Gen 2) SDK for Python
+ms.topic: reference
+ms.data: 07/26/2022
 ms.service: datalakestorage(gen2)
+ms.devlang: python
 ---
 # Azure Data Lake Storage (Gen 2) SDK for Python - preview
 

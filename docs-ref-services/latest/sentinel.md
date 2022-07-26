@@ -8,7 +8,7 @@ ms.data: 07/26/2022
 ms.service: sentinel
 ms.devlang: python
 ---
-# Azure Sentinel SDK for Python - preview
+# Azure Sentinel SDK for Python - latest
 
-## Management packages - preview
+## Management packages - latest
 [!INCLUDE [mgmt-packages](sentinel-mgmt-index.md)]
