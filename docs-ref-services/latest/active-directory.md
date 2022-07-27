@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 title: Azure Active Directory SDK for Python
-author: lmazuel
-description: Reference for Azure Active Directory SDK for Python
-ms.topic: reference
-ms.data: 07/26/2022
 ms.service: activedirectory
+ms.author: lmazuel
+ms.topic: reference
+author: lmazuel
 ms.devlang: python
+description: Reference for Azure Active Directory SDK for Python
+ms.data: 07/27/2022
 ---
 # Microsoft Authentication Library (MSAL) for Python
 
