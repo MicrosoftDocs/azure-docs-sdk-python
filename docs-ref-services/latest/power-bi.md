@@ -20,4 +20,4 @@ pip install azure-mgmt-powerbiembedded
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/powerbi/management)
+> [Explore the Management APIs](/python/api/overview/azure/powerbi/management/resourcemanagement-powerbiembedded)
