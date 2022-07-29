@@ -1,12 +1,12 @@
 ---
-ms.author: acsdevx-msft
-title: Azure Communication SDK for Python
-ms.service: communication
-description: Reference for Azure Communication SDK for Python
-ms.data: 07/28/2022
-ms.topic: reference
+ms.data: 07/29/2022
 ms.devlang: python
 author: acsdevx-msft
+ms.topic: reference
+ms.service: communication
+description: Reference for Azure Communication SDK for Python
+ms.author: acsdevx-msft
+title: Azure Communication SDK for Python
 ---
 # Azure Communication SDK for Python - preview
 

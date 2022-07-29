@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-title: Azure AgriFood SDK for Python
-ms.service: agrifood
-description: Reference for Azure AgriFood SDK for Python
-ms.data: 07/28/2022
-ms.topic: reference
+ms.data: 07/29/2022
 ms.devlang: python
 author: lmazuel
+ms.topic: reference
+ms.service: agrifood
+description: Reference for Azure AgriFood SDK for Python
+ms.author: lmazuel
+title: Azure AgriFood SDK for Python
 ---
 # Azure AgriFood SDK for Python - preview
 

@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-title: Azure Security Center SDK for Python
-ms.service: securitycenter
-description: Reference for Azure Security Center SDK for Python
-ms.data: 07/28/2022
-ms.topic: reference
+ms.data: 07/29/2022
 ms.devlang: python
 author: lmazuel
+ms.topic: reference
+ms.service: securitycenter
+description: Reference for Azure Security Center SDK for Python
+ms.author: lmazuel
+title: Azure Security Center SDK for Python
 ---
 # Azure Security Center SDK for Python - preview
 

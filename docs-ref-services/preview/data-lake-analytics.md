@@ -1,19 +1,18 @@
 ---
-title: Azure Data Lake Analytics libraries for python
-description: Reference for Azure Data Lake Analytics libraries for python
-keywords: Azure, python, SDK, API, Data Lake Analytics
-author: lisawong19
-ms.author: ramyar
-manager: douge
-
-ms.date: 08/04/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
+ms.data: 07/29/2022
 ms.devlang: python
-ms.service: multiple
+author: ro-joowan
+ms.topic: reference
+ms.service: datalakeanalytics
+description: Reference for Azure Data Lake Analytics SDK for Python
+ms.author: ro-joowan
+title: Azure Data Lake Analytics SDK for Python
+keywords: Azure, python, SDK, API, Data Lake Analytics
+manager: douge
+ms.technology: azure
+ms.date: 08/04/2017
+ms.prod: azure
 ---
-
 # Azure Data Lake Analytics libraries for python
 
 ## Overview
