@@ -3,10 +3,8 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 03/16/2022
+ms.date: 08/02/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: monitor
 ---
@@ -27,8 +25,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/monitoring?view=azure-python-preview)
-Code samples for this package can be found at [Monitor](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](/python/api/overview/azure/monitoring?view=azure-python-preview)
+Code samples for this package can be found at [Monitor](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
