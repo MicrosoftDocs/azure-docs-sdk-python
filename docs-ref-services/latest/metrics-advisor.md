@@ -1,12 +1,12 @@
 ---
-ms.service: metricsadvisor
-ms.data: 08/01/2022
-ms.author: xiangyan
-author: xiangyan99
-description: Reference for Azure Metrics Advisor SDK for Python
 title: Azure Metrics Advisor SDK for Python
+ms.author: xiangyan
 ms.topic: reference
 ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Metrics Advisor SDK for Python
+ms.service: metricsadvisor
+author: xiangyan99
 ---
 # Azure Metrics Advisor SDK for Python - latest
 

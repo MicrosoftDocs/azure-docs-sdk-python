@@ -1,12 +1,12 @@
 ---
-ms.service: textanalytics
-ms.data: 08/01/2022
-ms.author: krpratic
-author: kristapratico
-description: Reference for Azure Text Analytics SDK for Python
 title: Azure Text Analytics SDK for Python
+ms.author: krpratic
 ms.topic: reference
 ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Text Analytics SDK for Python
+ms.service: textanalytics
+author: kristapratico
 ---
 # Azure Text Analytics SDK for Python - preview
 

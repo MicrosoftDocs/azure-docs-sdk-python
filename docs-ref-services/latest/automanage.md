@@ -8,7 +8,7 @@ description: Reference for Azure Automanage SDK for Python
 ms.service: automanage
 author: lmazuel
 ---
-# Azure Automanage SDK for Python - preview
+# Azure Automanage SDK for Python - latest
 
-## Management packages - preview
+## Management packages - latest
 [!INCLUDE [mgmt-packages](automanage-mgmt-index.md)]
