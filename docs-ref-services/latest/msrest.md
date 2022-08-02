@@ -1,11 +1,11 @@
 ---
+ms.service: msrest
+ms.data: 08/01/2022
 ms.author: lmazuel
-title: Azure MsRest SDK for Python
 author: lmazuel
 description: Reference for Azure MsRest SDK for Python
+title: Azure MsRest SDK for Python
 ms.topic: reference
-ms.data: 07/26/2022
-ms.service: msrest
 ms.devlang: python
 ---
 # Azure MsRest SDK for Python - latest

@@ -1,11 +1,11 @@
 ---
+ms.service: hybridcompute
+ms.data: 08/01/2022
 ms.author: lmazuel
-title: Azure Hybrid Compute SDK for Python
 author: lmazuel
 description: Reference for Azure Hybrid Compute SDK for Python
+title: Azure Hybrid Compute SDK for Python
 ms.topic: reference
-ms.data: 07/26/2022
-ms.service: hybridcompute
 ms.devlang: python
 ---
 # Azure Hybrid Compute SDK for Python - latest
