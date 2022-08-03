@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 08/02/2022
+ms.date: 08/03/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -11,7 +11,7 @@ ms.service: monitor
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Monitor Client Library.
-This package has been tested with Python 3.6+.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
