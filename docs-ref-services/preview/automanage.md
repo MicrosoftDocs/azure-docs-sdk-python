@@ -1,12 +1,12 @@
 ---
-ms.service: automanage
-ms.data: 08/01/2022
-ms.author: lmazuel
-author: lmazuel
-description: Reference for Azure Automanage SDK for Python
 title: Azure Automanage SDK for Python
+ms.author: lmazuel
 ms.topic: reference
 ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Automanage SDK for Python
+ms.service: automanage
+author: lmazuel
 ---
 # Azure Automanage SDK for Python - preview
 
