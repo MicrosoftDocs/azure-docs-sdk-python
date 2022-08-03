@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: communication
 ---
 
-# Azure Communication SMS Package client library for Python - Version 1.0.1 
+# Azure Communication SMS Package client library for Python - version 1.0.1 
 
 
 This package contains a Python SDK for Azure Communication Services for SMS.

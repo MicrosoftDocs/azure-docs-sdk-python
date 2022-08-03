@@ -3,14 +3,12 @@ title: Azure Purview Catalog client library for Python
 keywords: Azure, python, SDK, API, azure-purview-catalog, purview
 author: lmazuel
 ms.author: lmazuel
-ms.date: 03/17/2022
+ms.date: 06/15/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview Catalog client library for Python - Version 1.0.0b3 
+# Azure Purview Catalog client library for Python - version 1.0.0b4 
 
 
 Azure Purview Catalog is a fully managed cloud service whose users can discover the data sources they need and understand the data sources they find. At the same time, Data Catalog helps organizations get more value from their existing investments.
@@ -25,7 +23,7 @@ Azure Purview Catalog is a fully managed cloud service whose users can discover 
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
@@ -161,20 +159,20 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b3/sdk/purview/azure-purview-catalog/azure/purview/catalog
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b4/sdk/purview/azure-purview-catalog/azure/purview/catalog
 [catalog_pypi]: https://aka.ms/azsdk/python/purviewcatalog/pypi
 [catalog_ref_docs]: https://aka.ms/azsdk/python/purviewcatalog/ref-docs
 [catalog_product_documentation]: https://azure.microsoft.com/services/purview/
 [azure_subscription]: https://azure.microsoft.com/free/
-[purview_resource]: https://docs.microsoft.com/azure/purview/create-catalog-portal
+[purview_resource]: /azure/purview/create-catalog-portal
 [pip]: https://pypi.org/project/pip/
-[authenticate_with_token]: https://docs.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b3/sdk/identity/azure-identity#credentials
+[authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b4/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b3/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-catalog_1.0.0b4/sdk/identity/azure-identity#defaultazurecredential
 [request_builders_and_client]: https://aka.ms/azsdk/python/protocol/quickstart
-[enable_aad]: https://docs.microsoft.com/azure/purview/create-catalog-portal#add-a-security-principal-to-a-data-plane-role
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-purview-catalog_1.0.0b3/sdk/core/azure-core/README.md
+[enable_aad]: /azure/purview/create-catalog-portal#add-a-security-principal-to-a-data-plane-role
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-purview-catalog_1.0.0b4/sdk/core/azure-core/README.md
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

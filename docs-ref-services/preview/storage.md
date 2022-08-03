@@ -1,13 +1,12 @@
 ---
-title: Azure Storage client libraries for Python
-description: 
-keywords: Azure, Python, SDK, API, Storage
-author: annatisch
+title: Azure Storage SDK for Python
 ms.author: antisch
-ms.date: 06/12/2017
 ms.topic: reference
 ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Storage SDK for Python
 ms.service: storage
+author: annatisch
 ---
 
 # Azure Storage client libraries for Python
@@ -60,4 +59,4 @@ pip install azure-mgmt-storage
 | [Get started with Azure Blob Storage in Python](/azure/storage/blobs/storage-python-how-to-use-blob-storage) | Create, read, update, restrict access, and delete files and objects in Azure Storage. |
 | [Manage Azure Storage accounts](/samples/azure-samples/storage-python-manage/storage-python-manage/) | Create, update , and delete storage accounts. Retrieve and regenerate storage account access keys.
 
-Explore more [sample Python code](/samples/browse/?products=azure) you can use in your apps.
+Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.

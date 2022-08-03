@@ -1,19 +1,13 @@
 ---
-title: Azure Search libraries for python
-description: Reference for Azure Search libraries for python
-keywords: Azure, python, SDK, API, Search
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
+title: Azure Search SDK for Python
+ms.author: sabhyrav
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.data: 08/02/2022
+description: Reference for Azure Search SDK for Python
+ms.service: search
+author: rakshith91
 ---
-
 # Azure Search libraries for python
 
 ## Install the libraries

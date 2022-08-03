@@ -13,7 +13,7 @@ ms.service: communication
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Communication Administration Package client library for Python - Version 1.0.0b2 
+# Azure Communication Administration Package client library for Python - version 1.0.0b2 
 
 
 Azure Communication Administration client package is intended to be used to setup the basics for opening a way to use Azure Communication Service offerings. This package helps to create identities user tokens to be used by other client packages such as chat, calling, sms. 

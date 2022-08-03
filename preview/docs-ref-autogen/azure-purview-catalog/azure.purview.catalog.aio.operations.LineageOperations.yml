@@ -11,22 +11,36 @@ summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> I
 constructor:
   syntax: LineageOperations(*args, **kwargs)
 methods:
-- uid: azure.purview.catalog.aio.operations.LineageOperations.get_lineage_graph
-  name: get_lineage_graph
-  summary: Get lineage info of the entity specified by GUID.
-  signature: 'async get_lineage_graph(guid: str, *, direction: str, depth: Optional[int]
-    = 3, width: Optional[int] = 10, include_parent: Optional[bool] = None, get_derived_lineage:
-    Optional[bool] = None, **kwargs: Any) -> Any'
+- uid: azure.purview.catalog.aio.operations.LineageOperations.get_lineage_by_unique_attribute
+  name: get_lineage_by_unique_attribute
+  summary: 'Returns lineage info about entity.
+
+
+    In addition to the typeName path parameter, attribute key-value pair(s) can be
+    provided in the
+
+    following format
+
+
+    attr:[attrName]=[attrValue]
+
+
+    NOTE: The attrName and attrValue should be unique across entities, eg. qualifiedName.'
+  signature: 'async get_lineage_by_unique_attribute(type_name: str, *, direction:
+    str, depth: Optional[int] = 3, width: Optional[int] = 10, include_parent: Optional[bool]
+    = None, get_derived_lineage: Optional[bool] = None, **kwargs: Any) -> collections.abc.MutableMapping[str,
+    Any]'
   parameters:
-  - name: guid
-    description: The globally unique identifier of the entity.
+  - name: type_name
+    description: The name of the type.
     isRequired: true
     types:
     - <xref:str>
   - name: direction
     description: 'The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+      Known
 
-      Possible values are: "BOTH", "INPUT", and "OUTPUT".'
+      values are: "BOTH", "INPUT", and "OUTPUT".'
     types:
     - <xref:str>
   - name: depth
@@ -53,7 +67,7 @@ methods:
   return:
     description: JSON object
     types:
-    - <xref:JSONType>
+    - <xref:JSON>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -73,74 +87,76 @@ methods:
     \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
     \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
     \ Status of\n                         the entity - can be active or deleted. Deleted\
-    \ entities are not\n                         removed from Atlas store. Possible\
-    \ values include: \"ACTIVE\",\n                         \"DELETED\".\n       \
-    \                \"lastModifiedTS\": \"str\",  # Optional. ETag\n            \
-    \             for concurrency control.\n                       \"removePropagationsOnEntityDelete\"\
-    : bool,  #\n                         Optional. Determines if propagations will\
-    \ be removed on entity\n                         deletion.\n                 \
-    \      \"source\": \"str\",  # Optional. indicate the\n                      \
-    \   source who create the classification detail.\n                       \"sourceDetails\"\
-    : {\n                           \"str\": {}  # Optional. more detail on\n    \
-    \                         source information.\n                       },\n   \
-    \                    \"typeName\": \"str\",  # Optional. The name of\n       \
-    \                  the type.\n                       \"validityPeriods\": [\n\
-    \                           {\n                               \"endTime\": \"\
-    str\",  #\n                                 Optional. The end of the time boundary.\n\
-    \                               \"startTime\": \"str\",  #\n                 \
-    \                Optional. The start of the time boundary.\n                 \
-    \              \"timeZone\": \"str\"  #\n                                 Optional.\
-    \ The timezone of the time boundary.\n                           }\n         \
-    \              ]\n                   }\n               ],\n               \"displayText\"\
-    : \"str\",  # Optional. The display text.\n               \"guid\": \"str\", \
-    \ # Optional. The GUID of the record.\n               \"lastModifiedTS\": \"str\"\
-    ,  # Optional. ETag for concurrency\n                 control.\n             \
-    \  \"meaningNames\": [\n                   \"str\"  # Optional. An array of meanings.\n\
-    \               ],\n               \"meanings\": [\n                   {\n   \
-    \                    \"confidence\": 0,  # Optional. The confidence\n        \
-    \                 of the term assignment.\n                       \"createdBy\"\
-    : \"str\",  # Optional. The user who\n                         created the record.\n\
-    \                       \"description\": \"str\",  # Optional. The\n         \
-    \                description of the term assignment.\n                       \"\
-    displayText\": \"str\",  # Optional. The\n                         display text.\n\
-    \                       \"expression\": \"str\",  # Optional. The\n          \
-    \               expression of the term assignment.\n                       \"\
-    relationGuid\": \"str\",  # Optional. The GUID\n                         of the\
-    \ relationship.\n                       \"source\": \"str\",  # Optional. The\
-    \ source of\n                         the term.\n                       \"status\"\
-    : \"str\",  # Optional. The status of\n                         terms assignment.\
-    \ Possible values include: \"DISCOVERED\",\n                         \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\",\n               \
-    \          \"OTHER\".\n                       \"steward\": \"str\",  # Optional.\
-    \ The steward of\n                         the term.\n                       \"\
-    termGuid\": \"str\"  # Optional. The GUID of\n                         the term.\n\
-    \                   }\n               ],\n               \"status\": \"str\",\
-    \  # Optional. Status of the entity - can be\n                 active or deleted.\
-    \ Deleted entities are not removed from Atlas store.\n                 Possible\
-    \ values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\": \"str\"\
-    \  # Optional. The name of the type.\n           }\n       },\n       \"includeParent\"\
-    : bool,  # Optional. True to return the parent of the base\n         entity.\n\
-    \       \"lineageDepth\": 0,  # Optional. The depth of lineage.\n       \"lineageDirection\"\
-    : \"str\",  # Optional. The enum of lineage direction.\n         Possible values\
-    \ include: \"INPUT\", \"OUTPUT\", \"BOTH\".\n       \"lineageWidth\": 0,  # Optional.\
-    \ The width of lineage.\n       \"parentRelations\": [\n           {\n       \
-    \        \"childEntityId\": \"str\",  # Optional. The GUID of child\n        \
-    \         entity.\n               \"parentEntityId\": \"str\",  # Optional. The\
-    \ GUID of parent\n                 entity.\n               \"relationshipId\"\
-    : \"str\"  # Optional. The GUID of\n                 relationship.\n         \
-    \  }\n       ],\n       \"relations\": [\n           {\n               \"fromEntityId\"\
-    : \"str\",  # Optional. The GUID of from-entity.\n               \"relationshipId\"\
-    : \"str\",  # Optional. The GUID of\n                 relationship.\n        \
-    \       \"toEntityId\": \"str\"  # Optional. The GUID of to-entity.\n        \
-    \   }\n       ],\n       \"widthCounts\": {\n           \"str\": {\n         \
-    \      \"str\": {}  # Optional. The entity count in specific\n               \
-    \  direction.\n           }\n       }\n   }\n   ````\n"
-- uid: azure.purview.catalog.aio.operations.LineageOperations.next_page_lineage
-  name: next_page_lineage
-  summary: Return immediate next page lineage info about entity with pagination.
-  signature: 'async next_page_lineage(guid: str, *, direction: str, get_derived_lineage:
-    Optional[bool] = None, offset: Optional[int] = None, limit: Optional[int] = None,
-    **kwargs: Any) -> Any'
+    \ entities are not\n                         removed from Atlas store. Known values\
+    \ are: \"ACTIVE\", \"DELETED\".\n                       \"lastModifiedTS\": \"\
+    str\",  # Optional. ETag\n                         for concurrency control.\n\
+    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
+    \                    Optional. Determines if propagations will be removed on entity\n\
+    \                         deletion.\n                       \"source\": \"str\"\
+    ,  # Optional. indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"displayText\": \"str\",  #\
+    \ Optional. The display text.\n               \"guid\": \"str\",  # Optional.\
+    \ The GUID of the record.\n               \"isIncomplete\": bool,  # Optional.\
+    \ Whether it is a shell\n                 entity.\n               \"labels\":\
+    \ [\n                   \"str\"  # Optional. labels.\n               ],\n    \
+    \           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\n \
+    \                control.\n               \"meaningNames\": [\n              \
+    \     \"str\"  # Optional. An array of meanings.\n               ],\n        \
+    \       \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"status\": \"str\",  # Optional.\
+    \ Status of the entity - can be\n                 active or deleted. Deleted entities\
+    \ are not removed from Atlas store.\n                 Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n               \"typeName\": \"str\"  # Optional. The name of\
+    \ the type.\n           }\n       },\n       \"includeParent\": bool,  # Optional.\
+    \ True to return the parent of the base\n         entity.\n       \"lineageDepth\"\
+    : 0,  # Optional. The depth of lineage.\n       \"lineageDirection\": \"str\"\
+    ,  # Optional. The enum of lineage direction. Known\n         values are: \"INPUT\"\
+    , \"OUTPUT\", \"BOTH\".\n       \"lineageWidth\": 0,  # Optional. The width of\
+    \ lineage.\n       \"parentRelations\": [\n           {\n               \"childEntityId\"\
+    : \"str\",  # Optional. The GUID of child\n                 entity.\n        \
+    \       \"parentEntityId\": \"str\",  # Optional. The GUID of parent\n       \
+    \          entity.\n               \"relationshipId\": \"str\"  # Optional. The\
+    \ GUID of\n                 relationship.\n           }\n       ],\n       \"\
+    relations\": [\n           {\n               \"fromEntityId\": \"str\",  # Optional.\
+    \ The GUID of from-entity.\n               \"relationshipId\": \"str\",  # Optional.\
+    \ The GUID of\n                 relationship.\n               \"toEntityId\":\
+    \ \"str\"  # Optional. The GUID of to-entity.\n           }\n       ],\n     \
+    \  \"widthCounts\": {\n           \"str\": {\n               \"str\": {}  # Optional.\
+    \ The entity count in specific\n                 direction.\n           }\n  \
+    \     }\n   }\n   ````\n"
+- uid: azure.purview.catalog.aio.operations.LineageOperations.get_lineage_graph
+  name: get_lineage_graph
+  summary: Get lineage info of the entity specified by GUID.
+  signature: 'async get_lineage_graph(guid: str, *, direction: str, depth: Optional[int]
+    = 3, width: Optional[int] = 10, include_parent: Optional[bool] = None, get_derived_lineage:
+    Optional[bool] = None, **kwargs: Any) -> collections.abc.MutableMapping[str, Any]'
   parameters:
   - name: guid
     description: The globally unique identifier of the entity.
@@ -149,8 +165,136 @@ methods:
     - <xref:str>
   - name: direction
     description: 'The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+      Known
 
-      Possible values are: "BOTH", "INPUT", and "OUTPUT".'
+      values are: "BOTH", "INPUT", and "OUTPUT".'
+    types:
+    - <xref:str>
+  - name: depth
+    description: The number of hops for lineage. Default value is 3.
+    types:
+    - <xref:int>
+  - name: width
+    description: The number of max expanding width in lineage. Default value is 10.
+    types:
+    - <xref:int>
+  - name: include_parent
+    description: 'True to include the parent chain in the response. Default value
+      is
+
+      None.'
+    types:
+    - <xref:bool>
+  - name: get_derived_lineage
+    description: 'True to include derived lineage in the response. Default value is
+
+      None.'
+    types:
+    - <xref:bool>
+  return:
+    description: JSON object
+    types:
+    - <xref:JSON>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response.json() == {\n       \"\
+    baseEntityGuid\": \"str\",  # Optional. The GUID of the base entity.\n       \"\
+    childrenCount\": 0,  # Optional. The number of children node.\n       \"guidEntityMap\"\
+    : {\n           \"str\": {\n               \"attributes\": {\n               \
+    \    \"str\": {}  # Optional. The attributes of the struct.\n               },\n\
+    \               \"classificationNames\": [\n                   \"str\"  # Optional.\
+    \ An array of classification names.\n               ],\n               \"classifications\"\
+    : [\n                   {\n                       \"attributes\": {\n        \
+    \                   \"str\": {}  # Optional. The attributes\n                \
+    \             of the struct.\n                       },\n                    \
+    \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
+    \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
+    \ Status of\n                         the entity - can be active or deleted. Deleted\
+    \ entities are not\n                         removed from Atlas store. Known values\
+    \ are: \"ACTIVE\", \"DELETED\".\n                       \"lastModifiedTS\": \"\
+    str\",  # Optional. ETag\n                         for concurrency control.\n\
+    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
+    \                    Optional. Determines if propagations will be removed on entity\n\
+    \                         deletion.\n                       \"source\": \"str\"\
+    ,  # Optional. indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"displayText\": \"str\",  #\
+    \ Optional. The display text.\n               \"guid\": \"str\",  # Optional.\
+    \ The GUID of the record.\n               \"isIncomplete\": bool,  # Optional.\
+    \ Whether it is a shell\n                 entity.\n               \"labels\":\
+    \ [\n                   \"str\"  # Optional. labels.\n               ],\n    \
+    \           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\n \
+    \                control.\n               \"meaningNames\": [\n              \
+    \     \"str\"  # Optional. An array of meanings.\n               ],\n        \
+    \       \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"status\": \"str\",  # Optional.\
+    \ Status of the entity - can be\n                 active or deleted. Deleted entities\
+    \ are not removed from Atlas store.\n                 Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n               \"typeName\": \"str\"  # Optional. The name of\
+    \ the type.\n           }\n       },\n       \"includeParent\": bool,  # Optional.\
+    \ True to return the parent of the base\n         entity.\n       \"lineageDepth\"\
+    : 0,  # Optional. The depth of lineage.\n       \"lineageDirection\": \"str\"\
+    ,  # Optional. The enum of lineage direction. Known\n         values are: \"INPUT\"\
+    , \"OUTPUT\", \"BOTH\".\n       \"lineageWidth\": 0,  # Optional. The width of\
+    \ lineage.\n       \"parentRelations\": [\n           {\n               \"childEntityId\"\
+    : \"str\",  # Optional. The GUID of child\n                 entity.\n        \
+    \       \"parentEntityId\": \"str\",  # Optional. The GUID of parent\n       \
+    \          entity.\n               \"relationshipId\": \"str\"  # Optional. The\
+    \ GUID of\n                 relationship.\n           }\n       ],\n       \"\
+    relations\": [\n           {\n               \"fromEntityId\": \"str\",  # Optional.\
+    \ The GUID of from-entity.\n               \"relationshipId\": \"str\",  # Optional.\
+    \ The GUID of\n                 relationship.\n               \"toEntityId\":\
+    \ \"str\"  # Optional. The GUID of to-entity.\n           }\n       ],\n     \
+    \  \"widthCounts\": {\n           \"str\": {\n               \"str\": {}  # Optional.\
+    \ The entity count in specific\n                 direction.\n           }\n  \
+    \     }\n   }\n   ````\n"
+- uid: azure.purview.catalog.aio.operations.LineageOperations.next_page_lineage
+  name: next_page_lineage
+  summary: Return immediate next page lineage info about entity with pagination.
+  signature: 'async next_page_lineage(guid: str, *, direction: str, get_derived_lineage:
+    Optional[bool] = None, offset: Optional[int] = None, limit: Optional[int] = None,
+    **kwargs: Any) -> collections.abc.MutableMapping[str, Any]'
+  parameters:
+  - name: guid
+    description: The globally unique identifier of the entity.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: direction
+    description: 'The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+      Known
+
+      values are: "BOTH", "INPUT", and "OUTPUT".'
     types:
     - <xref:str>
   - name: get_derived_lineage
@@ -170,7 +314,7 @@ methods:
   return:
     description: JSON object
     types:
-    - <xref:JSONType>
+    - <xref:JSON>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -190,65 +334,67 @@ methods:
     \   \"entityGuid\": \"str\",  # Optional. The GUID of\n                      \
     \   the entity.\n                       \"entityStatus\": \"str\",  # Optional.\
     \ Status of\n                         the entity - can be active or deleted. Deleted\
-    \ entities are not\n                         removed from Atlas store. Possible\
-    \ values include: \"ACTIVE\",\n                         \"DELETED\".\n       \
-    \                \"lastModifiedTS\": \"str\",  # Optional. ETag\n            \
-    \             for concurrency control.\n                       \"removePropagationsOnEntityDelete\"\
-    : bool,  #\n                         Optional. Determines if propagations will\
-    \ be removed on entity\n                         deletion.\n                 \
-    \      \"source\": \"str\",  # Optional. indicate the\n                      \
-    \   source who create the classification detail.\n                       \"sourceDetails\"\
-    : {\n                           \"str\": {}  # Optional. more detail on\n    \
-    \                         source information.\n                       },\n   \
-    \                    \"typeName\": \"str\",  # Optional. The name of\n       \
-    \                  the type.\n                       \"validityPeriods\": [\n\
-    \                           {\n                               \"endTime\": \"\
-    str\",  #\n                                 Optional. The end of the time boundary.\n\
-    \                               \"startTime\": \"str\",  #\n                 \
-    \                Optional. The start of the time boundary.\n                 \
-    \              \"timeZone\": \"str\"  #\n                                 Optional.\
-    \ The timezone of the time boundary.\n                           }\n         \
-    \              ]\n                   }\n               ],\n               \"displayText\"\
-    : \"str\",  # Optional. The display text.\n               \"guid\": \"str\", \
-    \ # Optional. The GUID of the record.\n               \"lastModifiedTS\": \"str\"\
-    ,  # Optional. ETag for concurrency\n                 control.\n             \
-    \  \"meaningNames\": [\n                   \"str\"  # Optional. An array of meanings.\n\
-    \               ],\n               \"meanings\": [\n                   {\n   \
-    \                    \"confidence\": 0,  # Optional. The confidence\n        \
-    \                 of the term assignment.\n                       \"createdBy\"\
-    : \"str\",  # Optional. The user who\n                         created the record.\n\
-    \                       \"description\": \"str\",  # Optional. The\n         \
-    \                description of the term assignment.\n                       \"\
-    displayText\": \"str\",  # Optional. The\n                         display text.\n\
-    \                       \"expression\": \"str\",  # Optional. The\n          \
-    \               expression of the term assignment.\n                       \"\
-    relationGuid\": \"str\",  # Optional. The GUID\n                         of the\
-    \ relationship.\n                       \"source\": \"str\",  # Optional. The\
-    \ source of\n                         the term.\n                       \"status\"\
-    : \"str\",  # Optional. The status of\n                         terms assignment.\
-    \ Possible values include: \"DISCOVERED\",\n                         \"PROPOSED\"\
-    , \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\",\n               \
-    \          \"OTHER\".\n                       \"steward\": \"str\",  # Optional.\
-    \ The steward of\n                         the term.\n                       \"\
-    termGuid\": \"str\"  # Optional. The GUID of\n                         the term.\n\
-    \                   }\n               ],\n               \"status\": \"str\",\
-    \  # Optional. Status of the entity - can be\n                 active or deleted.\
-    \ Deleted entities are not removed from Atlas store.\n                 Possible\
-    \ values include: \"ACTIVE\", \"DELETED\".\n               \"typeName\": \"str\"\
-    \  # Optional. The name of the type.\n           }\n       },\n       \"includeParent\"\
-    : bool,  # Optional. True to return the parent of the base\n         entity.\n\
-    \       \"lineageDepth\": 0,  # Optional. The depth of lineage.\n       \"lineageDirection\"\
-    : \"str\",  # Optional. The enum of lineage direction.\n         Possible values\
-    \ include: \"INPUT\", \"OUTPUT\", \"BOTH\".\n       \"lineageWidth\": 0,  # Optional.\
-    \ The width of lineage.\n       \"parentRelations\": [\n           {\n       \
-    \        \"childEntityId\": \"str\",  # Optional. The GUID of child\n        \
-    \         entity.\n               \"parentEntityId\": \"str\",  # Optional. The\
-    \ GUID of parent\n                 entity.\n               \"relationshipId\"\
-    : \"str\"  # Optional. The GUID of\n                 relationship.\n         \
-    \  }\n       ],\n       \"relations\": [\n           {\n               \"fromEntityId\"\
-    : \"str\",  # Optional. The GUID of from-entity.\n               \"relationshipId\"\
-    : \"str\",  # Optional. The GUID of\n                 relationship.\n        \
-    \       \"toEntityId\": \"str\"  # Optional. The GUID of to-entity.\n        \
-    \   }\n       ],\n       \"widthCounts\": {\n           \"str\": {\n         \
-    \      \"str\": {}  # Optional. The entity count in specific\n               \
-    \  direction.\n           }\n       }\n   }\n   ````\n"
+    \ entities are not\n                         removed from Atlas store. Known values\
+    \ are: \"ACTIVE\", \"DELETED\".\n                       \"lastModifiedTS\": \"\
+    str\",  # Optional. ETag\n                         for concurrency control.\n\
+    \                       \"removePropagationsOnEntityDelete\": bool,  #\n     \
+    \                    Optional. Determines if propagations will be removed on entity\n\
+    \                         deletion.\n                       \"source\": \"str\"\
+    ,  # Optional. indicate the\n                         source who create the classification\
+    \ detail.\n                       \"sourceDetails\": {\n                     \
+    \      \"str\": {}  # Optional. more detail on\n                             source\
+    \ information.\n                       },\n                       \"typeName\"\
+    : \"str\",  # Optional. The name of\n                         the type.\n    \
+    \                   \"validityPeriods\": [\n                           {\n   \
+    \                            \"endTime\": \"str\",  #\n                      \
+    \           Optional. The end of the time boundary.\n                        \
+    \       \"startTime\": \"str\",  #\n                                 Optional.\
+    \ The start of the time boundary.\n                               \"timeZone\"\
+    : \"str\"  #\n                                 Optional. The timezone of the time\
+    \ boundary.\n                           }\n                       ]\n        \
+    \           }\n               ],\n               \"displayText\": \"str\",  #\
+    \ Optional. The display text.\n               \"guid\": \"str\",  # Optional.\
+    \ The GUID of the record.\n               \"isIncomplete\": bool,  # Optional.\
+    \ Whether it is a shell\n                 entity.\n               \"labels\":\
+    \ [\n                   \"str\"  # Optional. labels.\n               ],\n    \
+    \           \"lastModifiedTS\": \"str\",  # Optional. ETag for concurrency\n \
+    \                control.\n               \"meaningNames\": [\n              \
+    \     \"str\"  # Optional. An array of meanings.\n               ],\n        \
+    \       \"meanings\": [\n                   {\n                       \"confidence\"\
+    : 0,  # Optional. The confidence\n                         of the term assignment.\n\
+    \                       \"createdBy\": \"str\",  # Optional. The user who\n  \
+    \                       created the record.\n                       \"description\"\
+    : \"str\",  # Optional. The\n                         description of the term\
+    \ assignment.\n                       \"displayText\": \"str\",  # Optional. The\n\
+    \                         display text.\n                       \"expression\"\
+    : \"str\",  # Optional. The\n                         expression of the term assignment.\n\
+    \                       \"relationGuid\": \"str\",  # Optional. The GUID\n   \
+    \                      of the relationship.\n                       \"source\"\
+    : \"str\",  # Optional. The source of\n                         the term.\n  \
+    \                     \"status\": \"str\",  # Optional. The status of\n      \
+    \                   terms assignment. Known values are: \"DISCOVERED\", \"PROPOSED\"\
+    ,\n                         \"IMPORTED\", \"VALIDATED\", \"DEPRECATED\", \"OBSOLETE\"\
+    , \"OTHER\".\n                       \"steward\": \"str\",  # Optional. The steward\
+    \ of\n                         the term.\n                       \"termGuid\"\
+    : \"str\"  # Optional. The GUID of\n                         the term.\n     \
+    \              }\n               ],\n               \"status\": \"str\",  # Optional.\
+    \ Status of the entity - can be\n                 active or deleted. Deleted entities\
+    \ are not removed from Atlas store.\n                 Known values are: \"ACTIVE\"\
+    , \"DELETED\".\n               \"typeName\": \"str\"  # Optional. The name of\
+    \ the type.\n           }\n       },\n       \"includeParent\": bool,  # Optional.\
+    \ True to return the parent of the base\n         entity.\n       \"lineageDepth\"\
+    : 0,  # Optional. The depth of lineage.\n       \"lineageDirection\": \"str\"\
+    ,  # Optional. The enum of lineage direction. Known\n         values are: \"INPUT\"\
+    , \"OUTPUT\", \"BOTH\".\n       \"lineageWidth\": 0,  # Optional. The width of\
+    \ lineage.\n       \"parentRelations\": [\n           {\n               \"childEntityId\"\
+    : \"str\",  # Optional. The GUID of child\n                 entity.\n        \
+    \       \"parentEntityId\": \"str\",  # Optional. The GUID of parent\n       \
+    \          entity.\n               \"relationshipId\": \"str\"  # Optional. The\
+    \ GUID of\n                 relationship.\n           }\n       ],\n       \"\
+    relations\": [\n           {\n               \"fromEntityId\": \"str\",  # Optional.\
+    \ The GUID of from-entity.\n               \"relationshipId\": \"str\",  # Optional.\
+    \ The GUID of\n                 relationship.\n               \"toEntityId\":\
+    \ \"str\"  # Optional. The GUID of to-entity.\n           }\n       ],\n     \
+    \  \"widthCounts\": {\n           \"str\": {\n               \"str\": {}  # Optional.\
+    \ The entity count in specific\n                 direction.\n           }\n  \
+    \     }\n   }\n   ````\n"

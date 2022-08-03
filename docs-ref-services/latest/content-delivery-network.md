@@ -1,17 +1,13 @@
 ---
-title: Azure CDN libraries for python
-description: Reference for Azure CDN libraries for python
-keywords: Azure, python, SDK, API, CDN
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
+title: Azure Content Delivery Network SDK for Python
+ms.author: lmazuel
 ms.topic: reference
-ms.service: azure-cdn
 ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Content Delivery Network SDK for Python
+ms.service: contentdeliverynetwork
+author: lmazuel
 ---
-
 # Azure CDN libraries for python
 
 ## Overview

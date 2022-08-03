@@ -1,19 +1,12 @@
 ---
-title: Microsoft Authentication Library (MSAL) for Python overview
-titleSuffix: Microsoft Authentication Library (MSAL)
-description: Learn how to integrate MSAL for Python with the Microsoft identity platform
-services: active-directory
-author: mmacy
-manager: CelesteDG
-
-ms.service: active-directory
-ms.subservice: develop
+title: Azure Active Directory SDK for Python
+ms.author: lmazuel
 ms.topic: reference
-ms.workload: identity
-ms.date: 01/19/2021
-ms.author: marsma
-ms.custom: marsma
-#Customer intent: As an application developer, I want to know how to write a desktop app that calls web APIs by using the Microsoft identity platform.
+ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Active Directory SDK for Python
+ms.service: activedirectory
+author: lmazuel
 ---
 # Microsoft Authentication Library (MSAL) for Python
 

@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: identity
 ---
 
-# Azure Identity client library for Python - Version 1.5.0 
+# Azure Identity client library for Python - version 1.5.0 
 
 
 The Azure Identity library provides a set of credential classes for use with

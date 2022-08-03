@@ -1,17 +1,13 @@
 ---
-title: Azure Resources libraries for python
-description: Reference for Azure Resources libraries for python
-keywords: Azure, python, SDK, API, Resources
-author: lisawong19
-ms.author: ramyar
-manager: routlaw
-
-ms.date: 08/11/2017
+title: Azure Resources SDK for Python
+ms.author: lmazuel
 ms.topic: reference
-ms.service: azure
 ms.devlang: python
+ms.data: 08/02/2022
+description: Reference for Azure Resources SDK for Python
+ms.service: resources
+author: lmazuel
 ---
-
 # Azure Resources libraries for python
 
 ## Overview 

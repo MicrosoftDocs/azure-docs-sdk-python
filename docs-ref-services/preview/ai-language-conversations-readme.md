@@ -1,24 +1,24 @@
 ---
 title: Azure Conversational Language Understanding client library for Python
 keywords: Azure, python, SDK, API, azure-ai-language-conversations, cognitivelanguage
-author: lmazuel
-ms.author: lmazuel
-ms.date: 05/26/2022
+author: kristapratico
+ms.author: krpratic
+ms.date: 07/01/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitivelanguage
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=main)
 
-# Azure Conversational Language Understanding client library for Python - Version 1.1.0b1 
+# Azure Conversational Language Understanding client library for Python - version 1.1.0b2 
 
 Conversational Language Understanding - aka **CLU** for short - is a cloud-based conversational AI service which provides many language understanding capabilities like:
 - Conversation App: It's used in extracting intents and entities in conversations
 - Workflow app: Acts like an orchestrator to select the best candidate to analyze conversations to get best response from apps like Qna, Luis, and Conversation App
 - Conversational Summarization: Used to summarize conversations in the form of issues, and final resolutions
-- Conversational PII: Used to extract and redact personally-identifiable info (PII) 
+- Conversational PII: Used to extract and redact personally-identifiable info (PII)
 
-[Source code][conversationallanguage_client_src] | [Package (PyPI)][conversationallanguage_pypi_package] | [API reference documentation][api_reference_documentation] | [Product documentation][conversationallanguage_docs] | [Samples][conversationallanguage_samples]
+[Source code][conversationallanguage_client_src] | [Package (PyPI)][conversationallanguage_pypi_package] | [API reference documentation][api_reference_documentation] | [Samples][conversationallanguage_samples] | [Product documentation][conversationallanguage_docs] | [Analysis REST API][conversationallanguage_restdocs] | [Authoring REST API][conversationallanguage_restdocs_authoring]
 
 ## _Disclaimer_
 
@@ -39,11 +39,13 @@ _Azure SDK Python packages support for Python 2.7 ended 01 January 2022. For mor
 Install the Azure Conversations client library for Python with [pip][pip_link]:
 
 ```bash
-pip install azure-ai-language-conversations
+pip install azure-ai-language-conversations --pre
 ```
 
+> Note: This version of the client library defaults to the 2022-05-15-preview version of the service
+
 ### Authenticate the client
-In order to interact with the CLU service, you'll need to create an instance of the [ConversationAnalysisClient][conversationanalysis_client_class] class. You will need an **endpoint**, and an **API key** to instantiate a client object. For more information regarding authenticating with Cognitive Services, see [Authenticate requests to Azure Cognitive Services][cognitive_auth].
+In order to interact with the CLU service, you'll need to create an instance of the [ConversationAnalysisClient][conversationanalysisclient_class] class, or [ConversationAuthoringClient][conversationauthoringclient_class] class. You will need an **endpoint**, and an **API key** to instantiate a client object. For more information regarding authenticating with Cognitive Services, see [Authenticate requests to Azure Cognitive Services][cognitive_auth].
 
 #### Get an API key
 You can get the **endpoint** and an **API key** from the Cognitive Services resource in the [Azure Portal][azure_portal].
@@ -67,11 +69,56 @@ credential = AzureKeyCredential("<api-key>")
 client = ConversationAnalysisClient(endpoint, credential)
 ```
 
+#### Create ConversationAuthoringClient
+Once you've determined your **endpoint** and **API key** you can instantiate a `ConversationAuthoringClient`:
+
+```python
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.language.conversations.authoring import ConversationAuthoringClient
+
+endpoint = "https://<my-custom-subdomain>.cognitiveservices.azure.com/"
+credential = AzureKeyCredential("<api-key>")
+client = ConversationAuthoringClient(endpoint, credential)
+```
+
+#### Create a client with an Azure Active Directory Credential
+
+To use an [Azure Active Directory (AAD) token credential][cognitive_authentication_aad],
+provide an instance of the desired credential type obtained from the
+[azure-identity][azure_identity_credentials] library.
+Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain]
+name for your resource in order to use this type of authentication.
+
+Authentication with AAD requires some initial setup:
+
+- [Install azure-identity][install_azure_identity]
+- [Register a new AAD application][register_aad_app]
+- [Grant access][grant_role_access] to the Language service by assigning the "Cognitive Services Language Reader" role to your service principal.
+
+After setup, you can choose which type of [credential][azure_identity_credentials] from azure.identity to use.
+As an example, [DefaultAzureCredential][default_azure_credential]
+can be used to authenticate the client:
+
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
+`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`
+
+Use the returned token credential to authenticate the client:
+
+```python
+from azure.ai.textanalytics import ConversationAnalysisClient
+from azure.identity import DefaultAzureCredential
+
+credential = DefaultAzureCredential()
+client = ConversationAnalysisClient(endpoint="https://<my-custom-subdomain>.cognitiveservices.azure.com/", credential=credential)
+```
 
 ## Key concepts
 
 ### ConversationAnalysisClient
-The [ConversationAnalysisClient][conversationanalysis_client_class] is the primary interface for making predictions using your deployed Conversations models. For asynchronous operations, an async `ConversationAnalysisClient` is in the `azure.ai.language.conversation.aio` namespace.
+The [ConversationAnalysisClient][conversationanalysisclient_class] is the primary interface for making predictions using your deployed Conversations models. For asynchronous operations, an async `ConversationAnalysisClient` is in the `azure.ai.language.conversation.aio` namespace.
+
+### ConversationAuthoringClient
+You can use the [ConversationAuthoringClient][conversationauthoringclient_class] to interface with the [Azure Language Portal][azure_language_portal] to carry out authoring operations on your language resource/project. For example, you can use it to create a project, populate with training data, train, test, and deploy. For asynchronous operations, an async `ConversationAuthoringClient` is in the `azure.ai.language.conversation.authoring.aio` namespace.
 
 ## Examples
 The `azure-ai-language-conversation` client library provides both synchronous and asynchronous APIs.
@@ -145,7 +192,6 @@ for entity in result["result"]["prediction"]["entities"]:
                 print("key: {}".format(data["key"]))
             if data["extraInformationKind"] == "EntitySubtype":
                 print("value: {}".format(data["value"]))
-
 ```
 
 ### Analyze Text with an Orchestration App
@@ -208,7 +254,6 @@ if top_intent_object["targetProjectKind"] == "Luis":
     print("\nentities:")
     for entity in luis_response["entities"]:
         print("\n{}".format(entity))
-
 ```
 
 ### Conversational Summarization
@@ -219,14 +264,11 @@ You can use this sample if you need to summarize a conversation in the form of a
 # import libraries
 import os
 from azure.core.credentials import AzureKeyCredential
-
 from azure.ai.language.conversations import ConversationAnalysisClient
-
 # get secrets
 endpoint = os.environ["AZURE_CONVERSATIONS_ENDPOINT"]
 key = os.environ["AZURE_CONVERSATIONS_KEY"]
-
-# analyze quey
+# analyze query
 client = ConversationAnalysisClient(endpoint, AzureKeyCredential(key))
 with client:
     poller = client.begin_conversation_analysis(
@@ -294,7 +336,6 @@ with client:
             print("... view task result ...")
             print("issue: {}".format(summaries[0]["text"]))
             print("resolution: {}".format(summaries[1]["text"]))
-
 ```
 
 ### Conversational PII
@@ -305,17 +346,13 @@ You can use this sample if you need to extract and redact pii info from/in conve
 # import libraries
 import os
 from azure.core.credentials import AzureKeyCredential
-
 from azure.ai.language.conversations import ConversationAnalysisClient
-
 # get secrets
 endpoint = os.environ["AZURE_CONVERSATIONS_ENDPOINT"]
 key = os.environ["AZURE_CONVERSATIONS_KEY"]
-
-# analyze quey
+# analyze query
 client = ConversationAnalysisClient(endpoint, AzureKeyCredential(key))
 with client:
-
     poller = client.begin_conversation_analysis(
         task={
             "displayName": "Analyze PII in conversation",
@@ -370,7 +407,6 @@ with client:
             ]
         }
     )
-
     # view result
     result = poller.result()
     task_result = result["tasks"]["items"][0]
@@ -398,8 +434,65 @@ with client:
                     print("confidence: {}".format(entity["confidenceScore"]))
                     print("offset: {}".format(entity["offset"]))
                     print("length: {}".format(entity["length"]))
+```
+
+### Import a Conversation Project
+This sample shows a common scenario for the authoring part of the SDK
+
+```python
+import os
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.language.conversations.authoring import ConversationAuthoringClient
+
+clu_endpoint = os.environ["AZURE_CONVERSATIONS_ENDPOINT"]
+clu_key = os.environ["AZURE_CONVERSATIONS_KEY"]
+
+project_name = "test_project"
+
+exported_project_assets = {
+    "projectKind": "Conversation",
+    "intents": [{"category": "Read"}, {"category": "Delete"}],
+    "entities": [{"category": "Sender"}],
+    "utterances": [
+        {
+            "text": "Open Blake's email",
+            "dataset": "Train",
+            "intent": "Read",
+            "entities": [{"category": "Sender", "offset": 5, "length": 5}],
+        },
+        {
+            "text": "Delete last email",
+            "language": "en-gb",
+            "dataset": "Test",
+            "intent": "Delete",
+            "entities": [],
+        },
+    ],
+}
+
+client = ConversationAuthoringClient(
+    clu_endpoint, AzureKeyCredential(clu_key)
+)
+poller = client.begin_import_project(
+    project_name=project_name,
+    project={
+        "assets": exported_project_assets,
+        "metadata": {
+            "projectKind": "Conversation",
+            "settings": {"confidenceThreshold": 0.7},
+            "projectName": "EmailApp",
+            "multilingual": True,
+            "description": "Trying out CLU",
+            "language": "en-us",
+        },
+        "projectFileVersion": "2022-05-01",
+    },
+)
+response = poller.result()
+print(response)
 
 ```
+
 
 ## Optional Configuration
 
@@ -453,6 +546,10 @@ result = client.analyze_conversation(..., logging_enable=True)
 
 ## Next steps
 
+### More sample code
+
+See the [Sample README][conversationallanguage_samples] for several code snippets illustrating common patterns used in the CLU Python API.
+
 ## Contributing
 
 See the [CONTRIBUTING.md][contributing] for details on building, testing, and contributing to this library.
@@ -467,25 +564,36 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_cli]: /cli/azure/
 [azure_portal]: https://portal.azure.com/
 [azure_subscription]: https://azure.microsoft.com/free/
-
 [cla]: https://cla.microsoft.com
 [coc_contact]: mailto:opencode@microsoft.com
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [cognitive_auth]: /azure/cognitive-services/authentication/
-[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations_1.1.0b1/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations_1.1.0b2/CONTRIBUTING.md
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
 [azure_core_ref_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/latest/azure.core.html
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations_1.1.0b1/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations_1.1.0b2/sdk/core/azure-core/README.md
 [pip_link]:https://pypi.org/project/pip/
-[conversationallanguage_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b1/sdk/cognitivelanguage/azure-ai-language-conversations
+[conversationallanguage_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b2/sdk/cognitivelanguage/azure-ai-language-conversations
 [conversationallanguage_pypi_package]: https://pypi.org/project/azure-ai-language-conversations/
 [api_reference_documentation]:https://azuresdkdocs.blob.core.windows.net/$web/python/azure-ai-language-conversations/latest/azure.ai.language.conversations.html
-[conversationallanguage_refdocs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b1/sdk/cognitivelanguage/azure-ai-language-conversations
+[conversationallanguage_refdocs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b2/sdk/cognitivelanguage/azure-ai-language-conversations
 [conversationallanguage_docs]: /azure/cognitive-services/language-service/conversational-language-understanding/overview
-[conversationallanguage_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b1/sdk/cognitivelanguage/azure-ai-language-conversations/samples/README.md
-[conversationanalysis_client_class]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-ai-language-conversations/latest/azure.ai.language.conversations.html#azure.ai.language.conversations.ConversationAnalysisClient
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations_1.1.0b1/sdk/core/azure-core/README.md
+[conversationallanguage_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b2/sdk/cognitivelanguage/azure-ai-language-conversations/samples/README.md
+[conversationallanguage_restdocs]: /rest/api/language/conversation-analysis-runtime/
+[conversationallanguage_restdocs_authoring]: /rest/api/language/conversational-analysis-authoring
+[conversationanalysisclient_class]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-ai-language-conversations/latest/azure.ai.language.conversations.html#azure.ai.language.conversations.ConversationAnalysisClient
+[conversationauthoringclient_class]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-ai-language-conversations/latest/azure.ai.language.conversations.html#azure.ai.language.conversations.ConversationAuthoringClient
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-language-conversations_1.1.0b2/sdk/core/azure-core/README.md
+[azure_language_portal]: https://language.cognitive.azure.com/home
+[cognitive_authentication_aad]: /azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b2/sdk/identity/azure-identity#credentials
+[custom_subdomain]: /azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b2/sdk/identity/azure-identity#install-the-package
+[register_aad_app]: /azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[grant_role_access]: /azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-language-conversations_1.1.0b2/sdk/identity/azure-identity#defaultazurecredential
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftemplate%2Fazure-template%2FREADME.png)
 

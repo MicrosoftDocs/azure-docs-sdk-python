@@ -8,7 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: formrecognizer
 ---
-# Azure Form Recognizer client library for Python - Version 3.2.0b5 
+# Azure Form Recognizer client library for Python - version 3.2.0b5 
 
 
 Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents. It includes the following main features:

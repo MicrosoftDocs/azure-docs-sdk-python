@@ -13,7 +13,7 @@ ms.service: remoterendering
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Remote Rendering client library for Python - Version 1.0.0b1 
+# Azure Remote Rendering client library for Python - version 1.0.0b1 
 
 
 Azure Remote Rendering (ARR) is a service that enables you to render high-quality, interactive 3D content in the cloud and stream it in real time to devices, such as the HoloLens 2.
