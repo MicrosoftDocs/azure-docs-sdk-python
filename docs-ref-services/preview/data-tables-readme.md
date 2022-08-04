@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: tables
 ---
 
-# Azure Data Tables client library for Python - Version 12.0.0b7 
+# Azure Data Tables client library for Python - version 12.0.0b7 
 
 
 Azure Data Tables is a NoSQL data storage service that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.

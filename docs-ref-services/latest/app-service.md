@@ -1,18 +1,13 @@
 ---
-title: Azure Web Apps libraries for Python
-description: 
-keywords: Azure, Python, SDK, API, web apps, App Service
-author: lisawong19
-ms.author: ramyar
-manager: douge
-ms.date: 06/12/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: appservice
+author: lmazuel
+ms.author: lmazuel
+title: Azure App Service SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure App Service SDK for Python
 ---
-
 # Azure Web Apps libraries for Python
 
 ## Overview

@@ -1,16 +1,13 @@
 ---
-title: Service Bus libraries for Python 
-description: Reference documentation for the Python client and management libraries for Service Bus
-keywords: Azure, Python, SDK, API, messaging, pubsub, pub-sub, message broker
+ms.devlang: python
+ms.service: servicebus
 author: annatisch
 ms.author: antisch
-manager: mayurid
-ms.date: 01/15/2019
+title: Azure Service Bus SDK for Python
+ms.data: 08/03/2022
 ms.topic: reference
-ms.devlang: python
-ms.service: service-bus
+description: Reference for Azure Service Bus SDK for Python
 ---
-
 # Azure Service Bus libraries for Python
 
 Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.

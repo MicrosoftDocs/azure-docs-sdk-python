@@ -1,15 +1,13 @@
 ---
-title: Azure Redis libraries for Python
-description: Reference documentation for the Python client libraries for Redis
-keywords: Azure, Python, Redis, API, SDK, database, NoSQL
-author: flang-msft
-ms.author: franlanglois
-ms.date: 06/26/2017
-ms.topic: reference
 ms.devlang: python
 ms.service: cache
+author: lmazuel
+ms.author: lmazuel
+title: Azure Cache for Redis SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Cache for Redis SDK for Python
 ---
-
 # Azure Cache for Redis libraries for Python
 
 ## Overview
@@ -56,4 +54,3 @@ redis_cache = redis_client.redis.create_or_update(
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/redis/management)
-

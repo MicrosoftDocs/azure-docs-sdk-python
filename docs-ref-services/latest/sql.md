@@ -1,15 +1,13 @@
 ---
-title: Azure SQL Database libraries for Python
-description: Connect to Azure SQL Database using the ODBC driver and pyodbc or manage Azure SQL instances with the management API.
-author: lisawong19  
-ms.author: ramyar
-manager: routlaw
-ms.date: 01/09/2018
-ms.topic: reference
 ms.devlang: python
-ms.service: sql-database
+ms.service: sql
+author: lmazuel
+ms.author: lmazuel
+title: Azure SQL SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure SQL SDK for Python
 ---
-
 # Azure SQL Database libraries for Python
 
 ## Overview
@@ -126,4 +124,3 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 ```
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-sql-readme)
-

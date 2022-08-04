@@ -1,19 +1,13 @@
 ---
-title: Azure Container Registry libraries for python
-description: Reference for Azure Container Registry libraries for python
-keywords: Azure, python, SDK, API, Container Registry
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: containerregistry
+author: YalinLi0312
+ms.author: yall
+title: Azure Container Registry SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Container Registry SDK for Python
 ---
-
 # Azure Container Registry libraries for python
 
 ## Install the libraries

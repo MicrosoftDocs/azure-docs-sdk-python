@@ -1,18 +1,13 @@
 ---
-title: Azure Batch libraries for Python
-description: Reference documentation for the Python Batch libraries 
-keywords: Azure, Python, SDK, API, Batch, processing, scheduling, long-running
-author: lisawong19
-ms.author: ramyar
-manager: douge
-ms.date: 07/31/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: batch
+author: cRui861
+ms.author: rechen
+title: Azure Batch SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Batch SDK for Python
 ---
-
 # Azure Batch libraries for python
 
 ## Overview

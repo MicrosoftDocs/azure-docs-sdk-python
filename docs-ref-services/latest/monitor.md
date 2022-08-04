@@ -1,19 +1,13 @@
 ---
-title: Azure Monitoring libraries for python
-description: Reference for Azure Monitoring libraries for python
-keywords: Azure, python, SDK, API, Monitoring
-author: lisawong19
-ms.author: ramyar
-manager: douge
-
-ms.date: 07/19/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: monitor
+author: lmazuel
+ms.author: lmazuel
+title: Azure Monitor SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Monitor SDK for Python
 ---
-
 # Azure Monitoring libraries for python
 
 ## Overview 

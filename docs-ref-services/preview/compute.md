@@ -1,18 +1,13 @@
 ---
-title: Azure Virtual Machine libraries for Python
-description: 
-keywords: Azure, Python, SDK, API, Compute , Virtual Machines
-author: lisawong19
-ms.author: ramyar
-manager: douge
-ms.date: 06/09/2017
-ms.topic: article
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: compute
+author: lmazuel
+ms.author: lmazuel
+title: Azure Compute SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Compute SDK for Python
 ---
-
 # Azure virtual machine libraries
 
 ## Overview

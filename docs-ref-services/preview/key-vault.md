@@ -1,15 +1,13 @@
 ---
-title: Azure Key Vault libraries for Python
-description: Reference documentation for the Python client libraries for Azure Key Vault
-author: sptramer
-manager: carmonm
-ms.author: sttramer
-ms.date: 11/25/2019
-ms.topic: reference
 ms.devlang: python
-ms.service: key-vault
+ms.service: keyvault
+author: schaabs
+ms.author: sschaab
+title: Azure Key Vault SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Key Vault SDK for Python
 ---
-
 # Azure Key Vault libraries for Python
 
 The Azure Key Vault client libraries for Python offer a convenient interface for making calls to Azure Key Vault. For more information about Azure Key Vault, see [Introduction to Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general/overview).

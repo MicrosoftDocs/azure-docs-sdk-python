@@ -1,19 +1,13 @@
 ---
-title: Azure PowerBI libraries for python
-description: Reference for Azure PowerBI libraries for python
-keywords: Azure, python, SDK, API, PowerBI
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: powerbi
+author: lmazuel
+ms.author: lmazuel
+title: Azure Power BI SDK for Python
+ms.data: 08/03/2022
+ms.topic: reference
+description: Reference for Azure Power BI SDK for Python
 ---
-
 # Azure PowerBI libraries for python
 
 ## Install the libraries

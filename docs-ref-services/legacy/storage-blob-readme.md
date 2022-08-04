@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: storage
 ---
 
-# Azure Storage Blobs client library for Python - Version 12.6.0 
+# Azure Storage Blobs client library for Python - version 12.6.0 
 
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob storage is optimized for storing massive amounts of unstructured data, such as text or binary data.
 

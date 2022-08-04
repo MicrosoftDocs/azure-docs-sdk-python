@@ -10,7 +10,7 @@ ms.technology: azure
 ms.devlang: python
 ms.service: eventgrid
 ---
-# Azure Event Grid client library for Python - Version 4.9.0b1 
+# Azure Event Grid client library for Python - version 4.9.0b1 
 
 
 Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.

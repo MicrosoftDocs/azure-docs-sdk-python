@@ -11,7 +11,7 @@ ms.devlang: python
 ms.service: communication
 ---
 
-# Azure Communication Phone Numbers Package client library for Python - Version 1.0.1 
+# Azure Communication Phone Numbers Package client library for Python - version 1.0.1 
 
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers. 
