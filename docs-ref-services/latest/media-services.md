@@ -1,12 +1,12 @@
 ---
-ms.devlang: python
-ms.service: mediaservices
-author: naiteeks
-ms.author: naiteeks
-title: Azure Media Services SDK for Python
-ms.data: 08/03/2022
 ms.topic: reference
+ms.data: 08/04/2022
 description: Reference for Azure Media Services SDK for Python
+author: naiteeks
+ms.devlang: python
+title: Azure Media Services SDK for Python
+ms.service: mediaservices
+ms.author: naiteeks
 ---
 # Azure Media Services libraries for python
 

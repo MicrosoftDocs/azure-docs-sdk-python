@@ -1,12 +1,12 @@
 ---
-ms.devlang: python
-ms.service: stackedge
-author: lmazuel
-ms.author: lmazuel
-title: Azure Stack Edge SDK for Python
-ms.data: 08/03/2022
 ms.topic: reference
+ms.data: 08/04/2022
 description: Reference for Azure Stack Edge SDK for Python
+author: lmazuel
+ms.devlang: python
+title: Azure Stack Edge SDK for Python
+ms.service: stackedge
+ms.author: lmazuel
 ---
 # Azure Stack Edge SDK for Python - latest
 

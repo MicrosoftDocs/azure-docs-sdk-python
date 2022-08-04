@@ -1,12 +1,12 @@
 ---
-ms.devlang: python
-ms.service: servicebus
-author: annatisch
-ms.author: antisch
-title: Azure Service Bus SDK for Python
-ms.data: 08/03/2022
 ms.topic: reference
+ms.data: 08/04/2022
 description: Reference for Azure Service Bus SDK for Python
+author: annatisch
+ms.devlang: python
+title: Azure Service Bus SDK for Python
+ms.service: servicebus
+ms.author: antisch
 ---
 # Azure Service Bus libraries for Python
 
