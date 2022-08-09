@@ -1,12 +1,12 @@
 ---
-title: Azure HDInsight SDK for Python
-ms.author: idear1203
-ms.topic: reference
 ms.devlang: python
-ms.data: 08/02/2022
-description: Reference for Azure HDInsight SDK for Python
+ms.topic: reference
+ms.author: idear1203
 ms.service: hdinsight
 author: idear1203
+title: Azure HDInsight SDK for Python
+description: Reference for Azure HDInsight SDK for Python
+ms.data: 08/08/2022
 ---
 # HDInsight SDK for Python
 
