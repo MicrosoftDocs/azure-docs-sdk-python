@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 title: Azure Consumption SDK for Python
-ms.devlang: python
-ms.service: consumption
 description: Reference for Azure Consumption SDK for Python
-ms.author: sandeepnl
+ms.data: 08/10/2022
+ms.service: consumption
 author: sandeepnl
-ms.data: 08/09/2022
+ms.author: sandeepnl
+ms.devlang: python
+ms.topic: reference
 ---
 # Azure Consumption libraries for python
 

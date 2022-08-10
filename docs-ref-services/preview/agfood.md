@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 title: Azure Agfood SDK for Python
-ms.devlang: python
-ms.service: agfood
 description: Reference for Azure Agfood SDK for Python
-ms.author: lmazuel
+ms.data: 08/10/2022
+ms.service: agfood
 author: lmazuel
-ms.data: 08/09/2022
+ms.author: lmazuel
+ms.devlang: python
+ms.topic: reference
 ---
 # Azure Agfood SDK for Python - preview
 
