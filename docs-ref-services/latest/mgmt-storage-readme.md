@@ -1,19 +1,17 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storage, storage
-author: amishra-dev
-ms.author: amishra
-ms.date: 04/06/2022
+author: annatisch
+ms.author: antisch
+ms.date: 08/10/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: storage
 ---
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Storage Management Client Library.
-This package has been tested with Python 3.6+.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -27,8 +25,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/storage?view=azure-python-preview)
-Code samples for this package can be found at [Storage Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](/python/api/overview/azure/storage?view=azure-python-preview)
+Code samples for this package can be found at [Storage Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
