@@ -1,12 +1,12 @@
 ---
-title: Azure Power BI Dedicated SDK for Python
-description: Reference for Azure Power BI Dedicated SDK for Python
-ms.data: 08/10/2022
-ms.service: powerbidedicated
-author: lmazuel
-ms.author: lmazuel
 ms.devlang: python
+ms.data: 08/11/2022
+ms.service: powerbidedicated
 ms.topic: reference
+title: Azure Power BI Dedicated SDK for Python
+ms.author: lmazuel
+description: Reference for Azure Power BI Dedicated SDK for Python
+author: lmazuel
 ---
 # Azure Power BI Dedicated SDK for Python - preview
 

@@ -1,12 +1,12 @@
 ---
-title: Azure Stack SDK for Python
-description: Reference for Azure Stack SDK for Python
-ms.data: 08/10/2022
-ms.service: stack
-author: lmazuel
-ms.author: lmazuel
 ms.devlang: python
+ms.data: 08/11/2022
+ms.service: stack
 ms.topic: reference
+title: Azure Stack SDK for Python
+ms.author: lmazuel
+description: Reference for Azure Stack SDK for Python
+author: lmazuel
 ---
 # Azure Stack SDK for Python - latest
 
