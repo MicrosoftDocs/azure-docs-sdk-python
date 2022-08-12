@@ -11,16 +11,17 @@ summary: "Performs cryptographic operations using Azure Key Vault keys.\n\nThis 
   \ is unavailable, cryptographic operations are performed\nby the Key Vault service.\n\
   \nCreate a CryptographyClient<!--[!code-python[Main](s\\test_examples_crypto_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.5.1\\\
-  \\tests\\\\test_examples_crypto_async.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   # create a CryptographyClient using a\
-  \ KeyVaultKey instance\n   key = await key_client.get_key(key_name)\n   crypto_client\
-  \ = CryptographyClient(key, credential)\n\n   # or a key's id, which must include\
-  \ a version\n   key_id = \"https://<your vault>.vault.azure.net/keys/<key name>/fe4fdcab688c479a9aa80f01ffeac26\"\
-  \n   crypto_client = CryptographyClient(key_id, credential)\n\n   # the client and\
-  \ credential should be closed when no longer needed\n   # (both are also async context\
-  \ managers)\n   await crypto_client.close()\n   await credential.close()\n\n   ````"
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
+  17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_examples_crypto_async.py\", \"\
+  xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # create a CryptographyClient\
+  \ using a KeyVaultKey instance\n   key = await key_client.get_key(key_name)\n  \
+  \ crypto_client = CryptographyClient(key, credential)\n\n   # or a key's id, which\
+  \ must include a version\n   key_id = \"https://<your vault>.vault.azure.net/keys/<key\
+  \ name>/fe4fdcab688c479a9aa80f01ffeac26\"\n   crypto_client = CryptographyClient(key_id,\
+  \ credential)\n\n   # the client and credential should be closed when no longer\
+  \ needed\n   # (both are also async context managers)\n   await crypto_client.close()\n\
+  \   await credential.close()\n\n   ````"
 constructor:
   syntax: 'CryptographyClient(key: Union[KeyVaultKey, str], credential: AsyncTokenCredential,
     **kwargs: Any)'
@@ -59,39 +60,45 @@ methods:
     \ whose size depends on\nthe key and encryption algorithm.\n\nDecrypt bytes<!--[!code-python[Main](s\\\
     test_examples_crypto_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.5.1\\\\tests\\\\test_examples_crypto_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\n   result =\
-    \ await client.decrypt(EncryptionAlgorithm.rsa_oaep, ciphertext)\n   print(result.plaintext)\n\
-    \n   ````"
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\
+    \\test_examples_crypto_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\
+    \n   result = await client.decrypt(EncryptionAlgorithm.rsa_oaep, ciphertext)\n\
+    \   print(result.plaintext)\n\n   ````"
   signature: 'async decrypt(algorithm: EncryptionAlgorithm, ciphertext: bytes, **kwargs:
     Any) -> azure.keyvault.keys.crypto._models.DecryptResult'
   parameters:
   - name: algorithm
-    description: encryption algorithm to use
+    description: Encryption algorithm to use
     isRequired: true
     types:
     - <xref:azure.keyvault.keys.crypto.EncryptionAlgorithm>
   - name: ciphertext
-    description: encrypted bytes to decrypt
+    description: 'Encrypted bytes to decrypt. Microsoft recommends you not use CBC
+      without first ensuring
+
+      the integrity of the ciphertext using, for example, an HMAC. See
+
+      [https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode](https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode)
+      for more information.'
     isRequired: true
     types:
     - <xref:bytes>
   - name: iv
-    description: the initialization vector used during encryption. Required for AES
+    description: The initialization vector used during encryption. Required for AES
       decryption.
     types:
     - <xref:bytes>
   - name: authentication_tag
-    description: 'the authentication tag generated during encryption. Required for
+    description: 'The authentication tag generated during encryption. Required for
       only AES-GCM
 
       decryption.'
     types:
     - <xref:bytes>
   - name: additional_authenticated_data
-    description: 'optional data that is authenticated but not encrypted. For use
+    description: 'Optional data that is authenticated but not encrypted. For use
 
       with AES-GCM decryption.'
     types:
@@ -101,7 +108,7 @@ methods:
     - <xref:azure.keyvault.keys.crypto.DecryptResult>
   exceptions:
   - type: ValueError
-    description: if parameters that are incompatible with the specified algorithm
+    description: If parameters that are incompatible with the specified algorithm
       are provided.
 - uid: azure.keyvault.keys.crypto.aio.CryptographyClient.encrypt
   name: encrypt
@@ -109,8 +116,8 @@ methods:
     \ This method encrypts only a single block of data, whose size depends on\nthe\
     \ key and encryption algorithm.\n\nEncrypt bytes<!--[!code-python[Main](s\\test_examples_crypto_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.5.1\\\\tests\\\\test_examples_crypto_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_examples_crypto_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.keyvault.keys.crypto import EncryptionAlgorithm\n\n   # the result\
@@ -122,21 +129,27 @@ methods:
     Any) -> azure.keyvault.keys.crypto._models.EncryptResult'
   parameters:
   - name: algorithm
-    description: encryption algorithm to use
+    description: Encryption algorithm to use
     isRequired: true
     types:
     - <xref:azure.keyvault.keys.crypto.EncryptionAlgorithm>
   - name: plaintext
-    description: bytes to encrypt
+    description: Bytes to encrypt
     isRequired: true
     types:
     - <xref:bytes>
   - name: iv
-    description: initialization vector. Required for only AES-CBC(PAD) encryption.
+    description: 'Initialization vector. Required for only AES-CBC(PAD) encryption.
+      If you pass your own IV,
+
+      make sure you use a cryptographically random, non-repeating IV. If omitted for
+      remote cryptography, Key
+
+      Vault will generate an IV.'
     types:
     - <xref:bytes>
   - name: additional_authenticated_data
-    description: 'optional data that is authenticated but not encrypted. For use
+    description: 'Optional data that is authenticated but not encrypted. For use
 
       with AES-GCM encryption.'
     types:
@@ -145,9 +158,8 @@ methods:
     types:
     - <xref:azure.keyvault.keys.crypto.EncryptResult>
   exceptions:
-  - type: ValueError
-    description: if parameters that are incompatible with the specified algorithm
-      are provided.
+  - type: ValueError if parameters that are incompatible with the specified algorithm
+      are provided,RuntimeError if an IV cannot be generated
 - uid: azure.keyvault.keys.crypto.aio.CryptographyClient.from_jwk
   name: from_jwk
   summary: Creates a client that can only perform cryptographic operations locally.
@@ -169,11 +181,11 @@ methods:
   summary: "Create a signature from a digest using the client's key.\n\nRequires the\
     \ keys/sign permission.\n\nSign bytes<!--[!code-python[Main](s\\test_examples_crypto_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.5.1\\\\tests\\\\test_examples_crypto_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_examples_crypto_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import hashlib\n   from azure.keyvault.keys.crypto import SignatureAlgorithm\n\
+    \n   import hashlib\n\n   from azure.keyvault.keys.crypto import SignatureAlgorithm\n\
     \n   digest = hashlib.sha256(b\"plaintext\").digest()\n\n   # sign returns the\
     \ signature and the metadata required to verify it\n   result = await client.sign(SignatureAlgorithm.rs256,\
     \ digest)\n   print(result.key_id)\n   print(result.algorithm)\n   signature =\
@@ -199,8 +211,8 @@ methods:
   summary: "Unwrap a key previously wrapped with the client's key.\n\nRequires the\
     \ keys/unwrapKey permission.\n\nUnwrap a key<!--[!code-python[Main](s\\test_examples_crypto_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.5.1\\\\tests\\\\test_examples_crypto_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_examples_crypto_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.keyvault.keys.crypto import KeyWrapAlgorithm\n\n   result = await\
@@ -226,8 +238,8 @@ methods:
   summary: "Verify a signature using the client's key.\n\nRequires the keys/verify\
     \ permission.\n\nVerify a signature<!--[!code-python[Main](s\\test_examples_crypto_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.5.1\\\\tests\\\\test_examples_crypto_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_examples_crypto_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.keyvault.keys.crypto import SignatureAlgorithm\n\n   verified\
@@ -262,14 +274,14 @@ methods:
   summary: "Wrap a key with the client's key.\n\nRequires the keys/wrapKey permission.\n\
     \nWrap a key<!--[!code-python[Main](s\\test_examples_crypto_async.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\17\\\\\
-    azure-keyvault-keys-4.5.1\\\\tests\\\\test_examples_crypto_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.keyvault.keys.crypto\
-    \ import KeyWrapAlgorithm\n\n   # wrap returns a tuple with the wrapped bytes\
-    \ and the metadata required to unwrap the key\n   result = await client.wrap_key(KeyWrapAlgorithm.rsa_oaep,\
-    \ key_bytes)\n   print(result.key_id)\n   print(result.algorithm)\n   encrypted_key\
-    \ = result.encrypted_key\n\n   ````"
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_examples_crypto_async.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.keyvault.keys.crypto import KeyWrapAlgorithm\n\n   # wrap returns\
+    \ a tuple with the wrapped bytes and the metadata required to unwrap the key\n\
+    \   result = await client.wrap_key(KeyWrapAlgorithm.rsa_oaep, key_bytes)\n   print(result.key_id)\n\
+    \   print(result.algorithm)\n   encrypted_key = result.encrypted_key\n\n   ````"
   signature: 'async wrap_key(algorithm: KeyWrapAlgorithm, key: bytes, **kwargs: Any)
     -> azure.keyvault.keys.crypto._models.WrapResult'
   parameters:
