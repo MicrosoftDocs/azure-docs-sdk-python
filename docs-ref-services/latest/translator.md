@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-ms.devlang: python
-title: Azure Translator SDK for Python
-author: lmazuel
-ms.topic: reference
 ms.service: translator
-ms.data: 08/12/2022
+author: lmazuel
+ms.data: 08/15/2022
+title: Azure Translator SDK for Python
 description: Reference for Azure Translator SDK for Python
+ms.devlang: python
+ms.topic: reference
+ms.author: lmazuel
 ---
 # Azure Translator SDK for Python - latest
 
