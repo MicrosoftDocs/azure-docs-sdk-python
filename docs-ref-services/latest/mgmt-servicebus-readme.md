@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-servicebus, servicebus
 author: annatisch
 ms.author: antisch
-ms.date: 08/09/2022
+ms.date: 08/11/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: servicebus
