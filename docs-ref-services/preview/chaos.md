@@ -1,12 +1,12 @@
 ---
-ms.service: chaos
-author: lmazuel
-ms.data: 08/15/2022
-title: Azure Chaos SDK for Python
 description: Reference for Azure Chaos SDK for Python
-ms.devlang: python
 ms.topic: reference
+title: Azure Chaos SDK for Python
+ms.data: 08/16/2022
+ms.service: chaos
 ms.author: lmazuel
+ms.devlang: python
+author: lmazuel
 ---
 # Azure Chaos SDK for Python - preview
 

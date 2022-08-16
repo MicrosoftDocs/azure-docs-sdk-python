@@ -1,12 +1,12 @@
 ---
-ms.service: batch
-author: cRui861
-ms.data: 08/15/2022
-title: Azure Batch SDK for Python
 description: Reference for Azure Batch SDK for Python
-ms.devlang: python
 ms.topic: reference
+title: Azure Batch SDK for Python
+ms.data: 08/16/2022
+ms.service: batch
 ms.author: rechen
+ms.devlang: python
+author: cRui861
 ---
 # Azure Batch libraries for python
 

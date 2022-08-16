@@ -1,12 +1,12 @@
 ---
-ms.service: maps
-author: lmazuel
-ms.data: 08/15/2022
-title: Azure Maps SDK for Python
 description: Reference for Azure Maps SDK for Python
-ms.devlang: python
 ms.topic: reference
+title: Azure Maps SDK for Python
+ms.data: 08/16/2022
+ms.service: maps
 ms.author: lmazuel
+ms.devlang: python
+author: lmazuel
 ---
 # Azure Maps SDK for Python - latest
 

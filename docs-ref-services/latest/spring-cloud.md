@@ -1,12 +1,12 @@
 ---
-ms.service: springcloud
-author: lmazuel
-ms.data: 08/15/2022
-title: Azure Spring Cloud SDK for Python
 description: Reference for Azure Spring Cloud SDK for Python
-ms.devlang: python
 ms.topic: reference
+title: Azure Spring Cloud SDK for Python
+ms.data: 08/16/2022
+ms.service: springcloud
 ms.author: lmazuel
+ms.devlang: python
+author: lmazuel
 ---
 # Azure Spring Cloud SDK for Python - latest
 

@@ -1,12 +1,12 @@
 ---
-ms.service: batchai
-author: cRui861
-ms.data: 08/15/2022
-title: Azure Batch AI SDK for Python
 description: Reference for Azure Batch AI SDK for Python
-ms.devlang: python
 ms.topic: reference
+title: Azure Batch AI SDK for Python
+ms.data: 08/16/2022
+ms.service: batchai
 ms.author: rechen
+ms.devlang: python
+author: cRui861
 ---
 # Azure Batch AI SDK for Python - preview
 
