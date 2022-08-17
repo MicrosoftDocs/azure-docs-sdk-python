@@ -1,11 +1,11 @@
 ---
-description: Reference for Azure Identity SDK for Python
-ms.topic: reference
-title: Azure Identity SDK for Python
-ms.data: 08/16/2022
+ms.data: 08/17/2022
 ms.service: identity
-ms.author: mcpatino
+title: Azure Identity SDK for Python
 ms.devlang: python
+ms.topic: reference
+ms.author: mcpatino
+description: Reference for Azure Identity SDK for Python
 author: mccoyp
 ---
 # Azure Identity SDK for Python - latest

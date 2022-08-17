@@ -8,7 +8,7 @@ ms.author: lmazuel
 description: Reference for Azure Dashboard SDK for Python
 author: lmazuel
 ---
-# Azure Dashboard SDK for Python - preview
+# Azure Dashboard SDK for Python - latest
 
-## Management packages - preview
+## Management packages - latest
 [!INCLUDE [mgmt-packages](dashboard-mgmt-index.md)]
