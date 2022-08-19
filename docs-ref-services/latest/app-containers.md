@@ -1,12 +1,12 @@
 ---
 ms.service: appcontainers
-author: lmazuel
-ms.data: 08/15/2022
-title: Azure App Containers SDK for Python
 description: Reference for Azure App Containers SDK for Python
 ms.devlang: python
-ms.topic: reference
+title: Azure App Containers SDK for Python
 ms.author: lmazuel
+ms.topic: reference
+ms.data: 08/18/2022
+author: lmazuel
 ---
 # Azure App Containers SDK for Python - latest
 
