@@ -1,12 +1,12 @@
 ---
-ms.service: confluent
 description: Reference for Azure Confluent SDK for Python
-ms.devlang: python
-title: Azure Confluent SDK for Python
-ms.author: lmazuel
-ms.topic: reference
-ms.data: 08/18/2022
+ms.service: confluent
 author: lmazuel
+title: Azure Confluent SDK for Python
+ms.data: 08/19/2022
+ms.devlang: python
+ms.topic: reference
+ms.author: lmazuel
 ---
 # Azure Confluent SDK for Python - latest
 

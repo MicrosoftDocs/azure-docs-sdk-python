@@ -1,12 +1,12 @@
 ---
-ms.service: edgeorder
 description: Reference for Azure Edge Order SDK for Python
-ms.devlang: python
-title: Azure Edge Order SDK for Python
-ms.author: lmazuel
-ms.topic: reference
-ms.data: 08/18/2022
+ms.service: edgeorder
 author: lmazuel
+title: Azure Edge Order SDK for Python
+ms.data: 08/19/2022
+ms.devlang: python
+ms.topic: reference
+ms.author: lmazuel
 ---
 # Azure Edge Order SDK for Python - latest
 
