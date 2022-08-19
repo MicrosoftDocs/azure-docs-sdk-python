@@ -58,4 +58,4 @@ permissions = self.authorization_client.permissions.list_for_resource_group(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/authorization)
+> [Explore the Management APIs](/python/api/overview/azure-mgmt-authorization/azure.mgmt.authorization)
