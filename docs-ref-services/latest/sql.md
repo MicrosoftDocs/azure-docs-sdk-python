@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure SQL SDK for Python
-ms.service: sql
-author: lmazuel
 title: Azure SQL SDK for Python
-ms.data: 08/19/2022
-ms.devlang: python
-ms.topic: reference
+author: lmazuel
+ms.data: 08/22/2022
 ms.author: lmazuel
+description: Reference for Azure SQL SDK for Python
+ms.devlang: python
+ms.service: sql
+ms.topic: reference
 ---
 # Azure SQL Database libraries for Python
 

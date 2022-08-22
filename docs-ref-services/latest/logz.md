@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Logz SDK for Python
-ms.service: logz
-author: lmazuel
 title: Azure Logz SDK for Python
-ms.data: 08/19/2022
-ms.devlang: python
-ms.topic: reference
+author: lmazuel
+ms.data: 08/22/2022
 ms.author: lmazuel
+description: Reference for Azure Logz SDK for Python
+ms.devlang: python
+ms.service: logz
+ms.topic: reference
 ---
 # Azure Logz SDK for Python - latest
 
