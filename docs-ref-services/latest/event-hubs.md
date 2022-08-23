@@ -1,12 +1,12 @@
 ---
-ms.service: eventhubs
+title: Azure Event Hubs SDK for Python
+author: annatisch
+ms.data: 08/22/2022
+ms.author: antisch
 description: Reference for Azure Event Hubs SDK for Python
 ms.devlang: python
-title: Azure Event Hubs SDK for Python
-ms.author: antisch
+ms.service: eventhubs
 ms.topic: reference
-ms.data: 08/18/2022
-author: annatisch
 ---
 # Azure Event Hubs libraries for Python
 

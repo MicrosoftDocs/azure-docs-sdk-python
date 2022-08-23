@@ -1,12 +1,12 @@
 ---
-ms.service: costmanagement+billing
+title: Azure Cost Management + Billing SDK for Python
+author: lmazuel
+ms.data: 08/22/2022
+ms.author: lmazuel
 description: Reference for Azure Cost Management + Billing SDK for Python
 ms.devlang: python
-title: Azure Cost Management + Billing SDK for Python
-ms.author: lmazuel
+ms.service: costmanagement+billing
 ms.topic: reference
-ms.data: 08/18/2022
-author: lmazuel
 ---
 # Azure Billing libraries for python
 

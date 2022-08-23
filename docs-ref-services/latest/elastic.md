@@ -1,12 +1,12 @@
 ---
-ms.service: elastic
+title: Azure Elastic SDK for Python
+author: lmazuel
+ms.data: 08/22/2022
+ms.author: lmazuel
 description: Reference for Azure Elastic SDK for Python
 ms.devlang: python
-title: Azure Elastic SDK for Python
-ms.author: lmazuel
+ms.service: elastic
 ms.topic: reference
-ms.data: 08/18/2022
-author: lmazuel
 ---
 # Azure Elastic SDK for Python - latest
 

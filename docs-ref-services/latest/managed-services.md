@@ -1,12 +1,12 @@
 ---
-ms.service: managedservices
+title: Azure Managed Services SDK for Python
+author: lmazuel
+ms.data: 08/22/2022
+ms.author: lmazuel
 description: Reference for Azure Managed Services SDK for Python
 ms.devlang: python
-title: Azure Managed Services SDK for Python
-ms.author: lmazuel
+ms.service: managedservices
 ms.topic: reference
-ms.data: 08/18/2022
-author: lmazuel
 ---
 # Azure Managed Services SDK for Python - latest
 
