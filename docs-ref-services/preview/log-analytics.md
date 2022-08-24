@@ -1,12 +1,12 @@
 ---
-ms.service: loganalytics
-ms.data: 08/23/2022
-ms.devlang: python
-author: alexeldeib
-ms.author: aleldeib
 title: Azure Log Analytics SDK for Python
+ms.service: loganalytics
 ms.topic: reference
+ms.author: aleldeib
+author: alexeldeib
 description: Reference for Azure Log Analytics SDK for Python
+ms.data: 08/24/2022
+ms.devlang: python
 ---
 # Azure Log Analytics SDK for Python - preview
 
