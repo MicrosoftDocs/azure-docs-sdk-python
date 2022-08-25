@@ -1,11 +1,11 @@
 ---
-title: Azure Nginx SDK for Python
-ms.service: nginx
-ms.topic: reference
 ms.author: lmazuel
-author: lmazuel
+ms.topic: reference
+title: Azure Nginx SDK for Python
 description: Reference for Azure Nginx SDK for Python
-ms.data: 08/24/2022
+author: lmazuel
+ms.service: nginx
+ms.data: 08/25/2022
 ms.devlang: python
 ---
 # Azure Nginx SDK for Python - preview
