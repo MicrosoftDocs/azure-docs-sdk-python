@@ -1,12 +1,12 @@
 ---
-title: Azure Mixed Reality SDK for Python
-ms.data: 08/26/2022
-ms.devlang: python
 description: Reference for Azure Mixed Reality SDK for Python
-ms.author: lmazuel
-author: lmazuel
+ms.devlang: python
+title: Azure Mixed Reality SDK for Python
 ms.service: mixedreality
 ms.topic: reference
+ms.data: 08/29/2022
+author: lmazuel
+ms.author: lmazuel
 ---
 # Azure Mixed Reality Resource Management libraries for Python
 

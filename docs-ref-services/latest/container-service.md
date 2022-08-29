@@ -1,12 +1,12 @@
 ---
-title: Azure Container Service SDK for Python
-ms.data: 08/26/2022
-ms.devlang: python
 description: Reference for Azure Container Service SDK for Python
-ms.author: samkreter
-author: samkreter
+ms.devlang: python
+title: Azure Container Service SDK for Python
 ms.service: containerservice
 ms.topic: reference
+ms.data: 08/29/2022
+author: samkreter
+ms.author: samkreter
 ---
 # Azure Container Service SDK for Python - latest
 
