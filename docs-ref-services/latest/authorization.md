@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Authorization SDK for Python
-ms.devlang: python
-title: Azure Authorization SDK for Python
-ms.service: authorization
-ms.topic: reference
-ms.data: 08/29/2022
 author: lmazuel
+title: Azure Authorization SDK for Python
+ms.data: 08/30/2022
+description: Reference for Azure Authorization SDK for Python
 ms.author: lmazuel
+ms.topic: reference
+ms.service: authorization
+ms.devlang: python
 ---
 # Azure Authorization libraries for python
 
