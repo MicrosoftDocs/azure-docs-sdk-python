@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-title: Azure Commerce SDK for Python
-ms.data: 08/30/2022
 description: Reference for Azure Commerce SDK for Python
+ms.data: 08/31/2022
 ms.author: lmazuel
 ms.topic: reference
+author: lmazuel
 ms.service: commerce
 ms.devlang: python
+title: Azure Commerce SDK for Python
 ---
 # Azure Commerce libraries for python
 
