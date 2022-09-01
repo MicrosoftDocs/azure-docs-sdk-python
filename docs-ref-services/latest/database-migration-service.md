@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Database Migration Service SDK for Python
-ms.data: 08/31/2022
 ms.author: lmazuel
-ms.topic: reference
 author: lmazuel
-ms.service: databasemigrationservice
+description: Reference for Azure Database Migration Service SDK for Python
 ms.devlang: python
+ms.topic: reference
+ms.data: 09/01/2022
 title: Azure Database Migration Service SDK for Python
+ms.service: databasemigrationservice
 ---
 # Azure Database Migration Service SDK for Python - latest
 

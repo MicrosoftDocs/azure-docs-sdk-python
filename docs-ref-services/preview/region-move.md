@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Region Move SDK for Python
-ms.data: 08/31/2022
 ms.author: lmazuel
-ms.topic: reference
 author: lmazuel
-ms.service: regionmove
+description: Reference for Azure Region Move SDK for Python
 ms.devlang: python
+ms.topic: reference
+ms.data: 09/01/2022
 title: Azure Region Move SDK for Python
+ms.service: regionmove
 ---
 # Azure Region Move SDK for Python - preview
 
