@@ -1,12 +1,12 @@
 ---
-ms.data: 09/05/2022
-ms.devlang: python
-ms.service: serialconsole
 ms.author: lmazuel
 title: Azure Serial Console SDK for Python
-ms.topic: reference
-description: Reference for Azure Serial Console SDK for Python
+ms.data: 09/06/2022
 author: lmazuel
+ms.service: serialconsole
+ms.topic: reference
+ms.devlang: python
+description: Reference for Azure Serial Console SDK for Python
 ---
 # Azure Serial Console SDK for Python - latest
 

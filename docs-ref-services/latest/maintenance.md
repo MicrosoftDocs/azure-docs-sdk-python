@@ -1,12 +1,12 @@
 ---
-ms.data: 09/05/2022
-ms.devlang: python
-ms.service: maintenance
 ms.author: lmazuel
 title: Azure Maintenance SDK for Python
-ms.topic: reference
-description: Reference for Azure Maintenance SDK for Python
+ms.data: 09/06/2022
 author: lmazuel
+ms.service: maintenance
+ms.topic: reference
+ms.devlang: python
+description: Reference for Azure Maintenance SDK for Python
 ---
 # Azure Maintenance SDK for Python - latest
 

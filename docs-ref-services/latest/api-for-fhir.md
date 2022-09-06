@@ -1,12 +1,12 @@
 ---
-ms.data: 09/05/2022
-ms.devlang: python
-ms.service: apiforfhir
 ms.author: lmazuel
 title: Azure API for FHIR SDK for Python
-ms.topic: reference
-description: Reference for Azure API for FHIR SDK for Python
+ms.data: 09/06/2022
 author: lmazuel
+ms.service: apiforfhir
+ms.topic: reference
+ms.devlang: python
+description: Reference for Azure API for FHIR SDK for Python
 ---
 # Azure API for FHIR SDK for Python - latest
 
