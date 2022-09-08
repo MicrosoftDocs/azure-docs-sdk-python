@@ -7,8 +7,8 @@ inheritances:
 - azure.search.documents._headers_mixin.HeadersMixin
 summary: A client to interact with Azure search service Indexers.
 constructor:
-  syntax: 'SearchIndexerClient(endpoint: str, credential: AzureKeyCredential, **kwargs:
-    Any)'
+  syntax: 'SearchIndexerClient(endpoint: str, credential: Union[AzureKeyCredential,
+    TokenCredential], **kwargs: Any)'
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
@@ -20,8 +20,19 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
   - name: api_version
     description: The Search API version to use for requests.
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'sets the Audience to use for authentication with Azure Active Directory
+      (AAD). The
+
+      audience is not considered when using a shared key. If audience is not provided,
+      the public cloud audience
+
+      will be assumed.'
     types:
     - <xref:str>
 methods:
@@ -48,7 +59,7 @@ methods:
   - "Create a Data Source<!--[!code-python[Main](les\\sample_data_source_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\\sample_data_source_operations.py\"\
+    dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\\sample_data_source_operations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   container = SearchIndexerDataContainer(name='searchcontainer')\n   data_source_connection\
@@ -83,7 +94,7 @@ methods:
 
     :keyword match_condition: The match condition to use upon the etag
 
-    :type match_condition: ~azure.core.MatchConditions
+    :paramtype match_condition: ~azure.core.MatchConditions
 
     :return: The created SearchIndexerDataSourceConnection
 
@@ -101,7 +112,7 @@ methods:
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   return:
-    description: The created IndexSearchIndexerer
+    description: The created SearchIndexer
     types:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
 - uid: azure.search.documents.indexes.SearchIndexerClient.create_or_update_skillset
@@ -120,6 +131,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: The created or updated SearchIndexerSkillset
     types:
@@ -157,6 +170,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: None
     types:
@@ -165,7 +180,7 @@ methods:
   - "Delete a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\sample_data_source_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\\sample_data_source_operations.py\"\
+    dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\\sample_data_source_operations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   client.delete_data_source_connection(\"sample-data-source-connection\")\n\
@@ -189,6 +204,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: None
     types:
@@ -205,7 +222,7 @@ methods:
   signature: 'delete_skillset(skillset: Union[str, SearchIndexerSkillset], **kwargs:
     Any) -> None'
   parameters:
-  - name: name
+  - name: skillset
     description: The SearchIndexerSkillset to delete
     isRequired: true
     types:
@@ -213,6 +230,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
 - uid: azure.search.documents.indexes.SearchIndexerClient.get_data_source_connection
   name: get_data_source_connection
   summary: Retrieves a data source connection definition.
@@ -231,7 +250,7 @@ methods:
   - "Retrieve a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\sample_data_source_operations.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\\sample_data_source_operations.py\"\
+    dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\\sample_data_source_operations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   result = client.get_data_source_connection(\"sample-data-source-connection\"\
@@ -249,6 +268,16 @@ methods:
   name: get_data_source_connections
   summary: Lists all data source connections available for a search service.
   signature: 'get_data_source_connections(**kwargs: Any) -> Sequence[SearchIndexerDataSourceConnection]'
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of all the data source connections.
     types:
@@ -257,7 +286,7 @@ methods:
   - "List all the SearchIndexerDataSourceConnections<!--[!code-python[Main](les\\\
     sample_data_source_operations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\
     \\samples\\\\sample_data_source_operations.py\", \"xml:space\": \"preserve\",\
     \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   result = client.get_data_source_connections()\n\
@@ -303,6 +332,16 @@ methods:
   name: get_indexers
   summary: Lists all indexers available for a search service.
   signature: 'get_indexers(**kwargs: Any) -> Sequence[SearchIndexer]'
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of all the SearchIndexers.
     types:
@@ -337,6 +376,16 @@ methods:
   name: get_skillsets
   summary: List the SearchIndexerSkillsets in an Azure Search service.
   signature: 'get_skillsets(**kwargs: Any) -> List[SearchIndexerSkillset]'
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of SearchIndexerSkillsets
     types:

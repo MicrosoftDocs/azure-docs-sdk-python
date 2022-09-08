@@ -7,8 +7,8 @@ inheritances:
 - azure.search.documents._headers_mixin.HeadersMixin
 summary: A client to interact with an existing Azure search index.
 constructor:
-  syntax: 'SearchClient(endpoint: str, index_name: str, credential: AzureKeyCredential,
-    **kwargs: Any)'
+  syntax: 'SearchClient(endpoint: str, index_name: str, credential: Union[azure.core.credentials.AzureKeyCredential,
+    AsyncTokenCredential], **kwargs)'
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
@@ -25,15 +25,26 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
   - name: api_version
     description: The Search API version to use for requests.
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'sets the Audience to use for authentication with Azure Active Directory
+      (AAD). The
+
+      audience is not considered when using a shared key. If audience is not provided,
+      the public cloud audience
+
+      will be assumed.'
     types:
     - <xref:str>
 examples:
 - "Creating the SearchClient with an API key.<!--[!code-python[Main](les\\async_samples\\\
   sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\
   \\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\"\
   , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
   : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import\
@@ -120,7 +131,7 @@ methods:
   - "Get a auto-completions.<!--[!code-python[Main](les\\async_samples\\sample_autocomplete_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\\async_samples\\\
+    dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
     \\sample_autocomplete_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -167,7 +178,7 @@ methods:
   - "Delete existing documents to an index<!--[!code-python[Main](les\\async_samples\\\
     sample_crud_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\\
     samples\\\\async_samples\\\\sample_crud_operations_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
@@ -185,7 +196,7 @@ methods:
     types:
     - <xref:str>
   - name: selected_fields
-    description: a whitelist of fields to include in the results
+    description: a allowlist of fields to include in the results
     isRequired: true
     types:
     - <xref:List>[<xref:str>]
@@ -196,7 +207,7 @@ methods:
   - "Get a specific document from the search index.<!--[!code-python[Main](les\\async_samples\\\
     sample_get_document_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\\
     samples\\\\async_samples\\\\sample_get_document_async.py\", \"xml:space\": \"\
     preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
     linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
@@ -257,7 +268,7 @@ methods:
   - "Merge fields into existing documents to an index<!--[!code-python[Main](les\\\
     async_samples\\sample_crud_operations_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\
     \\samples\\\\async_samples\\\\sample_crud_operations_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
@@ -289,17 +300,11 @@ methods:
     - <xref:List>[<xref:azure.search.documents.models.IndexingResult>]
 - uid: azure.search.documents.aio.SearchClient.search
   name: search
-  summary: Search the Azure search index for documents.
+  summary: "Search the Azure search index for documents.\n:param str search_text:\
+    \ A full-text search query expression; Use \"*\" or omit this parameter to\n\n\
+    \   match all documents."
   signature: 'async search(search_text: str, **kwargs: Any) -> AsyncSearchItemPaged[dict]'
   parameters:
-  - name: search_text
-    description: 'A full-text search query expression; Use "*" or omit this parameter
-      to
-
-      match all documents.'
-    isRequired: true
-    types:
-    - <xref:str>
   - name: include_total_count
     description: 'A value that specifies whether to fetch the total count of
 
@@ -328,7 +333,7 @@ methods:
 
       Only searchable fields can be used for hit highlighting.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:str>
   - name: highlight_post_tag
     description: 'A string tag that is appended to hit highlights. Must be set with
 
@@ -456,7 +461,7 @@ methods:
   - "Get search result facets.<!--[!code-python[Main](les\\async_samples\\sample_facet_query_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\\async_samples\\\
+    dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
     \\sample_facet_query_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -554,7 +559,7 @@ methods:
   - "Get search suggestions.<!--[!code-python[Main](les\\async_samples\\sample_suggestions_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\samples\\\\async_samples\\\
+    dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
     \\sample_suggestions_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -589,7 +594,7 @@ methods:
   - "Upload new documents to an index<!--[!code-python[Main](les\\async_samples\\\
     sample_crud_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.2.2\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\116\\\\azure-search-documents-11.3.0\\\\\
     samples\\\\async_samples\\\\sample_crud_operations_async.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   DOCUMENT =\
