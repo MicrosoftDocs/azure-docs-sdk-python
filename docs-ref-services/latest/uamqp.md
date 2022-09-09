@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Uamqp SDK for Python
+ms.devlang: python
 author: lmazuel
-ms.service: uamqp
 title: Azure Uamqp SDK for Python
 ms.topic: reference
+ms.data: 09/09/2022
+ms.service: uamqp
+description: Reference for Azure Uamqp SDK for Python
 ms.author: lmazuel
-ms.devlang: python
-ms.data: 09/08/2022
 ---
 # Azure Uamqp SDK for Python - latest
 

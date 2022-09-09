@@ -8,7 +8,7 @@ ms.service: iotdeviceupdate
 description: Reference for Azure IoT Device Update SDK for Python
 ms.author: lmazuel
 ---
-# Azure IoT Device Update SDK for Python - preview
+# Azure IoT Device Update SDK for Python - latest
 
-## Client packages - preview
+## Client packages - latest
 [!INCLUDE [client-packages](iot-device-update-client-index.md)]
