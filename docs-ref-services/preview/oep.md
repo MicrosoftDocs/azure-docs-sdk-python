@@ -1,12 +1,12 @@
 ---
-ms.data: 09/12/2022
-ms.devlang: python
 title: Azure Oep SDK for Python
-ms.service: oep
-ms.author: lmazuel
-description: Reference for Azure Oep SDK for Python
 ms.topic: reference
+ms.author: lmazuel
+ms.devlang: python
+ms.data: 09/13/2022
 author: lmazuel
+description: Reference for Azure Oep SDK for Python
+ms.service: oep
 ---
 # Azure Oep SDK for Python - preview
 
