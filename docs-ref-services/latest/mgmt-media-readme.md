@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-media, media
 author: naiteeks
 ms.author: naiteeks
-ms.date: 07/01/2022
+ms.date: 09/14/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: media
@@ -11,7 +11,7 @@ ms.service: media
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Media Services Client Library.
-This package has been tested with Python 3.6+.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -22,8 +22,6 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
-
-
  
 For docs and references, see [Python SDK References](/python/api/overview/azure/media-services)
 Code samples for this package can be found at [Media Services](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
