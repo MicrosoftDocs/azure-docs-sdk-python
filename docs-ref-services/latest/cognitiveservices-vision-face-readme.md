@@ -6,7 +6,6 @@ author: PatrickFarley
 ms.author: pafarley
 ms.date: 09/14/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: cognitive-services
 ---
