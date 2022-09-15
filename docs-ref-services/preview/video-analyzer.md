@@ -1,11 +1,11 @@
 ---
+ms.data: 09/15/2022
 title: Azure Video Analyzer SDK for Python
 description: Reference for Azure Video Analyzer SDK for Python
-ms.topic: reference
-ms.author: hivyas
 author: hivyas
-ms.data: 09/14/2022
+ms.topic: reference
 ms.devlang: python
+ms.author: hivyas
 ms.service: videoanalyzer
 ---
 # Azure Video Analyzer SDK for Python - preview

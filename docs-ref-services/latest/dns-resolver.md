@@ -8,7 +8,7 @@ ms.devlang: python
 ms.author: lmazuel
 ms.service: dnsresolver
 ---
-# Azure DNS Resolver SDK for Python - preview
+# Azure DNS Resolver SDK for Python - latest
 
-## Management packages - preview
+## Management packages - latest
 [!INCLUDE [mgmt-packages](dns-resolver-mgmt-index.md)]

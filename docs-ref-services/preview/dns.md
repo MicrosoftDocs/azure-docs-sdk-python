@@ -1,11 +1,11 @@
 ---
+ms.data: 09/15/2022
 title: Azure DNS SDK for Python
 description: Reference for Azure DNS SDK for Python
-ms.topic: reference
-ms.author: lmazuel
 author: lmazuel
-ms.data: 09/14/2022
+ms.topic: reference
 ms.devlang: python
+ms.author: lmazuel
 ms.service: dns
 ---
 # Azure DNS libraries for python
