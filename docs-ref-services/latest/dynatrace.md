@@ -8,7 +8,7 @@ ms.topic: reference
 ms.data: 09/19/2022
 ms.devlang: python
 ---
-# Azure Dynatrace SDK for Python - preview
+# Azure Dynatrace SDK for Python - latest
 
-## Management packages - preview
+## Management packages - latest
 [!INCLUDE [mgmt-packages](dynatrace-mgmt-index.md)]
