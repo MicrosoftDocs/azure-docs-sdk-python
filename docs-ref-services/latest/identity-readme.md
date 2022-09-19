@@ -3,17 +3,17 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: mccoyp
 ms.author: mcpatino
-ms.date: 04/28/2022
+ms.date: 09/19/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: identity
 ---
-# Azure Identity client library for Python - version 1.10.0 
+# Azure Identity client library for Python - version 1.11.0 
 
 
 The Azure Identity library provides [Azure Active Directory (AAD)](/azure/active-directory/fundamentals/active-directory-whatis) token authentication through a set of convenient TokenCredential implementations. It enables Azure SDK clients to authenticate with AAD, while also allowing other Python apps to authenticate with AAD work and school accounts, Microsoft personal accounts (MSA), and other Identity providers like [AAD B2C](/azure/active-directory-b2c/overview) service.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [API reference documentation][ref_docs]
 | [Azure Active Directory documentation](/azure/active-directory/)
@@ -49,7 +49,9 @@ local development.
 
 Developers using Visual Studio Code can use the [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) to authenticate via the editor. Apps using `DefaultAzureCredential` or `VisualStudioCodeCredential` can then use this account to authenticate calls in their app when running locally.
 
-To authenticate in Visual Studio Code, ensure **version 0.9.11 or earlier** of the Azure Account extension is installed. To track progress toward supporting newer extension versions, see [this GitHub issue](https://github.com/Azure/azure-sdk-for-net/issues/27263). Once installed, open the **Command Palette** and run the **Azure: Sign In** command.
+To authenticate in Visual Studio Code, ensure the Azure Account extension is installed. Once installed, open the **Command Palette** and run the **Azure: Sign In** command.
+
+It's a [known issue](https://github.com/Azure/azure-sdk-for-python/issues/23249) that `VisualStudioCodeCredential` doesn't work with [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider [authenticating via the Azure CLI](#authenticate-via-the-azure-cli).
 
 #### Authenticate via the Azure CLI
 
@@ -235,9 +237,9 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ## Credential classes
 
-### Authenticate Azure hosted applications
+### Authenticate Azure-hosted applications
 
-|credential|usage
+|Credential|Usage
 |-|-
 |[DefaultAzureCredential][default_cred_ref]|simplified authentication to get started developing applications for the Azure cloud
 |[ChainedTokenCredential][chain_cred_ref]|define custom authentication flows composing multiple credentials
@@ -246,22 +248,24 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticate service principals
 
-|credential|usage
+|Credential|Usage
 |-|-
-|[ClientSecretCredential][client_secret_cred_ref]| authenticate a service principal using a secret
 |[CertificateCredential][cert_cred_ref]| authenticate a service principal using a certificate
+|[ClientAssertionCredential][client_assertion_cred_ref]|authenticate a service principal using a signed client assertion
+|[ClientSecretCredential][client_secret_cred_ref]| authenticate a service principal using a secret
 
 ### Authenticate users
 
-|credential|usage
+|Credential|Usage
 |-|-
-|[InteractiveBrowserCredential][interactive_cred_ref]|interactively authenticate a user with the default web browser
 |[DeviceCodeCredential][device_code_cred_ref]| interactively authenticate a user on a device with limited UI
+|[InteractiveBrowserCredential][interactive_cred_ref]|interactively authenticate a user with the default web browser
+|[OnBehalfOfCredential][obo_cred_ref]|propagates the delegated user identity and permissions through the request chain
 |[UsernamePasswordCredential][userpass_cred_ref]| authenticate a user with a username and password (does not support multi-factor authentication)
 
 ### Authenticate via development tools
 
-|credential|usage
+|Credential|Usage
 |-|-
 |[AzureCliCredential][cli_cred_ref]|authenticate as the user signed in to the Azure CLI
 |[VisualStudioCodeCredential][vscode_cred_ref]|authenticate as the user signed in to the Visual Studio Code Azure Account extension
@@ -285,7 +289,8 @@ variables:
 |-|-
 |`AZURE_CLIENT_ID`|id of an Azure Active Directory application
 |`AZURE_TENANT_ID`|id of the application's Azure Active Directory tenant
-|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM or PKCS12 certificate file including private key (without password protection)
+|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM or PKCS12 certificate file including private key
+|`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file, if any
 
 #### Username and password
 |variable name|value
@@ -372,28 +377,30 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/appconfiguration/azure-appconfiguration
+[azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/appconfiguration/azure-appconfiguration
 [azure_cli]: /cli/azure
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/eventhub/azure-eventhub
-[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk//keyvault/azure-keyvault-certificates
-[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/keyvault/azure-keyvault-keys
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/storage/azure-storage-blob
-[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/storage/azure-storage-queue
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/eventhub/azure-eventhub
+[azure_keyvault_certificates]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk//keyvault/azure-keyvault-certificates
+[azure_keyvault_keys]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/keyvault/azure-keyvault-keys
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/storage/azure-storage-blob
+[azure_storage_queue]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/storage/azure-storage-queue
 [b2c]: /azure/active-directory-b2c/overview
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/certificatecredential
 [chain_cred_ref]: https://aka.ms/azsdk/python/identity/chainedtokencredential
 [cli_cred_ref]: https://aka.ms/azsdk/python/identity/azclicredential
+[client_assertion_cred_ref]: https://aka.ms/azsdk/python/identity/clientassertioncredential
 [client_secret_cred_ref]: https://aka.ms/azsdk/python/identity/clientsecretcredential
 [default_cred_ref]: https://aka.ms/azsdk/python/identity/defaultazurecredential
 [device_code_cred_ref]: https://aka.ms/azsdk/python/identity/devicecodecredential
 [environment_cred_ref]: https://aka.ms/azsdk/python/identity/environmentcredential
 [interactive_cred_ref]: https://aka.ms/azsdk/python/identity/interactivebrowsercredential
 [managed_id_cred_ref]: https://aka.ms/azsdk/python/identity/managedidentitycredential
+[obo_cred_ref]: https://aka.ms/azsdk/python/identity/onbehalfofcredential
 [ref_docs]: https://aka.ms/azsdk/python/identity/docs
 [ref_docs_aio]: https://aka.ms/azsdk/python/identity/aio/docs
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.10.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.11.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
 [userpass_cred_ref]: https://aka.ms/azsdk/python/identity/usernamepasswordcredential
 [vscode_cred_ref]: https://aka.ms/azsdk/python/identity/vscodecredential
 
