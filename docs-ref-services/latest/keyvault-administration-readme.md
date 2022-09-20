@@ -3,26 +3,26 @@ title: Azure Key Vault Administration client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-administration, keyvault
 author: schaabs
 ms.author: sschaab
-ms.date: 08/11/2022
+ms.date: 09/20/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: keyvault
 ---
-# Azure Key Vault Administration client library for Python - version 4.1.1 
+# Azure Key Vault Administration client library for Python - version 4.2.0 
 
 
 >**Note:** The Administration library only works with [Managed HSM][managed_hsm] – functions targeting a Key Vault will fail.
 
 Azure Key Vault helps solve the following problems:
 - Vault administration (this library) - role-based access control (RBAC), and vault-level backup and restore options
-- Cryptographic key management ([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-keys)) - create, store, and control
+- Cryptographic key management ([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-keys)) - create, store, and control
 access to the keys used to encrypt your data
 - Secrets management
-([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-secrets)) -
+([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-secrets)) -
 securely store and control access to tokens, passwords, certificates, API keys,
 and other secrets
 - Certificate management
-([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-certificates)) -
+([azure-keyvault-certificates](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-certificates)) -
 create, manage, and deploy public and private SSL/TLS certificates
 
 [Source code][library_src] | [Package (PyPI)][pypi_package_administration] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][administration_samples]
@@ -237,7 +237,7 @@ print(role_assignment.role_definition_id)
 ### Perform a full key backup
 Back up your entire collection of keys. The backing store for full key backups is a blob storage container using Shared Access Signature authentication.
 
-For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.1.1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
+For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.2.0/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
 Alternatively, it is possible to [generate a SAS token in Storage Explorer](/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer)
 
 ```python
@@ -265,7 +265,7 @@ print(backup_operation.folder_url)
 Restore your entire collection of keys from a backup. The data source for a full key restore is a storage blob accessed using Shared Access Signature authentication.
 You will also need the `azure_storage_blob_container_uri` from the [above snippet](#perform-a-full-key-backup).
 
-For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.1.1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
+For more details on creating a SAS token using the `BlobServiceClient`, see the sample [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-keyvault-administration_4.2.0/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py#L105).
 Alternatively, it is possible to [generate a SAS token in Storage Explorer](/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer)
 
 ```python
@@ -289,7 +289,7 @@ restore_poller.wait()
 ## Troubleshooting
 
 See the `azure-keyvault-administration`
-[troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/TROUBLESHOOTING.md)
+[troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/TROUBLESHOOTING.md)
 for details on how to diagnose various failure scenarios.
 
 ### General
@@ -346,17 +346,17 @@ contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
 [access_control]: /azure/key-vault/managed-hsm/access-control
-[access_control_operations_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/samples/access_control_operations.py
-[access_control_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/samples/access_control_operations_async.py
-[administration_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/samples
+[access_control_operations_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/samples/access_control_operations.py
+[access_control_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/samples/access_control_operations_async.py
+[administration_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/samples
 [azure_cloud_shell]: https://shell.azure.com/bash
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/identity/azure-identity
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/core/azure-core#azure-core-library-exceptions
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [azure_sub]: https://azure.microsoft.com/free/
 
-[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/samples/backup_restore_operations.py
-[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/samples/backup_restore_operations_async.py
+[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/samples/backup_restore_operations.py
+[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/samples/backup_restore_operations_async.py
 [best_practices]: /azure/key-vault/managed-hsm/best-practices
 [built_in_roles]: /azure/key-vault/managed-hsm/built-in-roles
 
@@ -366,7 +366,7 @@ contact opencode@microsoft.com with any additional questions or comments.
 
 [keyvault_docs]: /azure/key-vault/
 
-[library_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.1.1/sdk/keyvault/azure-keyvault-administration/azure/keyvault/administration
+[library_src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-administration_4.2.0/sdk/keyvault/azure-keyvault-administration/azure/keyvault/administration
 
 [managed_hsm]: /azure/key-vault/managed-hsm/overview
 [managed_hsm_cli]: /azure/key-vault/managed-hsm/quick-create-cli
