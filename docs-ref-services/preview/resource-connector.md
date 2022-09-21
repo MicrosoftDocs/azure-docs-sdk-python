@@ -1,12 +1,12 @@
 ---
-ms.service: resourceconnector
-title: Azure Resource Connector SDK for Python
-description: Reference for Azure Resource Connector SDK for Python
-author: lmazuel
 ms.topic: reference
+title: Azure Resource Connector SDK for Python
 ms.author: lmazuel
-ms.data: 09/20/2022
+author: lmazuel
 ms.devlang: python
+ms.service: resourceconnector
+ms.data: 09/21/2022
+description: Reference for Azure Resource Connector SDK for Python
 ---
 # Azure Resource Connector SDK for Python - preview
 

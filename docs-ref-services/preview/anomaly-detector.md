@@ -1,12 +1,12 @@
 ---
-ms.service: anomalydetector
-title: Azure Anomaly Detector SDK for Python
-description: Reference for Azure Anomaly Detector SDK for Python
-author: conhua
 ms.topic: reference
+title: Azure Anomaly Detector SDK for Python
 ms.author: conhua
-ms.data: 09/20/2022
+author: conhua
 ms.devlang: python
+ms.service: anomalydetector
+ms.data: 09/21/2022
+description: Reference for Azure Anomaly Detector SDK for Python
 ---
 # Azure Anomaly Detector SDK for Python - preview
 

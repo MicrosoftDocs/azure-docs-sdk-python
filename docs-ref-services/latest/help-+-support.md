@@ -1,12 +1,12 @@
 ---
-ms.service: help+support
-title: Azure Help + support SDK for Python
-description: Reference for Azure Help + support SDK for Python
-author: lmazuel
 ms.topic: reference
+title: Azure Help + support SDK for Python
 ms.author: lmazuel
-ms.data: 09/20/2022
+author: lmazuel
 ms.devlang: python
+ms.service: help+support
+ms.data: 09/21/2022
+description: Reference for Azure Help + support SDK for Python
 ---
 # Azure Help + support SDK for Python - latest
 

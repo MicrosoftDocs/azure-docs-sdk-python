@@ -1,12 +1,12 @@
 ---
-ms.service: managedidentity
-title: Azure Managed Identity SDK for Python
-description: Reference for Azure Managed Identity SDK for Python
-author: lmazuel
 ms.topic: reference
+title: Azure Managed Identity SDK for Python
 ms.author: lmazuel
-ms.data: 09/20/2022
+author: lmazuel
 ms.devlang: python
+ms.service: managedidentity
+ms.data: 09/21/2022
+description: Reference for Azure Managed Identity SDK for Python
 ---
 # Azure Managed Identity SDK for Python - preview
 

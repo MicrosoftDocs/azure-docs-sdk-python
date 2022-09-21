@@ -1,12 +1,12 @@
 ---
-ms.service: compute
-title: Azure Compute SDK for Python
-description: Reference for Azure Compute SDK for Python
-author: lmazuel
 ms.topic: reference
+title: Azure Compute SDK for Python
 ms.author: lmazuel
-ms.data: 09/20/2022
+author: lmazuel
 ms.devlang: python
+ms.service: compute
+ms.data: 09/21/2022
+description: Reference for Azure Compute SDK for Python
 ---
 # Azure virtual machine libraries
 

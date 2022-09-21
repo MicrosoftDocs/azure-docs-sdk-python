@@ -1,12 +1,12 @@
 ---
-ms.service: kubernetesconfiguration
-title: Azure Kubernetes Configuration SDK for Python
-description: Reference for Azure Kubernetes Configuration SDK for Python
-author: lmazuel
 ms.topic: reference
+title: Azure Kubernetes Configuration SDK for Python
 ms.author: lmazuel
-ms.data: 09/20/2022
+author: lmazuel
 ms.devlang: python
+ms.service: kubernetesconfiguration
+ms.data: 09/21/2022
+description: Reference for Azure Kubernetes Configuration SDK for Python
 ---
 # Azure Kubernetes Configuration SDK for Python - latest
 
