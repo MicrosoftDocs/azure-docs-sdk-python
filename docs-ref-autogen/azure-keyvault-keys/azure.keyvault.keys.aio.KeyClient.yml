@@ -10,7 +10,14 @@ constructor:
   syntax: 'KeyClient(vault_url: str, credential: AsyncTokenCredential, **kwargs: Any)'
   parameters:
   - name: vault_url
-    description: URL of the vault the client will access
+    description: 'URL of the vault the client will access. This is also called the
+      vault''s "DNS Name".
+
+      You should validate that this URL references a valid Key Vault or Managed HSM
+      resource.
+
+      See [https://aka.ms/azsdk/blog/vault-uri](https://aka.ms/azsdk/blog/vault-uri)
+      for details.'
     isRequired: true
     types:
     - <xref:str>
@@ -20,21 +27,24 @@ constructor:
 
       <xref:azure.identity.aio>'
     isRequired: true
+    types:
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
   - name: api_version
-    description: version of the Key Vault API to use. Defaults to the most recent.
+    description: Version of the service API to use. Defaults to the most recent.
     types:
     - <xref:azure.keyvault.keys.ApiVersion>
-  - name: transport
-    description: 'transport to use. Defaults to
+  - name: verify_challenge_resource
+    description: 'Whether to verify the authentication challenge resource matches
+      the Key
 
-      <xref:azure.core.pipeline.transport.AioHttpTransport>.'
+      Vault or Managed HSM domain. Defaults to True.'
     types:
-    - <xref:azure.core.pipeline.transport.AsyncHttpTransport>
+    - <xref:bool>
 examples:
 - "Create a new `KeyClient`<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\
   \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
+  17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
   : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\":\
   \ {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity.aio\
   \ import DefaultAzureCredential\n   from azure.keyvault.keys.aio import KeyClient\n\
@@ -77,7 +87,7 @@ methods:
   - "Get a key backup<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"\
+    \\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # backup key\n\
     \   key_backup = await key_client.backup_key(key_name)\n\n   # returns the raw\
@@ -146,7 +156,7 @@ methods:
   - "Create an elliptic curve key<!--[!code-python[Main](s\\test_samples_keys_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\"\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # create an elliptic curve (ec) key\n   key_curve = \"P-256\"\n   ec_key\
@@ -235,7 +245,7 @@ methods:
   - "Create a key<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
+    17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from dateutil\
     \ import parser as date_parse\n\n   key_size = 2048\n   key_ops = [\"encrypt\"\
@@ -308,7 +318,7 @@ methods:
   - "Create an octet sequence (symmetric) key<!--[!code-python[Main](s\\test_samples_keys_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\"\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   key = await key_client.create_oct_key(key_name, size=256, hardware_protected=True)\n\
@@ -381,7 +391,7 @@ methods:
   - "Create RSA key<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"\
+    \\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # create an\
     \ rsa key in a hardware security module\n   key = await key_client.create_rsa_key(key_name,\
@@ -416,7 +426,7 @@ methods:
   - "Delete a key<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
+    17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # delete a\
     \ key\n   deleted_key = await key_client.delete_key(key_name)\n\n   print(deleted_key.name)\n\
@@ -472,7 +482,7 @@ methods:
   - "Get a deleted key<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"\
+    \\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # get a deleted\
     \ key (requires soft-delete enabled for the vault)\n   deleted_key = await key_client.get_deleted_key(key_name)\n\
@@ -511,7 +521,7 @@ methods:
   - "Get a key<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
+    17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # get the\
     \ latest version of a key\n   key = await key_client.get_key(key_name)\n\n   #\
@@ -557,7 +567,7 @@ methods:
   examples:
   - "Get random bytes<!--[!code-python[Main](s\\test_keys_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\17\\\\azure-keyvault-keys-4.7.0\\\
     \\tests\\\\test_keys_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   # get eight random bytes from a managed HSM\n\
@@ -632,7 +642,7 @@ methods:
   - "List all the deleted keys<!--[!code-python[Main](s\\test_samples_keys_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\"\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # get an iterator of deleted keys (requires soft-delete enabled for the vault)\n\
@@ -660,7 +670,7 @@ methods:
   - "List all versions of a key<!--[!code-python[Main](s\\test_samples_keys_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\"\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # get an iterator of all versions of a key\n   key_versions = key_client.list_properties_of_key_versions(\"\
@@ -683,7 +693,7 @@ methods:
   - "List all keys<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"\
+    \\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # list keys\n\
     \   keys = key_client.list_properties_of_keys()\n\n   async for key in keys:\n\
@@ -755,7 +765,7 @@ methods:
   - "Recover a deleted key<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"\
+    \\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # recover\
     \ deleted key to its latest version (requires soft-delete enabled for the vault)\n\
@@ -837,7 +847,7 @@ methods:
   - "Restore a key backup<!--[!code-python[Main](s\\test_samples_keys_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\", \"\
+    \\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # restores\
     \ a backup\n   restored_key = await key_client.restore_key_backup(key_backup)\n\
@@ -921,7 +931,7 @@ methods:
   - "Update a key's attributes<!--[!code-python[Main](s\\test_samples_keys_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\17\\\\azure-keyvault-keys-4.6.1\\\\tests\\\\test_samples_keys_async.py\"\
+    dist_temp\\\\17\\\\azure-keyvault-keys-4.7.0\\\\tests\\\\test_samples_keys_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # update attributes of an existing key\n   expires_on = date_parse.parse(\"\

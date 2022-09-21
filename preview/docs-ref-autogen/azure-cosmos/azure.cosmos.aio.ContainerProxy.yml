@@ -13,8 +13,8 @@ summary: 'An interface to interact with a specific DB Container.
   <xref:azure.cosmos.aio.database.DatabaseProxy.get_container_client> method to get
   an existing
 
-  container, or the <xref:azure.cosmos.aio.database.DatabaseProxy> method to create
-  a
+  container, or the <xref:azure.cosmos.aio.database.DatabaseProxy.create_container>
+  method to create a
 
   new container.
 
@@ -49,17 +49,30 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.aio.ContainerProxy.upsert_item> method.'
-  signature: async create_item(body, **kwargs) -> Dict[str, Any]
+  signature: 'async create_item(body: Dict[str, Any], **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
-  - name: body
+  - name: str] body
     description: A dict-like object representing the item to create.
     isRequired: true
+    types:
+    - <xref:dict>[<xref:str,>
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
   - name: indexing_directive
-    description: Indicate whether the document should be omitted from indexing.
+    description: 'Enumerates the possible values to indicate whether the document
+      should
+
+      be omitted from indexing. Possible values include: 0 for Default, 1 for Exclude,
+      or 2 for Include.'
+    types:
+    - <xref:Union>[<xref:int>, <xref:azure.cosmos.documents.IndexingDirective>]
   - name: enable_automatic_id_generation
     description: Enable automatic id generation if no id present.
     types:
@@ -68,10 +81,10 @@ methods:
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: initial_headers
+  - name: str] initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str,>
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -87,11 +100,12 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
   return:
     description: A dict representing the new item.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: Item with the given ID already exists.
@@ -101,18 +115,23 @@ methods:
 
 
     If the conflict does not already exist in the container, an exception is raised.'
-  signature: async delete_conflict(conflict, partition_key, **kwargs) -> None
+  signature: 'async delete_conflict(conflict: Union[str, Dict[str, Any]], partition_key:
+    Union[str, int, float, bool], **kwargs: Any) -> None'
   parameters:
   - name: conflict
-    description: The ID (name) or dict representing the conflict to be deleted.
+    description: The ID (name) or dict representing the conflict to retrieve.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
   - name: partition_key
-    description: Partition key for the conflict to delete.
+    description: Partition key for the conflict to retrieve.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:None>], <xref:None>]
   return:
     types:
     - <xref:None>
@@ -127,29 +146,35 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: async delete_item(item, partition_key, pre_trigger_include=None, post_trigger_include=None,
-    **kwargs) -> None
+  signature: 'async delete_item(item: Union[str, Dict[str, Any]], partition_key: Union[str,
+    int, float, bool], **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
   - name: partition_key
     description: Specifies the partition key value for the item.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: session_token
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: initial_headers
+  - name: str] initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str,>
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -165,7 +190,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:None>], <xref:None>]
   return:
     types:
     - <xref:None>
@@ -174,19 +199,71 @@ methods:
     description: The item wasn't deleted successfully.
   - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
     description: The item does not exist in the container.
-- uid: azure.cosmos.aio.ContainerProxy.list_conflicts
-  name: list_conflicts
-  summary: List all the conflicts in the container.
-  signature: 'list_conflicts(max_item_count: Optional[int] = None, **kwargs: Any)
-    -> azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]'
+- uid: azure.cosmos.aio.ContainerProxy.get_conflict
+  name: get_conflict
+  summary: Get the conflict identified by *conflict*.
+  signature: 'async get_conflict(conflict: Union[str, Dict[str, Any]], partition_key:
+    Union[str, int, float, bool], **kwargs: Any) -> Dict[str, Any]'
   parameters:
-  - name: max_item_count
-    description: Max number of items to be returned in the enumeration operation.
+  - name: conflict
+    description: The ID (name) or dict representing the conflict to retrieve.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: partition_key
+    description: Partition key for the conflict to retrieve.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
+  return:
+    description: A dict representing the retrieved conflict.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Any>]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The given conflict couldn't be retrieved.
+- uid: azure.cosmos.aio.ContainerProxy.get_throughput
+  name: get_throughput
+  summary: 'Get the ThroughputProperties object for this container.
+
+
+    If no ThroughputProperties already exists for the container, an exception is raised.'
+  signature: 'async get_throughput(**kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  parameters:
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:List>[<xref:Dict>[<xref:str>,
+      <xref:Any>]]], <xref:None>]
+  return:
+    description: ThroughputProperties for the container.
+    types:
+    - <xref:azure.cosmos.offer.ThroughputProperties>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'No throughput properties exist for the container
+
+      or the throughput properties could not be retrieved.'
+- uid: azure.cosmos.aio.ContainerProxy.list_conflicts
+  name: list_conflicts
+  summary: List all the conflicts in the container.
+  signature: 'list_conflicts(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
+    Any]]'
+  parameters:
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    types:
+    - <xref:int>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
+      <xref:Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of conflicts (dicts).
     types:
@@ -194,46 +271,109 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: query_conflicts(query, parameters=None, partition_key=None, max_item_count=None,
-    **kwargs) -> azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]
+  signature: 'query_conflicts(query: Union[str, Dict[str, Any]], **kwargs: Any) ->
+    azure.core.async_paging.AsyncItemPaged[Dict[str, Any]]'
   parameters:
-  - name: query
+  - name: Dict[str, Any]] query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str,>
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
-    isRequired: true
+    types:
+    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
   - name: partition_key
     description: 'Specifies the partition key value for the item. If none is passed
       in, a
 
       cross partition query will be executed.'
-    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    isRequired: true
+    types:
+    - <xref:int>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
+      <xref:Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of conflicts (dicts).
     types:
     - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.query_items
   name: query_items
-  summary: "Return all results matching the given *query*.\n\nYou can use any value\
-    \ for the container name in the FROM clause, but\noften the container name is\
-    \ used. In the examples below, the container\nname is \"products,\" and is aliased\
-    \ as \"p\" for easier referencing in\nthe WHERE clause.\n\n**Provisional** keyword\
-    \ argument max_integrated_cache_staleness_in_ms\n:keyword int max_integrated_cache_staleness_in_ms:\n\
-    The max cache staleness for the integrated cache in milliseconds.\n\n   For accounts\
-    \ configured to use the integrated cache, using Session or Eventual consistency,\n\
-    \   responses are guaranteed to be no staler than this value."
-  signature: query_items(query, parameters=None, partition_key=None, max_item_count=None,
-    enable_scan_in_query=None, populate_query_metrics=None, **kwargs) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
-    Any]]
+  summary: 'Return all results matching the given *query*.
+
+
+    You can use any value for the container name in the FROM clause, but
+
+    often the container name is used. In the examples below, the container
+
+    name is "products," and is aliased as "p" for easier referencing in
+
+    the WHERE clause.'
+  signature: 'query_items(query: Union[str, Dict[str, Any]], **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
+    Any]]'
+  parameters:
+  - name: Dict[str, Any]] query
+    description: The Azure Cosmos DB SQL query to execute.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str,>
+  - name: parameters
+    description: 'Optional array of parameters to the query.
+
+      Each parameter is a dict() with ''name'' and ''value'' keys.
+
+      Ignored if no query is provided.'
+    types:
+    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: partition_key
+    description: 'Specifies the partition key value for the item. If none is provided,
+
+      a cross-partition query will be executed.'
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    types:
+    - <xref:int>
+  - name: enable_scan_in_query
+    description: 'Allow scan on the queries which couldn''t be served as
+
+      indexing was opted out on the requested paths.'
+    types:
+    - <xref:bool>
+  - name: populate_query_metrics
+    description: Enable returning query metrics in response headers.
+    types:
+    - <xref:bool>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: str] initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
+      <xref:Any>]]], <xref:None>]
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -242,7 +382,7 @@ methods:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\dist_temp\\\\75\\\\azure-cosmos-4.3.0b4\\\\samples\\\\examples_async.py\"\
+    \\1\\\\s\\\\dist_temp\\\\75\\\\azure-cosmos-4.3.1b1\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import json\n\n   async for item in container.query_items(\n           query='SELECT\
@@ -251,7 +391,7 @@ methods:
     \ query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\dist_temp\\\\75\\\\azure-cosmos-4.3.0b4\\\\samples\\\\examples_async.py\"\
+    \\1\\\\s\\\\dist_temp\\\\75\\\\azure-cosmos-4.3.1b1\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   discontinued_items = container.query_items(\n       query='SELECT * FROM\
@@ -263,35 +403,40 @@ methods:
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: query_items_change_feed(partition_key_range_id=None, is_start_from_beginning=False,
-    continuation=None, max_item_count=None, **kwargs) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
-    Any]]
+  signature: 'query_items_change_feed(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
+    Any]]'
   parameters:
-  - name: partition_key_range_id
-    description: 'ChangeFeed requests can be executed against specific partition key
-      ranges.
-
-      This is used to process the change feed in parallel across multiple consumers.'
-    isRequired: true
-  - name: partition_key
-    description: partition key at which ChangeFeed requests are targetted.
-    isRequired: true
   - name: is_start_from_beginning
     description: 'Get whether change feed should start from
 
       beginning (true) or from current (false). By default it''s start from current
       (false).'
-    isRequired: true
+    types:
+    - <xref:bool>
+  - name: partition_key_range_id
+    description: 'ChangeFeed requests can be executed against specific partition key
+
+      ranges. This is used to process the change feed in parallel across multiple
+      consumers.'
+    types:
+    - <xref:str>
   - name: continuation
     description: e_tag value to be used as continuation for reading change feed.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    isRequired: true
+    types:
+    - <xref:int>
+  - name: partition_key
+    description: partition key at which ChangeFeed requests are targeted.
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
+      <xref:Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -299,34 +444,36 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.read
   name: read
   summary: Read the container properties.
-  signature: async read(populate_partition_key_range_statistics=None, populate_quota_info=None,
-    **kwargs) -> Dict[str, Any]
+  signature: 'async read(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
 
       range statistics in response headers.'
-    isRequired: true
+    types:
+    - <xref:bool>
   - name: populate_quota_info
     description: Enable returning collection storage quota information in response
       headers.
-    isRequired: true
+    types:
+    - <xref:bool>
   - name: session_token
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: initial_headers
+  - name: str] initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str,>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
   return:
     description: Dict representing the retrieved container.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'Raised if the container couldn''t be retrieved.
@@ -334,51 +481,86 @@ methods:
       This includes if the container does not exist.'
 - uid: azure.cosmos.aio.ContainerProxy.read_all_items
   name: read_all_items
-  summary: "List all the items in the container.\n\n**Provisional** keyword argument\
-    \ max_integrated_cache_staleness_in_ms\n:keyword int max_integrated_cache_staleness_in_ms:\n\
-    The max cache staleness for the integrated cache in milliseconds.\n\n   For accounts\
-    \ configured to use the integrated cache, using Session or Eventual consistency,\n\
-    \   responses are guaranteed to be no staler than this value."
-  signature: read_all_items(max_item_count=None, **kwargs) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
-    Any]]
+  summary: List all the items in the container.
+  signature: 'read_all_items(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[Dict[str,
+    Any]]'
+  parameters:
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    types:
+    - <xref:int>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: str] initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
+      <xref:Any>]]], <xref:None>]
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
     - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
-- uid: azure.cosmos.aio.ContainerProxy.read_conflict
-  name: read_conflict
-  summary: Get the conflict identified by *conflict*.
-  signature: async read_conflict(conflict, partition_key, **kwargs) -> Dict[str, Any]
+- uid: azure.cosmos.aio.ContainerProxy.read_item
+  name: read_item
+  summary: Get the item identified by *item*.
+  signature: 'async read_item(item: Union[str, Dict[str, Any]], partition_key: Union[str,
+    int, float, bool], **kwargs: Any) -> Dict[str, Any]'
   parameters:
-  - name: conflict
-    description: The ID (name) or dict representing the conflict to retrieve.
+  - name: item
+    description: The ID (name) or dict representing item to retrieve.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
   - name: partition_key
-    description: Partition key for the conflict to retrieve.
+    description: Partition key for the item to retrieve.
     isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: str] initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
-  return:
-    description: A dict representing the retrieved conflict.
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
-  exceptions:
-  - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: The given conflict couldn't be retrieved.
-- uid: azure.cosmos.aio.ContainerProxy.read_item
-  name: read_item
-  summary: "Get the item identified by *item*.\n\n**Provisional** keyword argument\
-    \ max_integrated_cache_staleness_in_ms\n:keyword int max_integrated_cache_staleness_in_ms:\n\
-    The max cache staleness for the integrated cache in milliseconds.\n\n   For accounts\
-    \ configured to use the integrated cache, using Session or Eventual consistency,\n\
-    \   responses are guaranteed to be no staler than this value."
-  signature: async read_item(item, partition_key, **kwargs) -> Dict[str, Any]
+    - <xref:int>
   return:
     description: Dict representing the item to be retrieved.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given item couldn't be retrieved.
@@ -386,62 +568,47 @@ methods:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\dist_temp\\\\75\\\\azure-cosmos-4.3.0b4\\\\samples\\\\examples_async.py\"\
+    \\1\\\\s\\\\dist_temp\\\\75\\\\azure-cosmos-4.3.1b1\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   item = await container.read_item(\"item2\", partition_key=\"Widget\")\n \
     \  item[\"productModel\"] = \"DISCONTINUED\"\n   updated_item = await container.upsert_item(item)\n\
     \n   ````\n"
-- uid: azure.cosmos.aio.ContainerProxy.read_offer
-  name: read_offer
-  summary: 'Read the Offer object for this container.
-
-
-    If no Offer already exists for the container, an exception is raised.'
-  signature: 'async read_offer(**kwargs: Any) -> azure.cosmos.offer.Offer'
-  parameters:
-  - name: response_hook
-    description: A callable invoked with the response metadata.
-    types:
-    - <xref:Callable>
-  return:
-    description: Offer for the container.
-    types:
-    - <xref:azure.cosmos.Offer>
-  exceptions:
-  - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: 'No offer exists for the container or
-
-      the offer could not be retrieved.'
 - uid: azure.cosmos.aio.ContainerProxy.replace_item
   name: replace_item
   summary: 'Replaces the specified item if it exists in the container.
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: async replace_item(item, body, pre_trigger_include=None, post_trigger_include=None,
-    **kwargs) -> Dict[str, Any]
+  signature: 'async replace_item(item: Union[str, Dict[str, Any]], body: Dict[str,
+    Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
     isRequired: true
-  - name: body
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: Any] body
     description: A dict-like object representing the item to replace.
     isRequired: true
+    types:
+    - <xref:Dict>[<xref:str,>
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: session_token
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: initial_headers
+  - name: str] initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str,>
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -457,11 +624,12 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
   return:
     description: A dict representing the item after replace went through.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'The replace failed or the item with
@@ -472,25 +640,29 @@ methods:
   summary: 'Replace the container''s throughput.
 
 
-    If no Offer already exists for the container, an exception is raised.'
-  signature: 'async replace_throughput(throughput: int, **kwargs: Any) -> azure.cosmos.offer.Offer'
+    If no ThroughputProperties already exist for the container, an exception is raised.'
+  signature: 'async replace_throughput(throughput: Union[int, azure.cosmos.offer.ThroughputProperties],
+    **kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
     isRequired: true
+    types:
+    - <xref:int>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
   return:
-    description: Offer for the container, updated with new throughput.
+    description: ThroughputProperties for the container, updated with new throughput.
     types:
-    - <xref:azure.cosmos.Offer>
+    - <xref:azure.cosmos.offer.ThroughputProperties>
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: 'No offer exists for the container
+    description: 'No throughput properties exist for the container
 
-      or the offer could not be updated.'
+      or the throughput properties could not be updated.'
 - uid: azure.cosmos.aio.ContainerProxy.upsert_item
   name: upsert_item
   summary: 'Insert or update the specified item.
@@ -499,26 +671,30 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: async upsert_item(body, pre_trigger_include=None, post_trigger_include=None,
-    **kwargs) -> Dict[str, Any]
+  signature: 'async upsert_item(body: Dict[str, Any], **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
-  - name: body
+  - name: Any] body
     description: A dict-like object representing the item to update or insert.
     isRequired: true
+    types:
+    - <xref:Dict>[<xref:str,>
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
-    isRequired: true
+    types:
+    - <xref:str>
   - name: session_token
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: initial_headers
+  - name: str] initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str,>
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -534,11 +710,12 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
+      <xref:Any>]], <xref:None>]
   return:
     description: A dict representing the upserted item.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given item could not be upserted.
