@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 08/03/2022
+ms.date: 09/22/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -22,12 +22,10 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
-
-
  
 For docs and references, see [Python SDK References](/python/api/overview/azure/monitoring?view=azure-python-preview)
 Code samples for this package can be found at [Monitor](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
-Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Additional code samples for different Azure services are available at [Samples Repo](https://github.com/Azure-Samples/azure-samples-python-management/tree/main/samples/monitor)
 
 
 # Provide Feedback
