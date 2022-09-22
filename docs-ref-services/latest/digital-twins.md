@@ -1,11 +1,11 @@
 ---
-ms.topic: reference
-title: Azure Digital Twins SDK for Python
 ms.author: jgalla
 author: johngallardo
-ms.devlang: python
+ms.topic: reference
+ms.data: 09/22/2022
 ms.service: digitaltwins
-ms.data: 09/21/2022
+title: Azure Digital Twins SDK for Python
+ms.devlang: python
 description: Reference for Azure Digital Twins SDK for Python
 ---
 # Azure Digital Twins SDK for Python - latest
