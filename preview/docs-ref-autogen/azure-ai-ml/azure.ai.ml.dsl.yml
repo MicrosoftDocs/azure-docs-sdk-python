@@ -7,16 +7,16 @@ functions:
 - uid: azure.ai.ml.dsl.pipeline
   name: pipeline
   summary: "Build a pipeline which contains all component nodes defined in this\n\
-    function. Currently only single layer pipeline is supported.\n\n> [!NOTE]\n> The\
-    \ following pseudo-code shows how to create a pipeline using this decorator.\n\
-    >\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # Define a pipeline with decorator\n   @pipeline(name='sample_pipeline', description='pipeline\
-    \ description')\n   def sample_pipeline_func(pipeline_input, pipeline_str_param):\n\
-    \           # component1 and component2 will be added into the current pipeline\n\
-    \           component1 = component1_func(input1=pipeline_input, param1='literal')\n\
-    \           component2 = component2_func(input1=dataset, param1=pipeline_str_param)\n\
+    function. Set AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED to enable multi layer pipeline.\n\
+    \n> [!NOTE]\n> The following pseudo-code shows how to create a pipeline using\
+    \ this decorator.\n>\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {}, \"linenos\": false}\
+    \ -->\n\n````python\n\n   # Define a pipeline with decorator\n   @pipeline(name='sample_pipeline',\
+    \ description='pipeline description')\n   def sample_pipeline_func(pipeline_input,\
+    \ pipeline_str_param):\n           # component1 and component2 will be added into\
+    \ the current pipeline\n           component1 = component1_func(input1=pipeline_input,\
+    \ param1='literal')\n           component2 = component2_func(input1=dataset, param1=pipeline_str_param)\n\
     \           # A decorated pipeline function needs to return outputs.\n       \
     \    # In this case, the pipeline has two outputs: component1's output1 and component2's\
     \ output1,\n           # and let's rename them to 'pipeline_output1' and 'pipeline_output2'\n\
@@ -26,11 +26,17 @@ functions:
     \   pipeline_job = sample_pipeline_func(\n       pipeline_input=Input(type='uri_folder',\
     \ path='./local-data'),\n       pipeline_str_param='literal'\n   )\n   ml_client.jobs.create_or_update(pipeline_job,\
     \ experiment_name=\"pipeline_samples\")\n   ````"
-  signature: 'pipeline(*, name: Optional[str] = None, version: Optional[str] = None,
-    display_name: Optional[str] = None, description: Optional[str] = None, experiment_name:
-    Optional[str] = None, tags: Optional[Dict[str, str]] = None, continue_on_step_failure:
-    Optional[bool] = None, **kwargs)'
+  signature: 'pipeline(func=None, *, name: Optional[str] = None, version: Optional[str]
+    = None, display_name: Optional[str] = None, description: Optional[str] = None,
+    experiment_name: Optional[str] = None, tags: Optional[Dict[str, str]] = None,
+    **kwargs)'
   parameters:
+  - name: func
+    description: The user pipeline function to be decorated.
+    defaultValue: None
+  - name: func
+    description: types.FunctionType
+    isRequired: true
   - name: name
     description: The name of pipeline component, defaults to function name.
     isRequired: true
@@ -52,8 +58,8 @@ functions:
     types:
     - <xref:str>
   - name: experiment_name
-    description: Name of the experiment the job will be created under, if None is
-      provided, experiment will be set to current directory.
+    description: Name of the experiment the job will be created under,                 if
+      None is provided, experiment will be set to current directory.
     isRequired: true
     types:
     - <xref:str>
@@ -62,11 +68,6 @@ functions:
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: continue_on_step_failure
-    description: Flag when set, continue pipeline execution if a step fails.
-    isRequired: true
-    types:
-    - <xref:bool>
   - name: kwargs
     description: A dictionary of additional configuration parameters.
     isRequired: true
