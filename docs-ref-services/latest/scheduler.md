@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-ms.devlang: python
-ms.author: lmazuel
-ms.service: scheduler
-title: Azure Scheduler SDK for Python
 description: Reference for Azure Scheduler SDK for Python
-ms.data: 09/23/2022
+ms.author: lmazuel
+ms.devlang: python
+title: Azure Scheduler SDK for Python
 ms.topic: reference
+ms.data: 09/26/2022
+ms.service: scheduler
+author: lmazuel
 ---
 # Azure Scheduler libraries for python
 

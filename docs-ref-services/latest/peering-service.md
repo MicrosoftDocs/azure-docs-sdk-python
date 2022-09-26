@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-ms.devlang: python
-ms.author: lmazuel
-ms.service: peeringservice
-title: Azure Peering Service SDK for Python
 description: Reference for Azure Peering Service SDK for Python
-ms.data: 09/23/2022
+ms.author: lmazuel
+ms.devlang: python
+title: Azure Peering Service SDK for Python
 ms.topic: reference
+ms.data: 09/26/2022
+ms.service: peeringservice
+author: lmazuel
 ---
 # Azure Peering Service SDK for Python - latest
 

@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-ms.devlang: python
-ms.author: lmazuel
-ms.service: mobilenetwork
-title: Azure Mobile Network SDK for Python
 description: Reference for Azure Mobile Network SDK for Python
-ms.data: 09/23/2022
+ms.author: lmazuel
+ms.devlang: python
+title: Azure Mobile Network SDK for Python
 ms.topic: reference
+ms.data: 09/26/2022
+ms.service: mobilenetwork
+author: lmazuel
 ---
 # Azure Mobile Network SDK for Python - preview
 
