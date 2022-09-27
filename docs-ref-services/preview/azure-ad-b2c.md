@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Azure AD B2C SDK for Python
-ms.author: lmazuel
-ms.devlang: python
 title: Azure Azure AD B2C SDK for Python
-ms.topic: reference
-ms.data: 09/26/2022
-ms.service: azureadb2c
 author: lmazuel
+ms.service: azureadb2c
+ms.devlang: python
+ms.topic: reference
+ms.data: 09/27/2022
+ms.author: lmazuel
+description: Reference for Azure Azure AD B2C SDK for Python
 ---
 # Azure Azure AD B2C SDK for Python - preview
 

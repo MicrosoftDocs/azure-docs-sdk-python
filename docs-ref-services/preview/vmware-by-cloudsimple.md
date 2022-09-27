@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure VMWare by CloudSimple SDK for Python
-ms.author: lmazuel
-ms.devlang: python
 title: Azure VMWare by CloudSimple SDK for Python
-ms.topic: reference
-ms.data: 09/26/2022
-ms.service: vmwarebycloudsimple
 author: lmazuel
+ms.service: vmwarebycloudsimple
+ms.devlang: python
+ms.topic: reference
+ms.data: 09/27/2022
+ms.author: lmazuel
+description: Reference for Azure VMWare by CloudSimple SDK for Python
 ---
 # Azure VMWare by CloudSimple SDK for Python - preview
 

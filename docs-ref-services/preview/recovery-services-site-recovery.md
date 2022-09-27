@@ -1,12 +1,12 @@
 ---
-description: Reference for Azure Recovery Services Site Recovery SDK for Python
-ms.author: DheerendraRathor
-ms.devlang: python
 title: Azure Recovery Services Site Recovery SDK for Python
-ms.topic: reference
-ms.data: 09/26/2022
-ms.service: recoveryservicessiterecovery
 author: DheerendraRathor
+ms.service: recoveryservicessiterecovery
+ms.devlang: python
+ms.topic: reference
+ms.data: 09/27/2022
+ms.author: DheerendraRathor
+description: Reference for Azure Recovery Services Site Recovery SDK for Python
 ---
 # Azure Recovery Services Site Recovery SDK for Python - preview
 
