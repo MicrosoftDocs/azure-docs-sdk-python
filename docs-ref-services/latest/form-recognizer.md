@@ -1,12 +1,12 @@
 ---
-ms.data: 09/28/2022
-author: kristapratico
-description: Reference for Azure Form Recognizer SDK for Python
-ms.topic: reference
-ms.devlang: python
+ms.data: 09/30/2022
 ms.author: krpratic
+ms.topic: reference
 title: Azure Form Recognizer SDK for Python
+description: Reference for Azure Form Recognizer SDK for Python
+author: kristapratico
 ms.service: formrecognizer
+ms.devlang: python
 ---
 # Azure Form Recognizer SDK for Python - latest
 
