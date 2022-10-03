@@ -1,12 +1,12 @@
 ---
-ms.data: 09/30/2022
-ms.author: lmazuel
-ms.topic: reference
-title: Azure Work Load Monitor SDK for Python
 description: Reference for Azure Work Load Monitor SDK for Python
-author: lmazuel
+title: Azure Work Load Monitor SDK for Python
+ms.topic: reference
+ms.data: 10/03/2022
 ms.service: workloadmonitor
+author: lmazuel
 ms.devlang: python
+ms.author: lmazuel
 ---
 # Azure Work Load Monitor SDK for Python - preview
 

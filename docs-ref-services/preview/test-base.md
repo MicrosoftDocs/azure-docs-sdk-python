@@ -1,12 +1,12 @@
 ---
-ms.data: 09/30/2022
-ms.author: lmazuel
-ms.topic: reference
-title: Azure Test Base SDK for Python
 description: Reference for Azure Test Base SDK for Python
-author: lmazuel
+title: Azure Test Base SDK for Python
+ms.topic: reference
+ms.data: 10/03/2022
 ms.service: testbase
+author: lmazuel
 ms.devlang: python
+ms.author: lmazuel
 ---
 # Azure Test Base SDK for Python - preview
 

@@ -1,12 +1,12 @@
 ---
-ms.data: 09/30/2022
-ms.author: lmazuel
-ms.topic: reference
-title: Azure DNS Resolver SDK for Python
 description: Reference for Azure DNS Resolver SDK for Python
-author: lmazuel
+title: Azure DNS Resolver SDK for Python
+ms.topic: reference
+ms.data: 10/03/2022
 ms.service: dnsresolver
+author: lmazuel
 ms.devlang: python
+ms.author: lmazuel
 ---
 # Azure DNS Resolver SDK for Python - latest
 
