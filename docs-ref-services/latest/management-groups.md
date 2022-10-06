@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-ms.service: managementgroups
-ms.devlang: python
-ms.topic: reference
-title: Azure Management Groups SDK for Python
 description: Reference for Azure Management Groups SDK for Python
+ms.topic: reference
+ms.service: managementgroups
 ms.author: lmazuel
-ms.data: 10/05/2022
+title: Azure Management Groups SDK for Python
+author: lmazuel
+ms.devlang: python
+ms.data: 10/06/2022
 ---
 # Azure Management Groups SDK for Python - latest
 

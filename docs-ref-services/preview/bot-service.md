@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-ms.service: botservice
-ms.devlang: python
-ms.topic: reference
-title: Azure Bot Service SDK for Python
 description: Reference for Azure Bot Service SDK for Python
+ms.topic: reference
+ms.service: botservice
 ms.author: lmazuel
-ms.data: 10/05/2022
+title: Azure Bot Service SDK for Python
+author: lmazuel
+ms.devlang: python
+ms.data: 10/06/2022
 ---
 # Azure Bot Service SDK for Python - preview
 

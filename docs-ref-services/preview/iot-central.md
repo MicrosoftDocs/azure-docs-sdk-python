@@ -1,12 +1,12 @@
 ---
-author: lmazuel
-ms.service: iotcentral
-ms.devlang: python
-ms.topic: reference
-title: Azure IoT Central SDK for Python
 description: Reference for Azure IoT Central SDK for Python
+ms.topic: reference
+ms.service: iotcentral
 ms.author: lmazuel
-ms.data: 10/05/2022
+title: Azure IoT Central SDK for Python
+author: lmazuel
+ms.devlang: python
+ms.data: 10/06/2022
 ---
 # Azure IoT Central SDK for Python - preview
 

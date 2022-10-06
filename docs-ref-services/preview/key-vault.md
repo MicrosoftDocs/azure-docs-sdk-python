@@ -1,12 +1,12 @@
 ---
-author: schaabs
-ms.service: keyvault
-ms.devlang: python
-ms.topic: reference
-title: Azure Key Vault SDK for Python
 description: Reference for Azure Key Vault SDK for Python
+ms.topic: reference
+ms.service: keyvault
 ms.author: sschaab
-ms.data: 10/05/2022
+title: Azure Key Vault SDK for Python
+author: schaabs
+ms.devlang: python
+ms.data: 10/06/2022
 ---
 # Azure Key Vault libraries for Python
 
