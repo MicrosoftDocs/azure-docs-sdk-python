@@ -51,10 +51,16 @@ methods:
 
     Prerequisite: In Azure Portal, configure the Redirect URI of your
 
-    "Mobile and Desktop application" as `http://localhost`.'
+    "Mobile and Desktop application" as `http://localhost`.
+
+    If you opts in to use broker during `PublicClientApplication` creation,
+
+    your app also need this Redirect URI:
+
+    `ms-appx-web://Microsoft.AAD.BrokerPlugin/YOUR_CLIENT_ID`'
   signature: acquire_token_interactive(scopes, prompt=None, login_hint=None, domain_hint=None,
     claims_challenge=None, timeout=None, port=None, extra_scopes_to_consent=None,
-    max_age=None, **kwargs)
+    max_age=None, parent_window_handle=None, on_before_launching_ui=None, **kwargs)
   parameters:
   - name: scopes
     description: It is a list of case-sensitive strings.
@@ -153,6 +159,34 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: parent_window_handle
+    description: 'OPTIONAL. If your app is a GUI app running on modern Windows system,
+
+      and your app opts in to use broker,
+
+      you are recommended to also provide its window handle,
+
+      so that the sign in UI window will properly pop up on top of your window.
+
+
+      New in version 1.20.0.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: on_before_launching_ui
+    description: 'A callback with the form of
+
+      `lambda ui="xyz", **kwargs: print("A {} will be launched".format(ui))`,
+
+      where `ui` will be either "browser" or "broker".
+
+      You can use it to inform your end user to expect a pop-up window.
+
+
+      New in version 1.20.0.'
+    defaultValue: None
+    types:
+    - <xref:function>
   return:
     description: "* A dict containing no \"error\" key, and typically contains an\
       \ \"access_token\" key. \n\n* A dict containing an \"error\" key, when token\
@@ -174,6 +208,9 @@ methods:
       \ response would contain \"user_code\" key, among others \n\n* an error response\
       \ would contain some other readable key/value pairs."
 attributes:
+- uid: msal.application.PublicClientApplication.CONSOLE_WINDOW_HANDLE
+  name: CONSOLE_WINDOW_HANDLE
+  signature: CONSOLE_WINDOW_HANDLE = <object object>
 - uid: msal.application.PublicClientApplication.DEVICE_FLOW_CORRELATION_ID
   name: DEVICE_FLOW_CORRELATION_ID
   signature: DEVICE_FLOW_CORRELATION_ID = '_correlation_id'
