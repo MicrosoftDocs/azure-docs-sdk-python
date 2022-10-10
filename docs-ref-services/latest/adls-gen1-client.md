@@ -1,5 +1,5 @@
 ---
-title: Azure Data Lake Storage Gen1 library for Python
+title: Azure DataLake Store Gen1 library for Python
 description: A python interface to the Azure Data-lake Storage system gen 1
 keywords: Azure, Python, SDK, API, DataLake, ADLS
 author: akharit
@@ -7,10 +7,10 @@ ms.author: akharit
 manager: pkasturi
 ms.date: 08/26/2019
 ms.topic: reference
-[](ms.prod: azure)
-[](ms.technology: azure)
+ms.prod: azure
+ms.technology: azure
 ms.devlang: python
-[](ms.service: datalake-store)
+ms.service: datalake-store
 ---
 
 # azure-datalake-store
