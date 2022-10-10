@@ -1,14 +1,14 @@
 ---
 title: Azure Schema Registry client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry, schemaregistry
-author: yunhaoling
-ms.author: yunhaoling
-ms.date: 05/10/2022
+author: kashifkhan
+ms.author: kashifkhan
+ms.date: 10/10/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: schemaregistry
 ---
-# Azure Schema Registry client library for Python - version 1.1.0 
+# Azure Schema Registry client library for Python - version 1.2.0 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
@@ -35,7 +35,7 @@ pip install azure-schemaregistry
 To use this package, you must have:
 * Azure subscription - [Create a free account][azure_sub]
 * [Azure Schema Registry][schemaregistry_service] - [Here is the quickstart guide][quickstart_guide] to create a Schema Registry group using the Azure portal.
-* Python 3.6 or later - [Install Python][python]
+* Python 3.7 or later - [Install Python][python]
 
 ### Authenticate the client
 
@@ -82,6 +82,7 @@ The following sections provide several code snippets covering some of the most c
 
 - [Register a schema](#register-a-schema)
 - [Get the schema by id](#get-the-schema-by-id)
+- [Get the schema by version](#get-the-schema-by-version)
 - [Get the id of a schema](#get-the-id-of-a-schema)
 
 ### Register a schema
@@ -134,6 +135,29 @@ schema_id = 'your-schema-id'
 schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=fully_qualified_namespace, credential=token_credential)
 with schema_registry_client:
     schema = schema_registry_client.get_schema(schema_id)
+    definition = schema.definition
+    properties = schema.properties
+```
+
+### Get the schema by version
+
+Get the schema definition and its properties by schema version.
+
+```python
+import os
+
+from azure.identity import DefaultAzureCredential
+from azure.schemaregistry import SchemaRegistryClient
+
+token_credential = DefaultAzureCredential()
+fully_qualified_namespace = os.environ['SCHEMA_REGISTRY_FULLY_QUALIFIED_NAMESPACE']
+group_name = os.environ["SCHEMAREGISTRY_GROUP"]
+name = "your-schema-name"
+version = int("<your schema version>")
+
+schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=fully_qualified_namespace, credential=token_credential)
+with schema_registry_client:
+    schema = schema_registry_client.get_schema(group_name=group_name, name=name, version=version)
     definition = schema.definition
     properties = schema.properties
 ```
@@ -234,17 +258,17 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-schemaregistry
 [python]: https://www.python.org/downloads/
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.1.0/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.2.0/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/schemaregistry/azure-schemaregistry/samples
+[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.2.0/sdk/schemaregistry/azure-schemaregistry/samples
 [api_reference]: /python/api/overview/azure/schemaregistry-readme
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/schemaregistry/azure-schemaregistry
-[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.2.0/sdk/schemaregistry/azure-schemaregistry
+[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.2.0/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
 [schemas]: /azure/event-hubs/schema-registry-overview#schemas
 [schema_groups]: /azure/event-hubs/schema-registry-overview#schema-groups
 [schemaregistry_service]: https://aka.ms/schemaregistry
 [schemaregistry_avroserializer_pypi]: https://pypi.org/project/azure-schemaregistry-avroserializer/
-[token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.1.0/sdk/core/azure-core/azure/core/credentials.py
+[token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.2.0/sdk/core/azure-core/azure/core/credentials.py
 [pypi_azure_identity]: https://pypi.org/project/azure-identity/
 [quickstart_guide]: /azure/event-hubs/create-schema-registry
