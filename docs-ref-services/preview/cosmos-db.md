@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
 description: Reference for Azure Cosmos DB SDK for Python
-title: Azure Cosmos DB SDK for Python
-ms.service: cosmosdb
-ms.devlang: python
-ms.data: 10/10/2022
-author: kushagraThapar
 ms.author: kuthapar
+ms.data: 10/11/2022
+ms.devlang: python
+ms.service: cosmosdb
+author: kushagraThapar
+title: Azure Cosmos DB SDK for Python
 ---
 # Azure Cosmos DB libraries for Python
 

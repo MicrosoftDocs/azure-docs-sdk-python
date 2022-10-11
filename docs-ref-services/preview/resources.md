@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
 description: Reference for Azure Resources SDK for Python
-title: Azure Resources SDK for Python
-ms.service: resources
-ms.devlang: python
-ms.data: 10/10/2022
-author: lmazuel
 ms.author: lmazuel
+ms.data: 10/11/2022
+ms.devlang: python
+ms.service: resources
+author: lmazuel
+title: Azure Resources SDK for Python
 ---
 # Azure Resources libraries for python
 

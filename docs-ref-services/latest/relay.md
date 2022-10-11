@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
 description: Reference for Azure Relay SDK for Python
-title: Azure Relay SDK for Python
-ms.service: relay
-ms.devlang: python
-ms.data: 10/10/2022
-author: lmazuel
 ms.author: lmazuel
+ms.data: 10/11/2022
+ms.devlang: python
+ms.service: relay
+author: lmazuel
+title: Azure Relay SDK for Python
 ---
 # Azure Relay SDK for Python - latest
 

@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
 description: Reference for Azure Traffic Manager SDK for Python
-title: Azure Traffic Manager SDK for Python
-ms.service: trafficmanager
-ms.devlang: python
-ms.data: 10/10/2022
-author: lmazuel
 ms.author: lmazuel
+ms.data: 10/11/2022
+ms.devlang: python
+ms.service: trafficmanager
+author: lmazuel
+title: Azure Traffic Manager SDK for Python
 ---
 # Azure Traffic Manager libraries for python
 

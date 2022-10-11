@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
 description: Reference for Azure Hybrid Network SDK for Python
-title: Azure Hybrid Network SDK for Python
-ms.service: hybridnetwork
-ms.devlang: python
-ms.data: 10/10/2022
-author: lmazuel
 ms.author: lmazuel
+ms.data: 10/11/2022
+ms.devlang: python
+ms.service: hybridnetwork
+author: lmazuel
+title: Azure Hybrid Network SDK for Python
 ---
 # Azure Hybrid Network SDK for Python - latest
 
