@@ -61,4 +61,4 @@ print(output.is_availiable) # Yes, it's 'availiable', it's a typo in the REST AP
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mgmt-notificationhubs-readme?view=azure-python)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-notificationhubs-readme)
