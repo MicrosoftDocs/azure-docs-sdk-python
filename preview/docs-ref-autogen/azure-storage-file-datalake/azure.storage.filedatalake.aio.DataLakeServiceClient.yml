@@ -18,8 +18,9 @@ summary: 'A client to interact with the DataLake Service at the account level.
 
   can also be retrieved using the *get_client* functions.'
 constructor:
-  syntax: 'DataLakeServiceClient(account_url: str, credential: Optional[Any] = None,
-    **kwargs: Any)'
+  syntax: 'DataLakeServiceClient(account_url: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the DataLake storage account. Any other entities included
@@ -37,15 +38,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -127,6 +134,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.storage.filedatalake.PublicAccess>
+  - name: encryption_scope_options
+    description: 'Specifies the default encryption scope to set on the file system
+      and use for
+
+      all future writes.
+
+
+      New in version 12.9.0.'
+    types:
+    - <xref:dict>
+    - <xref:azure.storage.filedatalake.EncryptionScopeOptions>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:

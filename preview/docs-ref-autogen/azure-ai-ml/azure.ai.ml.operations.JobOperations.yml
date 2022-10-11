@@ -15,11 +15,13 @@ summary: 'JobOperations.
   attaches it as an attribute.'
 constructor:
   syntax: 'JobOperations(operation_scope: azure.ai.ml._scope_dependent_operations.OperationScope,
-    service_client_06_2022_preview: azure.ai.ml._restclient.v2022_06_01_preview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces,
+    operation_config: azure.ai.ml._scope_dependent_operations.OperationConfig, service_client_06_2022_preview:
+    azure.ai.ml._restclient.v2022_06_01_preview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces,
     all_operations: azure.ai.ml._scope_dependent_operations.OperationsContainer, credential:
     azure.core.credentials.TokenCredential, **kwargs: Any)'
   parameters:
   - name: operation_scope
+  - name: operation_config
   - name: service_client_06_2022_preview
   - name: all_operations
   - name: credential
@@ -34,10 +36,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-- uid: azure.ai.ml.operations.JobOperations.cancel
-  name: cancel
+- uid: azure.ai.ml.operations.JobOperations.begin_cancel
+  name: begin_cancel
   summary: Cancel job resource.
-  signature: 'cancel(name: str) -> None'
+  signature: 'begin_cancel(name: str) -> azure.core.polling._poller.LROPoller[None]'
   parameters:
   - name: name
     description: Name of the job.
@@ -45,9 +47,10 @@ methods:
     types:
     - <xref:str>
   return:
-    description: None, or the result of cls(response)
+    description: A poller to track the operation status.
     types:
     - <xref:None>
+    - <xref:azure.core.polling.LROPoller>[<xref:None>]
 - uid: azure.ai.ml.operations.JobOperations.create_or_update
   name: create_or_update
   summary: 'Create or update a job, if there''re inline defined entities, e.g.
@@ -78,15 +81,18 @@ methods:
     types:
     - <xref:dict>
   - name: experiment_name
-    description: Name of the experiment the job will be created under, if None is
-      provided, job will be created under experiment 'Default'.
+    description: 'Name of the experiment the job will be created under, if None is
+      provided,
+
+      job will be created under experiment ''Default''.'
     isRequired: true
     types:
     - <xref:str>
   - name: skip_validation
-    description: whether to skip validation before creating/updating the job. Note
-      that dependent resources like anonymous component won't skip their validation
-      in creating.
+    description: 'whether to skip validation before creating/updating the job. Note
+      that dependent
+
+      resources like anonymous component won''t skip their validation in creating.'
     isRequired: true
     types:
     - <xref:bool>
@@ -94,11 +100,38 @@ methods:
     description: Created or updated job.
     types:
     - <xref:azure.ai.ml.entities.Job>
+  exceptions:
+  - type: azure.ai.ml.exceptions.UserErrorException
+  - type: azure.ai.ml.exceptions.ValidationException
+    description: 'Raised if
+
+      Job cannot be successfully validated. Details will be provided in the error
+      message.'
+  - type: azure.ai.ml.exceptions.AssetException
+    description: 'Raised if Job assets
+
+      (e.g. Data, Code, Model, Environment) cannot be successfully validated.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.ModelException
+    description: 'Raised if Job model cannot be successfully validated.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.JobException
+    description: 'Raised if Job object or attributes correctly formatted.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.EmptyDirectoryError
+    description: Raised if local path provided points to an empty directory.
+  - type: azure.ai.ml.exceptions.DockerEngineNotAvailableError
+    description: 'Raised if Docker Engine
+
+      is not available for local job.'
 - uid: azure.ai.ml.operations.JobOperations.download
   name: download
   summary: Download logs and output of a job.
-  signature: 'download(name: str, *, download_path: Union[os.PathLike, str], output_name:
-    str = None, all: bool = False) -> None'
+  signature: 'download(name: str, *, download_path: Union[os.PathLike, str] = ''.'',
+    output_name: str = None, all: bool = False) -> None'
   parameters:
   - name: name
     description: Name of a job.
@@ -106,7 +139,7 @@ methods:
     types:
     - <xref:str>
   - name: str] download_path
-    description: Local path as download destination.
+    description: Local path as download destination, defaults to '.'.
     isRequired: true
     types:
     - <xref:Union>[<xref:PathLike,>
@@ -120,6 +153,29 @@ methods:
     isRequired: true
     types:
     - <xref:bool>
+  - name: name
+    description: Name of a job.
+    isRequired: true
+  - name: download_path
+    description: Local path as download destination, defaults to '.'.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:PathLike>, <xref:str>]
+  - name: output_name
+    description: Named output to download, defaults to None.
+    isRequired: true
+  - name: all
+    description: Whether to download logs and all named outputs, defaults to False.
+    isRequired: true
+  exceptions:
+  - type: azure.ai.ml.exceptions.JobException
+    description: 'Raised if Job is not yet in a terminal state.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.MlException
+    description: 'Raised if logs and outputs cannot be successfully downloaded.
+
+      Details will be provided in the error message.'
 - uid: azure.ai.ml.operations.JobOperations.get
   name: get
   summary: Get a job resource.
@@ -137,7 +193,7 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.list
   name: list
   summary: List jobs of the workspace.
-  signature: 'list(parent_job_name: str = None, *, list_view_type: azure.ai.ml._restclient.v2022_06_01_preview.models._azure_machine_learning_workspaces_enums.ListViewType
+  signature: 'list(*, parent_job_name: str = None, list_view_type: azure.ai.ml._restclient.v2022_06_01_preview.models._azure_machine_learning_workspaces_enums.ListViewType
     = <ListViewType.ACTIVE_ONLY: ''ActiveOnly''>, **kwargs) -> Iterable[azure.ai.ml.entities._job.job.Job]'
   parameters:
   - name: parent_job_name
@@ -213,4 +269,4 @@ methods:
   return:
     description: a ValidationResult object containing all found errors.
     types:
-    - <xref:ValidationResult>
+    - <xref:azure.ai.ml.entities.ValidationResult>

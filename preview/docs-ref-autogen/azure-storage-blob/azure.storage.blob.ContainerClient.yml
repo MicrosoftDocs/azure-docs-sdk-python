@@ -5,6 +5,7 @@ fullName: azure.storage.blob.ContainerClient
 module: azure.storage.blob
 inheritances:
 - azure.storage.blob._shared.base_client.StorageAccountHostsMixin
+- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: 'A client to interact with a specific container, although that container
 
   may not yet exist.
@@ -20,8 +21,9 @@ summary: 'A client to interact with a specific container, although that containe
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#optional-configuration).'
 constructor:
-  syntax: 'ContainerClient(account_url: str, container_name: str, credential: Optional[Any]
-    = None, **kwargs: Any)'
+  syntax: 'ContainerClient(account_url: str, container_name: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -42,15 +44,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -285,7 +293,7 @@ methods:
     Soft deleted blob or snapshot is accessible through <xref:azure.storage.blob.ContainerClient.list_blobs>
     specifying *include=["deleted"]*
 
-    option. Soft-deleted blob or snapshot can be restored using <xref:BlobClient.undelete>'
+    option. Soft-deleted blob or snapshot can be restored using <xref:azure.storage.blob.BlobClient.undelete>'
   signature: 'delete_blob(blob: Union[str, azure.storage.blob._models.BlobProperties],
     delete_snapshots: Optional[str] = None, **kwargs) -> None'
   parameters:
@@ -399,11 +407,12 @@ methods:
     Soft deleted blobs or snapshots are accessible through <xref:azure.storage.blob.ContainerClient.list_blobs>
     specifying *include=["deleted"]*
 
-    Soft-deleted blobs or snapshots can be restored using <xref:BlobClient.undelete>
+    Soft-deleted blobs or snapshots can be restored using <xref:azure.storage.blob.BlobClient.undelete>
 
 
     The maximum number of blobs that can be deleted in a single request is 256.'
-  signature: delete_blobs(*blobs, **kwargs) -> Iterator[HttpResponse]
+  signature: 'delete_blobs(*blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
+    **kwargs: Any) -> Iterator[azure.core.pipeline.transport._base.HttpResponse]'
   parameters:
   - name: blobs
     description: "The blobs to delete. This can be a single blob, or multiple values\
@@ -411,9 +420,10 @@ methods:
       \ BlobProperties.\n\n\n> [!NOTE]\n> When the blob type is dict, here's a list\
       \ of keys, value rules.\n>\n> \n>\n> blob name:\n>\n> \n>\n> key: 'name', value\
       \ type: str\n>\n> \n>\n> snapshot you want to delete:\n>\n> \n>\n> key: 'snapshot',\
-      \ value type: str\n>\n> \n>\n> whether to delete snapthots when deleting blob:\n\
-      >\n> \n>\n> key: 'delete_snapshots', value: 'include' or 'only'\n>\n> \n>\n\
-      > if the blob modified or not:\n>\n> \n>\n> key: 'if_modified_since', 'if_unmodified_since',\
+      \ value type: str\n>\n> \n>\n> version id:\n>\n> \n>\n> key: 'version_id', value\
+      \ type: str\n>\n> \n>\n> whether to delete snapshots when deleting blob:\n>\n\
+      > \n>\n> key: 'delete_snapshots', value: 'include' or 'only'\n>\n> \n>\n> if\
+      \ the blob modified or not:\n>\n> \n>\n> key: 'if_modified_since', 'if_unmodified_since',\
       \ value type: datetime\n>\n> \n>\n> etag:\n>\n> \n>\n> key: 'etag', value type:\
       \ str\n>\n> \n>\n> match the etag or not:\n>\n> \n>\n> key: 'match_condition',\
       \ value type: MatchConditions\n>\n> \n>\n> tags match condition:\n>\n> \n>\n\
@@ -422,8 +432,9 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
-    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:str>
+    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.BlobProperties>
   - name: delete_snapshots
     description: "Required if a blob has associated snapshots. Values include:\n \
       \  * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
@@ -566,8 +577,8 @@ methods:
 
     a stream. Using chunks() returns an iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'download_blob(blob: Union[str, BlobProperties], offset: Optional[int]
-    = None, length: Optional[int] = None, **kwargs: Any) -> StorageStreamDownloader'
+  signature: 'download_blob(blob: Union[str, BlobProperties], offset: int = None,
+    length: int = None, *, encoding: str, **kwargs) -> StorageStreamDownloader[str]'
   parameters:
   - name: blob
     description: 'The blob with which to interact. If specified, this value will override
@@ -764,7 +775,9 @@ methods:
   name: from_connection_string
   summary: Create ContainerClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, container_name: str, credential:
-    Optional[Any] = None, **kwargs: Any) -> ClassType'
+    Optional[Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential,
+    "TokenCredential"]] # pylint: disable=line-too-long = None, **kwargs: Any) ->
+    ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -784,13 +797,18 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A container client.
@@ -809,8 +827,9 @@ methods:
 - uid: azure.storage.blob.ContainerClient.from_container_url
   name: from_container_url
   summary: Create ContainerClient from a container url.
-  signature: 'from_container_url(container_url: Type[ClassType], credential: str =
-    None, **kwargs: Optional[Any]) -> ClassType'
+  signature: 'from_container_url(container_url: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any) -> ClassType'
   parameters:
   - name: container_url
     description: 'The full endpoint URL to the Container, including SAS token if used.
@@ -829,16 +848,21 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A container client.
@@ -955,6 +979,38 @@ methods:
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = container_client.get_container_properties()\n\n   ````\n"
+- uid: azure.storage.blob.ContainerClient.list_blob_names
+  name: list_blob_names
+  summary: 'Returns a generator to list the names of blobs under the specified container.
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service.
+
+
+    Note that no additional properties or metadata will be returned when using this
+    API.
+
+    Additionally, this API does not have an option to include additional blobs such
+    as snapshots,
+
+    versions, soft-deleted blobs, etc. To get any of this data, use <xref:azure.storage.blob.ContainerClient.list_blobs>.'
+  signature: 'list_blob_names(**kwargs: Any) -> azure.core.paging.ItemPaged[str]'
+  parameters:
+  - name: name_starts_with
+    description: 'Filters the results to return only blobs whose names
+
+      begin with the specified prefix.'
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: An iterable (auto-paging) response of blob names as strings.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:str>]
 - uid: azure.storage.blob.ContainerClient.list_blobs
   name: list_blobs
   summary: 'Returns a generator to list the blobs under the specified container.
@@ -972,7 +1028,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: or str include
+  - name: include
     description: 'Specifies one or more additional datasets to include in the response.
 
       Options include: ''snapshots'', ''metadata'', ''uncommittedblobs'', ''copy'',
@@ -980,8 +1036,6 @@ methods:
 
       ''tags'', ''versions'', ''immutabilitypolicy'', ''legalhold''.'
     isRequired: true
-    types:
-    - <xref:list>[<xref:str>]
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -1165,8 +1219,8 @@ methods:
 
     The maximum number of blobs that can be updated in a single request is 256.'
   signature: 'set_premium_page_blob_tier_blobs(premium_page_blob_tier: Optional[Union[str,
-    PremiumPageBlobTier]], *blobs: List[Union[str, BlobProperties, dict]], **kwargs)
-    -> Iterator[HttpResponse]'
+    PremiumPageBlobTier]], *blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
+    **kwargs: Any) -> Iterator[azure.core.pipeline.transport._base.HttpResponse]'
   parameters:
   - name: premium_page_blob_tier
     description: 'A page blob tier value to set the blob to. The tier correlates to
@@ -1202,8 +1256,9 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
-    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:str>
+    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.BlobProperties>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -1235,8 +1290,8 @@ methods:
 
     The maximum number of blobs that can be updated in a single request is 256.'
   signature: 'set_standard_blob_tier_blobs(standard_blob_tier: Optional[Union[str,
-    StandardBlobTier]], *blobs: List[Union[str, BlobProperties, dict]], **kwargs)
-    -> Iterator[HttpResponse]'
+    StandardBlobTier]], *blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
+    **kwargs: Any) -> Iterator[azure.core.pipeline.transport._base.HttpResponse]'
   parameters:
   - name: standard_blob_tier
     description: 'Indicates the tier to be set on all blobs. Options include ''Hot'',
@@ -1277,15 +1332,16 @@ methods:
       \ 'blob_tier', value type: StandardBlobTier\n>\n> \n>\n> rehydrate priority:\n\
       >\n> \n>\n> key: 'rehydrate_priority', value type: RehydratePriority\n>\n> \n\
       >\n> lease:\n>\n> \n>\n> key: 'lease_id', value type: Union[str, LeaseClient]\n\
-      >\n> \n>\n> snapshot:\n>\n> \n>\n> key: \"snapshost\", value type: str\n>\n\
-      > \n>\n> version id:\n>\n> \n>\n> key: \"version_id\", value type: str\n>\n\
+      >\n> \n>\n> snapshot:\n>\n> \n>\n> key: \"snapshot\", value type: str\n>\n>\
+      \ \n>\n> version id:\n>\n> \n>\n> key: \"version_id\", value type: str\n>\n\
       > \n>\n> tags match condition:\n>\n> \n>\n> key: 'if_tags_match_condition',\
       \ value type: str\n>\n> \n>\n> timeout for subrequest:\n>\n> \n>\n> key: 'timeout',\
       \ value type: int\n>"
     isRequired: true
     types:
-    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
-    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:str>
+    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.BlobProperties>
   - name: rehydrate_priority
     description: Indicates the priority with which to rehydrate an archived blob
     types:

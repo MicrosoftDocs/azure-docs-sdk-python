@@ -21,7 +21,9 @@ summary: 'A client to interact with a specific share, although that share may no
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
   syntax: 'ShareClient(account_url: str, share_name: str, snapshot: Optional[Union[str,
-    Dict[str, Any]]] = None, credential: Optional[Any] = None, **kwargs: Any)'
+    Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -45,13 +47,26 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -317,7 +332,9 @@ methods:
   name: from_connection_string
   summary: Create ShareClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, share_name: str, snapshot: Optional[str]
-    = None, credential: Optional[Any] = None, **kwargs: Any) -> azure.storage.fileshare._share_client.ShareClient'
+    = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Any) -> ShareClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -338,13 +355,26 @@ methods:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A share client.
@@ -362,7 +392,9 @@ methods:
 - uid: azure.storage.fileshare.ShareClient.from_share_url
   name: from_share_url
   signature: 'from_share_url(share_url: str, snapshot: Optional[Union[str, Dict[str,
-    Any]]] = None, credential: Optional[Any] = None, **kwargs: Any) -> azure.storage.fileshare._share_client.ShareClient'
+    Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Any) -> ShareClient'
   parameters:
   - name: share_url
     description: The full URI to the share.
@@ -378,13 +410,26 @@ methods:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A share client.

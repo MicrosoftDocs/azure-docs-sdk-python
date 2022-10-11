@@ -5,6 +5,7 @@ fullName: azure.storage.blob.BlobServiceClient
 module: azure.storage.blob
 inheritances:
 - azure.storage.blob._shared.base_client.StorageAccountHostsMixin
+- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: 'A client to interact with the Blob Service at the account level.
 
 
@@ -21,8 +22,9 @@ summary: 'A client to interact with the Blob Service at the account level.
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#optional-configuration).'
 constructor:
-  syntax: 'BlobServiceClient(account_url: str, credential: Optional[Any] = None, **kwargs:
-    Any)'
+  syntax: 'BlobServiceClient(account_url: str, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the blob storage account. Any other entities included
@@ -40,15 +42,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -305,8 +313,9 @@ methods:
 - uid: azure.storage.blob.BlobServiceClient.from_connection_string
   name: from_connection_string
   summary: Create BlobServiceClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Optional[Any] = None,
-    **kwargs: Any) -> ClassType'
+  signature: 'from_connection_string(conn_str: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any) -> ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -321,13 +330,18 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A Blob service client.

@@ -15,14 +15,14 @@ summary: 'BatchEndpointOperations.
   attaches it as an attribute.'
 constructor:
   syntax: 'BatchEndpointOperations(operation_scope: azure.ai.ml._scope_dependent_operations.OperationScope,
-    service_client_05_2022: azure.ai.ml._restclient.v2022_05_01._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces,
-    service_client_09_2020_dataplanepreview: azure.ai.ml._restclient.v2020_09_01_dataplanepreview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces,
+    operation_config: azure.ai.ml._scope_dependent_operations.OperationConfig, service_client_05_2022:
+    azure.ai.ml._restclient.v2022_05_01._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces,
     all_operations: azure.ai.ml._scope_dependent_operations.OperationsContainer, credentials:
     Optional[azure.core.credentials.TokenCredential] = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+  - name: operation_config
   - name: service_client_05_2022
-  - name: service_client_09_2020_dataplanepreview
   - name: all_operations
   - name: credentials
     defaultValue: None
@@ -30,23 +30,22 @@ methods:
 - uid: azure.ai.ml.operations.BatchEndpointOperations.begin_create_or_update
   name: begin_create_or_update
   summary: Create or update a batch endpoint.
-  signature: 'begin_create_or_update(endpoint: azure.ai.ml.entities._endpoint.batch_endpoint.BatchEndpoint,
-    **kwargs: Any) -> Union[azure.ai.ml.entities._endpoint.batch_endpoint.BatchEndpoint,
-    azure.core.polling._poller.LROPoller]'
+  signature: 'begin_create_or_update(endpoint: azure.ai.ml.entities._endpoint.batch_endpoint.BatchEndpoint)
+    -> azure.core.polling._poller.LROPoller[azure.ai.ml.entities._endpoint.batch_endpoint.BatchEndpoint]'
   parameters:
   - name: endpoint
     description: The endpoint entity.
     isRequired: true
     types:
-    - <xref:azure.ai.ml.entities.Endpoint>
+    - <xref:azure.ai.ml.entities.BatchEndpoint>
   return:
     description: A poller to track the operation status.
     types:
-    - <xref:LROPoller>
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.BatchEndpoint>]
 - uid: azure.ai.ml.operations.BatchEndpointOperations.begin_delete
   name: begin_delete
   summary: Delete a batch Endpoint.
-  signature: 'begin_delete(name: str = None, **kwargs: Any) -> Union[None, azure.core.polling._poller.LROPoller]'
+  signature: 'begin_delete(name: str) -> azure.core.polling._poller.LROPoller[None]'
   parameters:
   - name: name
     description: Name of the batch endpoint.
@@ -56,7 +55,7 @@ methods:
   return:
     description: A poller to track the operation status.
     types:
-    - <xref:Optional>[<xref:LROPoller>]
+    - <xref:azure.core.polling.LROPoller>[<xref:None>]
 - uid: azure.ai.ml.operations.BatchEndpointOperations.get
   name: get
   summary: Get a Endpoint resource.
@@ -74,57 +73,76 @@ methods:
 - uid: azure.ai.ml.operations.BatchEndpointOperations.invoke
   name: invoke
   summary: Invokes the batch endpoint with the provided payload.
-  signature: 'invoke(endpoint_name: str, deployment_name: str = None, input: azure.ai.ml.entities._inputs_outputs.Input
+  signature: 'invoke(endpoint_name: str, *, deployment_name: str = None, input: azure.ai.ml.entities._inputs_outputs.input.Input
     = None, params_override=None, **kwargs) -> azure.ai.ml._restclient.v2020_09_01_dataplanepreview.models._models_py3.BatchJobResource'
   parameters:
   - name: endpoint_name
-    description: the endpoint name
+    description: The endpoint name.
     isRequired: true
     types:
     - <xref:str>
-  - name: optional) deployment_name
-    description: 'Name of a specific deployment to invoke. This is optional.
+  - name: deployment_name
+    description: 'The name of a specific deployment to invoke. This is optional.
 
       By default requests are routed to any of the deployments according to the traffic
       rules.'
     isRequired: true
     types:
-    - <xref:(<xref:str,>>
-  - name: optional) input
-    description: 'To use a existing data asset, public uri file,
-
-      or folder pass in a Input object, for batch endpoints only.'
+    - <xref:Optional>[<xref:str>]
+  - name: input
+    description: An existing data asset, public uri file or folder to use with the
+      deployment
     isRequired: true
     types:
-    - <xref:(<xref:azure.ai.ml.Input,>>
-  - name: optional) params_override
-    description: Used to overwrite deployment configurations, for batch endpoints
+    - <xref:Optional>[<xref:azure.ai.ml.Input>]
+  - name: params_override
+    description: Parameters to overwrite deployment configurations, for batch endpoints
       only.
     isRequired: true
     types:
-    - <xref:(<xref:List,>>
+    - <xref:Dict>
   return:
-    description: Prediction output for online endpoints or details of batch prediction
-      job.
+    description: The invoked batch deployment job.
     types:
-    - <xref:Union>[<xref:str>, <xref:BatchJobResource>]
+    - <xref:BatchJobResource>
+  exceptions:
+  - type: azure.ai.ml.exceptions.ValidationException
+    description: 'Raised if deployment cannot be successfully validated.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.AssetException
+    description: 'Raised if BatchEndpoint assets
+
+      (e.g. Data, Code, Model, Environment) cannot be successfully validated.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.ModelException
+    description: 'Raised if BatchEndpoint model cannot be successfully validated.
+
+      Details will be provided in the error message.'
+  - type: azure.ai.ml.exceptions.EmptyDirectoryError
+    description: Raised if local path provided points to an empty directory.
 - uid: azure.ai.ml.operations.BatchEndpointOperations.list
   name: list
   summary: List endpoints of the workspace.
-  signature: list() -> Iterable[azure.ai.ml._restclient.v2022_05_01.models._models_py3.BatchEndpointTrackedResourceArmPaginatedResult]
+  signature: list() -> azure.core.paging.ItemPaged[azure.ai.ml.entities._endpoint.batch_endpoint.BatchEndpoint]
   return:
-    description: a list of endpoints
+    description: A list of endpoints
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.BatchEndpoint>]
 - uid: azure.ai.ml.operations.BatchEndpointOperations.list_jobs
   name: list_jobs
   summary: 'List jobs under the provided batch endpoint deployment. This is only
 
     valid for batch endpoint.'
-  signature: 'list_jobs(endpoint_name: str)'
+  signature: 'list_jobs(endpoint_name: str) -> List[azure.ai.ml._restclient.v2020_09_01_dataplanepreview.models._models_py3.BatchJobResource]'
   parameters:
   - name: endpoint_name
-    description: the endpoint name
+    description: The endpoint name
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Iterable[BatchJobResourceArmPaginatedResult]
+    description: List of jobs
+    types:
+    - <xref:list>[<xref:BatchJobResource>]

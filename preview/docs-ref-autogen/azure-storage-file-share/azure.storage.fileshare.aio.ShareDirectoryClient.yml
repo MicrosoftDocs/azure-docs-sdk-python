@@ -17,8 +17,9 @@ summary: 'A client to interact with a specific directory, although it may not ye
   and <xref:azure.storage.fileshare.aio.ShareDirectoryClient.get_file_client> functions.'
 constructor:
   syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
-    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any]
-    = None, **kwargs: Optional[Any])'
+    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Optional[Any])'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -50,13 +51,26 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -73,8 +87,6 @@ constructor:
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
-  - name: loop
-    description: The event loop to run the asynchronous tasks.
   - name: max_range_size
     description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
     types:
@@ -133,12 +145,59 @@ methods:
     - <xref:dict>[<xref:str>, <xref:int>]
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.create_directory
   name: create_directory
-  summary: "Creates a new directory under the directory referenced by the client.\n\
-    \n:keyword ~datetime.datetime file_change_time\n   Change time for the directory.\
-    \ If not specified, change time will be set to the current date/time.\n\n   New\
-    \ in version 12.8.0: This parameter was introduced in API version '2021-06-08'."
+  summary: Creates a new directory under the directory referenced by the client.
   signature: 'async create_directory(**kwargs: Any) -> Dict[str, Any]'
   parameters:
+  - name: file_attributes
+    description: 'The file system attributes for files and directories.
+
+      If not set, the default value would be "none" and the attributes will be set
+      to "Archive".
+
+      Here is an example for when the var type is str: ''Temporary|Archive''.
+
+      file_attributes value is not case sensitive.'
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.NTFSAttributes>
+  - name: file_creation_time
+    description: 'Creation time for the directory. Default value: "now".'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_last_write_time
+    description: 'Last write time for the directory. Default value: "now".'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_permission
+    description: 'If specified the permission (security descriptor) shall be set
+
+      for the directory/file. This header can be used if Permission size is
+
+      <= 8KB, else file-permission-key header shall be used.
+
+      Default value: Inherit. If SDDL is specified as input, it must have owner, group
+      and dacl.
+
+      Note: Only one of the file-permission or file-permission-key should be specified.'
+    types:
+    - <xref:str>
+  - name: file_permission_key
+    description: 'Key of the permission to be set for the directory/file.
+
+      Note: Only one of the file-permission or file-permission-key should be specified.'
+    types:
+    - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the directory. If not specified, change time will
+      be set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
     types:
@@ -425,10 +484,15 @@ methods:
     \ or str\n:keyword file_creation_time:\n\n   Creation time for the directory.\n\
     \n:paramtype file_creation_time:~datetime.datetime or str\n:keyword file_last_write_time:\n\
     \n   Last write time for the file.\n\n:paramtype file_last_write_time:~datetime.datetime\
-    \ or str\n:keyword Dict[str,str] metadata:\n\n   A name-value pair to associate\
-    \ with a file storage object."
+    \ or str\n:keyword file_change_time:\n\n   Change time for the directory. If not\
+    \ specified, change time will be set to the current date/time.\n\n   New in version\
+    \ 12.8.0: This parameter was introduced in API version '2021-06-08'."
   signature: 'async rename_directory(new_name: str, **kwargs: Any) -> azure.storage.fileshare.aio._directory_client_async.ShareDirectoryClient'
   parameters:
+  - name: metadata
+    description: A name-value pair to associate with a file storage object.
+    types:
+    - <xref:Dict>[<xref:str,str>]
   - name: destination_lease
     description: 'Required if the destination file has an active lease. Value can
       be a ShareLeaseClient object
@@ -469,15 +533,71 @@ methods:
     - <xref:dict>(<xref:str>, <xref:Any>)
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.set_http_headers
   name: set_http_headers
-  summary: "Sets HTTP headers on the directory.\n\n:keyword ~datetime.datetime file_change_time\n\
-    \   Change time for the directory. If not specified, change time will be set to\
-    \ the current date/time.\n\n   New in version 12.8.0: This parameter was introduced\
-    \ in API version '2021-06-08'."
+  summary: Sets HTTP headers on the directory.
   signature: 'async set_http_headers(file_attributes: Union[str, NTFSAttributes] =
     ''none'', file_creation_time: Optional[Union[str, datetime]] = ''preserve'', file_last_write_time:
     Optional[Union[str, datetime]] = ''preserve'', file_permission: Optional[str]
     = None, permission_key: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
+  - name: file_attributes
+    description: 'The file system attributes for files and directories.
+
+      If not set, indicates preservation of existing values.
+
+      Here is an example for when the var type is str: ''Temporary|Archive'''
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.fileshare.NTFSAttributes>
+  - name: file_creation_time
+    description: 'Creation time for the file
+
+      Default value: Preserve.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:datetime>
+  - name: file_last_write_time
+    description: 'Last write time for the file
+
+      Default value: Preserve.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:datetime>
+  - name: file_permission
+    description: 'If specified the permission (security
+
+      descriptor) shall be set for the directory/file. This header can be
+
+      used if Permission size is <= 8KB, else x-ms-file-permission-key
+
+      header shall be used. Default value: Inherit. If SDDL is specified as
+
+      input, it must have owner, group and dacl. Note: Only one of the
+
+      x-ms-file-permission or x-ms-file-permission-key should be specified.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: permission_key
+    description: 'Key of the permission to be set for the
+
+      directory/file. Note: Only one of the x-ms-file-permission or
+
+      x-ms-file-permission-key should be specified.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the directory. If not specified, change time will
+      be set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -539,6 +659,16 @@ methods:
     description: Maximum number of parallel connections to use.
     types:
     - <xref:int>
+  - name: progress_hook
+    description: 'An async callback to track the progress of a long running upload.
+      The signature is
+
+      function(current: int, total: Optional[int]) where current is the number of
+      bytes transferred
+
+      so far, and total is the size of the blob or None if the size is unknown.'
+    types:
+    - <xref:Callable>[[<xref:int>, <xref:Optional>[<xref:int>]], <xref:Awaitable>[<xref:None>]]
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:

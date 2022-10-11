@@ -16,8 +16,9 @@ summary: 'A client to interact with a specific file system, even if that file sy
   can be retrieved using the <xref:azure.storage.filedatalake.FileSystemClient.get_directory_client>
   or <xref:azure.storage.filedatalake.FileSystemClient.get_file_client> functions.'
 constructor:
-  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: Optional[Any]
-    = None, **kwargs: Any)'
+  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -35,15 +36,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -219,6 +226,43 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -336,6 +380,58 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
+  - name: expires_on
+    description: 'The time to set the file to expiry.
+
+      If the type of expires_on is an int, expiration time will be set
+
+      as the number of milliseconds elapsed from creation time.
+
+      If the type of expires_on is datetime, expiration time will be set
+
+      absolute to the time provided. If no time zone info is provided, this
+
+      will be interpreted as UTC.'
+    types:
+    - <xref:datetime>
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -425,6 +521,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.storage.filedatalake.PublicAccess>
+  - name: encryption_scope_options
+    description: 'Specifies the default encryption scope to set on the file system
+      and use for
+
+      all future writes.
+
+
+      New in version 12.9.0.'
+    types:
+    - <xref:dict>
+    - <xref:azure.storage.filedatalake.EncryptionScopeOptions>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -676,7 +783,9 @@ methods:
 
     :rtype ~azure.storage.filedatalake.FileSystemClient'
   signature: 'from_connection_string(conn_str: str, file_system_name: str, credential:
-    Optional[Any] = None, **kwargs: Any) -> ClassType'
+    Optional[Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential,
+    "TokenCredential"]] # pylint: disable=line-too-long = None, **kwargs: Any) ->
+    ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -696,13 +805,18 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   examples:
   - "Create FileSystemClient from connection string<!--[!code-python[Main](les\\datalake_samples_file_system.py\

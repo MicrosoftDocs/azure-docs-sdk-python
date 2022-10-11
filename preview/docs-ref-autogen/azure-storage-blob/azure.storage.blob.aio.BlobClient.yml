@@ -6,12 +6,14 @@ module: azure.storage.blob.aio
 inheritances:
 - azure.storage.blob._shared.base_client_async.AsyncStorageAccountHostsMixin
 - azure.storage.blob._blob_client.BlobClient
+- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: A client to interact with a specific blob, although that blob may not yet
   exist.
 constructor:
   syntax: 'BlobClient(account_url: str, container_name: str, blob_name: str, snapshot:
-    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any] = None,
-    **kwargs: Any)'
+    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -48,15 +50,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -267,7 +275,7 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.append_block
   name: append_block
   summary: Commits a new block of data to the end of the existing append blob.
-  signature: 'async append_block(data: Union[AnyStr, Iterable[AnyStr], IO[AnyStr]],
+  signature: 'async append_block(data: Union[bytes, str, Iterable[AnyStr], IO[AnyStr]],
     length: Optional[int] = None, **kwargs) -> Dict[str, Union[str, datetime, int]]'
   parameters:
   - name: data
@@ -1437,8 +1445,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'async download_blob(offset: Optional[int] = None, length: Optional[int]
-    = None, **kwargs: Any) -> azure.storage.blob.aio._download_async.StorageStreamDownloader'
+  signature: 'async download_blob(offset: int = None, length: int = None, *, encoding:
+    str, **kwargs) -> StorageStreamDownloader[str]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the blob.
@@ -3334,10 +3342,10 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'async upload_blob(data: Union[AnyStr, Iterable, IO], blob_type: Union[str,
-    azure.storage.blob._models.BlobType] = <BlobType.BLOCKBLOB: ''BlockBlob''>, length:
-    Optional[int] = None, metadata: Optional[Dict[str, str]] = None, **kwargs) ->
-    Any'
+  signature: 'async upload_blob(data: Union[bytes, str, Iterable, IO], blob_type:
+    Union[str, azure.storage.blob._models.BlobType] = <BlobType.BLOCKBLOB: ''BlockBlob''>,
+    length: Optional[int] = None, metadata: Optional[Dict[str, str]] = None, **kwargs)
+    -> Any'
   parameters:
   - name: data
     description: The blob data to upload.
