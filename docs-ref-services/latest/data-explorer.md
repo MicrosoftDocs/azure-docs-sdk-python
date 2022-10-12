@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
-description: Reference for Azure Data Explorer SDK for Python
 ms.author: lmazuel
-ms.data: 10/11/2022
 ms.devlang: python
-ms.service: dataexplorer
-author: lmazuel
 title: Azure Data Explorer SDK for Python
+ms.service: dataexplorer
+description: Reference for Azure Data Explorer SDK for Python
+ms.topic: reference
+author: lmazuel
+ms.data: 10/12/2022
 ---
 # Azure Data Explorer SDK for Python - latest
 

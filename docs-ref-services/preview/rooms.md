@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
-description: Reference for Azure Rooms SDK for Python
 ms.author: lmazuel
-ms.data: 10/11/2022
 ms.devlang: python
-ms.service: rooms
-author: lmazuel
 title: Azure Rooms SDK for Python
+ms.service: rooms
+description: Reference for Azure Rooms SDK for Python
+ms.topic: reference
+author: lmazuel
+ms.data: 10/12/2022
 ---
 # Azure Rooms SDK for Python - preview
 

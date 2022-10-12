@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
-description: Reference for Azure Quantum SDK for Python
 ms.author: lmazuel
-ms.data: 10/11/2022
 ms.devlang: python
-ms.service: quantum
-author: lmazuel
 title: Azure Quantum SDK for Python
+ms.service: quantum
+description: Reference for Azure Quantum SDK for Python
+ms.topic: reference
+author: lmazuel
+ms.data: 10/12/2022
 ---
 # Azure Quantum SDK for Python - preview
 
