@@ -22,8 +22,9 @@ summary: 'A client to interact with the File Share Service at the account level.
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
-  syntax: 'ShareServiceClient(account_url: str, credential: Optional[Any] = None,
-    **kwargs: Any)'
+  syntax: 'ShareServiceClient(account_url: str, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the file share storage account. Any other entities included
@@ -35,13 +36,26 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -66,7 +80,7 @@ examples:
 - "Create the share service client with url and credential.<!--[!code-python[Main](les\\\
   file_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\
   \\file_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   from azure.storage.fileshare import ShareServiceClient\n\
@@ -108,7 +122,7 @@ methods:
   - "Create a share in the file share service.<!--[!code-python[Main](les\\file_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_service.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\\file_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_service.create_share(share_name=\"fileshare1\")\n\n   ````\n"
@@ -144,15 +158,16 @@ methods:
   - "Delete a share in the file share service.<!--[!code-python[Main](les\\file_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_service.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\\file_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_service.delete_share(share_name=\"fileshare1\")\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareServiceClient.from_connection_string
   name: from_connection_string
   summary: Create ShareServiceClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Optional[Any] = None,
-    **kwargs: Any) -> azure.storage.fileshare._share_service_client.ShareServiceClient'
+  signature: 'from_connection_string(conn_str: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any) -> ShareServiceClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -160,13 +175,26 @@ methods:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A File Share service client.
@@ -176,11 +204,11 @@ methods:
   - "Create the share service client with connection string.<!--[!code-python[Main](les\\\
     file_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\\
-    samples\\\\file_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare import\
-    \ ShareServiceClient\n   share_service_client = ShareServiceClient.from_connection_string(self.connection_string)\n\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\
+    \\samples\\\\file_samples_authentication.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare\
+    \ import ShareServiceClient\n   share_service_client = ShareServiceClient.from_connection_string(self.connection_string)\n\
     \n   ````\n"
 - uid: azure.storage.fileshare.ShareServiceClient.get_service_properties
   name: get_service_properties
@@ -203,7 +231,7 @@ methods:
   - "Get file share service properties.<!--[!code-python[Main](les\\file_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_service.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\\file_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = file_service.get_service_properties()\n\n   ````\n"
@@ -239,7 +267,7 @@ methods:
   - "Gets the share client.<!--[!code-python[Main](les\\file_samples_service.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_service.py\"\
+    \\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\\file_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.storage.fileshare import ShareServiceClient\n   file_service =\
@@ -293,7 +321,7 @@ methods:
   - "List shares in the file share service.<!--[!code-python[Main](les\\file_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_service.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\\file_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List the shares in the file service\n   my_shares = list(file_service.list_shares())\n\
@@ -349,7 +377,7 @@ methods:
   - "Sets file share service properties.<!--[!code-python[Main](les\\file_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_service.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.0\\\\samples\\\\file_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create service properties\n   from azure.storage.fileshare import Metrics,\

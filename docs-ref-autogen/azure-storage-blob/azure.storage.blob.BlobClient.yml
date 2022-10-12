@@ -15,8 +15,9 @@ summary: 'A client to interact with a specific blob, although that blob may not 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#optional-configuration).'
 constructor:
   syntax: 'BlobClient(account_url: str, container_name: str, blob_name: str, snapshot:
-    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any] = None,
-    **kwargs: Any)'
+    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -53,15 +54,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -126,7 +133,7 @@ examples:
 - "Creating the BlobClient from a URL to a public blob (no auth needed).<!--[!code-python[Main](les\\\
   blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\\
   blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   from azure.storage.blob import BlobClient\n   blob_client\
@@ -134,7 +141,7 @@ examples:
   )\n\n   ````\n\nCreating the BlobClient from a SAS URL to a blob.<!--[!code-python[Main](les\\\
   blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\\
   blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   from azure.storage.blob import BlobClient\n\n \
@@ -168,12 +175,13 @@ methods:
   - "Abort copying a blob from URL.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Passing in copy id to abort copy operation\n   copied_blob.abort_copy(copy_id)\n\
-    \n   # check copy status\n   props = copied_blob.get_blob_properties()\n   print(props.copy.status)\n\
-    \n   ````\n"
+    \n   # Passing in copy id to abort copy operation\n   if props.copy.status !=\
+    \ \"success\":\n       copied_blob.abort_copy(copy_id)\n\n   # check copy status\n\
+    \   props = copied_blob.get_blob_properties()\n   print(props.copy.status)\n\n\
+    \   ````\n"
 - uid: azure.storage.blob.BlobClient.acquire_lease
   name: acquire_lease
   summary: 'Requests a new lease.
@@ -262,7 +270,7 @@ methods:
   - "Acquiring a lease on a blob.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Acquire a lease on the blob\n   lease = blob_client.acquire_lease()\n\n\
@@ -271,8 +279,8 @@ methods:
 - uid: azure.storage.blob.BlobClient.append_block
   name: append_block
   summary: Commits a new block of data to the end of the existing append blob.
-  signature: 'append_block(data: Union[AnyStr, Iterable[AnyStr], IO[AnyStr]], length:
-    Optional[int] = None, **kwargs) -> Dict[str, Union[str, datetime, int]]'
+  signature: 'append_block(data: Union[bytes, str, Iterable[AnyStr], IO[AnyStr]],
+    length: Optional[int] = None, **kwargs) -> Dict[str, Union[str, datetime, int]]'
   parameters:
   - name: data
     description: Content of the block. This can be bytes, text, an iterable or a file-like
@@ -1290,7 +1298,7 @@ methods:
   - "Create a snapshot of the blob.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create a read-only snapshot of the blob at this point in time\n   snapshot_blob\
@@ -1410,7 +1418,7 @@ methods:
   - "Delete a blob.<!--[!code-python[Main](les\\blob_samples_hello_world.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_hello_world.py\"\
+    \\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_hello_world.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   blob_client.delete_blob()\n\n   ````\n"
@@ -1441,8 +1449,8 @@ methods:
 
     a stream. Using chunks() returns an iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'download_blob(offset: Optional[int] = None, length: Optional[int] =
-    None, **kwargs: Any) -> azure.storage.blob._download.StorageStreamDownloader'
+  signature: 'download_blob(offset: int = None, length: int = None, *, encoding: str,
+    **kwargs) -> StorageStreamDownloader[str]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the blob.
@@ -1588,7 +1596,7 @@ methods:
   - "Download a blob.<!--[!code-python[Main](les\\blob_samples_hello_world.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_hello_world.py\"\
+    \\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_hello_world.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(DEST_FILE, \"wb\") as my_blob:\n       download_stream = blob_client.download_blob()\n\
@@ -1616,9 +1624,10 @@ methods:
   name: from_blob_url
   summary: Create BlobClient from a blob url. This doesn't support customized blob
     url with '/' in blob name.
-  signature: 'from_blob_url(blob_url: Type[ClassType], credential: Optional[str] =
-    None, snapshot: Optional[Any] = None, **kwargs: Optional[Union[str, Dict[str,
-    Any]]]) -> ClassType'
+  signature: 'from_blob_url(blob_url: str, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, snapshot: Optional[Union[str, Dict[str, Any]]] =
+    None, **kwargs: Any) -> ClassType'
   parameters:
   - name: blob_url
     description: 'The full endpoint URL to the Blob, including SAS token and snapshot
@@ -1637,16 +1646,21 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: snapshot
     description: 'The optional blob snapshot on which to operate. This can be the
@@ -1667,8 +1681,9 @@ methods:
   name: from_connection_string
   summary: Create BlobClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, container_name: str, blob_name:
-    str, snapshot: Optional[str] = None, credential: Optional[Any] = None, **kwargs:
-    Any) -> ClassType'
+    str, snapshot: Optional[str] = None, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any) -> ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -1701,13 +1716,18 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A Blob client.
@@ -1717,7 +1737,7 @@ methods:
   - "Creating the BlobClient from a connection string.<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\
     \\blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.storage.blob import BlobClient\n \
@@ -1831,7 +1851,7 @@ methods:
   - "Getting the properties for a blob.<!--[!code-python[Main](les\\blob_samples_common.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = blob_client.get_blob_properties()\n\n   ````\n"
@@ -2386,7 +2406,7 @@ methods:
   - "select/project on blob/or blob snapshot data by providing simple query expressions.<!--[!code-python[Main](les\\\
     blob_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\\
     blob_samples_query.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
     \n````python\n\n   errors = []\n   def on_error(error):\n       errors.append(error)\n\
@@ -3555,7 +3575,7 @@ methods:
   - "Copy a blob from a URL.<!--[!code-python[Main](les\\blob_samples_common.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common.py\", \"\
+    \\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Get the\
     \ blob client with the source blob\n   source_blob = \"https://www.gutenberg.org/files/59466/59466-0.txt\"\
@@ -3584,7 +3604,7 @@ methods:
   - "Undeleting a blob.<!--[!code-python[Main](les\\blob_samples_common.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common.py\", \"\
+    \\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Undelete\
     \ the blob before the retention policy expires\n   blob_client.undelete_blob()\n\
@@ -3592,7 +3612,7 @@ methods:
 - uid: azure.storage.blob.BlobClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'upload_blob(data: Union[AnyStr, Iterable, IO], blob_type: Union[str,
+  signature: 'upload_blob(data: Union[bytes, str, Iterable, IO], blob_type: Union[str,
     azure.storage.blob._models.BlobType] = <BlobType.BLOCKBLOB: ''BlockBlob''>, length:
     Optional[int] = None, metadata: Optional[Dict[str, str]] = None, **kwargs) ->
     Any'
@@ -3847,7 +3867,7 @@ methods:
   - "Upload a blob to the container.<!--[!code-python[Main](les\\blob_samples_hello_world.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_hello_world.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_hello_world.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Upload content to block blob\n   with open(SOURCE_FILE, \"rb\") as data:\n\

@@ -18,8 +18,9 @@ summary: 'A client to interact with a specific container, although that containe
   retrieved using the <xref:azure.storage.blob.aio.ContainerClient.get_blob_client>
   function.'
 constructor:
-  syntax: 'ContainerClient(account_url: str, container_name: str, credential: Optional[Any]
-    = None, **kwargs: Any)'
+  syntax: 'ContainerClient(account_url: str, container_name: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -40,15 +41,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -113,7 +120,7 @@ examples:
 - "Get a ContainerClient from an existing BlobServiceClient.<!--[!code-python[Main](les\\\
   blob_samples_containers_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\\
   blob_samples_containers_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   # Instantiate a BlobServiceClient using a connection\
@@ -123,7 +130,7 @@ examples:
   mynewcontainerasync\")\n\n   ````\n\nCreating the container client directly.<!--[!code-python[Main](les\\\
   blob_samples_containers_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\\
   blob_samples_containers_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   from azure.storage.blob.aio import ContainerClient\n\
@@ -205,7 +212,7 @@ methods:
   - "Acquiring a lease on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Acquire a lease on the container\n   lease = await container_client.acquire_lease()\n\
@@ -255,7 +262,7 @@ methods:
   - "Creating a container to store blobs.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await container_client.create_container()\n\n   ````\n"
@@ -281,10 +288,10 @@ methods:
     After specified number of days, blob''s data is removed from the service during
     garbage collection.
 
-    Soft deleted blob or snapshot is accessible through <xref:azure.storage.blob.aio.ContainerClient.list_blobs>
+    Soft deleted blobs or snapshots are accessible through <xref:azure.storage.blob.aio.ContainerClient.list_blobs>
     specifying *include=["deleted"]*
 
-    option. Soft-deleted blob or snapshot can be restored using <xref:BlobClient.undelete>'
+    Soft-deleted blob or snapshot can be restored using <xref:azure.storage.blob.aio.BlobClient.undelete>'
   signature: 'async delete_blob(blob: Union[str, azure.storage.blob._models.BlobProperties],
     delete_snapshots: Optional[str] = None, **kwargs) -> None'
   parameters:
@@ -397,12 +404,12 @@ methods:
     Soft deleted blobs or snapshots are accessible through <xref:azure.storage.blob.aio.ContainerClient.list_blobs>
     specifying *include=["deleted"]*
 
-    Soft-deleted blobs or snapshots can be restored using <xref:BlobClient.undelete>
+    Soft-deleted blobs or snapshots can be restored using <xref:azure.storage.blob.aio.BlobClient.undelete>
 
 
     The maximum number of blobs that can be deleted in a single request is 256.'
-  signature: 'async delete_blobs(*blobs: List[Union[str, azure.storage.blob._models.BlobProperties,
-    dict]], **kwargs) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
+  signature: 'async delete_blobs(*blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
+    **kwargs: Any) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
   parameters:
   - name: blobs
     description: "The blobs to delete. This can be a single blob, or multiple values\
@@ -421,8 +428,9 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
-    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:str>
+    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.BlobProperties>
   - name: delete_snapshots
     description: "Required if a blob has associated snapshots. Values include:\n \
       \  * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
@@ -484,7 +492,7 @@ methods:
   - "Deleting multiple blobs.<!--[!code-python[Main](les\\blob_samples_common_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_common_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_common_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Delete multiple blobs in the container by name\n   await container_client.delete_blobs(\"\
@@ -554,7 +562,7 @@ methods:
   - "Delete a container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await container_client.delete_container()\n\n   ````\n"
@@ -568,8 +576,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'async download_blob(blob: Union[str, BlobProperties], offset: Optional[int]
-    = None, length: Optional[int] = None, **kwargs: Any) -> StorageStreamDownloader'
+  signature: 'async download_blob(blob: Union[str, BlobProperties], offset: int =
+    None, length: int = None, *, encoding: str, **kwargs) -> StorageStreamDownloader[str]'
   parameters:
   - name: blob
     description: 'The blob with which to interact. If specified, this value will override
@@ -807,7 +815,7 @@ methods:
   - "Get the blob client.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get the BlobClient from the ContainerClient to interact with a specific\
@@ -839,7 +847,7 @@ methods:
   - "Getting the access policy on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   policy = await container_client.get_container_access_policy()\n\n   ````\n"
@@ -869,10 +877,42 @@ methods:
   - "Getting properties on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = await container_client.get_container_properties()\n\n   ````\n"
+- uid: azure.storage.blob.aio.ContainerClient.list_blob_names
+  name: list_blob_names
+  summary: 'Returns a generator to list the names of blobs under the specified container.
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service.
+
+
+    Note that no additional properties or metadata will be returned when using this
+    API.
+
+    Additionally this API does not have an option to include additional blobs such
+    as snapshots,
+
+    versions, soft-deleted blobs, etc. To get any of this data, use <xref:azure.storage.blob.aio.ContainerClient.list_blobs>.'
+  signature: 'list_blob_names(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[str]'
+  parameters:
+  - name: name_starts_with
+    description: 'Filters the results to return only blobs whose names
+
+      begin with the specified prefix.'
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: An iterable (auto-paging) response of blob names as strings.
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:str>]
 - uid: azure.storage.blob.aio.ContainerClient.list_blobs
   name: list_blobs
   summary: 'Returns a generator to list the blobs under the specified container.
@@ -890,7 +930,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: or str include
+  - name: include
     description: 'Specifies one or more additional datasets to include in the response.
 
       Options include: ''snapshots'', ''metadata'', ''uncommittedblobs'', ''copy'',
@@ -898,8 +938,6 @@ methods:
 
       ''tags'', ''versions''.'
     isRequired: true
-    types:
-    - <xref:list>[<xref:str>]
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -912,7 +950,7 @@ methods:
   - "List the blobs in the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   blobs_list = []\n   async for blob in container_client.list_blobs():\n  \
@@ -988,7 +1026,7 @@ methods:
   - "Setting access policy on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create access policy\n   from azure.storage.blob import AccessPolicy, ContainerSasPermissions\n\
@@ -1047,7 +1085,7 @@ methods:
   - "Setting metadata on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create key, value pairs for metadata\n   metadata = {'type': 'test'}\n\n\
@@ -1060,9 +1098,9 @@ methods:
 
 
     The maximum number of blobs that can be updated in a single request is 256.'
-  signature: 'set_premium_page_blob_tier_blobs(premium_page_blob_tier: Union[str,
-    PremiumPageBlobTier], *blobs: List[Union[str, azure.storage.blob._models.BlobProperties,
-    dict]], **kwargs) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
+  signature: 'async set_premium_page_blob_tier_blobs(premium_page_blob_tier: Union[str,
+    PremiumPageBlobTier], *blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
+    **kwargs: Any) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
   parameters:
   - name: premium_page_blob_tier
     description: 'A page blob tier value to set on all blobs to. The tier correlates
@@ -1098,8 +1136,9 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
-    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:str>
+    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.BlobProperties>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -1132,9 +1171,9 @@ methods:
 
 
     The maximum number of blobs that can be updated in a single request is 256.'
-  signature: 'set_standard_blob_tier_blobs(standard_blob_tier: Union[str, StandardBlobTier],
-    *blobs: List[Union[str, azure.storage.blob._models.BlobProperties, dict]], **kwargs)
-    -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
+  signature: 'async set_standard_blob_tier_blobs(standard_blob_tier: Union[str, StandardBlobTier],
+    *blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
+    **kwargs: Any) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
   parameters:
   - name: standard_blob_tier
     description: 'Indicates the tier to be set on all blobs. Options include ''Hot'',
@@ -1180,8 +1219,9 @@ methods:
       \ type: int\n>"
     isRequired: true
     types:
-    - <xref:list>[<xref:str>], <xref:list>[<xref:dict>]<xref:,>
-    - <xref:list>[<xref:azure.storage.blob.BlobProperties>]
+    - <xref:str>
+    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.BlobProperties>
   - name: rehydrate_priority
     description: Indicates the priority with which to rehydrate an archived blob
     types:
@@ -1439,7 +1479,7 @@ methods:
   - "Upload blob to the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.1\\\\samples\\\\blob_samples_containers_async.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.0\\\\samples\\\\blob_samples_containers_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(SOURCE_FILE, \"rb\") as data:\n       blob_client = await container_client.upload_blob(name=\"\
