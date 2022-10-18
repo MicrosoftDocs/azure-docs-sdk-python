@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-title: Azure App Service SDK for Python
-ms.service: appservice
 ms.topic: reference
 ms.devlang: python
+title: Azure App Service SDK for Python
+ms.author: lmazuel
 author: lmazuel
+ms.service: appservice
 description: Reference for Azure App Service SDK for Python
-ms.data: 10/17/2022
+ms.data: 10/18/2022
 ---
 # Azure Web Apps libraries for Python
 
