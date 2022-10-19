@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 ms.devlang: python
-title: Azure Scvmm SDK for Python
 ms.author: lmazuel
-author: lmazuel
+ms.data: 10/19/2022
 ms.service: scvmm
+author: lmazuel
+title: Azure Scvmm SDK for Python
 description: Reference for Azure Scvmm SDK for Python
-ms.data: 10/18/2022
+ms.topic: reference
 ---
 # Azure Scvmm SDK for Python - preview
 

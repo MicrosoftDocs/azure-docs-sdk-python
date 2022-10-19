@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 ms.devlang: python
-title: Azure Cache for Redis SDK for Python
 ms.author: lmazuel
-author: lmazuel
+ms.data: 10/19/2022
 ms.service: cache
+author: lmazuel
+title: Azure Cache for Redis SDK for Python
 description: Reference for Azure Cache for Redis SDK for Python
-ms.data: 10/18/2022
+ms.topic: reference
 ---
 # Azure Cache for Redis libraries for Python
 

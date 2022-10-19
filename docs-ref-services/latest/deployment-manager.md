@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 ms.devlang: python
-title: Azure Deployment Manager SDK for Python
 ms.author: lmazuel
-author: lmazuel
+ms.data: 10/19/2022
 ms.service: deploymentmanager
+author: lmazuel
+title: Azure Deployment Manager SDK for Python
 description: Reference for Azure Deployment Manager SDK for Python
-ms.data: 10/18/2022
+ms.topic: reference
 ---
 # Azure Deployment Manager SDK for Python - latest
 

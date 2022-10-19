@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 ms.devlang: python
-title: Azure Connected VMWare SDK for Python
 ms.author: lmazuel
-author: lmazuel
+ms.data: 10/19/2022
 ms.service: connectedvmware
+author: lmazuel
+title: Azure Connected VMWare SDK for Python
 description: Reference for Azure Connected VMWare SDK for Python
-ms.data: 10/18/2022
+ms.topic: reference
 ---
 # Azure Connected VMWare SDK for Python - preview
 

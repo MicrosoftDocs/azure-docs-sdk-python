@@ -1,12 +1,12 @@
 ---
-ms.topic: reference
 ms.devlang: python
-title: Azure VMware Solution SDK for Python
 ms.author: lmazuel
-author: lmazuel
+ms.data: 10/19/2022
 ms.service: vmwaresolution
+author: lmazuel
+title: Azure VMware Solution SDK for Python
 description: Reference for Azure VMware Solution SDK for Python
-ms.data: 10/18/2022
+ms.topic: reference
 ---
 # Azure VMware Solution SDK for Python - latest
 
