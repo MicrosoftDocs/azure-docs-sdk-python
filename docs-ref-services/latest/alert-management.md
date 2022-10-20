@@ -1,9 +1,9 @@
 ---
-ms.devlang: python
-ms.author: lmazuel
-ms.data: 10/19/2022
-ms.service: alertmanagement
+ms.data: 10/20/2022
 author: lmazuel
+ms.author: lmazuel
+ms.service: alertmanagement
+ms.devlang: python
 title: Azure Alert Management SDK for Python
 description: Reference for Azure Alert Management SDK for Python
 ms.topic: reference

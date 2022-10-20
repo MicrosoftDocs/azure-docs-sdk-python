@@ -1,9 +1,9 @@
 ---
-ms.devlang: python
-ms.author: lmazuel
-ms.data: 10/19/2022
-ms.service: streamanalytics
+ms.data: 10/20/2022
 author: lmazuel
+ms.author: lmazuel
+ms.service: streamanalytics
+ms.devlang: python
 title: Azure Stream Analytics SDK for Python
 description: Reference for Azure Stream Analytics SDK for Python
 ms.topic: reference

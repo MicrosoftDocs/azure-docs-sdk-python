@@ -1,9 +1,9 @@
 ---
-ms.devlang: python
-ms.author: ttsao
-ms.data: 10/19/2022
-ms.service: mapsrender
+ms.data: 10/20/2022
 author: alextts627
+ms.author: ttsao
+ms.service: mapsrender
+ms.devlang: python
 title: Azure Maps Render SDK for Python
 description: Reference for Azure Maps Render SDK for Python
 ms.topic: reference
