@@ -1,12 +1,12 @@
 ---
-ms.data: 10/25/2022
-author: lmazuel
+ms.service: privatedns
 ms.author: lmazuel
+ms.devlang: python
 ms.topic: reference
 description: Reference for Azure Private DNS SDK for Python
+ms.data: 10/26/2022
 title: Azure Private DNS SDK for Python
-ms.service: privatedns
-ms.devlang: python
+author: lmazuel
 ---
 # Azure Private DNS libraries
 

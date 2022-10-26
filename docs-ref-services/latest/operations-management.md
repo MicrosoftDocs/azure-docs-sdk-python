@@ -1,12 +1,12 @@
 ---
-ms.data: 10/25/2022
-author: lmazuel
+ms.service: operationsmanagement
 ms.author: lmazuel
+ms.devlang: python
 ms.topic: reference
 description: Reference for Azure Operations Management SDK for Python
+ms.data: 10/26/2022
 title: Azure Operations Management SDK for Python
-ms.service: operationsmanagement
-ms.devlang: python
+author: lmazuel
 ---
 # Azure Operations Management SDK for Python - latest
 

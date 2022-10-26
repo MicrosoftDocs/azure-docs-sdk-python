@@ -1,12 +1,12 @@
 ---
-ms.data: 10/25/2022
-author: lmazuel
+ms.service: fluidrelay
 ms.author: lmazuel
+ms.devlang: python
 ms.topic: reference
 description: Reference for Azure Fluid Relay SDK for Python
+ms.data: 10/26/2022
 title: Azure Fluid Relay SDK for Python
-ms.service: fluidrelay
-ms.devlang: python
+author: lmazuel
 ---
 # Azure Fluid Relay SDK for Python - latest
 
