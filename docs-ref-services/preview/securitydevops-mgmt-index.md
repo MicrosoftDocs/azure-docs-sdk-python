@@ -1,3 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[azure-mgmt-securitydevops](mgmt-securitydevops-readme.md)|[azure-mgmt-securitydevops](https://pypi.org/project/azure-mgmt-securitydevops)|[Github](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/securitydevops/azure-mgmt-securitydevops)|
+|[Resource Management -  Security Devops](mgmt-securitydevops-readme.md)|[azure-mgmt-securitydevops](https://pypi.org/project/azure-mgmt-securitydevops)|[Github](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/securitydevops/azure-mgmt-securitydevops)|
