@@ -7,3 +7,6 @@
 
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](load-testing-mgmt-index.md)]
+
+## Dataplane packages - preview
+[!INCLUDE [data-packages](load-testing-client-index.md)]
