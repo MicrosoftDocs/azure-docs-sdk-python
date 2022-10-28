@@ -1,12 +1,12 @@
 ---
-title: Azure Data Factory SDK for Python
-ms.devlang: python
-author: hvermis
 ms.service: datafactory
+author: hvermis
+ms.devlang: python
 ms.author: hvermis
-ms.data: 10/27/2022
-description: Reference for Azure Data Factory SDK for Python
 ms.topic: reference
+title: Azure Data Factory SDK for Python
+description: Reference for Azure Data Factory SDK for Python
+ms.data: 10/28/2022
 ---
 # Azure Data Factory libraries for Python
 
