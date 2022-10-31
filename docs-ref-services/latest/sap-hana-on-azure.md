@@ -1,12 +1,12 @@
 ---
-ms.service: saphanaonazure
-author: lmazuel
-ms.devlang: python
 ms.author: lmazuel
-ms.topic: reference
-title: Azure SAP HANA on Azure SDK for Python
+author: lmazuel
 description: Reference for Azure SAP HANA on Azure SDK for Python
-ms.data: 10/28/2022
+ms.topic: reference
+ms.service: saphanaonazure
+ms.data: 10/31/2022
+ms.devlang: python
+title: Azure SAP HANA on Azure SDK for Python
 ---
 # Azure SAP HANA on Azure SDK for Python - latest
 

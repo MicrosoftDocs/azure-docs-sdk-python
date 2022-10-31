@@ -1,12 +1,12 @@
 ---
-ms.service: education
-author: lmazuel
-ms.devlang: python
 ms.author: lmazuel
-ms.topic: reference
-title: Azure Education SDK for Python
+author: lmazuel
 description: Reference for Azure Education SDK for Python
-ms.data: 10/28/2022
+ms.topic: reference
+ms.service: education
+ms.data: 10/31/2022
+ms.devlang: python
+title: Azure Education SDK for Python
 ---
 # Azure Education SDK for Python - preview
 

@@ -1,12 +1,12 @@
 ---
-ms.service: devcenter
-author: lmazuel
-ms.devlang: python
 ms.author: lmazuel
-ms.topic: reference
-title: Azure Devcenter SDK for Python
+author: lmazuel
 description: Reference for Azure Devcenter SDK for Python
-ms.data: 10/28/2022
+ms.topic: reference
+ms.service: devcenter
+ms.data: 10/31/2022
+ms.devlang: python
+title: Azure Devcenter SDK for Python
 ---
 # Azure Devcenter SDK for Python - preview
 
