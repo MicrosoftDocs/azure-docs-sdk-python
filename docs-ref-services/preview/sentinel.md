@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 author: lmazuel
+title: Azure Sentinel SDK for Python
+ms.author: lmazuel
 description: Reference for Azure Sentinel SDK for Python
 ms.topic: reference
-ms.service: sentinel
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Sentinel SDK for Python
+ms.service: sentinel
 ---
 # Azure Sentinel SDK for Python - preview
 

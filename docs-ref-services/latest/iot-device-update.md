@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 author: lmazuel
+title: Azure IoT Device Update SDK for Python
+ms.author: lmazuel
 description: Reference for Azure IoT Device Update SDK for Python
 ms.topic: reference
-ms.service: iotdeviceupdate
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure IoT Device Update SDK for Python
+ms.service: iotdeviceupdate
 ---
 # Azure IoT Device Update SDK for Python - latest
 

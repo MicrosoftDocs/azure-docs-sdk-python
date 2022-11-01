@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 author: lmazuel
+title: Azure Automation SDK for Python
+ms.author: lmazuel
 description: Reference for Azure Automation SDK for Python
 ms.topic: reference
-ms.service: automation
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Automation SDK for Python
+ms.service: automation
 ---
 # Azure Automation SDK for Python - preview
 

@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 author: lmazuel
+title: Azure Marketplace Ordering SDK for Python
+ms.author: lmazuel
 description: Reference for Azure Marketplace Ordering SDK for Python
 ms.topic: reference
-ms.service: marketplaceordering
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Marketplace Ordering SDK for Python
+ms.service: marketplaceordering
 ---
 # Azure Marketplace Ordering SDK for Python - preview
 

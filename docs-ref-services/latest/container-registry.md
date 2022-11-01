@@ -1,12 +1,12 @@
 ---
-ms.author: yall
 author: YalinLi0312
+title: Azure Container Registry SDK for Python
+ms.author: yall
 description: Reference for Azure Container Registry SDK for Python
 ms.topic: reference
-ms.service: containerregistry
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Container Registry SDK for Python
+ms.service: containerregistry
 ---
 # Azure Container Registry libraries for python
 

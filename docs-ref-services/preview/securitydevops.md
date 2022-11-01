@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 author: lmazuel
+title: Azure Securitydevops SDK for Python
+ms.author: lmazuel
 description: Reference for Azure Securitydevops SDK for Python
 ms.topic: reference
-ms.service: securitydevops
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Securitydevops SDK for Python
+ms.service: securitydevops
 ---
 # Azure Securitydevops SDK for Python - preview
 

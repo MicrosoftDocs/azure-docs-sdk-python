@@ -1,12 +1,12 @@
 ---
-ms.author: kashifkhan
 author: kashifkhan
+title: Azure Schema Registry SDK for Python
+ms.author: kashifkhan
 description: Reference for Azure Schema Registry SDK for Python
 ms.topic: reference
-ms.service: schemaregistry
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Schema Registry SDK for Python
+ms.service: schemaregistry
 ---
 # Azure Schema Registry SDK for Python - latest
 

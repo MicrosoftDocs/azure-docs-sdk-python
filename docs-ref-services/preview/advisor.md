@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
 author: lmazuel
+title: Azure Advisor SDK for Python
+ms.author: lmazuel
 description: Reference for Azure Advisor SDK for Python
 ms.topic: reference
-ms.service: advisor
-ms.data: 10/31/2022
+ms.data: 11/01/2022
 ms.devlang: python
-title: Azure Advisor SDK for Python
+ms.service: advisor
 ---
 # Azure Advisor SDK for Python - preview
 
