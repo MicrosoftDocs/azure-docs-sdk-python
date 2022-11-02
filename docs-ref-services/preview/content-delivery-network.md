@@ -1,11 +1,11 @@
 ---
-author: lmazuel
-title: Azure Content Delivery Network SDK for Python
 ms.author: lmazuel
-description: Reference for Azure Content Delivery Network SDK for Python
+author: lmazuel
 ms.topic: reference
-ms.data: 11/01/2022
+title: Azure Content Delivery Network SDK for Python
+ms.data: 11/02/2022
 ms.devlang: python
+description: Reference for Azure Content Delivery Network SDK for Python
 ms.service: contentdeliverynetwork
 ---
 # Azure CDN libraries for python
