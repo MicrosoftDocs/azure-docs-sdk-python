@@ -14,14 +14,17 @@ summary: 'Represents a server.
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: 'Server(*, location: str, tags: Optional[Dict[str, str]] = None, sku: Optional[_models.Sku]
-    = None, administrator_login: Optional[str] = None, administrator_login_password:
-    Optional[str] = None, version: Optional[Union[str, _models.ServerVersion]] = None,
-    storage: Optional[_models.Storage] = None, backup: Optional[_models.Backup] =
-    None, network: Optional[_models.Network] = None, high_availability: Optional[_models.HighAvailability]
-    = None, maintenance_window: Optional[_models.MaintenanceWindow] = None, source_server_resource_id:
-    Optional[str] = None, point_in_time_utc: Optional[datetime.datetime] = None, availability_zone:
-    Optional[str] = '''', create_mode: Optional[Union[str, _models.CreateMode]] =
-    None, **kwargs)'
+    = None, identity: Optional[_models.UserAssignedIdentity] = None, administrator_login:
+    Optional[str] = None, administrator_login_password: Optional[str] = None, version:
+    Optional[Union[str, _models.ServerVersion]] = None, storage: Optional[_models.Storage]
+    = None, auth_config: Optional[_models.AuthConfig] = None, data_encryption: Optional[_models.DataEncryption]
+    = None, backup: Optional[_models.Backup] = None, network: Optional[_models.Network]
+    = None, high_availability: Optional[_models.HighAvailability] = None, maintenance_window:
+    Optional[_models.MaintenanceWindow] = None, source_server_resource_id: Optional[str]
+    = None, point_in_time_utc: Optional[datetime.datetime] = None, availability_zone:
+    str = '''', replication_role: Optional[Union[str, _models.ReplicationRole]] =
+    None, replica_capacity: Optional[int] = None, create_mode: Optional[Union[str,
+    _models.CreateMode]] = None, **kwargs)'
 variables:
 - description: 'Fully qualified resource ID for the resource. Ex -
 
@@ -40,11 +43,17 @@ variables:
   name: type
   types:
   - <xref:str>
-- description: A set of tags. Resource tags.
+- description: 'Azure Resource Manager metadata containing createdBy and modifiedBy
+
+    information.'
+  name: system_data
+  types:
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.SystemData>
+- description: Resource tags.
   name: tags
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
-- description: Required. The geo-location where the resource lives.
+- description: The geo-location where the resource lives. Required.
   name: location
   types:
   - <xref:str>
@@ -52,10 +61,10 @@ variables:
   name: sku
   types:
   - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.Sku>
-- description: The system metadata relating to this resource.
-  name: system_data
+- description: Describes the identity of the application.
+  name: identity
   types:
-  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.SystemData>
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.UserAssignedIdentity>
 - description: 'The administrator''s login name of a server. Can only be specified
 
     when the server is being created (and is required for creation).'
@@ -68,7 +77,8 @@ variables:
   name: administrator_login_password
   types:
   - <xref:str>
-- description: 'PostgreSQL Server version. Known values are: "14", "13", "12", "11".'
+- description: 'PostgreSQL Server version. Known values are: "14", "13", "12", and
+    "11".'
   name: version
   types:
   - <xref:str>
@@ -79,7 +89,7 @@ variables:
   - <xref:str>
 - description: 'A state of a server that is visible to user. Known values are: "Ready",
 
-    "Dropping", "Disabled", "Starting", "Stopping", "Stopped", "Updating".'
+    "Dropping", "Disabled", "Starting", "Stopping", "Stopped", and "Updating".'
   name: state
   types:
   - <xref:str>
@@ -92,6 +102,14 @@ variables:
   name: storage
   types:
   - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.Storage>
+- description: AuthConfig properties of a server.
+  name: auth_config
+  types:
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.AuthConfig>
+- description: Data encryption properties of a server.
+  name: data_encryption
+  types:
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.DataEncryption>
 - description: Backup properties of a server.
   name: backup
   types:
@@ -110,14 +128,15 @@ variables:
   - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MaintenanceWindow>
 - description: 'The source server resource ID to restore from. It''s required
 
-    when ''createMode'' is ''PointInTimeRestore''.'
+    when ''createMode'' is ''PointInTimeRestore'' or ''GeoRestore'' or ''Replica''.'
   name: source_server_resource_id
   types:
   - <xref:str>
 - description: 'Restore point creation time (ISO8601 format), specifying the time
     to
 
-    restore from. It''s required when ''createMode'' is ''PointInTimeRestore''.'
+    restore from. It''s required when ''createMode'' is ''PointInTimeRestore'' or
+    ''GeoRestore''.'
   name: point_in_time_utc
   types:
   - <xref:datetime.datetime>
@@ -125,9 +144,22 @@ variables:
   name: availability_zone
   types:
   - <xref:str>
+- description: 'Replication role of the server. Known values are: "Primary",
+
+    "Secondary", "WalReplica", "SyncReplica", "AsyncReplica", "GeoSyncReplica", and
+
+    "GeoAsyncReplica".'
+  name: replication_role
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.ReplicationRole>
+- description: Replicas allowed for a server.
+  name: replica_capacity
+  types:
+  - <xref:int>
 - description: 'The mode to create a new PostgreSQL server. Known values are: "Default",
 
-    "Create", "Update", "PointInTimeRestore".'
+    "Create", "Update", "PointInTimeRestore", "GeoRestore", and "Replica".'
   name: create_mode
   types:
   - <xref:str>
