@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-ms.topic: reference
-description: Reference for Azure Service Linker SDK for Python
 title: Azure Service Linker SDK for Python
-ms.data: 11/03/2022
-author: lmazuel
 ms.devlang: python
+description: Reference for Azure Service Linker SDK for Python
+author: lmazuel
+ms.topic: reference
+ms.author: lmazuel
 ms.service: servicelinker
+ms.data: 11/04/2022
 ---
 # Azure Service Linker SDK for Python - preview
 

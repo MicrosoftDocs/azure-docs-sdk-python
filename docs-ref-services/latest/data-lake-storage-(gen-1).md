@@ -1,12 +1,12 @@
 ---
-ms.author: ro-joowan
-ms.topic: reference
-description: Reference for Azure Data Lake Storage (Gen 1) SDK for Python
 title: Azure Data Lake Storage (Gen 1) SDK for Python
-ms.data: 11/03/2022
-author: ro-joowan
 ms.devlang: python
+description: Reference for Azure Data Lake Storage (Gen 1) SDK for Python
+author: ro-joowan
+ms.topic: reference
+ms.author: ro-joowan
 ms.service: datalakestorage(gen1)
+ms.data: 11/04/2022
 ---
 # Azure Data Lake Store libraries for python
 

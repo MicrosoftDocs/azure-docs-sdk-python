@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-ms.topic: reference
-description: Reference for Azure Data Share SDK for Python
 title: Azure Data Share SDK for Python
-ms.data: 11/03/2022
-author: lmazuel
 ms.devlang: python
+description: Reference for Azure Data Share SDK for Python
+author: lmazuel
+ms.topic: reference
+ms.author: lmazuel
 ms.service: datashare
+ms.data: 11/04/2022
 ---
 # Azure Data Share SDK for Python - latest
 

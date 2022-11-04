@@ -1,19 +1,18 @@
 ---
-title: Azure Logic Apps libraries for python
-description: Reference for Azure Logic Apps libraries for python
-keywords: Azure, python, SDK, API, Logic Apps
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
-ms.topic: reference
-ms.prod: azure
-ms.technology: azure
+title: Azure Logic Apps SDK for Python
 ms.devlang: python
-ms.service: multiple
+description: Reference for Azure Logic Apps SDK for Python
+author: lmazuel
+ms.topic: reference
+ms.author: lmazuel
+ms.service: logicapps
+ms.data: 11/04/2022
+ms.technology: azure
+ms.date: 07/10/2017
+keywords: Azure, python, SDK, API, Logic Apps
+manager: douge
+ms.prod: azure
 ---
-
 # Azure Logic Apps libraries for python
 
 ## Install the libraries
