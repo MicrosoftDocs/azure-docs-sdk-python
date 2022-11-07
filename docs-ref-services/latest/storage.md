@@ -1,13 +1,19 @@
 ---
 title: Azure Storage SDK for Python
-ms.devlang: python
 description: Reference for Azure Storage SDK for Python
 author: annatisch
-ms.topic: reference
 ms.author: antisch
+ms.data: 11/07/2022
+ms.topic: reference
+ms.devlang: python
 ms.service: storage
-ms.data: 11/04/2022
 ---
+# Azure Storage SDK for Python - latest
+
+## Client packages - latest
+[!INCLUDE [client-packages](storage-client-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](storage-mgmt-index.md)]
 # Azure Storage client libraries for Python
 
 ## Client Packages (12.X.X) - Latest
