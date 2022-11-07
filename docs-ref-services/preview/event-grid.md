@@ -14,6 +14,8 @@ ms.service: eventgrid
 [!INCLUDE [client-packages](event-grid-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](event-grid-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](event-grid-mgmt-index.md)]
 # Event Grid libraries for Python
 
 

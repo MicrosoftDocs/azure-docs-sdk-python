@@ -16,3 +16,5 @@ ms.service: attestation
 [!INCLUDE [mgmt-packages](attestation-mgmt-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](attestation-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](attestation-mgmt-index.md)]

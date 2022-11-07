@@ -14,6 +14,8 @@ ms.service: iot
 [!INCLUDE [client-packages](iot-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](iot-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](iot-mgmt-index.md)]
 # Azure IoT Hub libraries for python
 
 ## [Management API](/python/api/overview/azure/iot/management)

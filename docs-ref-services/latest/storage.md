@@ -14,6 +14,8 @@ ms.service: storage
 [!INCLUDE [client-packages](storage-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](storage-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](storage-mgmt-index.md)]
 # Azure Storage client libraries for Python
 
 ## Client Packages (12.X.X) - Latest

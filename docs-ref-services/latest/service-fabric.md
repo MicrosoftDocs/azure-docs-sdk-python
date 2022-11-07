@@ -16,3 +16,5 @@ ms.service: servicefabric
 [!INCLUDE [mgmt-packages](service-fabric-mgmt-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](service-fabric-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](service-fabric-mgmt-index.md)]

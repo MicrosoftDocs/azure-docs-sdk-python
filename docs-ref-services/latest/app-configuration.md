@@ -16,3 +16,5 @@ ms.service: appconfiguration
 [!INCLUDE [mgmt-packages](app-configuration-mgmt-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](app-configuration-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](app-configuration-mgmt-index.md)]

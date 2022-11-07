@@ -16,3 +16,5 @@ ms.service: monitor
 [!INCLUDE [mgmt-packages](monitor-mgmt-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](monitor-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](monitor-mgmt-index.md)]

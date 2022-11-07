@@ -14,3 +14,5 @@ ms.service: machinelearning
 [!INCLUDE [client-packages](machine-learning-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](machine-learning-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](machine-learning-mgmt-index.md)]

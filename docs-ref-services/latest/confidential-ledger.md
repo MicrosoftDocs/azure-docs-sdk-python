@@ -16,3 +16,5 @@ ms.service: confidentialledger
 [!INCLUDE [mgmt-packages](confidential-ledger-mgmt-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](confidential-ledger-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](confidential-ledger-mgmt-index.md)]

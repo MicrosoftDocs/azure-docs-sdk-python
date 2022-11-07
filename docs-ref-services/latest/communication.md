@@ -16,3 +16,5 @@ ms.service: communication
 [!INCLUDE [mgmt-packages](communication-mgmt-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](communication-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](communication-mgmt-index.md)]

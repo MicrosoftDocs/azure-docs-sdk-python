@@ -16,3 +16,5 @@ ms.service: iothub
 [!INCLUDE [mgmt-packages](iot-hub-mgmt-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](iot-hub-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](iot-hub-mgmt-index.md)]

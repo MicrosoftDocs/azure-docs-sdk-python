@@ -14,6 +14,8 @@ ms.service: search
 [!INCLUDE [client-packages](search-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](search-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](search-mgmt-index.md)]
 # Azure Search libraries for python
 
 ## Install the libraries

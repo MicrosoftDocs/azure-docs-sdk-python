@@ -16,3 +16,5 @@ ms.service: synapseanalytics
 [!INCLUDE [mgmt-packages](synapse-analytics-mgmt-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](synapse-analytics-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](synapse-analytics-mgmt-index.md)]

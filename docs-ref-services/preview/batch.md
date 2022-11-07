@@ -14,6 +14,8 @@ ms.service: batch
 [!INCLUDE [client-packages](batch-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](batch-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](batch-mgmt-index.md)]
 # Azure Batch libraries for python
 
 ## Overview

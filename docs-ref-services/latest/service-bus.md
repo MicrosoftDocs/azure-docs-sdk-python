@@ -14,6 +14,8 @@ ms.service: servicebus
 [!INCLUDE [client-packages](service-bus-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](service-bus-mgmt-index.md)]
+## Management packages - latest
+[!INCLUDE [mgmt-packages](service-bus-mgmt-index.md)]
 # Azure Service Bus libraries for Python
 
 Microsoft Azure Service Bus supports a set of cloud-based, message-oriented middleware technologies including reliable message queuing and durable publish/subscribe messaging.

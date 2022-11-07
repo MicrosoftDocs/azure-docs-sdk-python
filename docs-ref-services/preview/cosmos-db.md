@@ -14,6 +14,8 @@ ms.service: cosmosdb
 [!INCLUDE [client-packages](cosmos-db-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](cosmos-db-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](cosmos-db-mgmt-index.md)]
 # Azure Cosmos DB libraries for Python
 
 ## Overview

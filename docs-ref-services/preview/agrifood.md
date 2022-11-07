@@ -16,3 +16,5 @@ ms.service: agrifood
 [!INCLUDE [mgmt-packages](agrifood-mgmt-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](agrifood-mgmt-index.md)]
+## Management packages - preview
+[!INCLUDE [mgmt-packages](agrifood-mgmt-index.md)]
