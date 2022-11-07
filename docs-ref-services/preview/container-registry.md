@@ -10,8 +10,6 @@ ms.service: containerregistry
 ---
 # Azure Container Registry SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](container-registry-client-index.md)]
 # Azure Container Registry libraries for python
 
 ## Install the libraries

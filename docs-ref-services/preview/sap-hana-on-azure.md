@@ -10,5 +10,3 @@ ms.service: saphanaonazure
 ---
 # Azure SAP HANA on Azure SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](sap-hana-on-azure-mgmt-index.md)]

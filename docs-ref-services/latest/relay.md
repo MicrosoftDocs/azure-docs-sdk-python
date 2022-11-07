@@ -10,5 +10,3 @@ ms.service: relay
 ---
 # Azure Relay SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](relay-mgmt-index.md)]

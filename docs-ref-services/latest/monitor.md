@@ -10,8 +10,6 @@ ms.service: monitor
 ---
 # Azure Monitor SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](monitor-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](monitor-mgmt-index.md)]
 ## Management packages - latest

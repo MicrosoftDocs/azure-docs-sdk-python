@@ -10,8 +10,6 @@ ms.service: attestation
 ---
 # Azure Attestation SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](attestation-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](attestation-mgmt-index.md)]
 ## Management packages - latest

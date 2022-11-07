@@ -10,5 +10,3 @@ ms.service: sentinel
 ---
 # Azure Sentinel SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](sentinel-mgmt-index.md)]

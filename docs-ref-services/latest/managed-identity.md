@@ -10,5 +10,3 @@ ms.service: managedidentity
 ---
 # Azure Managed Identity SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](managed-identity-mgmt-index.md)]

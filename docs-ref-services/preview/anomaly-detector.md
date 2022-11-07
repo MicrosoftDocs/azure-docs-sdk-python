@@ -10,5 +10,3 @@ ms.service: anomalydetector
 ---
 # Azure Anomaly Detector SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](anomaly-detector-client-index.md)]

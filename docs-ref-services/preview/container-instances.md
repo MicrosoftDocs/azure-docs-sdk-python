@@ -10,5 +10,3 @@ ms.service: containerinstances
 ---
 # Azure Container Instances SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](container-instances-mgmt-index.md)]

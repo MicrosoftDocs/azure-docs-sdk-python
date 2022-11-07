@@ -10,8 +10,6 @@ ms.service: privatedns
 ---
 # Azure Private DNS SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](private-dns-mgmt-index.md)]
 # Azure Private DNS libraries
 
 ## Overview

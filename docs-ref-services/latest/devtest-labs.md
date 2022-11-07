@@ -10,8 +10,6 @@ ms.service: devtestlabs
 ---
 # Azure DevTest Labs SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](devtest-labs-mgmt-index.md)]
 # Azure DevTest Labs libraries for python
 
 ## [Management API](/python/api/overview/azure/devtestlabs/management)

@@ -10,8 +10,6 @@ ms.service: eventgrid
 ---
 # Azure Event Grid SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](event-grid-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](event-grid-mgmt-index.md)]
 ## Management packages - preview

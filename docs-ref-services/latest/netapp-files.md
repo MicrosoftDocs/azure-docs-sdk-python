@@ -10,5 +10,3 @@ ms.service: netappfiles
 ---
 # Azure NetApp Files SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](netapp-files-mgmt-index.md)]

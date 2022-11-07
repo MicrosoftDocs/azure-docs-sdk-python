@@ -10,8 +10,6 @@ ms.service: datalakeanalytics
 ---
 # Azure Data Lake Analytics SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](data-lake-analytics-mgmt-index.md)]
 # Azure Data Lake Analytics libraries for python
 
 ## Overview

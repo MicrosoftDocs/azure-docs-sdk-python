@@ -10,5 +10,3 @@ ms.service: devcenter
 ---
 # Azure Devcenter SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](devcenter-mgmt-index.md)]

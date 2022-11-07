@@ -10,5 +10,3 @@ ms.service: devspaces
 ---
 # Azure Dev Spaces SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](dev-spaces-mgmt-index.md)]

@@ -10,5 +10,3 @@ ms.service: iotcentral
 ---
 # Azure IoT Central SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](iot-central-mgmt-index.md)]

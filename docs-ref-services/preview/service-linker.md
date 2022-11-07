@@ -10,5 +10,3 @@ ms.service: servicelinker
 ---
 # Azure Service Linker SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](service-linker-mgmt-index.md)]

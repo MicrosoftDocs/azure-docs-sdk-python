@@ -10,5 +10,3 @@ ms.service: desktopvirtualization
 ---
 # Azure Desktop Virtualization SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](desktop-virtualization-mgmt-index.md)]

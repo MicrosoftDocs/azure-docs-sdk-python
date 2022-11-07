@@ -10,5 +10,3 @@ ms.service: mapssearch
 ---
 # Azure Maps Search SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](maps-search-client-index.md)]

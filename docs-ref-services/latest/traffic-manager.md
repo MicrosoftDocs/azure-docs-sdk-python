@@ -10,8 +10,6 @@ ms.service: trafficmanager
 ---
 # Azure Traffic Manager SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](traffic-manager-mgmt-index.md)]
 # Azure Traffic Manager libraries for python
 
 ## Install the libraries

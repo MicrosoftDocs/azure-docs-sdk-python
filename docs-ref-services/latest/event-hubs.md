@@ -10,8 +10,6 @@ ms.service: eventhubs
 ---
 # Azure Event Hubs SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](event-hubs-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](event-hubs-mgmt-index.md)]
 ## Management packages - latest

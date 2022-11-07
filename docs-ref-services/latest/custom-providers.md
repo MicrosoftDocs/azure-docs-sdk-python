@@ -10,5 +10,3 @@ ms.service: customproviders
 ---
 # Azure Custom Providers SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](custom-providers-mgmt-index.md)]

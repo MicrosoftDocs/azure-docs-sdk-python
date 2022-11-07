@@ -10,5 +10,3 @@ ms.service: iotdeviceupdate
 ---
 # Azure IoT Device Update SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](iot-device-update-client-index.md)]

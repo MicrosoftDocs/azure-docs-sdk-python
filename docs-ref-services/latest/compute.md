@@ -10,8 +10,6 @@ ms.service: compute
 ---
 # Azure Compute SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](compute-mgmt-index.md)]
 # Azure virtual machine libraries
 
 ## Overview

@@ -10,8 +10,6 @@ ms.service: siterecovery
 ---
 # Azure Site Recovery SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](site-recovery-mgmt-index.md)]
 # Azure Recovery Services Backup libraries for python
 
 ## Install the libraries

@@ -10,8 +10,6 @@ ms.service: microsoftgraph
 ---
 # Azure Microsoft Graph SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](microsoft-graph-client-index.md)]
 # Azure Active Directory Graph libraries for Python
 
 > [!IMPORTANT]

@@ -10,5 +10,3 @@ ms.service: datashare
 ---
 # Azure Data Share SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](data-share-mgmt-index.md)]

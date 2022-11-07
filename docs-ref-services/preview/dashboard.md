@@ -10,5 +10,3 @@ ms.service: dashboard
 ---
 # Azure Dashboard SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](dashboard-mgmt-index.md)]

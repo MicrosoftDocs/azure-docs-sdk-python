@@ -10,8 +10,6 @@ ms.service: storage
 ---
 # Azure Storage SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](storage-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](storage-mgmt-index.md)]
 ## Management packages - latest

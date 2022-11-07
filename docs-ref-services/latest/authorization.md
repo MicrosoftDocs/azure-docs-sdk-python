@@ -10,8 +10,6 @@ ms.service: authorization
 ---
 # Azure Authorization SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](authorization-mgmt-index.md)]
 # Azure Authorization libraries for python
 
 ## [Management API](/python/api/overview/azure/authorization/management)

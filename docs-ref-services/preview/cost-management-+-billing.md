@@ -10,8 +10,6 @@ ms.service: costmanagement+billing
 ---
 # Azure Cost Management + Billing SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](cost-management-+-billing-mgmt-index.md)]
 # Azure Billing libraries for python
 
 ## Install the libraries

@@ -10,5 +10,3 @@ ms.service: help+support
 ---
 # Azure Help + support SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](help-+-support-mgmt-index.md)]

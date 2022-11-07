@@ -10,5 +10,3 @@ ms.service: managementgroups
 ---
 # Azure Management Groups SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](management-groups-mgmt-index.md)]

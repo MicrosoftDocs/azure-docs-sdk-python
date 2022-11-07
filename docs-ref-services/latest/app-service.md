@@ -10,8 +10,6 @@ ms.service: appservice
 ---
 # Azure App Service SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](app-service-mgmt-index.md)]
 # Azure Web Apps libraries for Python
 
 ## Overview

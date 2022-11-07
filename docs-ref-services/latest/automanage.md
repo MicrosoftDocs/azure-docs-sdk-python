@@ -10,5 +10,3 @@ ms.service: automanage
 ---
 # Azure Automanage SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](automanage-mgmt-index.md)]

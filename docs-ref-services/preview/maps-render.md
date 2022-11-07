@@ -10,5 +10,3 @@ ms.service: mapsrender
 ---
 # Azure Maps Render SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](maps-render-client-index.md)]

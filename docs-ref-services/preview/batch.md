@@ -10,8 +10,6 @@ ms.service: batch
 ---
 # Azure Batch SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](batch-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](batch-mgmt-index.md)]
 ## Management packages - preview

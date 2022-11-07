@@ -10,8 +10,6 @@ ms.service: hdinsight
 ---
 # Azure HDInsight SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](hdinsight-mgmt-index.md)]
 # HDInsight SDK for Python
 
 ## Overview

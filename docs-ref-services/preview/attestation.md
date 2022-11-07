@@ -10,5 +10,3 @@ ms.service: attestation
 ---
 # Azure Attestation SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](attestation-mgmt-index.md)]

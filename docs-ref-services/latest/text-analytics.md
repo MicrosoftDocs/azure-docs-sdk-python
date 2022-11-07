@@ -10,5 +10,3 @@ ms.service: textanalytics
 ---
 # Azure Text Analytics SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](text-analytics-client-index.md)]

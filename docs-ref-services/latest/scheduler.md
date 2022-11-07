@@ -10,8 +10,6 @@ ms.service: scheduler
 ---
 # Azure Scheduler SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](scheduler-mgmt-index.md)]
 # Azure Scheduler libraries for python
 
 ## Install the libraries

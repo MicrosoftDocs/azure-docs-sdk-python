@@ -10,8 +10,6 @@ ms.service: resources
 ---
 # Azure Resources SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](resources-mgmt-index.md)]
 # Azure Resources libraries for python
 
 ## Overview 

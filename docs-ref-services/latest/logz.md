@@ -10,5 +10,3 @@ ms.service: logz
 ---
 # Azure Logz SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](logz-mgmt-index.md)]

@@ -10,5 +10,3 @@ ms.service: loganalytics
 ---
 # Azure Log Analytics SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](log-analytics-mgmt-index.md)]

@@ -10,8 +10,6 @@ ms.service: sql
 ---
 # Azure SQL SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](sql-mgmt-index.md)]
 # Azure SQL Database libraries for Python
 
 ## Overview

@@ -10,5 +10,3 @@ ms.service: batchai
 ---
 # Azure Batch AI SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](batch-ai-mgmt-index.md)]

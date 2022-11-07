@@ -10,5 +10,3 @@ ms.service: media
 ---
 # Azure Media SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](media-client-index.md)]

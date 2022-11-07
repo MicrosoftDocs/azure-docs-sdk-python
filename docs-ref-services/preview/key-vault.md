@@ -10,8 +10,6 @@ ms.service: keyvault
 ---
 # Azure Key Vault SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](key-vault-client-index.md)]
 # Azure Key Vault libraries for Python
 
 The Azure Key Vault client libraries for Python offer a convenient interface for making calls to Azure Key Vault. For more information about Azure Key Vault, see [Introduction to Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general/overview).

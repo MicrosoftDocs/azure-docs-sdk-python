@@ -10,5 +10,3 @@ ms.service: loadtesting
 ---
 # Azure Load Testing SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](load-testing-client-index.md)]

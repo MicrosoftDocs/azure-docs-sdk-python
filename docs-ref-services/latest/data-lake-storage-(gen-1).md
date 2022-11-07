@@ -10,8 +10,6 @@ ms.service: datalakestorage(gen1)
 ---
 # Azure Data Lake Storage (Gen 1) SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](data-lake-storage-(gen-1)-mgmt-index.md)]
 # Azure Data Lake Store libraries for python
 
 ## Install the libraries

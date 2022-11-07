@@ -10,8 +10,6 @@ ms.service: notificationhubs
 ---
 # Azure Notification Hubs SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](notification-hubs-mgmt-index.md)]
 # Azure Notification Hubs libraries for python
 
 ## [Management API](/python/api/overview/azure/notificationhubs/management)

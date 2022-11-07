@@ -10,5 +10,3 @@ ms.service: confluent
 ---
 # Azure Confluent SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](confluent-mgmt-index.md)]

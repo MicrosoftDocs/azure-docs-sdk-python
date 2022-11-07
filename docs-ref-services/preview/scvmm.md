@@ -10,5 +10,3 @@ ms.service: scvmm
 ---
 # Azure Scvmm SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](scvmm-mgmt-index.md)]

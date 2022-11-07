@@ -10,8 +10,6 @@ ms.service: mixedreality
 ---
 # Azure Mixed Reality SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](mixed-reality-client-index.md)]
 # Azure Mixed Reality Resource Management libraries for Python
 
 ## Overview

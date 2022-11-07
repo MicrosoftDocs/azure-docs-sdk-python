@@ -10,8 +10,6 @@ ms.service: iot
 ---
 # Azure IoT SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](iot-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](iot-mgmt-index.md)]
 ## Management packages - preview

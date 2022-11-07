@@ -10,5 +10,3 @@ ms.service: operationsmanagement
 ---
 # Azure Operations Management SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](operations-management-mgmt-index.md)]

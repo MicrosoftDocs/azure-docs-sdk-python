@@ -10,5 +10,3 @@ ms.service: marketplaceordering
 ---
 # Azure Marketplace Ordering SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](marketplace-ordering-mgmt-index.md)]

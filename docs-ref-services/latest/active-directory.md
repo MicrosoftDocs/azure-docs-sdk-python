@@ -10,8 +10,6 @@ ms.service: activedirectory
 ---
 # Azure Active Directory SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](active-directory-client-index.md)]
 # Microsoft Authentication Library (MSAL) for Python
 
 Get started with the Microsoft Authentication Library for Python to sign in users or apps with Microsoft identities ([Azure AD](https://azure.microsoft.com/services/active-directory/), [Microsoft Accounts](https://account.microsoft.com) and [Azure AD B2C](https://azure.microsoft.com/services/active-directory-b2c/) accounts) and obtain tokens to call Microsoft APIs such as [Microsoft Graph](https://graph.microsoft.io/) or your own APIs registered with the [Microsoft identity platform](https://aka.ms/aaddevv2).

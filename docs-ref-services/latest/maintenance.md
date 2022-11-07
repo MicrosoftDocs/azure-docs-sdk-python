@@ -10,5 +10,3 @@ ms.service: maintenance
 ---
 # Azure Maintenance SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](maintenance-mgmt-index.md)]

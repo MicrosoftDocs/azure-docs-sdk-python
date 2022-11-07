@@ -10,5 +10,3 @@ ms.service: streamanalytics
 ---
 # Azure Stream Analytics SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](stream-analytics-mgmt-index.md)]

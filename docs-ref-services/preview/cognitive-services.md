@@ -10,8 +10,6 @@ ms.service: cognitiveservices
 ---
 # Azure Cognitive Services SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](cognitive-services-client-index.md)]
 # Azure Cognitive Services modules for Python
 
 Add image and face recognition, language analysis, and search to your Python apps, websites, and tools using the Azure Cognitive Services modules for Python.

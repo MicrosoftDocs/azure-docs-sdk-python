@@ -10,5 +10,3 @@ ms.service: apiforfhir
 ---
 # Azure API for FHIR SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](api-for-fhir-mgmt-index.md)]

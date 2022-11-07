@@ -10,5 +10,3 @@ ms.service: loadtesting
 ---
 # Azure Load Testing SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](load-testing-mgmt-index.md)]

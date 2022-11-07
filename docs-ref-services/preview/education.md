@@ -10,5 +10,3 @@ ms.service: education
 ---
 # Azure Education SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](education-mgmt-index.md)]

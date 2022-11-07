@@ -10,5 +10,3 @@ ms.service: metricsadvisor
 ---
 # Azure Metrics Advisor SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](metrics-advisor-client-index.md)]

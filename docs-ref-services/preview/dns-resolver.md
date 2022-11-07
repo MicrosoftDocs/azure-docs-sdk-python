@@ -10,5 +10,3 @@ ms.service: dnsresolver
 ---
 # Azure DNS Resolver SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](dns-resolver-mgmt-index.md)]

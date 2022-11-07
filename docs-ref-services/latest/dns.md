@@ -10,8 +10,6 @@ ms.service: dns
 ---
 # Azure DNS SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](dns-mgmt-index.md)]
 # Azure DNS libraries for python
 
 ## Overview

@@ -10,5 +10,3 @@ ms.service: vmwarebycloudsimple
 ---
 # Azure VMWare by CloudSimple SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](vmware-by-cloudsimple-mgmt-index.md)]

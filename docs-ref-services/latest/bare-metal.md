@@ -10,5 +10,3 @@ ms.service: baremetal
 ---
 # Azure Bare Metal SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](bare-metal-mgmt-index.md)]

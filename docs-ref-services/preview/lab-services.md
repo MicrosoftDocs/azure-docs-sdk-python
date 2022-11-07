@@ -10,5 +10,3 @@ ms.service: labservices
 ---
 # Azure Lab Services SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](lab-services-mgmt-index.md)]

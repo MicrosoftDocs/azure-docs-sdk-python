@@ -10,8 +10,6 @@ ms.service: search
 ---
 # Azure Search SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](search-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](search-mgmt-index.md)]
 ## Management packages - preview

@@ -10,5 +10,3 @@ ms.service: mapsroute
 ---
 # Azure Maps Route SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](maps-route-client-index.md)]

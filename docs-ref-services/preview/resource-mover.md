@@ -10,5 +10,3 @@ ms.service: resourcemover
 ---
 # Azure Resource Mover SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](resource-mover-mgmt-index.md)]

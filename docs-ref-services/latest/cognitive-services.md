@@ -10,8 +10,6 @@ ms.service: cognitiveservices
 ---
 # Azure Cognitive Services SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](cognitive-services-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](cognitive-services-mgmt-index.md)]
 ## Management packages - latest

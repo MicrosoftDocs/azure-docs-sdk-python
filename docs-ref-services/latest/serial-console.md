@@ -10,5 +10,3 @@ ms.service: serialconsole
 ---
 # Azure Serial Console SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](serial-console-mgmt-index.md)]

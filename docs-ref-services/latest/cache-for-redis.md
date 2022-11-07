@@ -10,8 +10,6 @@ ms.service: cache
 ---
 # Azure Cache for Redis SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](cache-for-redis-mgmt-index.md)]
 # Azure Cache for Redis libraries for Python
 
 ## Overview

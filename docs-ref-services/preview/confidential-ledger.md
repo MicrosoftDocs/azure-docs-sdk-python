@@ -10,8 +10,6 @@ ms.service: confidentialledger
 ---
 # Azure Confidential Ledger SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](confidential-ledger-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](confidential-ledger-mgmt-index.md)]
 ## Management packages - preview

@@ -10,8 +10,6 @@ ms.service: logicapps
 ---
 # Azure Logic Apps SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](logic-apps-mgmt-index.md)]
 # Azure Logic Apps libraries for python
 
 ## Install the libraries

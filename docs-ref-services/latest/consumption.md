@@ -10,8 +10,6 @@ ms.service: consumption
 ---
 # Azure Consumption SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](consumption-mgmt-index.md)]
 # Azure Consumption libraries for python
 
 ## Install the libraries

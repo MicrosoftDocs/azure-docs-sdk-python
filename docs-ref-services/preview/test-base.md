@@ -10,5 +10,3 @@ ms.service: testbase
 ---
 # Azure Test Base SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](test-base-mgmt-index.md)]

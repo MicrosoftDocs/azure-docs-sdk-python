@@ -10,5 +10,3 @@ ms.service: databox
 ---
 # Azure Data Box SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](data-box-mgmt-index.md)]

@@ -10,5 +10,3 @@ ms.service: maps
 ---
 # Azure Maps SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](maps-mgmt-index.md)]

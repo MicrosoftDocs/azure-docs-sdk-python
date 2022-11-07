@@ -10,5 +10,3 @@ ms.service: stackhci
 ---
 # Azure Stack HCI SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](stack-hci-mgmt-index.md)]

@@ -10,8 +10,6 @@ ms.service: powerbi
 ---
 # Azure Power BI SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](power-bi-mgmt-index.md)]
 # Azure PowerBI libraries for python
 
 ## Install the libraries

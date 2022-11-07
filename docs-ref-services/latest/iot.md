@@ -10,8 +10,6 @@ ms.service: iot
 ---
 # Azure IoT SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](iot-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](iot-mgmt-index.md)]
 ## Management packages - latest

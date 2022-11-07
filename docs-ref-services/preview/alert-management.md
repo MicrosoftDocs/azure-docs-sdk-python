@@ -10,5 +10,3 @@ ms.service: alertmanagement
 ---
 # Azure Alert Management SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](alert-management-mgmt-index.md)]

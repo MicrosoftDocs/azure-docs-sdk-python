@@ -10,5 +10,3 @@ ms.service: dynatrace
 ---
 # Azure Dynatrace SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](dynatrace-mgmt-index.md)]

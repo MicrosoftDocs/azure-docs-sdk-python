@@ -10,5 +10,3 @@ ms.service: resourcegraph
 ---
 # Azure Resource Graph SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](resource-graph-mgmt-index.md)]

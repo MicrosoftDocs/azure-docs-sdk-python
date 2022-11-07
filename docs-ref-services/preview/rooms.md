@@ -10,5 +10,3 @@ ms.service: rooms
 ---
 # Azure Rooms SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](rooms-client-index.md)]

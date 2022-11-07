@@ -10,5 +10,3 @@ ms.service: oep
 ---
 # Azure Oep SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](oep-mgmt-index.md)]

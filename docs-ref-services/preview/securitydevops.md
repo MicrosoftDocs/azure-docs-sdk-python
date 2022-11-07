@@ -10,5 +10,3 @@ ms.service: securitydevops
 ---
 # Azure Securitydevops SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](securitydevops-mgmt-index.md)]

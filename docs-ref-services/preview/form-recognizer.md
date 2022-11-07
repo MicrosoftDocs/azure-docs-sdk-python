@@ -10,5 +10,3 @@ ms.service: formrecognizer
 ---
 # Azure Form Recognizer SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](form-recognizer-client-index.md)]

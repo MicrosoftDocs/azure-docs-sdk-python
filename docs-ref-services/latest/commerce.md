@@ -10,8 +10,6 @@ ms.service: commerce
 ---
 # Azure Commerce SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](commerce-mgmt-index.md)]
 # Azure Commerce libraries for python
 
 ## [Management API](/python/api/overview/azure/commerce/management)

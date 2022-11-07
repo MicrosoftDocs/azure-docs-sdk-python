@@ -10,8 +10,6 @@ ms.service: servicebus
 ---
 # Azure Service Bus SDK for Python - latest
 
-## Client packages - latest
-[!INCLUDE [client-packages](service-bus-client-index.md)]
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](service-bus-mgmt-index.md)]
 ## Management packages - latest

@@ -10,8 +10,6 @@ ms.service: contentdeliverynetwork
 ---
 # Azure Content Delivery Network SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](content-delivery-network-mgmt-index.md)]
 # Azure CDN libraries for python
 
 ## Overview

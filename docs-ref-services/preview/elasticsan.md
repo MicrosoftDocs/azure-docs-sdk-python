@@ -10,5 +10,3 @@ ms.service: elasticsan
 ---
 # Azure Elasticsan SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](elasticsan-mgmt-index.md)]

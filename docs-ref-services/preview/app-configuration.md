@@ -10,8 +10,6 @@ ms.service: appconfiguration
 ---
 # Azure App Configuration SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](app-configuration-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](app-configuration-mgmt-index.md)]
 ## Management packages - preview

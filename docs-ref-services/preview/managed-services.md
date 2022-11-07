@@ -10,5 +10,3 @@ ms.service: managedservices
 ---
 # Azure Managed Services SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](managed-services-mgmt-index.md)]

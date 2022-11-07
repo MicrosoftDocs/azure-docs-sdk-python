@@ -10,5 +10,3 @@ ms.service: videoanalyzer
 ---
 # Azure Video Analyzer SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](video-analyzer-client-index.md)]

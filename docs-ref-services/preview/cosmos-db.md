@@ -10,8 +10,6 @@ ms.service: cosmosdb
 ---
 # Azure Cosmos DB SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](cosmos-db-client-index.md)]
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](cosmos-db-mgmt-index.md)]
 ## Management packages - preview

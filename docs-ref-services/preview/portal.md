@@ -10,5 +10,3 @@ ms.service: portal
 ---
 # Azure Portal SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](portal-mgmt-index.md)]

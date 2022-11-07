@@ -10,5 +10,3 @@ ms.service: vmwaresolution
 ---
 # Azure VMware Solution SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](vmware-solution-mgmt-index.md)]

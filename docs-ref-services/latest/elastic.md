@@ -10,5 +10,3 @@ ms.service: elastic
 ---
 # Azure Elastic SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](elastic-mgmt-index.md)]

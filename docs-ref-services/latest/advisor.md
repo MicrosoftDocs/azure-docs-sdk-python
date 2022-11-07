@@ -10,5 +10,3 @@ ms.service: advisor
 ---
 # Azure Advisor SDK for Python - latest
 
-## Management packages - latest
-[!INCLUDE [mgmt-packages](advisor-mgmt-index.md)]

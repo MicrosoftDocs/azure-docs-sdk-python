@@ -10,5 +10,3 @@ ms.service: nginx
 ---
 # Azure Nginx SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](nginx-mgmt-index.md)]

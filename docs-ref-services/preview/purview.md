@@ -10,5 +10,3 @@ ms.service: purview
 ---
 # Azure Purview SDK for Python - preview
 
-## Client packages - preview
-[!INCLUDE [client-packages](purview-client-index.md)]

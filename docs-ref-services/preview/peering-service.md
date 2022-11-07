@@ -10,5 +10,3 @@ ms.service: peeringservice
 ---
 # Azure Peering Service SDK for Python - preview
 
-## Management packages - preview
-[!INCLUDE [mgmt-packages](peering-service-mgmt-index.md)]
