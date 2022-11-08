@@ -11,7 +11,7 @@ ms.service: ml
 # Azure ML Package client library for Python - version 1.0.0 
 
 
-We are excited to introduce the public  preview of Azure Machine Learning Python SDK v2. The Python SDK v2 introduces new SDK capabilities like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2 which is currently in also in public preview.
+We are excited to introduce Azure Machine Learning Python SDK v2. The Python SDK v2 introduces new SDK capabilities like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2.
 
 [Source code][source_code] | [Package (PyPI)][ml_pypi] | [API reference documentation][ml_ref_docs] | [Product documentation][product_documentation] | [Samples][ml_samples]
 
@@ -126,7 +126,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.0.0/sdk/ml/azure-ai-ml
 [ml_pypi]: https://pypi.org/project/azure-ai-ml/
 [ml_ref_docs]: /python/api/azure-ai-ml/?view=azure-ml-py
-[ml_samples]: https://github.com/Azure/azureml-examples/tree/sdk-preview/sdk
+[ml_samples]: https://github.com/Azure/azureml-examples/tree/main/sdk/python
 [product_documentation]: /azure/machine-learning/
 [azure_subscription]: https://azure.microsoft.com/free/
 [workspace]: /azure/machine-learning/concept-workspace
