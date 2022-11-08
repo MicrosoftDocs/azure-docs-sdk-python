@@ -1,12 +1,12 @@
 ---
-title: Azure Change Analysis SDK for Python
 ms.devlang: python
-description: Reference for Azure Change Analysis SDK for Python
 author: lmazuel
+ms.service: changeanalysis
+ms.data: 11/08/2022
+title: Azure Change Analysis SDK for Python
+description: Reference for Azure Change Analysis SDK for Python
 ms.topic: reference
 ms.author: lmazuel
-ms.service: changeanalysis
-ms.data: 11/04/2022
 ---
 # Azure Change Analysis SDK for Python - latest
 

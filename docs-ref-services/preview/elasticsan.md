@@ -1,12 +1,12 @@
 ---
-title: Azure Elasticsan SDK for Python
 ms.devlang: python
-description: Reference for Azure Elasticsan SDK for Python
 author: lmazuel
+ms.service: elasticsan
+ms.data: 11/08/2022
+title: Azure Elasticsan SDK for Python
+description: Reference for Azure Elasticsan SDK for Python
 ms.topic: reference
 ms.author: lmazuel
-ms.service: elasticsan
-ms.data: 11/04/2022
 ---
 # Azure Elasticsan SDK for Python - preview
 
