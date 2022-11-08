@@ -3,7 +3,7 @@ title: Azure Connected VMWare SDK for Python
 description: Reference for Azure Connected VMWare SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 11/07/2022
+ms.data: 11/08/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: connectedvmware
@@ -12,4 +12,3 @@ ms.service: connectedvmware
 
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](connected-vmware-mgmt-index.md)]
-# Azure Connected VMWare SDK for Python - preview

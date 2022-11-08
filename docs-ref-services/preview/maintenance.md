@@ -3,7 +3,7 @@ title: Azure Maintenance SDK for Python
 description: Reference for Azure Maintenance SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 11/07/2022
+ms.data: 11/08/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: maintenance
@@ -12,4 +12,3 @@ ms.service: maintenance
 
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](maintenance-mgmt-index.md)]
-# Azure Maintenance SDK for Python - preview
