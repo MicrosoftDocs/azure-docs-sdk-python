@@ -1,6 +1,7 @@
 ---
 title: Azure ML Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
+description: Learn about and install the Azure Machine Learning SDK v2 for Python.
 author: paulshealy1
 ms.author: paulsh
 ms.date: 10/10/2022
@@ -125,7 +126,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 [source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.0.0/sdk/ml/azure-ai-ml
 [ml_pypi]: https://pypi.org/project/azure-ai-ml/
-[ml_ref_docs]: /python/api/azure-ai-ml/?view=azure-ml-py
+[ml_ref_docs]: /python/api/azure-ai-ml/
 [ml_samples]: https://github.com/Azure/azureml-examples/tree/main/sdk/python
 [product_documentation]: /azure/machine-learning/
 [azure_subscription]: https://azure.microsoft.com/free/
