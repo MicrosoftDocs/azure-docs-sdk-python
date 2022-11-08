@@ -6,7 +6,7 @@ ms.author: paulsh
 ms.date: 10/10/2022
 ms.topic: reference
 ms.devlang: python
-ms.service: ml
+ms.service: machine-learning
 ---
 # Azure ML Package client library for Python - version 1.0.0 
 
