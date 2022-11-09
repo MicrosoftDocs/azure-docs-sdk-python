@@ -2,9 +2,9 @@
 ms.devlang: python
 author: lmazuel
 ms.service: activedirectory
-ms.data: 11/08/2022
-title: Azure Active Directory SDK for Python
 description: Reference for Azure Active Directory SDK for Python
+title: Azure Active Directory SDK for Python
+ms.data: 11/09/2022
 ms.topic: reference
 ms.author: lmazuel
 ---

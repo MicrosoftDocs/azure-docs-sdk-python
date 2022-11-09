@@ -2,9 +2,9 @@
 ms.devlang: python
 author: lmazuel
 ms.service: compute
-ms.data: 11/08/2022
-title: Azure Compute SDK for Python
 description: Reference for Azure Compute SDK for Python
+title: Azure Compute SDK for Python
+ms.data: 11/09/2022
 ms.topic: reference
 ms.author: lmazuel
 ---
