@@ -1,0 +1,370 @@
+### YamlMime:PythonClass
+uid: azure.ai.personalizer.PersonalizerClient
+name: PersonalizerClient
+fullName: azure.ai.personalizer.PersonalizerClient
+module: azure.ai.personalizer
+inheritances:
+- builtins.object
+summary: 'Personalizer Service is an Azure Cognitive Service that makes it easy to
+  target content and
+
+  experiences without complex pre-analysis or cleanup of past data. Given a context
+  and
+
+  featurized content, the Personalizer Service returns which content item to show
+  to users in
+
+  rewardActionId. As rewards are sent in response to the use of rewardActionId, the
+  reinforcement
+
+  learning algorithm will improve the model and improve performance of future rank
+  calls.'
+constructor:
+  syntax: 'PersonalizerClient(endpoint: str, credential: Union[azure.core.credentials.AzureKeyCredential,
+    azure.core.credentials.TokenCredential], **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: Supported Cognitive Services endpoint. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: Credential needed for the client to connect to Azure. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: api_version
+    description: 'Api Version. Default value is "2022-09-01-preview". Note that overriding
+
+      this default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+methods:
+- uid: azure.ai.personalizer.PersonalizerClient.activate
+  name: activate
+  summary: 'Activate Event.
+
+
+    Report that the specified event was actually used (e.g. by being displayed to
+    the user) and a
+
+    reward should be expected for it.'
+  signature: 'activate(event_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: event_id
+    description: The event ID to be activated. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.personalizer.PersonalizerClient.activate_multi_slot
+  name: activate_multi_slot
+  summary: 'Activate Event (MultiSlot).
+
+
+    Report that the specified event was actually used or displayed to the user and
+    a rewards should
+
+    be expected for it.'
+  signature: 'activate_multi_slot(event_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: event_id
+    description: The event ID this activation applies to. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.personalizer.PersonalizerClient.close
+  name: close
+  signature: close() -> None
+- uid: azure.ai.personalizer.PersonalizerClient.rank
+  name: rank
+  summary: 'Rank.
+
+
+    Submit a Personalizer rank request. Receives a context and a list of actions.
+    Returns which of
+
+    the provided actions should be used by your application, in rewardActionId.'
+  signature: 'rank(rank_request: Union[collections.abc.MutableMapping[str, Any], IO],
+    **kwargs: Any) -> collections.abc.MutableMapping[str, Any]'
+  parameters:
+  - name: rank_request
+    description: A Personalizer Rank request. Required.
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:IO>
+  - name: content_type
+    description: 'Body Parameter content-type. Content type parameter for JSON body.
+
+      Default value is "application/json".'
+    types:
+    - <xref:str>
+  return:
+    description: JSON object
+    types:
+    - <xref:JSON>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   rank_request\
+    \ = {\n       \"actions\": [\n           {\n               \"features\": [\n \
+    \                  {}  # List of dictionaries containing features.\n         \
+    \            Required.\n               ],\n               \"id\": \"str\"  # Id\
+    \ of the action. Required.\n           }\n       ],\n       \"contextFeatures\"\
+    : [\n           {}  # Optional. Features of the context used for Personalizer\
+    \ as\n             a\"ndictionary of dictionaries. This is determined by your\
+    \ application,\n             and\"ntypically includes features about the current\
+    \ user, their\"ndevice,\n             profile information, aggregated data about\
+    \ time and date, etc.\"nFeatures\n             should not include personally identifiable\
+    \ information (PII),\"nunique\n             UserIDs, or precise timestamps.\n\
+    \       ],\n       \"deferActivation\": False,  # Optional. Default value is False.\
+    \ Send false if\n         it is certain the rewardActionId in rank results will\
+    \ be shown to the user,\n         therefore\"nPersonalizer will expect a Reward\
+    \ call, otherwise it will assign the\n         default\"nReward to the event.\
+    \ Send true if it is possible the user will not see\n         the action specified\
+    \ in the rank results,\"n(e.g. because the page is rendering\n         later,\
+    \ or the Rank results may be overridden by code further downstream).\"nYou\n \
+    \        must call the Activate Event API if the event output is shown to users,\
+    \ otherwise\n         Rewards will be ignored.\n       \"eventId\": \"str\", \
+    \ # Optional. Optionally pass an eventId that uniquely\n         identifies this\
+    \ Rank event.\"nIf null, the service generates a unique eventId. The\n       \
+    \  eventId will be used for\"nassociating this request with its reward, as well\
+    \ as\n         seeding the pseudo-random\"ngenerator when making a Personalizer\
+    \ call.\n       \"excludedActions\": [\n           \"str\"  # Optional. The set\
+    \ of action ids to exclude from\n             ranking.\"nPersonalizer will consider\
+    \ the first non-excluded item in the array\n             as the Baseline action\
+    \ when performing Offline Evaluations.\n       ]\n   }\n\n   # response body for\
+    \ status code(s): 201\n   response == {\n       \"eventId\": \"str\",  # The eventId\
+    \ for the round trip from request to response.\n         Required.\n       \"\
+    ranking\": [\n           {\n               \"id\": \"str\",  # Optional. Id of\
+    \ the action.\n               \"probability\": 0.0  # Optional. Probability of\
+    \ the action.\n           }\n       ],\n       \"rewardActionId\": \"str\"  #\
+    \ Optional. The action chosen by the Personalizer\n         service.\"nThis is\
+    \ the action your application should display, and for which to\n         report\
+    \ the reward.\"nThis might not be the first found in 'ranking'.\n   }\n   ````\n"
+- uid: azure.ai.personalizer.PersonalizerClient.rank_multi_slot
+  name: rank_multi_slot
+  summary: 'Rank (MultiSlot).
+
+
+    Submit a Personalizer multi-slot rank request. Receives a context, a list of actions,
+    and a
+
+    list of slots. Returns which of the provided actions should be used in each slot,
+    in each
+
+    rewardActionId.'
+  signature: 'rank_multi_slot(body: Union[collections.abc.MutableMapping[str, Any],
+    IO], **kwargs: Any) -> collections.abc.MutableMapping[str, Any]'
+  parameters:
+  - name: body
+    description: A Personalizer multi-slot Rank request. Required.
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:IO>
+  - name: content_type
+    description: 'Body Parameter content-type. Content type parameter for JSON body.
+
+      Default value is "application/json".'
+    types:
+    - <xref:str>
+  return:
+    description: JSON object
+    types:
+    - <xref:JSON>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   body\
+    \ = {\n       \"actions\": [\n           {\n               \"features\": [\n \
+    \                  {}  # List of dictionaries containing features.\n         \
+    \            Required.\n               ],\n               \"id\": \"str\"  # Id\
+    \ of the action. Required.\n           }\n       ],\n       \"slots\": [\n   \
+    \        {\n               \"baselineAction\": \"str\",  # The 'baseline action'\
+    \ ID for the\n                 slot.\"nThe BaselineAction is the Id of the Action\
+    \ your application would\n                 use in that slot if Personalizer didn't\
+    \ exist.\"nBaselineAction must be\n                 defined for every slot.\"\
+    nBaselineAction should never be part of\n                 ExcludedActions.\"nEach\
+    \ slot must have a unique BaselineAction which\n                 corresponds to\
+    \ an an action from the event's Actions list. Required.\n               \"id\"\
+    : \"str\",  # Slot ID. Required.\n               \"excludedActions\": [\n    \
+    \               \"str\"  # Optional. List of excluded action Ids.\n          \
+    \     ],\n               \"features\": [\n                   {}  # Optional. List\
+    \ of dictionaries containing slot\n                     features.\n          \
+    \     ]\n           }\n       ],\n       \"contextFeatures\": [\n           {}\
+    \  # Optional. Features of the context used for Personalizer as\n            \
+    \ a\"ndictionary of dictionaries. This is determined by your application,\n  \
+    \           and\"ntypically includes features about the current user, their\"\
+    ndevice,\n             profile information, aggregated data about time and date,\
+    \ etc.\"nFeatures\n             should not include personally identifiable information\
+    \ (PII),\"nunique\n             UserIDs, or precise timestamps.\n       ],\n \
+    \      \"deferActivation\": False,  # Optional. Default value is False. Send false\
+    \ if\n         it is certain the rewardActionId in rank results will be shown\
+    \ to the user,\n         therefore\"nPersonalizer will expect a Reward call, otherwise\
+    \ it will assign the\n         default\"nReward to the event. Send true if it\
+    \ is possible the user will not see\n         the action specified in the rank\
+    \ results,\"n(e.g. because the page is rendering\n         later, or the Rank\
+    \ results may be overridden by code further downstream).\"nYou\n         must\
+    \ call the Activate Event API if the event output is shown to users, otherwise\n\
+    \         Rewards will be ignored.\n       \"eventId\": \"str\"  # Optional. Optionally\
+    \ pass an eventId that uniquely\n         identifies this Rank event.\"nIf null,\
+    \ the service generates a unique eventId. The\n         eventId will be used for\"\
+    nassociating this request with its reward, as well as\n         seeding the pseudo-random\"\
+    ngenerator when making a Personalizer call.\n   }\n\n   # response body for status\
+    \ code(s): 201\n   response == {\n       \"eventId\": \"str\",  # The eventId\
+    \ for the round trip from request to response.\n         Required.\n       \"\
+    slots\": [\n           {\n               \"id\": \"str\",  # Id is the slot ID.\
+    \ Required.\n               \"rewardActionId\": \"str\"  # Optional. RewardActionID\
+    \ is the\n                 action ID recommended by Personalizer.\n          \
+    \ }\n       ]\n   }\n   ````\n"
+- uid: azure.ai.personalizer.PersonalizerClient.reward
+  name: reward
+  summary: 'Reward.
+
+
+    Report reward between 0 and 1 that resulted from using the action specified in
+    rewardActionId,
+
+    for the specified event.'
+  signature: 'reward(event_id: str, reward: Union[collections.abc.MutableMapping[str,
+    Any], IO], **kwargs: Any) -> None'
+  parameters:
+  - name: event_id
+    description: The event id this reward applies to. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: reward
+    description: 'The reward should be a floating point number, typically between
+      0 and 1.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:IO>
+  - name: content_type
+    description: 'Body Parameter content-type. Content type parameter for JSON body.
+
+      Default value is "application/json".'
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   reward\
+    \ = {\n       \"value\": 0.0  # Reward to be assigned to an action. Value is a\
+    \ float\n         calculated by your application, typically between 0 and 1, and\
+    \ must be between -1\n         and 1. Required.\n   }\n   ````\n"
+- uid: azure.ai.personalizer.PersonalizerClient.reward_multi_slot
+  name: reward_multi_slot
+  summary: 'Reward (MultiSlot).
+
+
+    Report reward that resulted from using the action specified in rewardActionId
+    for the slot.'
+  signature: 'reward_multi_slot(event_id: str, body: Union[collections.abc.MutableMapping[str,
+    Any], IO], **kwargs: Any) -> None'
+  parameters:
+  - name: event_id
+    description: The event id this reward applies to. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: body
+    description: 'List of slot id and reward values. The reward should be a floating
+      point number,
+
+      typically between 0 and 1. Required.'
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:IO>
+  - name: content_type
+    description: 'Body Parameter content-type. Content type parameter for JSON body.
+
+      Default value is "application/json".'
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   body\
+    \ = {\n       \"reward\": [\n           {\n               \"slotId\": \"str\"\
+    ,  # Slot id for which we are sending the\n                 reward. Required.\n\
+    \               \"value\": 0.0  # Reward to be assigned to slotId. Value should\n\
+    \                 be between -1 and 1 inclusive. Required.\n           }\n   \
+    \    ]\n   }\n   ````\n"
+- uid: azure.ai.personalizer.PersonalizerClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: azure.core.rest._rest_py3.HttpRequest, **kwargs:
+    Any) -> azure.core.rest._rest_py3.HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
