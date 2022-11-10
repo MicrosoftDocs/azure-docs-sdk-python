@@ -1,12 +1,12 @@
 ---
+ms.author: lmazuel
+ms.service: dynatrace
 ms.devlang: python
 author: lmazuel
-ms.service: dynatrace
-description: Reference for Azure Dynatrace SDK for Python
 title: Azure Dynatrace SDK for Python
-ms.data: 11/09/2022
+ms.data: 11/10/2022
 ms.topic: reference
-ms.author: lmazuel
+description: Reference for Azure Dynatrace SDK for Python
 ---
 # Azure Dynatrace SDK for Python - latest
 

@@ -1,12 +1,12 @@
 ---
+ms.author: lmazuel
+ms.service: healthbot
 ms.devlang: python
 author: lmazuel
-ms.service: healthbot
-description: Reference for Azure Health Bot SDK for Python
 title: Azure Health Bot SDK for Python
-ms.data: 11/09/2022
+ms.data: 11/10/2022
 ms.topic: reference
-ms.author: lmazuel
+description: Reference for Azure Health Bot SDK for Python
 ---
 # Azure Health Bot SDK for Python - preview
 

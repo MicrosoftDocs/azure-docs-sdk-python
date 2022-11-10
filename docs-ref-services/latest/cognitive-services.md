@@ -1,12 +1,12 @@
 ---
+ms.author: krpratic
+ms.service: cognitiveservices
 ms.devlang: python
 author: kristapratico
-ms.service: cognitiveservices
-description: Reference for Azure Cognitive Services SDK for Python
 title: Azure Cognitive Services SDK for Python
-ms.data: 11/09/2022
+ms.data: 11/10/2022
 ms.topic: reference
-ms.author: krpratic
+description: Reference for Azure Cognitive Services SDK for Python
 ---
 # Azure Cognitive Services modules for Python
 

@@ -1,12 +1,12 @@
 ---
+ms.author: ttsao
+ms.service: mapsroute
 ms.devlang: python
 author: alextts627
-ms.service: mapsroute
-description: Reference for Azure Maps Route SDK for Python
 title: Azure Maps Route SDK for Python
-ms.data: 11/09/2022
+ms.data: 11/10/2022
 ms.topic: reference
-ms.author: ttsao
+description: Reference for Azure Maps Route SDK for Python
 ---
 # Azure Maps Route SDK for Python - preview
 

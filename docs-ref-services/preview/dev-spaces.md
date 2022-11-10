@@ -1,12 +1,12 @@
 ---
+ms.author: lmazuel
+ms.service: devspaces
 ms.devlang: python
 author: lmazuel
-ms.service: devspaces
-description: Reference for Azure Dev Spaces SDK for Python
 title: Azure Dev Spaces SDK for Python
-ms.data: 11/09/2022
+ms.data: 11/10/2022
 ms.topic: reference
-ms.author: lmazuel
+description: Reference for Azure Dev Spaces SDK for Python
 ---
 # Azure Dev Spaces SDK for Python - preview
 

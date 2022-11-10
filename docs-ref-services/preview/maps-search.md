@@ -1,12 +1,12 @@
 ---
+ms.author: ttsao
+ms.service: mapssearch
 ms.devlang: python
 author: alextts627
-ms.service: mapssearch
-description: Reference for Azure Maps Search SDK for Python
 title: Azure Maps Search SDK for Python
-ms.data: 11/09/2022
+ms.data: 11/10/2022
 ms.topic: reference
-ms.author: ttsao
+description: Reference for Azure Maps Search SDK for Python
 ---
 # Azure Maps Search SDK for Python - preview
 
