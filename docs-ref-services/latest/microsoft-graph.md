@@ -1,12 +1,12 @@
 ---
-ms.author: lmazuel
-ms.service: microsoftgraph
-ms.devlang: python
-author: lmazuel
-title: Azure Microsoft Graph SDK for Python
-ms.data: 11/10/2022
 ms.topic: reference
+ms.data: 11/10/2022
 description: Reference for Azure Microsoft Graph SDK for Python
+author: lmazuel
+ms.devlang: python
+ms.author: lmazuel
+title: Azure Microsoft Graph SDK for Python
+ms.service: microsoftgraph
 ---
 # Azure Active Directory Graph libraries for Python
 
