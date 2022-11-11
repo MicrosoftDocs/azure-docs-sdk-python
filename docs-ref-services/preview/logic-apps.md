@@ -1,17 +1,17 @@
 ---
 ms.topic: reference
-ms.data: 11/10/2022
-description: Reference for Azure Logic Apps SDK for Python
-author: lmazuel
-ms.devlang: python
 ms.author: lmazuel
-title: Azure Logic Apps SDK for Python
+ms.devlang: python
+author: lmazuel
 ms.service: logicapps
-ms.date: 07/10/2017
+description: Reference for Azure Logic Apps SDK for Python
+title: Azure Logic Apps SDK for Python
+ms.data: 11/11/2022
 keywords: Azure, python, SDK, API, Logic Apps
-ms.prod: azure
 ms.technology: azure
 manager: douge
+ms.prod: azure
+ms.date: 07/10/2017
 ---
 # Azure Logic Apps libraries for python
 

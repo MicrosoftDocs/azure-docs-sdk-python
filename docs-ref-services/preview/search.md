@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
-ms.data: 11/10/2022
-description: Reference for Azure Search SDK for Python
-author: xiangyan99
-ms.devlang: python
 ms.author: xiangyan
-title: Azure Search SDK for Python
+ms.devlang: python
+author: xiangyan99
 ms.service: search
+description: Reference for Azure Search SDK for Python
+title: Azure Search SDK for Python
+ms.data: 11/11/2022
 ---
 # Azure Search libraries for python
 

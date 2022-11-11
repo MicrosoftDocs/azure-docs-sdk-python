@@ -1,12 +1,12 @@
 ---
 ms.topic: reference
-ms.data: 11/10/2022
-description: Reference for Azure Datadog SDK for Python
-author: lmazuel
-ms.devlang: python
 ms.author: lmazuel
-title: Azure Datadog SDK for Python
+ms.devlang: python
+author: lmazuel
 ms.service: datadog
+description: Reference for Azure Datadog SDK for Python
+title: Azure Datadog SDK for Python
+ms.data: 11/11/2022
 ---
 # Azure Datadog SDK for Python - latest
 
