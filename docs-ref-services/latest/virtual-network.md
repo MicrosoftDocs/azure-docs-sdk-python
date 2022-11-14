@@ -1,12 +1,12 @@
 ---
-title: Azure Virtual Network SDK for Python
-description: Reference for Azure Virtual Network SDK for Python
-author: lmazuel
 ms.author: lmazuel
-ms.data: 11/14/2022
-ms.topic: reference
+description: Reference for Azure Virtual Network SDK for Python
 ms.devlang: python
 ms.service: virtualnetwork
+author: lmazuel
+ms.data: 11/14/2022
+title: Azure Virtual Network SDK for Python
+ms.topic: reference
 ---
 # Azure Virtual Network SDK for Python - latest
 ## Packages - latest

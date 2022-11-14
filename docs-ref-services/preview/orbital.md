@@ -1,12 +1,12 @@
 ---
-title: Azure Orbital SDK for Python
-description: Reference for Azure Orbital SDK for Python
-author: lmazuel
 ms.author: lmazuel
-ms.data: 11/14/2022
-ms.topic: reference
+description: Reference for Azure Orbital SDK for Python
 ms.devlang: python
 ms.service: orbital
+author: lmazuel
+ms.data: 11/14/2022
+title: Azure Orbital SDK for Python
+ms.topic: reference
 ---
 # Azure Orbital SDK for Python - preview
 

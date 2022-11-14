@@ -1,12 +1,12 @@
 ---
-title: Azure Media SDK for Python
-description: Reference for Azure Media SDK for Python
-author: naiteeks
 ms.author: naiteeks
-ms.data: 11/14/2022
-ms.topic: reference
+description: Reference for Azure Media SDK for Python
 ms.devlang: python
 ms.service: media
+author: naiteeks
+ms.data: 11/14/2022
+title: Azure Media SDK for Python
+ms.topic: reference
 ---
 # Azure Media SDK for Python - preview
 
