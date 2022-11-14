@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-rdbms, rdbms
 author: lmazuel
 ms.author: lmazuel
-ms.date: 11/02/2022
+ms.date: 11/14/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: rdbms
