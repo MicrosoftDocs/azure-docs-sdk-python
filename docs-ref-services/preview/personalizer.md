@@ -1,12 +1,12 @@
 ---
-ms.author: sharathm
+title: Azure Personalizer SDK for Python
 description: Reference for Azure Personalizer SDK for Python
+author: sharathmalladi
+ms.author: sharathm
+ms.data: 11/16/2022
+ms.topic: reference
 ms.devlang: python
 ms.service: personalizer
-author: sharathmalladi
-ms.data: 11/14/2022
-title: Azure Personalizer SDK for Python
-ms.topic: reference
 ---
 # Azure Personalizer SDK for Python - preview
 
