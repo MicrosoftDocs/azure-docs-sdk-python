@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: databasemigrationservice
 ---
 # Azure Database Migration Service SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](database-migration-service-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](database-migration-service-index.md)]

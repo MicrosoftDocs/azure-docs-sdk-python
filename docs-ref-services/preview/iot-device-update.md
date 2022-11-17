@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: iotdeviceupdate
 ---
 # Azure IoT Device Update SDK for Python - preview
-
-## Client packages - preview
-[!INCLUDE [client-packages](iot-device-update-client-index.md)]
+## Packages - preview
+[!INCLUDE [packages](iot-device-update-index.md)]

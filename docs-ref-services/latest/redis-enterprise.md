@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: cache
 ---
 # Azure Redis Enterprise SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](redis-enterprise-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](redis-enterprise-index.md)]

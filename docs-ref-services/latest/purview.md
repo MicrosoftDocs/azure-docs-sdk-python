@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: purview
 ---
 # Azure Purview SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](purview-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](purview-index.md)]

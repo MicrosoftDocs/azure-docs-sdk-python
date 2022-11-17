@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: deploymentmanager
 ---
 # Azure Deployment Manager SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](deployment-manager-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](deployment-manager-index.md)]

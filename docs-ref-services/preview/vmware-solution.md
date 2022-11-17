@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: vmwaresolution
 ---
 # Azure VMware Solution SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](vmware-solution-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](vmware-solution-index.md)]

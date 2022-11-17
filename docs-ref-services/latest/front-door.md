@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: frontdoor
 ---
 # Azure Front Door SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](front-door-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](front-door-index.md)]

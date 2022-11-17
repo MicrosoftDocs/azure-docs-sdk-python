@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: iotplugandplay
 ---
 # Azure IoT Plug and Play SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](iot-plug-and-play-client-index.md)]
+## Packages - latest
+[!INCLUDE [packages](iot-plug-and-play-index.md)]

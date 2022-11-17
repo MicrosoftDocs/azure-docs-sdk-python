@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: automation
 ---
 # Azure Automation SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](automation-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](automation-index.md)]

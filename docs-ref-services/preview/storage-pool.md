@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: storagepool
 ---
 # Azure Storage Pool SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](storage-pool-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](storage-pool-index.md)]

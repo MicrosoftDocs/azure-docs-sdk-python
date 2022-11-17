@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: automanage
 ---
 # Azure Automanage SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](automanage-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](automanage-index.md)]

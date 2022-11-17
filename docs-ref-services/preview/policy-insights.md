@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: policyinsights
 ---
 # Azure Policy Insights SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](policy-insights-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](policy-insights-index.md)]

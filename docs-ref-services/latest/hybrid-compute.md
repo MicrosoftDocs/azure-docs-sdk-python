@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: hybridcompute
 ---
 # Azure Hybrid Compute SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](hybrid-compute-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](hybrid-compute-index.md)]

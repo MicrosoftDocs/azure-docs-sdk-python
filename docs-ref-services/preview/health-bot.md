@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: healthbot
 ---
 # Azure Health Bot SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](health-bot-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](health-bot-index.md)]

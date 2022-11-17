@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: redhatopenshift(aro)
 ---
 # Azure Red Hat OpenShift (ARO) SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](red-hat-openshift-(aro)-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](red-hat-openshift-(aro)-index.md)]

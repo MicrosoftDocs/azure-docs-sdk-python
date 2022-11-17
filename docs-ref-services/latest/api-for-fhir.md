@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: apiforfhir
 ---
 # Azure API for FHIR SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](api-for-fhir-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](api-for-fhir-index.md)]

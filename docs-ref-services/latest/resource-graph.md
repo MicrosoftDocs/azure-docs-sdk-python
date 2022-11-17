@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: resourcegraph
 ---
 # Azure Resource Graph SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](resource-graph-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](resource-graph-index.md)]

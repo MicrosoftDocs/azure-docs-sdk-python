@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: digitaltwins
 ---
 # Azure Digital Twins SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](digital-twins-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](digital-twins-index.md)]

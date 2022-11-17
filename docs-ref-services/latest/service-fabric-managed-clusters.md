@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: servicefabricmanagedclusters
 ---
 # Azure Service Fabric Managed Clusters SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](service-fabric-managed-clusters-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](service-fabric-managed-clusters-index.md)]

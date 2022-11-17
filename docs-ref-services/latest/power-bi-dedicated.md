@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: powerbidedicated
 ---
 # Azure Power BI Dedicated SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](power-bi-dedicated-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](power-bi-dedicated-index.md)]

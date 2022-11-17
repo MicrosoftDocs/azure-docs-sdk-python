@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: mobilenetwork
 ---
 # Azure Mobile Network SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](mobile-network-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](mobile-network-index.md)]

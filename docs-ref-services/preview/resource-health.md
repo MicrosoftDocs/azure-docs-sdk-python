@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: resourcehealth
 ---
 # Azure Resource Health SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](resource-health-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](resource-health-index.md)]

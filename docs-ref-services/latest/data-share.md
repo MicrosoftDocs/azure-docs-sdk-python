@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: datashare
 ---
 # Azure Data Share SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](data-share-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](data-share-index.md)]

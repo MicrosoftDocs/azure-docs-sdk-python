@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: machinelearning
 ---
 # Azure Machine Learning SDK for Python - preview
-
-## Client packages - preview
-[!INCLUDE [client-packages](machine-learning-client-index.md)]
+## Packages - preview
+[!INCLUDE [packages](machine-learning-index.md)]

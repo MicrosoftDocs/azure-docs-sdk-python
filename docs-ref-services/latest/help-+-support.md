@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: help+support
 ---
 # Azure Help + support SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](help-+-support-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](help-+-support-index.md)]

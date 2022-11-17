@@ -9,8 +9,5 @@ ms.devlang: python
 ms.service: servicefabric
 ---
 # Azure Service Fabric SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](service-fabric-client-index.md)]
-## Management packages - latest
-[!INCLUDE [mgmt-packages](service-fabric-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](service-fabric-index.md)]

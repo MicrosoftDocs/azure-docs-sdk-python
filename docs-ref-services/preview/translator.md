@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: translator
 ---
 # Azure Translator SDK for Python - preview
-
-## Client packages - preview
-[!INCLUDE [client-packages](translator-client-index.md)]
+## Packages - preview
+[!INCLUDE [packages](translator-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: identity
 ---
 # Azure Identity SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](identity-client-index.md)]
+## Packages - latest
+[!INCLUDE [packages](identity-index.md)]

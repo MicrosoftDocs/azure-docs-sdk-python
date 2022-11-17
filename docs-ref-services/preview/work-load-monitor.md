@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: workloadmonitor
 ---
 # Azure Work Load Monitor SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](work-load-monitor-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](work-load-monitor-index.md)]

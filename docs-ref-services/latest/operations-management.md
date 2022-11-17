@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: operationsmanagement
 ---
 # Azure Operations Management SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](operations-management-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](operations-management-index.md)]

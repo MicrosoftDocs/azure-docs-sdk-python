@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: loganalytics
 ---
 # Azure Log Analytics SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](log-analytics-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](log-analytics-index.md)]

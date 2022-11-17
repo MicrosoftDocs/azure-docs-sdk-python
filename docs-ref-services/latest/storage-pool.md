@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: storagepool
 ---
 # Azure Storage Pool SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](storage-pool-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](storage-pool-index.md)]

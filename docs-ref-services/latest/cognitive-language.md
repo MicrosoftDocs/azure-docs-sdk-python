@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: cognitivelanguage
 ---
 # Azure Cognitive Language SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](cognitive-language-client-index.md)]
+## Packages - latest
+[!INCLUDE [packages](cognitive-language-index.md)]

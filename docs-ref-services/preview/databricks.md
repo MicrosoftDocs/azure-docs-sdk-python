@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: databricks
 ---
 # Azure Databricks SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](databricks-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](databricks-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: webpubsub
 ---
 # Azure Web PubSub SDK for Python - preview
-
-## Client packages - preview
-[!INCLUDE [client-packages](web-pubsub-client-index.md)]
+## Packages - preview
+[!INCLUDE [packages](web-pubsub-index.md)]

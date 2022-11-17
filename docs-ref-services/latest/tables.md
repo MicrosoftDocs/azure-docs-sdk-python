@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: tables
 ---
 # Azure Tables SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](tables-client-index.md)]
+## Packages - latest
+[!INCLUDE [packages](tables-index.md)]

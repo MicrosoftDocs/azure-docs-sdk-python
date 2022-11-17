@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: stackedge
 ---
 # Azure Stack Edge SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](stack-edge-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](stack-edge-index.md)]

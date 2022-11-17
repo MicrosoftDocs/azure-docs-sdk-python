@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: portal
 ---
 # Azure Portal SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](portal-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](portal-index.md)]

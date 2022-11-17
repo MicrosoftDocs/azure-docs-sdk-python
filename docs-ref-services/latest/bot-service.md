@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: botservice
 ---
 # Azure Bot Service SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](bot-service-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](bot-service-index.md)]

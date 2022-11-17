@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: resourceconnector
 ---
 # Azure Resource Connector SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](resource-connector-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](resource-connector-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: quantum
 ---
 # Azure Quantum SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](quantum-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](quantum-index.md)]

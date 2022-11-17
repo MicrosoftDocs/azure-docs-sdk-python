@@ -9,8 +9,5 @@ ms.devlang: python
 ms.service: communication
 ---
 # Azure Communication SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](communication-client-index.md)]
-## Management packages - latest
-[!INCLUDE [mgmt-packages](communication-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](communication-index.md)]

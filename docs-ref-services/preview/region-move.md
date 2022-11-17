@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: regionmove
 ---
 # Azure Region Move SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](region-move-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](region-move-index.md)]

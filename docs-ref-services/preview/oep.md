@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: oep
 ---
 # Azure Oep SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](oep-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](oep-index.md)]

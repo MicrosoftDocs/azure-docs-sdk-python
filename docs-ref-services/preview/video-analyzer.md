@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: videoanalyzer
 ---
 # Azure Video Analyzer SDK for Python - preview
-
-## Client packages - preview
-[!INCLUDE [client-packages](video-analyzer-client-index.md)]
+## Packages - preview
+[!INCLUDE [packages](video-analyzer-index.md)]

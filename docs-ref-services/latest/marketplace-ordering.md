@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: marketplaceordering
 ---
 # Azure Marketplace Ordering SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](marketplace-ordering-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](marketplace-ordering-index.md)]

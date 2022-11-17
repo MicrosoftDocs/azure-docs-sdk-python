@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: extendedlocation
 ---
 # Azure Extended Location SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](extended-location-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](extended-location-index.md)]

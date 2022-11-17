@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: dataexplorer
 ---
 # Azure Data Explorer SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](data-explorer-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](data-explorer-index.md)]

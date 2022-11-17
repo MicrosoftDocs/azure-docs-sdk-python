@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: timeseriesinsights
 ---
 # Azure Time Series Insights SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](time-series-insights-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](time-series-insights-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: containerservice
 ---
 # Azure Container Service SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](container-service-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](container-service-index.md)]

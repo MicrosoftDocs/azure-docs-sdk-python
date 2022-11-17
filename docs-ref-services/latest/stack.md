@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: stack
 ---
 # Azure Stack SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](stack-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](stack-index.md)]

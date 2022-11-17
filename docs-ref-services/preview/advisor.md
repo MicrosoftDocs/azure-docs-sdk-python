@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: advisor
 ---
 # Azure Advisor SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](advisor-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](advisor-index.md)]

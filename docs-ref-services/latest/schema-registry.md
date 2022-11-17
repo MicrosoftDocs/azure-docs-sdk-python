@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: schemaregistry
 ---
 # Azure Schema Registry SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](schema-registry-client-index.md)]
+## Packages - latest
+[!INCLUDE [packages](schema-registry-index.md)]

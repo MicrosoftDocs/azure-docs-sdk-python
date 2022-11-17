@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: servicelinker
 ---
 # Azure Service Linker SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](service-linker-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](service-linker-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: resourcemover
 ---
 # Azure Resource Mover SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](resource-mover-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](resource-mover-index.md)]

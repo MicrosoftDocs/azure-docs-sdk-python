@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: cognitivelanguageunderstanding
 ---
 # Azure Cognitive Language Understanding SDK for Python - preview
-
-## Client packages - preview
-[!INCLUDE [client-packages](cognitive-language-understanding-client-index.md)]
+## Packages - preview
+[!INCLUDE [packages](cognitive-language-understanding-index.md)]

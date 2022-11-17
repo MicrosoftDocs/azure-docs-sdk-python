@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: managementpartner
 ---
 # Azure Management Partner SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](management-partner-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](management-partner-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: machinelearning
 ---
 # Azure Machine Learning SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](machine-learning-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](machine-learning-index.md)]

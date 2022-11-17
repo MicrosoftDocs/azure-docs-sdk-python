@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: chaos
 ---
 # Azure Chaos SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](chaos-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](chaos-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: managementgroups
 ---
 # Azure Management Groups SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](management-groups-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](management-groups-index.md)]

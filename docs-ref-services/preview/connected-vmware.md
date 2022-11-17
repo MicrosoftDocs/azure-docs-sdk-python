@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: connectedvmware
 ---
 # Azure Connected VMWare SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](connected-vmware-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](connected-vmware-index.md)]

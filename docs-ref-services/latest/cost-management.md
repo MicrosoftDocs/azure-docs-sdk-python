@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: costmanagement
 ---
 # Azure Cost Management SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](cost-management-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](cost-management-index.md)]

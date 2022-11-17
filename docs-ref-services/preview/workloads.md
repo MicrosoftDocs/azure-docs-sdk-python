@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: workloads
 ---
 # Azure Workloads SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](workloads-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](workloads-index.md)]

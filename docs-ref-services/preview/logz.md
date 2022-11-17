@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: logz
 ---
 # Azure Logz SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](logz-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](logz-index.md)]

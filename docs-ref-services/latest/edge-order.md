@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: edgeorder
 ---
 # Azure Edge Order SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](edge-order-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](edge-order-index.md)]

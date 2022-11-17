@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: sentinel
 ---
 # Azure Sentinel SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](sentinel-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](sentinel-index.md)]

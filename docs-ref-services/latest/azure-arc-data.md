@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: azurearcdata
 ---
 # Azure Azure Arc Data SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](azure-arc-data-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](azure-arc-data-index.md)]

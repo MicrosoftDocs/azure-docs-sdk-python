@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: dynatrace
 ---
 # Azure Dynatrace SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](dynatrace-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](dynatrace-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: uamqp
 ---
 # Azure Uamqp SDK for Python - latest
-
-## Client packages - latest
-[!INCLUDE [client-packages](uamqp-client-index.md)]
+## Packages - latest
+[!INCLUDE [packages](uamqp-index.md)]

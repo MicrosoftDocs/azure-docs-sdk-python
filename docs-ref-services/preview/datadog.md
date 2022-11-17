@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: datadog
 ---
 # Azure Datadog SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](datadog-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](datadog-index.md)]

@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: orbital
 ---
 # Azure Orbital SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](orbital-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](orbital-index.md)]

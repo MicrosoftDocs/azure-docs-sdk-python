@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: loadtesting
 ---
 # Azure Load Testing SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](load-testing-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](load-testing-index.md)]

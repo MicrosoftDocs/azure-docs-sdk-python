@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: peeringservice
 ---
 # Azure Peering Service SDK for Python - latest
-
-## Management packages - latest
-[!INCLUDE [mgmt-packages](peering-service-mgmt-index.md)]
+## Packages - latest
+[!INCLUDE [packages](peering-service-index.md)]

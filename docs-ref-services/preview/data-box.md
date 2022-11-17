@@ -9,6 +9,5 @@ ms.devlang: python
 ms.service: databox
 ---
 # Azure Data Box SDK for Python - preview
-
-## Management packages - preview
-[!INCLUDE [mgmt-packages](data-box-mgmt-index.md)]
+## Packages - preview
+[!INCLUDE [packages](data-box-index.md)]
