@@ -1,6 +1,6 @@
 ---
-title: Azure Devcenter SDK for Python
-description: Reference for Azure Devcenter SDK for Python
+title: Azure DevCenter SDK for Python
+description: Reference for Azure DevCenter SDK for Python
 author: lmazuel
 ms.author: lmazuel
 ms.data: 11/17/2022
