@@ -14,8 +14,9 @@ summary: 'A client to interact with a specific file, although that file may not 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
   syntax: 'ShareFileClient(account_url: str, share_name: str, file_path: str, snapshot:
-    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any] = None,
-    **kwargs: Any)'
+    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -47,13 +48,26 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -142,7 +156,7 @@ methods:
   - "Acquiring a lease on a file.<!--[!code-python[Main](les\\file_samples_client.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_client.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_client.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   source_file.create_file(1024)\n   lease = source_file.acquire_lease()\n \
@@ -344,7 +358,7 @@ methods:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_client.py\"\
+    72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_client.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create and allocate bytes for the file (no content added yet)\n   my_allocated_file.create_file(size=100)\n\
@@ -378,7 +392,7 @@ methods:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_client.py\"\
+    72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_client.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   my_file.delete_file()\n\n   ````\n"
@@ -443,6 +457,15 @@ methods:
     types:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
     - <xref:str>
+  - name: progress_hook
+    description: 'A callback to track the progress of a long running download. The
+      signature is
+
+      function(current: int, total: int) where current is the number of bytes transferred
+
+      so far, and total is the total size of the download.'
+    types:
+    - <xref:Callable>[[<xref:int>, <xref:int>], <xref:None>]
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -455,7 +478,7 @@ methods:
   - "Download a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_client.py\"\
+    \\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_client.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(DEST_FILE, \"wb\") as data:\n       stream = my_file.download_file()\n\
@@ -464,8 +487,9 @@ methods:
   name: from_connection_string
   summary: Create ShareFileClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, share_name: str, file_path: str,
-    snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any]
-    = None, **kwargs: Any) -> azure.storage.fileshare._file_client.ShareFileClient'
+    snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any) -> ShareFileClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -487,19 +511,30 @@ methods:
       ID string
 
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
-    defaultValue: None
-  - name: credential
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A File client.
@@ -509,7 +544,7 @@ methods:
   - "Creates the file client with connection string.<!--[!code-python[Main](les\\\
     file_samples_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\
     \\samples\\\\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare import\
@@ -520,7 +555,9 @@ methods:
   summary: A client to interact with a specific file, although that file may not yet
     exist.
   signature: 'from_file_url(file_url: str, snapshot: Optional[Union[str, Dict[str,
-    Any]]] = None, credential: Optional[Any] = None, **kwargs: Any) -> azure.storage.fileshare._file_client.ShareFileClient'
+    Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Any) -> ShareFileClient'
   parameters:
   - name: file_url
     description: The full URI to the file.
@@ -532,19 +569,30 @@ methods:
       ID string
 
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
-    defaultValue: None
-  - name: credential
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A File client.
@@ -627,7 +675,7 @@ methods:
   parameters:
   - name: offset
     description: Specifies the start offset of bytes over which to get ranges.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: length
@@ -642,7 +690,7 @@ methods:
       specifies a previous file snapshot to be compared
 
       against a more recent snapshot or the current file.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: lease
@@ -1039,7 +1087,7 @@ methods:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_client.py\"\
+    \\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_client.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   destination_file.start_copy_from_url(source_url=source_url)\n\n   ````\n"
@@ -1089,17 +1137,22 @@ methods:
       \ number of parallel connections to use.\n\nkeyword lease:\n   Required if the\
       \ file has an active lease. Value can be a ShareLeaseClient object\n   or the\
       \ lease ID as a string.\n\n   New in version 12.1.0.\n\nparamtype lease:\n \
-      \  ~azure.storage.fileshare.ShareLeaseClient or str\n\nkeyword int timeout:\n\
-      \   The timeout parameter is expressed in seconds.\n\nkeyword str encoding:\n\
-      \   Defaults to UTF-8.\n\nreturns:\n   File-updated property dict (Etag and\
-      \ last modified).\n\nrtype:\n   dict(str, Any)\n\n\n\n## Example:Upload a file.<!--[!code-python[Main](les\\\
-      file_samples_client.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-      : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-      a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\
-      \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
-      : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1},\
-      \ \"linenos\": false} -->\n\n````python\n\n   with open(SOURCE_FILE, \"rb\"\
-      ) as source:\n       my_file.upload_file(source)\n\n   ````"
+      \  ~azure.storage.fileshare.ShareLeaseClient or str\n\nkeyword progress_hook:\n\
+      \   A callback to track the progress of a long running upload. The signature\
+      \ is\n   function(current: int, total: Optional[int]) where current is the number\
+      \ of bytes transferred\n   so far, and total is the size of the blob or None\
+      \ if the size is unknown.\n\nparamtype progress_hook:\n   Callable[[int, Optional[int]],\
+      \ None]\n\nkeyword int timeout:\n   The timeout parameter is expressed in seconds.\n\
+      \nkeyword str encoding:\n   Defaults to UTF-8.\n\nreturns:\n   File-updated\
+      \ property dict (Etag and last modified).\n\nrtype:\n   dict(str, Any)\n\n\n\
+      \n## Example:Upload a file.<!--[!code-python[Main](les\\file_samples_client.py\
+      \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
+      \ \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\\
+      s\\\\dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_client.py\"\
+      , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+      highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+      \n   with open(SOURCE_FILE, \"rb\") as source:\n       my_file.upload_file(source)\n\
+      \n   ````"
 - uid: azure.storage.fileshare.ShareFileClient.upload_range
   name: upload_range
   summary: Upload a range of bytes to a file.

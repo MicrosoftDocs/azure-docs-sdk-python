@@ -21,8 +21,9 @@ summary: 'A client to interact with a specific directory, although it may not ye
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
   syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
-    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any]
-    = None, **kwargs: Optional[Any])'
+    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Optional[Any])'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -55,13 +56,26 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -205,7 +219,7 @@ methods:
   - "Creates a directory.<!--[!code-python[Main](les\\file_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    \\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   my_directory.create_directory()\n\n   ````\n"
@@ -237,7 +251,7 @@ methods:
   - "Create a subdirectory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create the directory\n   parent_dir.create_directory()\n\n   # Create a\
@@ -260,7 +274,7 @@ methods:
   - "Deletes a directory.<!--[!code-python[Main](les\\file_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    \\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   my_directory.delete_directory()\n\n   ````\n"
@@ -287,7 +301,7 @@ methods:
   - "Delete a file in a directory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Delete the file in the directory\n   my_directory.delete_file(file_name=\"\
@@ -313,7 +327,7 @@ methods:
   - "Delete a subdirectory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   parent_dir.delete_subdirectory(\"subdir\")\n\n   ````\n"
@@ -334,7 +348,9 @@ methods:
   name: from_connection_string
   summary: Create ShareDirectoryClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, share_name: str, directory_path:
-    str, credential: Optional[Any] = None, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+    str, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Any) -> ShareDirectoryClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -352,15 +368,26 @@ methods:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
-    isRequired: true
-  - name: credential
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A directory client.
@@ -368,10 +395,36 @@ methods:
     - <xref:azure.storage.fileshare.ShareDirectoryClient>
 - uid: azure.storage.fileshare.ShareDirectoryClient.from_directory_url
   name: from_directory_url
-  summary: Create a ShareDirectoryClient from a directory url.
+  summary: 'Create a ShareDirectoryClient from a directory url.
+
+
+    The credentials with which to authenticate. This is optional if the
+
+    account URL already has a SAS token. The value can be a SAS token string,
+
+    an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+    an account shared access key, or an instance of a TokenCredentials class from
+    azure.identity.
+
+    If the resource URI already contains a SAS token, this will be ignored in favor
+    of an explicit credential
+
+    - except in the case of AzureSasCredential, where the conflicting SAS tokens will
+    raise a ValueError.
+
+    If using an instance of AzureNamedKeyCredential, "name" should be the storage
+    account name, and "key"
+
+    should be the storage account key.
+
+    :returns: A directory client.
+
+    :rtype: ~azure.storage.fileshare.ShareDirectoryClient'
   signature: 'from_directory_url(directory_url: str, snapshot: Optional[Union[str,
-    Dict[str, Any]]] = None, credential: Optional[Any] = None, **kwargs: Optional[Any])
-    -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+    Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Optional[Any]) -> ShareDirectoryClient'
   parameters:
   - name: directory_url
     description: The full URI to the directory.
@@ -383,24 +436,11 @@ methods:
       snapshot ID string
 
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
-
-      account URL already has a SAS token. The value can be a SAS token string,
-
-      an instance of a AzureSasCredential from azure.core.credentials or an account
-
-      shared access key.'
     defaultValue: None
-  - name: credential
-    defaultValue: None
-  return:
-    description: A directory client.
-    types:
-    - <xref:azure.storage.fileshare.ShareDirectoryClient>
 - uid: azure.storage.fileshare.ShareDirectoryClient.get_directory_properties
   name: get_directory_properties
   summary: 'Returns all user-defined metadata and system properties for the
@@ -454,7 +494,7 @@ methods:
   - "Gets the subdirectory client.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get a directory client and create the directory\n   parent = share.get_directory_client(\"\
@@ -509,7 +549,7 @@ methods:
   - "List directories and files.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List the directories and files under the parent directory\n   my_list =\
@@ -716,6 +756,16 @@ methods:
     description: Maximum number of parallel connections to use.
     types:
     - <xref:int>
+  - name: progress_hook
+    description: 'A callback to track the progress of a long running upload. The signature
+      is
+
+      function(current: int, total: Optional[int]) where current is the number of
+      bytes transferred
+
+      so far, and total is the size of the blob or None if the size is unknown.'
+    types:
+    - <xref:Callable>[[<xref:int>, <xref:Optional>[<xref:int>]], <xref:None>]
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -732,7 +782,7 @@ methods:
   - "Upload a file to a directory.<!--[!code-python[Main](les\\file_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-file-share-12.9.0b1\\\\samples\\\\file_samples_directory.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.10.0b1\\\\samples\\\\file_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Upload a file to the directory\n   with open(SOURCE_FILE, \"rb\") as source:\n\

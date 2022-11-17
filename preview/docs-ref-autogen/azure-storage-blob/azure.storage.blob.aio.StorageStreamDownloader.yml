@@ -4,12 +4,12 @@ name: StorageStreamDownloader
 fullName: azure.storage.blob.aio.StorageStreamDownloader
 module: azure.storage.blob.aio
 inheritances:
-- builtins.object
+- typing.Generic
 summary: A streaming object to download from Azure Storage.
 constructor:
   syntax: StorageStreamDownloader(clients=None, config=None, start_range=None, end_range=None,
     validate_content=None, encryption_options=None, max_concurrency=1, name=None,
-    container=None, encoding=None, **kwargs)
+    container=None, encoding=None, download_cls=None, **kwargs)
   parameters:
   - name: clients
     defaultValue: None
@@ -30,6 +30,8 @@ constructor:
   - name: container
     defaultValue: None
   - name: encoding
+    defaultValue: None
+  - name: download_cls
     defaultValue: None
 variables:
 - description: The name of the blob being downloaded.
@@ -66,7 +68,7 @@ methods:
   - "Download a blob using chunks().<!--[!code-python[Main](les\\blob_samples_hello_world_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\61\\\\azure-storage-blob-12.13.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
+    dist_temp\\\\60\\\\azure-storage-blob-12.14.0b2\\\\samples\\\\blob_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # This returns a StorageStreamDownloader.\n   stream = await source_blob_client.download_blob()\n\
@@ -133,15 +135,35 @@ methods:
     description: The properties of the downloaded blob.
     types:
     - <xref:Any>
+- uid: azure.storage.blob.aio.StorageStreamDownloader.read
+  name: read
+  summary: 'Read up to size bytes from the stream and return them. If size
+
+    is unspecified or is -1, all bytes will be read.'
+  signature: 'async read(size: Optional[int] = - 1) -> T'
+  parameters:
+  - name: size
+    description: 'The number of bytes to download from the stream. Leave unsepcified
+
+      or set to -1 to download all bytes.'
+    defaultValue: '-1'
+  return:
+    description: 'The requsted data as bytes or a string if encoding was speicified.
+      If
+
+      the return value is empty, there is no more data to read.'
+    types:
+    - <xref:T>
 - uid: azure.storage.blob.aio.StorageStreamDownloader.readall
   name: readall
-  summary: 'Download the contents of this blob.
+  summary: 'Read the entire contents of this blob.
 
-
-    This operation is blocking until all data is downloaded.
-
-    :rtype: bytes or str'
-  signature: async readall()
+    This operation is blocking until all data is downloaded.'
+  signature: async readall() -> T
+  return:
+    description: The requsted data as bytes or a string if encoding was speicified.
+    types:
+    - <xref:T>
 - uid: azure.storage.blob.aio.StorageStreamDownloader.readinto
   name: readinto
   summary: Download the contents of this blob to a stream.

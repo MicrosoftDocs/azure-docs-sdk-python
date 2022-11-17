@@ -16,8 +16,9 @@ summary: 'A client to interact with a specific file system, even if that file sy
   can be retrieved using the <xref:azure.storage.filedatalake.FileSystemClient.get_directory_client>
   or <xref:azure.storage.filedatalake.FileSystemClient.get_file_client> functions.'
 constructor:
-  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: Optional[Any]
-    = None, **kwargs: Any)'
+  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -35,16 +36,30 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
 variables:
 - description: The full endpoint URL to the file system, including SAS token if used.
   name: url
@@ -62,7 +77,7 @@ examples:
 - "Get a FileSystemClient from an existing DataLakeServiceClient.<!--[!code-python[Main](les\\\
   datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\\
   samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
   linenos\": false} -->\n\n````python\n\n   # Instantiate a DataLakeServiceClient\
@@ -147,7 +162,7 @@ methods:
   - "Acquiring a lease on the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Acquire a lease on the file system\n   lease = file_system_client.acquire_lease()\n\
@@ -162,8 +177,8 @@ methods:
 - uid: azure.storage.filedatalake.FileSystemClient.create_directory
   name: create_directory
   summary: Create directory
-  signature: 'create_directory(directory: Union[DirectoryProperties, str], metadata:
-    Optional[Dict[str, str]] = None, **kwargs) -> DataLakeDirectoryClient'
+  signature: 'create_directory(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
+    str], metadata: Optional[Dict[str, str]] = None, **kwargs) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -211,6 +226,43 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -270,7 +322,7 @@ methods:
   - "Create directory in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   directory_client = file_system_client.create_directory(\"mydirectory\")\n\
@@ -328,6 +380,58 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
+  - name: expires_on
+    description: 'The time to set the file to expiry.
+
+      If the type of expires_on is an int, expiration time will be set
+
+      as the number of milliseconds elapsed from creation time.
+
+      If the type of expires_on is datetime, expiration time will be set
+
+      absolute to the time provided. If no time zone info is provided, this
+
+      will be interpreted as UTC.'
+    types:
+    - <xref:datetime>
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -387,7 +491,7 @@ methods:
   - "Create file in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_client = file_system_client.create_file(\"myfile\")\n\n   ````\n"
@@ -417,18 +521,30 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.storage.filedatalake.PublicAccess>
+  - name: encryption_scope_options
+    description: 'Specifies the default encryption scope to set on the file system
+      and use for
+
+      all future writes.
+
+
+      New in version 12.9.0.'
+    types:
+    - <xref:dict>
+    - <xref:azure.storage.filedatalake.EncryptionScopeOptions>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>
   return:
+    description: A dictionary of response headers.
     types:
-    - <xref:azure.storage.filedatalake.FileSystemClient>
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:datetime>]]
   examples:
   - "Creating a file system in the datalake service.<!--[!code-python[Main](les\\\
     datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\
     \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   file_system_client.create_file_system()\n\
@@ -501,7 +617,7 @@ methods:
   - "Delete directory in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_system_client.delete_directory(\"mydirectory\")\n\n   ````\n"
@@ -573,7 +689,7 @@ methods:
   - "Delete file in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   file_system_client.delete_file(\"myfile\")\n\n   ````\n"
@@ -642,7 +758,7 @@ methods:
   - "Deleting a file system in the datalake service.<!--[!code-python[Main](les\\\
     datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\
     \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   file_system_client.delete_file_system()\n\
@@ -667,7 +783,9 @@ methods:
 
     :rtype ~azure.storage.filedatalake.FileSystemClient'
   signature: 'from_connection_string(conn_str: str, file_system_name: str, credential:
-    Optional[Any] = None, **kwargs: Any) -> ClassType'
+    Optional[Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential,
+    "TokenCredential"]] # pylint: disable=line-too-long = None, **kwargs: Any) ->
+    ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -687,21 +805,24 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
-    isRequired: true
-  - name: credential
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   examples:
   - "Create FileSystemClient from connection string<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.storage.filedatalake import FileSystemClient\n   file_system_client\
@@ -733,7 +854,7 @@ methods:
   - "Getting the directory client to interact with a specific directory.<!--[!code-python[Main](les\\\
     datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\
     \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   # Get the DataLakeDirectoryClient\
@@ -765,7 +886,7 @@ methods:
   - "Getting the file client to interact with a specific file.<!--[!code-python[Main](les\\\
     datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\
     \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   # Get the FileClient from the\
@@ -818,7 +939,7 @@ methods:
   - "Getting properties on the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = file_system_client.get_file_system_properties()\n\n   ````\n"
@@ -844,7 +965,7 @@ methods:
       number of items to return per page. If omitted or greater than 5,000, the
 
       response will include up to 5,000 items per page.'
-    defaultValue: 'True'
+    defaultValue: None
     types:
     - <xref:int>
   - name: upn
@@ -863,11 +984,12 @@ methods:
       application Object IDs are not translated because they do not have
 
       unique friendly names.'
-    defaultValue: None
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>
+  - name: recursive
+    defaultValue: 'True'
   return:
     description: An iterable (auto-paging) response of PathProperties.
     types:
@@ -876,7 +998,7 @@ methods:
   - "List the paths in the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   path_list = file_system_client.get_paths()\n   for path in path_list:\n \
@@ -1053,7 +1175,7 @@ methods:
   - "Setting metadata on the file system.<!--[!code-python[Main](les\\datalake_samples_file_system.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\62\\\\azure-storage-file-datalake-12.8.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
+    dist_temp\\\\61\\\\azure-storage-file-datalake-12.9.0b1\\\\samples\\\\datalake_samples_file_system.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create key, value pairs for metadata\n   metadata = {'type': 'test'}\n\n\

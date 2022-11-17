@@ -9,7 +9,7 @@ constructor:
   syntax: ClientApplication(client_id, client_credential=None, authority=None, validate_authority=True,
     token_cache=None, http_client=None, verify=True, proxies=None, timeout=None, client_claims=None,
     app_name=None, app_version=None, client_capabilities=None, azure_region=None,
-    exclude_scopes=None, http_cache=None)
+    exclude_scopes=None, http_cache=None, instance_discovery=None, allow_broker=None)
   parameters:
   - name: client_id
   - name: client_credential
@@ -41,6 +41,10 @@ constructor:
   - name: exclude_scopes
     defaultValue: None
   - name: http_cache
+    defaultValue: None
+  - name: instance_discovery
+    defaultValue: None
+  - name: allow_broker
     defaultValue: None
 methods:
 - uid: msal.application.ClientApplication.acquire_token_by_auth_code_flow
@@ -173,7 +177,7 @@ methods:
       It is a string of a JSON object which contains lists of claims being requested
       from these locations.'
     defaultValue: None
-  - name: claims_challenge
+  - name: redirect_uri
     defaultValue: None
   return:
     description: "A dict representing the json response from AAD:\n\n* A successful\
@@ -295,6 +299,8 @@ methods:
 
       It is a string of a JSON object which contains lists of claims being requested
       from these locations.'
+    defaultValue: None
+  - name: scopes
     isRequired: true
   - name: account
     isRequired: true
@@ -302,8 +308,6 @@ methods:
     defaultValue: None
   - name: force_refresh
     defaultValue: 'False'
-  - name: claims_challenge
-    defaultValue: None
   return:
     description: "* A dict containing no \"error\" key, and typically contains an\
       \ \"access_token\" key, if cache lookup succeeded. \n\n* None when cache lookup\
@@ -347,7 +351,7 @@ methods:
     description: 'If True, it will skip Access Token look-up,
 
       and try to find a Refresh Token to obtain a new Access Token.'
-    defaultValue: None
+    defaultValue: 'False'
   - name: claims_challenge
     description: 'The claims_challenge parameter requests specific claims requested
       by the resource provider
@@ -359,8 +363,8 @@ methods:
 
       It is a string of a JSON object which contains lists of claims being requested
       from these locations.'
-    defaultValue: 'False'
-  - name: claims_challenge
+    defaultValue: None
+  - name: authority
     defaultValue: None
   return:
     description: "* A dict containing no \"error\" key, and typically contains an\
@@ -589,7 +593,7 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-  - name: response_mode
+  - name: claims_challenge
     defaultValue: None
   return:
     description: "The auth code flow. It is a dict in this form:\n\n<!-- literal_block\

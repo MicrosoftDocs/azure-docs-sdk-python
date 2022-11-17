@@ -17,8 +17,9 @@ summary: 'A client to interact with a specific directory, although it may not ye
   and <xref:azure.storage.fileshare.aio.ShareDirectoryClient.get_file_client> functions.'
 constructor:
   syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
-    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any]
-    = None, **kwargs: Optional[Any])'
+    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Optional[Any])'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -50,13 +51,26 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -73,8 +87,6 @@ constructor:
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
-  - name: loop
-    description: The event loop to run the asynchronous tasks.
   - name: max_range_size
     description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
     types:
@@ -202,7 +214,7 @@ methods:
   - "Creates a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await directory.create_directory()\n\n   ````\n"
@@ -234,7 +246,7 @@ methods:
   - "Create a subdirectory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create the directory\n   await parent_dir.create_directory()\n\n   # Create\
@@ -258,7 +270,7 @@ methods:
   - "Deletes a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await directory.delete_directory()\n\n   ````\n"
@@ -285,7 +297,7 @@ methods:
   - "Delete a file in a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Delete the file in the directory\n   await directory.delete_file(file_name=\"\
@@ -311,7 +323,7 @@ methods:
   - "Delete a subdirectory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await parent_dir.delete_subdirectory(\"subdir\")\n\n   ````\n"
@@ -383,7 +395,7 @@ methods:
   - "Gets the subdirectory client.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get a directory client and create the directory\n   parent = share.get_directory_client(\"\
@@ -439,7 +451,7 @@ methods:
   - "List directories and files.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List the directories and files under the parent directory\n   my_list =\
@@ -673,7 +685,7 @@ methods:
   - "Upload a file to a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.9.0\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.10.1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Upload a file to the directory\n   with open(SOURCE_FILE, \"rb\") as source:\n\

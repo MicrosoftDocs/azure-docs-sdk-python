@@ -7,6 +7,7 @@ ms.data: 11/16/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: powerbi
+ms.date: 08/24/2022
 ---
 # Azure PowerBI libraries for python
 
@@ -20,4 +21,4 @@ pip install azure-mgmt-powerbiembedded
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/powerbi/management)
+> [Explore the Management APIs](/python/api/overview/azure/powerbi/management/resourcemanagement-powerbiembedded)

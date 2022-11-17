@@ -18,7 +18,9 @@ summary: 'A client to interact with the DataLake directory, even if the director
   functions.'
 constructor:
   syntax: 'DataLakeDirectoryClient(account_url: str, file_system_name: str, directory_name:
-    str, credential: Optional[Any] = None, **kwargs: Any)'
+    str, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
+    AzureSasCredential, "TokenCredential"]] # pylint: disable=line-too-long = None,
+    **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -42,15 +44,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -77,7 +85,7 @@ examples:
 - "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
   datalake_samples_instantiate_client_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.8.0\\\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\110\\\\azure-storage-file-datalake-12.9.1\\\
   \\samples\\\\datalake_samples_instantiate_client_async.py\", \"xml:space\": \"preserve\"\
   , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
   : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake.aio\
@@ -231,7 +239,7 @@ methods:
   - "Create directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\110\\\\azure-storage-file-datalake-12.8.0\\\\samples\\\\datalake_samples_directory_async.py\"\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.9.1\\\\samples\\\\datalake_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await directory_client.create_directory()\n\n   ````\n"
@@ -606,7 +614,7 @@ methods:
   - "Delete directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\110\\\\azure-storage-file-datalake-12.8.0\\\\samples\\\\datalake_samples_directory_async.py\"\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.9.1\\\\samples\\\\datalake_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await new_directory.delete_directory()\n\n   ````\n"
@@ -754,7 +762,7 @@ methods:
   - "Getting the properties for a file/directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\110\\\\azure-storage-file-datalake-12.8.0\\\\samples\\\\datalake_samples_directory_async.py\"\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.9.1\\\\samples\\\\datalake_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   props = await new_directory.get_directory_properties()\n\n   ````\n"
@@ -818,7 +826,7 @@ methods:
   - name: source_lease
     description: 'A lease ID for the source path. If specified,
 
-      the source path must have an active lease and the leaase ID must
+      the source path must have an active lease and the lease ID must
 
       match.'
     types:
@@ -912,7 +920,7 @@ methods:
   - "Rename the source directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\110\\\\azure-storage-file-datalake-12.8.0\\\\samples\\\\datalake_samples_directory_async.py\"\
+    dist_temp\\\\110\\\\azure-storage-file-datalake-12.9.1\\\\samples\\\\datalake_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   new_dir_name = \"testdir2\"\n   print(\"Renaming the directory named '{}'\

@@ -20,6 +20,13 @@ constructor:
     isRequired: true
     types:
     - <xref:AsyncTokenCredential>
+  - name: api_version
+    description: 'Azure Communication Identity API version.
+
+      Default value is "2022-06-01". Note that overriding this default value may result
+      in unsupported behavior.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.close
   name: close
@@ -41,6 +48,14 @@ methods:
     \n   List of scopes to be added to the token."
   signature: 'async create_user_and_token(scopes: List[Union[str, CommunicationTokenScope]],
     **kwargs) -> Tuple[CommunicationUserIdentifier, azure.core.credentials.AccessToken]'
+  parameters:
+  - name: token_expires_in
+    description: 'Custom validity period of the Communication Identity access token
+
+      within [1, 24] hours range. If not provided, the default value of 24 hours will
+      be used.'
+    types:
+    - <xref:datetime.timedelta>
   return:
     description: A tuple of a CommunicationUserIdentifier and a AccessToken.
     types:
@@ -71,8 +86,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: conn_str
-    isRequired: true
   return:
     description: Instance of CommunicationIdentityClient.
     types:
@@ -94,6 +107,43 @@ methods:
     types:
     - <xref:list>[<xref:str>
     - <xref:azure.communication.identity.CommunicationTokenScope>]
+  - name: token_expires_in
+    description: 'Custom validity period of the Communication Identity access token
+
+      within [1, 24] hours range. If not provided, the default value of 24 hours will
+      be used.'
+    types:
+    - <xref:datetime.timedelta>
+  return:
+    description: AccessToken
+    types:
+    - <xref:azure.core.credentials.AccessToken>
+- uid: azure.communication.identity.aio.CommunicationIdentityClient.get_token_for_teams_user
+  name: get_token_for_teams_user
+  summary: Exchanges an Azure AD access token of a Teams User for a new Communication
+    Identity access token.
+  signature: 'async get_token_for_teams_user(aad_token: str, client_id: str, user_object_id:
+    str, **kwargs) -> azure.core.credentials.AccessToken'
+  parameters:
+  - name: aad_token
+    description: an Azure AD access token of a Teams User
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: client_id
+    description: 'a Client ID of an Azure AD application to be verified against
+
+      the appId claim in the Azure AD access token.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: user_object_id
+    description: 'an Object ID of an Azure AD user (Teams User) to be verified against
+
+      the OID claim in the Azure AD access token.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: AccessToken
     types:

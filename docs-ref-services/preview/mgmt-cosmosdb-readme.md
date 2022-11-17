@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-cosmosdb, cosmos
 author: kushagraThapar
 ms.author: kuthapar
-ms.date: 05/23/2022
+ms.date: 11/01/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
@@ -11,7 +11,7 @@ ms.service: cosmos
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Cosmos DB Management Client Library.
-This package has been tested with Python 3.6+.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -22,12 +22,10 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
-
-
  
 For docs and references, see [Python SDK References](/python/api/overview/azure/cosmosdb)
 Code samples for this package can be found at [Cosmos DB Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
-Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Additional code samples for different Azure services are available at [Samples Repo](https://github.com/Azure-Samples/azure-samples-python-management/tree/main/samples/cosmosdb)
 
 
 # Provide Feedback

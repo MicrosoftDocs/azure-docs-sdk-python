@@ -7,6 +7,7 @@ ms.data: 11/16/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: consumption
+ms.date: 08/25/2022
 ---
 # Azure Consumption libraries for python
 
@@ -19,4 +20,4 @@ ms.service: consumption
 pip install azure-mgmt-consumption
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/consumption/management)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-consumption-readme)

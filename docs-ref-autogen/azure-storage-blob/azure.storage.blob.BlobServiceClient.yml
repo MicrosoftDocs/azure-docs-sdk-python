@@ -22,8 +22,9 @@ summary: 'A client to interact with the Blob Service at the account level.
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#optional-configuration).'
 constructor:
-  syntax: 'BlobServiceClient(account_url: str, credential: Optional[Any] = None, **kwargs:
-    Any)'
+  syntax: 'BlobServiceClient(account_url: str, credential: Optional[Union[str, Dict[str,
+    str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]] # pylint:
+    disable=line-too-long = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the blob storage account. Any other entities included
@@ -41,15 +42,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -114,7 +121,7 @@ examples:
 - "Creating the BlobServiceClient with account url and credential.<!--[!code-python[Main](les\\\
   blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\\\
   blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   from azure.storage.blob import BlobServiceClient\n\
@@ -122,7 +129,7 @@ examples:
   \n   ````\n\nCreating the BlobServiceClient with Azure Identity credentials.<!--[!code-python[Main](les\\\
   blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\\\
   blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   # Get a token credential for authentication\n \
@@ -186,7 +193,7 @@ methods:
   - "Creating a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\\blob_samples_service.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   try:\n       new_container = blob_service_client.create_container(\"containerfromblobservice\"\
@@ -265,7 +272,7 @@ methods:
   - "Deleting a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\\blob_samples_service.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Delete container if it exists\n   try:\n       blob_service_client.delete_container(\"\
@@ -306,8 +313,9 @@ methods:
 - uid: azure.storage.blob.BlobServiceClient.from_connection_string
   name: from_connection_string
   summary: Create BlobServiceClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Optional[Any] = None,
-    **kwargs: Any) -> ClassType'
+  signature: 'from_connection_string(conn_str: str, credential: Optional[Union[str,
+    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
+    # pylint: disable=line-too-long = None, **kwargs: Any) -> ClassType'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -322,15 +330,18 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
-    isRequired: true
-  - name: credential
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A Blob service client.
@@ -340,7 +351,7 @@ methods:
   - "Creating the BlobServiceClient from a connection string.<!--[!code-python[Main](les\\\
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\
     \\blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.storage.blob import BlobServiceClient\n\
@@ -364,7 +375,7 @@ methods:
   - "Getting account information for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\
     \\blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   account_info = blob_service_client.get_account_information()\n\
@@ -413,7 +424,7 @@ methods:
   - "Getting the blob client to interact with a specific blob.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\
     \\blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   blob_client = blob_service_client.get_blob_client(container=\"\
@@ -444,7 +455,7 @@ methods:
   - "Getting the container client to interact with a specific container.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\
     \\blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   # Get a client to interact with a specific container\
@@ -473,7 +484,7 @@ methods:
   - "Getting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\
     \\blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   properties = blob_service_client.get_service_properties()\n\
@@ -525,7 +536,7 @@ methods:
   - "Getting service stats for the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\\blob_samples_service.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   stats = blob_service_client.get_service_stats()\n\n   ````\n"
@@ -613,7 +624,7 @@ methods:
   - "Listing the containers in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\\blob_samples_service.py\"\
+    dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\\blob_samples_service.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List all containers\n   all_containers = blob_service_client.list_containers(include_metadata=True)\n\
@@ -698,7 +709,7 @@ methods:
   - "Setting service properties for the blob service.<!--[!code-python[Main](les\\\
     blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.13.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\86\\\\azure-storage-blob-12.14.1\\\\samples\\\
     \\blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   # Create service properties\n   from azure.storage.blob\

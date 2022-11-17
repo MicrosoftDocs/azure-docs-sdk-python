@@ -34,8 +34,8 @@ summary: 'DocumentModelAdministrationClient is the Form Recognizer interface to 
   New in version 2021-09-30-preview: The *DocumentModelAdministrationClient* and its
   client methods.'
 constructor:
-  syntax: 'DocumentModelAdministrationClient(endpoint: str, credential: Union[AzureKeyCredential,
-    AsyncTokenCredential], **kwargs: Any)'
+  syntax: 'DocumentModelAdministrationClient(endpoint: str, credential: Union[azure.core.credentials.AzureKeyCredential,
+    azure.core.credentials_async.AsyncTokenCredential], **kwargs: Any)'
   parameters:
   - name: endpoint
     description: 'Supported Cognitive Services endpoints (protocol and hostname,
@@ -69,7 +69,7 @@ examples:
 - "Creating the DocumentModelAdministrationClient with an endpoint and API key.<!--[!code-python[Main](les\\\
   v3.2-beta\\async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block\
   \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\":\
-  \ [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
+  \ [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
   \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_authentication_async.py\", \"\
   xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
@@ -80,7 +80,7 @@ examples:
   \ with a token credential.<!--[!code-python[Main](les\\v3.2-beta\\async_samples\\\
   sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\\samples\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\\samples\\\
   \\v3.2-beta\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\"\
   : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\":\
   \ {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential\
@@ -96,7 +96,7 @@ methods:
   summary: 'Build a custom model.
 
 
-    The request must include a *source* parameter that is an
+    The request must include a *blob_container_url* keyword parameter that is an
 
     externally accessible Azure storage blob container URI (preferably a Shared Access
     Signature URI). Note that
@@ -117,20 +117,9 @@ methods:
 
     New in version v2022-01-30-preview: The required *build_mode* parameter and *tags*
     keyword argument'
-  signature: 'async begin_build_model(source: str, build_mode: Union[str, azure.ai.formrecognizer._models.DocumentBuildMode],
-    **kwargs: Any) -> azure.ai.formrecognizer.aio._async_polling.AsyncDocumentModelAdministrationLROPoller[azure.ai.formrecognizer._models.DocumentModel]'
+  signature: 'async begin_build_model(build_mode: Union[str, azure.ai.formrecognizer._models.ModelBuildMode],
+    *, blob_container_url: str, **kwargs: Any) -> azure.ai.formrecognizer.aio._async_polling.AsyncDocumentModelAdministrationLROPoller[azure.ai.formrecognizer._models.DocumentModelDetails]'
   parameters:
-  - name: source
-    description: 'An Azure Storage blob container''s SAS URI. A container URI (without
-      SAS)
-
-      can be used if the container is public or has a managed identity configured.
-      For more information on
-
-      setting up a training data set, see: [https://aka.ms/azsdk/formrecognizer/buildtrainingset](https://aka.ms/azsdk/formrecognizer/buildtrainingset).'
-    isRequired: true
-    types:
-    - <xref:str>
   - name: build_mode
     description: 'The custom model build mode. Possible values include: "template",
       "neural".
@@ -139,7 +128,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.ai.formrecognizer.DocumentBuildMode>
+    - <xref:azure.ai.formrecognizer.ModelBuildMode>
+  - name: blob_container_url
+    description: 'An Azure Storage blob container''s SAS URI. A container URI (without
+      SAS)
+
+      can be used if the container is public or has a managed identity configured.
+      For more information on
+
+      setting up a training data set, see: [https://aka.ms/azsdk/formrecognizer/buildtrainingset](https://aka.ms/azsdk/formrecognizer/buildtrainingset).'
+    types:
+    - <xref:str>
   - name: model_id
     description: A unique ID for your model. If not specified, a model ID will be
       created for you.
@@ -150,8 +149,8 @@ methods:
     types:
     - <xref:str>
   - name: prefix
-    description: 'A case-sensitive prefix string to filter documents in the source
-      path.
+    description: 'A case-sensitive prefix string to filter documents in the blob container
+      url path.
 
       For example, when using an Azure storage blob URI, use the prefix to restrict
       sub folders.
@@ -164,36 +163,32 @@ methods:
       model.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
   return:
     description: 'An instance of an AsyncDocumentModelAdministrationLROPoller. Call
       *result()* on the poller
 
-      object to return a <xref:azure.ai.formrecognizer.DocumentModel>.'
+      object to return a <xref:azure.ai.formrecognizer.DocumentModelDetails>.'
     types:
-    - <xref:azure.ai.formrecognizer.aio.AsyncDocumentModelAdministrationLROPoller>[<xref:azure.ai.formrecognizer.DocumentModel>]
+    - <xref:azure.ai.formrecognizer.aio.AsyncDocumentModelAdministrationLROPoller>[<xref:azure.ai.formrecognizer.DocumentModelDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Building a model from training files.<!--[!code-python[Main](les\\v3.2-beta\\\
     async_samples\\sample_build_model_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
     \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_build_model_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.formrecognizer.aio\
     \ import DocumentModelAdministrationClient\n   from azure.ai.formrecognizer import\
-    \ DocumentBuildMode\n   from azure.core.credentials import AzureKeyCredential\n\
-    \n   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
+    \ ModelBuildMode\n   from azure.core.credentials import AzureKeyCredential\n\n\
+    \   endpoint = os.environ[\"AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_FORM_RECOGNIZER_KEY\"]\n   container_sas_url = os.environ[\"CONTAINER_SAS_URL\"\
     ]\n\n   document_model_admin_client = DocumentModelAdministrationClient(endpoint,\
     \ AzureKeyCredential(key))\n   async with document_model_admin_client:\n     \
-    \  poller = await document_model_admin_client.begin_build_model(\n           container_sas_url,\
-    \ DocumentBuildMode.TEMPLATE, description=\"my model description\"\n       )\n\
-    \       model = await poller.result()\n\n   print(\"Model ID: {}\".format(model.model_id))\n\
+    \  poller = await document_model_admin_client.begin_build_model(\n           ModelBuildMode.TEMPLATE,\
+    \ blob_container_url=container_sas_url, description=\"my model description\"\n\
+    \       )\n       model = await poller.result()\n\n   print(\"Model ID: {}\".format(model.model_id))\n\
     \   print(\"Description: {}\".format(model.description))\n   print(\"Model created\
     \ on: {}\\n\".format(model.created_on))\n   print(\"Doc types the model can recognize:\"\
     )\n   for name, doc_type in model.doc_types.items():\n       print(\"\\nDoc Type:\
@@ -202,6 +197,94 @@ methods:
     Field: '{}' has type '{}' and confidence score {}\".format(\n               field_name,\
     \ field[\"type\"], doc_type.field_confidence[field_name]\n           ))\n\n  \
     \ ````\n"
+- uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.begin_compose_model
+  name: begin_compose_model
+  summary: 'Creates a composed model from a collection of existing models.
+
+
+    A composed model allows multiple models to be called with a single model ID. When
+    a document is
+
+    submitted to be analyzed with a composed model ID, a classification step is first
+    performed to
+
+    route it to the correct custom model.
+
+
+    New in version v2022-01-30-preview: The *tags* keyword argument'
+  signature: 'async begin_compose_model(component_model_ids: List[str], **kwargs:
+    Any) -> azure.ai.formrecognizer.aio._async_polling.AsyncDocumentModelAdministrationLROPoller[azure.ai.formrecognizer._models.DocumentModelDetails]'
+  parameters:
+  - name: component_model_ids
+    description: List of model IDs to use in the composed model.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  - name: model_id
+    description: 'A unique ID for your composed model.
+
+      If not specified, a model ID will be created for you.'
+    types:
+    - <xref:str>
+  - name: description
+    description: An optional description to add to the model.
+    types:
+    - <xref:str>
+  - name: tags
+    description: List of user defined key-value tag attributes associated with the
+      model.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  return:
+    description: 'An instance of an AsyncDocumentModelAdministrationLROPoller. Call
+      *result()* on the poller
+
+      object to return a <xref:azure.ai.formrecognizer.DocumentModelDetails>.'
+    types:
+    - <xref:azure.ai.formrecognizer.aio.AsyncDocumentModelAdministrationLROPoller>[<xref:azure.ai.formrecognizer.DocumentModelDetails>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Creating a composed model with existing models.<!--[!code-python[Main](les\\\
+    v3.2-beta\\async_samples\\sample_compose_model_async.py )]-->\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
+    \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_compose_model_async.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.ai.formrecognizer.aio import DocumentModelAdministrationClient\n\
+    \   from azure.ai.formrecognizer import ModelBuildMode\n\n   endpoint = os.environ[\"\
+    AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"AZURE_FORM_RECOGNIZER_KEY\"\
+    ]\n   po_supplies = os.environ['PURCHASE_ORDER_OFFICE_SUPPLIES_SAS_URL']\n   po_equipment\
+    \ = os.environ['PURCHASE_ORDER_OFFICE_EQUIPMENT_SAS_URL']\n   po_furniture = os.environ['PURCHASE_ORDER_OFFICE_FURNITURE_SAS_URL']\n\
+    \   po_cleaning_supplies = os.environ['PURCHASE_ORDER_OFFICE_CLEANING_SUPPLIES_SAS_URL']\n\
+    \n   document_model_admin_client = DocumentModelAdministrationClient(endpoint=endpoint,\
+    \ credential=AzureKeyCredential(key))\n   async with document_model_admin_client:\n\
+    \       supplies_poller = await document_model_admin_client.begin_build_model(\n\
+    \           ModelBuildMode.TEMPLATE, blob_container_url=po_supplies, description=\"\
+    Purchase order-Office supplies\"\n       )\n       equipment_poller = await document_model_admin_client.begin_build_model(\n\
+    \           ModelBuildMode.TEMPLATE, blob_container_url=po_equipment, description=\"\
+    Purchase order-Office Equipment\"\n       )\n       furniture_poller = await document_model_admin_client.begin_build_model(\n\
+    \           ModelBuildMode.TEMPLATE, blob_container_url=po_furniture, description=\"\
+    Purchase order-Furniture\"\n       )\n       cleaning_supplies_poller = await\
+    \ document_model_admin_client.begin_build_model(\n           ModelBuildMode.TEMPLATE,\
+    \ blob_container_url=po_cleaning_supplies, description=\"Purchase order-Cleaning\
+    \ Supplies\"\n       )\n       supplies_model = await supplies_poller.result()\n\
+    \       equipment_model = await equipment_poller.result()\n       furniture_model\
+    \ = await furniture_poller.result()\n       cleaning_supplies_model = await cleaning_supplies_poller.result()\n\
+    \n       purchase_order_models = [\n           supplies_model.model_id,\n    \
+    \       equipment_model.model_id,\n           furniture_model.model_id,\n    \
+    \       cleaning_supplies_model.model_id\n       ]\n\n       poller = await document_model_admin_client.begin_compose_model(\n\
+    \           purchase_order_models, description=\"Office Supplies Composed Model\"\
+    \n       )\n       model = await poller.result()\n\n   print(\"Office Supplies\
+    \ Composed Model Info:\")\n   print(\"Model ID: {}\".format(model.model_id))\n\
+    \   print(\"Description: {}\".format(model.description))\n   print(\"Model created\
+    \ on: {}\\n\".format(model.created_on))\n   print(\"Doc types the model can recognize:\"\
+    )\n   for name, doc_type in model.doc_types.items():\n       print(\"\\nDoc Type:\
+    \ '{}' which has the following fields:\".format(name))\n       for field_name,\
+    \ field in doc_type.field_schema.items():\n           print(\"Field: '{}' has\
+    \ type '{}' and confidence score {}\".format(\n               field_name, field[\"\
+    type\"], doc_type.field_confidence[field_name]\n           ))\n\n   ````\n"
 - uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.begin_copy_model_to
   name: begin_copy_model_to
   summary: 'Copy a model stored in this resource (the source) to the user specified
@@ -216,8 +299,8 @@ methods:
 
     target resource''s output from calling the <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_copy_authorization>
     method.'
-  signature: 'async begin_copy_model_to(model_id: str, target: dict, **kwargs: Any)
-    -> azure.ai.formrecognizer.aio._async_polling.AsyncDocumentModelAdministrationLROPoller[azure.ai.formrecognizer._models.DocumentModel]'
+  signature: 'async begin_copy_model_to(model_id: str, target: TargetAuthorization,
+    **kwargs: Any) -> azure.ai.formrecognizer.aio._async_polling.AsyncDocumentModelAdministrationLROPoller[azure.ai.formrecognizer._models.DocumentModelDetails]'
   parameters:
   - name: model_id
     description: Model identifier of the model to copy to target resource.
@@ -231,25 +314,21 @@ methods:
       <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_copy_authorization>.'
     isRequired: true
     types:
-    - <xref:dict>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
+    - <xref:TargetAuthorization>
   return:
     description: 'An instance of a AsyncDocumentModelAdministrationLROPoller. Call
       *result()* on the poller
 
-      object to return a <xref:azure.ai.formrecognizer.DocumentModel>.'
+      object to return a <xref:azure.ai.formrecognizer.DocumentModelDetails>.'
     types:
-    - <xref:azure.ai.formrecognizer.aio.AsyncDocumentModelAdministrationLROPoller>[<xref:azure.ai.formrecognizer.DocumentModel>]
+    - <xref:azure.ai.formrecognizer.aio.AsyncDocumentModelAdministrationLROPoller>[<xref:azure.ai.formrecognizer.DocumentModelDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Copy a model from the source resource to the target resource<!--[!code-python[Main](les\\\
     v3.2-beta\\async_samples\\sample_copy_model_to_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
     \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_copy_model_to_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
@@ -274,98 +353,6 @@ methods:
     Field: '{}' has type '{}' and confidence score {}\".format(\n               field_name,\
     \ field[\"type\"], doc_type.field_confidence[field_name]\n           ))\n\n  \
     \ ````\n"
-- uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.begin_create_composed_model
-  name: begin_create_composed_model
-  summary: 'Creates a composed model from a collection of existing models.
-
-
-    A composed model allows multiple models to be called with a single model ID. When
-    a document is
-
-    submitted to be analyzed with a composed model ID, a classification step is first
-    performed to
-
-    route it to the correct custom model.
-
-
-    New in version v2022-01-30-preview: The *tags* keyword argument'
-  signature: 'async begin_create_composed_model(component_model_ids: List[str], **kwargs:
-    Any) -> azure.ai.formrecognizer.aio._async_polling.AsyncDocumentModelAdministrationLROPoller[azure.ai.formrecognizer._models.DocumentModel]'
-  parameters:
-  - name: component_model_ids
-    description: List of model IDs to use in the composed model.
-    isRequired: true
-    types:
-    - <xref:list>[<xref:str>]
-  - name: model_id
-    description: 'A unique ID for your composed model.
-
-      If not specified, a model ID will be created for you.'
-    types:
-    - <xref:str>
-  - name: description
-    description: An optional description to add to the model.
-    types:
-    - <xref:str>
-  - name: tags
-    description: List of user defined key-value tag attributes associated with the
-      model.
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  return:
-    description: 'An instance of an AsyncDocumentModelAdministrationLROPoller. Call
-      *result()* on the poller
-
-      object to return a <xref:azure.ai.formrecognizer.DocumentModel>.'
-    types:
-    - <xref:azure.ai.formrecognizer.aio.AsyncDocumentModelAdministrationLROPoller>[<xref:azure.ai.formrecognizer.DocumentModel>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "Creating a composed model with existing models.<!--[!code-python[Main](les\\\
-    v3.2-beta\\async_samples\\sample_create_composed_model_async.py )]-->\n\n<!--\
-    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    56\\\\azure-ai-formrecognizer-3.2.0b5\\\\samples\\\\v3.2-beta\\\\async_samples\\\
-    \\sample_create_composed_model_async.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
-    \   from azure.ai.formrecognizer.aio import DocumentModelAdministrationClient\n\
-    \   from azure.ai.formrecognizer import DocumentBuildMode\n\n   endpoint = os.environ[\"\
-    AZURE_FORM_RECOGNIZER_ENDPOINT\"]\n   key = os.environ[\"AZURE_FORM_RECOGNIZER_KEY\"\
-    ]\n   po_supplies = os.environ['PURCHASE_ORDER_OFFICE_SUPPLIES_SAS_URL']\n   po_equipment\
-    \ = os.environ['PURCHASE_ORDER_OFFICE_EQUIPMENT_SAS_URL']\n   po_furniture = os.environ['PURCHASE_ORDER_OFFICE_FURNITURE_SAS_URL']\n\
-    \   po_cleaning_supplies = os.environ['PURCHASE_ORDER_OFFICE_CLEANING_SUPPLIES_SAS_URL']\n\
-    \n   document_model_admin_client = DocumentModelAdministrationClient(endpoint=endpoint,\
-    \ credential=AzureKeyCredential(key))\n   async with document_model_admin_client:\n\
-    \       supplies_poller = await document_model_admin_client.begin_build_model(\n\
-    \           po_supplies, DocumentBuildMode.TEMPLATE, description=\"Purchase order-Office\
-    \ supplies\"\n       )\n       equipment_poller = await document_model_admin_client.begin_build_model(\n\
-    \           po_equipment, DocumentBuildMode.TEMPLATE, description=\"Purchase order-Office\
-    \ Equipment\"\n       )\n       furniture_poller = await document_model_admin_client.begin_build_model(\n\
-    \           po_furniture, DocumentBuildMode.TEMPLATE, description=\"Purchase order-Furniture\"\
-    \n       )\n       cleaning_supplies_poller = await document_model_admin_client.begin_build_model(\n\
-    \           po_cleaning_supplies, DocumentBuildMode.TEMPLATE, description=\"Purchase\
-    \ order-Cleaning Supplies\"\n       )\n       supplies_model = await supplies_poller.result()\n\
-    \       equipment_model = await equipment_poller.result()\n       furniture_model\
-    \ = await furniture_poller.result()\n       cleaning_supplies_model = await cleaning_supplies_poller.result()\n\
-    \n       purchase_order_models = [\n           supplies_model.model_id,\n    \
-    \       equipment_model.model_id,\n           furniture_model.model_id,\n    \
-    \       cleaning_supplies_model.model_id\n       ]\n\n       poller = await document_model_admin_client.begin_create_composed_model(\n\
-    \           purchase_order_models, description=\"Office Supplies Composed Model\"\
-    \n       )\n       model = await poller.result()\n\n   print(\"Office Supplies\
-    \ Composed Model Info:\")\n   print(\"Model ID: {}\".format(model.model_id))\n\
-    \   print(\"Description: {}\".format(model.description))\n   print(\"Model created\
-    \ on: {}\\n\".format(model.created_on))\n   print(\"Doc types the model can recognize:\"\
-    )\n   for name, doc_type in model.doc_types.items():\n       print(\"\\nDoc Type:\
-    \ '{}' which has the following fields:\".format(name))\n       for field_name,\
-    \ field in doc_type.field_schema.items():\n           print(\"Field: '{}' has\
-    \ type '{}' and confidence score {}\".format(\n               field_name, field[\"\
-    type\"], doc_type.field_confidence[field_name]\n           ))\n\n   ````\n"
 - uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.close
   name: close
   summary: Close the <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient>
@@ -391,36 +378,13 @@ methods:
   - "Delete a model.<!--[!code-python[Main](les\\v3.2-beta\\async_samples\\sample_manage_models_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\\samples\\\\v3.2-beta\\\\\
+    dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\\samples\\\\v3.2-beta\\\\\
     async_samples\\\\sample_manage_models_async.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   await document_model_admin_client.delete_model(model_id=my_model.model_id)\n\
     \n   try:\n       await document_model_admin_client.get_model(model_id=my_model.model_id)\n\
     \   except ResourceNotFoundError:\n       print(\"Successfully deleted model with\
     \ ID {}\".format(my_model.model_id))\n\n   ````\n"
-- uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_account_info
-  name: get_account_info
-  summary: Get information about the models under the Form Recognizer resource.
-  signature: 'async get_account_info(**kwargs: Any) -> azure.ai.formrecognizer._models.AccountInfo'
-  return:
-    description: Summary of models under the resource - model count and limit.
-    types:
-    - <xref:azure.ai.formrecognizer.AccountInfo>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  examples:
-  - "Get model counts and limits under the Form Recognizer resource.<!--[!code-python[Main](les\\\
-    v3.2-beta\\async_samples\\sample_manage_models_async.py )]-->\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
-    \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_manage_models_async.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   document_model_admin_client\
-    \ = DocumentModelAdministrationClient(endpoint=endpoint, credential=AzureKeyCredential(key))\n\
-    \n   async with document_model_admin_client:\n       account_info = await document_model_admin_client.get_account_info()\n\
-    \       print(\"Our account has {} custom models, and we can have at most {} custom\
-    \ models\\n\".format(\n           account_info.document_model_count, account_info.document_model_limit\n\
-    \       ))\n\n   ````\n"
 - uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_copy_authorization
   name: get_copy_authorization
   summary: 'Generate authorization for copying a custom model into the target Form
@@ -433,7 +397,7 @@ methods:
 
 
     New in version v2022-01-30-preview: The *tags* keyword argument'
-  signature: 'async get_copy_authorization(**kwargs: Any) -> Dict[str, str]'
+  signature: 'async get_copy_authorization(**kwargs: Any) -> TargetAuthorization'
   parameters:
   - name: model_id
     description: 'A unique ID for your copied model.
@@ -453,7 +417,7 @@ methods:
   return:
     description: A dictionary with values necessary for the copy authorization.
     types:
-    - <xref:Dict>[<xref:str>, <xref:str>]
+    - <xref:TargetAuthorization>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_document_analysis_client
@@ -467,7 +431,7 @@ methods:
 - uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_model
   name: get_model
   summary: Get a model by its ID.
-  signature: 'async get_model(model_id: str, **kwargs: Any) -> azure.ai.formrecognizer._models.DocumentModel'
+  signature: 'async get_model(model_id: str, **kwargs: Any) -> azure.ai.formrecognizer._models.DocumentModelDetails'
   parameters:
   - name: model_id
     description: Model identifier.
@@ -475,9 +439,9 @@ methods:
     types:
     - <xref:str>
   return:
-    description: DocumentModel
+    description: DocumentModelDetails
     types:
-    - <xref:azure.ai.formrecognizer.DocumentModel>
+    - <xref:azure.ai.formrecognizer.DocumentModelDetails>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -485,7 +449,7 @@ methods:
   - "Get a model by its ID.<!--[!code-python[Main](les\\v3.2-beta\\async_samples\\\
     sample_manage_models_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\\\
     samples\\\\v3.2-beta\\\\async_samples\\\\sample_manage_models_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   my_model =\
@@ -505,7 +469,7 @@ methods:
     the document model can be accessed using the <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_model>
     or <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.list_models>
     APIs.'
-  signature: 'async get_operation(operation_id: str, **kwargs: Any) -> azure.ai.formrecognizer._models.ModelOperation'
+  signature: 'async get_operation(operation_id: str, **kwargs: Any) -> azure.ai.formrecognizer._models.DocumentModelOperationDetails'
   parameters:
   - name: operation_id
     description: The operation ID.
@@ -513,16 +477,16 @@ methods:
     types:
     - <xref:str>
   return:
-    description: ModelOperation
+    description: DocumentModelOperationDetails
     types:
-    - <xref:azure.ai.formrecognizer.ModelOperation>
+    - <xref:azure.ai.formrecognizer.DocumentModelOperationDetails>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Get a document model operation by its ID.<!--[!code-python[Main](les\\v3.2-beta\\\
     async_samples\\sample_get_operations_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
     \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_get_operations_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Get an operation\
@@ -537,23 +501,46 @@ methods:
     \ error.message))\n       else:\n           print(\"My operation status is {}\"\
     .format(operation_info.status))\n   except StopAsyncIteration:\n       print(\"\
     No operations found.\")\n\n   ````\n"
+- uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_resource_details
+  name: get_resource_details
+  summary: Get information about the models under the Form Recognizer resource.
+  signature: 'async get_resource_details(**kwargs: Any) -> azure.ai.formrecognizer._models.ResourceDetails'
+  return:
+    description: Summary of models under the resource - model count and limit.
+    types:
+    - <xref:azure.ai.formrecognizer.ResourceDetails>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Get model counts and limits under the Form Recognizer resource.<!--[!code-python[Main](les\\\
+    v3.2-beta\\async_samples\\sample_manage_models_async.py )]-->\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
+    \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_manage_models_async.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   document_model_admin_client\
+    \ = DocumentModelAdministrationClient(endpoint=endpoint, credential=AzureKeyCredential(key))\n\
+    \n   async with document_model_admin_client:\n       account_info = await document_model_admin_client.get_resource_details()\n\
+    \       print(\"Our resource has {} custom models, and we can have at most {}\
+    \ custom models\\n\".format(\n           account_info.document_model_count, account_info.document_model_limit\n\
+    \       ))\n\n   ````\n"
 - uid: azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.list_models
   name: list_models
   summary: 'List information for each model, including its model ID,
 
     description, and when it was created.'
-  signature: 'list_models(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.formrecognizer._models.DocumentModelInfo]'
+  signature: 'list_models(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.formrecognizer._models.DocumentModelSummary]'
   return:
-    description: Pageable of DocumentModelInfo.
+    description: Pageable of DocumentModelSummary.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.formrecognizer.DocumentModelInfo>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.formrecognizer.DocumentModelSummary>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "List all models that were built successfully under the Form Recognizer resource.<!--[!code-python[Main](les\\\
     v3.2-beta\\async_samples\\sample_manage_models_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
     \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_manage_models_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   models = document_model_admin_client.list_models()\n\
@@ -573,18 +560,18 @@ methods:
     the document model can be accessed using the <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.get_model>
     or <xref:azure.ai.formrecognizer.aio.DocumentModelAdministrationClient.list_models>
     APIs.'
-  signature: 'list_operations(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.formrecognizer._models.ModelOperationInfo]'
+  signature: 'list_operations(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.ai.formrecognizer._models.DocumentModelOperationSummary]'
   return:
-    description: A pageable of ModelOperationInfo.
+    description: A pageable of DocumentModelOperationSummary.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.formrecognizer.ModelOperationInfo>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.formrecognizer.DocumentModelOperationSummary>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "List all document model operations in the past 24 hours.<!--[!code-python[Main](les\\\
     v3.2-beta\\async_samples\\sample_get_operations_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\56\\\\azure-ai-formrecognizer-3.2.0b5\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\55\\\\azure-ai-formrecognizer-3.2.0b6\\\
     \\samples\\\\v3.2-beta\\\\async_samples\\\\sample_get_operations_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
