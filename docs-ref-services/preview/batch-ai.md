@@ -3,7 +3,7 @@ title: Azure Batch AI SDK for Python
 description: Reference for Azure Batch AI SDK for Python
 author: cRui861
 ms.author: rechen
-ms.data: 11/17/2022
+ms.data: 11/18/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: batchai
