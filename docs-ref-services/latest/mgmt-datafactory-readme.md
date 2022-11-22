@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
 author: hvermis
 ms.author: hvermis
-ms.date: 10/24/2022
+ms.date: 11/22/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: datafactory
