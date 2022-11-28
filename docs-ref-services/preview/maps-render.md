@@ -3,7 +3,7 @@ title: Azure Maps Render SDK for Python
 description: Reference for Azure Maps Render SDK for Python
 author: alextts627
 ms.author: ttsao
-ms.data: 11/25/2022
+ms.data: 11/28/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: mapsrender

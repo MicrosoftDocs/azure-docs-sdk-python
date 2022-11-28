@@ -8,6 +8,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: stackhci
 ---
-# Azure Stack HCI SDK for Python - latest
-## Packages - latest
+# Azure Stack HCI SDK for Python - preview
+## Packages - preview
 [!INCLUDE [packages](stack-hci-index.md)]
