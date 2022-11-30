@@ -7,11 +7,11 @@ ms.data: 11/30/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: datalakeanalytics
-ms.prod: azure
-ms.date: 08/04/2017
-ms.technology: azure
-keywords: Azure, python, SDK, API, Data Lake Analytics
 manager: douge
+ms.date: 08/04/2017
+keywords: Azure, python, SDK, API, Data Lake Analytics
+ms.technology: azure
+ms.prod: azure
 ---
 # Azure Data Lake Analytics libraries for python
 
