@@ -1,6 +1,5 @@
 | Reference | Package | Source |
 |---|---|---|
-|[Anomaly Detector](cognitiveservices-anomalydetector-readme.md)|[azure-cognitiveservices-anomalydetector](https://pypi.org/project/azure-cognitiveservices-anomalydetector)|[Github](https://github.com/Azure/azure-sdk-for-python)|
 |[QnA Maker](cognitiveservices-knowledge-qnamaker-readme.md)|[azure-cognitiveservices-knowledge-qnamaker](https://pypi.org/project/azure-cognitiveservices-knowledge-qnamaker)|[Github](https://github.com/Azure/azure-sdk-for-python)|
 |[Language Understanding (LUIS)](cognitiveservices-language-luis-readme.md)|[azure-cognitiveservices-language-luis](https://pypi.org/project/azure-cognitiveservices-language-luis)|[Github](https://github.com/Azure/azure-sdk-for-python)|
 |Spell Check|[azure-cognitiveservices-language-spellcheck](https://pypi.org/project/azure-cognitiveservices-language-spellcheck)|[Github](https://github.com/Azure/azure-sdk-for-python)|
