@@ -8,14 +8,117 @@ inheritances:
 summary: 'This is the main API for oauth2 client.
 
 
-  Its methods define and document parameters mentioned in OAUTH2 RFC 6749.'
+  Its methods define and document parameters mentioned in OAUTH2 RFC 6749.
+
+
+  Initialize a client object to talk all the OAuth2 grants to the server.'
 constructor:
   syntax: Client(server_configuration, client_id, on_obtaining_tokens=<function Client.<lambda>>,
     on_removing_rt=<function Client.<lambda>>, on_updating_rt=<function Client.<lambda>>,
     **kwargs)
   parameters:
   - name: server_configuration
+    description: "It contains the configuration (i.e. metadata) of the auth server.\n\
+      The actual content typically contains keys like\n\"authorization_endpoint\"\
+      , \"token_endpoint\", etc..\nBased on RFC 8414 ([https://tools.ietf.org/html/rfc8414](https://tools.ietf.org/html/rfc8414)),\n\
+      you can probably fetch it online from either\n[https://example.com/\u2026/.well-known/oauth-authorization-server](https://example.com/.../.well-known/oauth-authorization-server)\n\
+      or\n[https://example.com/\u2026/.well-known/openid-configuration](https://example.com/.../.well-known/openid-configuration)"
+    isRequired: true
+    types:
+    - <xref:dict>
   - name: client_id
+    description: The client's id, issued by the authorization server
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: http_client
+    description: "Your implementation of abstract class [http.HttpClient](http.HttpClient).\n\
+      Defaults to a requests session instance.\n\nThere is no session-wide *timeout*\
+      \ parameter defined here.\nTimeout behavior is determined by the actual http\
+      \ client you use.\nIf you happen to use Requests, it disallows session-wide\
+      \ timeout\n([https://github.com/psf/requests/issues/3341](https://github.com/psf/requests/issues/3341)).\
+      \ The workaround is:\n\n   s = requests.Session()\n   s.request = functools.partial(s.request,\
+      \ timeout=3)\n\nand then feed that patched session instance to this class."
+    isRequired: true
+    types:
+    - <xref:msal.oauth2cli.http.HttpClient>
+  - name: client_secret
+    description: Triggers HTTP AUTH for Confidential Client
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: client_assertion
+    description: 'The client assertion to authenticate this client, per RFC 7521.
+
+      It can be a raw SAML2 assertion (we will base64 encode it for you),
+
+      or a raw JWT assertion in bytes (which we will relay to http layer).
+
+      It can also be a callable (recommended),
+
+      so that we will do lazy creation of an assertion.'
+    isRequired: true
+    types:
+    - <xref:bytes>, <xref:callable>
+  - name: client_assertion_type
+    description: 'The type of your <xref:client_assertion> parameter.
+
+      It is typically the value of <xref:CLIENT_ASSERTION_TYPE_SAML2> or
+
+      <xref:CLIENT_ASSERTION_TYPE_JWT>, the only two defined in RFC 7521.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: default_headers
+    description: 'A dict to be sent in each request header.
+
+      It is not required by OAuth2 specs, but you may use it for telemetry.'
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: default_body
+    description: 'A dict to be sent in each token request body. For example,
+
+      you could choose to set this as {"client_secret": "your secret"}
+
+      if your authorization server wants it to be in the request body
+
+      (rather than in the request header).'
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: verify
+    description: 'It will be passed to the
+
+      [verify parameter in the underlying requests library](http://docs.python-requests.org/en/v2.9.1/user/advanced/#ssl-cert-verification).
+
+      When leaving it with default value (None), we will use True instead.
+
+
+      This does not apply if you have chosen to pass your own Http client.'
+    isRequired: true
+    types:
+    - <xref:boolean>
+  - name: proxies
+    description: 'It will be passed to the
+
+      [proxies parameter in the underlying requests library](http://docs.python-requests.org/en/v2.9.1/user/advanced/#proxies).
+
+
+      This does not apply if you have chosen to pass your own Http client.'
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: timeout
+    description: 'It will be passed to the
+
+      [timeout parameter in the underlying requests library](http://docs.python-requests.org/en/v2.9.1/user/advanced/#timeouts).
+
+
+      This does not apply if you have chosen to pass your own Http client.'
+    isRequired: true
+    types:
+    - <xref:object>
   - name: on_obtaining_tokens
   - name: on_removing_rt
   - name: on_updating_rt

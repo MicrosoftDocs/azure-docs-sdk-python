@@ -5,6 +5,7 @@ fullName: msal.application.ConfidentialClientApplication
 module: msal.application
 inheritances:
 - msal.application.ClientApplication
+summary: Create an instance of application.
 constructor:
   syntax: ConfidentialClientApplication(client_id, client_credential=None, authority=None,
     validate_authority=True, token_cache=None, http_client=None, verify=True, proxies=None,
@@ -13,39 +14,305 @@ constructor:
     allow_broker=None)
   parameters:
   - name: client_id
-  - name: client_credential
+    description: Your app has a client_id after you register it on AAD.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: dict] client_credential
+    description: "For <xref:msal.application.PublicClientApplication>, you simply\
+      \ use *None* here.\nFor <xref:msal.application.ConfidentialClientApplication>,\n\
+      it can be a string containing client secret,\nor an X509 certificate container\
+      \ in this form:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+      : [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\"\
+      : \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\n\
+      \   {\n       \"private_key\": \"...-----BEGIN PRIVATE KEY-----...\",\n    \
+      \   \"thumbprint\": \"A1B2C3D4E5F6...\",\n       \"public_certificate\": \"\
+      ...-----BEGIN CERTIFICATE-----... (Optional. See below.)\",\n       \"passphrase\"\
+      : \"Passphrase if the private_key is encrypted (Optional. Added in version 1.6.0)\"\
+      ,\n   }\n   ````\n\n*Added in version 0.5.0*:\npublic_certificate (optional)\
+      \ is public key certificate\nwhich will be sent through 'x5c' JWT header only\
+      \ for\nsubject name and issuer authentication to support cert auto rolls.\n\n\
+      Per [specs](https://tools.ietf.org/html/rfc7515#section-4.1.6),\n\"the certificate\
+      \ containing\nthe public key corresponding to the key used to digitally sign\
+      \ the\nJWS MUST be the first certificate.  This MAY be followed by\nadditional\
+      \ certificates, with each subsequent certificate being the\none used to certify\
+      \ the previous one.\"\nHowever, your certificate's issuer may use a different\
+      \ order.\nSo, if your attempt ends up with an error AADSTS700027 -\n\"The provided\
+      \ signature value did not match the expected signature value\",\nyou may try\
+      \ use only the leaf cert (in PEM/str format) instead.\n\n*Added in version 1.13.0*:\n\
+      It can also be a completely pre-signed assertion that you've assembled yourself.\n\
+      Simply pass a container containing only the key \"client_assertion\", like this:\n\
+      \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+      : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\"\
+      , \"force\": false, \"linenos\": false} -->\n\n````default\n\n   {\n       \"\
+      client_assertion\": \"...a JWT with claims aud, exp, iss, jti, nbf, and sub...\"\
+      \n   }\n   ````"
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str,>
+  - name: client_claims
+    description: "*Added in version 0.5.0*:\nIt is a dictionary of extra claims that\
+      \ would be signed by\nby this <xref:msal.application.ConfidentialClientApplication>\
+      \ 's private key.\nFor example, you can use {\"client_ip\": \"x.x.x.x\"}.\n\
+      You may also override any of the following default claims:\n\n<!-- literal_block\
+      \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+      : [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+      \ \"linenos\": false} -->\n\n````default\n\n   {\n       \"aud\": the_token_endpoint,\n\
+      \       \"iss\": self.client_id,\n       \"sub\": same_as_issuer,\n       \"\
+      exp\": now + 10_min,\n       \"iat\": now,\n       \"jti\": a_random_uuid\n\
+      \   }\n   ````"
     defaultValue: None
+    types:
+    - <xref:dict>
   - name: authority
+    description: "A URL that identifies a token authority. It should be of the format\n\
+      `https://login.microsoftonline.com/your_tenant`\nBy default, we will use `https://login.microsoftonline.com/common`\n\
+      \n*Changed in version 1.17*: you can also use predefined constant\nand a builder\
+      \ like this:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+      : [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"language\"\
+      : \"default\", \"force\": false, \"linenos\": false} -->\n\n````default\n\n\
+      \   from msal.authority import (\n       AuthorityBuilder,\n       AZURE_US_GOVERNMENT,\
+      \ AZURE_CHINA, AZURE_PUBLIC)\n   my_authority = AuthorityBuilder(AZURE_PUBLIC,\
+      \ \"contoso.onmicrosoft.com\")\n   # Now you get an equivalent of\n   # \"https://login.microsoftonline.com/contoso.onmicrosoft.com\"\
+      \n\n   # You can feed such an authority to msal's ClientApplication\n   from\
+      \ msal import PublicClientApplication\n   app = PublicClientApplication(\"my_client_id\"\
+      , authority=my_authority, ...)\n   ````"
     defaultValue: None
+    types:
+    - <xref:str>
   - name: validate_authority
+    description: '(optional) Turns authority validation
+
+      on or off. This parameter default to true.'
     defaultValue: 'True'
-  - name: token_cache
-    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: cache
+    description: 'Sets the token cache used by this ClientApplication instance.
+
+      By default, an in-memory cache will be created and used.'
+    isRequired: true
+    types:
+    - <xref:msal.token_cache.TokenCache>
   - name: http_client
+    description: '(optional)
+
+      Your implementation of abstract class HttpClient <msal.oauth2cli.http.http_client>
+
+      Defaults to a requests session instance.
+
+      Since MSAL 1.11.0, the default session would be configured
+
+      to attempt one retry on connection error.
+
+      If you are providing your own http_client,
+
+      it will be your http_client''s duty to decide whether to perform retry.'
     defaultValue: None
   - name: verify
+    description: '(optional)
+
+      It will be passed to the
+
+      [verify parameter in the underlying requests library](http://docs.python-requests.org/en/v2.9.1/user/advanced/#ssl-cert-verification)
+
+      This does not apply if you have chosen to pass your own Http client'
     defaultValue: 'True'
   - name: proxies
+    description: '(optional)
+
+      It will be passed to the
+
+      [proxies parameter in the underlying requests library](http://docs.python-requests.org/en/v2.9.1/user/advanced/#proxies)
+
+      This does not apply if you have chosen to pass your own Http client'
     defaultValue: None
   - name: timeout
-    defaultValue: None
-  - name: client_claims
+    description: '(optional)
+
+      It will be passed to the
+
+      [timeout parameter in the underlying requests library](http://docs.python-requests.org/en/v2.9.1/user/advanced/#timeouts)
+
+      This does not apply if you have chosen to pass your own Http client'
     defaultValue: None
   - name: app_name
+    description: '(optional)
+
+      You can provide your application name for Microsoft telemetry purposes.
+
+      Default value is None, means it will not be passed to Microsoft.'
     defaultValue: None
   - name: app_version
+    description: '(optional)
+
+      You can provide your application version for Microsoft telemetry purposes.
+
+      Default value is None, means it will not be passed to Microsoft.'
     defaultValue: None
   - name: client_capabilities
+    description: '(optional)
+
+      Allows configuration of one or more client capabilities, e.g. ["CP1"].
+
+
+      Client capability is meant to inform the Microsoft identity platform
+
+      (STS) what this client is capable for,
+
+      so STS can decide to turn on certain features.
+
+      For example, if client is capable to handle *claims challenge*,
+
+      STS can then issue CAE access tokens to resources
+
+      knowing when the resource emits *claims challenge*
+
+      the client will be capable to handle.
+
+
+      Implementation details:
+
+      Client capability is implemented using "claims" parameter on the wire,
+
+      for now.
+
+      MSAL will combine them into
+
+      [claims parameter](https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter)
+
+      which you will later provide via one of the acquire-token request.'
     defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
   - name: azure_region
+    description: "AAD provides regional endpoints for apps to opt in\nto keep their\
+      \ traffic remain inside that region.\n\nAs of 2021 May, regional service is\
+      \ only available for\n`acquire_token_for_client()` sent by any of the following\
+      \ scenarios:\n\n1. An app powered by a capable MSAL (MSAL Python 1.12+ will\
+      \ be provisioned) \n\n2. An app with managed identity, which is formerly known\
+      \ as MSI. (However MSAL Python does not support managed identity, so this one\
+      \ does not apply.) \n\n3. An app authenticated by [Subject Name/Issuer (SNI)](https://github.com/AzureAD/microsoft-authentication-library-for-python/issues/60).\
+      \ \n\n4. An app which already onboard to the region's allow-list. \n\nThis parameter\
+      \ defaults to None, which means region behavior remains off.\n\nApp developer\
+      \ can opt in to a regional endpoint,\nby provide its region name, such as \"\
+      westus\", \"eastus2\".\nYou can find a full list of regions by running\n`az\
+      \ account list-locations -o table`, or referencing to\n[this doc](https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.management.resourcemanager.fluent.core.region?view=azure-dotnet).\n\
+      \nAn app running inside Azure Functions and Azure VM can use a special keyword\n\
+      `ClientApplication.ATTEMPT_REGION_DISCOVERY` to auto-detect region.\n\n\n> [!NOTE]\n\
+      > Setting azure_region to non-None for an app running\n>\n> outside of Azure\
+      \ Function/VM could hang indefinitely.\n>\n> \n>\n> You should consider opting\
+      \ in/out region behavior on-demand,\n>\n> by loading azure_region=None or azure_region=\"\
+      westus\"\n>\n> or azure_region=True (which means opt-in and auto-detect)\n>\n\
+      > from your per-deployment configuration, and then do\n>\n> app = ConfidentialClientApplication(...,\
+      \ azure_region=azure_region).\n>\n> \n>\n> Alternatively, you can configure\
+      \ a short timeout,\n>\n> or provide a custom http_client which has a short timeout.\n\
+      >\n> That way, the latency would be under your control,\n>\n> but still less\
+      \ performant than opting out of region feature.\n>\n\nNew in version 1.12.0."
     defaultValue: None
+    types:
+    - <xref:str>
   - name: exclude_scopes
+    description: '(optional)
+
+      Historically MSAL hardcodes *offline_access* scope,
+
+      which would allow your app to have prolonged access to user''s data.
+
+      If that is unnecessary or undesirable for your app,
+
+      now you can use this parameter to supply an exclusion list of scopes,
+
+      such as `exclude_scopes = ["offline_access"]`.'
     defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
   - name: http_cache
+    description: "MSAL has long been caching tokens in the `token_cache`.\nRecently,\
+      \ MSAL also introduced a concept of `http_cache`,\nby automatically caching\
+      \ some finite amount of non-token http responses,\nso that *long-lived*\n`PublicClientApplication`\
+      \ and `ConfidentialClientApplication`\nwould be more performant and responsive\
+      \ in some situations.\n\nThis `http_cache` parameter accepts any dict-like object.\n\
+      If not provided, MSAL will use an in-memory dict.\n\nIf your app is a command-line\
+      \ app (CLI),\nyou would want to persist your http_cache across different CLI\
+      \ runs.\nThe following recipe shows a way to do so:\n\n<!-- literal_block {\"\
+      ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+      \ \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+      \ \"linenos\": false} -->\n\n````default\n\n   # Just add the following lines\
+      \ at the beginning of your CLI script\n   import sys, atexit, pickle\n   http_cache_filename\
+      \ = sys.argv[0] + \".http_cache\"\n   try:\n       with open(http_cache_filename,\
+      \ \"rb\") as f:\n           persisted_http_cache = pickle.load(f)  # Take a\
+      \ snapshot\n   except (\n           FileNotFoundError,  # Or IOError in Python\
+      \ 2\n           pickle.UnpicklingError,  # A corrupted http cache file\n   \
+      \        ):\n       persisted_http_cache = {}  # Recover by starting afresh\n\
+      \   atexit.register(lambda: pickle.dump(\n       # When exit, flush it back\
+      \ to the file.\n       # It may occasionally overwrite another process's concurrent\
+      \ write,\n       # but that is fine. Subsequent runs will reach eventual consistency.\n\
+      \       persisted_http_cache, open(http_cache_file, \"wb\")))\n\n   # And then\
+      \ you can implement your app as you normally would\n   app = msal.PublicClientApplication(\n\
+      \       \"your_client_id\",\n       ...,\n       http_cache=persisted_http_cache,\
+      \  # Utilize persisted_http_cache\n       ...,\n       #token_cache=...,  #\
+      \ You may combine the old token_cache trick\n           # Please refer to token_cache\
+      \ recipe at\n           # https://msal-python.readthedocs.io/en/latest/#msal.SerializableTokenCache\n\
+      \       )\n   app.acquire_token_interactive([\"your\", \"scope\"], ...)\n  \
+      \ ````\n\nContent inside `http_cache` are cheap to obtain.\nThere is no need\
+      \ to share them among different apps.\n\nContent inside `http_cache` will contain\
+      \ no tokens nor\nPersonally Identifiable Information (PII). Encryption is unnecessary.\n\
+      \nNew in version 1.16.0."
     defaultValue: None
+    types:
+    - <xref:dict>
   - name: instance_discovery
+    description: "Historically, MSAL would connect to a central endpoint located at\n\
+      `https://login.microsoftonline.com` to acquire some metadata,\nespecially when\
+      \ using an unfamiliar authority.\nThis behavior is known as Instance Discovery.\n\
+      \nThis parameter defaults to None, which enables the Instance Discovery.\n\n\
+      If you know some authorities which you allow MSAL to operate with as-is,\nwithout\
+      \ involving any Instance Discovery, the recommended pattern is:\n\n<!-- literal_block\
+      \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+      : [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\": false,\
+      \ \"linenos\": false} -->\n\n````default\n\n   known_authorities = frozenset([\
+      \  # Treat your known authorities as const\n       \"https://contoso.com/adfs\"\
+      , \"https://login.azs/foo\"])\n   ...\n   authority = \"https://contoso.com/adfs\"\
+      \  # Assuming your app will use this\n   app1 = PublicClientApplication(\n \
+      \      \"client_id\",\n       authority=authority,\n       # Conditionally disable\
+      \ Instance Discovery for known authorities\n       instance_discovery=authority\
+      \ not in known_authorities,\n       )\n   ````\n\nIf you do not know some authorities\
+      \ beforehand,\nyet still want MSAL to accept any authority that you will provide,\n\
+      you can use a `False` to unconditionally disable Instance Discovery.\n\nNew\
+      \ in version 1.19.0."
     defaultValue: None
+    types:
+    - <xref:boolean>
   - name: allow_broker
+    description: "A broker is a component installed on your device.\nBroker implicitly\
+      \ gives your device an identity. By using a broker,\nyour device becomes a factor\
+      \ that can satisfy MFA (Multi-factor authentication).\nThis factor would become\
+      \ mandatory\nif a tenant's admin enables a corresponding Conditional Access\
+      \ (CA) policy.\nThe broker's presence allows Microsoft identity platform\nto\
+      \ have higher confidence that the tokens are being issued to your device,\n\
+      and that is more secure.\n\nAn additional benefit of broker is,\nit runs as\
+      \ a long-lived process with your device's OS,\nand maintains its own cache,\n\
+      so that your broker-enabled apps (even a CLI)\ncould automatically SSO from\
+      \ a previously established signed-in session.\n\nThis parameter defaults to\
+      \ None, which means MSAL will not utilize a broker.\nIf this parameter is set\
+      \ to True,\nMSAL will use the broker whenever possible,\nand automatically fall\
+      \ back to non-broker behavior.\nThat also means your app does not need to enable\
+      \ broker conditionally,\nyou can always set allow_broker to True,\nas long as\
+      \ your app meets the following prerequisite:\n\n* Installed optional dependency,\
+      \ e.g. `pip install msal[broker]>=1.20,<2`. (Note that broker is currently only\
+      \ available on Windows 10+) \n\n* Register a new redirect_uri for your desktop\
+      \ app as: `ms-appx-web://Microsoft.AAD.BrokerPlugin/your_client_id` \n\n* Tested\
+      \ your app in following scenarios: \n\n  * Windows 10+ \n\n  * PublicClientApplication's\
+      \ following methods:: acquire_token_interactive(), acquire_token_by_username_password(),\
+      \ acquire_token_silent() (or acquire_token_silent_with_error()). \n\n  * AAD\
+      \ and MSA accounts (i.e. Non-ADFS, non-B2C) \n\nNew in version 1.20.0."
+    defaultValue: None
+    types:
+    - <xref:boolean>
+  - name: client_credential
+    defaultValue: None
+  - name: token_cache
     defaultValue: None
 methods:
 - uid: msal.application.ConfidentialClientApplication.acquire_token_for_client
