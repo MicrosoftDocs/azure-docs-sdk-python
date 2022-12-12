@@ -359,10 +359,10 @@ service_client.delete_event_route(event_route_id)
 To publish a telemetry message for a digital twin, you need to provide the digital twin Id, along with the payload on which telemetry that needs the update.
 
 ```Python Snippet:dt_publish_telemetry
-digita_twin_id = "<DIGITAL TWIN ID>"
+digital_twin_id = "<DIGITAL TWIN ID>"
 telemetry_payload = '{"Telemetry1": 5}'
 service_client.publish_telemetry(
-    digita_twin_id,
+    digital_twin_id,
     telemetry_payload
 )
 ```
@@ -370,11 +370,11 @@ service_client.publish_telemetry(
 You can also publish a telemetry message for a specific component in a digital twin. In addition to the digital twin Id and payload, you need to specify the target component Id.
 
 ```Python Snippet:dt_publish_component_telemetry
-digita_twin_id = "<DIGITAL TWIN ID>"
+digital_twin_id = "<DIGITAL TWIN ID>"
 component_name = "<COMPONENT_NAME>"
 telemetry_payload = '{"Telemetry1": 5}'
 service_client.publish_component_telemetry(
-    digita_twin_id,
+    digital_twin_id,
     component_name,
     telemetry_payload
 )
