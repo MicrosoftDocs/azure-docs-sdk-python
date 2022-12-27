@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-alertsmanagement, alertsmanagement
 author: lmazuel
 ms.author: lmazuel
-ms.date: 08/26/2022
+ms.date: 12/27/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: alertsmanagement
@@ -22,8 +22,6 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
-
-
  
 For docs and references, see [Python SDK References](/python/api/overview/azure/)
 Code samples for this package can be found at [Alerts Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
