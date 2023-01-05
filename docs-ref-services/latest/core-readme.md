@@ -3,21 +3,21 @@ title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
 author: lmazuel
 ms.author: lmazuel
-ms.date: 11/03/2022
+ms.date: 01/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
 
-# Azure Core shared client library for Python - version 1.26.1 
+# Azure Core shared client library for Python - version 1.26.2 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries.
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python/guidelines/index.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.26.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.26.2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.26.1/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.26.1/sdk/core/azure-core/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.26.2/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.26.2/sdk/core/azure-core/)
 
 ## _Disclaimer_
 
@@ -206,11 +206,11 @@ MatchConditions is an enum to describe match conditions.
 
 ```python
 class MatchConditions(Enum):
-    Unconditionally = 1
-    IfNotModified = 2
-    IfModified = 3
-    IfPresent = 4
-    IfMissing = 5
+    Unconditionally = 1  # Matches any condition
+    IfNotModified = 2  # If the target object is not modified. Usually it maps to etag=<specific etag>
+    IfModified = 3  # Only if the target object is modified. Usually it maps to etag!=<specific etag>
+    IfPresent = 4   # If the target object exists. Usually it maps to etag='*'
+    IfMissing = 5   # If the target object does not exist. Usually it maps to etag!='*'
 ```
 
 #### CaseInsensitiveEnumMeta
