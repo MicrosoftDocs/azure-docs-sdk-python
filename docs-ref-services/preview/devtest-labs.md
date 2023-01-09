@@ -3,15 +3,15 @@ title: Azure DevTest Labs SDK for Python
 description: Reference for Azure DevTest Labs SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 01/06/2023
+ms.data: 01/09/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: devtestlabs
-manager: routlaw
 ms.prod: azure
+ms.technology: azure
+manager: routlaw
 keywords: Azure, python, SDK, API, DevTest Labs
 ms.date: 02/21/2018
-ms.technology: azure
 ---
 # Azure DevTest Labs libraries for python
 
