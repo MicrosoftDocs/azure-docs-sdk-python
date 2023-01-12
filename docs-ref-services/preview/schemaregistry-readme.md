@@ -1,17 +1,14 @@
 ---
 title: Azure Schema Registry client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry, schemaregistry
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/05/2021
+author: kashifkhan
+ms.author: kashifkhan
+ms.date: 01/12/2023
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: schemaregistry
 ---
-
-# Azure Schema Registry client library for Python - version 1.0.0b3 
+# Azure Schema Registry client library for Python - version 1.3.0b1 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
@@ -22,26 +19,42 @@ schema identifiers rather than full schemas.
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended on 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
 ### Install the package
 
-Install the Azure Schema Registry client library and Azure Identity client library for Python with [pip][pip]:
+Install the Azure Schema Registry client library for Python with [pip][pip]:
 
 ```Bash
-pip install azure-schemaregistry azure-identity
+pip install azure-schemaregistry
 ```
 
 ### Prerequisites:
 To use this package, you must have:
 * Azure subscription - [Create a free account][azure_sub]
-* [Azure Schema Registry][schemaregistry_service]
-* Python 2.7, 3.6 or later - [Install Python][python]
+* [Azure Schema Registry][schemaregistry_service] - [Here is the quickstart guide][quickstart_guide] to create a Schema Registry group using the Azure portal.
+* Python 3.7 or later - [Install Python][python]
 
 ### Authenticate the client
-Interaction with Schema Registry starts with an instance of SchemaRegistryClient class. You need the fully qualified namespace and AAD credential to instantiate the client object.
+
+Interaction with Schema Registry starts with an instance of SchemaRegistryClient class. The client constructor takes the fully qualified namespace and an Azure Active Directory credential:
+
+* The fully qualified namespace of the Schema Registry instance should follow the format: `<yournamespace>.servicebus.windows.net`.
+
+* An AAD credential that implements the [TokenCredential][token_credential_interface] protocol should be passed to the constructor. There are implementations of the `TokenCredential` protocol available in the
+[azure-identity package][pypi_azure_identity]. To use the credential types provided by `azure-identity`, please install the Azure Identity client library for Python with [pip][pip]:
+
+```Bash
+pip install azure-identity
+```
+
+* Additionally, to use the async API,  you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/):
+
+```Bash
+pip install aiohttp
+```
 
 **Create client using the azure-identity library:**
 
@@ -57,7 +70,9 @@ schema_registry_client = SchemaRegistryClient(fully_qualified_namespace, credent
 
 ## Key concepts
 
-- Schema: Schema is the organization or structure for data.
+- Schema: Schema is the organization or structure for data. More detailed information can be found [here][schemas].
+
+- Schema Group: A logical group of similar schemas based on business criteria, which can hold multiple versions of a schema. More detailed information can be found [here][schema_groups].
 
 - SchemaRegistryClient: `SchemaRegistryClient` provides the API for storing and retrieving schemas in schema registry.
 
@@ -67,6 +82,7 @@ The following sections provide several code snippets covering some of the most c
 
 - [Register a schema](#register-a-schema)
 - [Get the schema by id](#get-the-schema-by-id)
+- [Get the schema by version](#get-the-schema-by-version)
 - [Get the id of a schema](#get-the-id-of-a-schema)
 
 ### Register a schema
@@ -80,11 +96,11 @@ from azure.identity import DefaultAzureCredential
 from azure.schemaregistry import SchemaRegistryClient
 
 token_credential = DefaultAzureCredential()
-fully_qualified_namespace = os.environ['SCHEMA_REGISTRY_FULLY_QUALIFIED_NAMESPACE']
-group_name = "<your-group-name>"
-name = "<your-schema-name>"
+fully_qualified_namespace = os.environ['SCHEMAREGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE']
+group_name = os.environ['SCHEMA_REGISTRY_GROUP']
+name = "your-schema-name"
 format = "Avro"
-schema_definition = """
+definition = """
 {"namespace": "example.avro",
  "type": "record",
  "name": "User",
@@ -98,13 +114,13 @@ schema_definition = """
 
 schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=fully_qualified_namespace, credential=token_credential)
 with schema_registry_client:
-    schema_properties = schema_registry_client.register_schema(group_name, name, schema_definition, format)
+    schema_properties = schema_registry_client.register_schema(group_name, name, definition, format)
     id = schema_properties.id
 ```
 
 ### Get the schema by id
 
-Get the schema content and its properties by schema id.
+Get the schema definition and its properties by schema id.
 
 ```python
 import os
@@ -113,18 +129,42 @@ from azure.identity import DefaultAzureCredential
 from azure.schemaregistry import SchemaRegistryClient
 
 token_credential = DefaultAzureCredential()
-fully_qualified_namespace = os.environ['SCHEMA_REGISTRY_FULLY_QUALIFIED_NAMESPACE']
-id = '<your-schema-id>'
+fully_qualified_namespace = os.environ['SCHEMAREGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE']
+schema_id = 'your-schema-id'
 
 schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=fully_qualified_namespace, credential=token_credential)
 with schema_registry_client:
-    schema = schema_registry_client.get_schema(id)
-    schema_definition = schema.schema_definition
+    schema = schema_registry_client.get_schema(schema_id)
+    definition = schema.definition
+    properties = schema.properties
+```
+
+### Get the schema by version
+
+Get the schema definition and its properties by schema version.
+
+```python
+import os
+
+from azure.identity import DefaultAzureCredential
+from azure.schemaregistry import SchemaRegistryClient
+
+token_credential = DefaultAzureCredential()
+fully_qualified_namespace = os.environ['SCHEMAREGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE']
+group_name = os.environ["SCHEMAREGISTRY_GROUP"]
+name = "your-schema-name"
+version = int("<your schema version>")
+
+schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=fully_qualified_namespace, credential=token_credential)
+with schema_registry_client:
+    schema = schema_registry_client.get_schema(group_name=group_name, name=name, version=version)
+    definition = schema.definition
+    properties = schema.properties
 ```
 
 ### Get the id of a schema
 
-Get the schema id of a schema by schema content and its properties.
+Get the schema id of a schema by schema definition and its properties.
 
 ```python
 import os
@@ -133,11 +173,11 @@ from azure.identity import DefaultAzureCredential
 from azure.schemaregistry import SchemaRegistryClient
 
 token_credential = DefaultAzureCredential()
-fully_qualified_namespace = os.environ['SCHEMA_REGISTRY_FULLY_QUALIFIED_NAMESPACE']
-group_name = "<your-group-name>"
-name = "<your-schema-name>"
+fully_qualified_namespace = os.environ['SCHEMAREGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE']
+group_name = os.environ['SCHEMA_REGISTRY_GROUP']
+name = "your-schema-name"
 format = "Avro"
-schema_definition = """
+definition = """
 {"namespace": "example.avro",
  "type": "record",
  "name": "User",
@@ -151,7 +191,7 @@ schema_definition = """
 
 schema_registry_client = SchemaRegistryClient(fully_qualified_namespace=fully_qualified_namespace, credential=token_credential)
 with schema_registry_client:
-    schema_properties = schema_registry_client.register_schema(group_name, name, schema_definition, format)
+    schema_properties = schema_registry_client.register_schema(group_name, name, definition, format)
     id = schema_properties.id
 ```
 
@@ -191,7 +231,7 @@ schema_registry_client = SchemaRegistryClient("your_fully_qualified_namespace", 
 Similarly, `logging_enable` can enable detailed logging for a single operation,
 even when it isn't enabled for the client:
 ```py
-schema_registry_client.get_schema(id, logging_enable=True)
+schema_registry_client.get_schema(schema_id, logging_enable=True)
 ```
 
 ## Next steps
@@ -199,13 +239,6 @@ schema_registry_client.get_schema(id, logging_enable=True)
 ### More sample code
 
 Please take a look at the [samples][sr_samples] directory for detailed examples of how to use this library to register and retrieve schema to/from Schema Registry.
-
-### Event Hubs and Avro Serializer
-
-We provide [azure-schemaregistry-avroserializer][schemaregistry_avroserializer_pypi] library as serializer
-implementation to serialize/deserialize avro data integrated with `azure-schemaregistry` for automatic schema registration and retrieval.
-It integrates nicely with the [EventHubs SDK][eventhubs_repo].
-For more information and sample codes, please refer to the [Azure Schema Registry Avro Serializer SDK][schemaregistry_avroserializer_repo].
 
 ## Contributing
 
@@ -225,14 +258,16 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [pip]: https://pypi.org/project/pip/
 [pypi]: https://pypi.org/project/azure-schemaregistry
 [python]: https://www.python.org/downloads/
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.0.0b3/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-schemaregistry_1.3.0b1/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b3/sdk/schemaregistry/azure-schemaregistry/samples
-[api_reference]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-schemaregistry/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b3/sdk/schemaregistry/azure-schemaregistry
-[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b3/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
+[sr_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.3.0b1/sdk/schemaregistry/azure-schemaregistry/samples
+[api_reference]: /python/api/overview/azure/schemaregistry-readme
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.3.0b1/sdk/schemaregistry/azure-schemaregistry
+[change_log]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.3.0b1/sdk/schemaregistry/azure-schemaregistry/CHANGELOG.md
+[schemas]: /azure/event-hubs/schema-registry-overview#schemas
+[schema_groups]: /azure/event-hubs/schema-registry-overview#schema-groups
 [schemaregistry_service]: https://aka.ms/schemaregistry
-[schemaregistry_avroserializer_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b3/sdk/schemaregistry/azure-schemaregistry-avroserializer
-[schemaregistry_avroserializer_pypi]: https://pypi.org/project/azure-schemaregistry-avroserializer/
-[eventhubs_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.0.0b3/sdk/eventhub/azure-eventhub
+[token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.3.0b1/sdk/core/azure-core/azure/core/credentials.py
+[pypi_azure_identity]: https://pypi.org/project/azure-identity/
+[quickstart_guide]: /azure/event-hubs/create-schema-registry
