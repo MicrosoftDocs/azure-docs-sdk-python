@@ -28,7 +28,7 @@ For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all
 - You must have an [Azure subscription][azure_subscription].
 - An [Azure Machine Learning Workspace][workspace].
 
-### Install the package
+### Install the Azure ML client library package
 
 Install the Azure ML client library for Python with [pip][pip_link]:
 
@@ -37,6 +37,19 @@ pip install azure-ai-ml
 ```
 
 ### Authenticate the client
+
+In order to interact with the Azure ML service, you'll need to create an instance of the [ML Client][ml_client] class.
+
+[Client secret credential][ClientSecretCredential] authentication is being used in this getting started section but you can find more ways to authenticate with the [Azure identity package][azure_identity]. To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below,
+or other credential providers provided with the Azure SDK, you should install the azure-identity package:
+
+```bash
+pip install azure-identity
+```
+
+### Create ML Client instance
+
+Creates an instance of the ML Client.
 
 ```python
 from azure.ai.ml import MLClient
@@ -134,6 +147,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [workspace]: /azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
+[ml_client]: https://learn.microsoft.com/python/api/azure-ai-ml/azure.ai.ml.mlclient?view=azure-python
+[DefaultAzureCredential]: https://learn.microsoft.com/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python
+[ClientSecretCredential]: https://learn.microsoft.com/python/api/azure-identity/azure.identity.clientsecretcredential?view=azure-python
 [azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.3.0/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
