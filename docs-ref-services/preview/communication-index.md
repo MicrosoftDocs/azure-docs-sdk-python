@@ -1,5 +1,6 @@
 | Reference | Package | Source |
 |---|---|---|
+|[azure-communication-administration](communication-administration-readme.md)|[azure-communication-administration](https://pypi.org/project/azure-communication-administration)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Communication Email](communication-email-readme.md)|[azure-communication-email](https://pypi.org/project/azure-communication-email)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-email)|
 |[Communication Identity](communication-identity-readme.md)|[azure-communication-identity](https://pypi.org/project/azure-communication-identity)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-identity)|
 |[Communication Network Traversal](communication-networktraversal-readme.md)|[azure-communication-networktraversal](https://pypi.org/project/azure-communication-networktraversal)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-networktraversal)|
