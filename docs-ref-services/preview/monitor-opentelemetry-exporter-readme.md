@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry-exporter, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 12/16/2022
+ms.date: 02/07/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -12,7 +12,7 @@ ms.service: monitor
 
 The exporter for Azure Monitor allows you to export data utilizing the OpenTelemetry SDK and send telemetry data to Azure Monitor for applications written in Python.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter/samples) | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter/samples) | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
 
 ## Getting started
 
@@ -96,11 +96,11 @@ Some of the key concepts for the Azure monitor exporter include:
 
 * [LogRecord][log_record]: Represents a log record emitted from a supported logging library.
 
-* [LogEmitter][log_emitter]: Converts a `LogRecord` into a readable `LogData`, and will be pushed through the SDK to be exported.
+* [Logger][logger]: Converts a `LogRecord` into a readable `LogData`, and will be pushed through the SDK to be exported.
 
-* [LogEmitter Provider][log_emitter_provider]: Provides a `LogEmitter` for the given instrumentation library.
+* [Logger Provider][logger_provider]: Provides a `Logger` for the given instrumentation library.
 
-* [LogProcessor][log_processor]: Interface to hook the log record emitting action.
+* [LogRecordProcessor][log_record_processor]: Interface to hook the log record emitting action.
 
 * [LoggingHandler][logging_handler]: A handler class which writes logging records in OpenTelemetry format from the standard Python `logging` library.
 
@@ -142,9 +142,9 @@ For more information about these resources, see [What is Azure Monitor?][product
 
 All configuration options can be passed through the constructors of exporters through `kwargs`. Below is a list of configurable options.
 
-`connection_string`: The connection string used for your Application Insights resource.
-`disable_offline_storage`: Boolean value to determine whether to disable storing failed telemetry records for retry. Defaults to `False`.
-`storage_directory`: Storage directory in which to store retry files. Defaults to `<tempfile.gettempdir()>/Microsoft/AzureMonitor/opentelemetry-python-<your-instrumentation-key>`.
+* `connection_string`: The connection string used for your Application Insights resource.
+* `disable_offline_storage`: Boolean value to determine whether to disable storing failed telemetry records for retry. Defaults to `False`.
+* `storage_directory`: Storage directory in which to store retry files. Defaults to `<tempfile.gettempdir()>/Microsoft/AzureMonitor/opentelemetry-python-<your-instrumentation-key>`.
 
 ## Examples
 
@@ -172,22 +172,22 @@ import os
 import logging
 
 from opentelemetry.sdk._logs import (
-    LogEmitterProvider,
+    LoggerProvider,
     LoggingHandler,
-    set_log_emitter_provider,
+    set_logger_provider,
 )
-from opentelemetry.sdk._logs.export import BatchLogProcessor
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 
 from azure.monitor.opentelemetry.exporter import AzureMonitorLogExporter
 
-log_emitter_provider = LogEmitterProvider()
-set_log_emitter_provider(log_emitter_provider)
+logger_provider = LoggerProvider()
+set_logger_provider(logger_provider)
 
 exporter = AzureMonitorLogExporter(
     connection_string=os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"]
 )
 
-log_emitter_provider.add_log_processor(BatchLogProcessor(exporter))
+logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 handler = LoggingHandler()
 
 # Attach LoggingHandler to root logger
@@ -210,25 +210,25 @@ import logging
 
 from opentelemetry import trace
 from opentelemetry.sdk._logs import (
-    LogEmitterProvider,
+    LoggerProvider,
     LoggingHandler,
-    set_log_emitter_provider,
+    set_logger_provider,
 )
-from opentelemetry.sdk._logs.export import BatchLogProcessor
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.trace import TracerProvider
 
 from azure.monitor.opentelemetry.exporter import AzureMonitorLogExporter
 
 trace.set_tracer_provider(TracerProvider())
 tracer = trace.get_tracer(__name__)
-log_emitter_provider = LogEmitterProvider()
-set_log_emitter_provider(log_emitter_provider)
+logger_provider = LoggerProvider()
+set_logger_provider(logger_provider)
 
 exporter = AzureMonitorLogExporter(
     connection_string=os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"]
 )
 
-log_emitter_provider.add_log_processor(BatchLogProcessor(exporter))
+logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 handler = LoggingHandler()
 
 # Attach LoggingHandler to root logger
@@ -253,22 +253,22 @@ import os
 import logging
 
 from opentelemetry.sdk._logs import (
-    LogEmitterProvider,
+    LoggerProvider,
     LoggingHandler,
-    set_log_emitter_provider,
+    set_logger_provider,
 )
-from opentelemetry.sdk._logs.export import BatchLogProcessor
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 
 from azure.monitor.opentelemetry.exporter import AzureMonitorLogExporter
 
-log_emitter_provider = LogEmitterProvider()
-set_log_emitter_provider(log_emitter_provider)
+logger_provider = LoggerProvider()
+set_logger_provider(logger_provider)
 
 exporter = AzureMonitorLogExporter(
     connection_string=os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"]
 )
 
-log_emitter_provider.add_log_processor(BatchLogProcessor(exporter))
+logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 handler = LoggingHandler()
 
 # Attach LoggingHandler to root logger
@@ -290,21 +290,23 @@ An example showing how to export exception telemetry using the AzureMonitorLogEx
 import os
 import logging
 
-from opentelemetry.sdk._logs import (
-    LogEmitterProvider,
-    LoggingHandler,
-    get_log_emitter_provider,
-    set_log_emitter_provider,
+from opentelemetry._logs import (
+    get_logger_provider,
+    set_logger_provider,
 )
-from opentelemetry.sdk._logs.export import BatchLogProcessor
+from opentelemetry.sdk._logs import (
+    LoggerProvider,
+    LoggingHandler,
+)
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 
 from azure.monitor.opentelemetry.exporter import AzureMonitorLogExporter
 
-set_log_emitter_provider(LogEmitterProvider())
+set_logger_provider(LoggerProvider())
 exporter = AzureMonitorLogExporter(
     connection_string=os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"]
 )
-get_log_emitter_provider().add_log_processor(BatchLogProcessor(exporter))
+get_logger_provider().add_log_record_processor(BatchLogRecordProcessor(exporter))
 
 # Attach LoggingHandler to namespaced logger
 handler = LoggingHandler()
@@ -620,13 +622,13 @@ for i in range(100):
 
 ## Troubleshooting
 
-The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/core/azure-core/README.md#azure-core-library-exceptions).
+The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/core/azure-core/README.md#azure-core-library-exceptions).
 
 ## Next steps
 
 ### More sample code
 
-Please find further examples in the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter/samples) directory demonstrating common scenarios.
+Please find further examples in the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter/samples) directory demonstrating common scenarios.
 
 ### Additional documentation
 
@@ -665,11 +667,11 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [instrumentation_library]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#instrumentation-libraries
 [log_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#log-signal
 [log_record]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LogRecord
-[log_emitter]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LogEmitter
-[log_emitter_provider]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LogEmitterProvider
-[log_processor]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LogProcessor
+[logger]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.Logger
+[logger_provider]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LoggerProvider
+[log_record_processor]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LogRecordProcessor
 [logging_handler]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html#opentelemetry.sdk._logs.LoggingHandler
-[log_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/logs/_exporter.py
+[log_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/logs/_exporter.py
 [ot_logging_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/logs.html
 [metric_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#metric-signal
 [measurement]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#measurement
@@ -677,14 +679,14 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [meter]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#meter
 [meter_provider]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#meterprovider
 [metric_reader]:https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#metricreader
-[metric_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/metrics/_exporter.py
+[metric_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/metrics/_exporter.py
 [ot_metrics_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/metrics.html
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md#tracing-signal
 [span]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.Span
 [tracer]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.Tracer
 [tracer_provider]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.TracerProvider
 [span_processor]: https://opentelemetry-python.readthedocs.io/en/stable/_modules/opentelemetry/sdk/trace.html?highlight=SpanProcessor#
-[trace_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b11/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/trace/_exporter.py
+[trace_reference]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b12/sdk/monitor/azure-monitor-opentelemetry-exporter/azure/monitor/opentelemetry/exporter/export/trace/_exporter.py
 [ot_tracing_sdk]: https://opentelemetry-python.readthedocs.io/en/stable/sdk/trace.html
 [sampler_ref]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#sampling
 
