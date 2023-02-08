@@ -1,20 +1,20 @@
 ---
 title: Azure Monitor Query client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-query, monitor
-author: rakshith91
-ms.author: sabhyrav
-ms.date: 07/07/2022
+author: pvaneck
+ms.author: paulvaneck
+ms.date: 02/08/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Query client library for Python - version 1.0.3 
+# Azure Monitor Query client library for Python - version 1.1.0 
 
 
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
-- [Logs](/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language].
-- [Metrics](/azure/azure-monitor/essentials/data-platform-metrics) - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
+- [Logs](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language].
+- [Metrics](https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics) - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them useful for alerting and fast detection of issues.
 
 **Resources:**
 
@@ -25,16 +25,13 @@ The Azure Monitor Query client library is used to execute read-only queries agai
 - [Samples][samples]
 - [Change log][changelog]
 
-## _Disclaimer_
-
-_Azure SDK Python packages support for Python 2.7 has ended on 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
-
 ## Getting started
 
 ### Prerequisites
 
-- Python 3.6 or later
+- Python 3.7 or later
 - An [Azure subscription][azure_subscription]
+- A [TokenCredential](https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.tokencredential?view=azure-python) implementation, such as an [Azure Identity library credential type](https://learn.microsoft.com/python/api/overview/azure/identity-readme?view=azure-python#credential-classes).
 - To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal].
 - To query Metrics, you need an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 
@@ -84,7 +81,7 @@ For examples of Logs and Metrics queries, see the [Examples](#examples) section.
 
 ### Logs query rate limits and throttling
 
-The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](/azure/azure-monitor/service-limits#la-query-api).
+The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api).
 
 If you're executing a batch logs query, a throttled request will return a `LogsQueryError` object. That object's `code` value will be `ThrottledError`.
 
@@ -108,6 +105,8 @@ Each set of metric values is a time series with the following characteristics:
 - [Advanced logs query scenarios](#advanced-logs-query-scenarios)
   - [Set logs query timeout](#set-logs-query-timeout)
   - [Query multiple workspaces](#query-multiple-workspaces)
+  - [Include statistics](#include-statistics)
+  - [Include visualization](#include-visualization)
 - [Metrics query](#metrics-query)
   - [Handle metrics query response](#handle-metrics-query-response)
   - [Example of handling response](#example-of-handling-response)
@@ -151,7 +150,7 @@ try:
     if response.status == LogsQueryStatus.PARTIAL:
         error = response.partial_error
         data = response.partial_data
-        print(error.message)
+        print(error)
     elif response.status == LogsQueryStatus.SUCCESS:
         data = response.tables
     for table in data:
@@ -182,6 +181,7 @@ LogsQueryPartialResult
 |---partial_error (a `LogsQueryError` object)
     |---code
     |---message
+    |---details
     |---status
 |---partial_data (list of `LogsTable` objects)
     |---name
@@ -198,7 +198,7 @@ for table in response:
     df = pd.DataFrame(table.rows, columns=[col.name for col in table.columns])
 ```
 
-A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_logs_single_query.py).
+A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_logs_single_query.py).
 
 In a similar fashion, to handle a batch logs query response:
 
@@ -210,7 +210,7 @@ for result in response:
             print(df)
 ```
 
-A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_batch_query.py).
+A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_batch_query.py).
 
 ### Batch logs query
 
@@ -253,7 +253,7 @@ for res in results:
         print(res.message)
     elif res.status == LogsQueryStatus.PARTIAL:
         ## this will be a LogsQueryPartialResult
-        print(res.partial_error.message)
+        print(res.partial_error)
         for table in res.partial_data:
             df = pd.DataFrame(table.rows, columns=table.columns)
             print(df)
@@ -282,8 +282,8 @@ client = LogsQueryClient(credential)
 response = client.query_workspace(
     os.environ['LOG_WORKSPACE_ID'],
     "range x from 1 to 10000000000 step 1 | count",
-    timespan=None,
-    server_timeout=1,
+    timespan=timedelta(days=1),
+    server_timeout=600 # sets the timeout to 10 minutes
     )
 ```
 
@@ -303,11 +303,97 @@ For example, the following query executes in three workspaces:
 client.query_workspace(
     <workspace_id>,
     query,
+    timespan=timedelta(days=1),
     additional_workspaces=['<workspace 2>', '<workspace 3>']
     )
 ```
 
-A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_log_query_multiple_workspaces.py).
+A full sample can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_log_query_multiple_workspaces.py).
+
+#### Include statistics
+
+To get logs query execution statistics, such as CPU and memory consumption:
+
+1. Set the `include_statistics` parameter to `True`.
+2. Access the `statistics` field inside the `LogsQueryResult` object.
+
+The following example prints the query execution time:
+
+```python
+query = "AzureActivity | top 10 by TimeGenerated"
+result = client.query_workspace(
+    <workspace_id>,
+    query,
+    timespan=timedelta(days=1),
+    include_statistics=True
+    )
+
+execution_time = result.statistics.get("query", {}).get("executionTime")
+print(f"Query execution time: {execution_time}")
+```
+
+The `statistics` field is a `dict` that corresponds to the raw JSON response, and its structure can vary by query. The statistics are found within the `query` property. For example:
+
+```python
+{
+  "query": {
+    "executionTime": 0.0156478,
+    "resourceUsage": {...},
+    "inputDatasetStatistics": {...},
+    "datasetStatistics": [{...}]
+  }
+}
+```
+#### Include visualization
+
+To get visualization data for logs queries using the [render operator](/azure/data-explorer/kusto/query/renderoperator?pivots=azuremonitor):
+
+1. Set the `include_visualization` property to `True`.
+1. Access the `visualization` field inside the `LogsQueryResult` object.
+
+For example:
+
+```python
+query = (
+    "StormEvents"
+    "| summarize event_count = count() by State"
+    "| where event_count > 10"
+    "| project State, event_count"
+    "| render columnchart"
+)
+result = client.query_workspace(
+    <workspace_id>,
+    query,
+    timespan=timedelta(days=1),
+    include_visualization=True
+    )
+
+print(f"Visualization result: {result.visualization}")
+```
+
+The `visualization` field is a `dict` that corresponds to the raw JSON response, and its structure can vary by query. For example:
+
+```python
+{
+  "visualization": "columnchart",
+  "title": "the chart title",
+  "accumulate": False,
+  "isQuerySorted": False,
+  "kind": None,
+  "legend": None,
+  "series": None,
+  "yMin": "NaN",
+  "yMax": "NaN",
+  "xAxis": None,
+  "xColumn": None,
+  "xTitle": "x axis title",
+  "yAxis": None,
+  "yColumns": None,
+  "ySplit": None,
+  "yTitle": None,
+  "anomalyColumns": None
+}
+```
 
 ### Metrics query
 
@@ -424,18 +510,18 @@ The following code samples show common scenarios with the Azure Monitor Query cl
 
 #### Logs query samples
 
-- [Send a single query with LogsQueryClient and handle the response as a table](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_logs_single_query.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/async_samples/sample_log_query_async.py))
-- [Send a single query with LogsQueryClient and handle the response in key-value form](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_logs_query_key_value_form.py)
-- [Send a single query with LogsQueryClient without pandas](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_single_log_query_without_pandas.py)
-- [Send a single query with LogsQueryClient across multiple workspaces](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_log_query_multiple_workspaces.py)
-- [Send multiple queries with LogsQueryClient](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_batch_query.py)
-- [Send a single query with LogsQueryClient using server timeout](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_server_timeout.py)
+- [Send a single query with LogsQueryClient and handle the response as a table](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_logs_single_query.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/async_samples/sample_log_query_async.py))
+- [Send a single query with LogsQueryClient and handle the response in key-value form](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_logs_query_key_value_form.py)
+- [Send a single query with LogsQueryClient without pandas](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_single_log_query_without_pandas.py)
+- [Send a single query with LogsQueryClient across multiple workspaces](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_log_query_multiple_workspaces.py)
+- [Send multiple queries with LogsQueryClient](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_batch_query.py)
+- [Send a single query with LogsQueryClient using server timeout](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_server_timeout.py)
 
 #### Metrics query samples
 
-- [Send a query using MetricsQueryClient](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_metrics_query.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/async_samples/sample_metrics_query_async.py))
-- [Get a list of metric namespaces](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_metric_namespaces.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/async_samples/sample_metric_namespaces_async.py))
-- [Get a list of metric definitions](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/sample_metric_definitions.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples/async_samples/sample_metric_definitions_async.py))
+- [Send a query using MetricsQueryClient](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_metrics_query.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/async_samples/sample_metrics_query_async.py))
+- [Get a list of metric namespaces](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_metric_namespaces.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/async_samples/sample_metric_namespaces_async.py))
+- [Get a list of metric definitions](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/sample_metric_definitions.py) ([async sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples/async_samples/sample_metric_definitions_async.py))
 
 ## Contributing
 
@@ -449,17 +535,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [azure_core_ref_docs]: https://aka.ms/azsdk/python/core/docs
-[azure_monitor_create_using_portal]: /azure/azure-monitor/logs/quick-create-workspace
-[azure_monitor_overview]: /azure/azure-monitor/
+[azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
+[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
 [azure_subscription]: https://azure.microsoft.com/free/python/
-[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/CHANGELOG.md
-[kusto_query_language]: /azure/data-explorer/kusto/query/
+[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/CHANGELOG.md
+[kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [package]: https://aka.ms/azsdk-python-monitor-query-pypi
 [pip]: https://pypi.org/project/pip/
 [python_logging]: https://docs.python.org/3/library/logging.html
 [python-query-ref-docs]: https://aka.ms/azsdk/python/monitor-query/docs
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/samples
-[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.0.3/sdk/monitor/azure-monitor-query/
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/samples
+[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-query_1.1.0/sdk/monitor/azure-monitor-query/
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
