@@ -21,7 +21,8 @@ summary: 'LogsQueryClient. Use this client to collect and organize log and perfo
 
   [Kusto Query Language]([https://docs.microsoft.com/azure/data-explorer/kusto/query/](https://docs.microsoft.com/azure/data-explorer/kusto/query/))'
 constructor:
-  syntax: 'LogsQueryClient(credential: AsyncTokenCredential, **kwargs: Any)'
+  syntax: 'LogsQueryClient(credential: azure.core.credentials_async.AsyncTokenCredential,
+    **kwargs: Any)'
   parameters:
   - name: credential
     description: The credential to authenticate the client
@@ -31,7 +32,7 @@ constructor:
   - name: endpoint
     description: The endpoint to connect to. Defaults to '[https://api.loganalytics.io/v1](https://api.loganalytics.io/v1)'.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
 methods:
 - uid: azure.monitor.query.aio.LogsQueryClient.close
   name: close
@@ -46,8 +47,8 @@ methods:
 
     **NOTE**: The response is returned in the same order as that of the requests sent.'
   signature: 'async query_batch(queries: Union[Sequence[Dict], Sequence[azure.monitor.query._models.LogsBatchQuery]],
-    **kwargs: Any) -> List[Union[azure.monitor.query._models.LogsQueryResult, azure.monitor.query._models.LogsQueryPartialResult,
-    azure.monitor.query._exceptions.LogsQueryError]]'
+    **kwargs: Any) -> List[Union[azure.monitor.query._models.LogsQueryResult, azure.monitor.query._exceptions.LogsQueryError,
+    azure.monitor.query._models.LogsQueryPartialResult]]'
   parameters:
   - name: queries
     description: The list of Kusto queries to execute.
@@ -77,8 +78,8 @@ methods:
 
 
     Executes an Analytics query for data.'
-  signature: 'async query_workspace(workspace_id: str, query: str, *, timespan: Union[datetime.timedelta,
-    Tuple[datetime.datetime, datetime.timedelta], Tuple[datetime.datetime, datetime.datetime]],
+  signature: 'async query_workspace(workspace_id: str, query: str, *, timespan: Optional[Union[datetime.timedelta,
+    Tuple[datetime.datetime, datetime.timedelta], Tuple[datetime.datetime, datetime.datetime]]],
     **kwargs: Any) -> Union[azure.monitor.query._models.LogsQueryResult, azure.monitor.query._models.LogsQueryPartialResult]'
   parameters:
   - name: workspace_id
@@ -98,11 +99,15 @@ methods:
     description: 'Required. The timespan for which to query the data. This can be
       a timedelta,
 
-      a timedelta and a start datetime, or a start datetime/end datetime.'
+      a timedelta and a start datetime, or a start datetime/end datetime. Set to None
+      to not constrain
+
+      the query to a timespan.'
     types:
     - <xref:datetime.timedelta>
     - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.timedelta>]
     - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.datetime>]
+    - <xref:None>
   - name: server_timeout
     description: 'the server timeout in seconds. The default timeout is 3 minutes,
 
@@ -128,7 +133,7 @@ methods:
 
       These can be qualified workspace names, workspace Ids, or Azure resource Ids.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:Optional>[<xref:List>[<xref:str>]]
   return:
     description: LogsQueryResult if there is a success or LogsQueryPartialResult when
       there is a partial success.

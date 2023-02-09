@@ -13,13 +13,13 @@ summary: "MetricsQueryClient should be used to collect numeric data from monitor
   Creating the MetricsQueryClient with a TokenCredential.<!--[!code-python[Main](les\\\
   sample_metrics_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
   \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-  \\1\\\\s\\\\dist_temp\\\\176\\\\azure-monitor-query-1.0.3\\\\samples\\\\sample_metrics_query.py\"\
+  \\1\\\\s\\\\dist_temp\\\\176\\\\azure-monitor-query-1.1.0\\\\samples\\\\sample_metrics_query.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   credential \
-  \ = DefaultAzureCredential()\n\n   client = MetricsQueryClient(credential)\n\n \
-  \  ````"
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   credential =\
+  \ DefaultAzureCredential()\n\n   client = MetricsQueryClient(credential)\n\n   ````"
 constructor:
-  syntax: 'MetricsQueryClient(credential: TokenCredential, **kwargs: Any)'
+  syntax: 'MetricsQueryClient(credential: azure.core.credentials.TokenCredential,
+    **kwargs: Any)'
   parameters:
   - name: credential
     description: The credential to authenticate the client.
@@ -29,7 +29,7 @@ constructor:
   - name: endpoint
     description: The endpoint to connect to. Defaults to '[https://management.azure.com](https://management.azure.com)'.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
 methods:
 - uid: azure.monitor.query.MetricsQueryClient.close
   name: close
@@ -38,7 +38,7 @@ methods:
 - uid: azure.monitor.query.MetricsQueryClient.list_metric_definitions
   name: list_metric_definitions
   summary: Lists the metric definitions for the resource.
-  signature: 'list_metric_definitions(resource_uri: str, **kwargs: Any) -> ItemPaged[MetricDefinition]'
+  signature: 'list_metric_definitions(resource_uri: str, **kwargs: Any) -> azure.core.paging.ItemPaged[azure.monitor.query._models.MetricDefinition]'
   parameters:
   - name: resource_uri
     description: The identifier of the resource.
@@ -48,7 +48,7 @@ methods:
   - name: namespace
     description: Metric namespace to query metric definitions for.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   return:
     description: An iterator like instance of either MetricDefinition or the result
       of cls(response)
@@ -59,7 +59,7 @@ methods:
 - uid: azure.monitor.query.MetricsQueryClient.list_metric_namespaces
   name: list_metric_namespaces
   summary: Lists the metric namespaces for the resource.
-  signature: 'list_metric_namespaces(resource_uri: str, **kwargs: Any) -> ItemPaged[MetricNamespace]'
+  signature: 'list_metric_namespaces(resource_uri: str, **kwargs: Any) -> azure.core.paging.ItemPaged[azure.monitor.query._models.MetricNamespace]'
   parameters:
   - name: resource_uri
     description: The identifier of the resource.
@@ -71,7 +71,7 @@ methods:
 
       namespaces. This should be provided as a datetime object.'
     types:
-    - <xref:datetime.datetime>
+    - <xref:Optional>[<xref:datetime.datetime>]
   return:
     description: An iterator like instance of either MetricNamespace or the result
       of cls(response)
@@ -100,19 +100,18 @@ methods:
 
       a timedelta and a start datetime, or a start datetime/end datetime.'
     types:
-    - <xref:datetime.timedelta>
-    - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.timedelta>]
-    - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.datetime>]
+    - <xref:Optional>[<xref:Union>[<xref:datetime.timedelta>, <xref:tuple>[<xref:datetime.datetime>,
+      <xref:datetime.timedelta>]<xref:,tuple>[<xref:datetime.datetime>, <xref:datetime.datetime>]]]
   - name: granularity
     description: The granularity (i.e. timegrain) of the query.
     types:
-    - <xref:datetime.timedelta>
+    - <xref:Optional>[<xref:datetime.timedelta>]
   - name: aggregations
     description: 'The list of aggregation types to retrieve. Use
 
       *azure.monitor.query.MetricAggregationType* enum to get each aggregation type.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:Optional>[<xref:list>[<xref:str>]]
   - name: max_results
     description: 'The maximum number of records to retrieve.
 
@@ -120,7 +119,7 @@ methods:
 
       Defaults to 10.'
     types:
-    - <xref:int>
+    - <xref:Optional>[<xref:int>]
   - name: order_by
     description: 'The aggregation to use for sorting results and the direction of
       the sort.
@@ -129,38 +128,47 @@ methods:
 
       Examples: sum asc.'
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   - name: filter
-    description: 'The **$filter** is used to reduce the set of metric data
+    description: 'The **$filter** is used to reduce the set of metric data returned.
+      Example:
 
-      returned.:code:*<br>`Example::code:`<br>`Metric contains metadata A, B and C.:code:`<br>*-
+      Metric contains metadata A, B and C. - Return all time series of C where A =
+      a1 and B = b1 or
 
-      Return all time series of C where A = a1 and B = b1 or b2:code:*<br>***$filter=A
-      eq ''a1'' and
+      b2 **$filter=A eq ''a1'' and B eq ''b1'' or B eq ''b2'' and C eq ''*''** - Invalid
+      variant: **$filter=A
 
-      B eq ''b1'' or B eq ''b2'' and C eq ''*''**`<br>`- Invalid variant:`<br>`**$filter=A
+      eq ''a1'' and B eq ''b1'' and C eq ''*'' or B = ''b2''** This is invalid because
+      the logical or
 
-      eq ''a1'' and B eq ''b1'' and C eq ''*'' or B = ''b2''**`<br>`This is invalid
-      because the
+      operator cannot separate two different metadata names. - Return all time series
+      where A = a1, B
 
-      logical or operator cannot separate two different metadata names.:code:`<br>`-
-      Return all time
+      = b1 and C = c1: **$filter=A eq ''a1'' and B eq ''b1'' and C eq ''c1''** - Return
+      all time series
 
-      series where A = a1, B = b1 and C = c1:`<br>`**$filter=A eq ''a1'' and B eq
-      ''b1'' and C eq
+      where A = a1 **$filter=A eq ''a1'' and B eq ''*'' and C eq ''*''**. Special
+      case: When dimension
 
-      ''c1''**`<br>`- Return all time series where A = a1:code:*<br>***$filter=A eq
-      ''a1'' and
+      name or dimension value uses round brackets. Eg: When dimension name is **dim
+      (test) 1**
 
-      B eq ''*'' and C eq ''*''**.
+      Instead of using **$filter= "dim (test) 1 eq ''*''"** use **$filter= "dim %2528test%2529
+      1 eq ''*''"**.
 
-      To use the split feature, set the value to * - for example, like "City eq ''*''"'
+      When dimension name is **dim (test) 3** and dimension value is **dim3 (test)
+      val**, instead of using
+
+      **$filter= "dim (test) 3 eq ''dim3 (test) val''"** use **$filter= "dim
+
+      %2528test%2529 3 eq ''dim3 %2528test%2529 val''"**. Default value is None.'
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   - name: metric_namespace
     description: Metric namespace to query metric definitions for.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   return:
     description: A MetricsQueryResult object.
     types:
