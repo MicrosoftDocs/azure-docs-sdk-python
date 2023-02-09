@@ -1,0 +1,367 @@
+### YamlMime:PythonClass
+uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector
+name: DialogServiceConnector
+fullName: azure.cognitiveservices.speech.dialog.DialogServiceConnector
+module: azure.cognitiveservices.speech.dialog
+inheritances:
+- builtins.object
+summary: 'An object that communicates with a speech-enabled dialog system using either
+  the Bot Framework or Custom Commands.
+
+  This type receives speech-to-text results and also facilitates the asynchronous
+  sending and receiving of non-speech
+
+  dialog activity data.'
+constructor:
+  syntax: 'DialogServiceConnector(dialog_service_config: DialogServiceConfig, audio_config:
+    AudioConfig | None = None)'
+  parameters:
+  - name: dialog_service_config
+    description: The config for the dialog service, either for bot framework or custom
+      commands.
+    isRequired: true
+  - name: audio_config
+    description: The config for the audio input.
+    defaultValue: None
+methods:
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.connect
+  name: connect
+  summary: 'Synchronously establishes a connection with the service. Connection is
+    automatically performed when needed,
+
+    but this manual call can be useful to make sure the connection is active before
+    its first use to help reduce
+
+    initial latency.
+
+
+    On return, the connection might not be ready yet. Please subscribe to the *connected*
+    event
+
+    of the *Connection* instance to be notified when the connection to service is
+    established.
+
+    Please use <xref:azure.cognitiveservices.speech.Connection> to retrieve instance
+    by using <xref:azure.cognitiveservices.speech.Connection.from_dialog_service_connector>
+
+    method.'
+  signature: connect()
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.connect_async
+  name: connect_async
+  summary: 'Asynchronously establishes a connection with the service. Connection is
+    automatically performed when needed,
+
+    but this manual call can be useful to make sure the connection is active before
+    its first use to help reduce
+
+    initial latency.'
+  signature: connect_async()
+  return:
+    description: A future that is fulfilled once connection has been initialized.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.disconnect
+  name: disconnect
+  summary: 'Synchronously disconnects from the service. Subsequent calls that require
+    a connection will still automatically
+
+    reconnect after manual disconnection.'
+  signature: disconnect()
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.disconnect_async
+  name: disconnect_async
+  summary: 'Asynchronously disconnects from the service. Subsequent calls that require
+    a connection will still automatically
+
+    reconnect after manual disconnection.'
+  signature: disconnect_async()
+  return:
+    description: A future that is fulfilled when disconnected.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.listen_once
+  name: listen_once
+  summary: 'Synchronously starts a speech-to-text interaction with this connector
+    and blocks until a single speech-to-text
+
+    final result is received. The speech-to-text result received is also provided
+    to the configured dialog implementation
+
+    and that dialog system may produce any number of activity payloads in response
+    to the speech interaction.
+
+    Speech interactions may be correlated with activities via dialog-specific data
+    in the activity payload.'
+  signature: listen_once() -> SpeechRecognitionResult
+  return:
+    description: the speech-to-text result from the speech recognition.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.listen_once_async
+  name: listen_once_async
+  summary: 'Asynchronously starts a speech-to-text interaction with this connector
+    and blocks until a single speech-to-text
+
+    final result is received. The speech-to-text result received is also provided
+    to the configured dialog implementation
+
+    and that dialog system may produce any number of activity payloads in response
+    to the speech interaction.
+
+    Speech interactions may be correlated with activities via dialog-specific data
+    in the activity payload.'
+  signature: listen_once_async() -> ResultFuture
+  return:
+    description: A future containing the speech-to-text result value of the asynchronous
+      recognition.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.send_activity
+  name: send_activity
+  summary: 'Synchronously sends a data payload to dialog backend service that this
+    DialogServiceConnector instance is
+
+    connected to. This is usually a JSON document with its schema determined by the
+    dialog implementation in
+
+    the service and the contents of a sent activity should be populated with knowledge
+    about the format and
+
+    content expectations of the dialog system. Sent activities are not associated
+    with any other interaction
+
+    and will generate their own standalone interaction identifier when processed by
+    the service. Correlation of
+
+    conversations and other interactions should be accomplished via the activity payload
+    itself using the
+
+    capabilities of the dialog implementation used.'
+  signature: 'send_activity(activity: str) -> str'
+  parameters:
+  - name: activity
+    description: the serialized payload of an activity to send.
+    isRequired: true
+  return:
+    description: 'an interaction identifier acquired when the activity is acknowledged
+      by the service. This may occur
+
+      before the activity is processed and evaluated by the dialog implementation
+      and the receipt of an interaction
+
+      identifier does not indicate any success or failure in processing the activity.
+      Information about success or failure
+
+      may be obtained via response activities with correlation data or with TurnStatusReceived
+      events that correlate to
+
+      this interaction identifier.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.send_activity_async
+  name: send_activity_async
+  summary: Asynchronously sends an activity to the backing dialog, see description
+    details at <xref:azure.cognitiveservices.speech.dialog.DialogServiceConnector.send_activity>
+  signature: 'send_activity_async(activity: str) -> ResultFuture'
+  parameters:
+  - name: activity
+    description: the serialized payload of an activity to send.
+    isRequired: true
+  return:
+    description: A future containing the result value of the asynchronous activity
+      sending operation.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.start_keyword_recognition
+  name: start_keyword_recognition
+  summary: 'Synchronously starts a speech-to-text interaction with this connector
+    using a keyword. This interaction will use
+
+    the provided keyword model to listen for a keyword indefinitely, during which
+    audio is not sent to the speech service
+
+    and all processing is performed locally. When a keyword is recognized, the DialogServiceConnector
+    will automatically
+
+    connect to the speech service and begin sending audio data from just before the
+    keyword as if
+
+    <xref:azure.cognitiveservices.speech.dialog.DialogServiceConnector.listen_once_async>
+    were invoked. When received, speech-to-text results may be processed by the provided
+
+    result handler or retrieved via a subscription to the recognized event. The speech-to-text
+    result produced by this
+
+    operation is also provided to the configured dialog implementation and that dialog
+    system may produce any number of
+
+    activity payloads in response to the speech interaction. Speech interactions may
+    be correlated with activities via
+
+    dialog-specific data in the activity payload.
+
+
+    Call <xref:azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_keyword_recognition_async>
+    to stop the keyword initiated recognition.'
+  signature: 'start_keyword_recognition(model: KeywordRecognitionModel)'
+  parameters:
+  - name: model
+    description: the keyword recognition model that specifies the keyword to be recognized.
+    isRequired: true
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.start_keyword_recognition_async
+  name: start_keyword_recognition_async
+  summary: 'Asynchronously configures the dialog service connector with the given
+    keyword model. After calling this method,
+
+    the connector is listening for the keyword to start the recognition. Call
+
+    <xref:azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_keyword_recognition_async>
+    to stop the keyword initiated recognition.
+
+
+    See <xref:azure.cognitiveservices.speech.dialog.DialogServiceConnector.start_keyword_recognition>
+    for detailed description of the functionality.'
+  signature: 'start_keyword_recognition_async(model: KeywordRecognitionModel)'
+  parameters:
+  - name: model
+    description: the keyword recognition model that specifies the keyword to be recognized.
+    isRequired: true
+  return:
+    description: A future that is fulfilled once recognition has been initialized.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_keyword_recognition
+  name: stop_keyword_recognition
+  summary: Synchronously stops the keyword initiated recognition.
+  signature: stop_keyword_recognition()
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_keyword_recognition_async
+  name: stop_keyword_recognition_async
+  summary: Asynchronously stops the keyword initiated recognition.
+  signature: stop_keyword_recognition_async()
+  return:
+    description: A future that is fulfilled once recognition has been stopped.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_listening
+  name: stop_listening
+  summary: 'Requests an immediate stop to any active listening operation. This may
+    interrupt a speech-to-text interaction
+
+    in progress and any speech-to-text result received may represent an incomplete
+    speech input.
+
+
+    Synchronous methods should not be called when handling an event. Use <xref:azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_listening_async>
+    if a stop
+
+    is desired in response to an event.'
+  signature: stop_listening()
+  return:
+    description: A future that is fulfilled once listening has been stopped.
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.stop_listening_async
+  name: stop_listening_async
+  summary: 'Requests an immediate stop to any active listening operation. This may
+    interrupt a speech-to-text interaction
+
+    in progress and any speech-to-text result received may represent an incomplete
+    speech input.'
+  signature: stop_listening_async()
+  return:
+    description: A future that is fulfilled once listening has been stopped.
+attributes:
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.activity_received
+  name: activity_received
+  summary: 'Signals that an activity was received from the backend.
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.dialog.ActivityReceivedEventArgs>,
+
+    instance as the single argument, dependent on the type of recognizer.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.authorization_token
+  name: authorization_token
+  summary: 'The authorization token that will be used for connecting to the service.
+
+
+    > [!NOTE]
+
+    > The caller needs to ensure that the authorization token is valid. Before the
+
+    >
+
+    > authorization token expires, the caller needs to refresh it by calling this
+    setter with a
+
+    >
+
+    > new valid token. Otherwise, the recognizer will encounter errors during recognition.
+
+    >'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.canceled
+  name: canceled
+  summary: 'Signal for events containing canceled recognition results (indicating
+    a recognition attempt
+
+    that was canceled as a result or a direct cancellation request or, alternatively,
+    a
+
+    transport or protocol failure).
+
+
+    Callbacks connected to this signal are called with a
+
+    <xref:azure.cognitiveservices.speech.SpeechRecognitionCanceledEventArgs>, instance
+    as the single argument.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.recognized
+  name: recognized
+  summary: 'Signal for events containing final recognition results (indicating a successful
+
+    recognition attempt).
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.SpeechRecognitionEventArgs>,
+
+    instance as the single argument, dependent on the type of recognizer.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.recognizing
+  name: recognizing
+  summary: 'Signal for events containing intermediate recognition results.
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.SpeechRecognitionEventArgs>,
+
+    instance as the single argument.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.session_started
+  name: session_started
+  summary: 'Signal for events indicating the start of a recognition session (operation).
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.SessionEventArgs>
+    instance as
+
+    the single argument.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.session_stopped
+  name: session_stopped
+  summary: 'Signal for events indicating the end of a recognition session (operation).
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.SessionEventArgs>
+    instance as
+
+    the single argument.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.speech_activity_template
+  name: speech_activity_template
+  summary: 'Gets the JSON template that will be provided to the speech service for
+    the next conversation. The service will
+
+    attempt to merge this template into all activities sent to the dialog backend,
+    whether originated by the
+
+    client with SendActivityAsync or generated by the service, as is the case with
+    speech-to-text results.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.speech_end_detected
+  name: speech_end_detected
+  summary: 'Signal for events indicating the end of speech.
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.RecognitionEventArgs>
+
+    instance as the single argument.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.speech_start_detected
+  name: speech_start_detected
+  summary: 'Signal for events indicating the start of speech.
+
+
+    Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.RecognitionEventArgs>
+
+    instance as the single argument.'
+- uid: azure.cognitiveservices.speech.dialog.DialogServiceConnector.turn_status_received
+  name: turn_status_received
+  summary: 'Signals that a turn status update was received from the backend.
+
+
+    Callbacks connected to this signal are called with a
+
+    <xref:azure.cognitiveservices.speech.dialog.TurnStatusReceivedEventArgs>, instance
+    as the single argument.'

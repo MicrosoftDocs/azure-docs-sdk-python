@@ -1,0 +1,157 @@
+### YamlMime:PythonClass
+uid: azure.datalake.store.transfer.ADLTransferClient
+name: ADLTransferClient
+fullName: azure.datalake.store.transfer.ADLTransferClient
+module: azure.datalake.store.transfer
+inheritances:
+- builtins.object
+summary: "Client for transferring data from/to Azure DataLake Store\n\nThis is intended\
+  \ as the underlying class for *ADLDownloader* and\n*ADLUploader*. If necessary,\
+  \ it can be used directly for additional\ncontrol.\n\n:param :\n:param *fn(adlfs:\n\
+  :param src:\n:param dst:\n:param offset:\n:param size:\n:param buffersize:\n:param\
+  \ blocksize:\n:param shutdown_event)*.:\n:param *adlfs* is the ADL filesystem instance.\
+  \ *src* and *dst* refer to the source:\n:param and destination of the respective\
+  \ file transfer. *offset* is the location:\n:param in *src* to read *size* bytes\
+  \ from. *buffersize* is the number of bytes:\n:param used for internal buffering\
+  \ before transfer. *blocksize* is the number of:\n:param bytes in a chunk to write\
+  \ at one time. The callable should return an:\n:param integer representing the number\
+  \ of bytes written.:\n:param The *merge* callable has the function signature:\n\
+  :param :\n:param *fn(adlfs:\n:param outfile:\n:param files:\n:param shutdown_event)*.\
+  \ *adlfs* is the ADL filesystem:\n:param instance. *outfile* is the result of merging\
+  \ *files*.:\n:param For both transfer callables:\n:param *shutdown_event* is optional.\
+  \ In particular:\n:param :\n:param *shutdown_event* is a *threading.Event* that\
+  \ is passed to the callable.:\n:param The event will be set when a shutdown is requested.\
+  \ It is good practice:\n:param to listen for this.:\n:param Internal State:\n:param\
+  \ \u2014\u2014\u2014\u2014\u2013:\n:param self._fstates: This captures the current\
+  \ state of each transferred file.\n:type self._fstates: StateManager\n:param self._files:\
+  \ Using a tuple of the file source/destination as the key, this\n\n   dictionary\
+  \ stores the file metadata and all chunk states. The\n   dictionary key is *(src,\
+  \ dst)* and the value is\n   *dict(length, cstates, exception)*."
+constructor:
+  syntax: ADLTransferClient(adlfs, transfer, merge=None, nthreads=None, chunksize=268435456,
+    blocksize=33554432, chunked=True, unique_temporary=True, delimiter=None, parent=None,
+    verbose=False, buffersize=33554432, progress_callback=None, timeout=0)
+  parameters:
+  - name: self._chunks
+    description: 'Using a tuple of the chunk name/offset as the key, this dictionary
+
+      stores the chunk metadata and has a reference to the chunk''s parent
+
+      file. The dictionary key is *(name, offset)* and the value is
+
+      *dict(parent=(src, dst), expected, actual, exception)*.'
+    isRequired: true
+    types:
+    - <xref:azure.datalake.store.transfer.dict>
+  - name: self._ffutures
+    description: 'Using a Future object as the key, this dictionary provides a reverse
+
+      lookup for the file associated with the given future. The returned
+
+      value is the file''s primary key, *(src, dst)*.'
+    isRequired: true
+    types:
+    - <xref:azure.datalake.store.transfer.dict>
+  - name: self._cfutures
+    description: 'Using a Future object as the key, this dictionary provides a reverse
+
+      lookup for the chunk associated with the given future. The returned
+
+      value is the chunk''s primary key, *(name, offset)*.'
+    isRequired: true
+    types:
+    - <xref:azure.datalake.store.transfer.dict>
+  - name: adlfs
+  - name: transfer
+  - name: merge
+    defaultValue: None
+  - name: nthreads
+    defaultValue: None
+  - name: chunksize
+    defaultValue: '268435456'
+  - name: blocksize
+    defaultValue: '33554432'
+  - name: chunked
+    defaultValue: 'True'
+  - name: unique_temporary
+    defaultValue: 'True'
+  - name: delimiter
+    defaultValue: None
+  - name: parent
+    defaultValue: None
+  - name: verbose
+    defaultValue: 'False'
+  - name: buffersize
+    defaultValue: '33554432'
+  - name: progress_callback
+    defaultValue: None
+  - name: timeout
+    defaultValue: '0'
+methods:
+- uid: azure.datalake.store.transfer.ADLTransferClient.monitor
+  name: monitor
+  summary: Wait for download to happen
+  signature: monitor(poll=0.1, timeout=0)
+  parameters:
+  - name: poll
+    defaultValue: '0.1'
+  - name: timeout
+    defaultValue: '0'
+- uid: azure.datalake.store.transfer.ADLTransferClient.run
+  name: run
+  signature: run(nthreads=None, monitor=True, before_start=None)
+  parameters:
+  - name: nthreads
+    defaultValue: None
+  - name: monitor
+    defaultValue: 'True'
+  - name: before_start
+    defaultValue: None
+- uid: azure.datalake.store.transfer.ADLTransferClient.save
+  name: save
+  signature: save(keep=True)
+  parameters:
+  - name: keep
+    defaultValue: 'True'
+- uid: azure.datalake.store.transfer.ADLTransferClient.shutdown
+  name: shutdown
+  summary: 'Shutdown task threads in an orderly fashion.
+
+
+    Within the context of this method, we disable Ctrl+C keystroke events
+
+    until all threads have exited. We re-enable Ctrl+C keystroke events
+
+    before leaving.'
+  signature: shutdown()
+- uid: azure.datalake.store.transfer.ADLTransferClient.submit
+  name: submit
+  summary: 'Split a given file into chunks.
+
+
+    All submitted files/chunks start in the *pending* state until *run()*
+
+    is called.'
+  signature: submit(src, dst, length)
+  parameters:
+  - name: src
+    isRequired: true
+  - name: dst
+    isRequired: true
+  - name: length
+    isRequired: true
+attributes:
+- uid: azure.datalake.store.transfer.ADLTransferClient.active
+  name: active
+  summary: Return whether the transfer is active
+- uid: azure.datalake.store.transfer.ADLTransferClient.progress
+  name: progress
+  summary: Return a summary of all transferred file/chunks
+- uid: azure.datalake.store.transfer.ADLTransferClient.status
+  name: status
+- uid: azure.datalake.store.transfer.ADLTransferClient.successful
+  name: successful
+  summary: 'Return whether the transfer completed successfully.
+
+
+    It will raise AssertionError if the transfer is active.'

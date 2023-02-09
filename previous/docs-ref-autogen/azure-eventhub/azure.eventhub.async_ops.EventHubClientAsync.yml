@@ -1,0 +1,193 @@
+### YamlMime:PythonClass
+uid: azure.eventhub.async_ops.EventHubClientAsync
+name: EventHubClientAsync
+fullName: azure.eventhub.async_ops.EventHubClientAsync
+module: azure.eventhub.async_ops
+inheritances:
+- azure.eventhub.client.EventHubClient
+summary: 'The EventHubClient class defines a high level interface for asynchronously
+
+  sending events to and receiving events from the Azure Event Hubs service.'
+constructor:
+  syntax: EventHubClientAsync(address, username=None, password=None, debug=False,
+    http_proxy=None, auth_timeout=60, sas_token=None)
+  parameters:
+  - name: address
+  - name: username
+    defaultValue: None
+  - name: password
+    defaultValue: None
+  - name: debug
+    defaultValue: 'False'
+  - name: http_proxy
+    defaultValue: None
+  - name: auth_timeout
+    defaultValue: '60'
+  - name: sas_token
+    defaultValue: None
+methods:
+- uid: azure.eventhub.async_ops.EventHubClientAsync.add_async_epoch_receiver
+  name: add_async_epoch_receiver
+  summary: 'Add an async receiver to the client with an epoch value. Only a single
+    epoch receiver
+
+    can connect to a partition at any given time - additional epoch receivers must
+    have
+
+    a higher epoch value or they will be rejected. If a 2nd epoch receiver has
+
+    connected, the first will be closed.'
+  signature: add_async_epoch_receiver(consumer_group, partition, epoch, prefetch=300,
+    operation=None, keep_alive=30, auto_reconnect=True, loop=None)
+  parameters:
+  - name: consumer_group
+    description: The name of the consumer group.
+    isRequired: true
+    types:
+    - <xref:azure.eventhub.async_ops.str>
+  - name: partition
+    description: The ID of the partition.
+    isRequired: true
+    types:
+    - <xref:azure.eventhub.async_ops.str>
+  - name: epoch
+    description: The epoch value for the receiver.
+    isRequired: true
+    types:
+    - <xref:azure.eventhub.async_ops.int>
+  - name: prefetch
+    description: The message prefetch count of the receiver. Default is 300.
+    defaultValue: '300'
+    types:
+    - <xref:azure.eventhub.async_ops.int>
+  - name: operation
+    defaultValue: None
+  - name: keep_alive
+    defaultValue: '30'
+  - name: auto_reconnect
+    defaultValue: 'True'
+  - name: loop
+    defaultValue: None
+  return:
+    types:
+    - <xref:azure.eventhub.async_ops.receiver_async.ReceiverAsync>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.add_async_receiver
+  name: add_async_receiver
+  summary: Add an async receiver to the client for a particular consumer group and
+    partition.
+  signature: add_async_receiver(consumer_group, partition, offset=None, prefetch=300,
+    operation=None, keep_alive=30, auto_reconnect=True, loop=None)
+  parameters:
+  - name: consumer_group
+    description: The name of the consumer group.
+    isRequired: true
+    types:
+    - <xref:azure.eventhub.async_ops.str>
+  - name: partition
+    description: The ID of the partition.
+    isRequired: true
+    types:
+    - <xref:azure.eventhub.async_ops.str>
+  - name: offset
+    description: The offset from which to start receiving.
+    defaultValue: None
+    types:
+    - <xref:azure.eventhub.common.Offset>
+  - name: prefetch
+    description: The message prefetch count of the receiver. Default is 300.
+    defaultValue: '300'
+    types:
+    - <xref:azure.eventhub.async_ops.int>
+  - name: operation
+    defaultValue: None
+  - name: keep_alive
+    defaultValue: '30'
+  - name: auto_reconnect
+    defaultValue: 'True'
+  - name: loop
+    defaultValue: None
+  return:
+    types:
+    - <xref:azure.eventhub.async_ops.receiver_async.ReceiverAsync>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.add_async_sender
+  name: add_async_sender
+  summary: 'Add an async sender to the client to send ~azure.eventhub.common.EventData
+    object
+
+    to an EventHub.'
+  signature: add_async_sender(partition=None, operation=None, send_timeout=60, keep_alive=30,
+    auto_reconnect=True, loop=None)
+  parameters:
+  - name: partition
+    description: 'Optionally specify a particular partition to send to.
+
+      If omitted, the events will be distributed to available partitions via
+
+      round-robin.'
+    defaultValue: None
+    types:
+    - <xref:azure.eventhub.async_ops.str>
+  - name: send_timeout
+    description: 'The timeout in seconds for an individual event to be sent from the
+      time that it is
+
+      queued. Default value is 60 seconds. If set to 0, there will be no timeout.'
+    defaultValue: '60'
+    types:
+    - <xref:azure.eventhub.async_ops.int>
+  - name: keep_alive
+    description: 'The time interval in seconds between pinging the connection to keep
+      it alive during
+
+      periods of inactivity. The default value is 30 seconds. If set to *None*, the
+      connection will not
+
+      be pinged.'
+    defaultValue: '30'
+    types:
+    - <xref:azure.eventhub.async_ops.int>
+  - name: auto_reconnect
+    description: 'Whether to automatically reconnect the sender if a retryable error
+      occurs.
+
+      Default value is *True*.'
+    defaultValue: 'True'
+    types:
+    - <xref:azure.eventhub.async_ops.bool>
+  - name: operation
+    defaultValue: None
+  - name: loop
+    defaultValue: None
+  return:
+    types:
+    - <xref:azure.eventhub.async_ops.sender_async.SenderAsync>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.get_eventhub_info_async
+  name: get_eventhub_info_async
+  summary: Get details on the specified EventHub async.
+  signature: async get_eventhub_info_async()
+  return:
+    types:
+    - <xref:azure.eventhub.async_ops.dict>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.run_async
+  name: run_async
+  summary: 'Run the EventHubClient asynchronously.
+
+    Opens the connection and starts running all AsyncSender/AsyncReceiver clients.
+
+    Returns a list of the start up results. For a succcesful client start the
+
+    result will be *None*, otherwise the exception raised.
+
+    If all clients failed to start, then run will fail, shut down the connection
+
+    and raise an exception.
+
+    If at least one client starts up successfully the run command will succeed.'
+  signature: async run_async()
+  return:
+    types:
+    - <xref:azure.eventhub.async_ops.list>[<xref:azure.eventhub.common.EventHubError>]
+- uid: azure.eventhub.async_ops.EventHubClientAsync.stop_async
+  name: stop_async
+  summary: Stop the EventHubClient and all its Sender/Receiver clients.
+  signature: async stop_async()

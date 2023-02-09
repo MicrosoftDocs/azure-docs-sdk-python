@@ -1,0 +1,137 @@
+### YamlMime:PythonClass
+uid: uamqp.message.BatchMessage
+name: BatchMessage
+fullName: uamqp.message.BatchMessage
+module: uamqp.message
+inheritances:
+- uamqp.message.Message
+summary: 'A Batched AMQP message.
+
+
+  This batch message encodes multiple message bodies into a single message
+
+  to increase through-put over the wire. It requires server-side support
+
+  to unpackage the batched messages and so will not be universally supported.'
+constructor:
+  syntax: BatchMessage(data=None, properties=None, application_properties=None, annotations=None,
+    header=None, multi_messages=False, encoding='UTF-8')
+  parameters:
+  - name: data
+    description: 'An iterable source of data, where each value will be considered
+      the
+
+      body of a single message in the batch.'
+    defaultValue: None
+    types:
+    - <xref:uamqp.message.iterable>
+  - name: properties
+    description: 'Properties to add to the message. If multiple messages are created
+
+      these properties will be applied to each message.'
+    defaultValue: None
+    types:
+    - <xref:uamqp.message.MessageProperties>
+  - name: application_properties
+    description: 'Service specific application properties. If multiple messages
+
+      are created these properties will be applied to each message.'
+    defaultValue: None
+    types:
+    - <xref:uamqp.message.dict>
+  - name: annotations
+    description: 'Service specific message annotations. If multiple messages are created
+
+      these properties will be applied to each message. Keys in the dictionary
+
+      must be *types.AMQPSymbol* or *types.AMQPuLong*.'
+    defaultValue: None
+    types:
+    - <xref:uamqp.message.dict>
+  - name: header
+    description: The message header. This header will be applied to each message in
+      the batch.
+    defaultValue: None
+    types:
+    - <xref:uamqp.message.MessageHeader>
+  - name: multi_messages
+    description: 'Whether to send the supplied data across multiple messages. If set
+      to
+
+      *False*, all the data will be sent in a single message, and an error raised
+      if the message
+
+      is too large. If set to *True*, the data will automatically be divided across
+      multiple messages
+
+      of an appropriate size. The default is *False*.'
+    defaultValue: 'False'
+    types:
+    - <xref:uamqp.message.bool>
+  - name: encoding
+    description: 'The encoding to use for parameters supplied as strings.
+
+      Default is ''UTF-8'''
+    defaultValue: UTF-8
+    types:
+    - <xref:uamqp.message.str>
+variables:
+- description: 'A custom callback to be run on completion of
+
+    the send operation of this message. The callback must take two parameters,
+
+    a result (of type ~uamqp.constants.MessageSendResult) and an error (of type
+
+    Exception). The error parameter may be None if no error ocurred or the error
+
+    information was undetermined.'
+  name: on_send_complete
+  types:
+  - <xref:uamqp.message.callable>[<xref:uamqp.constants.MessageSendResult>, <xref:uamqp.message.Exception>]
+- description: 'The is the specific message format to inform the service the
+
+    the body should be interpreted as multiple messages. The value is 0x80013700.'
+  name: batch_format
+  types:
+  - <xref:uamqp.message.int>
+- description: 'The maximum data size in bytes to allow in a single message.
+
+    By default this is 256kb. If sending a single batch message, an error will be
+    raised
+
+    if the supplied data exceeds this maximum. If sending multiple batch messages,
+    this
+
+    value will be used to divide the supplied data between messages.'
+  name: max_message_length
+  types:
+  - <xref:uamqp.message.int>
+methods:
+- uid: uamqp.message.BatchMessage.gather
+  name: gather
+  summary: 'Return all the messages represented by this object. This will convert
+
+    the batch data into individual Message objects, which may be one
+
+    or more if multi_messages is set to *True*.'
+  signature: gather()
+  return:
+    types:
+    - <xref:uamqp.message.list>[<xref:uamqp.message.Message>]
+attributes:
+- uid: uamqp.message.BatchMessage.data
+  name: data
+  summary: "Returns an iterable source of data, where each value will be considered\
+    \ the\n   body of a single message in the batch."
+  return:
+    types:
+    - <xref:uamqp.message.iterable>
+- uid: uamqp.message.BatchMessage.batch_format
+  name: batch_format
+  signature: batch_format = 2147563264
+- uid: uamqp.message.BatchMessage.max_message_length
+  name: max_message_length
+  signature: max_message_length = 1048576
+- uid: uamqp.message.BatchMessage.size_offset
+  name: size_offset
+  signature: size_offset = 0

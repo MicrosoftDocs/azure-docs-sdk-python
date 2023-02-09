@@ -1,0 +1,95 @@
+### YamlMime:PythonClass
+uid: azure.schemaregistry.serializer.avroserializer.aio.AvroSerializer
+name: AvroSerializer
+fullName: azure.schemaregistry.serializer.avroserializer.aio.AvroSerializer
+module: azure.schemaregistry.serializer.avroserializer.aio
+inheritances:
+- builtins.object
+summary: 'AvroSerializer provides the ability to serialize and deserialize data according
+
+  to the given avro schema. It would automatically register, get and cache the schema.'
+constructor:
+  syntax: 'AvroSerializer(**kwargs: Any)'
+  parameters:
+  - name: client
+    description: 'Required. The schema registry client
+
+      which is used to register schema and retrieve schema from the service.'
+    types:
+    - <xref:azure.schemaregistry.aio.SchemaRegistryClient>
+  - name: group_name
+    description: Required. Schema group under which schema should be registered.
+    types:
+    - <xref:str>
+  - name: auto_register_schemas
+    description: 'When true, register new schemas passed to serialize.
+
+      Otherwise, and by default, serialization will fail if the schema has not been
+      pre-registered in the registry.'
+    types:
+    - <xref:bool>
+methods:
+- uid: azure.schemaregistry.serializer.avroserializer.aio.AvroSerializer.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close() -> None
+- uid: azure.schemaregistry.serializer.avroserializer.aio.AvroSerializer.deserialize
+  name: deserialize
+  summary: 'Decode bytes data.
+
+
+    Data must follow format of associated Avro RecordSchema:
+
+    [https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)'
+  signature: 'async deserialize(value: bytes, **kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: value
+    description: The bytes data needs to be decoded.
+    isRequired: true
+    types:
+    - <xref:azure.schemaregistry.serializer.avroserializer.aio.bytes>
+  return:
+    types:
+    - <xref:azure.schemaregistry.serializer.avroserializer.aio.Dict>[<xref:azure.schemaregistry.serializer.avroserializer.aio.str>,
+      <xref:azure.schemaregistry.serializer.avroserializer.aio.Any>]
+  exceptions:
+  - type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaParseError
+    description: Indicates an issue with parsing schema.
+  - type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaDeserializationError
+    description: Indicates an issue with deserializing value.
+- uid: azure.schemaregistry.serializer.avroserializer.aio.AvroSerializer.serialize
+  name: serialize
+  summary: 'Encode data with the given schema. The returns bytes are consisted of:
+    The first 4 bytes
+
+    denoting record format identifier. The following 32 bytes denoting schema id returned
+    by schema registry
+
+    service. The remaining bytes are the real data payload.
+
+
+    Schema must be an Avro RecordSchema:
+
+    [https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)'
+  signature: 'async serialize(value: Mapping[str, Any], **kwargs: Any) -> bytes'
+  parameters:
+  - name: value
+    description: The data to be encoded.
+    isRequired: true
+    types:
+    - <xref:azure.schemaregistry.serializer.avroserializer.aio.Mapping>[<xref:azure.schemaregistry.serializer.avroserializer.aio.str>,
+      <xref:azure.schemaregistry.serializer.avroserializer.aio.Any>]
+  - name: schema
+    description: Required. The schema used to encode the data.
+    types:
+    - <xref:str>
+  return:
+    types:
+    - <xref:azure.schemaregistry.serializer.avroserializer.aio.bytes>
+  exceptions:
+  - type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaParseError
+    description: Indicates an issue with parsing schema.
+  - type: azure.schemaregistry.serializer.avroserializer.exceptions.SchemaSerializationError
+    description: Indicates an issue with serializing data for provided schema.

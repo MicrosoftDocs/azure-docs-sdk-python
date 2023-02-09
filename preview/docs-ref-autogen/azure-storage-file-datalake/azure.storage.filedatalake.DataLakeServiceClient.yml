@@ -1,0 +1,662 @@
+### YamlMime:PythonClass
+uid: azure.storage.filedatalake.DataLakeServiceClient
+name: DataLakeServiceClient
+fullName: azure.storage.filedatalake.DataLakeServiceClient
+module: azure.storage.filedatalake
+inheritances:
+- azure.storage.filedatalake._shared.base_client.StorageAccountHostsMixin
+summary: 'A client to interact with the DataLake Service at the account level.
+
+
+  This client provides operations to retrieve and configure the account properties
+
+  as well as list, create and delete file systems within the account.
+
+  For operations relating to a specific file system, directory or file, clients for
+  those entities
+
+  can also be retrieved using the *get_client* functions.'
+constructor:
+  syntax: 'DataLakeServiceClient(account_url: str, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any)'
+  parameters:
+  - name: account_url
+    description: 'The URL to the DataLake storage account. Any other entities included
+
+      in the URL path (e.g. file system or file) will be discarded. This URL can be
+      optionally
+
+      authenticated with a SAS token.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
+variables:
+- description: The full endpoint URL to the datalake service endpoint.
+  name: url
+  types:
+  - <xref:azure.storage.filedatalake.str>
+- description: The full primary endpoint URL.
+  name: primary_endpoint
+  types:
+  - <xref:azure.storage.filedatalake.str>
+- description: The hostname of the primary endpoint.
+  name: primary_hostname
+  types:
+  - <xref:azure.storage.filedatalake.str>
+examples:
+- "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
+  datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\\\
+  samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake import\
+  \ DataLakeServiceClient\n   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
+  \n   ````\n\nCreating the DataLakeServiceClient with Azure Identity credentials.<!--[!code-python[Main](les\\\
+  datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\\\
+  samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from azure.identity import ClientSecretCredential\n\
+  \   token_credential = ClientSecretCredential(\n       self.active_directory_tenant_id,\n\
+  \       self.active_directory_application_id,\n       self.active_directory_application_secret,\n\
+  \   )\n   datalake_service_client = DataLakeServiceClient(\"https://{}.dfs.core.windows.net\"\
+  .format(self.account_name),\n                                                  \
+  \ credential=token_credential)\n\n   ````\n"
+methods:
+- uid: azure.storage.filedatalake.DataLakeServiceClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: close() -> None
+- uid: azure.storage.filedatalake.DataLakeServiceClient.create_file_system
+  name: create_file_system
+  summary: 'Creates a new file system under the specified account.
+
+
+    If the file system with the same name already exists, a ResourceExistsError will
+
+    be raised. This method returns a client with which to interact with the newly
+
+    created file system.'
+  signature: 'create_file_system(file_system: FileSystemProperties | str, metadata:
+    Dict[str, str] | None = None, public_access: PublicAccess | None = None, **kwargs)
+    -> FileSystemClient'
+  parameters:
+  - name: file_system
+    description: The name of the file system to create.
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+  - name: metadata
+    description: 'A dict with name-value pairs to associate with the
+
+      file system as metadata. Example: *{''Category'':''test''}*'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.filedatalake.dict>(<xref:azure.storage.filedatalake.str>,
+      <xref:azure.storage.filedatalake.str>)
+  - name: public_access
+    description: 'Possible values include: file system, file.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.filedatalake.PublicAccess>
+  - name: encryption_scope_options
+    description: 'Specifies the default encryption scope to set on the file system
+      and use for
+
+      all future writes.
+
+
+      New in version 12.9.0.'
+    types:
+    - <xref:dict>
+    - <xref:azure.storage.filedatalake.EncryptionScopeOptions>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.storage.filedatalake.FileSystemClient>
+  examples:
+  - "Creating a file system in the datalake service.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   datalake_service_client.create_file_system(\"\
+    filesystem\")\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.delete_file_system
+  name: delete_file_system
+  summary: 'Marks the specified file system for deletion.
+
+
+    The file system and any files contained within it are later deleted during garbage
+    collection.
+
+    If the file system is not found, a ResourceNotFoundError will be raised.'
+  signature: 'delete_file_system(file_system: FileSystemProperties | str, **kwargs)
+    -> FileSystemClient'
+  parameters:
+  - name: file_system
+    description: 'The file system to delete. This can either be the name of the file
+      system,
+
+      or an instance of FileSystemProperties.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+    - <xref:azure.storage.filedatalake.FileSystemProperties>
+  - name: lease
+    description: 'If specified, delete_file_system only succeeds if the
+
+      file system''s lease is active and matches this ID.
+
+      Required if the file system has an active lease.'
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.storage.filedatalake.None>
+  examples:
+  - "Deleting a file system in the datalake service.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   datalake_service_client.delete_file_system(\"\
+    filesystem\")\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.from_connection_string
+  name: from_connection_string
+  summary: 'Create DataLakeServiceClient from a Connection String.
+
+
+    :return a DataLakeServiceClient
+
+    :rtype ~azure.storage.filedatalake.DataLakeServiceClient'
+  signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential from azure.core.credentials, an account
+      shared access
+
+      key, or an instance of a TokenCredentials class from azure.identity.
+
+      Credentials provided here will take precedence over those in the connection
+      string.'
+    defaultValue: None
+  examples:
+  - "Creating the DataLakeServiceClient from a connection string.<!--[!code-python[Main](les\\\
+    datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake\
+    \ import DataLakeServiceClient\n   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
+    \n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.get_directory_client
+  name: get_directory_client
+  summary: 'Get a client to interact with the specified directory.
+
+
+    The directory need not already exist.'
+  signature: 'get_directory_client(file_system: FileSystemProperties | str, directory:
+    DirectoryProperties | str) -> DataLakeDirectoryClient'
+  parameters:
+  - name: file_system
+    description: 'The file system that the directory is in. This can either be the
+      name of the file system,
+
+      or an instance of FileSystemProperties.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+    - <xref:azure.storage.filedatalake.FileSystemProperties>
+  - name: directory
+    description: 'The directory with which to interact. This can either be the name
+      of the directory,
+
+      or an instance of DirectoryProperties.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+    - <xref:azure.storage.filedatalake.DirectoryProperties>
+  return:
+    description: A DataLakeDirectoryClient.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
+  examples:
+  - "Getting the directory client to interact with a specific directory.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   directory_client = datalake_service_client.get_directory_client(file_system_client.file_system_name,\n\
+    \                                                                   \"mydirectory\"\
+    )\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.get_file_client
+  name: get_file_client
+  summary: 'Get a client to interact with the specified file.
+
+
+    The file need not already exist.'
+  signature: 'get_file_client(file_system: FileSystemProperties | str, file_path:
+    FileProperties | str) -> DataLakeFileClient'
+  parameters:
+  - name: file_system
+    description: 'The file system that the file is in. This can either be the name
+      of the file system,
+
+      or an instance of FileSystemProperties.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+    - <xref:azure.storage.filedatalake.FileSystemProperties>
+  - name: file_path
+    description: 'The file with which to interact. This can either be the full path
+      of the file(from the root directory),
+
+      or an instance of FileProperties. eg. directory/subdirectory/file'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+    - <xref:azure.storage.filedatalake.FileProperties>
+  return:
+    description: A DataLakeFileClient.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeFileClient>
+  examples:
+  - "Getting the file client to interact with a specific file.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   file_client = datalake_service_client.get_file_client(file_system_client.file_system_name,\
+    \ \"myfile\")\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.get_file_system_client
+  name: get_file_system_client
+  summary: 'Get a client to interact with the specified file system.
+
+
+    The file system need not already exist.'
+  signature: 'get_file_system_client(file_system: FileSystemProperties | str) -> FileSystemClient'
+  parameters:
+  - name: file_system
+    description: 'The file system. This can either be the name of the file system,
+
+      or an instance of FileSystemProperties.'
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+    - <xref:azure.storage.filedatalake.FileSystemProperties>
+  return:
+    description: A FileSystemClient.
+    types:
+    - <xref:azure.storage.filedatalake.FileSystemClient>
+  examples:
+  - "Getting the file system client to interact with a specific file system.<!--[!code-python[Main](les\\\
+    datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # Instantiate a DataLakeServiceClient\
+    \ using a connection string\n   from azure.storage.filedatalake import DataLakeServiceClient\n\
+    \   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
+    \n   # Instantiate a FileSystemClient\n   file_system_client = datalake_service_client.get_file_system_client(\"\
+    mynewfilesystem\")\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.get_service_properties
+  name: get_service_properties
+  summary: 'Gets the properties of a storage account''s datalake service, including
+
+    Azure Storage Analytics.
+
+
+    New in version 12.4.0: This operation was introduced in API version ''2020-06-12''.'
+  signature: 'get_service_properties(**kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'An object containing datalake service properties such as
+
+      analytics logging, hour/minute metrics, cors rules, etc.'
+    types:
+    - <xref:azure.storage.filedatalake.Dict>[<xref:azure.storage.filedatalake.str>,
+      <xref:azure.storage.filedatalake.Any>]
+- uid: azure.storage.filedatalake.DataLakeServiceClient.get_user_delegation_key
+  name: get_user_delegation_key
+  summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
+
+    A token credential must be present on the service object for this request to succeed.'
+  signature: 'get_user_delegation_key(key_start_time: datetime, key_expiry_time: datetime,
+    **kwargs: Any) -> UserDelegationKey'
+  parameters:
+  - name: key_start_time
+    description: A DateTime value. Indicates when the key becomes valid.
+    isRequired: true
+    types:
+    - <xref:datetime.datetime>
+  - name: key_expiry_time
+    description: A DateTime value. Indicates when the key stops being valid.
+    isRequired: true
+    types:
+    - <xref:datetime.datetime>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: The user delegation key.
+    types:
+    - <xref:azure.storage.filedatalake.UserDelegationKey>
+  examples:
+  - "Get user delegation key from datalake service client.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from datetime import datetime, timedelta\n\
+    \   user_delegation_key = datalake_service_client.get_user_delegation_key(datetime.utcnow(),\n\
+    \                                                                         datetime.utcnow()\
+    \ + timedelta(hours=1))\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.list_file_systems
+  name: list_file_systems
+  summary: 'Returns a generator to list the file systems under the specified account.
+
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service and stop when all file systems have been returned.'
+  signature: 'list_file_systems(name_starts_with: str | None = None, include_metadata:
+    bool | None = None, **kwargs) -> ItemPaged[FileSystemProperties]'
+  parameters:
+  - name: name_starts_with
+    description: 'Filters the results to return only file systems whose names
+
+      begin with the specified prefix.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.filedatalake.str>
+  - name: include_metadata
+    description: 'Specifies that file system metadata be returned in the response.
+
+      The default value is *False*.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.filedatalake.bool>
+  - name: results_per_page
+    description: 'The maximum number of file system names to retrieve per API
+
+      call. If the request does not specify the server will return up to 5,000 items
+      per page.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  - name: include_deleted
+    description: 'Specifies that deleted file systems to be returned in the response.
+      This is for file system restore enabled
+
+      account. The default value is *False*.
+
+      .. versionadded:: 12.3.0'
+    types:
+    - <xref:bool>
+  - name: include_system
+    description: 'Flag specifying that system filesystems should be included.
+
+      .. versionadded:: 12.6.0'
+    types:
+    - <xref:bool>
+  return:
+    description: An iterable (auto-paging) of FileSystemProperties.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.filedatalake.FileSystemProperties>]
+  examples:
+  - "Listing the file systems in the datalake service.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\61\\\\azure-storage-file-datalake-12.10.0b1\\\
+    \\samples\\\\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   file_systems = datalake_service_client.list_file_systems()\n\
+    \   for file_system in file_systems:\n       print(file_system.name)\n\n   ````\n"
+- uid: azure.storage.filedatalake.DataLakeServiceClient.set_service_properties
+  name: set_service_properties
+  summary: 'Sets the properties of a storage account''s Datalake service, including
+
+    Azure Storage Analytics.
+
+
+    New in version 12.4.0: This operation was introduced in API version ''2020-06-12''.
+
+
+    If an element (e.g. analytics_logging) is left as None, the
+
+    existing settings on the service for that functionality are preserved.'
+  signature: 'set_service_properties(**kwargs: Any) -> None'
+  parameters:
+  - name: analytics_logging
+    description: Groups the Azure Analytics Logging settings.
+  - name: hour_metrics
+    description: 'The hour metrics settings provide a summary of request
+
+      statistics grouped by API in hourly aggregates.'
+  - name: minute_metrics
+    description: 'The minute metrics settings provide request statistics
+
+      for each minute.'
+  - name: cors
+    description: 'You can include up to five CorsRule elements in the
+
+      list. If an empty list is specified, all CORS rules will be deleted,
+
+      and CORS will be disabled for the service.'
+  - name: target_version
+    description: 'Indicates the default version to use for requests if an incoming
+
+      request''s version is not specified.'
+    types:
+    - <xref:str>
+  - name: delete_retention_policy
+    description: 'The delete retention policy specifies whether to retain deleted
+      files/directories.
+
+      It also specifies the number of days and versions of file/directory to keep.'
+  - name: static_website
+    description: 'Specifies whether the static website feature is enabled,
+
+      and if yes, indicates the index document and 404 error document to use.'
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.storage.filedatalake.None>
+- uid: azure.storage.filedatalake.DataLakeServiceClient.undelete_file_system
+  name: undelete_file_system
+  summary: 'Restores soft-deleted filesystem.
+
+
+    Operation will only be successful if used within the specified number of days
+
+    set in the delete retention policy.
+
+
+    New in version 12.3.0: This operation was introduced in API version ''2019-12-12''.'
+  signature: 'undelete_file_system(name: str, deleted_version: str, **kwargs: Any)
+    -> FileSystemClient'
+  parameters:
+  - name: name
+    description: Specifies the name of the deleted filesystem to restore.
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+  - name: deleted_version
+    description: Specifies the version of the deleted filesystem to restore.
+    isRequired: true
+    types:
+    - <xref:azure.storage.filedatalake.str>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.storage.filedatalake.FileSystemClient>

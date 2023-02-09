@@ -1,0 +1,70 @@
+### YamlMime:PythonClass
+uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin
+name: CBSAsyncAuthMixin
+fullName: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin
+module: uamqp.authentication.cbs_auth_async
+inheritances:
+- uamqp.authentication.cbs_auth.CBSAuthMixin
+summary: Mixin to handle sending and refreshing CBS auth tokens asynchronously.
+constructor:
+  syntax: CBSAsyncAuthMixin()
+methods:
+- uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.close_authenticator_async
+  name: close_authenticator_async
+  summary: Close the CBS auth channel and session asynchronously.
+  signature: async close_authenticator_async()
+- uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.create_authenticator_async
+  name: create_authenticator_async
+  summary: 'Create the async AMQP session and the CBS channel with which
+
+    to negotiate the token.'
+  signature: async create_authenticator_async(connection, debug=False, loop=None,
+    **kwargs)
+  parameters:
+  - name: connection
+    description: 'The underlying AMQP connection on which
+
+      to create the session.'
+    isRequired: true
+    types:
+    - <xref:uamqp.async_ops.connection_async.ConnectionAsync>
+  - name: debug
+    description: 'Whether to emit network trace logging events for the
+
+      CBS session. Default is *False*. Logging events are set at INFO level.'
+    defaultValue: 'False'
+    types:
+    - <xref:uamqp.authentication.cbs_auth_async.bool>
+  - name: loop
+    defaultValue: None
+  return:
+    types:
+    - <xref:uamqp.c_uamqp.CBSTokenAuth>
+- uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.handle_token_async
+  name: handle_token_async
+  summary: 'This coroutine is called periodically to check the status of the current
+
+    token if there is one, and request a new one if needed.
+
+    If the token request fails, it will be retried according to the retry policy.
+
+    A token refresh will be attempted if the token will expire soon.
+
+
+    This function will return a tuple of two booleans. The first represents whether
+
+    the token authentication has not completed within it''s given timeout window.
+    The
+
+    second indicates whether the token negotiation is still in progress.'
+  signature: async handle_token_async()
+  return:
+    types:
+    - <xref:uamqp.authentication.cbs_auth_async.tuple>[<xref:uamqp.authentication.cbs_auth_async.bool>,
+      <xref:uamqp.authentication.cbs_auth_async.bool>]
+  exceptions:
+  - type: uamqp.errors.AuthenticationException if the token authentication fails.
+  - type: uamqp.errors.TokenExpired if the token has expired and cannot berefreshed.
+attributes:
+- uid: uamqp.authentication.cbs_auth_async.CBSAsyncAuthMixin.loop
+  name: loop
