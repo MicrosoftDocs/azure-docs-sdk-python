@@ -40,7 +40,7 @@ To manage your Azure Service Bus resources like namespaces, queues, topics, subs
 
 |    Library    |    Reference    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-|    [azure-mgmt-servicebus](https://pypi.org/project/azure-mgmt-servicebus/)    |    [API Reference for azure-mgmt-servicebus](https://docs.microsoft.com/python/api/overview/azure/servicebus/management?view=azure-python)    |   [Source code for azure-mgmt-servicebus](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-mgmt-servicebus)    |
+|    [azure-mgmt-servicebus](https://pypi.org/project/azure-mgmt-servicebus/)    |    [API Reference for azure-mgmt-servicebus](/python/api/overview/azure/mgmt-servicebus-readme)    |   [Source code for azure-mgmt-servicebus](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/servicebus/azure-mgmt-servicebus)    |
 
 ## Next Steps
 
