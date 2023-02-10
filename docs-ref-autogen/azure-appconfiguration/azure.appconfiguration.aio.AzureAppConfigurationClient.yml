@@ -12,8 +12,8 @@ summary: "Represents a client that calls restful API of Azure App Configuration 
   \ or <xref:azure.core.credentials_async.AsyncTokenCredential>\n\nThis is the async\
   \ version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
 constructor:
-  syntax: 'AzureAppConfigurationClient(base_url: str, credential: Union[azure.appconfiguration._azure_appconfiguration_credential.AppConfigConnectionStringCredential,
-    AsyncTokenCredential], **kwargs: Any)'
+  syntax: 'AzureAppConfigurationClient(base_url: str, credential: AppConfigConnectionStringCredential
+    | AsyncTokenCredential, **kwargs: Any)'
   parameters:
   - name: base_url
   - name: credential
@@ -29,8 +29,8 @@ methods:
     \       content_type=\"my content type\",\n       tags={\"my tag\": \"my tag value\"\
     }\n   )\n   added_config_setting = await async_client.add_configuration_setting(config_setting)\n\
     \   ````"
-  signature: 'async add_configuration_setting(configuration_setting: azure.appconfiguration._models.ConfigurationSetting,
-    **kwargs: Any) -> azure.appconfiguration._models.ConfigurationSetting'
+  signature: 'async add_configuration_setting(configuration_setting: ConfigurationSetting,
+    **kwargs: Any) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting object to be added
@@ -58,19 +58,19 @@ methods:
     , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   # in async\
     \ function\n   deleted_config_setting = await async_client.delete_configuration_setting(\n\
     \       key=\"MyKey\", label=\"MyLabel\"\n   )\n   ````"
-  signature: 'async delete_configuration_setting(key: str, label: Optional[str] =
-    None, **kwargs: Any) -> azure.appconfiguration._models.ConfigurationSetting'
+  signature: 'async delete_configuration_setting(key: str, label: str | None = None,
+    **kwargs: Any) -> ConfigurationSetting'
   parameters:
   - name: key
     description: key used to identify the ConfigurationSetting
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: label
     description: label used to identify the ConfigurationSetting. Default is *None*.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: etag
     description: check if the ConfigurationSetting is changed. Set None to skip checking
       etag
@@ -103,7 +103,7 @@ methods:
     \ -->\n\n````python\n\n   from azure.appconfiguration.aio import AzureAppConfigurationClient\n\
     \   connection_str = \"<my connection string>\"\n   async_client = AzureAppConfigurationClient.from_connection_string(connection_str)\n\
     \   ````"
-  signature: 'from_connection_string(connection_string: str, **kwargs: Any) -> azure.appconfiguration.aio._azure_configuration_client_async.AzureAppConfigurationClient'
+  signature: 'from_connection_string(connection_string: str, **kwargs: Any) -> AzureAppConfigurationClient'
   parameters:
   - name: connection_string
     description: 'Connection String
@@ -113,7 +113,7 @@ methods:
       used to access the Azure App Configuration.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   return:
     description: An AzureAppConfigurationClient authenticated with the connection
       string
@@ -128,27 +128,27 @@ methods:
     \ -->\n\n````python\n\n   # in async function\n   fetched_config_setting = await\
     \ async_client.get_configuration_setting(\n       key=\"MyKey\", label=\"MyLabel\"\
     \n   )\n   ````"
-  signature: 'async get_configuration_setting(key: str, label: Optional[str] = None,
-    etag: Optional[str] = ''*'', match_condition: Optional[azure.core._match_conditions.MatchConditions]
-    = <MatchConditions.Unconditionally: 1>, **kwargs: Any) -> Union[None, azure.appconfiguration._models.ConfigurationSetting]'
+  signature: 'async get_configuration_setting(key: str, label: str | None = None,
+    etag: str | None = ''*'', match_condition: MatchConditions | None = MatchConditions.Unconditionally,
+    **kwargs: Any) -> None | ConfigurationSetting'
   parameters:
   - name: key
     description: key of the ConfigurationSetting
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: label
     description: label used to identify the ConfigurationSetting. Default is *None*.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: etag
     description: check if the ConfigurationSetting is changed. Set None to skip checking
       etag
     isRequired: true
     types:
-    - <xref:str>
-    - <xref:None>
+    - <xref:azure.appconfiguration.aio.str>
+    - <xref:azure.appconfiguration.aio.None>
   - name: match_condition
     description: The match condition to use upon the etag
     isRequired: true
@@ -182,8 +182,8 @@ methods:
     \       label_filter=\"Labe*\", key_filter=\"Ke*\", accept_datetime=accept_datetime\n\
     \   )\n   async for item in filtered_listed:\n       pass  # do something\n  \
     \ ````"
-  signature: 'list_configuration_settings(key_filter: Optional[str] = None, label_filter:
-    Optional[str] = None, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.appconfiguration._models.ConfigurationSetting]'
+  signature: 'list_configuration_settings(key_filter: str | None = None, label_filter:
+    str | None = None, **kwargs: Any) -> AsyncItemPaged[ConfigurationSetting]'
   parameters:
   - name: key_filter
     description: 'filter results based on their keys. ''*'' can be
@@ -191,14 +191,14 @@ methods:
       used as wildcard in the beginning or end of the filter'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: label_filter
     description: 'filter results based on their label. ''*'' can be
 
       used as wildcard in the beginning or end of the filter'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: accept_datetime
     description: filter out ConfigurationSetting created after this datetime
     types:
@@ -227,8 +227,8 @@ methods:
     \ = async_client.list_revisions(\n       label_filter=\"Labe*\", key_filter=\"\
     Ke*\", accept_datetime=accept_datetime\n   )\n   async for item in filtered_revisions:\n\
     \       pass  # do something\n   ````"
-  signature: 'list_revisions(key_filter: Optional[str] = None, label_filter: Optional[str]
-    = None, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.appconfiguration._models.ConfigurationSetting]'
+  signature: 'list_revisions(key_filter: str | None = None, label_filter: str | None
+    = None, **kwargs: Any) -> AsyncItemPaged[ConfigurationSetting]'
   parameters:
   - name: key_filter
     description: 'filter results based on their keys. ''*'' can be
@@ -236,14 +236,14 @@ methods:
       used as wildcard in the beginning or end of the filter'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: label_filter
     description: 'filter results based on their label. ''*'' can be
 
       used as wildcard in the beginning or end of the filter'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>
   - name: accept_datetime
     description: filter out ConfigurationSetting created after this datetime
     types:
@@ -272,9 +272,9 @@ methods:
     ,\n       content_type=\"my set content type\",\n       tags={\"my set tag\":\
     \ \"my set tag value\"}\n   )\n   returned_config_setting = await async_client.set_configuration_setting(config_setting)\n\
     \   ````"
-  signature: 'async set_configuration_setting(configuration_setting: azure.appconfiguration._models.ConfigurationSetting,
-    match_condition: azure.core._match_conditions.MatchConditions = <MatchConditions.Unconditionally:
-    1>, **kwargs: Any) -> azure.appconfiguration._models.ConfigurationSetting'
+  signature: 'async set_configuration_setting(configuration_setting: ConfigurationSetting,
+    match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs:
+    Any) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be added (if not exists)         or updated
@@ -314,8 +314,8 @@ methods:
     MyLabel\"\n   )\n\n   read_only_config_setting = await async_client.set_read_only(config_setting)\n\
     \   read_only_config_setting = await client.set_read_only(config_setting, read_only=False)\n\
     \   ````"
-  signature: 'set_read_only(configuration_setting: azure.appconfiguration._models.ConfigurationSetting,
-    read_only: Optional[bool] = True, **kwargs: Any) -> azure.appconfiguration._models.ConfigurationSetting'
+  signature: 'set_read_only(configuration_setting: ConfigurationSetting, read_only:
+    bool | None = True, **kwargs: Any) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be set read only
@@ -326,7 +326,7 @@ methods:
     description: set the read only setting if true, else clear the read only setting
     isRequired: true
     types:
-    - <xref:bool>
+    - <xref:azure.appconfiguration.aio.bool>
   - name: match_condition
     description: The match condition to use upon the etag
     types:
@@ -353,4 +353,4 @@ methods:
     description: The sync token to be added to the internal list of tokens
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.appconfiguration.aio.str>

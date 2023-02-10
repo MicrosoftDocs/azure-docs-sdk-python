@@ -20,9 +20,9 @@ summary: 'A client to interact with a specific share, although that share may no
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
-  syntax: 'ShareClient(account_url: str, share_name: str, snapshot: Optional[Union[str,
-    Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any)'
+  syntax: 'ShareClient(account_url: str, share_name: str, snapshot: str | Dict[str,
+    Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -31,12 +31,12 @@ constructor:
       use the <xref:azure.storage.fileshare.ShareClient.from_share_url> classmethod.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: share_name
     description: The name of the share with which to interact.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: snapshot
     description: 'An optional share snapshot on which to operate. This can be the
       snapshot ID string
@@ -44,7 +44,7 @@ constructor:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -98,7 +98,7 @@ methods:
 
 
     New in version 12.5.0.'
-  signature: 'acquire_lease(**kwargs: Any) -> azure.storage.fileshare._lease.ShareLeaseClient'
+  signature: 'acquire_lease(**kwargs: Any) -> ShareLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -148,13 +148,13 @@ methods:
   summary: 'Creates a directory in the share and returns a client to interact
 
     with the directory.'
-  signature: 'create_directory(directory_name: str, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+  signature: 'create_directory(directory_name: str, **kwargs: Any) -> ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the directory.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
   - name: timeout
@@ -190,7 +190,7 @@ methods:
     description: File permission, a Portable SDDL
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -206,7 +206,7 @@ methods:
   return:
     description: A file permission key
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
 - uid: azure.storage.fileshare.ShareClient.create_share
   name: create_share
   summary: 'Creates a new Share under the account. If a share with the
@@ -255,7 +255,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:azure.storage.fileshare.Dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
   examples:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
@@ -282,7 +282,7 @@ methods:
     is taken, with a DateTime value appended to indicate the time at which the
 
     snapshot was taken.'
-  signature: 'create_snapshot(**kwargs: Optional[Any]) -> Dict[str, Any]'
+  signature: 'create_snapshot(**kwargs: Any | None) -> Dict[str, Any]'
   parameters:
   - name: metadata
     description: Name-value pairs associated with the share as metadata.
@@ -303,7 +303,7 @@ methods:
   return:
     description: Share-updated property dict (Snapshot ID, Etag, and last modified).
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
   examples:
   - "Creates a snapshot of the file share.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -323,7 +323,7 @@ methods:
     description: The name of the directory.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -338,20 +338,19 @@ methods:
     - <xref:int>
   return:
     types:
-    - <xref:None>
+    - <xref:azure.storage.fileshare.None>
 - uid: azure.storage.fileshare.ShareClient.delete_share
   name: delete_share
   summary: 'Marks the specified share for deletion. The share is
 
     later deleted during garbage collection.'
-  signature: 'delete_share(delete_snapshots: Optional[bool] = False, **kwargs) ->
-    None'
+  signature: 'delete_share(delete_snapshots: bool | None = False, **kwargs) -> None'
   parameters:
   - name: delete_snapshots
     description: Indicates if snapshots are to be deleted.
     isRequired: true
     types:
-    - <xref:bool>
+    - <xref:azure.storage.fileshare.bool>
   - name: lease
     description: 'Required if the share has an active lease. Value can be a ShareLeaseClient
       object
@@ -386,20 +385,20 @@ methods:
 - uid: azure.storage.fileshare.ShareClient.from_connection_string
   name: from_connection_string
   summary: Create ShareClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, share_name: str, snapshot: Optional[Union[str,
-    Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any) -> typing_extensions.Self'
+  signature: 'from_connection_string(conn_str: str, share_name: str, snapshot: str
+    | Dict[str, Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: share_name
     description: The name of the share.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: snapshot
     description: 'The optional share snapshot on which to operate. This can be the
       snapshot ID string
@@ -407,7 +406,7 @@ methods:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -445,15 +444,15 @@ methods:
     \ \"sharesamples2\")\n\n   ````\n"
 - uid: azure.storage.fileshare.ShareClient.from_share_url
   name: from_share_url
-  signature: 'from_share_url(share_url: str, snapshot: Optional[Union[str, Dict[str,
-    Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any) -> typing_extensions.Self'
+  signature: 'from_share_url(share_url: str, snapshot: str | Dict[str, Any] | None
+    = None, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: share_url
     description: The full URI to the share.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: snapshot
     description: 'An optional share snapshot on which to operate. This can be the
       snapshot ID string
@@ -461,7 +460,7 @@ methods:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -493,13 +492,13 @@ methods:
   summary: 'Get a client to interact with the specified directory.
 
     The directory need not already exist.'
-  signature: 'get_directory_client(directory_path: Optional[str] = None) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+  signature: 'get_directory_client(directory_path: str | None = None) -> ShareDirectoryClient'
   parameters:
   - name: directory_path
     description: Path to the specified directory.
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   return:
     description: A Directory Client.
     types:
@@ -509,13 +508,13 @@ methods:
   summary: 'Get a client to interact with the specified file.
 
     The file need not already exist.'
-  signature: 'get_file_client(file_path: str) -> azure.storage.fileshare._file_client.ShareFileClient'
+  signature: 'get_file_client(file_path: str) -> ShareFileClient'
   parameters:
   - name: file_path
     description: Path to the specified file.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   return:
     description: A File Client.
     types:
@@ -532,7 +531,7 @@ methods:
     description: Key of the file permission to retrieve
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -548,7 +547,7 @@ methods:
   return:
     description: A file permission (a portable SDDL)
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
 - uid: azure.storage.fileshare.ShareClient.get_share_access_policy
   name: get_share_access_policy
   summary: 'Gets the permissions for the share. The permissions
@@ -582,7 +581,7 @@ methods:
   return:
     description: Access policy information in a dict.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:azure.storage.fileshare.dict>[<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>]
 - uid: azure.storage.fileshare.ShareClient.get_share_properties
   name: get_share_properties
   summary: 'Returns all user-defined metadata and system properties for the
@@ -663,26 +662,26 @@ methods:
   return:
     description: The approximate size of the data (in bytes) stored on the share.
     types:
-    - <xref:int>
+    - <xref:azure.storage.fileshare.int>
 - uid: azure.storage.fileshare.ShareClient.list_directories_and_files
   name: list_directories_and_files
   summary: Lists the directories and files under the share.
-  signature: 'list_directories_and_files(directory_name: Optional[str] = None, name_starts_with:
-    Optional[str] = None, marker: Optional[str] = None, **kwargs: Any) -> Iterable[Dict[str,
+  signature: 'list_directories_and_files(directory_name: str | None = None, name_starts_with:
+    str | None = None, marker: str | None = None, **kwargs: Any) -> Iterable[Dict[str,
     str]]'
   parameters:
   - name: directory_name
     description: Name of a directory.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: name_starts_with
     description: 'Filters the results to return only directories whose names
 
       begin with the specified prefix.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: marker
     description: 'An opaque continuation token. This value can be retrieved from the
 
@@ -691,7 +690,7 @@ methods:
       this generator will begin returning results from this point.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.fileshare.str>
   - name: include
     description: 'Include this parameter to specify one or more datasets to include
       in the response.
@@ -786,7 +785,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
 - uid: azure.storage.fileshare.ShareClient.set_share_metadata
   name: set_share_metadata
   summary: 'Sets the metadata for the share.
@@ -804,7 +803,7 @@ methods:
     description: Name-value pairs associated with the share as metadata.
     isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.str>)
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -831,7 +830,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
   examples:
   - "Sets the share metadata.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
@@ -890,7 +889,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
   examples:
   - "Sets the share properties.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -915,7 +914,7 @@ methods:
       Must be greater than 0, and less than or equal to 5TB.'
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:azure.storage.fileshare.int>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -942,7 +941,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.fileshare.dict>(<xref:azure.storage.fileshare.str>, <xref:azure.storage.fileshare.Any>)
   examples:
   - "Sets the share quota.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\

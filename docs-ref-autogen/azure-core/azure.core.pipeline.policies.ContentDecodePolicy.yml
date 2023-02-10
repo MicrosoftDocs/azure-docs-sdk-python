@@ -7,13 +7,13 @@ inheritances:
 - azure.core.pipeline.policies._base.SansIOHTTPPolicy
 summary: Policy for decoding unstreamed response content.
 constructor:
-  syntax: 'ContentDecodePolicy(response_encoding: Optional[str] = None, **kwargs)'
+  syntax: 'ContentDecodePolicy(response_encoding: str | None = None, **kwargs)'
   parameters:
   - name: response_encoding
     description: The encoding to use if known for this service (will disable auto-detection)
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.core.pipeline.policies.str>
 methods:
 - uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_http_generics
   name: deserialize_from_http_generics
@@ -21,8 +21,8 @@ methods:
 
 
     Headers will tested for "content-type"'
-  signature: 'deserialize_from_http_generics(response: azure.core.pipeline.policies._universal.HTTPResponseType,
-    encoding: Optional[str] = None)'
+  signature: 'deserialize_from_http_generics(response: HTTPResponseType, encoding:
+    str | None = None)'
   parameters:
   - name: response
     description: The HTTP response
@@ -43,9 +43,8 @@ methods:
     Accept a stream of data as well, but will be load at once in memory for now.
 
     If no content-type, will return the string version (not bytes, not stream)'
-  signature: 'deserialize_from_text(data: Optional[Union[AnyStr, IO]], mime_type:
-    Optional[str] = None, response: Optional[azure.core.pipeline.policies._universal.HTTPResponseType]
-    = None)'
+  signature: 'deserialize_from_text(data: AnyStr | IO | None, mime_type: str | None
+    = None, response: HTTPResponseType | None = None)'
   parameters:
   - name: response
     description: The HTTP response.
@@ -56,7 +55,7 @@ methods:
     description: The mime type. As mime type, charset is not expected.
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.core.pipeline.policies.str>
   - name: response
     description: If passed, exception will be annotated with that response
     isRequired: true
@@ -70,7 +69,7 @@ methods:
 - uid: azure.core.pipeline.policies.ContentDecodePolicy.on_request
   name: on_request
   summary: Is executed before sending the request from next policy.
-  signature: 'on_request(request: azure.core.pipeline.PipelineRequest) -> None'
+  signature: 'on_request(request: PipelineRequest) -> None'
   parameters:
   - name: request
     description: Request to be modified before sent from next policy.
@@ -86,9 +85,8 @@ methods:
     Will follow Content-Type to parse.
 
     We assume everything is UTF8 (BOM acceptable).'
-  signature: 'on_response(request: azure.core.pipeline.PipelineRequest[azure.core.pipeline.policies._universal.HTTPRequestType],
-    response: azure.core.pipeline.PipelineResponse[azure.core.pipeline.policies._universal.HTTPRequestType,
-    azure.core.pipeline.policies._universal.HTTPResponseType]) -> None'
+  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
+    HTTPResponseType]) -> None'
   parameters:
   - name: request
     description: The PipelineRequest object.

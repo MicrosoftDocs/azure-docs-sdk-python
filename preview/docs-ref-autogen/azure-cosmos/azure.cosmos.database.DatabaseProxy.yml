@@ -19,8 +19,8 @@ summary: "An interface to interact with a specific database.\n\nThis class shoul
   \ path of the collections resource. \n\n* *_users*: The addressable path of the\
   \ users resource."
 constructor:
-  syntax: 'DatabaseProxy(client_connection: azure.cosmos._cosmos_client_connection.CosmosClientConnection,
-    id: str, properties: Optional[Dict[str, Any]] = None)'
+  syntax: 'DatabaseProxy(client_connection: CosmosClientConnection, id: str, properties:
+    Dict[str, Any] = None)'
   parameters:
   - name: client_connection
   - name: id
@@ -37,11 +37,11 @@ methods:
 
     If a container with the given ID already exists, a CosmosResourceExistsError is
     raised.'
-  signature: 'create_container(id: str, partition_key: Any, indexing_policy: Optional[Dict[str,
-    Any]] = None, default_ttl: Optional[int] = None, populate_query_metrics: Optional[bool]
-    = None, offer_throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]]
-    = None, unique_key_policy: Optional[Dict[str, Any]] = None, conflict_resolution_policy:
-    Optional[Dict[str, Any]] = None, **kwargs: Any) -> azure.cosmos.container.ContainerProxy'
+  signature: 'create_container(id: str, partition_key: Any, indexing_policy: Dict[str,
+    Any] | None = None, default_ttl: int | None = None, populate_query_metrics: bool
+    | None = None, offer_throughput: int | ThroughputProperties | None = None, unique_key_policy:
+    Dict[str, Any] | None = None, conflict_resolution_policy: Dict[str, Any] | None
+    = None, **kwargs: Any) -> ContainerProxy'
   parameters:
   - name: id
     description: ID (name) of container to create.
@@ -60,7 +60,7 @@ methods:
     description: The provisioned throughput for this offer.
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:azure.cosmos.database.int>
     - <xref:azure.cosmos.ThroughputProperties.>
   - name: unique_key_policy
     description: The unique key policy to apply to the container.
@@ -142,10 +142,10 @@ methods:
 
     if they differ from what was passed into the method.'
   signature: 'create_container_if_not_exists(id: str, partition_key: Any, indexing_policy:
-    Optional[Dict[str, Any]] = None, default_ttl: Optional[int] = None, populate_query_metrics:
-    Optional[bool] = None, offer_throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]]
-    = None, unique_key_policy: Optional[Dict[str, Any]] = None, conflict_resolution_policy:
-    Optional[Dict[str, Any]] = None, **kwargs: Any) -> azure.cosmos.container.ContainerProxy'
+    Dict[str, Any] | None = None, default_ttl: int | None = None, populate_query_metrics:
+    bool | None = None, offer_throughput: int | ThroughputProperties | None = None,
+    unique_key_policy: Dict[str, Any] | None = None, conflict_resolution_policy: Dict[str,
+    Any] | None = None, **kwargs: Any) -> ContainerProxy'
   parameters:
   - name: id
     description: ID (name) of container to read or create.
@@ -221,7 +221,7 @@ methods:
     To update or replace an existing user, use the
 
     <xref:ContainerProxy.upsert_user> method.'
-  signature: 'create_user(body: Dict[str, Any], **kwargs: Any) -> azure.cosmos.user.UserProxy'
+  signature: 'create_user(body: Dict[str, Any], **kwargs: Any) -> UserProxy'
   parameters:
   - name: body
     description: 'A dict-like object with an *id* key and value representing the user
@@ -255,9 +255,8 @@ methods:
 - uid: azure.cosmos.database.DatabaseProxy.delete_container
   name: delete_container
   summary: Delete a container.
-  signature: 'delete_container(container: Union[str, azure.cosmos.container.ContainerProxy,
-    Dict[str, Any]], populate_query_metrics: Optional[bool] = None, **kwargs: Any)
-    -> None'
+  signature: 'delete_container(container: str | ContainerProxy | Dict[str, Any], populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> None'
   parameters:
   - name: container
     description: 'The ID (name) of the container to delete. You can either
@@ -293,15 +292,15 @@ methods:
     - <xref:Callable>
   return:
     types:
-    - <xref:None>
+    - <xref:azure.cosmos.database.None>
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: If the container couldn't be deleted.
 - uid: azure.cosmos.database.DatabaseProxy.delete_user
   name: delete_user
   summary: Delete the specified user from the container.
-  signature: 'delete_user(user: Union[str, azure.cosmos.user.UserProxy, Dict[str,
-    Any]], **kwargs: Any) -> None'
+  signature: 'delete_user(user: str | UserProxy | Dict[str, Any], **kwargs: Any) ->
+    None'
   parameters:
   - name: user
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.database.UserProxy>
@@ -314,7 +313,7 @@ methods:
     - <xref:Callable>
   return:
     types:
-    - <xref:None>
+    - <xref:azure.cosmos.database.None>
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The user wasn't deleted successfully.
@@ -323,8 +322,8 @@ methods:
 - uid: azure.cosmos.database.DatabaseProxy.get_container_client
   name: get_container_client
   summary: Get a *ContainerProxy* for a container with specified ID (name).
-  signature: 'get_container_client(container: Union[str, azure.cosmos.container.ContainerProxy,
-    Dict[str, Any]]) -> azure.cosmos.container.ContainerProxy'
+  signature: 'get_container_client(container: str | ContainerProxy | Dict[str, Any])
+    -> ContainerProxy'
   parameters:
   - name: container
     description: 'The ID (name) of the container, a <xref:azure.cosmos.database.ContainerProxy>
@@ -353,15 +352,14 @@ methods:
     \ for the database.\n:raises ~azure.cosmos.exceptions.CosmosHttpResponseError:\
     \ No throughput properties exists for the container or\n\n   the throughput properties\
     \ could not be retrieved."
-  signature: 'get_throughput(**kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  signature: 'get_throughput(**kwargs: Any) -> ThroughputProperties'
   return:
     types:
     - <xref:azure.cosmos.ThroughputProperties>
 - uid: azure.cosmos.database.DatabaseProxy.get_user_client
   name: get_user_client
   summary: Get a *UserProxy* for a user with specified ID.
-  signature: 'get_user_client(user: Union[str, azure.cosmos.user.UserProxy, Dict[str,
-    Any]]) -> azure.cosmos.user.UserProxy'
+  signature: 'get_user_client(user: str | UserProxy | Dict[str, Any]) -> UserProxy'
   parameters:
   - name: user
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.database.UserProxy>
@@ -375,8 +373,8 @@ methods:
 - uid: azure.cosmos.database.DatabaseProxy.list_containers
   name: list_containers
   summary: List the containers in the database.
-  signature: 'list_containers(max_item_count: Optional[int] = None, populate_query_metrics:
-    Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'list_containers(max_item_count: int | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -396,7 +394,8 @@ methods:
   return:
     description: An Iterable of container properties (dicts).
     types:
-    - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+    - <xref:azure.cosmos.database.Iterable>[<xref:azure.cosmos.database.dict>[<xref:azure.cosmos.database.str>,
+      <xref:azure.cosmos.database.Any>]]
   examples:
   - "List all containers in the database:<!--[!code-python[Main](les\\examples.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -409,7 +408,7 @@ methods:
 - uid: azure.cosmos.database.DatabaseProxy.list_users
   name: list_users
   summary: List all the users in the container.
-  signature: 'list_users(max_item_count: Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str,
+  signature: 'list_users(max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
     Any]]'
   parameters:
   - name: max_item_count
@@ -422,12 +421,13 @@ methods:
   return:
     description: An Iterable of user properties (dicts).
     types:
-    - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+    - <xref:azure.cosmos.database.Iterable>[<xref:azure.cosmos.database.dict>[<xref:azure.cosmos.database.str>,
+      <xref:azure.cosmos.database.Any>]]
 - uid: azure.cosmos.database.DatabaseProxy.query_containers
   name: query_containers
   summary: List the properties for containers in the current database.
-  signature: 'query_containers(query: Optional[str] = None, parameters: Optional[List[str]]
-    = None, max_item_count: Optional[int] = None, populate_query_metrics: Optional[bool]
+  signature: 'query_containers(query: str | None = None, parameters: List[str] | None
+    = None, max_item_count: int | None = None, populate_query_metrics: bool | None
     = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: query
@@ -455,12 +455,13 @@ methods:
   return:
     description: An Iterable of container properties (dicts).
     types:
-    - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+    - <xref:azure.cosmos.database.Iterable>[<xref:azure.cosmos.database.dict>[<xref:azure.cosmos.database.str>,
+      <xref:azure.cosmos.database.Any>]]
 - uid: azure.cosmos.database.DatabaseProxy.query_users
   name: query_users
   summary: Return all users matching the given *query*.
-  signature: 'query_users(query: str, parameters: Optional[List[str]] = None, max_item_count:
-    Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'query_users(query: str, parameters: List[str] | None = None, max_item_count:
+    int | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -479,12 +480,12 @@ methods:
   return:
     description: An Iterable of user properties (dicts).
     types:
-    - <xref:Iterable>[<xref:str>, <xref:Any>]
+    - <xref:azure.cosmos.database.Iterable>[<xref:azure.cosmos.database.str>, <xref:azure.cosmos.database.Any>]
 - uid: azure.cosmos.database.DatabaseProxy.read
   name: read
   summary: Read the database properties.
-  signature: 'read(populate_query_metrics: Optional[bool] = None, **kwargs: Any) ->
-    Dict[str, Any]'
+  signature: 'read(populate_query_metrics: bool | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: session_token
     description: Token for use with Session consistency.
@@ -500,7 +501,7 @@ methods:
     - <xref:Callable>
   return:
     types:
-    - <xref:Dict>[<xref:Str>, <xref:Any>]
+    - <xref:azure.cosmos.database.Dict>[<xref:azure.cosmos.database.Str>, <xref:azure.cosmos.database.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: If the given database couldn't be retrieved.
@@ -512,7 +513,7 @@ methods:
     \ for the database.\n:raises ~azure.cosmos.exceptions.CosmosHttpResponseError:\
     \ No throughput properties exists for the container or\n\n   the throughput properties\
     \ could not be retrieved."
-  signature: 'read_offer(**kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  signature: 'read_offer(**kwargs: Any) -> ThroughputProperties'
   return:
     types:
     - <xref:azure.cosmos.ThroughputProperties>
@@ -524,11 +525,10 @@ methods:
     Property changes are persisted immediately. Any properties not specified
 
     will be reset to their default values.'
-  signature: 'replace_container(container: Union[str, azure.cosmos.container.ContainerProxy,
-    Dict[str, Any]], partition_key: Any, indexing_policy: Optional[Dict[str, Any]]
-    = None, default_ttl: Optional[int] = None, conflict_resolution_policy: Optional[Dict[str,
-    Any]] = None, populate_query_metrics: Optional[bool] = None, **kwargs: Any) ->
-    azure.cosmos.container.ContainerProxy'
+  signature: 'replace_container(container: str | ContainerProxy | Dict[str, Any],
+    partition_key: Any, indexing_policy: Dict[str, Any] | None = None, default_ttl:
+    int | None = None, conflict_resolution_policy: Dict[str, Any] | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> ContainerProxy'
   parameters:
   - name: container
     description: 'The ID (name), dict representing the properties or
@@ -612,8 +612,8 @@ methods:
 - uid: azure.cosmos.database.DatabaseProxy.replace_throughput
   name: replace_throughput
   summary: Replace the database-level throughput.
-  signature: 'replace_throughput(throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]],
-    **kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  signature: 'replace_throughput(throughput: int | ThroughputProperties | None, **kwargs:
+    Any) -> ThroughputProperties'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
@@ -637,8 +637,8 @@ methods:
 - uid: azure.cosmos.database.DatabaseProxy.replace_user
   name: replace_user
   summary: Replaces the specified user if it exists in the container.
-  signature: 'replace_user(user: Union[str, azure.cosmos.user.UserProxy, Dict[str,
-    Any]], body: Dict[str, Any], **kwargs: Any) -> azure.cosmos.user.UserProxy'
+  signature: 'replace_user(user: str | UserProxy | Dict[str, Any], body: Dict[str,
+    Any], **kwargs: Any) -> UserProxy'
   parameters:
   - name: user
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.database.UserProxy>
@@ -667,7 +667,7 @@ methods:
     If the user already exists in the container, it is replaced. If the user
 
     does not already exist, it is inserted.'
-  signature: 'upsert_user(body: Dict[str, Any], **kwargs: Any) -> azure.cosmos.user.UserProxy'
+  signature: 'upsert_user(body: Dict[str, Any], **kwargs: Any) -> UserProxy'
   parameters:
   - name: body
     description: A dict-like object representing the user to update or insert.

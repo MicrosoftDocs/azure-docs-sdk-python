@@ -16,9 +16,8 @@ summary: 'The ServiceBusSender class defines a high level interface for
 
   ServiceBusSender instance.**'
 constructor:
-  syntax: 'ServiceBusSender(fully_qualified_namespace: str, credential: Union[AsyncTokenCredential,
-    azure.core.credentials.AzureSasCredential, azure.core.credentials.AzureNamedKeyCredential],
-    **kwargs: Any)'
+  syntax: 'ServiceBusSender(fully_qualified_namespace: str, credential: AsyncTokenCredential
+    | AzureSasCredential | AzureNamedKeyCredential, **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -26,7 +25,7 @@ constructor:
       The namespace format is: *<yournamespace>.servicebus.windows.net*.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.servicebus.aio.str>
   - name: credential
     description: 'The credential object used for authentication which
 
@@ -84,25 +83,25 @@ variables:
     The namespace format is: *<yournamespace>.servicebus.windows.net*.'
   name: fully_qualified_namespace
   types:
-  - <xref:str>
+  - <xref:azure.servicebus.aio.str>
 - description: The name of the entity that the client connects to.
   name: entity_name
   types:
-  - <xref:str>
+  - <xref:azure.servicebus.aio.str>
 methods:
 - uid: azure.servicebus.aio.ServiceBusSender.cancel_scheduled_messages
   name: cancel_scheduled_messages
   summary: Cancel one or more messages that have previously been scheduled and are
     still pending.
-  signature: 'async cancel_scheduled_messages(sequence_numbers: Union[int, List[int]],
-    **kwargs: Any) -> None'
+  signature: 'async cancel_scheduled_messages(sequence_numbers: int | List[int], **kwargs:
+    Any) -> None'
   parameters:
   - name: sequence_numbers
     description: The sequence numbers of the scheduled messages.
     isRequired: true
     types:
-    - <xref:int>
-    - <xref:list>[<xref:int>]
+    - <xref:azure.servicebus.aio.int>
+    - <xref:azure.servicebus.aio.list>[<xref:azure.servicebus.aio.int>]
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
       The value must be
@@ -112,7 +111,7 @@ methods:
     - <xref:float>
   return:
     types:
-    - <xref:None>
+    - <xref:azure.servicebus.aio.None>
   exceptions:
   - type: azure.servicebus.exceptions.ServiceBusError if messages cancellation failed
       due to message alreadycancelled or enqueued.
@@ -133,8 +132,8 @@ methods:
 
     max_size_in_bytes. The max_size should be no greater than the max allowed message
     size defined by the service.'
-  signature: 'async create_message_batch(max_size_in_bytes: Optional[int] = None)
-    -> azure.servicebus._common.message.ServiceBusMessageBatch'
+  signature: 'async create_message_batch(max_size_in_bytes: int | None = None) ->
+    ServiceBusMessageBatch'
   parameters:
   - name: max_size_in_bytes
     description: 'The maximum size of bytes data that a ServiceBusMessageBatch object
@@ -143,7 +142,7 @@ methods:
       hold. By default, the value is determined by your Service Bus tier.'
     defaultValue: None
     types:
-    - <xref:Optional>[<xref:int>]
+    - <xref:azure.servicebus.aio.Optional>[<xref:azure.servicebus.aio.int>]
   return:
     types:
     - <xref:azure.servicebus.ServiceBusMessageBatch>
@@ -164,16 +163,16 @@ methods:
     the service.
 
     Returns a list of the sequence numbers of the enqueued messages.'
-  signature: 'async schedule_messages(messages: Union[Mapping[str, Any], azure.servicebus._common.message.ServiceBusMessage,
-    azure.servicebus.amqp._amqp_message.AmqpAnnotatedMessage, List[Union[Mapping[str,
-    Any], azure.servicebus._common.message.ServiceBusMessage, azure.servicebus.amqp._amqp_message.AmqpAnnotatedMessage]]],
-    schedule_time_utc: datetime.datetime, **kwargs: Any) -> List[int]'
+  signature: 'async schedule_messages(messages: Mapping[str, Any] | ServiceBusMessage
+    | AmqpAnnotatedMessage | List[Mapping[str, Any] | ServiceBusMessage | AmqpAnnotatedMessage],
+    schedule_time_utc: datetime, **kwargs: Any) -> List[int]'
   parameters:
   - name: messages
     description: The message or list of messages to schedule.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.servicebus.ServiceBusMessage>, <xref:azure.servicebus.amqp.AmqpAnnotatedMessage,List>[<xref:Union>[<xref:azure.servicebus.ServiceBusMessage>,
+    - <xref:azure.servicebus.aio.Union>[<xref:azure.servicebus.ServiceBusMessage>,
+      <xref:azure.servicebus.amqp.AmqpAnnotatedMessage,azure.servicebus.aio.List>[<xref:azure.servicebus.aio.Union>[<xref:azure.servicebus.ServiceBusMessage>,
       <xref:azure.servicebus.amqp.AmqpAnnotatedMessage>]]]
   - name: schedule_time_utc
     description: The utc date and time to enqueue the messages.
@@ -189,7 +188,7 @@ methods:
     - <xref:float>
   return:
     types:
-    - <xref:list>[<xref:int>]
+    - <xref:azure.servicebus.aio.list>[<xref:azure.servicebus.aio.int>]
   examples:
   - "Schedule a message to be sent in future<!--[!code-python[Main](les\\async_samples\\\
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
@@ -212,17 +211,17 @@ methods:
     a
 
     *ValueError* if they cannot fit in a single batch.'
-  signature: 'async send_messages(message: Union[Mapping[str, Any], azure.servicebus._common.message.ServiceBusMessage,
-    azure.servicebus.amqp._amqp_message.AmqpAnnotatedMessage, List[Union[Mapping[str,
-    Any], azure.servicebus._common.message.ServiceBusMessage, azure.servicebus.amqp._amqp_message.AmqpAnnotatedMessage]],
-    azure.servicebus._common.message.ServiceBusMessageBatch], **kwargs: Any) -> None'
+  signature: 'async send_messages(message: Mapping[str, Any] | ServiceBusMessage |
+    AmqpAnnotatedMessage | List[Mapping[str, Any] | ServiceBusMessage | AmqpAnnotatedMessage]
+    | ServiceBusMessageBatch, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The ServiceBus message to be sent.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.servicebus.ServiceBusMessage>, <xref:azure.servicebus.ServiceBusMessageBatch,azure.servicebus.amqp.AmqpAnnotatedMessage>,
-      <xref:List>[<xref:Union>[<xref:azure.servicebus.ServiceBusMessage,azure.servicebus.amqp.AmqpAnnotatedMessage>]]]
+    - <xref:azure.servicebus.aio.Union>[<xref:azure.servicebus.ServiceBusMessage>,
+      <xref:azure.servicebus.ServiceBusMessageBatch,azure.servicebus.amqp.AmqpAnnotatedMessage>,
+      <xref:azure.servicebus.aio.List>[<xref:azure.servicebus.aio.Union>[<xref:azure.servicebus.ServiceBusMessage,azure.servicebus.amqp.AmqpAnnotatedMessage>]]]
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
 
@@ -232,7 +231,7 @@ methods:
     - <xref:Optional>[<xref:float>]
   return:
     types:
-    - <xref:None>
+    - <xref:azure.servicebus.aio.None>
   exceptions:
   - type: azure.servicebus.exceptions.OperationTimeoutError if sending times out.
   examples:
