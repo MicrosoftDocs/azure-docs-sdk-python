@@ -31,7 +31,7 @@ ms.service: storage
 ## Management
 | Package Name | Reference                                     | Package Manager                                   | Source                                                 |
 |--------------|-----------------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| Storage Management | [Reference](storage/management) | [PyPi](https://pypi.org/project/azure-mgmt-storage/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-mgmt-storage) |
+| Storage Management | [Reference](/python/api/azure-mgmt-storage/) | [PyPi](https://pypi.org/project/azure-mgmt-storage/) | [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage/azure-mgmt-storage) |
 |              |                                               |                                                   |                                                        |
 
 
