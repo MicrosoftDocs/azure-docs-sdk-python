@@ -1,4 +1,19 @@
 | Reference | Package | Source |
 |---|---|---|
+|[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
+|[Conversation Analysis](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
+|[Question Answering](ai-language-questionanswering-readme.md)|[azure-ai-language-questionanswering](https://pypi.org/project/azure-ai-language-questionanswering)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-questionanswering)|
+|[Text Analytics](ai-textanalytics-readme.md)|[azure-ai-textanalytics](https://pypi.org/project/azure-ai-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/textanalytics/azure-ai-textanalytics)|
+|[Document Translation](ai-translation-document-readme.md)|[azure-ai-translation-document](https://pypi.org/project/azure-ai-translation-document)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-document)|
+|[Anomaly Detector](cognitiveservices-anomalydetector-readme.md)|[azure-cognitiveservices-anomalydetector](https://pypi.org/project/azure-cognitiveservices-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|[Question Answering](cognitiveservices-knowledge-qnamaker-readme.md)|[azure-cognitiveservices-knowledge-qnamaker](https://pypi.org/project/azure-cognitiveservices-knowledge-qnamaker)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Language Understanding (LUIS)](cognitiveservices-language-luis-readme.md)|[azure-cognitiveservices-language-luis](https://pypi.org/project/azure-cognitiveservices-language-luis)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|Spell Check|[azure-cognitiveservices-language-spellcheck](https://pypi.org/project/azure-cognitiveservices-language-spellcheck)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|Text Analytics|[azure-cognitiveservices-language-textanalytics](https://pypi.org/project/azure-cognitiveservices-language-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|Personalizer|[azure-cognitiveservices-personalizer](https://pypi.org/project/azure-cognitiveservices-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|Speech|[azure-cognitiveservices-speech](https://pypi.org/project/azure-cognitiveservices-speech)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|[Computer Vision](cognitiveservices-vision-computervision-readme.md)|[azure-cognitiveservices-vision-computervision](https://pypi.org/project/azure-cognitiveservices-vision-computervision)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|Content Moderator|[azure-cognitiveservices-vision-contentmoderator](https://pypi.org/project/azure-cognitiveservices-vision-contentmoderator)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|[Custom Vision](cognitiveservices-vision-customvision-readme.md)|[azure-cognitiveservices-vision-customvision](https://pypi.org/project/azure-cognitiveservices-vision-customvision)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|[Face](cognitiveservices-vision-face-readme.md)|[azure-cognitiveservices-vision-face](https://pypi.org/project/azure-cognitiveservices-vision-face)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Resource Management - Cognitive Services](mgmt-cognitiveservices-readme.md)|[azure-mgmt-cognitiveservices](https://pypi.org/project/azure-mgmt-cognitiveservices)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-mgmt-cognitiveservices)|
