@@ -7,7 +7,7 @@
 |[Document Translation](ai-translation-document-readme.md)|[azure-ai-translation-document](https://pypi.org/project/azure-ai-translation-document)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-document)|
 |[Anomaly Detector](cognitiveservices-anomalydetector-readme.md)|[azure-cognitiveservices-anomalydetector](https://pypi.org/project/azure-cognitiveservices-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Question Answering](cognitiveservices-knowledge-qnamaker-readme.md)|[azure-cognitiveservices-knowledge-qnamaker](https://pypi.org/project/azure-cognitiveservices-knowledge-qnamaker)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
-|[Language Understanding (LUIS)](cognitiveservices-language-luis-readme.md)|[azure-cognitiveservices-language-luis](https://pypi.org/project/azure-cognitiveservices-language-luis)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|[LUIS](cognitiveservices-language-luis-readme.md)|[azure-cognitiveservices-language-luis](https://pypi.org/project/azure-cognitiveservices-language-luis)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |Spell Check|[azure-cognitiveservices-language-spellcheck](https://pypi.org/project/azure-cognitiveservices-language-spellcheck)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |Text Analytics|[azure-cognitiveservices-language-textanalytics](https://pypi.org/project/azure-cognitiveservices-language-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |Personalizer|[azure-cognitiveservices-personalizer](https://pypi.org/project/azure-cognitiveservices-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
