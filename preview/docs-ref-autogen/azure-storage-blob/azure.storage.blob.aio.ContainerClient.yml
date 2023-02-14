@@ -18,9 +18,9 @@ summary: 'A client to interact with a specific container, although that containe
   retrieved using the <xref:azure.storage.blob.aio.ContainerClient.get_blob_client>
   function.'
 constructor:
-  syntax: 'ContainerClient(account_url: str, container_name: str, credential: Optional[Union[str,
-    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential]]
-    = None, **kwargs: Any)'
+  syntax: 'ContainerClient(account_url: str, container_name: str, credential: str
+    | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -29,12 +29,12 @@ constructor:
       use the <xref:azure.storage.blob.aio.from_container_url> classmethod.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: container_name
     description: The name of the container for the blob.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -144,8 +144,8 @@ methods:
     the Blob service creates a lease on the container and returns a new
 
     lease ID.'
-  signature: 'async acquire_lease(lease_duration: int = - 1, lease_id: Optional[str]
-    = None, **kwargs) -> azure.storage.blob.aio._lease_async.BlobLeaseClient'
+  signature: 'async acquire_lease(lease_duration: int = -1, lease_id: str | None =
+    None, **kwargs) -> BlobLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -157,14 +157,14 @@ methods:
       using renew or change. Default is -1 (infinite lease).'
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:azure.storage.blob.aio.int>
   - name: lease_id
     description: 'Proposed lease ID, in a GUID string format. The Blob service returns
 
       400 (Invalid request) if the proposed lease ID is not in the correct format.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
 
@@ -231,9 +231,8 @@ methods:
   summary: 'Creates a new container under the specified account. If the container
 
     with the same name already exists, the operation fails.'
-  signature: 'async create_container(metadata: Optional[Dict[str, str]] = None, public_access:
-    Optional[Union[PublicAccess, str]] = None, **kwargs: Any) -> Dict[str, Union[str,
-    datetime]]'
+  signature: 'async create_container(metadata: Dict[str, str] | None = None, public_access:
+    PublicAccess | str | None = None, **kwargs: Any) -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: 'A dict with name_value pairs to associate with the
@@ -241,7 +240,7 @@ methods:
       container as metadata. Example:{''Category'':''test''}'
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:azure.storage.blob.aio.dict>[<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.str>]
   - name: public_access
     description: 'Possible values include: ''container'', ''blob''.'
     isRequired: true
@@ -273,7 +272,8 @@ methods:
   return:
     description: A dictionary of response headers.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:datetime>]]
+    - <xref:azure.storage.blob.aio.Dict>[<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.Union>[<xref:azure.storage.blob.aio.str>,
+      <xref:azure.storage.blob.aio.datetime>]]
   examples:
   - "Creating a container to store blobs.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -308,8 +308,8 @@ methods:
     specifying *include=["deleted"]*
 
     Soft-deleted blob or snapshot can be restored using <xref:azure.storage.blob.aio.BlobClient.undelete>'
-  signature: 'async delete_blob(blob: Union[str, azure.storage.blob._models.BlobProperties],
-    delete_snapshots: Optional[str] = None, **kwargs) -> None'
+  signature: 'async delete_blob(blob: str | BlobProperties, delete_snapshots: str
+    | None = None, **kwargs) -> None'
   parameters:
   - name: blob
     description: 'The blob with which to interact. If specified, this value will override
@@ -317,7 +317,7 @@ methods:
       a blob value specified in the blob URL.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
     - <xref:azure.storage.blob.BlobProperties>
   - name: delete_snapshots
     description: "Required if the blob has associated snapshots. Values include:\n\
@@ -325,7 +325,7 @@ methods:
       \ the blob along with all snapshots."
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: version_id
     description: 'The version id parameter is an opaque DateTime
 
@@ -404,7 +404,7 @@ methods:
     - <xref:int>
   return:
     types:
-    - <xref:None>
+    - <xref:azure.storage.blob.aio.None>
 - uid: azure.storage.blob.aio.ContainerClient.delete_blobs
   name: delete_blobs
   summary: 'Marks the specified blobs or snapshots for deletion.
@@ -432,8 +432,8 @@ methods:
 
 
     The maximum number of blobs that can be deleted in a single request is 256.'
-  signature: 'async delete_blobs(*blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
-    **kwargs: Any) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
+  signature: 'async delete_blobs(*blobs: str | Dict[str, Any] | BlobProperties, **kwargs:
+    Any) -> AsyncIterator[AsyncHttpResponse]'
   parameters:
   - name: blobs
     description: "The blobs to delete. This can be a single blob, or multiple values\
@@ -452,8 +452,8 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.aio.str>
+    - <xref:azure.storage.blob.aio.dict>(<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.Any>)
     - <xref:azure.storage.blob.BlobProperties>
   - name: delete_snapshots
     description: "Required if a blob has associated snapshots. Values include:\n \
@@ -519,7 +519,7 @@ methods:
   return:
     description: An async iterator of responses, one for each blob in order
     types:
-    - <xref:asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
+    - <xref:azure.storage.blob.aio.asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
   examples:
   - "Deleting multiple blobs.<!--[!code-python[Main](les\\blob_samples_common_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -597,7 +597,7 @@ methods:
     - <xref:int>
   return:
     types:
-    - <xref:None>
+    - <xref:azure.storage.blob.aio.None>
   examples:
   - "Delete a container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -616,8 +616,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'async download_blob(blob: Union[str, BlobProperties], offset: int =
-    None, length: int = None, *, encoding: str, **kwargs) -> StorageStreamDownloader[str]'
+  signature: 'async download_blob(blob: str | BlobProperties, offset: int = None,
+    length: int = None, *, encoding: str, **kwargs) -> StorageStreamDownloader[str]'
   parameters:
   - name: blob
     description: 'The blob with which to interact. If specified, this value will override
@@ -625,7 +625,7 @@ methods:
       a blob value specified in the blob URL.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
     - <xref:azure.storage.blob.BlobProperties>
   - name: offset
     description: 'Start of byte range to use for downloading a section of the blob.
@@ -633,14 +633,14 @@ methods:
       Must be set if length is provided.'
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:azure.storage.blob.aio.int>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:azure.storage.blob.aio.int>
   - name: version_id
     description: 'The version id parameter is an opaque DateTime
 
@@ -807,8 +807,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: 'find_blobs_by_tags(filter_expression: str, **kwargs: Optional[Any])
-    -> azure.core.async_paging.AsyncItemPaged[azure.storage.blob._models.FilteredBlob]'
+  signature: 'find_blobs_by_tags(filter_expression: str, **kwargs: Any | None) ->
+    AsyncItemPaged[FilteredBlob]'
   parameters:
   - name: filter_expression
     description: 'The expression to find blobs whose tags matches the specified condition.
@@ -816,7 +816,7 @@ methods:
       eg. ""yourtagname"=''firsttag'' and "yourtagname2"=''secondtag''"'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: results_per_page
     description: The max result per page when paginating.
     types:
@@ -850,21 +850,21 @@ methods:
   return:
     description: A dict of account information (SKU and account type).
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:azure.storage.blob.aio.dict>(<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.str>)
 - uid: azure.storage.blob.aio.ContainerClient.get_blob_client
   name: get_blob_client
   summary: 'Get a client to interact with the specified blob.
 
 
     The blob need not already exist.'
-  signature: 'get_blob_client(blob: Union[azure.storage.blob._models.BlobProperties,
-    str], snapshot: Optional[str] = None) -> azure.storage.blob.aio._blob_client_async.BlobClient'
+  signature: 'get_blob_client(blob: BlobProperties | str, snapshot: str = None) ->
+    BlobClient'
   parameters:
   - name: blob
     description: The blob with which to interact.
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
     - <xref:azure.storage.blob.BlobProperties>
   - name: snapshot
     description: 'The optional blob snapshot on which to operate. This can be the
@@ -873,7 +873,7 @@ methods:
       or the response returned from <xref:azure.storage.blob.aio.BlobClient.create_snapshot>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   return:
     description: A BlobClient.
     types:
@@ -917,7 +917,7 @@ methods:
   return:
     description: Access policy information in a dict.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:azure.storage.blob.aio.dict>[<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.Any>]
   examples:
   - "Getting the access policy on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
@@ -931,7 +931,7 @@ methods:
   summary: 'Returns all user-defined metadata and system properties for the specified
 
     container. The data returned does not include the container''s list of blobs.'
-  signature: 'async get_container_properties(**kwargs: Any) -> azure.storage.blob._models.ContainerProperties'
+  signature: 'async get_container_properties(**kwargs: Any) -> ContainerProperties'
   parameters:
   - name: lease
     description: 'If specified, get_container_properties only succeeds if the
@@ -980,7 +980,7 @@ methods:
     as snapshots,
 
     versions, soft-deleted blobs, etc. To get any of this data, use <xref:azure.storage.blob.aio.ContainerClient.list_blobs>.'
-  signature: 'list_blob_names(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[str]'
+  signature: 'list_blob_names(**kwargs: Any) -> AsyncItemPaged[str]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
@@ -1003,7 +1003,7 @@ methods:
   return:
     description: An iterable (auto-paging) response of blob names as strings.
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:str>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.blob.aio.str>]
 - uid: azure.storage.blob.aio.ContainerClient.list_blobs
   name: list_blobs
   summary: 'Returns a generator to list the blobs under the specified container.
@@ -1011,8 +1011,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: 'list_blobs(name_starts_with: Optional[str] = None, include: Optional[Union[str,
-    List[str]]] = None, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.storage.blob._models.BlobProperties]'
+  signature: 'list_blobs(name_starts_with: str | None = None, include: str | List[str]
+    | None = None, **kwargs: Any) -> AsyncItemPaged[BlobProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
@@ -1020,7 +1020,7 @@ methods:
       begin with the specified prefix.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: include
     description: 'Specifies one or more additional datasets to include in the response.
 
@@ -1030,8 +1030,8 @@ methods:
       ''tags'', ''versions'', ''immutabilitypolicy'', ''legalhold''.'
     isRequired: true
     types:
-    - <xref:list>[<xref:str>]
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.list>[<xref:azure.storage.blob.aio.str>]
+    - <xref:azure.storage.blob.aio.str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1065,8 +1065,8 @@ methods:
 
     indicate whether blobs in a container may be accessed publicly.'
   signature: 'async set_container_access_policy(signed_identifiers: Dict[str, AccessPolicy],
-    public_access: Optional[Union[str, PublicAccess]] = None, **kwargs: Any) -> Dict[str,
-    Union[str, datetime]]'
+    public_access: str | PublicAccess | None = None, **kwargs: Any) -> Dict[str, str
+    | datetime]'
   parameters:
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the container.
@@ -1077,7 +1077,7 @@ methods:
       will clear the access policies set on the service.'
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:azure.storage.blob.AccessPolicy>]
+    - <xref:azure.storage.blob.aio.dict>[<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.AccessPolicy>]
   - name: public_access
     description: 'Possible values include: ''container'', ''blob''.'
     isRequired: true
@@ -1130,7 +1130,7 @@ methods:
   return:
     description: Container-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>[<xref:str>, <xref:str>
+    - <xref:azure.storage.blob.aio.dict>[<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.str>
     - <xref:datetime.datetime>]
   examples:
   - "Setting access policy on the container.<!--[!code-python[Main](les\\blob_samples_containers_async.py\
@@ -1155,8 +1155,8 @@ methods:
     attached to the container. To remove all metadata from the container,
 
     call this operation with no metadata dict.'
-  signature: 'async set_container_metadata(metadata: Optional[Dict[str, str]] = None,
-    **kwargs) -> Dict[str, Union[str, datetime]]'
+  signature: 'async set_container_metadata(metadata: Dict[str, str] | None = None,
+    **kwargs) -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the container
@@ -1165,7 +1165,7 @@ methods:
       metadata. Example: {''category'':''test''}'
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:azure.storage.blob.aio.dict>[<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.str>]
   - name: lease
     description: 'If specified, set_container_metadata only succeeds if the
 
@@ -1216,9 +1216,9 @@ methods:
 
 
     The maximum number of blobs that can be updated in a single request is 256.'
-  signature: 'async set_premium_page_blob_tier_blobs(premium_page_blob_tier: Union[str,
-    PremiumPageBlobTier], *blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
-    **kwargs: Any) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
+  signature: 'async set_premium_page_blob_tier_blobs(premium_page_blob_tier: str |
+    PremiumPageBlobTier, *blobs: str | Dict[str, Any] | BlobProperties, **kwargs:
+    Any) -> AsyncIterator[AsyncHttpResponse]'
   parameters:
   - name: premium_page_blob_tier
     description: 'A page blob tier value to set on all blobs to. The tier correlates
@@ -1254,8 +1254,8 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.aio.str>
+    - <xref:azure.storage.blob.aio.dict>(<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.Any>)
     - <xref:azure.storage.blob.BlobProperties>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -1281,7 +1281,7 @@ methods:
   return:
     description: An async iterator of responses, one for each blob in order
     types:
-    - <xref:asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
+    - <xref:azure.storage.blob.aio.asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
 - uid: azure.storage.blob.aio.ContainerClient.set_standard_blob_tier_blobs
   name: set_standard_blob_tier_blobs
   summary: 'This operation sets the tier on block blobs.
@@ -1293,9 +1293,8 @@ methods:
 
 
     The maximum number of blobs that can be updated in a single request is 256.'
-  signature: 'async set_standard_blob_tier_blobs(standard_blob_tier: Union[str, StandardBlobTier],
-    *blobs: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
-    **kwargs: Any) -> AsyncIterator[azure.core.pipeline.transport._base_async.AsyncHttpResponse]'
+  signature: 'async set_standard_blob_tier_blobs(standard_blob_tier: str | StandardBlobTier,
+    *blobs: str | Dict[str, Any] | BlobProperties, **kwargs: Any) -> AsyncIterator[AsyncHttpResponse]'
   parameters:
   - name: standard_blob_tier
     description: 'Indicates the tier to be set on all blobs. Options include ''Hot'',
@@ -1325,7 +1324,7 @@ methods:
       >'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
     - <xref:azure.storage.blob.StandardBlobTier>
   - name: blobs
     description: "The blobs with which to interact. This can be a single blob, or\
@@ -1341,8 +1340,8 @@ methods:
       \ type: int\n>"
     isRequired: true
     types:
-    - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:azure.storage.blob.aio.str>
+    - <xref:azure.storage.blob.aio.dict>(<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.Any>)
     - <xref:azure.storage.blob.BlobProperties>
   - name: rehydrate_priority
     description: Indicates the priority with which to rehydrate an archived blob
@@ -1382,14 +1381,13 @@ methods:
   return:
     description: An async iterator of responses, one for each blob in order
     types:
-    - <xref:asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
+    - <xref:azure.storage.blob.aio.asynciterator>[<xref:azure.core.pipeline.transport.AsyncHttpResponse>]
 - uid: azure.storage.blob.aio.ContainerClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'async upload_blob(name: Union[str, azure.storage.blob._models.BlobProperties],
-    data: Union[bytes, str, Iterable, AsyncIterable, IO], blob_type: Union[str, azure.storage.blob._models.BlobType]
-    = <BlobType.BLOCKBLOB: ''BlockBlob''>, length: Optional[int] = None, metadata:
-    Optional[Dict[str, str]] = None, **kwargs) -> azure.storage.blob.aio._blob_client_async.BlobClient'
+  signature: 'async upload_blob(name: str | BlobProperties, data: bytes | str | Iterable
+    | AsyncIterable | IO, blob_type: str | BlobType = BlobType.BLOCKBLOB, length:
+    int | None = None, metadata: Dict[str, str] | None = None, **kwargs) -> BlobClient'
   parameters:
   - name: name
     description: 'The blob with which to interact. If specified, this value will override
@@ -1397,7 +1395,7 @@ methods:
       a blob value specified in the blob URL.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
     - <xref:azure.storage.blob.BlobProperties>
   - name: data
     description: The blob data to upload.
@@ -1415,12 +1413,12 @@ methods:
       should be supplied for optimal performance.'
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:azure.storage.blob.aio.int>
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
     isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:azure.storage.blob.aio.dict>(<xref:azure.storage.blob.aio.str>, <xref:azure.storage.blob.aio.str>)
   - name: overwrite
     description: 'Whether the blob to be uploaded should overwrite the current data.
 
@@ -1635,8 +1633,8 @@ methods:
     the service. This operation will list blobs in accordance with a hierarchy,
 
     as delimited by the specified delimiter character.'
-  signature: 'walk_blobs(name_starts_with: Optional[str] = None, include: Optional[Union[str,
-    List[str]]] = None, delimiter: str = ''/'', **kwargs: Optional[Any]) -> azure.core.async_paging.AsyncItemPaged[azure.storage.blob._models.BlobProperties]'
+  signature: 'walk_blobs(name_starts_with: str | None = None, include: str | List[str]
+    | None = None, delimiter: str = ''/'', **kwargs: Any | None) -> AsyncItemPaged[BlobProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
@@ -1644,7 +1642,7 @@ methods:
       begin with the specified prefix.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: include
     description: 'Specifies one or more additional datasets to include in the response.
 
@@ -1654,8 +1652,8 @@ methods:
       ''tags'', ''versions'', ''immutabilitypolicy'', ''legalhold''.'
     isRequired: true
     types:
-    - <xref:list>[<xref:str>]
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.list>[<xref:azure.storage.blob.aio.str>]
+    - <xref:azure.storage.blob.aio.str>
   - name: delimiter
     description: 'When the request includes this parameter, the operation returns
       a BlobPrefix
@@ -1667,7 +1665,7 @@ methods:
       character. The delimiter may be a single character or a string.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:azure.storage.blob.aio.str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
