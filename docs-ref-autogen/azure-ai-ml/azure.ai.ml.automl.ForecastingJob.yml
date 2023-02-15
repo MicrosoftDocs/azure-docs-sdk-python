@@ -34,16 +34,13 @@ methods:
     - <xref:str>
   - name: forecast_horizon
     description: 'The desired maximum forecast horizon in units of time-series frequency.
-      The default value is 1.
-
-
-      Units are based on the time interval of your training data, e.g., monthly, weekly
-      that the forecaster
+      The default value is 1.Units are based on the time interval of your training
+      data, e.g., monthly, weekly that the forecaster
 
       should predict out. When task type is forecasting, this parameter is required.
       For more information on
 
-      setting forecasting parameters, see [Auto-train a time-series forecast model](https://docs.microsoft.com/azure/machine-learning/how-to-auto-train-forecast).'
+      setting forecasting parameters, see Auto-train a time-series forecast model.'
     isRequired: true
     types:
     - <xref:int>
@@ -63,40 +60,76 @@ methods:
     - <xref:str>
     - <xref:list>(<xref:str>)
   - name: target_lags
-    description: "The number of past periods to lag from the target column. By default\
-      \ the lags are turned off.\n\nWhen forecasting, this parameter represents the\
-      \ number of rows to lag the target values based\non the frequency of the data.\
-      \ This is represented as a list or single integer. Lag should be used\nwhen\
-      \ the relationship between the independent variables and dependent variable\
-      \ do not match up or\ncorrelate by default. For example, when trying to forecast\
-      \ demand for a product, the demand in any\nmonth may depend on the price of\
-      \ specific commodities 3 months prior. In this example, you may want\nto lag\
-      \ the target (demand) negatively by 3 months so that the model is training on\
-      \ the correct\nrelationship. For more information, see [Auto-train a time-series\
-      \ forecast model](https://docs.microsoft.com/azure/machine-learning/how-to-auto-train-forecast).\n\
-      \n**Note on auto detection of target lags and rolling window size.\nPlease see\
-      \ the corresponding comments in the rolling window section.**\nWe use the next\
-      \ algorithm to detect the optimal target lag and rolling window size.\n\n1.\
-      \ Estimate the maximum lag order for the look back feature selection. In our\
-      \ case it is the number of periods till the next date frequency granularity\
-      \ i.e. if frequency is daily, it will be a week (7), if it is a week, it will\
-      \ be month (4). That values multiplied by two is the largest possible values\
-      \ of lags/rolling windows. In our examples, we will consider the maximum lag\
-      \ order of 14 and 8 respectively). \n\n2. Create a de-seasonalized series by\
-      \ adding trend and residual components. This will be used in the next step.\
-      \ \n\n3. Estimate the PACF - Partial Auto Correlation Function on the on the\
-      \ data from (2) and search for points, where the auto correlation is significant\
-      \ i.e. its absolute value is more then 1.96/square_root(maximal lag value),\
-      \ which correspond to significance of 95%. \n\n4. If all points are significant,\
-      \ we consider it being strong seasonality and do not create look back features.\
-      \ \n\n5. We scan the PACF values from the beginning and the value before the\
-      \ first insignificant auto correlation will designate the lag. If first significant\
-      \ element (value correlate with itself) is followed by insignificant, the lag\
-      \ will be 0 and we will not use look back features."
+    description: 'The number of past periods to lag from the target column. By default
+      the lags are turned off.When forecasting, this parameter represents the number
+      of rows to lag the target values based
+
+      on the frequency of the data. This is represented as a list or single integer.
+      Lag should be used
+
+      when the relationship between the independent variables and dependent variable
+      do not match up or
+
+      correlate by default. For example, when trying to forecast demand for a product,
+      the demand in any
+
+      month may depend on the price of specific commodities 3 months prior. In this
+      example, you may want
+
+      to lag the target (demand) negatively by 3 months so that the model is training
+      on the correct
+
+      relationship. For more information, see Auto-train a time-series forecast model.Note
+      on auto detection of target lags and rolling window size.
+
+      Please see the corresponding comments in the rolling window section.
+
+      We use the next algorithm to detect the optimal target lag and rolling window
+      size.Estimate the maximum lag order for the look back feature selection. In
+      our case it is the number of
+
+      periods till the next date frequency granularity i.e. if frequency is daily,
+      it will be a week (7),
+
+      if it is a week, it will be month (4). That values multiplied by two is the
+      largest
+
+      possible values of lags/rolling windows. In our examples, we will consider the
+      maximum lag
+
+      order of 14 and 8 respectively).
+
+
+      Create a de-seasonalized series by adding trend and residual components. This
+      will be used
+
+      in the next step.
+
+
+      Estimate the PACF - Partial Auto Correlation Function on the on the data from
+      (2)
+
+      and search for points, where the auto correlation is significant i.e. its absolute
+
+      value is more then 1.96/square_root(maximal lag value), which correspond to
+      significance of 95%.
+
+
+      If all points are significant, we consider it being strong seasonality
+
+      and do not create look back features.
+
+
+      We scan the PACF values from the beginning and the value before the first insignificant
+
+      auto correlation will designate the lag. If first significant element (value
+      correlate with
+
+      itself) is followed by insignificant, the lag will be 0 and we will not use
+      look back features.'
     isRequired: true
     types:
-    - <xref:int>, <xref:str,>
-    - <xref:list>(<xref:int>)
+    - <xref:int>, <xref:str>, or <xref:list>(<xref:int>)
   - name: feature_lags
     description: Flag for generating lags for the numeric features with 'auto' or
       None.
@@ -106,14 +139,11 @@ methods:
     - <xref:None>
   - name: target_rolling_window_size
     description: 'The number of past periods used to create a rolling window average
-      of the target column.
+      of the target column.When forecasting, this parameter represents n historical
+      periods to use to generate forecasted values,
 
-
-      When forecasting, this parameter represents *n* historical periods to use to
-      generate forecasted values,
-
-      <= training set size. If omitted, *n* is the full training set size. Specify
-      this parameter
+      <= training set size. If omitted, n is the full training set size. Specify this
+      parameter
 
       when you only want to consider a certain amount of history when training the
       model.
@@ -159,20 +189,18 @@ methods:
     - <xref:int>, <xref:str>
     - <xref:None>
   - name: short_series_handling_config
-    description: 'The parameter defining how if AutoML should handle short time series.
+    description: 'The parameter defining how if AutoML should handle short time series.Possible
+      values: ''auto'' (default), ''pad'', ''drop'' and None.
 
-
-      Possible values: ''auto'' (default), ''pad'', ''drop'' and None.
-
-      * **auto** short series will be padded if there are no long series,
+      * auto short series will be padded if there are no long series,
 
       otherwise short series will be dropped.
 
-      * **pad** all the short series will be padded.
+      * pad all the short series will be padded.
 
-      * **drop**  all the short series will be dropped".
+      * drop  all the short series will be dropped".
 
-      * **None** the short series will not be modified.
+      * None the short series will not be modified.
 
       If set to ''pad'', the table will be padded with the zeroes and
 
@@ -186,208 +214,100 @@ methods:
       Input:
 
 
-      :::row:::
 
-      :::column:::
 
-      **Date**
 
-      :::column-end:::
 
-      :::column:::
 
-      **numeric_value**
 
-      :::column-end:::
+      Date
 
-      :::column:::
 
-      **string**
+      numeric_value
 
-      :::column-end:::
 
-      :::column:::
+      string
 
-      **target**
 
-      :::column-end:::
+      target
 
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       2020-01-01
 
-      :::column-end:::
-
-      :::column:::
 
       23
 
-      :::column-end:::
-
-      :::column:::
 
       green
 
-      :::column-end:::
 
-      :::column:::
-
-      55
-
-      :::column-end:::
-
-      :::row-end:::
+      55Output assuming minimal number of values is four:
 
 
-      Output assuming minimal number of values is four:
 
 
-      :::row:::
 
-      :::column:::
 
-      **Date**
 
-      :::column-end:::
 
-      :::column:::
+      Date
 
-      **numeric_value**
 
-      :::column-end:::
+      numeric_value
 
-      :::column:::
 
-      **string**
+      string
 
-      :::column-end:::
 
-      :::column:::
+      target
 
-      **target**
-
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       2019-12-29
 
-      :::column-end:::
-
-      :::column:::
 
       0
 
-      :::column-end:::
-
-      :::column:::
 
       NA
 
-      :::column-end:::
-
-      :::column:::
 
       55.1
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       2019-12-30
 
-      :::column-end:::
-
-      :::column:::
 
       0
 
-      :::column-end:::
-
-      :::column:::
 
       NA
 
-      :::column-end:::
-
-      :::column:::
 
       55.6
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       2019-12-31
 
-      :::column-end:::
-
-      :::column:::
 
       0
 
-      :::column-end:::
-
-      :::column:::
 
       NA
 
-      :::column-end:::
-
-      :::column:::
 
       54.5
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       2020-01-01
 
-      :::column-end:::
-
-      :::column:::
 
       23
 
-      :::column-end:::
-
-      :::column:::
 
       green
 
-      :::column-end:::
 
-      :::column:::
-
-      55
-
-      :::column-end:::
-
-      :::row-end:::
-
-
-      **Note:** We have two parameters short_series_handling_configuration and
+      55Note: We have two parameters short_series_handling_configuration and
 
       legacy short_series_handling. When both parameters are set we are
 
@@ -399,267 +319,125 @@ methods:
       respectively).
 
 
-      :::row:::
 
-      :::column:::
 
-      **handling**
 
-      :::column-end:::
 
-      :::column:::
 
-      **handling_configuration**
 
-      :::column-end:::
+      handling
 
-      :::column:::
 
-      **resulting handling**
+      handling_configuration
 
-      :::column-end:::
 
-      :::column:::
+      resulting handling
 
-      **resulting handling_configuration**
 
-      :::column-end:::
+      resulting handling_configuration
 
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       auto
 
-      :::column-end:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       auto
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       pad
 
-      :::column-end:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       auto
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       drop
 
-      :::column-end:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       auto
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       True
 
-      :::column-end:::
-
-      :::column:::
 
       None
 
-      :::column-end:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       None
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       auto
 
-      :::column-end:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       None
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       pad
 
-      :::column-end:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       None
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       drop
 
-      :::column-end:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       None
 
-      :::column-end:::
-
-      :::row-end:::
-
-      :::row:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
-
-      :::column:::
 
       None
 
-      :::column-end:::
-
-      :::column:::
 
       False
 
-      :::column-end:::
 
-      :::column:::
-
-      None
-
-      :::column-end:::
-
-      :::row-end:::'
+      None'
     isRequired: true
     types:
     - <xref:str>
     - <xref:None>
   - name: frequency
-    description: 'Forecast frequency.
-
-
-      When forecasting, this parameter represents the period with which the forecast
-      is desired,
+    description: 'Forecast frequency.When forecasting, this parameter represents the
+      period with which the forecast is desired,
 
       for example daily, weekly, yearly, etc. The forecast frequency is dataset frequency
       by default.
@@ -676,39 +454,107 @@ methods:
 
       Please refer to pandas documentation for more information:
 
-      [https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects)'
+      https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects'
     isRequired: true
     types:
     - <xref:str>
     - <xref:None>
   - name: target_aggregate_function
-    description: "The function to be used to aggregate the time series target\n  \
-      \ column to conform to a user specified frequency. If the\n   target_aggregation_function\
-      \ is set, but the freq parameter\n   is not set, the error is raised. The possible\
-      \ target\n   aggregation functions are: \"sum\", \"max\", \"min\" and \"mean\"\
-      .\n\n* The target column values are aggregated based on the specified operation.\
-      \ Typically, sum is appropriate for most scenarios. \n\n* Numerical predictor\
-      \ columns in your data are aggregated by sum, mean, minimum value, and maximum\
-      \ value. As a result, automated ML generates new columns suffixed with the aggregation\
-      \ function name and applies the selected aggregate operation. \n\n* For categorical\
-      \ predictor columns, the data is aggregated by mode, the most prominent category\
-      \ in the window. \n\n* Date predictor columns are aggregated by minimum value,\
-      \ maximum value and mode. \n\n:::row:::\n:::column:::\n**freq**\n:::column-end:::\n\
-      :::column:::\n**target_aggregation_function**\n:::column-end:::\n:::column:::\n\
-      **Data regularity fixing mechanism**\n:::column-end:::\n:::row-end:::\n:::row:::\n\
-      :::column:::\nNone (Default)\n:::column-end:::\n:::column:::\nNone (Default)\n\
-      :::column-end:::\n:::column:::\nThe aggregation is not applied.If the valid\
-      \ frequency can not bedetermined the error will be raised.\n:::column-end:::\n\
-      :::row-end:::\n:::row:::\n:::column:::\nSome Value\n:::column-end:::\n:::column:::\n\
-      None (Default)\n:::column-end:::\n:::column:::\nThe aggregation is not applied.If\
-      \ the number of data points compliantto given frequency grid is less then 90%these\
-      \ points will be removed, otherwisethe error will be raised.\n:::column-end:::\n\
-      :::row-end:::\n:::row:::\n:::column:::\nNone (Default)\n:::column-end:::\n:::column:::\n\
-      Aggregation function\n:::column-end:::\n:::column:::\nThe error about missing\
-      \ frequency parameteris raised.\n:::column-end:::\n:::row-end:::\n:::row:::\n\
-      :::column:::\nSome Value\n:::column-end:::\n:::column:::\nAggregation function\n\
-      :::column-end:::\n:::column:::\nAggregate to frequency using providedaggregation\
-      \ function.\n:::column-end:::\n:::row-end:::"
+    description: 'The function to be used to aggregate the time series target
+
+
+      column to conform to a user specified frequency. If the
+
+      target_aggregation_function is set, but the freq parameter
+
+      is not set, the error is raised. The possible target
+
+      aggregation functions are: "sum", "max", "min" and "mean".The target column
+      values are aggregated based on the specified operation.
+
+      Typically, sum is appropriate for most scenarios.
+
+
+      Numerical predictor columns in your data are aggregated by sum, mean, minimum
+      value,
+
+      and maximum value. As a result, automated ML generates new columns suffixed
+      with the
+
+      aggregation function name and applies the selected aggregate operation.
+
+
+      For categorical predictor columns, the data is aggregated by mode,
+
+      the most prominent category in the window.
+
+
+      Date predictor columns are aggregated by minimum value, maximum value and mode.
+
+
+
+
+
+
+      freq
+
+
+      target_aggregation_function
+
+
+      Data regularity fixing mechanism
+
+
+      None (Default)
+
+
+      None (Default)
+
+
+      The aggregation is not applied.
+
+      If the valid frequency can not be
+
+      determined the error will be raised.
+
+
+      Some Value
+
+
+      None (Default)
+
+
+      The aggregation is not applied.
+
+      If the number of data points compliant
+
+      to given frequency grid is less then 90%
+
+      these points will be removed, otherwise
+
+      the error will be raised.
+
+
+      None (Default)
+
+
+      Aggregation function
+
+
+      The error about missing frequency parameter
+
+      is raised.
+
+
+      Some Value
+
+
+      Aggregation function
+
+
+      Aggregate to frequency using provided
+
+      aggregation function.'
     isRequired: true
     types:
     - <xref:str>
