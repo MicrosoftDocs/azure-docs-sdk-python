@@ -5,5 +5,7 @@
 |[Storage - Files Share](storage-file-share-readme.md)|[azure-storage-file-share](https://pypi.org/project/azure-storage-file-share)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-storage-file-share)|
 |[Storage - Queues](storage-queue-readme.md)|[azure-storage-queue](https://pypi.org/project/azure-storage-queue)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-storage-queue)|
 |Resource Management - Data Lake Analytics|[azure-mgmt-datalake-analytics](https://pypi.org/project/azure-mgmt-datalake-analytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
-|[Resource Management - Data Lake Storage](mgmt-datalake-store-readme.md)|[azure-mgmt-datalake-store](https://pypi.org/project/azure-mgmt-datalake-store)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Resource Management - Storage](mgmt-storage-readme.md)|[azure-mgmt-storage](https://pypi.org/project/azure-mgmt-storage)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-mgmt-storage)|
+|[Resource Management - Storage Cache](mgmt-storagecache-readme.md)|[azure-mgmt-storagecache](https://pypi.org/project/azure-mgmt-storagecache)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-mgmt-storagecache)|
+|[Resource Management - Storage Pool](mgmt-storagepool-readme.md)|[azure-mgmt-storagepool](https://pypi.org/project/azure-mgmt-storagepool)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storagepool/azure-mgmt-storagepool)|
+|[Resource Management - Storage Sync](mgmt-storagesync-readme.md)|[azure-mgmt-storagesync](https://pypi.org/project/azure-mgmt-storagesync)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|

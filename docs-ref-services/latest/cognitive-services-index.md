@@ -1,7 +1,7 @@
 | Reference | Package | Source |
 |---|---|---|
 |[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
-|[Conversation Analysis](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
+|[Conversational Language Understanding](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
 |[Question Answering](ai-language-questionanswering-readme.md)|[azure-ai-language-questionanswering](https://pypi.org/project/azure-ai-language-questionanswering)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-questionanswering)|
 |[Text Analytics](ai-textanalytics-readme.md)|[azure-ai-textanalytics](https://pypi.org/project/azure-ai-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/textanalytics/azure-ai-textanalytics)|
 |[Document Translation](ai-translation-document-readme.md)|[azure-ai-translation-document](https://pypi.org/project/azure-ai-translation-document)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-document)|

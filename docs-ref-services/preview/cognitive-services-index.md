@@ -2,7 +2,7 @@
 |---|---|---|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|
 |[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
-|[Conversation Analysis](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
+|[Conversational Language Understanding](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
 |[Question Answering](ai-language-questionanswering-readme.md)|[azure-ai-language-questionanswering](https://pypi.org/project/azure-ai-language-questionanswering)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-questionanswering)|
 |Personalizer|[azure-ai-personalizer](https://pypi.org/project/azure-ai-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Text Analytics](ai-textanalytics-readme.md)|[azure-ai-textanalytics](https://pypi.org/project/azure-ai-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/textanalytics/azure-ai-textanalytics)|
