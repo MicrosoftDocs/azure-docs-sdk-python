@@ -9,9 +9,9 @@ inheritances:
 - azure.storage.queue._encryption.StorageEncryptionMixin
 summary: A client to interact with a specific Queue.
 constructor:
-  syntax: 'QueueClient(account_url: str, queue_name: str, credential: Optional[Union[str,
-    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential]]
-    = None, **kwargs: Any)'
+  syntax: 'QueueClient(account_url: str, queue_name: str, credential: str | Dict[str,
+    str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
+    None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the storage account. In order to create a client given
@@ -93,7 +93,7 @@ methods:
 - uid: azure.storage.queue.aio.QueueClient.clear_messages
   name: clear_messages
   summary: Deletes all messages from the specified queue.
-  signature: 'async clear_messages(**kwargs: Optional[Any]) -> None'
+  signature: 'async clear_messages(**kwargs: Any | None) -> None'
   parameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -123,7 +123,7 @@ methods:
     If a queue with the same name already exists, the operation fails with
 
     a *ResourceExistsError*.'
-  signature: 'async create_queue(**kwargs: Optional[Any]) -> None'
+  signature: 'async create_queue(**kwargs: Any | None) -> None'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the queue as
@@ -185,8 +185,8 @@ methods:
     or <xref:azure.storage.queue.aio.QueueClient.update_message>
 
     operation.'
-  signature: 'async delete_message(message: Any, pop_receipt: Optional[str] = None,
-    **kwargs: Any) -> None'
+  signature: 'async delete_message(message: Any, pop_receipt: str | None = None, **kwargs:
+    Any) -> None'
   parameters:
   - name: message
     description: The message object or id identifying the message to delete.
@@ -240,7 +240,7 @@ methods:
     If an operation is attempted against the queue while it was being deleted,
 
     an <xref:azure.storage.queue.aio.HttpResponseError> will be thrown.'
-  signature: 'async delete_queue(**kwargs: Optional[Any]) -> None'
+  signature: 'async delete_queue(**kwargs: Any | None) -> None'
   parameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -270,8 +270,7 @@ methods:
   summary: 'Returns details about any stored access policies specified on the
 
     queue that may be used with Shared Access Signatures.'
-  signature: 'async get_queue_access_policy(**kwargs: Optional[Any]) -> Dict[str,
-    Any]'
+  signature: 'async get_queue_access_policy(**kwargs: Any | None) -> Dict[str, Any]'
   parameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -295,7 +294,7 @@ methods:
 
 
     The data returned does not include the queue''s list of messages.'
-  signature: 'async get_queue_properties(**kwargs: Optional[Any]) -> QueueProperties'
+  signature: 'async get_queue_properties(**kwargs: Any | None) -> QueueProperties'
   parameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
@@ -339,8 +338,8 @@ methods:
     If the key-encryption-key or resolver field is set on the local service object,
 
     the messages will be decrypted before being returned.'
-  signature: 'async peek_messages(max_messages: Optional[int] = None, **kwargs: Optional[Any])
-    -> List[azure.storage.queue._models.QueueMessage]'
+  signature: 'async peek_messages(max_messages: int | None = None, **kwargs: Any |
+    None) -> List[QueueMessage]'
   parameters:
   - name: max_messages
     description: 'A nonzero integer value that specifies the number of
@@ -403,7 +402,7 @@ methods:
     the message will be
 
     decrypted before being returned.'
-  signature: 'async receive_message(**kwargs: Optional[Any]) -> azure.storage.queue._models.QueueMessage'
+  signature: 'async receive_message(**kwargs: Any | None) -> QueueMessage'
   parameters:
   - name: visibility_timeout
     description: 'If not specified, the default value is 0. Specifies the
@@ -471,7 +470,7 @@ methods:
     the messages will be
 
     decrypted before being returned.'
-  signature: 'receive_messages(**kwargs: Optional[Any]) -> azure.core.async_paging.AsyncItemPaged[azure.storage.queue._models.QueueMessage]'
+  signature: 'receive_messages(**kwargs: Any | None) -> AsyncItemPaged[QueueMessage]'
   parameters:
   - name: messages_per_page
     description: 'A nonzero integer value that specifies the number of
@@ -558,7 +557,7 @@ methods:
     will
 
     encrypt the content before uploading.'
-  signature: 'async send_message(content: Any, **kwargs: Optional[Any]) -> azure.storage.queue._models.QueueMessage'
+  signature: 'async send_message(content: Any, **kwargs: Any | None) -> QueueMessage'
   parameters:
   - name: content
     description: 'Message content. Allowed type is determined by the encode_function
@@ -568,7 +567,7 @@ methods:
       64KB in size.'
     isRequired: true
     types:
-    - <xref:obj>
+    - <xref:azure.storage.queue.aio.obj>
   - name: visibility_timeout
     description: 'If not specified, the default value is 0. Specifies the
 
@@ -650,8 +649,8 @@ methods:
 
     <xref:azure.storage.queue.aio.HttpResponseError> until the access policy becomes
     active.'
-  signature: 'async set_queue_access_policy(signed_identifiers: Dict[str, azure.storage.queue._models.AccessPolicy],
-    **kwargs: Optional[Any]) -> None'
+  signature: 'async set_queue_access_policy(signed_identifiers: Dict[str, AccessPolicy],
+    **kwargs: Any | None) -> None'
   parameters:
   - name: signed_identifiers
     description: 'SignedIdentifier access policies to associate with the queue.
@@ -693,8 +692,8 @@ methods:
 
 
     Metadata is associated with the queue as name-value pairs.'
-  signature: 'async set_queue_metadata(metadata: Optional[Dict[str, Any]] = None,
-    **kwargs: Optional[Any]) -> None'
+  signature: 'async set_queue_metadata(metadata: Dict[str, Any] | None = None, **kwargs:
+    Any | None) -> None'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the
@@ -751,7 +750,7 @@ methods:
 
     encrypt the content before uploading.'
   signature: 'async update_message(message: Any, pop_receipt: int = None, content:
-    Optional[str] = None, **kwargs: Optional[Any]) -> azure.storage.queue._models.QueueMessage'
+    str | None = None, **kwargs: Any | None) -> QueueMessage'
   parameters:
   - name: message
     description: The message object or id identifying the message to update.
@@ -773,7 +772,7 @@ methods:
       set on the service. Default is str.'
     isRequired: true
     types:
-    - <xref:obj>
+    - <xref:azure.storage.queue.aio.obj>
   - name: visibility_timeout
     description: 'Specifies the new visibility timeout value, in seconds,
 

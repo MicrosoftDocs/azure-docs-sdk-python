@@ -14,11 +14,9 @@ summary: 'JobOperations.
 
   attaches it as an attribute.'
 constructor:
-  syntax: 'JobOperations(operation_scope: azure.ai.ml._scope_dependent_operations.OperationScope,
-    operation_config: azure.ai.ml._scope_dependent_operations.OperationConfig, service_client_10_2022_preview:
-    azure.ai.ml._restclient.v2022_10_01_preview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces,
-    all_operations: azure.ai.ml._scope_dependent_operations.OperationsContainer, credential:
-    azure.core.credentials.TokenCredential, **kwargs: Any)'
+  syntax: 'JobOperations(operation_scope: OperationScope, operation_config: OperationConfig,
+    service_client_10_2022_preview: AzureMachineLearningWorkspaces, all_operations:
+    OperationsContainer, credential: TokenCredential, **kwargs: Any)'
   parameters:
   - name: operation_scope
   - name: operation_config
@@ -39,7 +37,7 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.begin_cancel
   name: begin_cancel
   summary: Cancel job resource.
-  signature: 'begin_cancel(name: str) -> azure.core.polling._poller.LROPoller[None]'
+  signature: 'begin_cancel(name: str) -> LROPoller[None]'
   parameters:
   - name: name
     description: Name of the job.
@@ -56,10 +54,9 @@ methods:
   summary: 'Create or update a job, if there''re inline defined entities, e.g.
 
     Environment, Code, they''ll be created together with the job.'
-  signature: 'create_or_update(job: azure.ai.ml.entities._job.job.Job, *, description:
-    Optional[str] = None, compute: Optional[str] = None, tags: Optional[dict] = None,
-    experiment_name: Optional[str] = None, skip_validation: bool = False, **kwargs)
-    -> azure.ai.ml.entities._job.job.Job'
+  signature: 'create_or_update(job: Job, *, description: str | None = None, compute:
+    str | None = None, tags: dict | None = None, experiment_name: str | None = None,
+    skip_validation: bool = False, **kwargs) -> Job'
   parameters:
   - name: job
     description: Job definition or object which can be translate to a job.
@@ -131,19 +128,19 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.download
   name: download
   summary: Download logs and output of a job.
-  signature: 'download(name: str, *, download_path: Union[os.PathLike, str] = ''.'',
-    output_name: Optional[str] = None, all: bool = False) -> None'
+  signature: 'download(name: str, *, download_path: PathLike | str = ''.'', output_name:
+    str | None = None, all: bool = False) -> None'
   parameters:
   - name: name
     description: Name of a job.
     isRequired: true
     types:
     - <xref:str>
-  - name: str] download_path
+  - name: download_path
     description: Local path as download destination, defaults to '.'.
     isRequired: true
     types:
-    - <xref:Union>[<xref:PathLike,>
+    - <xref:Union>[<xref:azure.ai.ml.operations.PathLike>, <xref:str>]
   - name: output_name
     description: Named output to download, defaults to None.
     isRequired: true
@@ -160,8 +157,6 @@ methods:
   - name: download_path
     description: Local path as download destination, defaults to '.'.
     isRequired: true
-    types:
-    - <xref:Union>[<xref:PathLike>, <xref:str>]
   - name: output_name
     description: Named output to download, defaults to None.
     isRequired: true
@@ -180,7 +175,7 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.get
   name: get
   summary: Get a job resource.
-  signature: 'get(name: str) -> azure.ai.ml.entities._job.job.Job'
+  signature: 'get(name: str) -> Job'
   parameters:
   - name: name
     description: Name of the job.
@@ -194,8 +189,8 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.list
   name: list
   summary: List jobs of the workspace.
-  signature: 'list(*, parent_job_name: Optional[str] = None, list_view_type: azure.ai.ml._restclient.v2022_10_01_preview.models._azure_machine_learning_workspaces_enums.ListViewType
-    = <ListViewType.ACTIVE_ONLY: ''ActiveOnly''>, **kwargs) -> Iterable[azure.ai.ml.entities._job.job.Job]'
+  signature: 'list(*, parent_job_name: str | None = None, list_view_type: ListViewType
+    = ListViewType.ACTIVE_ONLY, **kwargs) -> Iterable[Job]'
   parameters:
   - name: parent_job_name
     description: When provided, returns children of named job.
@@ -207,7 +202,7 @@ methods:
       ACTIVE_ONLY.'
     isRequired: true
     types:
-    - <xref:Optional>[<xref:ListViewType>]
+    - <xref:Optional>[<xref:azure.ai.ml.operations.ListViewType>]
   return:
     description: An iterator like instance of Job objects.
     types:
@@ -225,7 +220,7 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.show_services
   name: show_services
   summary: Get services associated with a job's node.
-  signature: 'show_services(name: str, node_index: int = 0) -> Dict[str, azure.ai.ml.entities._job.service_instance.ServiceInstance]'
+  signature: 'show_services(name: str, node_index: int = 0) -> Dict[str, ServiceInstance]'
   parameters:
   - name: name
     description: Name of the job.
@@ -241,7 +236,7 @@ methods:
     description: The Services associated with the job for the given node.
     types:
     - '<xref:Dict>[<xref:str>, <xref:azure.ai.ml.entities.ServiceInstance>]<xref:
-      Map of service names to ServiceInstance.>'
+      azure.ai.ml.operations.Map of service names to ServiceInstance.>'
 - uid: azure.ai.ml.operations.JobOperations.stream
   name: stream
   summary: Stream logs of a job.
@@ -267,8 +262,7 @@ methods:
     defined entities, e.g. Component, Environment & Code. Only pipeline job
 
     is supported for now.'
-  signature: 'validate(job: azure.ai.ml.entities._job.job.Job, *, raise_on_failure:
-    bool = False, **kwargs) -> azure.ai.ml.entities._validation.ValidationResult'
+  signature: 'validate(job: Job, *, raise_on_failure: bool = False, **kwargs) -> ValidationResult'
   parameters:
   - name: job
     description: Job object to be validated.
