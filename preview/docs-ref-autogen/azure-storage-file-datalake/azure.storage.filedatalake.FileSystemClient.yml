@@ -16,9 +16,9 @@ summary: 'A client to interact with a specific file system, even if that file sy
   can be retrieved using the <xref:azure.storage.filedatalake.FileSystemClient.get_directory_client>
   or <xref:azure.storage.filedatalake.FileSystemClient.get_file_client> functions.'
 constructor:
-  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: Optional[Union[str,
-    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential]]
-    = None, **kwargs: Any)'
+  syntax: 'FileSystemClient(account_url: str, file_system_name: str, credential: str
+    | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -93,8 +93,8 @@ methods:
     the DataLake service creates a lease on the file system and returns a new
 
     lease ID.'
-  signature: 'acquire_lease(lease_duration: int = - 1, lease_id: Optional[str] = None,
-    **kwargs) -> azure.storage.filedatalake._data_lake_lease.DataLakeLeaseClient'
+  signature: 'acquire_lease(lease_duration: int = -1, lease_id: str | None = None,
+    **kwargs) -> DataLakeLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -185,8 +185,8 @@ methods:
 - uid: azure.storage.filedatalake.FileSystemClient.create_directory
   name: create_directory
   summary: Create directory
-  signature: 'create_directory(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
-    str], metadata: Optional[Dict[str, str]] = None, **kwargs) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
+  signature: 'create_directory(directory: DirectoryProperties | str, metadata: Dict[str,
+    str] | None = None, **kwargs) -> DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -346,8 +346,7 @@ methods:
 - uid: azure.storage.filedatalake.FileSystemClient.create_file
   name: create_file
   summary: Create file
-  signature: 'create_file(file: Union[azure.storage.filedatalake._models.FileProperties,
-    str], **kwargs) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
+  signature: 'create_file(file: FileProperties | str, **kwargs) -> DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -529,8 +528,8 @@ methods:
     be raised. This method returns a client with which to interact with the newly
 
     created file system.'
-  signature: 'create_file_system(metadata: Optional[Dict[str, str]] = None, public_access:
-    Optional[PublicAccess] = None, **kwargs) -> Dict[str, Union[str, datetime]]'
+  signature: 'create_file_system(metadata: Dict[str, str] | None = None, public_access:
+    PublicAccess | None = None, **kwargs) -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: 'A dict with name-value pairs to associate with the
@@ -571,7 +570,7 @@ methods:
   return:
     description: A dictionary of response headers.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:datetime>]]
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.storage.filedatalake.datetime>]]
   examples:
   - "Creating a file system in the datalake service.<!--[!code-python[Main](les\\\
     datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
@@ -584,8 +583,8 @@ methods:
 - uid: azure.storage.filedatalake.FileSystemClient.delete_directory
   name: delete_directory
   summary: Marks the specified path for deletion.
-  signature: 'delete_directory(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
-    str], **kwargs) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
+  signature: 'delete_directory(directory: DirectoryProperties | str, **kwargs) ->
+    DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -664,8 +663,7 @@ methods:
 - uid: azure.storage.filedatalake.FileSystemClient.delete_file
   name: delete_file
   summary: Marks the specified file for deletion.
-  signature: 'delete_file(file: Union[azure.storage.filedatalake._models.FileProperties,
-    str], **kwargs) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
+  signature: 'delete_file(file: FileProperties | str, **kwargs) -> DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -752,7 +750,7 @@ methods:
     If the file system is not found, a ResourceNotFoundError will be raised.'
   signature: 'delete_file_system(**kwargs: Any) -> None'
   parameters:
-  - name: or ~azure.storage.filedatalake.DataLakeLeaseClient lease
+  - name: lease
     description: 'If specified, delete_file_system only succeeds if the
 
       file system''s lease is active and matches this ID.
@@ -760,6 +758,7 @@ methods:
       Required if the file system has an active lease.'
     types:
     - <xref:str>
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
   - name: if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
 
@@ -847,8 +846,8 @@ methods:
 
     :rtype ~azure.storage.filedatalake.FileSystemClient'
   signature: 'from_connection_string(conn_str: str, file_system_name: str, credential:
-    Optional[Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential,
-    TokenCredential]] = None, **kwargs: Any) -> typing_extensions.Self'
+    str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -897,8 +896,7 @@ methods:
 
 
     The directory need not already exist.'
-  signature: 'get_directory_client(directory: Union[azure.storage.filedatalake._models.DirectoryProperties,
-    str]) -> azure.storage.filedatalake._data_lake_directory_client.DataLakeDirectoryClient'
+  signature: 'get_directory_client(directory: DirectoryProperties | str) -> DataLakeDirectoryClient'
   parameters:
   - name: directory
     description: 'The directory with which to interact. This can either be the name
@@ -929,8 +927,7 @@ methods:
 
 
     The file need not already exist.'
-  signature: 'get_file_client(file_path: Union[azure.storage.filedatalake._models.FileProperties,
-    str]) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
+  signature: 'get_file_client(file_path: FileProperties | str) -> DataLakeFileClient'
   parameters:
   - name: file_path
     description: 'The file with which to interact. This can either be the path of
@@ -990,14 +987,15 @@ methods:
   summary: 'Returns all user-defined metadata and system properties for the specified
 
     file system. The data returned does not include the file system''s list of paths.'
-  signature: 'get_file_system_properties(**kwargs: Any) -> azure.storage.filedatalake._models.FileSystemProperties'
+  signature: 'get_file_system_properties(**kwargs: Any) -> FileSystemProperties'
   parameters:
-  - name: or ~azure.storage.filedatalake.DataLakeLeaseClient lease
+  - name: lease
     description: 'If specified, get_file_system_properties only succeeds if the
 
       file system''s lease is active and matches this ID.'
     types:
     - <xref:str>
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1030,8 +1028,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: 'get_paths(path: Optional[str] = None, recursive: Optional[bool] = True,
-    max_results: Optional[int] = None, **kwargs) -> ItemPaged[PathProperties]'
+  signature: 'get_paths(path: str | None = None, recursive: bool | None = True, max_results:
+    int | None = None, **kwargs) -> ItemPaged[PathProperties]'
   parameters:
   - name: path
     description: Filters the results to return only paths under the specified path.
@@ -1101,7 +1099,7 @@ methods:
 
 
     New in version 12.4.0: This operation was introduced in API version ''2020-06-12''.'
-  signature: 'list_deleted_paths(**kwargs: Any) -> azure.core.paging.ItemPaged[azure.storage.filedatalake._models.DeletedPathProperties]'
+  signature: 'list_deleted_paths(**kwargs: Any) -> ItemPaged[DeletedPathProperties]'
   parameters:
   - name: path_prefix
     description: Filters the results to return only paths under the specified path.
@@ -1139,8 +1137,8 @@ methods:
 
     indicate whether files in a file system may be accessed publicly.'
   signature: 'set_file_system_access_policy(signed_identifiers: Dict[str, AccessPolicy],
-    public_access: Optional[Union[str, PublicAccess]] = None, **kwargs) -> Dict[str,
-    Union[str, datetime]]'
+    public_access: str | PublicAccess | None = None, **kwargs) -> Dict[str, str |
+    datetime]'
   parameters:
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the file system.
@@ -1217,7 +1215,7 @@ methods:
 
     call this operation with no metadata dict.'
   signature: 'set_file_system_metadata(metadata: Dict[str, str], **kwargs) -> Dict[str,
-    Union[str, datetime]]'
+    str | datetime]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the file system
@@ -1227,12 +1225,13 @@ methods:
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: or ~azure.storage.filedatalake.DataLakeLeaseClient lease
+  - name: lease
     description: 'If specified, set_file_system_metadata only succeeds if the
 
       file system''s lease is active and matches this ID.'
     types:
     - <xref:str>
+    - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
   - name: if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
 
