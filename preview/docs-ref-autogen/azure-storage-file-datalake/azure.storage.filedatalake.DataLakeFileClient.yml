@@ -9,8 +9,8 @@ summary: A client to interact with the DataLake file, even if the file may not y
   exist.
 constructor:
   syntax: 'DataLakeFileClient(account_url: str, file_system_name: str, file_path:
-    str, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any)'
+    str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -86,9 +86,8 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.append_data
   name: append_data
   summary: Append data to the file.
-  signature: 'append_data(data: Union[bytes, str, Iterable[AnyStr], IO[AnyStr]], offset:
-    int, length: Optional[int] = None, **kwargs) -> Dict[str, Union[str, datetime,
-    int]]'
+  signature: 'append_data(data: bytes | str | Iterable[AnyStr] | IO[AnyStr], offset:
+    int, length: int | None = None, **kwargs) -> Dict[str, str | datetime | int]'
   parameters:
   - name: data
     description: Content to be appended to file
@@ -177,8 +176,8 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.create_file
   name: create_file
   summary: Create a new file.
-  signature: 'create_file(content_settings: Optional[ContentSettings] = None, metadata:
-    Optional[Dict[str, str]] = None, **kwargs) -> Dict[str, Union[str, datetime]]'
+  signature: 'create_file(content_settings: ContentSettings | None = None, metadata:
+    Dict[str, str] | None = None, **kwargs) -> Dict[str, str | datetime]'
   parameters:
   - name: content_settings
     description: ContentSettings object used to set path properties.
@@ -428,8 +427,8 @@ methods:
 
     a stream. Using chunks() returns an iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'download_file(offset: Optional[int] = None, length: Optional[int] =
-    None, **kwargs: Any) -> azure.storage.filedatalake._download.StorageStreamDownloader'
+  signature: 'download_file(offset: int | None = None, length: int | None = None,
+    **kwargs: Any) -> StorageStreamDownloader'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the file.
@@ -549,8 +548,8 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.flush_data
   name: flush_data
   summary: Commit the previous appended data.
-  signature: 'flush_data(offset: int, retain_uncommitted_data: Optional[bool] = False,
-    **kwargs) -> Dict[str, Union[str, datetime]]'
+  signature: 'flush_data(offset: int, retain_uncommitted_data: bool | None = False,
+    **kwargs) -> Dict[str, str | datetime]'
   parameters:
   - name: offset
     description: 'offset is equal to the length of the file after commit the
@@ -709,8 +708,8 @@ methods:
 
     :rtype ~azure.storage.filedatalake.DataLakeFileClient'
   signature: 'from_connection_string(conn_str: str, file_system_name: str, file_path:
-    str, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any) -> typing_extensions.Self'
+    str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -761,7 +760,7 @@ methods:
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the file. It does not return the content of the file.'
-  signature: 'get_file_properties(**kwargs: Any) -> azure.storage.filedatalake._models.FileProperties'
+  signature: 'get_file_properties(**kwargs: Any) -> FileProperties'
   parameters:
   - name: lease
     description: 'Required if the directory or file has an active lease. Value can
@@ -841,7 +840,7 @@ methods:
 
     This operations returns a DataLakeFileQueryReader, users need to use readall()
     or readinto() to get query data.'
-  signature: 'query_file(query_expression: str, **kwargs: Any) -> azure.storage.filedatalake._quick_query_helper.DataLakeFileQueryReader'
+  signature: 'query_file(query_expression: str, **kwargs: Any) -> DataLakeFileQueryReader'
   parameters:
   - name: query_expression
     description: 'Required. a query statement.
@@ -975,7 +974,7 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.rename_file
   name: rename_file
   summary: Rename the source file.
-  signature: 'rename_file(new_name: str, **kwargs: Any) -> azure.storage.filedatalake._data_lake_file_client.DataLakeFileClient'
+  signature: 'rename_file(new_name: str, **kwargs: Any) -> DataLakeFileClient'
   parameters:
   - name: new_name
     description: 'the new file name the user want to rename to.
@@ -1100,8 +1099,8 @@ methods:
 - uid: azure.storage.filedatalake.DataLakeFileClient.set_file_expiry
   name: set_file_expiry
   summary: Sets the time a file will expire and be deleted.
-  signature: 'set_file_expiry(expiry_options: str, expires_on: Optional[Union[datetime,
-    int]] = None, **kwargs) -> None'
+  signature: 'set_file_expiry(expiry_options: str, expires_on: datetime | int | None
+    = None, **kwargs) -> None'
   parameters:
   - name: expiry_options
     description: 'Required. Indicates mode of the expiry time.
@@ -1111,15 +1110,16 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: or int expires_on
+  - name: expires_on
     description: 'The time to set the file to expiry.
 
       When expiry_options is RelativeTo*, expires_on should be an int in milliseconds.
 
       If the type of expires_on is datetime, it should be in UTC time.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:datetime>
+    - <xref:int>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1132,16 +1132,14 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
-  - name: expires_on
-    defaultValue: None
   return:
     types:
     - <xref:None>
 - uid: azure.storage.filedatalake.DataLakeFileClient.upload_data
   name: upload_data
   summary: Upload data to a file.
-  signature: 'upload_data(data: Union[bytes, str, Iterable, IO], length: Optional[int]
-    = None, overwrite: Optional[bool] = False, **kwargs) -> Dict[str, Any]'
+  signature: 'upload_data(data: bytes | str | Iterable | IO, length: int | None =
+    None, overwrite: bool | None = False, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: data
     description: Content to be uploaded to file
@@ -1164,13 +1162,14 @@ methods:
     description: Name-value pairs associated with the blob as metadata.
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
-  - name: or str lease
+  - name: lease
     description: 'Required if the blob has an active lease. Value can be a DataLakeLeaseClient
       object
 
       or the lease ID as a string.'
     types:
     - <xref:azure.storage.filedatalake.DataLakeLeaseClient>
+    - <xref:str>
   - name: umask
     description: 'Optional and only valid if Hierarchical Namespace is enabled for
       the account.
