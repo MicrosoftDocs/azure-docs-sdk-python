@@ -7,12 +7,17 @@ inheritances:
 - typing.Protocol
 summary: Wraps a span from a distributed tracing implementation.
 constructor:
-  syntax: AbstractSpan(*args, **kwargs)
+  syntax: 'AbstractSpan(span: Any | None = None, name: str | None = None, **kwargs)'
+  parameters:
+  - name: span
+    defaultValue: None
+  - name: name
+    defaultValue: None
 methods:
 - uid: azure.core.tracing.AbstractSpan.add_attribute
   name: add_attribute
   summary: Add attribute (key value pair) to the current span.
-  signature: 'add_attribute(key: str, value: Union[str, int]) -> None'
+  signature: 'add_attribute(key: str, value: str | int) -> None'
   parameters:
   - name: key
     description: The key of the key value pair
@@ -27,8 +32,7 @@ methods:
 - uid: azure.core.tracing.AbstractSpan.change_context
   name: change_context
   summary: Change the context for the life of this context manager.
-  signature: 'change_context(span: azure.core.tracing._abstract_span.AbstractSpan)
-    -> ContextManager'
+  signature: 'change_context(span: AbstractSpan) -> ContextManager'
   parameters:
   - name: span
     isRequired: true
@@ -59,7 +63,7 @@ methods:
   name: link
   summary: Given a traceparent, extracts the context and links the context to the
     current tracer.
-  signature: 'link(traceparent: str, attributes: Optional[Attributes] = None) -> None'
+  signature: 'link(traceparent: str, attributes: Attributes | None = None) -> None'
   parameters:
   - name: traceparent
     description: A string representing a traceparent
@@ -72,8 +76,8 @@ methods:
   name: link_from_headers
   summary: Given a dictionary, extracts the context and links the context to the current
     tracer.
-  signature: 'link_from_headers(headers: Dict[str, str], attributes: Optional[Attributes]
-    = None) -> None'
+  signature: 'link_from_headers(headers: Dict[str, str], attributes: Attributes |
+    None = None) -> None'
   parameters:
   - name: headers
     description: A dictionary of the request header as key value pairs.
@@ -99,8 +103,8 @@ methods:
 - uid: azure.core.tracing.AbstractSpan.set_http_attributes
   name: set_http_attributes
   summary: Add correct attributes for a http client span.
-  signature: 'set_http_attributes(request: HttpRequest, response: Optional[HttpResponseType]
-    = None) -> None'
+  signature: 'set_http_attributes(request: HttpRequest, response: HttpResponseType
+    | None = None) -> None'
   parameters:
   - name: request
     description: The request made
@@ -119,7 +123,7 @@ methods:
     list.
 
     The child span must be wrapped by an implementation of AbstractSpan'
-  signature: 'span(name: str = ''child_span'', **kwargs) -> azure.core.tracing._abstract_span.AbstractSpan'
+  signature: 'span(name: str = ''child_span'', **kwargs) -> AbstractSpan'
   parameters:
   - name: name
     defaultValue: child_span
