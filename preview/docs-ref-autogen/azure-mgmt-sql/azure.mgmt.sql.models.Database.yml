@@ -30,8 +30,11 @@ constructor:
     = None, requested_backup_storage_redundancy: Optional[Union[str, _models.BackupStorageRedundancy]]
     = None, min_capacity: Optional[float] = None, maintenance_configuration_id: Optional[str]
     = None, is_ledger_on: Optional[bool] = None, federated_client_id: Optional[str]
-    = None, preferred_enclave_type: Optional[Union[str, _models.AlwaysEncryptedEnclaveType]]
-    = None, source_resource_id: Optional[str] = None, **kwargs: Any)'
+    = None, keys: Optional[Dict[str, _models.DatabaseKey]] = None, encryption_protector:
+    Optional[str] = None, preferred_enclave_type: Optional[Union[str, _models.AlwaysEncryptedEnclaveType]]
+    = None, source_resource_id: Optional[str] = None, manual_cutover: Optional[bool]
+    = None, perform_cutover: Optional[bool] = None, availability_zone: Optional[Union[str,
+    _models.AvailabilityZoneType]] = None, **kwargs: Any)'
 variables:
 - description: Resource ID.
   name: id
@@ -377,6 +380,16 @@ variables:
   name: federated_client_id
   types:
   - <xref:str>
+- description: The resource ids of the user assigned identities to use.
+  name: keys
+  types:
+  - <xref:dict>[<xref:str>, <xref:azure.mgmt.sql.models.DatabaseKey>]
+- description: 'The azure key vault URI of the database if it''s configured with per
+
+    Database Customer Managed Keys.'
+  name: encryption_protector
+  types:
+  - <xref:str>
 - description: 'Type of enclave requested on the database i.e. Default or VBS
 
     enclaves. Known values are: "Default" and "VBS".'
@@ -432,3 +445,57 @@ variables:
   name: source_resource_id
   types:
   - <xref:str>
+- description: 'Whether or not customer controlled manual cutover needs to be done
+    during
+
+    Update Database operation to Hyperscale tier.
+
+
+    This property is only applicable when scaling database from Business Critical/General
+
+    Purpose/Premium/Standard tier to Hyperscale tier.
+
+
+    When manualCutover is specified, the scaling operation will wait for user input
+    to trigger
+
+    cutover to Hyperscale database.
+
+
+    To trigger cutover, please provide ''performCutover'' parameter when the Scaling
+    operation is in
+
+    Waiting state.'
+  name: manual_cutover
+  types:
+  - <xref:bool>
+- description: 'To trigger customer controlled manual cutover during the wait state
+
+    while Scaling operation is in progress.
+
+
+    This property parameter is only applicable for scaling operations that are initiated
+    along
+
+    with ''manualCutover'' parameter.
+
+
+    This property is only applicable when scaling database from Business Critical/General
+
+    Purpose/Premium/Standard tier to Hyperscale tier is already in progress.
+
+
+    When performCutover is specified, the scaling operation will trigger cutover and
+    perform
+
+    role-change to Hyperscale database.'
+  name: perform_cutover
+  types:
+  - <xref:bool>
+- description: 'Specifies the availability zone the database is pinned to. Known
+
+    values are: "NoPreference", "1", "2", and "3".'
+  name: availability_zone
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.AvailabilityZoneType>

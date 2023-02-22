@@ -26,8 +26,10 @@ constructor:
     = None, auto_pause_delay: Optional[int] = None, requested_backup_storage_redundancy:
     Optional[Union[str, _models.BackupStorageRedundancy]] = None, min_capacity: Optional[float]
     = None, maintenance_configuration_id: Optional[str] = None, is_ledger_on: Optional[bool]
-    = None, federated_client_id: Optional[str] = None, preferred_enclave_type: Optional[Union[str,
-    _models.AlwaysEncryptedEnclaveType]] = None, **kwargs: Any)'
+    = None, federated_client_id: Optional[str] = None, keys: Optional[Dict[str, _models.DatabaseKey]]
+    = None, encryption_protector: Optional[str] = None, preferred_enclave_type: Optional[Union[str,
+    _models.AlwaysEncryptedEnclaveType]] = None, manual_cutover: Optional[bool] =
+    None, perform_cutover: Optional[bool] = None, **kwargs: Any)'
 variables:
 - description: The name and tier of the SKU.
   name: sku
@@ -338,6 +340,16 @@ variables:
   name: federated_client_id
   types:
   - <xref:str>
+- description: The resource ids of the user assigned identities to use.
+  name: keys
+  types:
+  - <xref:dict>[<xref:str>, <xref:azure.mgmt.sql.models.DatabaseKey>]
+- description: 'The azure key vault URI of the database if it''s configured with per
+
+    Database Customer Managed Keys.'
+  name: encryption_protector
+  types:
+  - <xref:str>
 - description: 'Type of enclave requested on the database i.e. Default or VBS
 
     enclaves. Known values are: "Default" and "VBS".'
@@ -345,3 +357,50 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.sql.models.AlwaysEncryptedEnclaveType>
+- description: 'Whether or not customer controlled manual cutover needs to be done
+    during
+
+    Update Database operation to Hyperscale tier.
+
+
+    This property is only applicable when scaling database from Business Critical/General
+
+    Purpose/Premium/Standard tier to Hyperscale tier.
+
+
+    When manualCutover is specified, the scaling operation will wait for user input
+    to trigger
+
+    cutover to Hyperscale database.
+
+
+    To trigger cutover, please provide ''performCutover'' parameter when the Scaling
+    operation is in
+
+    Waiting state.'
+  name: manual_cutover
+  types:
+  - <xref:bool>
+- description: 'To trigger customer controlled manual cutover during the wait state
+
+    while Scaling operation is in progress.
+
+
+    This property parameter is only applicable for scaling operations that are initiated
+    along
+
+    with ''manualCutover'' parameter.
+
+
+    This property is only applicable when scaling database from Business Critical/General
+
+    Purpose/Premium/Standard tier to Hyperscale tier is already in progress.
+
+
+    When performCutover is specified, the scaling operation will trigger cutover and
+    perform
+
+    role-change to Hyperscale database.'
+  name: perform_cutover
+  types:
+  - <xref:bool>
