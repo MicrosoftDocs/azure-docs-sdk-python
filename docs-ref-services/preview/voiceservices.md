@@ -1,0 +1,13 @@
+---
+title: Azure Voiceservices SDK for Python
+description: Reference for Azure Voiceservices SDK for Python
+author: lmazuel
+ms.author: lmazuel
+ms.data: 02/23/2023
+ms.topic: reference
+ms.devlang: python
+ms.service: voiceservices
+---
+# Azure Voiceservices SDK for Python - preview
+## Packages - preview
+[!INCLUDE [packages](voiceservices-index.md)]
