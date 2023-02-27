@@ -46,7 +46,7 @@ iothub_client = IotHubClient(
 
 ## Create an IoTHub
 ```python
-async_iot_hub = iothub_client.iot_hub_resource.create_or_update(
+async_iot_hub = iothub_client.iot_hub_resource.begin_create_or_update(
     'MyResourceGroup',
     'MyIoTHubAccount',
     {
