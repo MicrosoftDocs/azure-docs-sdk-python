@@ -3,7 +3,7 @@ title: Azure Synapse SDK for Python
 description: Reference for Azure Synapse SDK for Python
 author: wonner
 ms.author: wanyang
-ms.data: 02/27/2023
+ms.data: 02/28/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse
