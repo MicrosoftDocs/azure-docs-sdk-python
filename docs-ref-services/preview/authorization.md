@@ -9,9 +9,9 @@ ms.devlang: python
 ms.service: authorization
 keywords: Azure, python, SDK, API, Authorization
 ms.prod: azure
+ms.date: 02/21/2018
 manager: routlaw
 ms.technology: azure
-ms.date: 02/21/2018
 ---
 # Azure Authorization libraries for python
 
