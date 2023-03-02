@@ -39,9 +39,9 @@ methods:
     raised.'
   signature: 'create_container(id: str, partition_key: Any, indexing_policy: Optional[Dict[str,
     Any]] = None, default_ttl: Optional[int] = None, populate_query_metrics: Optional[bool]
-    = None, offer_throughput: Optional[int] = None, unique_key_policy: Optional[Dict[str,
-    Any]] = None, conflict_resolution_policy: Optional[Dict[str, Any]] = None, **kwargs:
-    Any) -> azure.cosmos.container.ContainerProxy'
+    = None, offer_throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]]
+    = None, unique_key_policy: Optional[Dict[str, Any]] = None, conflict_resolution_policy:
+    Optional[Dict[str, Any]] = None, **kwargs: Any) -> azure.cosmos.container.ContainerProxy'
   parameters:
   - name: id
     description: ID (name) of container to create.
@@ -59,6 +59,9 @@ methods:
   - name: offer_throughput
     description: The provisioned throughput for this offer.
     isRequired: true
+    types:
+    - <xref:int>
+    - <xref:azure.cosmos.ThroughputProperties.>
   - name: unique_key_policy
     description: The unique key policy to apply to the container.
     isRequired: true
@@ -97,6 +100,8 @@ methods:
       on with no TTL. Please
 
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
+    types:
+    - <xref:int>
   return:
     description: A *ContainerProxy* instance representing the new container.
     types:
@@ -108,7 +113,7 @@ methods:
   - "Create a container with default settings:<!--[!code-python[Main](les\\examples.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\113\\\\azure-cosmos-4.3.0\\\\samples\\\\examples.py\", \"xml:space\"\
+    dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   container_name\
     \ = \"products\"\n   try:\n       container = database.create_container(\n   \
@@ -118,7 +123,7 @@ methods:
     \ with specific settings; in this case, a custom partition key:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.0\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   customer_container_name\
     \ = \"customers\"\n   try:\n       customer_container = database.create_container(\n\
@@ -138,9 +143,9 @@ methods:
     if they differ from what was passed into the method.'
   signature: 'create_container_if_not_exists(id: str, partition_key: Any, indexing_policy:
     Optional[Dict[str, Any]] = None, default_ttl: Optional[int] = None, populate_query_metrics:
-    Optional[bool] = None, offer_throughput: Optional[int] = None, unique_key_policy:
-    Optional[Dict[str, Any]] = None, conflict_resolution_policy: Optional[Dict[str,
-    Any]] = None, **kwargs: Any) -> azure.cosmos.container.ContainerProxy'
+    Optional[bool] = None, offer_throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]]
+    = None, unique_key_policy: Optional[Dict[str, Any]] = None, conflict_resolution_policy:
+    Optional[Dict[str, Any]] = None, **kwargs: Any) -> azure.cosmos.container.ContainerProxy'
   parameters:
   - name: id
     description: ID (name) of container to read or create.
@@ -199,6 +204,8 @@ methods:
       on with no TTL.  Please
 
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
+    types:
+    - <xref:int>
   return:
     description: A *ContainerProxy* instance representing the container.
     types:
@@ -238,7 +245,7 @@ methods:
   - "Create a database user:<!--[!code-python[Main](les\\examples.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    113\\\\azure-cosmos-4.3.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   try:\n       database.create_user(dict(id=\"\
     Walter Harp\"))\n   except exceptions.CosmosResourceExistsError:\n       print(\"\
@@ -333,7 +340,7 @@ methods:
   - "Get an existing container, handling a failure if encountered:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.0\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   database =\
     \ client.get_database_client(database_name)\n   container = database.get_container_client(container_name)\n\
@@ -394,7 +401,7 @@ methods:
   - "List all containers in the database:<!--[!code-python[Main](les\\examples.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\113\\\\azure-cosmos-4.3.0\\\\samples\\\\examples.py\", \"xml:space\"\
+    dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   database =\
     \ client.get_database_client(database_name)\n   for container in database.list_containers():\n\
@@ -569,6 +576,16 @@ methods:
     description: A callable invoked with the response metadata.
     types:
     - <xref:Callable>
+  - name: analytical_storage_ttl
+    description: 'Analytical store time to live (TTL) for items in the container.  A
+      value of
+
+      None leaves analytical storage off and a value of -1 turns analytical storage
+      on with no TTL.  Please
+
+      note that analytical storage can only be enabled on Synapse Link enabled accounts.'
+    types:
+    - <xref:int>
   return:
     description: A *ContainerProxy* instance representing the container after replace
       completed.
@@ -583,7 +600,7 @@ methods:
   - "Reset the TTL property on a container, and display the updated properties:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.0\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Set the\
     \ TTL on the container to 3600 seconds (one hour)\n   database.replace_container(container,\
@@ -594,7 +611,8 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.replace_throughput
   name: replace_throughput
   summary: Replace the database-level throughput.
-  signature: 'replace_throughput(throughput: Optional[int], **kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  signature: 'replace_throughput(throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]],
+    **kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
@@ -606,15 +624,11 @@ methods:
   return:
     description: ThroughputProperties for the database, updated with new throughput.
     types:
-    - '<xref:<xref:azure.cosmos.Offer
-
-      If no throughput properties exists for the database>>'
-    - <xref:<xref:if the throughput properties could not be updated.>>
     - <xref:azure.cosmos.ThroughputProperties>
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: If no offer exists for the database or if the offer could not be
-      updated.
+    description: If no throughput properties exists for the database or if the throughput
+      properties could not be updated.
 - uid: azure.cosmos.DatabaseProxy.replace_user
   name: replace_user
   summary: Replaces the specified user if it exists in the container.
