@@ -1,5 +1,6 @@
 | Reference | Package | Source |
 |---|---|---|
+|Azure AI Vision SDK|[azure-ai-vision](https://pypi.org/project/azure-ai-vision)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|
 |[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
 |[Conversational Language Understanding](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
