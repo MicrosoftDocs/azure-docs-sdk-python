@@ -3,17 +3,17 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: pvaneck
 ms.author: paulvaneck
-ms.date: 02/07/2023
+ms.date: 03/07/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: identity
 ---
-# Azure Identity client library for Python - version 1.13.0b2 
+# Azure Identity client library for Python - version 1.13.0b3 
 
 
 The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [`TokenCredential`](https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.tokencredential?view=azure-python) implementations, which can be used to construct Azure SDK clients that support Azure AD token authentication.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b2/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b3/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [API reference documentation][ref_docs]
 | [Azure AD documentation](https://learn.microsoft.com/azure/active-directory/)
@@ -103,7 +103,7 @@ More details on configuring your environment to use the `DefaultAzureCredential`
 
 This example demonstrates authenticating the `BlobServiceClient` from the [azure-storage-blob][azure_storage_blob] library using `DefaultAzureCredential`.
 
-```py
+```python
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient
 
@@ -116,7 +116,7 @@ client = BlobServiceClient(account_url, credential=default_credential)
 
 Interactive authentication is disabled in the `DefaultAzureCredential` by default and can be enabled with a keyword argument:
 
-```py
+```python
 DefaultAzureCredential(exclude_interactive_browser_credential=False)
 ```
 
@@ -126,7 +126,7 @@ When enabled, `DefaultAzureCredential` falls back to interactively authenticatin
 
 Many Azure hosts allow the assignment of a user-assigned managed identity. To configure `DefaultAzureCredential` to authenticate a user-assigned identity, use the `managed_identity_client_id` keyword argument:
 
-```py
+```python
 DefaultAzureCredential(managed_identity_client_id=client_id)
 ```
 
@@ -138,7 +138,7 @@ Alternatively, set the environment variable `AZURE_CLIENT_ID` to the identity's 
 
 The following example demonstrates creating a credential that will first attempt to authenticate using managed identity. The credential will fall back to authenticating via the Azure CLI when a managed identity is unavailable. This example uses the `EventHubProducerClient` from the [azure-eventhub][azure_eventhub] client library.
 
-```py
+```python
 from azure.eventhub import EventHubProducerClient
 from azure.identity import AzureCliCredential, ChainedTokenCredential, ManagedIdentityCredential
 
@@ -155,7 +155,7 @@ This library includes a set of async APIs. To use the async credentials in [azur
 
 Async credentials should be closed when they're no longer needed. Each async credential is an async context manager and defines an async `close` method. For example:
 
-```py
+```python
 from azure.identity.aio import DefaultAzureCredential
 
 # call close when the credential is no longer needed
@@ -172,7 +172,7 @@ async with credential:
 This example demonstrates authenticating the asynchronous `SecretClient` from [azure-keyvault-secrets][azure_keyvault_secrets] with an asynchronous
 credential.
 
-```py
+```python
 from azure.identity.aio import DefaultAzureCredential
 from azure.keyvault.secrets.aio import SecretClient
 
@@ -196,7 +196,7 @@ client = SecretClient("https://my-vault.vault.azure.net", default_credential)
 
 #### Authenticate with a user-assigned managed identity
 
-```py
+```python
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
 
@@ -206,7 +206,7 @@ client = SecretClient("https://my-vault.vault.azure.net", credential)
 
 #### Authenticate with a system-assigned managed identity
 
-```py
+```python
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
 
@@ -218,7 +218,7 @@ client = SecretClient("https://my-vault.vault.azure.net", credential)
 
 Credentials default to authenticating to the Azure AD endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `authority` argument. [AzureAuthorityHosts](https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureAuthorityHosts) defines authorities for well-known clouds:
 
-```py
+```python
 from azure.identity import AzureAuthorityHosts
 
 DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_GOVERNMENT)
@@ -318,7 +318,7 @@ This library uses the standard [logging](https://docs.python.org/3/library/loggi
 
 Detailed DEBUG level logging, including request/response bodies and header values, isn't enabled by default. It can be enabled with the `logging_enable` argument. For example:
 
-```py
+```python
 credential = DefaultAzureCredential(logging_enable=True)
 ```
 
@@ -352,10 +352,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [auth_code_cred_ref]: https://aka.ms/azsdk/python/identity/authorizationcodecredential
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_developer_cli]:https://aka.ms/azure-dev
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b2/sdk/eventhub/azure-eventhub
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b2/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b2/sdk/storage/azure-storage-blob
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b3/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b3/sdk/eventhub/azure-eventhub
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b3/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b3/sdk/storage/azure-storage-blob
 [b2c]: https://learn.microsoft.com/azure/active-directory-b2c/overview
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/certificatecredential
 [chain_cred_ref]: https://aka.ms/azsdk/python/identity/chainedtokencredential
@@ -371,7 +371,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [powershell_cred_ref]: https://aka.ms/azsdk/python/identity/powershellcredential
 [ref_docs]: https://aka.ms/azsdk/python/identity/docs
 [ref_docs_aio]: https://aka.ms/azsdk/python/identity/aio/docs
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b2/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.13.0b3/sdk/identity/azure-identity/TROUBLESHOOTING.md
 [userpass_cred_ref]: https://aka.ms/azsdk/python/identity/usernamepasswordcredential
 [vscode_cred_ref]: https://aka.ms/azsdk/python/identity/vscodecredential
 
