@@ -97,7 +97,7 @@ methods:
     This will leave a destination file with zero length and full metadata.
 
     This will raise an error if the copy operation has already ended.'
-  signature: 'abort_copy(copy_id: Union[str, FileProperties], **kwargs: Any) -> None'
+  signature: 'abort_copy(copy_id: str | FileProperties, **kwargs: Any) -> None'
   parameters:
   - name: copy_id
     description: 'The copy operation to abort. This can be either an ID, or an
@@ -133,7 +133,7 @@ methods:
     If the file does not have an active lease, the File
 
     Service creates a lease on the blob and returns a new lease.'
-  signature: 'acquire_lease(lease_id: Optional[str] = None, **kwargs: Any) -> azure.storage.fileshare._lease.ShareLeaseClient'
+  signature: 'acquire_lease(lease_id: str | None = None, **kwargs: Any) -> ShareLeaseClient'
   parameters:
   - name: lease_id
     description: 'Proposed lease ID, in a GUID string format. The File Service
@@ -224,8 +224,7 @@ methods:
 - uid: azure.storage.fileshare.ShareFileClient.close_handle
   name: close_handle
   summary: Close an open file handle.
-  signature: 'close_handle(handle: Union[str, HandleItem], **kwargs: Any) -> Dict[str,
-    int]'
+  signature: 'close_handle(handle: str | HandleItem, **kwargs: Any) -> Dict[str, int]'
   parameters:
   - name: handle
     description: A specific handle to close.
@@ -250,10 +249,10 @@ methods:
 
 
     Note that it only initializes the file with no content.'
-  signature: 'create_file(size: int, file_attributes: Union[str, NTFSAttributes] =
-    ''none'', file_creation_time: Optional[Union[str, datetime]] = ''now'', file_last_write_time:
-    Optional[Union[str, datetime]] = ''now'', file_permission: Optional[str] = None,
-    permission_key: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'create_file(size: int, file_attributes: str | NTFSAttributes = ''none'',
+    file_creation_time: str | datetime | None = ''now'', file_last_write_time: str
+    | datetime | None = ''now'', file_permission: str | None = None, permission_key:
+    str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: size
     description: 'Specifies the maximum size for the file,
@@ -406,8 +405,8 @@ methods:
 
     a stream. Using chunks() returns an iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'download_file(offset: Optional[int] = None, length: Optional[int] =
-    None, **kwargs: Any) -> azure.storage.fileshare._download.StorageStreamDownloader'
+  signature: 'download_file(offset: int | None = None, length: int | None = None,
+    **kwargs: Any) -> StorageStreamDownloader'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the file.
@@ -629,8 +628,8 @@ methods:
   summary: 'Returns the list of valid page ranges for a file or snapshot
 
     of a file.'
-  signature: 'get_ranges(offset: Optional[int] = None, length: Optional[int] = None,
-    **kwargs: Any) -> List[Dict[str, int]]'
+  signature: 'get_ranges(offset: int | None = None, length: int | None = None, **kwargs:
+    Any) -> List[Dict[str, int]]'
   parameters:
   - name: offset
     description: Specifies the start offset of bytes over which to get ranges.
@@ -669,9 +668,9 @@ methods:
 
 
     New in version 12.6.0.'
-  signature: 'get_ranges_diff(previous_sharesnapshot: Union[str, Dict[str, Any]],
-    offset: Optional[int] = None, length: Optional[int] = None, **kwargs: Any) ->
-    Tuple[List[Dict[str, int]], List[Dict[str, int]]]'
+  signature: 'get_ranges_diff(previous_sharesnapshot: str | Dict[str, Any], offset:
+    int | None = None, length: int | None = None, **kwargs: Any) -> Tuple[List[Dict[str,
+    int]], List[Dict[str, int]]]'
   parameters:
   - name: offset
     description: Specifies the start offset of bytes over which to get ranges.
@@ -735,7 +734,7 @@ methods:
     \ or str\n:keyword file_change_time:\n\n   Change time for the file. If not specified,\
     \ change time will be set to the current date/time.\n\n   New in version 12.8.0:\
     \ This parameter was introduced in API version '2021-06-08'."
-  signature: 'rename_file(new_name: str, **kwargs: Any) -> azure.storage.fileshare._file_client.ShareFileClient'
+  signature: 'rename_file(new_name: str, **kwargs: Any) -> ShareFileClient'
   parameters:
   - name: content_type
     description: 'The Content Type of the new file.
@@ -809,7 +808,7 @@ methods:
     attached to the file. To remove all metadata from the file,
 
     call this operation with no metadata dict.'
-  signature: 'set_file_metadata(metadata: Optional[Dict[str, Any]] = None, **kwargs:
+  signature: 'set_file_metadata(metadata: Dict[str, Any] | None = None, **kwargs:
     Any) -> Dict[str, Any]'
   parameters:
   - name: metadata
@@ -840,10 +839,10 @@ methods:
   name: set_http_headers
   summary: Sets HTTP headers on the file.
   signature: 'set_http_headers(content_settings: ContentSettings, file_attributes:
-    Union[str, NTFSAttributes] = ''preserve'', file_creation_time: Optional[Union[str,
-    datetime]] = ''preserve'', file_last_write_time: Optional[Union[str, datetime]]
-    = ''preserve'', file_permission: Optional[str] = None, permission_key: Optional[str]
-    = None, **kwargs: Any) -> Dict[str, Any]'
+    str | NTFSAttributes = ''preserve'', file_creation_time: str | datetime | None
+    = ''preserve'', file_last_write_time: str | datetime | None = ''preserve'', file_permission:
+    str | None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: content_settings
     description: 'ContentSettings object used to set file properties. Used to set
@@ -1114,11 +1113,10 @@ methods:
     \ for the\n      directory/file. Note: Only one of the x-ms-file-permission or\n\
     \      x-ms-file-permission-key should be specified.\n\n   type permission_key:\n\
     \      str"
-  signature: 'upload_file(data: Any, length: Optional[int] = None, file_attributes:
-    Union[str, NTFSAttributes] = ''none'', file_creation_time: Optional[Union[str,
-    datetime]] = ''now'', file_last_write_time: Optional[Union[str, datetime]] = ''now'',
-    file_permission: Optional[str] = None, permission_key: Optional[str] = None, **kwargs:
-    Any) -> Dict[str, Any]'
+  signature: 'upload_file(data: Any, length: int | None = None, file_attributes: str
+    | NTFSAttributes = ''none'', file_creation_time: str | datetime | None = ''now'',
+    file_last_write_time: str | datetime | None = ''now'', file_permission: str |
+    None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: file_change_time
     description: "Change time for the file. If not specified, change time will be\
