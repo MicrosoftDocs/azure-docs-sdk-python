@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.data: 03/07/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: loadtesting
+ms.service: azure-load-testing
 ---
 # Azure Load Testing SDK for Python - preview
 ## Packages - preview

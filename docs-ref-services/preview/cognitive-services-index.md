@@ -1,6 +1,5 @@
 | Reference | Package | Source |
 |---|---|---|
-|Azure AI Vision SDK|[azure-ai-vision](https://pypi.org/project/azure-ai-vision)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|
 |[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
 |[Conversational Language Understanding](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
@@ -8,6 +7,7 @@
 |Personalizer|[azure-ai-personalizer](https://pypi.org/project/azure-ai-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Text Analytics](ai-textanalytics-readme.md)|[azure-ai-textanalytics](https://pypi.org/project/azure-ai-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/textanalytics/azure-ai-textanalytics)|
 |[Document Translation](ai-translation-document-readme.md)|[azure-ai-translation-document](https://pypi.org/project/azure-ai-translation-document)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-document)|
+|Azure AI Vision SDK|[azure-ai-vision](https://pypi.org/project/azure-ai-vision)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Text Analytics](cognitiveservices-language-textanalytics-readme.md)|[azure-cognitiveservices-language-textanalytics](https://pypi.org/project/azure-cognitiveservices-language-textanalytics)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-cognitiveservices-language-textanalytics)|
 |[Face](cognitiveservices-vision-face-readme.md)|[azure-cognitiveservices-vision-face](https://pypi.org/project/azure-cognitiveservices-vision-face)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-cognitiveservices-vision-face)|
 |[Resource Management - Cognitive Services](mgmt-cognitiveservices-readme.md)|[azure-mgmt-cognitiveservices](https://pypi.org/project/azure-mgmt-cognitiveservices)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-mgmt-cognitiveservices)|

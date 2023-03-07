@@ -7,11 +7,11 @@ ms.data: 03/07/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: devtestlabs
-manager: routlaw
-keywords: Azure, python, SDK, API, DevTest Labs
 ms.prod: azure
-ms.technology: azure
+keywords: Azure, python, SDK, API, DevTest Labs
+manager: routlaw
 ms.date: 02/21/2018
+ms.technology: azure
 ---
 # Azure DevTest Labs libraries for python
 
