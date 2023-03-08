@@ -3,10 +3,10 @@ title: Azure Application Insights SDK for Python
 description: Reference for Azure Application Insights SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 03/07/2023
+ms.data: 03/08/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: applicationinsights
+ms.service: azure-monitor
 ---
 # Azure Application Insights SDK for Python - preview
 ## Packages - preview
