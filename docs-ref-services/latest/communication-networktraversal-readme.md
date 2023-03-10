@@ -21,7 +21,7 @@ It will provide TURN credentials to a user.
 
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Getting started
+## Getting started
 
 ### Prerequisites
 
@@ -39,7 +39,7 @@ pip install azure-communication-identity
 pip install azure-communication-networktraversal
 ```
 
-# Key concepts
+## Key concepts
 
 ## Examples
 
@@ -47,7 +47,7 @@ pip install azure-communication-networktraversal
 
 The following section provides code snippets covering some of the most common Azure Communication Network Traversal tasks, including:
 
-- [Getting the relay configuration](#getting-the-relay-configuration)
+- [Getting the relay configuration providing a user](#getting-the-relay-configuration-providing-a-user)
 
 ```python
 # You can find your endpoint and access token from your resource in the Azure Portal

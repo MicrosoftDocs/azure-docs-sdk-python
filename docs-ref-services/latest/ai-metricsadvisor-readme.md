@@ -6,7 +6,8 @@ ms.author: ramyar
 ms.date: 07/06/2021
 ms.topic: reference
 ms.devlang: python
-ms.service: metrics-advisor
+ms.service: applied-ai-services
+ms.subservice: metrics-advisor
 ---
 
 # Azure Metrics Advisor client library for Python - version 1.0.0 

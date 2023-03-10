@@ -95,7 +95,7 @@ Alternatively, if you have created a chat thread before and you have its thread_
 chat_thread_client = chat_client.get_chat_thread_client(thread_id) # thread_id is the id of an existing chat thread
 ```
 
-# Key concepts
+## Key concepts
 
 A chat conversation is represented by a chat thread. Each user in the thread is called a thread participant.
 Thread participants can chat with one another privately in a 1:1 chat or huddle up in a 1:N group chat.

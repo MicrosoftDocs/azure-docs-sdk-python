@@ -1,5 +1,5 @@
 ---
-title: Microsoft Azure SDK for Python
+title: Microsoft Azure SDK for Python - ai-language namespace package
 keywords: Azure, python, SDK, API, azure-ai-language-nspkg, azure-python
 author: ramya-rao-a
 ms.author: ramyar
@@ -9,7 +9,7 @@ ms.devlang: python
 ms.service: azure-python
 ---
 
-# Microsoft Azure SDK for Python
+# Microsoft Azure SDK for Python for ai-language services
 
 This is the Microsoft Azure ai-language Services namespace package.
 

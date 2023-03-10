@@ -9,7 +9,7 @@ ms.devlang: python
 ms.service: azure-python
 ---
 
-# Microsoft Azure SDK for Python
+# Microsoft Azure SDK for Python - Azure Messaging namespace
 
 This is the Microsoft Azure Messaging namespace package.
 
