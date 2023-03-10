@@ -7,9 +7,8 @@ ms.author: ramyar
 manager: douge
 ms.date: 10/02/2019
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
+ms.service: mysql
 ---
 
 # Azure Database for MySQL/PostgreSQL libraries for Python

@@ -5,10 +5,8 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 07/06/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: metricsadvisor
+ms.service: metrics-advisor
 ---
 
 # Azure Metrics Advisor client library for Python - version 1.0.0 
@@ -467,7 +465,7 @@ hook = client.create_hook(
         name="email hook",
         description="my email hook",
         emails_to_alert=["alertme@alertme.com"],
-        external_link="https://docs.microsoft.com/en-us/azure/cognitive-services/metrics-advisor/how-tos/alerts"
+        external_link="https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/how-tos/alerts"
     )
 )
 ```

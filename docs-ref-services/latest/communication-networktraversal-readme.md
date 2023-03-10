@@ -5,10 +5,8 @@ author: acsdevx-msft
 ms.author: acsdevx-msft
 ms.date: 02/04/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
 # Azure Communication Network Traversal Package client library for Python - version 1.0.0 
 
@@ -130,11 +128,11 @@ for iceServer in config.ice_servers:
         print('Url:' + url)
 ```
 
-# Troubleshooting
+## Troubleshooting
 
 The Azure Communication Relay client will raise exceptions defined in [Azure Core][azure_core].
 
-# Next steps
+## Next steps
 
 ## More sample code
 
@@ -142,7 +140,7 @@ The Azure Communication Relay client will raise exceptions defined in [Azure Cor
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

@@ -7,10 +7,8 @@ ms.author: akharit
 manager: pkasturi
 ms.date: 08/26/2019
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: datalake-store
+ms.service: data-lake-store
 ---
 
 # azure-datalake-store

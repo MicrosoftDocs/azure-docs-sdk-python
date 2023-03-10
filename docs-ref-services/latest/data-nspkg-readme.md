@@ -1,14 +1,12 @@
 ---
-title: 
+title: Microsoft Azure Data SDK for Python - namespace package
 keywords: Azure, python, SDK, API, azure-data-nspkg, 
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 09/08/2020
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: azure-python
 ---
 
 # Microsoft Azure Data SDK for Python

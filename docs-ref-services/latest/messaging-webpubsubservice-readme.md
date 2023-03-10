@@ -5,13 +5,11 @@ author: msyyc
 ms.author: yuchaoyan
 ms.date: 02/15/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: webpubsub
+ms.service: azure-web-pubsub
 ---
-# Azure Web PubSub service client library for Python - version 1.0.1 
 
+# Azure Web PubSub service client library for Python - version 1.0.1 
 
 [Azure Web PubSub Service](https://aka.ms/awps/doc) is an Azure-managed service that helps developers easily build web applications with real-time features and publish-subscribe pattern. Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients can use Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP requests can also use Azure Web PubSub service.
 

@@ -5,10 +5,8 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 09/16/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
 
 # Azure Communication Chat Package client library for Python - version 1.1.0 
@@ -19,7 +17,7 @@ Read more about Azure Communication Services [here](https://docs.microsoft.com/a
 
 [Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-chat_1.1.0/sdk/communication/azure-communication-chat) | [Package (Pypi)](https://pypi.org/project/azure-communication-chat/) | [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-communication-chat/1.0.0b5/index.html) | [Product documentation](https://docs.microsoft.com/azure/communication-services/)
 
-# Getting started
+## Getting started
 
 ## Prerequisites
 
@@ -169,7 +167,7 @@ send_read_receipt(message_id, **kwargs)
 list_read_receipts(**kwargs)
 ```
 
-# Examples
+## Examples
 
 The following sections provide several code snippets covering some of the most common tasks, including:
 
@@ -568,15 +566,15 @@ python samples\chat_thread_client_sample.py
 python samples\chat_thread_client_sample_async.py
 ```
 
-# Troubleshooting
+## Troubleshooting
 
 Running into issues? This section should contain details as to what to do there.
 
-# Next steps
+## Next steps
 
 More sample code should go [here](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-chat_1.1.0/sdk/communication/azure-communication-chat/samples), along with links out to the appropriate example tests.
 
-# Contributing
+## Contributing
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](<https://github.com/Azure/azure-sdk-for-python/issues>) section of the project.
 

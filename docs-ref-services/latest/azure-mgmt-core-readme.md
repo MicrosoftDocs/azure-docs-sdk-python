@@ -1,14 +1,12 @@
 ---
-title: 
+title: Azure Management Core Library
 keywords: Azure, python, SDK, API, azure-mgmt-core, core
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 09/30/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: core
+ms.service: azure
 ---
 
 

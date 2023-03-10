@@ -5,10 +5,8 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 06/08/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
 
 # Azure Communication Phone Numbers Package client library for Python - version 1.0.1 
@@ -16,7 +14,8 @@ ms.service: communication
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers. 
 
-# Getting started
+## Getting started
+
 ### Prerequisites
 - Python 2.7, or 3.6 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
@@ -153,10 +152,11 @@ poller = self.phone_number_client.begin_update_phone_number_capabilities(
 )
 ```
 
-# Troubleshooting
+## Troubleshooting
 The Phone Numbers Administration client will raise exceptions defined in [Azure Core][azure_core].
 
-# Next steps
+## Next steps
+
 ## More sample code
 
 Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.0.1/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
@@ -165,7 +165,7 @@ Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-pytho
 
 If you encounter any bugs or have suggestions, please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-python/issues) section of the project
 
-# Contributing
+## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 

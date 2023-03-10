@@ -1,14 +1,12 @@
 ---
-title: 
-keywords: Azure, python, SDK, API, azure-messaging-nspkg, 
+title: Microsoft Azure SDK for Python - messaging namespace
+keywords: Azure, python, SDK, API, azure-messaging-nspkg, azure-python
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/24/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: azure-python
 ---
 
 # Microsoft Azure SDK for Python

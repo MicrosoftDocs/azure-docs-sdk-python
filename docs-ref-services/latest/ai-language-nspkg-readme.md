@@ -1,14 +1,12 @@
 ---
-title: 
-keywords: Azure, python, SDK, API, azure-ai-language-nspkg, 
+title: Microsoft Azure SDK for Python
+keywords: Azure, python, SDK, API, azure-ai-language-nspkg, azure-python
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 07/28/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: azure-python
 ---
 
 # Microsoft Azure SDK for Python
