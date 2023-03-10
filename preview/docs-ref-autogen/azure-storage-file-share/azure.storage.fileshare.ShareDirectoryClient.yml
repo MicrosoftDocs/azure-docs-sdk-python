@@ -21,9 +21,9 @@ summary: 'A client to interact with a specific directory, although it may not ye
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
   syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
-    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Union[str,
-    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential]]
-    = None, **kwargs: Any)'
+    str, snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str,
+    str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
+    None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -136,8 +136,7 @@ methods:
 - uid: azure.storage.fileshare.ShareDirectoryClient.close_handle
   name: close_handle
   summary: Close an open file handle.
-  signature: 'close_handle(handle: Union[str, Handle], **kwargs: Any) -> Dict[str,
-    int]'
+  signature: 'close_handle(handle: str | Handle, **kwargs: Any) -> Dict[str, int]'
   parameters:
   - name: handle
     description: A specific handle to close.
@@ -252,7 +251,7 @@ methods:
   summary: 'Creates a new subdirectory and returns a client to interact
 
     with the subdirectory.'
-  signature: 'create_subdirectory(directory_name: str, **kwargs) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+  signature: 'create_subdirectory(directory_name: str, **kwargs) -> ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -323,7 +322,7 @@ methods:
   summary: 'Marks the specified file for deletion. The file is later
 
     deleted during garbage collection.'
-  signature: 'delete_file(file_name: str, **kwargs: Optional[Any]) -> None'
+  signature: 'delete_file(file_name: str, **kwargs: Any | None) -> None'
   parameters:
   - name: file_name
     description: The name of the file to delete.
@@ -412,8 +411,8 @@ methods:
   name: from_connection_string
   summary: Create ShareDirectoryClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, share_name: str, directory_path:
-    str, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any) -> typing_extensions.Self'
+    str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -484,9 +483,9 @@ methods:
     :returns: A directory client.
 
     :rtype: ~azure.storage.fileshare.ShareDirectoryClient'
-  signature: 'from_directory_url(directory_url: str, snapshot: Optional[Union[str,
-    Dict[str, Any]]] = None, credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential,
-    AzureSasCredential, TokenCredential]] = None, **kwargs: Any) -> typing_extensions.Self'
+  signature: 'from_directory_url(directory_url: str, snapshot: str | Dict[str, Any]
+    | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: directory_url
     description: The full URI to the directory.
@@ -534,7 +533,7 @@ methods:
 
 
     The file need not already exist.'
-  signature: 'get_file_client(file_name: str, **kwargs: Any) -> azure.storage.fileshare._file_client.ShareFileClient'
+  signature: 'get_file_client(file_name: str, **kwargs: Any) -> ShareFileClient'
   parameters:
   - name: file_name
     description: The name of the file.
@@ -549,7 +548,7 @@ methods:
 
 
     The subdirectory need not already exist.'
-  signature: 'get_subdirectory_client(directory_name: str, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+  signature: 'get_subdirectory_client(directory_name: str, **kwargs: Any) -> ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -574,8 +573,8 @@ methods:
 - uid: azure.storage.fileshare.ShareDirectoryClient.list_directories_and_files
   name: list_directories_and_files
   summary: Lists all the directories and files under the directory.
-  signature: 'list_directories_and_files(name_starts_with: Optional[str] = None, **kwargs:
-    Any) -> azure.core.paging.ItemPaged'
+  signature: 'list_directories_and_files(name_starts_with: str | None = None, **kwargs:
+    Any) -> ItemPaged'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only entities whose names
@@ -635,7 +634,7 @@ methods:
 - uid: azure.storage.fileshare.ShareDirectoryClient.list_handles
   name: list_handles
   summary: Lists opened handles on a directory or a file under the directory.
-  signature: 'list_handles(recursive: bool = False, **kwargs: Any) -> azure.core.paging.ItemPaged'
+  signature: 'list_handles(recursive: bool = False, **kwargs: Any) -> ItemPaged'
   parameters:
   - name: recursive
     description: 'Boolean that specifies if operation should apply to the directory
@@ -670,7 +669,7 @@ methods:
     \ or str\n:keyword file_change_time:\n\n   Change time for the directory. If not\
     \ specified, change time will be set to the current date/time.\n\n   New in version\
     \ 12.8.0: This parameter was introduced in API version '2021-06-08'."
-  signature: 'rename_directory(new_name: str, **kwargs: Any) -> azure.storage.fileshare._directory_client.ShareDirectoryClient'
+  signature: 'rename_directory(new_name: str, **kwargs: Any) -> ShareDirectoryClient'
   parameters:
   - name: metadata
     description: A name-value pair to associate with a file storage object.
@@ -725,10 +724,10 @@ methods:
 - uid: azure.storage.fileshare.ShareDirectoryClient.set_http_headers
   name: set_http_headers
   summary: Sets HTTP headers on the directory.
-  signature: 'set_http_headers(file_attributes: Union[str, NTFSAttributes] = ''none'',
-    file_creation_time: Optional[Union[str, datetime]] = ''preserve'', file_last_write_time:
-    Optional[Union[str, datetime]] = ''preserve'', file_permission: Optional[str]
-    = None, permission_key: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'set_http_headers(file_attributes: str | NTFSAttributes = ''none'', file_creation_time:
+    str | datetime | None = ''preserve'', file_last_write_time: str | datetime | None
+    = ''preserve'', file_permission: str | None = None, permission_key: str | None
+    = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: file_attributes
     description: 'The file system attributes for files and directories.
@@ -810,8 +809,8 @@ methods:
   summary: 'Creates a new file in the directory and returns a ShareFileClient
 
     to interact with the file.'
-  signature: 'upload_file(file_name: str, data: Union[bytes, str, Iterable, IO], length:
-    Optional[int] = None, **kwargs) -> azure.storage.fileshare._file_client.ShareFileClient'
+  signature: 'upload_file(file_name: str, data: bytes | str | Iterable | IO, length:
+    int | None = None, **kwargs) -> ShareFileClient'
   parameters:
   - name: file_name
     description: The name of the file.
