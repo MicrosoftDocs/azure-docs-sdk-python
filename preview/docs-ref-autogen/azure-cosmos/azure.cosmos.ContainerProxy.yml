@@ -23,8 +23,8 @@ summary: 'An interface to interact with a specific DB Container.
 
   documents, each of which is represented as an Item.'
 constructor:
-  syntax: 'ContainerProxy(client_connection: azure.cosmos._cosmos_client_connection.CosmosClientConnection,
-    database_link: str, id: str, properties: Optional[Dict[str, Any]] = None)'
+  syntax: 'ContainerProxy(client_connection: CosmosClientConnection, database_link:
+    str, id: str, properties: Dict[str, Any] = None)'
   parameters:
   - name: client_connection
   - name: database_link
@@ -49,10 +49,9 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.ContainerProxy.upsert_item> method.'
-  signature: 'create_item(body: Dict[str, Any], populate_query_metrics: Optional[bool]
-    = None, pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
-    = None, indexing_directive: Optional[Any] = None, **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'create_item(body: Dict[str, Any], populate_query_metrics: bool | None
+    = None, pre_trigger_include: str | None = None, post_trigger_include: str | None
+    = None, indexing_directive: Any | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -107,8 +106,8 @@ methods:
 
 
     If the conflict does not already exist in the container, an exception is raised.'
-  signature: 'delete_conflict(conflict: Union[str, Dict[str, Any]], partition_key:
-    Any, **kwargs: Any) -> None'
+  signature: 'delete_conflict(conflict: str | Dict[str, Any], partition_key: Any,
+    **kwargs: Any) -> None'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to be deleted.
@@ -134,9 +133,9 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'delete_item(item: Union[Dict[str, Any], str], partition_key: Any, populate_query_metrics:
-    Optional[bool] = None, pre_trigger_include: Optional[str] = None, post_trigger_include:
-    Optional[str] = None, **kwargs: Any) -> None'
+  signature: 'delete_item(item: Dict[str, Any] | str, partition_key: Any, populate_query_metrics:
+    bool | None = None, pre_trigger_include: str | None = None, post_trigger_include:
+    str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
@@ -185,8 +184,8 @@ methods:
 - uid: azure.cosmos.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
-  signature: 'get_conflict(conflict: Union[str, Dict[str, Any]], partition_key: Any,
-    **kwargs: Any) -> Dict[str, Any]'
+  signature: 'get_conflict(conflict: str | Dict[str, Any], partition_key: Any, **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
@@ -213,15 +212,15 @@ methods:
     \ for the container.\n:raises ~azure.cosmos.exceptions.CosmosHttpResponseError:\
     \ No throughput properties exists for the container or\n\n   the throughput properties\
     \ could not be retrieved."
-  signature: 'get_throughput(**kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  signature: 'get_throughput(**kwargs: Any) -> ThroughputProperties'
   return:
     types:
     - <xref:azure.cosmos.ThroughputProperties>
 - uid: azure.cosmos.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: 'list_conflicts(max_item_count: Optional[int] = None, **kwargs: Any)
-    -> Iterable[Dict[str, Any]]'
+  signature: 'list_conflicts(max_item_count: int | None = None, **kwargs: Any) ->
+    Iterable[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -237,10 +236,9 @@ methods:
 - uid: azure.cosmos.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: 'query_conflicts(query: str, parameters: Optional[List[str]] = None,
-    enable_cross_partition_query: Optional[bool] = None, partition_key: Optional[Any]
-    = None, max_item_count: Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str,
-    Any]]'
+  signature: 'query_conflicts(query: str, parameters: List[str] | None = None, enable_cross_partition_query:
+    bool | None = None, partition_key: Any | None = None, max_item_count: int | None
+    = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -280,10 +278,10 @@ methods:
     \ for the integrated cache in milliseconds.\n   For accounts configured to use\
     \ the integrated cache, using Session or Eventual consistency,\n   responses are\
     \ guaranteed to be no staler than this value."
-  signature: 'query_items(query: str, parameters: Optional[List[Dict[str, object]]]
-    = None, partition_key: Optional[Any] = None, enable_cross_partition_query: Optional[bool]
-    = None, max_item_count: Optional[int] = None, enable_scan_in_query: Optional[bool]
-    = None, populate_query_metrics: Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str,
+  signature: 'query_items(query: str, parameters: List[Dict[str, object]] | None =
+    None, partition_key: Any | None = None, enable_cross_partition_query: bool | None
+    = None, max_item_count: int | None = None, enable_scan_in_query: bool | None =
+    None, populate_query_metrics: bool | None = None, **kwargs: Any) -> Iterable[Dict[str,
     Any]]'
   return:
     description: An Iterable of items (dicts).
@@ -313,9 +311,9 @@ methods:
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: 'query_items_change_feed(partition_key_range_id: Optional[str] = None,
-    is_start_from_beginning: bool = False, continuation: Optional[str] = None, max_item_count:
-    Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'query_items_change_feed(partition_key_range_id: str | None = None, is_start_from_beginning:
+    bool = False, continuation: str | None = None, max_item_count: int | None = None,
+    **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: partition_key_range_id
     description: 'ChangeFeed requests can be executed against specific partition key
@@ -349,8 +347,8 @@ methods:
 - uid: azure.cosmos.ContainerProxy.read
   name: read
   summary: Read the container properties.
-  signature: 'read(*, populate_partition_key_range_statistics: Optional[bool] = ''None'',
-    populate_quota_info: Optional[bool] = ''None'', **kwargs)'
+  signature: 'read(*, populate_partition_key_range_statistics: bool | None = None,
+    populate_quota_info: bool | None = None, **kwargs)'
   parameters:
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
@@ -390,8 +388,8 @@ methods:
     \ integrated cache in milliseconds.\n   For accounts configured to use the integrated\
     \ cache, using Session or Eventual consistency,\n   responses are guaranteed to\
     \ be no staler than this value."
-  signature: 'read_all_items(max_item_count: Optional[int] = None, populate_query_metrics:
-    Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'read_all_items(max_item_count: int | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   return:
     description: An Iterable of items (dicts).
     types:
@@ -402,9 +400,9 @@ methods:
     \ integrated cache in milliseconds.\n   For accounts configured to use the integrated\
     \ cache, using Session or Eventual consistency,\n   responses are guaranteed to\
     \ be no staler than this value."
-  signature: 'read_item(item: Union[str, Dict[str, Any]], partition_key: Any, populate_query_metrics:
-    Optional[bool] = None, post_trigger_include: Optional[str] = None, **kwargs: Any)
-    -> Dict[str, Any]'
+  signature: 'read_item(item: str | Dict[str, Any], partition_key: Any, populate_query_metrics:
+    bool | None = None, post_trigger_include: str | None = None, **kwargs: Any) ->
+    Dict[str, Any]'
   return:
     description: Dict representing the item to be retrieved.
     types:
@@ -439,10 +437,9 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'replace_item(item: Union[str, Dict[str, Any]], body: Dict[str, Any],
-    populate_query_metrics: Optional[bool] = None, pre_trigger_include: Optional[str]
-    = None, post_trigger_include: Optional[str] = None, **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'replace_item(item: str | Dict[str, Any], body: Dict[str, Any], populate_query_metrics:
+    bool | None = None, pre_trigger_include: str | None = None, post_trigger_include:
+    str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -495,8 +492,8 @@ methods:
 
 
     If no ThroughputProperties already exist for the container, an exception is raised.'
-  signature: 'replace_throughput(throughput: Optional[Union[int, azure.cosmos.offer.ThroughputProperties]],
-    **kwargs: Any) -> azure.cosmos.offer.ThroughputProperties'
+  signature: 'replace_throughput(throughput: int | ThroughputProperties | None, **kwargs:
+    Any) -> ThroughputProperties'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
@@ -522,8 +519,8 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: 'upsert_item(body: Dict[str, Any], populate_query_metrics: Optional[bool]
-    = None, pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
+  signature: 'upsert_item(body: Dict[str, Any], populate_query_metrics: bool | None
+    = None, pre_trigger_include: str | None = None, post_trigger_include: str | None
     = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body

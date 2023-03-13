@@ -22,9 +22,9 @@ summary: 'A client to interact with the File Share Service at the account level.
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#optional-configuration).'
 constructor:
-  syntax: 'ShareServiceClient(account_url: str, credential: Optional[Union[str, Dict[str,
-    str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential]] = None, **kwargs:
-    Any)'
+  syntax: 'ShareServiceClient(account_url: str, credential: str | Dict[str, str] |
+    AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the file share storage account. Any other entities included
@@ -94,7 +94,7 @@ methods:
     with the same name already exists, the operation fails. Returns a client with
 
     which to interact with the newly created share.'
-  signature: 'create_share(share_name: str, **kwargs) -> azure.storage.fileshare._share_client.ShareClient'
+  signature: 'create_share(share_name: str, **kwargs) -> ShareClient'
   parameters:
   - name: share_name
     description: The name of the share to create.
@@ -139,8 +139,8 @@ methods:
   summary: 'Marks the specified share for deletion. The share is
 
     later deleted during garbage collection.'
-  signature: 'delete_share(share_name: Union[ShareProperties, str], delete_snapshots:
-    Optional[bool] = False, **kwargs) -> None'
+  signature: 'delete_share(share_name: ShareProperties | str, delete_snapshots: bool
+    | None = False, **kwargs) -> None'
   parameters:
   - name: share_name
     description: 'The share to delete. This can either be the name of the share,
@@ -181,9 +181,9 @@ methods:
 - uid: azure.storage.fileshare.ShareServiceClient.from_connection_string
   name: from_connection_string
   summary: Create ShareServiceClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Optional[Union[str,
-    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, TokenCredential]]
-    = None, **kwargs: Any) -> typing_extensions.Self'
+  signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -264,8 +264,8 @@ methods:
   summary: 'Get a client to interact with the specified share.
 
     The share need not already exist.'
-  signature: 'get_share_client(share: Union[ShareProperties, str], snapshot: Optional[Union[Dict[str,
-    Any], str]] = None) -> ShareClient'
+  signature: 'get_share_client(share: ShareProperties | str, snapshot: Dict[str, Any]
+    | str | None = None) -> ShareClient'
   parameters:
   - name: share
     description: 'The share. This can either be the name of the share,
@@ -306,9 +306,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service and stop when all shares have been returned.'
-  signature: 'list_shares(name_starts_with: Optional[str] = None, include_metadata:
-    Optional[bool] = False, include_snapshots: Optional[bool] = False, **kwargs) ->
-    ItemPaged[ShareProperties]'
+  signature: 'list_shares(name_starts_with: str | None = None, include_metadata: bool
+    | None = False, include_snapshots: bool | None = False, **kwargs) -> ItemPaged[ShareProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only shares whose names
@@ -366,9 +365,9 @@ methods:
     Azure Storage Analytics. If an element (e.g. hour_metrics) is left as None, the
 
     existing settings on the service for that functionality are preserved.'
-  signature: 'set_service_properties(hour_metrics: Optional[Metrics] = None, minute_metrics:
-    Optional[Metrics] = None, cors: Optional[List[CorsRule]] = None, protocol: Optional[ShareProtocolSettings]
-    = None, **kwargs) -> None'
+  signature: 'set_service_properties(hour_metrics: Metrics | None = None, minute_metrics:
+    Metrics | None = None, cors: List[CorsRule] | None = None, protocol: ShareProtocolSettings
+    | None = None, **kwargs) -> None'
   parameters:
   - name: hour_metrics
     description: 'The hour metrics settings provide a summary of request
@@ -447,7 +446,7 @@ methods:
 
     New in version 12.2.0: This operation was introduced in API version ''2019-12-12''.'
   signature: 'undelete_share(deleted_share_name: str, deleted_share_version: str,
-    **kwargs: Any) -> azure.storage.fileshare._share_client.ShareClient'
+    **kwargs: Any) -> ShareClient'
   parameters:
   - name: deleted_share_name
     description: Specifies the name of the deleted share to restore.
