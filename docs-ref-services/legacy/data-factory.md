@@ -7,10 +7,9 @@ manager: angerobe
 
 ms.date: 05/10/2018
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: data-factory
 ---
 
 

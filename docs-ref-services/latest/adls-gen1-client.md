@@ -9,7 +9,7 @@ ms.date: 08/26/2019
 ms.topic: reference
 ms.technology: azure
 ms.devlang: python
-ms.service: data-lake-store
+ms.service: azure-data-lake-storage
 ---
 
 # azure-datalake-store

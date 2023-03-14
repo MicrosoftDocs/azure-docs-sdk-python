@@ -8,10 +8,9 @@ manager: angerobe
 
 ms.date: 04/04/2018
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: azure-python
 ---
 
 # Azure Cognitive Services modules for Python

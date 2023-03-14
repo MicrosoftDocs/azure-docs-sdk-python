@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/05/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: appconfiguration
+ms.service: azure-app-configuration
 ---
 
 # Azure App Configuration client library for Python - version 1.1.1 
