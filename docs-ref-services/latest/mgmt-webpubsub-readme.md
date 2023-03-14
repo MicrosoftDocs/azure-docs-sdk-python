@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/14/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: webpubsub
+ms.service: azure-web-pubsub
 ---
 
 # Microsoft Azure SDK for Python

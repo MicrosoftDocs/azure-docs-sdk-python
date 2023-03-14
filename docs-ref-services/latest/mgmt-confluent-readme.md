@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 01/18/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: confluent
+ms.service: partner-services
+ms.subservice: confluent
 ---
 
 # Microsoft Azure SDK for Python

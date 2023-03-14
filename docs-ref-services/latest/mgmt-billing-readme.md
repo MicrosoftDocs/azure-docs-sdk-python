@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/12/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: costmanagement+billing
+ms.service: cost-management-billing
 ---
 
 ## Microsoft Azure SDK for Python

@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/26/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: datadog
+ms.service: partner-services
+ms.subservice: datadog
 ---
 
 # Microsoft Azure SDK for Python

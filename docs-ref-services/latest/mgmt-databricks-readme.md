@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/23/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: databricks
+ms.service: azure-databricks
 ---
 
 ## Microsoft Azure SDK for Python

@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/25/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: peeringservice
+ms.service: peering-service
 ---
 
 # Microsoft Azure SDK for Python

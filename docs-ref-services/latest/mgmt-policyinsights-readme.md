@@ -5,7 +5,6 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/02/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: azure-policy

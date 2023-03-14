@@ -5,10 +5,9 @@ author: maggiepint
 ms.author: magpint
 ms.date: 11/09/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: virtualnetwork
+ms.service: virtual-network
 ---
 
 # Microsoft Azure SDK for Python

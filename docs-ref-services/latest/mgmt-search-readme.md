@@ -8,6 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: search
 ---
+
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Search Management Client Library.

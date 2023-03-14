@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/29/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: timeseriesinsights
+ms.service: time-series-insights
 ---
 
 ## Microsoft Azure SDK for Python

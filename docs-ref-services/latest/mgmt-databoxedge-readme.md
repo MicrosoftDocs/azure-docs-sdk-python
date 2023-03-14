@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/26/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: stackedge
+ms.service: databox
+ms.subservice: edge
 ---
 
 # Microsoft Azure Data Box Edge SDK for Python

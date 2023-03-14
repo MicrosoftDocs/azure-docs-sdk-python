@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: machinelearning
+ms.service: machine-learning
 ---
 
 ## Microsoft Azure SDK for Python

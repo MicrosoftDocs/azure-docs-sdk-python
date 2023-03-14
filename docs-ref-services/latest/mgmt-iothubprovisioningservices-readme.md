@@ -5,10 +5,10 @@ author: mayurid
 ms.author: mayurid
 ms.date: 02/07/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: iothub
+ms.service: iot-hub
+ms.subservice: azure-iot-hub-device-provisioning-service
 ---
 # Microsoft Azure SDK for Python
 
