@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Market Place Ordering Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-marketplaceordering, marketplaceordering
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/18/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: marketplaceordering
+ms.service: marketplace
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Market Place Ordering Client Library for Python
 
 This is the Microsoft Azure Market Place Ordering Client Library.
 

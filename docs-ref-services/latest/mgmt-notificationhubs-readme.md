@@ -1,16 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Notification Hubs Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-notificationhubs, notificationhubs
 author: mayurid
 ms.author: mayurid
 ms.date: 01/06/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: notificationhubs
+ms.service: notification-hubs
 ---
-# Microsoft Azure SDK for Python
+
+# Microsoft Azure Notification Hubs Management Client Library for Python
 
 This is the Microsoft Azure Notification Hubs Management Client Library.
 This package has been tested with Python 2.7, 3.6+.
@@ -21,7 +20,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
@@ -33,7 +32,7 @@ Code samples for this package can be found at [Notification Hubs Management](htt
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
-# Provide Feedback
+## Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)

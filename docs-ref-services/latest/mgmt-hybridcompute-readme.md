@@ -1,14 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Hybrid Compute Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-hybridcompute, hybridcompute
 author: lmazuel
 ms.author: lmazuel
 ms.date: 02/20/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: hybridcompute
+ms.service: active-directory
+ms.subservice: hybrid
 ---
-# Microsoft Azure SDK for Python
+# Microsoft Azure Hybrid Compute Management Client Library for Python
 
 This is the Microsoft Azure Hybrid Compute Management Client Library.
 This package has been tested with Python 3.7+.

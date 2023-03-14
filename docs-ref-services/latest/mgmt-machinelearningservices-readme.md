@@ -1,20 +1,17 @@
 ---
-title: 
+title: Microsoft Azure Machine Learning Services Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-machinelearningservices, machinelearning
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: machinelearning
+ms.service: machine-learning
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Machine Learning Services Management Client Library for Python
     
-This is the Microsoft Azure Machine Learning Services Management Client
-Library.
+This is the Microsoft Azure Machine Learning Services Management Client Library.
 
 Azure Resource Manager (ARM) is the next generation of management APIs
 that replace the old Azure Service Management (ASM).
@@ -28,7 +25,7 @@ library.
 For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)

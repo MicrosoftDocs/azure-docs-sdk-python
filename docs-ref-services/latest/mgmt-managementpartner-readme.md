@@ -1,17 +1,16 @@
 ---
-title: 
+title: Microsoft Azure ManagementPartner Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-managementpartner, managementpartner
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/24/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: managementpartner
+ms.service: azure-resource-manager
+ms.subservice: management
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure ManagementPartner Management Client Library for Python
 
 This is the Microsoft Azure ManagementPartner Management Client Library.
 

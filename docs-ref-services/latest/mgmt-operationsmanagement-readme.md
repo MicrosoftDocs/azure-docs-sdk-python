@@ -1,17 +1,16 @@
 ---
-title: 
+title: Microsoft Azure OperationsManagement Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-operationsmanagement, operationsmanagement
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: operationsmanagement
+ms.service: azure-resource-manager
+ms.subservice: management
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure OperationsManagement Management Client Library for Python
 
 This is the Microsoft Azure OperationsManagement Management Client Library.
 

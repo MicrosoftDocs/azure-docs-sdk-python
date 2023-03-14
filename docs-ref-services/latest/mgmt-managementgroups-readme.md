@@ -1,17 +1,16 @@
 ---
-title: 
+title: Microsoft Azure Management Groups Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-managementgroups, managementgroups
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/21/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: managementgroups
+ms.service: azure-resource-manager
+ms.subservice: management
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Management Groups Client Library for Python
 
 This is the Microsoft Azure Management Groups Client Library.
 

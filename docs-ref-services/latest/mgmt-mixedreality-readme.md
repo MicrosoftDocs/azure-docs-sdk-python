@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Mixed Reality Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-mixedreality, mixedreality
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/28/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: mixedreality
+ms.service: azure
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Mixed Reality Management Client Library for Python
 
 This is the Microsoft Azure Mixed Reality Management Client Library.
 
