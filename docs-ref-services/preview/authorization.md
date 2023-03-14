@@ -6,8 +6,7 @@ ms.author: lmazuel
 ms.data: 03/13/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: authorization
-ms.prod: azure
+ms.service: azure-python
 manager: routlaw
 ms.technology: azure
 ms.date: 02/21/2018

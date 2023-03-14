@@ -5,10 +5,10 @@ author: lmazuel
 ms.author: lmazuel
 ms.date: 03/31/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: cognitiveservices
+ms.service: cognitive-services
+ms.subservice: personalizer
 ---
 # Microsoft Azure SDK for Python
 

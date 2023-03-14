@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 06/07/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: metricsadvisor
+ms.service: cognitive-services
+ms.subservice: metrics-advisor
 ---
 
 # Azure Metrics Advisor client library for Python - version 1.0.0b4 

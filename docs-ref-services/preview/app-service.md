@@ -7,10 +7,9 @@ ms.author: ramyar
 manager: douge
 ms.date: 06/12/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: appservice
+ms.service: app-service
 ---
 
 # Azure Web Apps libraries for Python
