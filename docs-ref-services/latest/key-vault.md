@@ -20,9 +20,9 @@ If you cannot update existing applications to version 4.x.x, then Microsoft reco
 
 ### Version 4.x.x
 
-The version 4.x.x client libraries for Python are part of the Azure SDK for Python. The source code for the Azure Key Vault client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault).
+The version 4.x.x client libraries for Python are part of the Azure SDK for Python. The source code for the Azure Key Vault client libraries for Python is available on [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault).
 
-Use the following version 4.x.x libraries to work with certificates, keys, and secrets:
+Use the following version 4.x.x libraries to work with vault administration, certificates, keys, and secrets:
 
 | Library | Reference | Package | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
