@@ -7,10 +7,10 @@ ms.author: ramyar
 manager: twolley
 ms.date: 03/12/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: storage
+ms.subservice: files
 ---
 
 # Azure Files for Python Readme - Version 12.1.1
