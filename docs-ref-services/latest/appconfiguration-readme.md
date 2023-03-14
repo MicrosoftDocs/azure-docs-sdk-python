@@ -6,7 +6,7 @@ ms.author: xiangyan
 ms.date: 02/13/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: appconfiguration
+ms.service: azure-app-configuration
 ---
 # Azure App Configuration client library for Python - version 1.4.0 
 

@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/27/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: computervision
+ms.service: cognitive-services
+ms.subservice: computer-vision
 ---
 
 # Azure Cognitive Services Computer Vision SDK for Python

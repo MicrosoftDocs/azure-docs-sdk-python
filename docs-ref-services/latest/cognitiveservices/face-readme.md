@@ -4,10 +4,10 @@ author: PatrickFarley
 ms.author: pafarley
 ms.date: 06/21/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: face-api
+ms.service: cognitive-services
+ms.subservice: face-api
 ---
 
 # Azure Face API
