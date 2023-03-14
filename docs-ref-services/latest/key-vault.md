@@ -26,9 +26,10 @@ Use the following version 4.x.x libraries to work with certificates, keys, and s
 
 | Library | Reference | Package | Source |
 |----------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-|    azure-keyvault-certificates   |    [Reference](keyvault-certificates-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-certificates/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-certificates)    |
-|    azure-keyvault-keys    |    [Reference](keyvault-keys-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-keys/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-keys)    |
-|    azure-keyvault-secrets    |    [Reference](keyvault-secrets-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-secrets/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-secrets)    |
+|    azure-keyvault-administration   |    [Reference](keyvault-administration-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-administration/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-administration)    |
+|    azure-keyvault-certificates   |    [Reference](keyvault-certificates-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-certificates/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-certificates)    |
+|    azure-keyvault-keys    |    [Reference](keyvault-keys-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-keys/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-keys)    |
+|    azure-keyvault-secrets    |    [Reference](keyvault-secrets-readme)    |    [PyPI](https://pypi.org/project/azure-keyvault-secrets/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-secrets)    |
 
 ### Version 1.x.x
 
@@ -46,4 +47,4 @@ Use the following library to work with the Azure Key Vault resource provider:
 
 |    Library    |    Reference    |    Package    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-|    azure-mgmt-keyvault    |    [Reference](/python/api/overview/azure/mgmt-keyvault-readme)    |    [PyPI](https://pypi.org/project/azure-mgmt-keyvault/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-mgmt-keyvault)    |
+|    azure-mgmt-keyvault    |    [Reference](/python/api/overview/azure/mgmt-keyvault-readme)    |    [PyPI](https://pypi.org/project/azure-mgmt-keyvault/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-mgmt-keyvault)    |
