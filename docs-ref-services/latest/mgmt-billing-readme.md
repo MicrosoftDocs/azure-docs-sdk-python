@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Billing Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-billing, costmanagement+billing
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/12/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: costmanagement+billing
+ms.service: cost-management-billing
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Billing Client Library for Python
 
 This is the Microsoft Azure Billing Client Library.
 

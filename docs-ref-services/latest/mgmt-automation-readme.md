@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Automation Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-automation, automation
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: automation
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Automation Client Library for Python
 
 This is the Microsoft Azure Automation Client Library.
 

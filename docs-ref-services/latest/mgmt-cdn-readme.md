@@ -1,16 +1,15 @@
 ---
-title: 
+title: Microsoft Azure CDN Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-cdn, cdn
 author: lmazuel
 ms.author: lmazuel
 ms.date: 03/22/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: cdn
+ms.service: azure-cdn
 ---
-# Microsoft Azure SDK for Python
+
+# Microsoft Azure CDN Management Client Library for Python
 
 This is the Microsoft Azure CDN Management Client Library.
 This package has been tested with Python 3.6+.
@@ -20,7 +19,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
@@ -32,7 +31,7 @@ Code samples for this package can be found at [CDN Management](https://docs.micr
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
-# Provide Feedback
+## Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)

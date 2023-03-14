@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure AzureStack Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-azurestack, stack
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/09/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: stack
+ms.service: azure-stack
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure AzureStack Management Client Library for Python
 
 This is the Microsoft Azure AzureStack Management Client Library.
 

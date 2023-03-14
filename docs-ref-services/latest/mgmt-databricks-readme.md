@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Databricks Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-databricks, databricks
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/23/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: databricks
+ms.service: azure-databricks
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Databricks Management Client Library for Python
 
 This is the Microsoft Azure Databricks Management Client Library.
 

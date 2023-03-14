@@ -6,8 +6,11 @@ ms.author: lmazuel
 ms.data: 03/09/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: metricsadvisor
+ms.service: applied-ai-services
+ms.subservice: metrics-advisor
 ---
 # Azure Metrics Advisor SDK for Python - latest
+
 ## Packages - latest
+
 [!INCLUDE [packages](metrics-advisor-index.md)]

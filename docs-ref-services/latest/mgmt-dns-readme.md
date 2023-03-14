@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure DNS Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-dns, dns
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/16/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: dns
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure DNS Management Client Library for Python
 
 This is the Microsoft Azure DNS Management Client Library.
 
