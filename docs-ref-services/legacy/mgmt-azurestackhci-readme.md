@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/15/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: azure-stack
+ms.subservice: azure-stack-hci
 ---
 
 # Microsoft Azure SDK for Python

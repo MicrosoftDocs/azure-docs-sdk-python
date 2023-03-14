@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/25/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerinstance
+ms.service: container-instances
 ---
 
 ## Microsoft Azure SDK for Python
