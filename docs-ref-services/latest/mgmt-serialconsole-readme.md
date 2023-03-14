@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure SerialConsole Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-serialconsole, serialconsole
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/21/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: serialconsole
+ms.service: azure-resource-manager
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure SerialConsole Client Library for Python
 
 This is the Microsoft Azure SerialConsole Client Library.
 

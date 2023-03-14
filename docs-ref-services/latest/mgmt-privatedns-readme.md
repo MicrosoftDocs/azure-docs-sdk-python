@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure DNS Private Zones Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-privatedns, privatedns
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/29/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: privatedns
+ms.service: azure-dns
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure DNS Private Zones Client Library for Python
 
 This is the Microsoft Azure DNS Private Zones Client Library.
 
@@ -27,7 +25,7 @@ library.
 For a more complete set of Azure libraries, see the
 [azure sdk python release](https://aka.ms/azsdk/python/all).
 
-# Usage
+## Usage
 
 
 To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
@@ -37,6 +35,7 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
 Code samples for this package can be found at [Privatedns Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+
 ## Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in

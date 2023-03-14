@@ -1,17 +1,15 @@
 ---
-title: 
+title: Microsoft Azure Storage Sync Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-storagesync, storage
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/09/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: storage
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Storage Sync Client Library for Python
 
 This is the Microsoft Azure Storage Sync Client Library.
 

@@ -1,20 +1,17 @@
 ---
-title: 
+title: Microsoft Azure TimeSeriesInsights Management Client Library for Python
 keywords: Azure, python, SDK, API, azure-mgmt-timeseriesinsights, timeseriesinsights
 author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/29/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: timeseriesinsights
+ms.service: time-series-insights
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure TimeSeriesInsights Management Client Library for Python
 
-This is the Microsoft Azure TimeSeriesInsights Management Client
-Library.
+This is the Microsoft Azure TimeSeriesInsights Management Client Library.
 
 Azure Resource Manager (ARM) is the next generation of management APIs
 that replace the old Azure Service Management (ASM).
