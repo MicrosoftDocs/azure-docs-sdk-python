@@ -11,3 +11,6 @@ ms.service: nginx
 # Azure Nginx SDK for Python - preview
 ## Packages - preview
 [!INCLUDE [packages](nginx-index.md)]
+
+## Example
+[Getting started - Managing NGINXaaS for Azure using Azure Python SDK](https://github.com/nginxinc/nginxaas-for-azure-snippets/tree/main/snippets/sdk/python)
