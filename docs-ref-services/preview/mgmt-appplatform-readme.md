@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 02/14/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: appplatform
+ms.service: azure-python
 ---
 # Microsoft Azure SDK for Python
 

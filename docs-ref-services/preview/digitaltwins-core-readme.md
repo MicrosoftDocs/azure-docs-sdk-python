@@ -5,10 +5,9 @@ author: johngallardo
 ms.author: jgalla
 ms.date: 03/31/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: digitaltwins
+ms.service: digital-twins
 ---
 # Azure Azure Digital Twins Core client library for Python - version 1.2.0b1 
 

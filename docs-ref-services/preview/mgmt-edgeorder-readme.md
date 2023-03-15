@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 02/14/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: edgeorder
+ms.service: active-directory
 ---
 # Microsoft Azure SDK for Python
 

@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 09/09/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: monitor
+ms.service: azure-monitor
 ---
 
 # Azure Monitor Query client library for Python - version 1.0.0b4 

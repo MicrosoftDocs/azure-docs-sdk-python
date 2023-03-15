@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 02/16/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: redhatopenshift
+ms.service: azure-redhat-openshift
 ---
 # Microsoft Azure SDK for Python
 

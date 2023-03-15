@@ -6,8 +6,7 @@ ms.author: lmazuel
 ms.data: 03/13/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: siterecovery
-ms.prod: azure
+ms.service: site-recovery
 manager: douge
 ms.technology: azure
 ms.date: 07/10/2017

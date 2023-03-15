@@ -6,8 +6,7 @@ ms.author: lmazuel
 ms.data: 03/13/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: mediaservices
-ms.prod: azure
+ms.service: media-services
 manager: douge
 ms.technology: azure
 ms.date: 07/10/2017

@@ -6,7 +6,7 @@ ms.author: ro-joowan
 ms.date: 02/16/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: datalake
+ms.service: data-lake-store
 ---
 # Microsoft Azure SDK for Python
 

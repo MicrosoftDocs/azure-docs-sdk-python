@@ -8,6 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
+
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Storage Management Client Library.

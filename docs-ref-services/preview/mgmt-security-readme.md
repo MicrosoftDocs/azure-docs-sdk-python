@@ -6,8 +6,9 @@ ms.author: lmazuel
 ms.date: 03/07/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: security
+ms.service: security-center
 ---
+
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Security Center Management Client Library.

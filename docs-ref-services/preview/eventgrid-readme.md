@@ -5,10 +5,9 @@ author: lmazuel
 ms.author: lmazuel
 ms.date: 04/07/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: eventgrid
+ms.service: event-grid
 ---
 # Azure Event Grid client library for Python - version 4.9.0b1 
 

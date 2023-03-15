@@ -6,8 +6,7 @@ ms.author: lmazuel
 ms.data: 03/13/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: logicapps
-ms.prod: azure
+ms.service: logic-apps
 manager: douge
 ms.technology: azure
 ms.date: 07/10/2017

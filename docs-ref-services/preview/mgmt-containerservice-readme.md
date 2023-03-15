@@ -5,10 +5,9 @@ author: samkreter
 ms.author: samkreter
 ms.date: 03/31/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerservice
+ms.service: container-service
 ---
 # Microsoft Azure SDK for Python
 

@@ -5,10 +5,9 @@ author: YalinLi0312
 ms.author: yall
 ms.date: 03/31/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerregistry
+ms.service: container-registry
 ---
 # Microsoft Azure SDK for Python
 

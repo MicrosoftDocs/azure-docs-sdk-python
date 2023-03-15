@@ -5,10 +5,9 @@ author: cartertinney
 ms.author: catinney
 ms.date: 03/31/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: modelsrepository
+ms.service: azure-python
 ---
 # Azure IoT Models Repository client library for Python - version 1.0.0a20220330001 
 
