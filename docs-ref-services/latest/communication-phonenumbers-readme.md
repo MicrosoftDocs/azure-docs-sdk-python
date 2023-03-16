@@ -8,7 +8,7 @@ ms.date: 03/16/2023
 ms.topic: reference
 ms.prod: azure
 ms.devlang: python
-ms.service: communication
+ms.service:
 ---
 
 # Azure Communication Phone Numbers Package client library for Python - version 1.2.0
@@ -24,7 +24,7 @@ Purchased phone numbers can come with many capabilities, depending on the countr
 
 - Python 2.7, or 3.6 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Installing
 
@@ -223,7 +223,6 @@ print(result.country_code)
 print(result.phone_number)
 ```
 
-
 ### List Purchased Phone Numbers
 
 Lists all of your purchased phone numbers
@@ -309,7 +308,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ## Related projects
 
