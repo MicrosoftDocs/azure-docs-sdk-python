@@ -8,7 +8,7 @@ ms.topic: reference
 ms.technology: azure
 ms.devlang: python
 ms.service: active-directory
-ms.subservice: b2c
+ms.subservice: B2C
 ---
 
 # Microsoft Azure SDK for Python
