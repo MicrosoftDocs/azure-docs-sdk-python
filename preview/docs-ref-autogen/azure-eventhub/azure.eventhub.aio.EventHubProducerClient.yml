@@ -10,11 +10,10 @@ summary: 'The EventHubProducerClient class defines a high level interface for
   sending events to the Azure Event Hubs service.'
 constructor:
   syntax: 'EventHubProducerClient(fully_qualified_namespace: str, eventhub_name: str,
-    credential: CredentialTypes, *, buffered_mode: bool = False, on_error: Optional[Callable[[List[Union[azure.eventhub._common.EventData,
-    azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage]], Optional[str], Exception],
-    Awaitable[None]]] = None, on_success: Optional[Callable[[List[Union[azure.eventhub._common.EventData,
-    azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage]], Optional[str]], Awaitable[None]]]
-    = None, max_buffer_length: Optional[int] = None, max_wait_time: Optional[float]
+    credential: CredentialTypes, *, buffered_mode: bool = False, on_error: Callable[[List[EventData
+    | AmqpAnnotatedMessage], str | None, Exception], Awaitable[None]] | None = None,
+    on_success: Callable[[List[EventData | AmqpAnnotatedMessage], str | None], Awaitable[None]]
+    | None = None, max_buffer_length: int | None = None, max_wait_time: float | None
     = None, **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
@@ -279,8 +278,8 @@ methods:
 
     The max_size_in_bytes should be no greater than the max allowed message size defined
     by the service.'
-  signature: 'async create_batch(*, partition_id: Optional[str] = None, partition_key:
-    Optional[str] = None, max_size_in_bytes: Optional[int] = None) -> azure.eventhub._common.EventDataBatch'
+  signature: 'async create_batch(*, partition_id: str | None = None, partition_key:
+    str | None = None, max_size_in_bytes: int | None = None) -> EventDataBatch'
   parameters:
   - name: partition_id
     description: 'The specific partition ID to send to. Default is None, in which
@@ -361,16 +360,14 @@ methods:
 - uid: azure.eventhub.aio.EventHubProducerClient.from_connection_string
   name: from_connection_string
   summary: Create an EventHubProducerClient from a connection string.
-  signature: 'from_connection_string(conn_str: str, *, eventhub_name: Optional[str]
-    = None, buffered_mode: bool = False, on_error: Optional[Callable[[List[Union[azure.eventhub._common.EventData,
-    azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage]], Optional[str], Exception],
-    Awaitable[None]]] = None, on_success: Optional[Callable[[List[Union[azure.eventhub._common.EventData,
-    azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage]], Optional[str]], Awaitable[None]]]
-    = None, max_buffer_length: Optional[int] = None, max_wait_time: Optional[float]
-    = None, logging_enable: bool = False, http_proxy: Optional[Dict[str, Union[str,
-    int]]] = None, auth_timeout: float = 60, user_agent: Optional[str] = None, retry_total:
-    int = 3, transport_type: azure.eventhub._constants.TransportType = <TransportType.Amqp:
-    1>, **kwargs: Any) -> azure.eventhub.aio._producer_client_async.EventHubProducerClient'
+  signature: 'from_connection_string(conn_str: str, *, eventhub_name: str | None =
+    None, buffered_mode: bool = False, on_error: Callable[[List[EventData | AmqpAnnotatedMessage],
+    str | None, Exception], Awaitable[None]] | None = None, on_success: Callable[[List[EventData
+    | AmqpAnnotatedMessage], str | None], Awaitable[None]] | None = None, max_buffer_length:
+    int | None = None, max_wait_time: float | None = None, logging_enable: bool =
+    False, http_proxy: Dict[str, str | int] | None = None, auth_timeout: float = 60,
+    user_agent: str | None = None, retry_total: int = 3, transport_type: TransportType
+    = TransportType.Amqp, **kwargs: Any) -> EventHubProducerClient'
   parameters:
   - name: conn_str
     description: The connection string of an Event Hub.
@@ -564,7 +561,7 @@ methods:
     \ and is only recommend for use in debugging. For a\n   partition ID that has\
     \ no events buffered, 0 will be returned regardless of whether that\n   partition\
     \ ID actually exists within the Event Hub.**"
-  signature: 'get_buffered_event_count(partition_id: str) -> Optional[int]'
+  signature: 'get_buffered_event_count(partition_id: str) -> int | None'
   parameters:
   - name: partition_id
     description: The target partition ID.
@@ -637,9 +634,8 @@ methods:
     to create *EventDataBatch* and add either *EventData* or *AmqpAnnotatedMessage*\
     \ into the batch one by one\nuntil the size limit, and then call this method to\
     \ send out the batch."
-  signature: 'async send_batch(event_data_batch: Union[azure.eventhub._common.EventDataBatch,
-    List[Union[azure.eventhub._common.EventData, azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage]]],
-    **kwargs: Any) -> None'
+  signature: 'async send_batch(event_data_batch: EventDataBatch | List[EventData |
+    AmqpAnnotatedMessage], **kwargs: Any) -> None'
   parameters:
   - name: event_data_batch
     description: 'The *EventDataBatch* object to be sent or a list of *EventData*
@@ -747,8 +743,8 @@ methods:
     \      * If events fail to enqueue within the given timeout, then an error will\
     \ be directly raised. \n\n      * If events fail to send after enqueuing successfully,\
     \ the *on_error* callback will be called."
-  signature: 'async send_event(event_data: Union[azure.eventhub._common.EventData,
-    azure.eventhub.amqp._amqp_message.AmqpAnnotatedMessage], **kwargs: Any) -> None'
+  signature: 'async send_event(event_data: EventData | AmqpAnnotatedMessage, **kwargs:
+    Any) -> None'
   parameters:
   - name: event_data
     description: The *EventData* object to be sent.

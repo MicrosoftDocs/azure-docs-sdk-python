@@ -7,8 +7,8 @@ inheritances:
 - azure.search.documents._headers_mixin.HeadersMixin
 summary: A client to interact with an existing Azure search index.
 constructor:
-  syntax: 'SearchClient(endpoint: str, index_name: str, credential: Union[azure.core.credentials.AzureKeyCredential,
-    azure.core.credentials.TokenCredential], **kwargs)'
+  syntax: 'SearchClient(endpoint: str, index_name: str, credential: AzureKeyCredential
+    | TokenCredential, **kwargs)'
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
@@ -60,12 +60,11 @@ methods:
     \ Autocomplete. The default is 'oneTerm'. Use\n\n   'twoTerms' to get shingles\
     \ and 'oneTermWithContext' to use the current context while producing\n   auto-completed\
     \ terms. Possible values include: 'oneTerm', 'twoTerms', 'oneTermWithContext'."
-  signature: 'autocomplete(search_text: str, suggester_name: str, *, mode: Optional[Union[str,
-    azure.search.documents._generated.models._search_index_client_enums.AutocompleteMode]]
-    = None, use_fuzzy_matching: Optional[bool] = None, highlight_post_tag: Optional[str]
-    = None, highlight_pre_tag: Optional[str] = None, minimum_coverage: Optional[float]
-    = None, search_fields: Optional[List[str]] = None, top: Optional[int] = None,
-    **kwargs) -> List[Dict]'
+  signature: 'autocomplete(search_text: str, suggester_name: str, *, mode: str | AutocompleteMode
+    | None = None, use_fuzzy_matching: bool | None = None, highlight_post_tag: str
+    | None = None, highlight_pre_tag: str | None = None, minimum_coverage: float |
+    None = None, search_fields: List[str] | None = None, top: int | None = None, **kwargs)
+    -> List[Dict]'
   parameters:
   - name: filter
     description: 'An OData expression that filters the documents used to produce completed
@@ -166,7 +165,7 @@ methods:
     not exist in the index, attempting a delete operation with that key will
 
     result in a 200 status code.'
-  signature: 'delete_documents(documents: List[Dict], **kwargs: Any) -> List[azure.search.documents._generated.models._models_py3.IndexingResult]'
+  signature: 'delete_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
     description: A list of documents to delete.
@@ -189,8 +188,8 @@ methods:
 - uid: azure.search.documents.SearchClient.get_document
   name: get_document
   summary: Retrieve a document from the Azure search index by its key.
-  signature: 'get_document(key: str, selected_fields: Optional[List[str]] = None,
-    **kwargs: Any) -> Dict'
+  signature: 'get_document(key: str, selected_fields: List[str] | None = None, **kwargs:
+    Any) -> Dict'
   parameters:
   - name: key
     description: The primary key value for the document to retrieve
@@ -232,8 +231,7 @@ methods:
 
 
     :raises <xref:azure.search.documents.RequestEntityTooLargeError>'
-  signature: 'index_documents(batch: azure.search.documents._index_documents_batch.IndexDocumentsBatch,
-    **kwargs: Any) -> List[azure.search.documents._generated.models._models_py3.IndexingResult]'
+  signature: 'index_documents(batch: IndexDocumentsBatch, **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: batch
     description: A batch of document operations to perform.
@@ -255,7 +253,7 @@ methods:
     merge will replace the existing field in the document. This also applies
 
     to collections of primitive and complex types.'
-  signature: 'merge_documents(documents: List[Dict], **kwargs: Any) -> List[azure.search.documents._generated.models._models_py3.IndexingResult]'
+  signature: 'merge_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
     description: A list of documents to merge.
@@ -287,7 +285,7 @@ methods:
     key already exists in the index. If the document does not exist, it
 
     behaves like *upload_documents* with a new document.'
-  signature: 'merge_or_upload_documents(documents: List[Dict], **kwargs: Any) -> List[azure.search.documents._generated.models._models_py3.IndexingResult]'
+  signature: 'merge_or_upload_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
     description: A list of documents to merge or upload.
@@ -300,24 +298,20 @@ methods:
 - uid: azure.search.documents.SearchClient.search
   name: search
   summary: Search the Azure search index for documents.
-  signature: 'search(search_text: str, *, include_total_count: Optional[bool] = None,
-    facets: Optional[List[str]] = None, filter: Optional[str] = None, highlight_fields:
-    Optional[str] = None, highlight_post_tag: Optional[str] = None, highlight_pre_tag:
-    Optional[str] = None, minimum_coverage: Optional[float] = None, order_by: Optional[List[str]]
-    = None, query_type: Optional[Union[str, azure.search.documents._generated.models._search_index_client_enums.QueryType]]
-    = None, scoring_parameters: Optional[List[str]] = None, scoring_profile: Optional[str]
-    = None, search_fields: Optional[List[str]] = None, search_mode: Optional[Union[str,
-    azure.search.documents._generated.models._search_index_client_enums.SearchMode]]
-    = None, query_language: Optional[Union[str, azure.search.documents._generated.models._search_index_client_enums.QueryLanguage]]
-    = None, query_speller: Optional[Union[str, azure.search.documents._generated.models._search_index_client_enums.QuerySpellerType]]
-    = None, query_answer: Optional[Union[str, azure.search.documents._generated.models._search_index_client_enums.QueryAnswerType]]
-    = None, query_answer_count: Optional[int] = None, query_caption: Optional[Union[str,
-    azure.search.documents._generated.models._search_index_client_enums.QueryCaptionType]]
-    = None, query_caption_highlight: Optional[bool] = None, semantic_fields: Optional[List[str]]
-    = None, semantic_configuration_name: Optional[str] = None, select: Optional[List[str]]
-    = None, skip: Optional[int] = None, top: Optional[int] = None, scoring_statistics:
-    Optional[Union[str, azure.search.documents._generated.models._search_index_client_enums.ScoringStatistics]]
-    = None, session_id: Optional[str] = None, **kwargs: Any) -> azure.search.documents._paging.SearchItemPaged[Dict]'
+  signature: 'search(search_text: str, *, include_total_count: bool | None = None,
+    facets: List[str] | None = None, filter: str | None = None, highlight_fields:
+    str | None = None, highlight_post_tag: str | None = None, highlight_pre_tag: str
+    | None = None, minimum_coverage: float | None = None, order_by: List[str] | None
+    = None, query_type: str | QueryType | None = None, scoring_parameters: List[str]
+    | None = None, scoring_profile: str | None = None, search_fields: List[str] |
+    None = None, search_mode: str | SearchMode | None = None, query_language: str
+    | QueryLanguage | None = None, query_speller: str | QuerySpellerType | None =
+    None, query_answer: str | QueryAnswerType | None = None, query_answer_count: int
+    | None = None, query_caption: str | QueryCaptionType | None = None, query_caption_highlight:
+    bool | None = None, semantic_fields: List[str] | None = None, semantic_configuration_name:
+    str | None = None, select: List[str] | None = None, skip: int | None = None, top:
+    int | None = None, scoring_statistics: str | ScoringStatistics | None = None,
+    session_id: str | None = None, **kwargs: Any) -> SearchItemPaged[Dict]'
   parameters:
   - name: search_text
     description: 'A full-text search query expression; Use "*" or omit this parameter
@@ -620,10 +614,10 @@ methods:
     \ experience in\n   some scenarios, it comes at a performance cost as fuzzy suggestions\
     \ queries are slower and\n   consume more resources."
   signature: 'suggest(search_text: str, suggester_name: str, *, use_fuzzy_matching:
-    Optional[bool] = None, highlight_post_tag: Optional[str] = None, highlight_pre_tag:
-    Optional[str] = None, minimum_coverage: Optional[float] = None, order_by: Optional[List[str]]
-    = None, search_fields: Optional[List[str]] = None, select: Optional[List[str]]
-    = None, top: Optional[int] = None, **kwargs) -> List[Dict]'
+    bool | None = None, highlight_post_tag: str | None = None, highlight_pre_tag:
+    str | None = None, minimum_coverage: float | None = None, order_by: List[str]
+    | None = None, search_fields: List[str] | None = None, select: List[str] | None
+    = None, top: int | None = None, **kwargs) -> List[Dict]'
   parameters:
   - name: highlight_post_tag
     description: 'A string tag that is appended to hit highlights. Must be set with
@@ -717,7 +711,7 @@ methods:
     inserted if it is new and updated/replaced if it exists. All fields are
 
     replaced in the update case.'
-  signature: 'upload_documents(documents: List[Dict], **kwargs: Any) -> List[azure.search.documents._generated.models._models_py3.IndexingResult]'
+  signature: 'upload_documents(documents: List[Dict], **kwargs: Any) -> List[IndexingResult]'
   parameters:
   - name: documents
     description: A list of documents to upload.
