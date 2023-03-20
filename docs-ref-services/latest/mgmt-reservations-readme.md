@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-reservations, reservations
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/16/2023
+ms.date: 03/20/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: reservations
