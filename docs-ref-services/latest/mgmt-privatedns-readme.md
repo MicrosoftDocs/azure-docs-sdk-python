@@ -7,7 +7,7 @@ ms.date: 03/29/2021
 ms.topic: reference
 ms.technology: azure
 ms.devlang: python
-ms.service: azure-dns
+ms.service: dns
 ---
 
 ## Microsoft Azure SDK for Python
