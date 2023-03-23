@@ -5,25 +5,80 @@ fullName: azure.ai.ml.MLClient
 module: azure.ai.ml
 inheritances:
 - builtins.object
-summary: 'A client class to interact with Azure ML services.
-
-
-  Use this client to manage Azure ML resources, e.g. workspaces, jobs,
-
-  models and so on.'
+summary: "A client class to interact with Azure ML services.\n\nUse this client to\
+  \ manage Azure ML resources, e.g. workspaces, jobs,\nmodels and so on.\n\nInitiate\
+  \ Azure ML client.\n\n> [!NOTE]\n> The cloud parameter in kwargs in this class is\
+  \ what gets\n>\n> the MLClient to work for non-standard Azure Clouds,\n>\n> e.g.\
+  \ AzureUSGovernment, AzureChinaCloud\n>\n> \n>\n> The following pseudo-code shows\
+  \ how to get a list of workspaces using MLClient.\n>\n\n<!-- literal_block {\"ids\"\
+  : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+  : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\":\
+  \ {}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity import DefaultAzureCredential,\
+  \ AzureAuthorityHosts\n   from azure.ai.ml import MLClient\n   from azure.ai.ml.entities\
+  \ import Workspace\n\n   # Enter details of your subscription\n   subscription_id\
+  \ = \"AZURE_SUBSCRIPTION_ID\"\n   resource_group = \"RESOURCE_GROUP_NAME\"\n\n \
+  \  # When using sovereign domains (that is, any cloud other than AZURE_PUBLIC_CLOUD),\n\
+  \   # you must use an authority with DefaultAzureCredential.\n   # Default authority\
+  \ value : AzureAuthorityHosts.AZURE_PUBLIC_CLOUD\n   # Expected values for authority\
+  \ for sovereign clouds:\n   # AzureAuthorityHosts.AZURE_CHINA or AzureAuthorityHosts.AZURE_GOVERNMENT\n\
+  \   credential = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_CHINA)\n\
+  \n   # When using sovereign domains (that is, any cloud other than AZURE_PUBLIC_CLOUD),\n\
+  \   # you must pass in the cloud name in kwargs. Default cloud is AzureCloud\n \
+  \  kwargs = {\"cloud\": \"AzureChinaCloud\"}\n   # get a handle to the subscription\n\
+  \   ml_client = MLClient(credential, subscription_id, resource_group, **kwargs)\n\
+  \n   # Get a list of workspaces in a resource group\n   for ws in ml_client.workspaces.list():\n\
+  \       print(ws.name, \":\", ws.location, \":\", ws.description)\n   ````"
 constructor:
   syntax: 'MLClient(credential: TokenCredential, subscription_id: str = None, resource_group_name:
     str = None, workspace_name: str = None, registry_name: str = None, **kwargs: Any)'
   parameters:
   - name: credential
+    description: Credential to use for authentication.
+    isRequired: true
+    types:
+    - <xref:TokenCredential>
   - name: subscription_id
+    description: Azure subscription ID, optional for registry assets only.
     defaultValue: None
+    types:
+    - <xref:str>
   - name: resource_group_name
+    description: Azure resource group, optional for registry assets only.
     defaultValue: None
+    types:
+    - <xref:str>
   - name: workspace_name
+    description: 'Workspace to use in the client, optional for non workspace dependent
+      operations only.
+
+      Defaults to None'
     defaultValue: None
+    types:
+    - <xref:str>, <xref:optional>
   - name: registry_name
+    description: 'Registry to use in the client, optional for non registry dependent
+      operations only.
+
+      Defaults to None'
     defaultValue: None
+    types:
+    - <xref:str>, <xref:optional>
+  - name: show_progress
+    description: 'Whether to display progress bars for long running operations. E.g.
+      customers may consider
+
+      to set this to False if not using this SDK in an interactive setup. Defaults
+      to True.'
+    isRequired: true
+    types:
+    - <xref:bool>, <xref:optional>
+  - name: kwargs
+    description: 'A dictionary of additional configuration parameters.
+
+      For e.g. kwargs = {"cloud": "AzureUSGovernment"}'
+    isRequired: true
+    types:
+    - <xref:dict>
 methods:
 - uid: azure.ai.ml.MLClient.begin_create_or_update
   name: begin_create_or_update
