@@ -32,6 +32,178 @@ constructor:
     blocksize=33554432, chunked=True, unique_temporary=True, delimiter=None, parent=None,
     verbose=False, buffersize=33554432, progress_callback=None, timeout=0)
   parameters:
+  - name: adlfs
+    isRequired: true
+    types:
+    - <xref:<xref:ADL filesystem instance>>
+  - name: name
+    description: Unique ID used for persistence.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: transfer
+    description: 'Function or callable object invoked when transferring chunks. See
+
+      `Function Signatures`.'
+    isRequired: true
+    types:
+    - <xref:callable>
+  - name: merge
+    description: 'Function or callable object invoked when merging chunks. For each
+      file
+
+      containing only one chunk, no merge function will be called, even if
+
+      provided. If None, then merging is skipped. See
+
+      `Function Signatures`.'
+    defaultValue: None
+    types:
+    - <xref:callable >[<xref:None>]
+  - name: nthreads
+    description: 'Number of threads to use (minimum is 1). If None, uses the number
+      of
+
+      cores.'
+    defaultValue: None
+    types:
+    - <xref:int >[<xref:None>]
+  - name: chunksize
+    description: 'Number of bytes for a chunk. Large files are split into chunks.
+      Files
+
+      smaller than this number will always be transferred in a single thread.'
+    defaultValue: '268435456'
+    types:
+    - <xref:int >[<xref:228>]
+  - name: buffersize
+    description: 'Number of bytes for internal buffer. This block cannot be bigger
+      than
+
+      a chunk and cannot be smaller than a block.'
+    defaultValue: '33554432'
+    types:
+    - <xref:int >[<xref:225>]
+  - name: blocksize
+    description: 'Number of bytes for a block. Within each chunk, we write a smaller
+
+      block for each API call. This block cannot be bigger than a chunk.'
+    defaultValue: '33554432'
+    types:
+    - <xref:int >[<xref:225>]
+  - name: chunked
+    description: 'If set, each transferred chunk is stored in a separate file until
+
+      chunks are gathered into a single file. Otherwise, each chunk will be
+
+      written into the same destination file.'
+    defaultValue: 'True'
+    types:
+    - <xref:bool >[<xref:True>]
+  - name: unique_temporary
+    description: 'If set, transferred chunks are written into a unique temporary
+
+      directory.'
+    defaultValue: 'True'
+    types:
+    - <xref:bool >[<xref:True>]
+  - name: persist_path
+    description: 'Path used for persisting a client''s state. If None, then *save()*
+
+      and *load()* will be empty operations.'
+    isRequired: true
+    types:
+    - <xref:str >[<xref:None>]
+  - name: delimiter
+    description: 'If set, will transfer blocks using delimiters, as well as split
+
+      files for transferring on that delimiter.'
+    defaultValue: None
+    types:
+    - <xref:byte>(<xref:s>)
+    - <xref:None>
+  - name: parent
+    description: 'In typical usage, the transfer client is created in the context
+      of an
+
+      upload or download, which can be persisted between sessions.'
+    defaultValue: None
+    types:
+    - <xref:azure.datalake.store.multithread.ADLDownloader>, <xref:azure.datalake.store.multithread.ADLUploader>
+    - <xref:None>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total) where
+
+      current is the number of bytes transferred so far, and total is the
+
+      size of the blob, or None if the total size is unknown.'
+    defaultValue: None
+    types:
+    - <xref:callable >[<xref:None>]
+  - name: timeout
+    description: 'Default value 0 means infinite timeout. Otherwise time in seconds
+      before the
+
+      process will stop and raise an exception if  transfer is still in progress'
+    defaultValue: '0'
+    types:
+    - <xref:int >(<xref:0>)
+  - name: Files
+    isRequired: true
+    types:
+    - <xref:Temporary>
+  - name: '---------------'
+    isRequired: true
+  - name: available
+    isRequired: true
+    types:
+    - <xref:<xref:When a merge step is>>
+  - name: temporary
+    isRequired: true
+    types:
+    - <xref:<xref:the client will write chunks to>>
+  - name: in
+    isRequired: true
+    types:
+    - <xref:<xref:files before merging. The exact temporary file looks like this>>
+  - name: pseudo-BNF
+    isRequired: true
+  - name: '{dirname}/{basename}.segments[.{unique_str}]/{basename}_{offset}'
+    isRequired: true
+    types:
+    - <xref:<xref:>>> >>
+  - name: Signatures
+    isRequired: true
+    types:
+    - <xref:Function>
+  - name: '-------------------'
+    isRequired: true
+  - name: client
+    isRequired: true
+    types:
+    - <xref:<xref:To perform the actual work needed by the>>
+  - name: two
+    isRequired: true
+    types:
+    - <xref:<xref:the user must pass in>>
+  - name: callables
+    isRequired: true
+  - name: provided
+    isRequired: true
+    types:
+    - <xref:<xref:transfer and merge. If merge is not>>
+  - name: the
+    isRequired: true
+    types:
+    - <xref:then>
+  - name: skipped.
+    isRequired: true
+    types:
+    - <xref:<xref:merge step will be>>
+  - name: signature
+    isRequired: true
+    types:
+    - <xref:<xref:The transfer callable has the function>>
   - name: self._chunks
     description: 'Using a tuple of the chunk name/offset as the key, this dictionary
 
@@ -61,32 +233,8 @@ constructor:
     isRequired: true
     types:
     - <xref:dict>
-  - name: adlfs
-  - name: transfer
-  - name: merge
-    defaultValue: None
-  - name: nthreads
-    defaultValue: None
-  - name: chunksize
-    defaultValue: '268435456'
-  - name: blocksize
-    defaultValue: '33554432'
-  - name: chunked
-    defaultValue: 'True'
-  - name: unique_temporary
-    defaultValue: 'True'
-  - name: delimiter
-    defaultValue: None
-  - name: parent
-    defaultValue: None
   - name: verbose
     defaultValue: 'False'
-  - name: buffersize
-    defaultValue: '33554432'
-  - name: progress_callback
-    defaultValue: None
-  - name: timeout
-    defaultValue: '0'
 methods:
 - uid: azure.datalake.store.transfer.ADLTransferClient.monitor
   name: monitor

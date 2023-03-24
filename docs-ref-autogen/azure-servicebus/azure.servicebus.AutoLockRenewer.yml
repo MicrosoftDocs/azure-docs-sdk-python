@@ -5,7 +5,16 @@ fullName: azure.servicebus.AutoLockRenewer
 module: azure.servicebus
 inheritances:
 - builtins.object
-summary: Auto renew locks for messages and sessions using a background thread pool.
+summary: 'Auto renew locks for messages and sessions using a background thread pool.
+
+
+  Auto renew locks for messages and sessions using a background thread pool. It is
+  recommended
+
+  setting max_worker to a large number or passing ThreadPoolExecutor of large max_workers
+  number when
+
+  AutoLockRenewer is supposed to deal with multiple messages or sessions simultaneously.'
 constructor:
   syntax: 'AutoLockRenewer(max_lock_renewal_duration: float = 300, on_lock_renew_failure:
     LockRenewFailureCallback | None = None, executor: ThreadPoolExecutor | None =
@@ -40,6 +49,37 @@ constructor:
 
       This cannot be combined with *executor*.'
     defaultValue: None
+    types:
+    - <xref:Optional>[<xref:int>]
+  - name: max_lock_renewal_duration
+    description: 'A time in seconds that locks registered to this renewer
+
+      should be maintained for. Default value is 300 (5 minutes).'
+    isRequired: true
+    types:
+    - <xref:float>
+  - name: on_lock_renew_failure
+    description: 'A callback may be specified to be called when the lock is lost on
+      the renewable
+
+      that is being registered. Default value is None (no callback).'
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:LockRenewFailureCallback>]
+  - name: executor
+    description: 'A user-specified thread pool. This cannot be combined with
+
+      setting *max_workers*.'
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:concurrent.futures.ThreadPoolExecutor>]
+  - name: max_workers
+    description: 'Specify the maximum workers in the thread pool. If not
+
+      specified the number used will be derived from the core count of the environment.
+
+      This cannot be combined with *executor*.'
+    isRequired: true
     types:
     - <xref:Optional>[<xref:int>]
 examples:
