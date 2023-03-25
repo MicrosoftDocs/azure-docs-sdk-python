@@ -5,9 +5,7 @@ fullName: azure.ai.ml.entities.Command
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._builders.base_node.BaseNode
-summary: 'Base class for command node, used for command component version
-
-  consumption.
+summary: 'Base class for command node, used for command component version consumption.
 
 
   You should not instantiate this class directly. Instead, you should
@@ -22,7 +20,8 @@ constructor:
     PyTorchDistribution | None = None, environment: Environment | str | None = None,
     environment_variables: Dict | None = None, resources: JobResourceConfiguration
     | None = None, services: Dict[str, JobService | JupyterLabJobService | SshJobService
-    | TensorBoardJobService | VsCodeJobService] | None = None, **kwargs)'
+    | TensorBoardJobService | VsCodeJobService] | None = None, queue_settings: QueueSettings
+    | None = None, **kwargs)'
   parameters:
   - name: component
     description: Id or instance of the command component/job to be run for the step
@@ -126,33 +125,53 @@ constructor:
     - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.JobService>,
       <xref:azure.ai.ml.entities.JupyterLabJobService>, <xref:azure.ai.ml.entities.SshJobService>,
       <xref:azure.ai.ml.entities.TensorBoardJobService>, <xref:azure.ai.ml.entities.VsCodeJobService>]]
+  - name: queue_settings
+    description: Queue settings for the job.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.QueueSettings>
 methods:
 - uid: azure.ai.ml.entities.Command.set_limits
   name: set_limits
   summary: Set limits for Command.
   signature: 'set_limits(*, timeout: int, **kwargs)'
+- uid: azure.ai.ml.entities.Command.set_queue_settings
+  name: set_queue_settings
+  summary: 'Set QueueSettings for the job.
+
+    :param job_tier: determines the job tier.
+
+    :type job_tier: str
+
+    :param priority: controls the priority on the compute.
+
+    :type priority: str'
+  signature: 'set_queue_settings(*, job_tier: str | None = None, priority: str | None
+    = None)'
 - uid: azure.ai.ml.entities.Command.set_resources
   name: set_resources
   summary: Set resources for Command.
   signature: 'set_resources(*, instance_type: str | List[str] | None = None, instance_count:
-    int | None = None, properties: Dict | None = None, docker_args: str | None = None,
-    shm_size: str | None = None, **kwargs)'
+    int | None = None, locations: List[str] | None = None, properties: Dict | None
+    = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs)'
 - uid: azure.ai.ml.entities.Command.sweep
   name: sweep
-  summary: 'Turn the command into a sweep node with extra sweep run setting. The
+  summary: 'Turn the command into a sweep node with extra sweep run setting. The command
+    component in current Command
 
-    command component in current Command node will be used as its trial
+    node will be used as its trial component. A command node can sweep for multiple
+    times, and the generated sweep
 
-    component. A command node can sweep for multiple times, and the
-
-    generated sweep node will share the same trial component.'
+    node will share the same trial component.'
   signature: 'sweep(*, primary_metric: str, goal: str, sampling_algorithm: str = ''random'',
     compute: str | None = None, max_concurrent_trials: int | None = None, max_total_trials:
     int | None = None, timeout: int | None = None, trial_timeout: int | None = None,
     early_termination_policy: EarlyTerminationPolicy | str | None = None, search_space:
     Dict[str, Choice | LogNormal | LogUniform | Normal | QLogNormal | QLogUniform
     | QNormal | QUniform | Randint | Uniform] | None = None, identity: ManagedIdentityConfiguration
-    | AmlTokenConfiguration | UserIdentityConfiguration | None = None) -> Sweep'
+    | AmlTokenConfiguration | UserIdentityConfiguration | None = None, queue_settings:
+    QueueSettings | None = None, job_tier: str | None = None, priority: str | None
+    = None) -> Sweep'
   parameters:
   - name: primary_metric
     description: 'primary metric of the sweep objective, AUC e.g. The metric must
@@ -215,6 +234,21 @@ methods:
     isRequired: true
     types:
     - <xref:Union>[<xref:azure.ai.ml.entities.ManagedIdentityConfiguration,azure.ai.ml.entities.AmlTokenConfiguration,azure.ai.ml.entities.UserIdentityConfiguration>]
+  - name: queue_settings
+    description: Queue settings for the job.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.QueueSettings>
+  - name: job_tier
+    description: '**Experimental** determines the job tier.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: priority
+    description: '**Experimental** controls the priority on the compute.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: A sweep node with component from current Command node as its trial
       component.
@@ -239,6 +273,8 @@ attributes:
     description: MLFlow parameters logged in job.
     types:
     - <xref:Dict>[<xref:str>, <xref:str>]
+- uid: azure.ai.ml.entities.Command.queue_settings
+  name: queue_settings
 - uid: azure.ai.ml.entities.Command.resources
   name: resources
 - uid: azure.ai.ml.entities.Command.services

@@ -29,13 +29,13 @@ constructor:
     - <xref:azure.core.credentials.TokenCredential>
   - name: subscription_id
     description: Azure subscription ID, optional for registry assets only, defaults
-      to None
+      to None.
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: resource_group_name
     description: Azure resource group, optional for registry assets only, defaults
-      to None
+      to None.
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
@@ -43,7 +43,7 @@ constructor:
     description: 'Workspace to use in the client, optional for non workspace dependent
       operations only,
 
-      defaults to None'
+      defaults to None.'
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
@@ -51,7 +51,7 @@ constructor:
     description: 'Registry to use in the client, optional for non registry dependent
       operations only,
 
-      defaults to None'
+      defaults to None.'
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
@@ -61,6 +61,12 @@ constructor:
 
       setting this to False if not using this SDK in an interactive setup. defaults
       to True.'
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:bool>]
+  - name: enable_telemetry
+    description: Whether to enable telemetry. Will be overridden to False if not in
+      a Jupyter Notebook.
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:bool>]
@@ -101,6 +107,33 @@ constructor:
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:str>]
+examples:
+- "Creating the MLClient with Azure Identity credentials.<!--[!code-python[Main](les\\\
+  ml_samples_authentication_sovereign_cloud.py )]-->\n\n<!-- literal_block {\"ids\"\
+  : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\205\\\\azure-ai-ml-1.5.0\\\\samples\\\
+  \\ml_samples_authentication_sovereign_cloud.py\", \"xml:space\": \"preserve\", \"\
+  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
+  \ 1}, \"linenos\": false} -->\n\n````python\n\n   # Get a credential for authentication\n\
+  \   # Default Azure Credentials attempt a chained set of authentication methods,\
+  \ per documentation here: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity\n\
+  \   # Alternately, one can specify the AZURE_TENANT_ID, AZURE_CLIENT_ID, and AZURE_CLIENT_SECRET\
+  \ to use the EnvironmentCredentialClass.\n   # The docs above specify all mechanisms\
+  \ which the defaultCredential internally support.\n   # Enter details of your subscription\n\
+  \   subscription_id = os.environ[\"AZURE_SUBSCRIPTION_ID\"]\n   resource_group =\
+  \ os.environ[\"RESOURCE_GROUP_NAME\"]\n\n   # Instantiate a MLClient\n   from azure.identity\
+  \ import AzureAuthorityHosts, DefaultAzureCredential\n\n   from azure.ai.ml import\
+  \ MLClient\n\n   # When using sovereign domains (that is, any cloud other than AZURE_PUBLIC_CLOUD),\n\
+  \   # you must use an authority with DefaultAzureCredential.\n   # Default authority\
+  \ value : AzureAuthorityHosts.AZURE_PUBLIC_CLOUD\n   # Expected values for authority\
+  \ for sovereign clouds:\n   # AzureAuthorityHosts.AZURE_CHINA or AzureAuthorityHosts.AZURE_GOVERNMENT\n\
+  \   # credential = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_CHINA)\n\
+  \   credential = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)\n\
+  \n   # When using sovereign domains (that is, any cloud other than AZURE_PUBLIC_CLOUD),\n\
+  \   # you must pass in the cloud name in kwargs. Default cloud is AzureCloud\n \
+  \  kwargs = {\"cloud\": \"AzureCloud\"}\n   # get a handle to the subscription\n\
+  \   ml_client = MLClient(credential, subscription_id, resource_group, **kwargs)\n\
+  \n   ````\n"
 methods:
 - uid: azure.ai.ml.MLClient.begin_create_or_update
   name: begin_create_or_update
@@ -133,7 +166,7 @@ methods:
     types:
     - <xref:typing.Union>[<xref:azure.ai.ml.entities.Job>, <xref:azure.ai.ml.entities.Model>,
       <xref:azure.ai.ml.entities.Environment>, <xref:azure.ai.ml.entities.Component>,
-      <xref:azure.ai.ml.entities.Datastore>, <xref:azure.ai.ml.entities.WorkspaceModelReference>]
+      <xref:azure.ai.ml.entities.Datastore>]
   return:
     description: The created or updated resource.
     types:

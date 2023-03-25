@@ -8,11 +8,10 @@ inheritances:
 summary: 'ModelOperations.
 
 
-  You should not instantiate this class directly. Instead, you should
+  You should not instantiate this class directly. Instead, you should create an MLClient
+  instance that instantiates it
 
-  create an MLClient instance that instantiates it for you and
-
-  attaches it as an attribute.'
+  for you and attaches it as an attribute.'
 constructor:
   syntax: 'ModelOperations(operation_scope: OperationScope, operation_config: OperationConfig,
     service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
@@ -36,18 +35,18 @@ methods:
     - <xref:str>
   - name: version
     description: Version of model asset.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: label
     description: Label of the model asset. (mutually exclusive with version)
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
 - uid: azure.ai.ml.operations.ModelOperations.create_or_update
   name: create_or_update
   summary: Returns created or updated model asset.
-  signature: 'create_or_update(model: Model | WorkspaceModelReference) -> Model'
+  signature: 'create_or_update(model: Model | WorkspaceAssetReference) -> Model'
   parameters:
   - name: model
     description: Model asset object.
@@ -90,7 +89,7 @@ methods:
 
       defaults to current working directory of the current user. Contents will be
       overwritten.'
-    defaultValue: .
+    isRequired: true
     types:
     - <xref:Union>[<xref:PathLike>, <xref:str>]
 - uid: azure.ai.ml.operations.ModelOperations.get
@@ -106,12 +105,12 @@ methods:
     - <xref:str>
   - name: version
     description: Version of the model.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: label
     description: Label of the model. (mutually exclusive with version)
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   return:
@@ -131,7 +130,7 @@ methods:
   parameters:
   - name: name
     description: Name of the model.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:Optional>[<xref:str>]
   - name: list_view_type
@@ -157,11 +156,54 @@ methods:
     - <xref:str>
   - name: version
     description: Version of model asset.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: label
     description: Label of the model asset. (mutually exclusive with version)
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
+- uid: azure.ai.ml.operations.ModelOperations.share
+  name: share
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Share a model asset from workspace to registry.'
+  signature: share(name, version, *, share_with_name, share_with_version, registry_name)
+    -> Model
+  parameters:
+  - name: name
+    description: Name of model asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of model asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: share_with_name
+    description: Name of model asset to share with.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: share_with_version
+    description: Version of model asset to share with.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: registry_name
+    description: Name of the destination registry.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Model asset object.
+    types:
+    - <xref:azure.ai.ml.entities.Model>

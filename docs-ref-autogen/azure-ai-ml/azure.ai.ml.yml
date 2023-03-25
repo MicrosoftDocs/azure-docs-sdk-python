@@ -6,9 +6,10 @@ type: import
 functions:
 - uid: azure.ai.ml.command
   name: command
-  summary: 'Create a Command object which can be used inside dsl.pipeline as a
+  summary: 'Create a Command object which can be used inside dsl.pipeline as a function
+    and can also be created as a
 
-    function and can also be created as a standalone command job.'
+    standalone command job.'
   signature: 'command(*, name: str | None = None, description: str | None = None,
     tags: Dict | None = None, properties: Dict | None = None, display_name: str |
     None = None, command: str | None = None, experiment_name: str | None = None, environment:
@@ -16,11 +17,13 @@ functions:
     Dict | MpiDistribution | TensorFlowDistribution | PyTorchDistribution | None =
     None, compute: str | None = None, inputs: Dict | None = None, outputs: Dict |
     None = None, instance_count: int | None = None, instance_type: str | None = None,
-    docker_args: str | None = None, shm_size: str | None = None, timeout: int | None
-    = None, code: PathLike | str | None = None, identity: ManagedIdentityConfiguration
-    | AmlTokenConfiguration | UserIdentityConfiguration | None = None, is_deterministic:
-    bool = True, services: Dict[str, JobService | JupyterLabJobService | SshJobService
-    | TensorBoardJobService | VsCodeJobService] | None = None, **kwargs) -> Command'
+    locations: List[str] | None = None, docker_args: str | None = None, shm_size:
+    str | None = None, timeout: int | None = None, code: PathLike | str | None = None,
+    identity: ManagedIdentityConfiguration | AmlTokenConfiguration | UserIdentityConfiguration
+    | None = None, is_deterministic: bool = True, services: Dict[str, JobService |
+    JupyterLabJobService | SshJobService | TensorBoardJobService | VsCodeJobService]
+    | None = None, job_tier: str | None = None, priority: str | None = None, **kwargs)
+    -> Command'
   parameters:
   - name: name
     description: Name of the command job or component created
@@ -101,6 +104,9 @@ functions:
   - name: instance_type
     description: Optional type of VM used as supported by the compute target.
     isRequired: true
+  - name: locations
+    description: Optional list of locations where the job can run.
+    isRequired: true
   - name: docker_args
     description: 'Extra arguments to pass to the Docker run command. This would override
       any
@@ -157,6 +163,16 @@ functions:
     isRequired: true
     types:
     - <xref:Dict>[<xref:str>, <xref:azure.ai.ml.entities.JobService>]
+  - name: job_tier
+    description: '**Experimental** determines the job tier.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: priority
+    description: '**Experimental** controls the priority on the compute.'
+    isRequired: true
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.load_batch_deployment
   name: load_batch_deployment
   summary: Construct a batch deployment object from yaml file.
@@ -400,7 +416,7 @@ functions:
     types:
     - <xref:List>[<xref:Dict>]
   return:
-    description: Constructed data object.
+    description: Constructed Data or DataImport object.
     types:
     - <xref:azure.ai.ml.entities.Data>
   exceptions:
@@ -1007,6 +1023,7 @@ classes:
 packages:
 - azure.ai.ml.automl
 - azure.ai.ml.constants
+- azure.ai.ml.data_transfer
 - azure.ai.ml.dsl
 - azure.ai.ml.entities
 - azure.ai.ml.identity
