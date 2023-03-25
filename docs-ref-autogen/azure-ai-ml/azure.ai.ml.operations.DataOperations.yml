@@ -7,8 +7,8 @@ inheritances:
 - azure.ai.ml._scope_dependent_operations._ScopeDependentOperations
 constructor:
   syntax: 'DataOperations(operation_scope: OperationScope, operation_config: OperationConfig,
-    service_client: AzureMachineLearningWorkspaces, datastore_operations: DatastoreOperations,
-    **kwargs: Dict)'
+    service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
+    datastore_operations: DatastoreOperations, **kwargs: Dict)'
   parameters:
   - name: operation_scope
   - name: operation_config
@@ -28,12 +28,12 @@ methods:
     - <xref:str>
   - name: version
     description: Version of data asset.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: label
     description: Label of the data asset. (mutually exclusive with version)
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   return:
@@ -79,12 +79,12 @@ methods:
     - <xref:str>
   - name: version
     description: Version of data asset.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: label
     description: Label of the data asset. (mutually exclusive with version)
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   return:
@@ -96,6 +96,28 @@ methods:
     description: 'Raised if Data cannot be successfully
 
       identified and retrieved. Details will be provided in the error message.'
+- uid: azure.ai.ml.operations.DataOperations.import_data
+  name: import_data
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Returns the data import job that is creating the data asset.'
+  signature: 'import_data(data_import: DataImport, **kwargs) -> PipelineJob'
+  parameters:
+  - name: data_import
+    description: DataImport object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.DataImport>
+  return:
+    description: data import job object.
+    types:
+    - <xref:azure.ai.ml.entities.PipelineJob>
 - uid: azure.ai.ml.operations.DataOperations.list
   name: list
   summary: List the data assets of the workspace.
@@ -104,7 +126,7 @@ methods:
   parameters:
   - name: name
     description: Name of a specific data asset, optional.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:Optional>[<xref:str>]
   - name: list_view_type
@@ -118,6 +140,35 @@ methods:
     description: An iterator like instance of Data objects
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.Data>]
+- uid: azure.ai.ml.operations.DataOperations.list_materialization_status
+  name: list_materialization_status
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    List materialization jobs of the asset.'
+  signature: 'list_materialization_status(name: str, *, list_view_type: ListViewType
+    = ListViewType.ACTIVE_ONLY, **kwargs) -> Iterable[PipelineJob]'
+  parameters:
+  - name: name
+    description: name of asset being created by the materialization jobs.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: list_view_type
+    description: 'View type for including/excluding (for example) archived jobs. Default:
+      ACTIVE_ONLY.'
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:ListViewType>]
+  return:
+    description: An iterator like instance of Job objects.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.PipelineJob>]
 - uid: azure.ai.ml.operations.DataOperations.restore
   name: restore
   summary: Restore an archived data asset.
@@ -131,12 +182,12 @@ methods:
     - <xref:str>
   - name: version
     description: Version of data asset.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: label
     description: Label of the data asset. (mutually exclusive with version)
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   return:

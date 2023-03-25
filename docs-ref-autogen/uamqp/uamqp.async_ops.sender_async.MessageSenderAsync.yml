@@ -149,14 +149,53 @@ variables:
   types:
   - <xref:int>
 methods:
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.close
+  name: close
+  summary: Close the sender, leaving the link intact.
+  signature: close()
 - uid: uamqp.async_ops.sender_async.MessageSenderAsync.close_async
   name: close_async
   summary: Close the sender asynchronously, leaving the link intact.
   signature: async close_async()
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.destroy
+  name: destroy
+  summary: Close both the Sender and the Link. Clean up any C objects.
+  signature: destroy()
 - uid: uamqp.async_ops.sender_async.MessageSenderAsync.destroy_async
   name: destroy_async
   summary: Asynchronously close both the Sender and the Link. Clean up any C objects.
   signature: async destroy_async()
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.get_state
+  name: get_state
+  summary: Get the state of the MessageSender and its underlying Link.
+  signature: get_state()
+  return:
+    types:
+    - <xref:uamqp.constants.MessageSenderState>
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.on_state_changed
+  name: on_state_changed
+  summary: 'Callback called whenever the underlying Sender undergoes a change
+
+    of state. This function can be overridden.'
+  signature: on_state_changed(previous_state, new_state)
+  parameters:
+  - name: previous_state
+    description: The previous Sender state.
+    isRequired: true
+    types:
+    - <xref:uamqp.constants.MessageSenderState>
+  - name: new_state
+    description: The new Sender state.
+    isRequired: true
+    types:
+    - <xref:uamqp.constants.MessageSenderState>
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.open
+  name: open
+  summary: Open the MessageSender in order to start processing messages.
+  signature: open()
+  exceptions:
+  - type: uamqp.errors.AMQPConnectionError if the Sender raisesan error on opening.
+      This can happen if the target URI is invalidor the credentials are rejected.
 - uid: uamqp.async_ops.sender_async.MessageSenderAsync.open_async
   name: open_async
   summary: 'Asynchronously open the MessageSender in order to start
@@ -166,6 +205,35 @@ methods:
   exceptions:
   - type: uamqp.errors.AMQPConnectionError if the Sender raisesan error on opening.
       This can happen if the target URI is invalidor the credentials are rejected.
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.send
+  name: send
+  summary: 'Add a single message to the internal pending queue to be processed
+
+    by the Connection without waiting for it to be sent.'
+  signature: send(message, callback, timeout=0)
+  parameters:
+  - name: message
+    description: The message to send.
+    isRequired: true
+    types:
+    - <xref:uamqp.message.Message>
+  - name: callback
+    description: 'The callback to be run once a disposition is received
+
+      in receipt of the message. The callback must take three arguments, the message,
+
+      the send result and the optional delivery condition (exception).'
+    isRequired: true
+    types:
+    - <xref:callable>[<xref:uamqp.message.Message>, <xref:uamqp.constants.MessageSendResult>,
+      <xref:uamqp.errors.MessageException>]
+  - name: timeout
+    description: 'An expiry time for the message added to the queue. If the
+
+      message is not sent within this timeout it will be discarded with an error
+
+      state. If set to 0, the message will not expire. The default is 0.'
+    defaultValue: '0'
 - uid: uamqp.async_ops.sender_async.MessageSenderAsync.send_async
   name: send_async
   summary: 'Add a single message to the internal pending queue to be processed
@@ -195,6 +263,10 @@ methods:
 
       state. If set to 0, the message will not expire. The default is 0.'
     defaultValue: '0'
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.work
+  name: work
+  summary: Update the link status.
+  signature: work()
 - uid: uamqp.async_ops.sender_async.MessageSenderAsync.work_async
   name: work_async
   summary: Update the link status.
@@ -202,3 +274,9 @@ methods:
 attributes:
 - uid: uamqp.async_ops.sender_async.MessageSenderAsync.loop
   name: loop
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.max_message_size
+  name: max_message_size
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.receive_settle_mode
+  name: receive_settle_mode
+- uid: uamqp.async_ops.sender_async.MessageSenderAsync.send_settle_mode
+  name: send_settle_mode
