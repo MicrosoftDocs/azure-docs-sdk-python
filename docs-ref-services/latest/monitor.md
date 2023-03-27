@@ -79,7 +79,7 @@ metrics_data = client.metrics.list(
 
 for item in metrics_data.value:
     # azure.mgmt.monitor.models.Metric
-    print("{} ({})".format(item.name.localized_value, item.unit.name))
+    print("{} ({})".format(item.name.localized_value, item.unit))
     for timeserie in item.timeseries:
         for data in timeserie.data:
             # azure.mgmt.monitor.models.MetricData
