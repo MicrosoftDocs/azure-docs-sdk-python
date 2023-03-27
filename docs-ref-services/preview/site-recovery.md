@@ -9,7 +9,7 @@ ms.service: site-recovery
 manager: douge
 keywords: Azure, python, SDK, API, Recovery Services Backup
 ms.technology: azure
-ms.date: 03/24/2023
+ms.date: 03/27/2023
 ---
 
 # Azure Recovery Services Backup libraries for python

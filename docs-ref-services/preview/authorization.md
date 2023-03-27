@@ -9,7 +9,7 @@ ms.service: azure-python
 manager: routlaw
 keywords: Azure, python, SDK, API, Authorization
 ms.technology: azure
-ms.date: 03/24/2023
+ms.date: 03/27/2023
 ---
 
 # Azure Authorization libraries for python

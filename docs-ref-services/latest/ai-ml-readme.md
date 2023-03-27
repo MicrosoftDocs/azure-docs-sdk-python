@@ -3,12 +3,12 @@ title: Azure ML Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
 author: paulshealy1
 ms.author: paulsh
-ms.date: 02/07/2023
+ms.date: 03/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: ml
 ---
-# Azure ML Package client library for Python - version 1.4.0 
+# Azure ML Package client library for Python - version 1.5.0 
 
 
 We are excited to introduce the GA of Azure Machine Learning Python SDK v2. The Python SDK v2 introduces new SDK capabilities like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2 which is also GA.
@@ -109,7 +109,7 @@ The Azure ML Python SDK includes a telemetry feature that collects usage and fai
 <u>Telemetry will **not** be collected for any use of the Python SDK outside of a Jupyter Notebook.</u>
 
 Telemetry data helps the SDK team understand how the SDK is used so it can be improved and the information about failures helps the team resolve problems and fix bugs.
-The SDK telemetry feature is enabled by default for Jupyter Notebook usage. To opt out of the telemetry feature, set the AZUREML_SDKV2_TELEMETRY_OPTOUT environment variable to '1' or 'true'.
+The SDK telemetry feature is enabled by default for Jupyter Notebook usage and cannot be enabled for non-Jupyter scenarios. To opt out of the telemetry feature in a Jupyter scenario, pass in `enable_telemetry=False` when constructing your MLClient object.
 
 ## Next steps
 
@@ -125,7 +125,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.4.0/sdk/ml/azure-ai-ml
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.5.0/sdk/ml/azure-ai-ml
 [ml_pypi]: https://pypi.org/project/azure-ai-ml/
 [ml_ref_docs]: https://learn.microsoft.com/python/api/overview/azure/ai-ml-readme?view=azure-python
 [ml_samples]: https://github.com/Azure/azureml-examples/tree/main/sdk/python
@@ -134,11 +134,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [workspace]: /azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.4.0/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.5.0/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.4.0/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.4.0/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-ml_1.5.0/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-ml_1.5.0/sdk/identity/azure-identity
 [python_logging]: https://docs.python.org/3/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
