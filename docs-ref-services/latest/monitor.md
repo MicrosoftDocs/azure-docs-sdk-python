@@ -3,7 +3,7 @@ title: Azure Monitor SDK for Python
 description: Reference for Azure Monitor SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 03/24/2023
+ms.date: 03/27/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -79,7 +79,7 @@ metrics_data = client.metrics.list(
 
 for item in metrics_data.value:
     # azure.mgmt.monitor.models.Metric
-    print("{} ({})".format(item.name.localized_value, item.unit.name))
+    print("{} ({})".format(item.name.localized_value, item.unit))
     for timeserie in item.timeseries:
         for data in timeserie.data:
             # azure.mgmt.monitor.models.MetricData
