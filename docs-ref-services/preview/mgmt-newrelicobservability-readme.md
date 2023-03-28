@@ -1,16 +1,16 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-resource, resources
+keywords: Azure, python, SDK, API, azure-mgmt-newrelicobservability, newrelicobservability
 author: lmazuel
 ms.author: lmazuel
 ms.date: 03/28/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: resources
+ms.service: newrelicobservability
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Resource Management Client Library.
+This is the Microsoft Azure Newrelicobservability Management Client Library.
 This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -28,7 +28,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 ### Install the package
 
 ```bash
-pip install azure-mgmt-resource
+pip install azure-mgmt-newrelicobservability
 pip install azure-identity
 ```
 
@@ -46,17 +46,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.resource import 
+from azure.mgmt.newrelicobservability import NewRelicObservabilityMgmtClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = (credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = NewRelicObservabilityMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Resource Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search Newrelicobservability Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
@@ -71,5 +71,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-resource%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-newrelicobservability%2FREADME.png)
 
