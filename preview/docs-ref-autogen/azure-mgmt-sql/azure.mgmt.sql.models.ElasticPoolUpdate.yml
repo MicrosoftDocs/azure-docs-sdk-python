@@ -8,10 +8,13 @@ inheritances:
 summary: An elastic pool update.
 constructor:
   syntax: 'ElasticPoolUpdate(*, sku: _models.Sku | None = None, tags: Dict[str, str]
-    | None = None, max_size_bytes: int | None = None, per_database_settings: _models.ElasticPoolPerDatabaseSettings
-    | None = None, zone_redundant: bool | None = None, license_type: str | _models.ElasticPoolLicenseType
+    | None = None, max_size_bytes: int | None = None, min_capacity: float | None =
+    None, per_database_settings: _models.ElasticPoolPerDatabaseSettings | None = None,
+    zone_redundant: bool | None = None, license_type: str | _models.ElasticPoolLicenseType
     | None = None, maintenance_configuration_id: str | None = None, high_availability_replica_count:
-    int | None = None, **kwargs: Any)'
+    int | None = None, preferred_enclave_type: str | _models.AlwaysEncryptedEnclaveType
+    | None = None, availability_zone: str | _models.AvailabilityZoneType | None =
+    None, **kwargs: Any)'
   parameters:
   - name: sku
     description: An ARM Resource SKU.
@@ -25,6 +28,13 @@ constructor:
     description: The storage limit for the database elastic pool in bytes.
     types:
     - <xref:int>
+  - name: min_capacity
+    description: 'Minimal capacity that serverless pool will not shrink below, if
+      not
+
+      paused.'
+    types:
+    - <xref:float>
   - name: per_database_settings
     description: The per database settings for the elastic pool.
     types:
@@ -59,6 +69,20 @@ constructor:
       pools.'
     types:
     - <xref:int>
+  - name: preferred_enclave_type
+    description: 'Type of enclave requested on the elastic pool. Known values
+
+      are: "Default" and "VBS".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.AlwaysEncryptedEnclaveType>
+  - name: availability_zone
+    description: 'Specifies the availability zone the pool''s primary replica is
+
+      pinned to. Known values are: "NoPreference", "1", "2", and "3".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.AvailabilityZoneType>
 variables:
 - description: An ARM Resource SKU.
   name: sku
@@ -72,6 +96,11 @@ variables:
   name: max_size_bytes
   types:
   - <xref:int>
+- description: Minimal capacity that serverless pool will not shrink below, if not
+    paused.
+  name: min_capacity
+  types:
+  - <xref:float>
 - description: The per database settings for the elastic pool.
   name: per_database_settings
   types:
@@ -104,3 +133,118 @@ variables:
   name: high_availability_replica_count
   types:
   - <xref:int>
+- description: 'Type of enclave requested on the elastic pool. Known values are:
+
+    "Default" and "VBS".'
+  name: preferred_enclave_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.AlwaysEncryptedEnclaveType>
+- description: 'Specifies the availability zone the pool''s primary replica is pinned
+
+    to. Known values are: "NoPreference", "1", "2", and "3".'
+  name: availability_zone
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.AvailabilityZoneType>
+inheritedMethods:
+- uid: azure.mgmt.sql.models.ElasticPoolUpdate.as_dict
+  name: as_dict
+  summary: "Return a dict that can be serialized using json.dump.\n\nAdvanced usage\
+    \ might optionally use a callback as parameter:\n\nKey is the attribute name used\
+    \ in Python. Attr_desc\nis a dict of metadata. Currently contains 'type' with\
+    \ the\nmsrest type and 'key' with the RestAPI encoded key.\nValue is the current\
+    \ value in this object.\n\nThe string returned will be used to serialize the key.\n\
+    If the return type is a list, this is considered hierarchical\nresult dict.\n\n\
+    See the three examples in this file:\n\n* attribute_transformer \n\n* full_restapi_key_transformer\
+    \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
+    \ pass the kwargs is_xml=True."
+  signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
+    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
+  parameters:
+  - name: key_transformer
+    description: A key transformer function.
+    types:
+    - <xref:function>
+  - name: keep_readonly
+    defaultValue: 'True'
+  return:
+    description: A dict JSON compatible object
+    types:
+    - <xref:dict>
+- uid: azure.mgmt.sql.models.ElasticPoolUpdate.deserialize
+  name: deserialize
+  summary: Parse a str using the RestAPI syntax and return a model.
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
+  parameters:
+  - name: data
+    description: A str using RestAPI structure. JSON by default.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content_type
+    description: JSON by default, set application/xml if XML.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: An instance of this model
+  exceptions:
+  - type: DeserializationError if something went wrong
+- uid: azure.mgmt.sql.models.ElasticPoolUpdate.enable_additional_properties_sending
+  name: enable_additional_properties_sending
+  signature: enable_additional_properties_sending() -> None
+- uid: azure.mgmt.sql.models.ElasticPoolUpdate.from_dict
+  name: from_dict
+  summary: 'Parse a dict using given key extractor return a model.
+
+
+    By default consider key
+
+    extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
+
+    and last_rest_key_case_insensitive_extractor)'
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
+    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
+  parameters:
+  - name: data
+    description: A dict using RestAPI structure
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: content_type
+    description: JSON by default, set application/xml if XML.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: key_extractors
+    defaultValue: None
+  return:
+    description: An instance of this model
+  exceptions:
+  - type: DeserializationError if something went wrong
+- uid: azure.mgmt.sql.models.ElasticPoolUpdate.is_xml_model
+  name: is_xml_model
+  signature: is_xml_model() -> bool
+- uid: azure.mgmt.sql.models.ElasticPoolUpdate.serialize
+  name: serialize
+  summary: 'Return the JSON that would be sent to azure from this model.
+
+
+    This is an alias to *as_dict(full_restapi_key_transformer, keep_readonly=False)*.
+
+
+    If you want XML serialization, you can pass the kwargs is_xml=True.'
+  signature: 'serialize(keep_readonly: bool = False, **kwargs: Any) -> MutableMapping[str,
+    Any]'
+  parameters:
+  - name: keep_readonly
+    description: If you want to serialize the readonly attributes
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    description: A dict JSON compatible object
+    types:
+    - <xref:dict>

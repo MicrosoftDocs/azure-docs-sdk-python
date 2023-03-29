@@ -26,6 +26,111 @@ constructor:
     - <xref:azure.iot.device.iothub.pipeline.MQTTPipeline>
   - name: http_pipeline
 methods:
+- uid: azure.iot.device.aio.IoTHubModuleClient.invoke_method
+  name: invoke_method
+  summary: Invoke a method from your client onto a device or module client, and receive
+    the response to the method call.
+  signature: async invoke_method(method_params, device_id, module_id=None)
+  parameters:
+  - name: method_params
+    description: 'Should contain a methodName (str), payload (str),
+
+      connectTimeoutInSeconds (int), responseTimeoutInSeconds (int).'
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: device_id
+    description: Device ID of the target device where the method will be invoked.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: module_id
+    description: Module ID of the target module where the method will be invoked.
+      (Optional)
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: method_result should contain a status, and a payload
+    types:
+    - <xref:dict>
+- uid: azure.iot.device.aio.IoTHubModuleClient.receive_message_on_input
+  name: receive_message_on_input
+  summary: 'Receive an input message that has been sent from another Module to a specific
+    input.
+
+
+    If no message is yet available, will wait until an item is available.
+
+
+    Deprecated since version 2.3.0: We recommend that you use the .on_message_received
+    property to set a handler instead'
+  signature: receive_message_on_input(input_name)
+  parameters:
+  - name: input_name
+    description: The input name to receive a message on.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Message that was sent to the specified input.
+    types:
+    - <xref:azure.iot.device.Message>
+- uid: azure.iot.device.aio.IoTHubModuleClient.send_message_to_output
+  name: send_message_to_output
+  summary: 'Sends an event/message to the given module output.
+
+
+    These are outgoing events and are meant to be "output events"
+
+
+    If the connection to the service has not previously been opened by a call to connect,
+    this
+
+    function will open the connection before sending the event.'
+  signature: async send_message_to_output(message, output_name)
+  parameters:
+  - name: message
+    description: 'Message to send to the given output. Anything passed that is not
+      an
+
+      instance of the Message class will be converted to Message object.'
+    isRequired: true
+    types:
+    - <xref:azure.iot.device.Message>
+    - <xref:str>
+  - name: output_name
+    description: Name of the output to send the event to.
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: azure.iot.device.exceptions.CredentialError
+    description: 'if credentials are invalid
+
+      and a connection cannot be established.'
+  - type: azure.iot.device.exceptions.ConnectionFailedError
+    description: 'if a establishing a
+
+      connection results in failure.'
+  - type: azure.iot.device.exceptions.ConnectionDroppedError
+    description: 'if connection is lost
+
+      during execution.'
+  - type: azure.iot.device.exceptions.OperationTimeout
+    description: 'if connection attempt
+
+      times out'
+  - type: azure.iot.device.exceptions.NoConnectionError
+    description: 'if the client is not
+
+      connected (and there is no auto-connect enabled)'
+  - type: azure.iot.device.exceptions.ClientError
+    description: 'if there is an unexpected failure
+
+      during execution.'
+  - type: ValueError if the message fails size validation.
+inheritedMethods:
 - uid: azure.iot.device.aio.IoTHubModuleClient.connect
   name: connect
   summary: 'Connects the client to an Azure IoT Hub or Azure IoT Edge Hub instance.
@@ -498,34 +603,6 @@ methods:
     description: 'if there is an unexpected failure
 
       during execution.'
-- uid: azure.iot.device.aio.IoTHubModuleClient.invoke_method
-  name: invoke_method
-  summary: Invoke a method from your client onto a device or module client, and receive
-    the response to the method call.
-  signature: async invoke_method(method_params, device_id, module_id=None)
-  parameters:
-  - name: method_params
-    description: 'Should contain a methodName (str), payload (str),
-
-      connectTimeoutInSeconds (int), responseTimeoutInSeconds (int).'
-    isRequired: true
-    types:
-    - <xref:dict>
-  - name: device_id
-    description: Device ID of the target device where the method will be invoked.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: module_id
-    description: Module ID of the target module where the method will be invoked.
-      (Optional)
-    defaultValue: None
-    types:
-    - <xref:str>
-  return:
-    description: method_result should contain a status, and a payload
-    types:
-    - <xref:dict>
 - uid: azure.iot.device.aio.IoTHubModuleClient.patch_twin_reported_properties
   name: patch_twin_reported_properties
   summary: 'Update reported properties with the Azure IoT Hub or Azure IoT Edge Hub
@@ -568,28 +645,6 @@ methods:
     description: 'if there is an unexpected failure
 
       during execution.'
-- uid: azure.iot.device.aio.IoTHubModuleClient.receive_message_on_input
-  name: receive_message_on_input
-  summary: 'Receive an input message that has been sent from another Module to a specific
-    input.
-
-
-    If no message is yet available, will wait until an item is available.
-
-
-    Deprecated since version 2.3.0: We recommend that you use the .on_message_received
-    property to set a handler instead'
-  signature: receive_message_on_input(input_name)
-  parameters:
-  - name: input_name
-    description: The input name to receive a message on.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: Message that was sent to the specified input.
-    types:
-    - <xref:azure.iot.device.Message>
 - uid: azure.iot.device.aio.IoTHubModuleClient.receive_method_request
   name: receive_method_request
   summary: 'Receive a method request via the Azure IoT Hub or Azure IoT Edge Hub.
@@ -652,60 +707,6 @@ methods:
     isRequired: true
     types:
     - <xref:azure.iot.device.Message>
-    - <xref:str>
-  exceptions:
-  - type: azure.iot.device.exceptions.CredentialError
-    description: 'if credentials are invalid
-
-      and a connection cannot be established.'
-  - type: azure.iot.device.exceptions.ConnectionFailedError
-    description: 'if a establishing a
-
-      connection results in failure.'
-  - type: azure.iot.device.exceptions.ConnectionDroppedError
-    description: 'if connection is lost
-
-      during execution.'
-  - type: azure.iot.device.exceptions.OperationTimeout
-    description: 'if connection attempt
-
-      times out'
-  - type: azure.iot.device.exceptions.NoConnectionError
-    description: 'if the client is not
-
-      connected (and there is no auto-connect enabled)'
-  - type: azure.iot.device.exceptions.ClientError
-    description: 'if there is an unexpected failure
-
-      during execution.'
-  - type: ValueError if the message fails size validation.
-- uid: azure.iot.device.aio.IoTHubModuleClient.send_message_to_output
-  name: send_message_to_output
-  summary: 'Sends an event/message to the given module output.
-
-
-    These are outgoing events and are meant to be "output events"
-
-
-    If the connection to the service has not previously been opened by a call to connect,
-    this
-
-    function will open the connection before sending the event.'
-  signature: async send_message_to_output(message, output_name)
-  parameters:
-  - name: message
-    description: 'Message to send to the given output. Anything passed that is not
-      an
-
-      instance of the Message class will be converted to Message object.'
-    isRequired: true
-    types:
-    - <xref:azure.iot.device.Message>
-    - <xref:str>
-  - name: output_name
-    description: Name of the output to send the event to.
-    isRequired: true
-    types:
     - <xref:str>
   exceptions:
   - type: azure.iot.device.exceptions.CredentialError

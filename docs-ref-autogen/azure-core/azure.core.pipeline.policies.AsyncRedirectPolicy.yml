@@ -56,3 +56,74 @@ methods:
     - <xref:azure.core.pipeline.PipelineResponse>
   exceptions:
   - type: azure.core.exceptions.TooManyRedirectsError if maximum redirects exceeded.
+inheritedMethods:
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.configure_redirects
+  name: configure_redirects
+  summary: Configures the redirect settings.
+  signature: configure_redirects(options)
+  parameters:
+  - name: options
+    description: Keyword arguments from context.
+    isRequired: true
+  return:
+    description: A dict containing redirect settings and a history of redirects.
+    types:
+    - <xref:dict>
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.get_redirect_location
+  name: get_redirect_location
+  summary: Checks for redirect status code and gets redirect location.
+  signature: get_redirect_location(response)
+  parameters:
+  - name: response
+    description: The PipelineResponse object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  return:
+    description: 'Truthy redirect location string if we got a redirect status
+
+      code and valid location. `None` if redirect status and no
+
+      location. `False` if not a redirect status code.'
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.increment
+  name: increment
+  summary: Increment the redirect attempts for this request.
+  signature: increment(settings, response, redirect_location)
+  parameters:
+  - name: settings
+    description: The redirect settings
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: response
+    description: A pipeline response object.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  - name: redirect_location
+    description: The redirected endpoint.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'Whether further redirect attempts are remaining.
+
+      False if exhausted; True if more redirect attempts available.'
+    types:
+    - <xref:bool>
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.no_redirects
+  name: no_redirects
+  summary: Disable redirects.
+  signature: no_redirects()
+attributes:
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.next
+  name: next
+  summary: Pointer to the next policy or a transport. Will be set at pipeline creation.
+  signature: 'next: ''AsyncHTTPPolicy[HTTPRequestTypeVar, AsyncHTTPResponseTypeVar]''
+    | ''AsyncHttpTransport[HTTPRequestTypeVar, AsyncHTTPResponseTypeVar]'''
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.REDIRECT_HEADERS_BLACKLIST
+  name: REDIRECT_HEADERS_BLACKLIST
+  signature: REDIRECT_HEADERS_BLACKLIST = frozenset({'Authorization'})
+- uid: azure.core.pipeline.policies.AsyncRedirectPolicy.REDIRECT_STATUSES
+  name: REDIRECT_STATUSES
+  signature: REDIRECT_STATUSES = frozenset({300, 301, 302, 303, 307, 308})

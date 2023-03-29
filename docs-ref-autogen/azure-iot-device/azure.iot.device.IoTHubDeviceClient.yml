@@ -25,6 +25,79 @@ constructor:
     - <xref:azure.iot.device.iothub.pipeline.MQTTPipeline>
   - name: http_pipeline
 methods:
+- uid: azure.iot.device.IoTHubDeviceClient.get_storage_info_for_blob
+  name: get_storage_info_for_blob
+  summary: Sends a POST request over HTTP to an IoTHub endpoint that will return information
+    for uploading via the Azure Storage Account linked to the IoTHub your device is
+    connected to.
+  signature: get_storage_info_for_blob(blob_name)
+  parameters:
+  - name: blob_name
+    description: The name in string format of the blob that will be uploaded using
+      the storage API. This name will be used to generate the proper credentials for
+      Storage, and needs to match what will be used with the Azure Storage SDK to
+      perform the blob upload.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'A JSON-like (dictionary) object from IoT Hub that will contain relevant
+      information including: correlationId, hostName, containerName, blobName, sasToken.'
+- uid: azure.iot.device.IoTHubDeviceClient.notify_blob_upload_status
+  name: notify_blob_upload_status
+  summary: When the upload is complete, the device sends a POST request to the IoT
+    Hub endpoint with information on the status of an upload to blob attempt. This
+    is used by IoT Hub to notify listening clients.
+  signature: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
+  parameters:
+  - name: correlation_id
+    description: Provided by IoT Hub on get_storage_info_for_blob request.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: is_success
+    description: A boolean that indicates whether the file was uploaded successfully.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: status_code
+    description: A numeric status code that is the status for the upload of the file
+      to storage.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: status_description
+    description: A description that corresponds to the status_code.
+    isRequired: true
+    types:
+    - <xref:str>
+- uid: azure.iot.device.IoTHubDeviceClient.receive_message
+  name: receive_message
+  summary: 'Receive a message that has been sent from the Azure IoT Hub.
+
+
+    Deprecated since version 2.3.0: We recommend that you use the .on_message_received
+    property to set a handler instead'
+  signature: receive_message(block=True, timeout=None)
+  parameters:
+  - name: block
+    description: Indicates if the operation should block until a message is received.
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: Optionally provide a number of seconds until blocking times out.
+    isRequired: true
+    types:
+    - <xref:int>
+  return:
+    description: 'Message that was sent from the Azure IoT Hub, or None if
+
+      no method request has been received by the end of the blocking period.'
+    types:
+    - <xref:azure.iot.device.Message>
+    - <xref:None>
+inheritedMethods:
 - uid: azure.iot.device.IoTHubDeviceClient.connect
   name: connect
   summary: 'Connects the client to an Azure IoT Hub or Azure IoT Edge Hub instance.
@@ -497,24 +570,6 @@ methods:
     description: 'if there is an unexpected failure
 
       during execution.'
-- uid: azure.iot.device.IoTHubDeviceClient.get_storage_info_for_blob
-  name: get_storage_info_for_blob
-  summary: Sends a POST request over HTTP to an IoTHub endpoint that will return information
-    for uploading via the Azure Storage Account linked to the IoTHub your device is
-    connected to.
-  signature: get_storage_info_for_blob(blob_name)
-  parameters:
-  - name: blob_name
-    description: The name in string format of the blob that will be uploaded using
-      the storage API. This name will be used to generate the proper credentials for
-      Storage, and needs to match what will be used with the Azure Storage SDK to
-      perform the blob upload.
-    isRequired: true
-    types:
-    - <xref:str>
-  return:
-    description: 'A JSON-like (dictionary) object from IoT Hub that will contain relevant
-      information including: correlationId, hostName, containerName, blobName, sasToken.'
 - uid: azure.iot.device.IoTHubDeviceClient.get_twin
   name: get_twin
   summary: 'Gets the device or module twin from the Azure IoT Hub or Azure IoT Edge
@@ -555,34 +610,6 @@ methods:
     description: 'if there is an unexpected failure
 
       during execution.'
-- uid: azure.iot.device.IoTHubDeviceClient.notify_blob_upload_status
-  name: notify_blob_upload_status
-  summary: When the upload is complete, the device sends a POST request to the IoT
-    Hub endpoint with information on the status of an upload to blob attempt. This
-    is used by IoT Hub to notify listening clients.
-  signature: notify_blob_upload_status(correlation_id, is_success, status_code, status_description)
-  parameters:
-  - name: correlation_id
-    description: Provided by IoT Hub on get_storage_info_for_blob request.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: is_success
-    description: A boolean that indicates whether the file was uploaded successfully.
-    isRequired: true
-    types:
-    - <xref:bool>
-  - name: status_code
-    description: A numeric status code that is the status for the upload of the file
-      to storage.
-    isRequired: true
-    types:
-    - <xref:int>
-  - name: status_description
-    description: A description that corresponds to the status_code.
-    isRequired: true
-    types:
-    - <xref:str>
 - uid: azure.iot.device.IoTHubDeviceClient.patch_twin_reported_properties
   name: patch_twin_reported_properties
   summary: 'Update reported properties with the Azure IoT Hub or Azure IoT Edge Hub
@@ -631,32 +658,6 @@ methods:
     description: 'if there is an unexpected failure
 
       during execution.'
-- uid: azure.iot.device.IoTHubDeviceClient.receive_message
-  name: receive_message
-  summary: 'Receive a message that has been sent from the Azure IoT Hub.
-
-
-    Deprecated since version 2.3.0: We recommend that you use the .on_message_received
-    property to set a handler instead'
-  signature: receive_message(block=True, timeout=None)
-  parameters:
-  - name: block
-    description: Indicates if the operation should block until a message is received.
-    isRequired: true
-    types:
-    - <xref:bool>
-  - name: timeout
-    description: Optionally provide a number of seconds until blocking times out.
-    isRequired: true
-    types:
-    - <xref:int>
-  return:
-    description: 'Message that was sent from the Azure IoT Hub, or None if
-
-      no method request has been received by the end of the blocking period.'
-    types:
-    - <xref:azure.iot.device.Message>
-    - <xref:None>
 - uid: azure.iot.device.IoTHubDeviceClient.receive_method_request
   name: receive_method_request
   summary: 'Receive a method request via the Azure IoT Hub or Azure IoT Edge Hub.
