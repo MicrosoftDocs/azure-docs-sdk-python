@@ -3,12 +3,12 @@ title: Azure Storage Blobs client library for Python
 keywords: Azure, python, SDK, API, azure-storage-blob, storage
 author: annatisch
 ms.author: antisch
-ms.date: 02/03/2023
+ms.date: 03/28/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
-# Azure Storage Blobs client library for Python - version 12.15.0b1 
+# Azure Storage Blobs client library for Python - version 12.16.0b1 
 
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob storage is optimized for storing massive amounts of unstructured data, such as text or binary data.
 
@@ -20,7 +20,12 @@ Blob storage is ideal for:
 * Storing data for backup and restore, disaster recovery, and archiving
 * Storing data for analysis by an on-premises or Azure-hosted service
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/azure/storage/blob) | [Package (PyPI)](https://pypi.org/project/azure-storage-blob/) | [API reference documentation](https://aka.ms/azsdk-python-storage-blob-ref) | [Product documentation](/azure/storage/) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/azure/storage/blob)
+| [Package (PyPI)](https://pypi.org/project/azure-storage-blob/)
+| [Package (Conda)](https://anaconda.org/microsoft/azure-storage/)
+| [API reference documentation](https://aka.ms/azsdk-python-storage-blob-ref)
+| [Product documentation](/azure/storage/)
+| [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples)
 
 
 ## Getting started
@@ -80,12 +85,12 @@ The `credential` parameter may be provided in a number of different forms, depen
 [authorization](/azure/storage/common/storage-auth) you wish to use:
 1. To use an [Azure Active Directory (AAD) token credential](/azure/storage/common/storage-auth-aad),
    provide an instance of the desired credential type obtained from the
-   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/identity/azure-identity#credentials) library.
-   For example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/identity/azure-identity#defaultazurecredential)
+   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/identity/azure-identity#credentials) library.
+   For example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/identity/azure-identity#defaultazurecredential)
    can be used to authenticate the client.
 
    This requires some initial setup:
-   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/identity/azure-identity#install-the-package)
+   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/identity/azure-identity#install-the-package)
    * [Register a new AAD application](/azure/active-directory/develop/quickstart-register-app) and give permissions to access Azure Storage
    * [Grant access](/azure/storage/common/storage-auth-aad-rbac-portal) to Azure Blob data with RBAC in the Azure Portal
    * Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
@@ -196,7 +201,7 @@ Four different clients are provided to interact with the various components of t
 This library includes a complete async API supported on Python 3.5+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-blob_12.15.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-blob_12.16.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport)
 for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
@@ -230,7 +235,7 @@ Create a container from where you can upload or download blobs.
 ```python
 from azure.storage.blob import ContainerClient
 
-container_client = ContainerClient.from_connection_string(conn_str="<connection_string>", container_name="my_container")
+container_client = ContainerClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer")
 
 container_client.create_container()
 ```
@@ -240,7 +245,7 @@ Use the async client to upload a blob
 ```python
 from azure.storage.blob.aio import ContainerClient
 
-container_client = ContainerClient.from_connection_string(conn_str="<connection_string>", container_name="my_container")
+container_client = ContainerClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer")
 
 await container_client.create_container()
 ```
@@ -251,7 +256,7 @@ Upload a blob to your container
 ```python
 from azure.storage.blob import BlobClient
 
-blob = BlobClient.from_connection_string(conn_str="<connection_string>", container_name="my_container", blob_name="my_blob")
+blob = BlobClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer", blob_name="my_blob")
 
 with open("./SampleSource.txt", "rb") as data:
     blob.upload_blob(data)
@@ -262,7 +267,7 @@ Use the async client to upload a blob
 ```python
 from azure.storage.blob.aio import BlobClient
 
-blob = BlobClient.from_connection_string(conn_str="<connection_string>", container_name="my_container", blob_name="my_blob")
+blob = BlobClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer", blob_name="my_blob")
 
 with open("./SampleSource.txt", "rb") as data:
     await blob.upload_blob(data)
@@ -274,7 +279,7 @@ Download a blob from your container
 ```python
 from azure.storage.blob import BlobClient
 
-blob = BlobClient.from_connection_string(conn_str="my_connection_string", container_name="my_container", blob_name="my_blob")
+blob = BlobClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer", blob_name="my_blob")
 
 with open("./BlockDestination.txt", "wb") as my_blob:
     blob_data = blob.download_blob()
@@ -286,7 +291,7 @@ Download a blob asynchronously
 ```python
 from azure.storage.blob.aio import BlobClient
 
-blob = BlobClient.from_connection_string(conn_str="my_connection_string", container_name="my_container", blob_name="my_blob")
+blob = BlobClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer", blob_name="my_blob")
 
 with open("./BlockDestination.txt", "wb") as my_blob:
     stream = await blob.download_blob()
@@ -300,7 +305,7 @@ List the blobs in your container
 ```python
 from azure.storage.blob import ContainerClient
 
-container = ContainerClient.from_connection_string(conn_str="my_connection_string", container_name="my_container")
+container = ContainerClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer")
 
 blob_list = container.list_blobs()
 for blob in blob_list:
@@ -312,7 +317,7 @@ List the blobs asynchronously
 ```python
 from azure.storage.blob.aio import ContainerClient
 
-container = ContainerClient.from_connection_string(conn_str="my_connection_string", container_name="my_container")
+container = ContainerClient.from_connection_string(conn_str="<connection_string>", container_name="mycontainer")
 
 blob_list = []
 async for blob in container.list_blobs():
@@ -378,7 +383,7 @@ the client level to enable it for all requests.
 
 ## Troubleshooting
 ### General
-Storage Blob clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-blob_12.15.0b1/sdk/core/azure-core/README.md).
+Storage Blob clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-storage-blob_12.16.0b1/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -409,7 +414,7 @@ service_client = BlobServiceClient.from_connection_string("your_connection_strin
 
 Similarly, `logging_enable` can enable detailed logging for a single operation,
 even when it isn't enabled for the client:
-```py
+```python
 service_client.get_service_stats(logging_enable=True)
 ```
 
@@ -417,34 +422,34 @@ service_client.get_service_stats(logging_enable=True)
 
 ### More sample code
 
-Get started with our [Blob samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples).
+Get started with our [Blob samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples).
 
 Several Storage Blobs Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Storage Blobs:
 
-* [blob_samples_container_access_policy.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_container_access_policy.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_container_access_policy_async.py)) - Examples to set Access policies:
+* [blob_samples_container_access_policy.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_container_access_policy.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_container_access_policy_async.py)) - Examples to set Access policies:
     * Set up Access Policy for container
 
-* [blob_samples_hello_world.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_hello_world.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_hello_world_async.py)) - Examples for common Storage Blob tasks:
+* [blob_samples_hello_world.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_hello_world.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_hello_world_async.py)) - Examples for common Storage Blob tasks:
     * Set up a container
     * Create a block, page, or append blob
     * Upload blobs
     * Download blobs
     * Delete blobs
 
-* [blob_samples_authentication.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication_async.py)) - Examples for authenticating and creating the client:
+* [blob_samples_authentication.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_authentication_async.py)) - Examples for authenticating and creating the client:
     * From a connection string
     * From a shared access key
     * From a shared access signature token
     * From active directory
 
-* [blob_samples_service.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_service.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_service_async.py)) - Examples for interacting with the blob service:
+* [blob_samples_service.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_service.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_service_async.py)) - Examples for interacting with the blob service:
     * Get account information
     * Get and set service properties
     * Get service statistics
     * Create, list, and delete containers
     * Get the Blob or Container client
 
-* [blob_samples_containers.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_containers.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_containers_async.py)) - Examples for interacting with containers:
+* [blob_samples_containers.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_containers.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_containers_async.py)) - Examples for interacting with containers:
     * Create a container and delete containers
     * Set metadata on containers
     * Get container properties
@@ -453,7 +458,7 @@ Several Storage Blobs Python SDK samples are available to you in the SDK's GitHu
     * Upload, list, delete blobs in container
     * Get the blob client to interact with a specific blob
 
-* [blob_samples_common.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_common.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_common_async.py)) - Examples common to all types of blobs:
+* [blob_samples_common.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_common.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_common_async.py)) - Examples common to all types of blobs:
     * Create a snapshot
     * Delete a blob snapshot
     * Soft delete a blob
@@ -461,7 +466,7 @@ Several Storage Blobs Python SDK samples are available to you in the SDK's GitHu
     * Acquire a lease on a blob
     * Copy a blob from a URL
 
-* [blob_samples_directory_interface.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.15.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_directory_interface.py) - Examples for interfacing with Blob storage as if it were a directory on a filesystem:
+* [blob_samples_directory_interface.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob_12.16.0b1/sdk/storage/azure-storage-blob/samples/blob_samples_directory_interface.py) - Examples for interfacing with Blob storage as if it were a directory on a filesystem:
     * Copy (upload or download) a single file or directory
     * List files or directories at a single level or recursively
     * Delete a single file or recursively delete a directory
