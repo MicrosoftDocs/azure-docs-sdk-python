@@ -5,10 +5,9 @@ author: maggiepint
 ms.author: magpint
 ms.date: 11/12/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: mixedreality
+ms.service: azure-python
 ---
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)

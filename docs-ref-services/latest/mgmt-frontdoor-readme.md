@@ -5,10 +5,9 @@ author: lmazuel
 ms.author: lmazuel
 ms.date: 03/29/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: network
+ms.service: frontdoor
 ---
 # Microsoft Azure SDK for Python
 

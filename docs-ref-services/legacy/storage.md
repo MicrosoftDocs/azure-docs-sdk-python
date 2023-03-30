@@ -7,7 +7,6 @@ ms.author: ramyar
 manager: douge
 ms.date: 06/12/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: storage

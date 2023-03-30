@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: advisor
+ms.service: applied-ai-services
+ms.subservice: metrics-advisor
 ---
 
 # Microsoft Azure SDK for Python

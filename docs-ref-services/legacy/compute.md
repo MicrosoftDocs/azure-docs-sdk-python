@@ -7,10 +7,9 @@ ms.author: ramyar
 manager: douge
 ms.date: 06/09/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: compute
+ms.service: big-compute
 ---
 
 # Azure virtual machine libraries

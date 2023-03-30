@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/17/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: loganalytics
+ms.service: log-analytics
 ---
 
 # Microsoft Azure SDK for Python

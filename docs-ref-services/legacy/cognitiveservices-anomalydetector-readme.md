@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 07/23/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: cognitive-services
+ms.subservice: anomaly-detector
 ---
 
 # Microsoft Azure SDK for Python

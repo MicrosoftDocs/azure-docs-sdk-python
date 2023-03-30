@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/24/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: synapseanalytics
+ms.service: synapse-analytics
 ---
 
 # Microsoft Azure SDK for Python

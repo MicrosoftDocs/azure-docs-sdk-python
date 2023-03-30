@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 08/25/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: purview
 ---
 
 # Azure Purview Account client library for Python - version 1.0.0b1 

@@ -5,10 +5,9 @@ author: msyyc
 ms.author: yuchaoyan
 ms.date: 02/15/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: webpubsub
+ms.service: azure-web-pubsub
 ---
 # Azure Web PubSub service client library for Python - version 1.0.1 
 

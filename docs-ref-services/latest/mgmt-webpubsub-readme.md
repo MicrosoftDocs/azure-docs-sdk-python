@@ -6,7 +6,7 @@ ms.author: yuchaoyan
 ms.date: 03/21/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: webpubsub
+ms.service: azure-web-pubsub
 ---
 # Microsoft Azure SDK for Python
 

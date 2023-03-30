@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 09/08/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: keyvault
+ms.service: key-vault
 ---
 
 # Azure Key Vault Certificates client library for Python - version 4.2.1 

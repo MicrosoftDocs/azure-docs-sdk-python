@@ -5,10 +5,10 @@ author: kristapratico
 ms.author: krpratic
 ms.date: 02/08/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: translator
+ms.service: cognitive-services
+ms.subservice: translator-text
 ---
 # Azure Document Translation client library for Python - version 1.0.0b6 
 

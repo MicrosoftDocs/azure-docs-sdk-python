@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 02/20/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: hybridcompute
+ms.service: azure-python
 ---
 # Microsoft Azure SDK for Python
 

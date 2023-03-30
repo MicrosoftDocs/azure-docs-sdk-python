@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 05/20/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: deploymentmanager
+ms.service: deployment-manager
 ---
 
 ## Microsoft Azure SDK for Python

@@ -6,10 +6,9 @@ ms.author: lmazuel
 ms.data: 02/09/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: datalakeanalytics
+ms.service: data-lake-analytics
 ms.date: 08/04/2017
 keywords: Azure, python, SDK, API, Data Lake Analytics
-ms.prod: azure
 manager: douge
 ms.technology: azure
 ---

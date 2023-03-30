@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/30/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
 
 # Microsoft Azure SDK for Python

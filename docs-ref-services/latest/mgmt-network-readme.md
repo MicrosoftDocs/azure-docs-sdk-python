@@ -5,8 +5,9 @@ author: lmazuel
 ms.author: lmazuel
 ms.date: 03/30/2023
 ms.topic: reference
+ms.technology: azure
 ms.devlang: python
-ms.service: network
+ms.service: virtual-network
 ---
 # Microsoft Azure SDK for Python
 

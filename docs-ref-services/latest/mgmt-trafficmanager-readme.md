@@ -5,10 +5,9 @@ author: mayurid
 ms.author: mayurid
 ms.date: 01/20/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: trafficmanager
+ms.service: traffic-manager
 ---
 # Microsoft Azure SDK for Python
 

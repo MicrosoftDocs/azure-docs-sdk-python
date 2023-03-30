@@ -5,10 +5,9 @@ author: maggiepint
 ms.author: magpint
 ms.date: 11/11/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: iothub
+ms.service: iot-hub
 ---
 
 # Microsoft Azure SDK for Python

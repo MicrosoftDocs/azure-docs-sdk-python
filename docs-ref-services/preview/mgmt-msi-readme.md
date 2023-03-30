@@ -6,7 +6,8 @@ ms.author: lmazuel
 ms.date: 02/16/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: resources
+ms.service: active-directory
+ms.subservice: msi
 ---
 # Microsoft Azure SDK for Python
 

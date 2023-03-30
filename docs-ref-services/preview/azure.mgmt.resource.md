@@ -7,10 +7,9 @@ ms.author: ramyar
 manager: douge
 ms.date: 06/19/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: resources
+ms.service: azure-python
 ---
 # Azure Resources libraries for Python 
 

@@ -5,10 +5,9 @@ author: QingChenmsft
 ms.author: QingChenmsft
 ms.date: 12/14/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: servicefabric
+ms.service: service-fabric
 ---
 # Microsoft Azure SDK for Python
 

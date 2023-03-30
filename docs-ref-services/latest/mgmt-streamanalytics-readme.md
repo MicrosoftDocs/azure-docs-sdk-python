@@ -5,10 +5,9 @@ author: mayurid
 ms.author: mayurid
 ms.date: 01/06/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: streamanalytics
+ms.service: stream-analytics
 ---
 # Microsoft Azure SDK for Python
 

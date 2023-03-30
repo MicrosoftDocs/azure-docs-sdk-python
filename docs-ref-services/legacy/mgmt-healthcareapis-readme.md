@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/30/2020
 ms.topic: article
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: healthcareapis
+ms.service: healthcare-apis
 ---
 
 # Microsoft Azure SDK for Python

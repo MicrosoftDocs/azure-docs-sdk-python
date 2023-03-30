@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/18/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: alertmanagement
+ms.service: azure-monitor
+ms.subservice: alerts
 ---
 
 # Microsoft Azure SDK for Python

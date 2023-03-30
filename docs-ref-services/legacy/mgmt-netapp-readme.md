@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/16/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: netapp
+ms.service: azure-netapp-files
 ---
 
 # Microsoft Azure SDK for Python

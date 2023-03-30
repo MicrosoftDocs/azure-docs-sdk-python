@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/14/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: baremetal
+ms.service: baremetal-infrastructure
 ---
 
 # Microsoft Azure SDK for Python

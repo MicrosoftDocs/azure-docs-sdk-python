@@ -5,7 +5,6 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 07/06/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: attestation

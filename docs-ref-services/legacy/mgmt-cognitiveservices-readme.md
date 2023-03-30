@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/13/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: cognitiveservices
+ms.service: cognitive-services
 ---
 
 # Microsoft Azure SDK for Python

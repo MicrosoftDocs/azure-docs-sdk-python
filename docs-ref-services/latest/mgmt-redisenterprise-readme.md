@@ -5,10 +5,9 @@ author: lmazuel
 ms.author: lmazuel
 ms.date: 04/07/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: redisenterprise
+ms.service: cache
 ---
 # Microsoft Azure SDK for Python
 

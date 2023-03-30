@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 02/19/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: resourcemover
+ms.service: resource-mover
 ---
 
 # Microsoft Azure SDK for Python

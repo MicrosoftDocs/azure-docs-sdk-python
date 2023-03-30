@@ -5,10 +5,10 @@ author: maggiepint
 ms.author: magpint
 ms.date: 11/09/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
+ms.subservice: identity
 ---
 
 # Azure Communication Identity Package client library for Python - version 1.1.0b1 

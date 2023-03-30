@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/11/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: storage
+ms.service: data-lake-storage-gen2
 ---
 
 # Azure DataLake service client library for Python - version 12.2.0 

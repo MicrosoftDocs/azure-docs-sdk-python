@@ -5,10 +5,9 @@ author: YalinLi0312
 ms.author: YalinLi0312
 ms.date: 01/26/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: containerregistry
+ms.service: container-registry
 ---
 # Azure Container Registry client library for Python - version 1.0.0 
 

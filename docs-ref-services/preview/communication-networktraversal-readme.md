@@ -5,10 +5,9 @@ author: acsdevx-msft
 ms.author: acsdevx-msft
 ms.date: 03/23/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
 # Azure Communication Network Traversal Package client library for Python - version 1.1.0b1 
 

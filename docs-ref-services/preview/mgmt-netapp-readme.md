@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 02/16/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: netapp
+ms.service: azure-netapp-files
 ---
 # Microsoft Azure SDK for Python
 

@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/08/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: 
+ms.service: azure-monitor
+ms.subservice: change-analysis
 ---
 
 # Microsoft Azure SDK for Python

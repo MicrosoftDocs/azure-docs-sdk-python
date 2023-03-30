@@ -6,7 +6,7 @@ ms.author: sschaab
 ms.date: 02/15/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: keyvault
+ms.service: key-vault
 ---
 # Microsoft Azure SDK for Python
 

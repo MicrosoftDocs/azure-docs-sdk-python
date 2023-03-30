@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 02/22/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: agrifood
+ms.service: azure-farmbeats
 ---
 # Azure FarmBeats client library for Python - version 1.0.0b2 
 

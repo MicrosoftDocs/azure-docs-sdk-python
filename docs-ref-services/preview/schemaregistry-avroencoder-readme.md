@@ -5,10 +5,9 @@ author: yunhaoling
 ms.author: yuling
 ms.date: 04/05/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: schemaregistry
+ms.service: event-hubs
 ---
 # Azure Schema Registry Avro Encoder client library for Python - version 1.0.0b3 
 
