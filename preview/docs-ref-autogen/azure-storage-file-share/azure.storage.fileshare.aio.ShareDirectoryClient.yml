@@ -19,7 +19,7 @@ constructor:
   syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
     str, snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str,
     str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
-    None, **kwargs: Any)'
+    None, *, token_intent: Literal[''backup''] | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -72,6 +72,23 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  - name: token_intent
+    description: "Required when using *TokenCredential* for authentication and ignored\
+      \ for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
+      \ - Specifies requests are intended for backup/admin type operations, meaning\
+      \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
+      \ User must also have required RBAC permission."
+    types:
+    - <xref:Literal>[<xref:'backup'>]
+  - name: allow_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the target URI.
+    types:
+    - <xref:bool>
+  - name: allow_source_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the source URI.
+    types:
+    - <xref:bool>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -238,7 +255,7 @@ methods:
   - "Creates a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await directory.create_directory()\n\n   ````\n"
@@ -278,7 +295,7 @@ methods:
   - "Create a subdirectory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create the directory\n   await parent_dir.create_directory()\n\n   # Create\
@@ -310,7 +327,7 @@ methods:
   - "Deletes a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await directory.delete_directory()\n\n   ````\n"
@@ -345,7 +362,7 @@ methods:
   - "Delete a file in a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Delete the file in the directory\n   await directory.delete_file(file_name=\"\
@@ -379,7 +396,7 @@ methods:
   - "Delete a subdirectory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await parent_dir.delete_subdirectory(\"subdir\")\n\n   ````\n"
@@ -467,7 +484,7 @@ methods:
   - "Gets the subdirectory client.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get a directory client and create the directory\n   parent = share.get_directory_client(\"\
@@ -531,7 +548,7 @@ methods:
   - "List directories and files.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List the directories and files under the parent directory\n   my_list =\
@@ -795,7 +812,7 @@ methods:
   - "Upload a file to a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_directory_async.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_directory_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Upload a file to the directory\n   with open(SOURCE_FILE, \"rb\") as source:\n\

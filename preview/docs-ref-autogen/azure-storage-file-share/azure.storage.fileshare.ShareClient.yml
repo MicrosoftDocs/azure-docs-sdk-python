@@ -22,7 +22,8 @@ summary: 'A client to interact with a specific share, although that share may no
 constructor:
   syntax: 'ShareClient(account_url: str, share_name: str, snapshot: str | Dict[str,
     Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
-    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any)'
+    | AzureSasCredential | TokenCredential | None = None, *, token_intent: Literal[''backup'']
+    | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -67,6 +68,23 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  - name: token_intent
+    description: "Required when using *TokenCredential* for authentication and ignored\
+      \ for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
+      \ - Specifies requests are intended for backup/admin type operations, meaning\
+      \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
+      \ User must also have required RBAC permission."
+    types:
+    - <xref:Literal>[<xref:'backup'>]
+  - name: allow_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the target URI.
+    types:
+    - <xref:bool>
+  - name: allow_source_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the source URI.
+    types:
+    - <xref:bool>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -138,7 +156,7 @@ methods:
   - "Acquiring a lease on a share.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   share.create_directory(\"mydir\")\n   lease = share.acquire_lease()\n   share.get_share_properties(lease=lease)\n\
@@ -260,7 +278,7 @@ methods:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    \\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create share with Access Tier set to Hot\n   share.create_share(access_tier=ShareAccessTier(\"\
@@ -308,7 +326,7 @@ methods:
   - "Creates a snapshot of the file share.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   share.create_snapshot()\n\n   ````\n"
@@ -378,7 +396,7 @@ methods:
   - "Deletes the share and any snapshots.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   share.delete_share(delete_snapshots=True)\n\n   ````\n"
@@ -437,7 +455,7 @@ methods:
   - "Gets the share client from connection string.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.storage.fileshare import ShareClient\n   share = ShareClient.from_connection_string(self.connection_string,\
@@ -622,7 +640,7 @@ methods:
   - "Gets the share properties.<!--[!code-python[Main](les\\file_samples_hello_world.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_hello_world.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_hello_world.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = share.get_share_properties()\n\n   ````\n"
@@ -732,7 +750,7 @@ methods:
   - "List directories and files in the share.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create a directory in the share\n   dir_client = share.create_directory(\"\
@@ -835,7 +853,7 @@ methods:
   - "Sets the share metadata.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    \\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   data = {'category': 'test'}\n   share.set_share_metadata(metadata=data)\n\
@@ -894,7 +912,7 @@ methods:
   - "Sets the share properties.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    dist_temp\\\\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Set the tier for the first share to Hot\n   share1.set_share_properties(access_tier=\"\
@@ -946,7 +964,7 @@ methods:
   - "Sets the share quota.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\72\\\\azure-storage-file-share-12.11.0b1\\\\samples\\\\file_samples_share.py\"\
+    \\72\\\\azure-storage-file-share-12.12.0b1\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Set the quota for the share to 1GB\n   share.set_share_quota(quota=1)\n\
