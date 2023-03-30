@@ -8,7 +8,7 @@ ms.devlang: python
 ms.service: logic-apps
 keywords: Azure, python, SDK, API, Logic Apps
 ms.technology: azure
-ms.date: 03/29/2023
+ms.date: 03/30/2023
 manager: douge
 ---
 

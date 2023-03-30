@@ -9,7 +9,7 @@ ms.service: azure-python
 manager: routlaw
 keywords: Azure, python, SDK, API, Commerce
 ms.technology: azure
-ms.date: 03/29/2023
+ms.date: 03/30/2023
 ---
 
 # Azure Commerce libraries for python
