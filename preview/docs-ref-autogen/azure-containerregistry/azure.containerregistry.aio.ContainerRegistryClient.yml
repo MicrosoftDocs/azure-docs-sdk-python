@@ -42,6 +42,31 @@ constructor:
     types:
     - <xref:str>
 methods:
+- uid: azure.containerregistry.aio.ContainerRegistryClient.delete_blob
+  name: delete_blob
+  summary: "Delete a blob. If the blob cannot be found or a response status code of\n\
+    404 is returned an error will not be raised.\n\nExample\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\"\
+    , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   from azure.containerregistry.aio\
+    \ import ContainerRegistryClient\n   from azure.identity.aio import DefaultAzureCredential\n\
+    \   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"]\n   client = ContainerRegistryClient(endpoint,\
+    \ DefaultAzureCredential(), audience=\"my_audience\")\n   await client.delete_blob(\"\
+    my_repository\", \"my_digest\")\n   ````"
+  signature: 'async delete_blob(repository: str, digest: str, **kwargs) -> None'
+  parameters:
+  - name: repository
+    description: Name of the repository the manifest belongs to
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: digest
+    description: Digest of the blob to be deleted
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
 - uid: azure.containerregistry.aio.ContainerRegistryClient.delete_manifest
   name: delete_manifest
   summary: "Delete a manifest. If the manifest cannot be found or a response status\
@@ -121,6 +146,29 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.containerregistry.aio.ContainerRegistryClient.download_blob
+  name: download_blob
+  summary: Download a blob that is part of an artifact to a stream.
+  signature: 'async download_blob(repository: str, digest: str, **kwargs) -> AsyncDownloadBlobStream'
+  parameters:
+  - name: repository
+    description: Name of the repository.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: digest
+    description: The digest of the blob to download.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: AsyncDownloadBlobStream
+    types:
+    - <xref:azure.containerregistry.aio.AsyncDownloadBlobStream>
+  exceptions:
+  - type: ValueError
+    description: If the requested digest does not match the digest of the received
+      blob.
 - uid: azure.containerregistry.aio.ContainerRegistryClient.get_manifest_properties
   name: get_manifest_properties
   summary: "Get the properties of a registry artifact\n\nExample\n\n<!-- literal_block\
@@ -278,3 +326,26 @@ methods:
   name: update_tag_properties
   signature: 'async update_tag_properties(repository: str, tag: str, properties: ArtifactTagProperties,
     **kwargs) -> ArtifactTagProperties'
+- uid: azure.containerregistry.aio.ContainerRegistryClient.upload_blob
+  name: upload_blob
+  summary: Upload an artifact blob.
+  signature: 'async upload_blob(repository: str, data: IO[bytes], **kwargs) -> Tuple[str,
+    int]'
+  parameters:
+  - name: repository
+    description: Name of the repository.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: data
+    description: 'The blob to upload. Note: This must be a seekable stream.'
+    isRequired: true
+    types:
+    - <xref:IO>
+  return:
+    description: The digest and size in bytes of the uploaded blob.
+    types:
+    - <xref:Tuple>[<xref:str>, <xref:int>]
+  exceptions:
+  - type: ValueError
+    description: If the parameter repository or data is None.

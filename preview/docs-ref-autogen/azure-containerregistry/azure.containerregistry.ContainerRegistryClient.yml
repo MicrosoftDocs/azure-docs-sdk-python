@@ -45,7 +45,7 @@ examples:
 - "Instantiate an instance of *ContainerRegistryClient*<!--[!code-python[Main](les\\\
   sample_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
   \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-  \\1\\\\s\\\\dist_temp\\\\42\\\\azure-containerregistry-1.1.0b2\\\\samples\\\\sample_hello_world.py\"\
+  \\1\\\\s\\\\dist_temp\\\\42\\\\azure-containerregistry-1.1.0b3\\\\samples\\\\sample_hello_world.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   with ContainerRegistryClient(self.endpoint,\
   \ self.credential, audience=self.audience) as client:\n\n   ````\n"
@@ -60,23 +60,21 @@ methods:
     \ import ContainerRegistryClient\n   from azure.identity import DefaultAzureCredential\n\
     \   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"]\n   client = ContainerRegistryClient(endpoint,\
     \ DefaultAzureCredential(), audience=\"my_audience\")\n   client.delete_blob(\"\
-    my_repository\", \"my_tag_or_digest\")\n   ````"
-  signature: 'delete_blob(repository: str, tag_or_digest: str, **kwargs) -> None'
+    my_repository\", \"my_digest\")\n   ````"
+  signature: 'delete_blob(repository: str, digest: str, **kwargs) -> None'
   parameters:
   - name: repository
     description: Name of the repository the manifest belongs to
     isRequired: true
     types:
     - <xref:str>
-  - name: tag_or_digest
-    description: Tag or digest of the blob to be deleted
+  - name: digest
+    description: Digest of the blob to be deleted
     isRequired: true
     types:
     - <xref:str>
   return:
     description: None
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.containerregistry.ContainerRegistryClient.delete_manifest
   name: delete_manifest
   summary: "Delete a manifest. If the manifest cannot be found or a response status\
@@ -127,7 +125,7 @@ methods:
   - "Delete a repository from the *ContainerRegistryClient*<!--[!code-python[Main](les\\\
     sample_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\42\\\\azure-containerregistry-1.1.0b2\\\\samples\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\42\\\\azure-containerregistry-1.1.0b3\\\\samples\\\
     \\sample_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
     \n````python\n\n               client.delete_repository(repository_name)\n\n \
@@ -164,11 +162,11 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.containerregistry.ContainerRegistryClient.download_blob
   name: download_blob
-  summary: Download a blob that is part of an artifact.
-  signature: 'download_blob(repository: str, digest: str, **kwargs) -> DownloadBlobResult'
+  summary: Download a blob that is part of an artifact to a stream.
+  signature: 'download_blob(repository: str, digest: str, **kwargs) -> DownloadBlobStream'
   parameters:
   - name: repository
-    description: Name of the repository
+    description: Name of the repository.
     isRequired: true
     types:
     - <xref:str>
@@ -178,12 +176,13 @@ methods:
     types:
     - <xref:str>
   return:
-    description: DownloadBlobResult
+    description: DownloadBlobStream
     types:
-    - <xref:azure.containerregistry.DownloadBlobResult>
+    - <xref:azure.containerregistry.DownloadBlobStream>
   exceptions:
   - type: ValueError
-    description: If the parameter repository or digest is None.
+    description: If the requested digest does not match the digest of the received
+      blob.
 - uid: azure.containerregistry.ContainerRegistryClient.download_manifest
   name: download_manifest
   summary: Download the manifest for an OCI artifact.
@@ -191,7 +190,7 @@ methods:
     DownloadManifestResult'
   parameters:
   - name: repository
-    description: Name of the repository
+    description: Name of the repository.
     isRequired: true
     types:
     - <xref:str>
@@ -208,11 +207,9 @@ methods:
   return:
     description: DownloadManifestResult
     types:
-    - <xref:azure.containerregistry.models.DownloadManifestResult>
+    - <xref:azure.containerregistry.DownloadManifestResult>
   exceptions:
   - type: ValueError
-    description: If the parameter repository or tag_or_digest is None.
-  - type: azure.core.exceptions.HttpResponseError
     description: If the requested digest does not match the digest of the received
       manifest.
 - uid: azure.containerregistry.ContainerRegistryClient.get_manifest_properties
@@ -331,7 +328,7 @@ methods:
   - "List repositories in a container registry account<!--[!code-python[Main](les\\\
     sample_delete_tags.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\42\\\\azure-containerregistry-1.1.0b2\\\\samples\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\42\\\\azure-containerregistry-1.1.0b3\\\\samples\\\
     \\sample_delete_tags.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
     \n````python\n\n       for repository in client.list_repository_names():\n   \
@@ -384,10 +381,11 @@ methods:
 - uid: azure.containerregistry.ContainerRegistryClient.upload_blob
   name: upload_blob
   summary: Upload an artifact blob.
-  signature: 'upload_blob(repository: str, data: IO, **kwargs) -> str'
+  signature: 'upload_blob(repository: str, data: IO[bytes], **kwargs) -> Tuple[str,
+    int]'
   parameters:
   - name: repository
-    description: Name of the repository
+    description: Name of the repository.
     isRequired: true
     types:
     - <xref:str>
@@ -397,9 +395,9 @@ methods:
     types:
     - <xref:IO>
   return:
-    description: The digest of the uploaded blob, calculated by the registry.
+    description: The digest and size in bytes of the uploaded blob.
     types:
-    - <xref:str>
+    - <xref:Tuple>[<xref:str>, <xref:int>]
   exceptions:
   - type: ValueError
     description: If the parameter repository or data is None.
@@ -410,7 +408,7 @@ methods:
     str | None = None, **kwargs) -> str'
   parameters:
   - name: repository
-    description: Name of the repository
+    description: Name of the repository.
     isRequired: true
     types:
     - <xref:str>
@@ -431,7 +429,6 @@ methods:
     - <xref:str>
   exceptions:
   - type: ValueError
-    description: If the parameter repository or manifest is None.
-  - type: azure.core.exceptions.HttpResponseError
-    description: If the digest in the response does not match the digest of the uploaded
-      manifest.
+    description: 'If the parameter repository or manifest is None,
+
+      or the digest in the response does not match the digest of the uploaded manifest.'
