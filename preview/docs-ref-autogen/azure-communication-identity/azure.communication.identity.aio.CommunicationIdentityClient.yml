@@ -7,8 +7,8 @@ inheritances:
 - builtins.object
 summary: Azure Communication Services Identity client.
 constructor:
-  syntax: 'CommunicationIdentityClient(endpoint: str, credential: AsyncTokenCredential,
-    **kwargs)'
+  syntax: 'CommunicationIdentityClient(endpoint: str, credential: AsyncTokenCredential
+    | AzureKeyCredential, **kwargs)'
   parameters:
   - name: endpoint
     description: The endpoint url for Azure Communication Service resource.
@@ -16,10 +16,17 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: The AsyncTokenCredential we use to authenticate against the service.
+    description: The credential we use to authenticate against the service.
     isRequired: true
     types:
-    - <xref:AsyncTokenCredential>
+    - <xref:Union>[<xref:AsyncTokenCredential>, <xref:AzureKeyCredential>]
+  - name: api_version
+    description: 'Azure Communication Identity API version.
+
+      Default value is "2022-06-01". Note that overriding this default value may result
+      in unsupported behavior.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.close
   name: close
@@ -41,6 +48,14 @@ methods:
     \n   List of scopes to be added to the token."
   signature: 'async create_user_and_token(scopes: List[str | CommunicationTokenScope],
     **kwargs) -> Tuple[CommunicationUserIdentifier, AccessToken]'
+  parameters:
+  - name: token_expires_in
+    description: 'Custom validity period of the Communication Identity access token
+
+      within [1, 24] hours range. If not provided, the default value of 24 hours will
+      be used.'
+    types:
+    - <xref:datetime.timedelta>
   return:
     description: A tuple of a CommunicationUserIdentifier and a AccessToken.
     types:
@@ -91,18 +106,40 @@ methods:
     types:
     - <xref:list>[<xref:str>
     - <xref:azure.communication.identity.CommunicationTokenScope>]
+  - name: token_expires_in
+    description: 'Custom validity period of the Communication Identity access token
+
+      within [1, 24] hours range. If not provided, the default value of 24 hours will
+      be used.'
+    types:
+    - <xref:datetime.timedelta>
   return:
     description: AccessToken
     types:
     - <xref:azure.core.credentials.AccessToken>
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.get_token_for_teams_user
   name: get_token_for_teams_user
-  summary: Exchanges an AAD access token of a Teams User for a new Communication Identity
-    access token.
-  signature: 'async get_token_for_teams_user(add_token: str, **kwargs) -> AccessToken'
+  summary: Exchanges an Azure AD access token of a Teams User for a new Communication
+    Identity access token.
+  signature: 'async get_token_for_teams_user(aad_token: str, client_id: str, user_object_id:
+    str, **kwargs) -> AccessToken'
   parameters:
-  - name: add_token
-    description: an AAD access token of a Teams User
+  - name: aad_token
+    description: an Azure AD access token of a Teams User
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: client_id
+    description: 'a Client ID of an Azure AD application to be verified against
+
+      the appId claim in the Azure AD access token.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: user_object_id
+    description: 'an Object ID of an Azure AD user (Teams User) to be verified against
+
+      the OID claim in the Azure AD access token.'
     isRequired: true
     types:
     - <xref:str>
