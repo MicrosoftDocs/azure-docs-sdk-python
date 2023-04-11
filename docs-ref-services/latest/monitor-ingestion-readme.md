@@ -3,12 +3,12 @@ title: Azure Monitor Ingestion client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-ingestion, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/16/2023
+ms.date: 04/11/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Ingestion client library for Python - version 1.0.0 
+# Azure Monitor Ingestion client library for Python - version 1.0.1 
 
 
 The Azure Monitor Ingestion client library is used to send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview].
@@ -19,6 +19,7 @@ This library allows you to send data from virtually any source to supported buil
 
 - [Source code][source]
 - [Package (PyPI)][package]
+- [Package (Conda)](https://anaconda.org/microsoft/azure-monitor-ingestion/)
 - [API reference documentation][python-ingestion-ref-docs]
 - [Service documentation][azure_monitor_overview]
 - [Samples][samples]
@@ -205,9 +206,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_ref_docs]: https://aka.ms/azsdk/python/core/docs
 [azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
-[azure_monitor_query]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-query#readme
+[azure_monitor_query]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-query#readme
 [azure_subscription]: https://azure.microsoft.com/free/python/
-[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/CHANGELOG.md
+[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/CHANGELOG.md
 [data_collection_endpoint]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview
 [data_collection_rule]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
 [data_collection_rule_tutorial]: https://learn.microsoft.com/azure/azure-monitor/logs/tutorial-logs-ingestion-portal#collect-information-from-the-dcr
@@ -216,17 +217,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [pip]: https://pypi.org/project/pip/
 [python_logging]: https://docs.python.org/3/library/logging.html
 [python-ingestion-ref-docs]: https://aka.ms/azsdk/python/monitor-ingestion/docs
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples
-[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples
+[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/
 
-[sample_send_small_logs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/sample_send_small_logs.py
-[sample_send_small_logs_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_send_small_logs_async.py
-[sample_custom_error_callback]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/sample_custom_error_callback.py
-[sample_custom_error_callback_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_custom_error_callback_async.py
-[sample_upload_file_contents]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_file_contents.py
-[sample_upload_file_contents_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_file_contents_async.py
-[sample_upload_pandas_dataframe]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_pandas_dataframe.py
-[sample_upload_pandas_dataframe_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.0/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_pandas_dataframe_async.py
+[sample_send_small_logs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/sample_send_small_logs.py
+[sample_send_small_logs_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_send_small_logs_async.py
+[sample_custom_error_callback]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/sample_custom_error_callback.py
+[sample_custom_error_callback_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_custom_error_callback_async.py
+[sample_upload_file_contents]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_file_contents.py
+[sample_upload_file_contents_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_file_contents_async.py
+[sample_upload_pandas_dataframe]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_pandas_dataframe.py
+[sample_upload_pandas_dataframe_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.1/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_pandas_dataframe_async.py
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
