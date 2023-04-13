@@ -100,6 +100,22 @@ methods:
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: Item with the given ID already exists.
+- uid: azure.cosmos.container.ContainerProxy.delete_all_items_by_partition_key
+  name: delete_all_items_by_partition_key
+  summary: "Exposes an API to delete all items with a single partition key without\
+    \ the user having\n   to explicitly call delete on each record in the partition\
+    \ key."
+  signature: 'delete_all_items_by_partition_key(partition_key: str | int | float |
+    bool, **kwargs: Any) -> None'
+  parameters:
+  - name: partition_key
+    description: Partition key for the items to be deleted.
+    isRequired: true
+    types:
+    - <xref:Any>
+  return:
+    types:
+    - <xref:None>
 - uid: azure.cosmos.container.ContainerProxy.delete_conflict
   name: delete_conflict
   summary: 'Delete a specified conflict from the container.
@@ -233,6 +249,70 @@ methods:
     description: An Iterable of conflicts (dicts).
     types:
     - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+- uid: azure.cosmos.container.ContainerProxy.patch_item
+  name: patch_item
+  summary: "**Provisional method** Patches the specified item with the provided operations\
+    \ if it\n   exists in the container.\n\nIf the item does not already exist in\
+    \ the container, an exception is raised."
+  signature: 'patch_item(item: str | Dict[str, Any], partition_key: str | int | float
+    | bool, patch_operations: List[Dict[str, Any]], **kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: item
+    description: The ID (name) or dict representing item to be patched.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: partition_key
+    description: The partition key of the object to patch.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  - name: patch_operations
+    description: The list of patch operations to apply to the item.
+    isRequired: true
+    types:
+    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,str>]
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>
+  return:
+    description: A dict representing the item after the patch operations went through.
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'The patch operations failed or the item with
+
+      given id does not exist.'
 - uid: azure.cosmos.container.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
@@ -271,18 +351,75 @@ methods:
     - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
 - uid: azure.cosmos.container.ContainerProxy.query_items
   name: query_items
-  summary: "Return all results matching the given *query*.\n\nYou can use any value\
-    \ for the container name in the FROM clause, but\noften the container name is\
-    \ used. In the examples below, the container\nname is \"products,\" and is aliased\
-    \ as \"p\" for easier referencing in\nthe WHERE clause.\n\nThe max cache staleness\
-    \ for the integrated cache in milliseconds.\n   For accounts configured to use\
-    \ the integrated cache, using Session or Eventual consistency,\n   responses are\
-    \ guaranteed to be no staler than this value."
+  summary: 'Return all results matching the given *query*.
+
+
+    You can use any value for the container name in the FROM clause, but
+
+    often the container name is used. In the examples below, the container
+
+    name is "products," and is aliased as "p" for easier referencing in
+
+    the WHERE clause.'
   signature: 'query_items(query: str, parameters: List[Dict[str, object]] | None =
     None, partition_key: Any | None = None, enable_cross_partition_query: bool | None
     = None, max_item_count: int | None = None, enable_scan_in_query: bool | None =
     None, populate_query_metrics: bool | None = None, **kwargs: Any) -> Iterable[Dict[str,
     Any]]'
+  parameters:
+  - name: query
+    description: The Azure Cosmos DB SQL query to execute.
+    isRequired: true
+  - name: parameters
+    description: 'Optional array of parameters to the query.
+
+      Each parameter is a dict() with ''name'' and ''value'' keys.
+
+      Ignored if no query is provided.'
+    isRequired: true
+  - name: partition_key
+    description: Specifies the partition key value for the item.
+    isRequired: true
+  - name: enable_cross_partition_query
+    description: 'Allows sending of more than one request to
+
+      execute the query in the Azure Cosmos DB service.
+
+      More than one request is necessary if the query is not scoped to single partition
+      key value.'
+    isRequired: true
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    isRequired: true
+  - name: enable_scan_in_query
+    description: 'Allow scan on the queries which couldn''t be served as
+
+      indexing was opted out on the requested paths.'
+    isRequired: true
+  - name: populate_query_metrics
+    description: Enable returning query metrics in response headers.
+    isRequired: true
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: An Iterable of items (dicts).
     types:
@@ -291,7 +428,7 @@ methods:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\74\\\\azure-cosmos-4.3.1b1\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\74\\\\azure-cosmos-4.4.0b1\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import json\n\
     \n   for item in container.query_items(\n       query='SELECT * FROM products\
@@ -300,7 +437,7 @@ methods:
     \ query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\74\\\\azure-cosmos-4.3.1b1\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\74\\\\azure-cosmos-4.4.0b1\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   discontinued_items\
     \ = container.query_items(\n       query='SELECT * FROM products p WHERE p.productModel\
@@ -327,7 +464,7 @@ methods:
   - name: is_start_from_beginning
     description: 'Get whether change feed should start from
 
-      beginning (true) or from current (false). By default it''s start from current
+      beginning (true) or from current (false). By default, it''s start from current
       (false).'
     isRequired: true
   - name: continuation
@@ -384,25 +521,75 @@ methods:
       This includes if the container does not exist.'
 - uid: azure.cosmos.container.ContainerProxy.read_all_items
   name: read_all_items
-  summary: "List all the items in the container.\n\nThe max cache staleness for the\
-    \ integrated cache in milliseconds.\n   For accounts configured to use the integrated\
-    \ cache, using Session or Eventual consistency,\n   responses are guaranteed to\
-    \ be no staler than this value."
+  summary: List all the items in the container.
   signature: 'read_all_items(max_item_count: int | None = None, populate_query_metrics:
     bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  parameters:
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    isRequired: true
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: An Iterable of items (dicts).
     types:
     - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
 - uid: azure.cosmos.container.ContainerProxy.read_item
   name: read_item
-  summary: "Get the item identified by *item*.\n\nThe max cache staleness for the\
-    \ integrated cache in milliseconds.\n   For accounts configured to use the integrated\
-    \ cache, using Session or Eventual consistency,\n   responses are guaranteed to\
-    \ be no staler than this value."
+  summary: Get the item identified by *item*.
   signature: 'read_item(item: str | Dict[str, Any], partition_key: Any, populate_query_metrics:
     bool | None = None, post_trigger_include: str | None = None, **kwargs: Any) ->
     Dict[str, Any]'
+  parameters:
+  - name: item
+    description: The ID (name) or dict representing item to retrieve.
+    isRequired: true
+  - name: partition_key
+    description: Partition key for the item to retrieve.
+    isRequired: true
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    isRequired: true
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str,str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: Dict representing the item to be retrieved.
     types:
@@ -414,7 +601,7 @@ methods:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\74\\\\azure-cosmos-4.3.1b1\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\74\\\\azure-cosmos-4.4.0b1\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   item = container.read_item(\"\
     item2\", partition_key=\"Widget\")\n   item[\"productModel\"] = \"DISCONTINUED\"\
