@@ -3,7 +3,7 @@ title: Azure Data Lake  Storage SDK for Python
 description: Reference for Azure Data Lake  Storage SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 04/13/2023
+ms.data: 04/14/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: datalakestorage
