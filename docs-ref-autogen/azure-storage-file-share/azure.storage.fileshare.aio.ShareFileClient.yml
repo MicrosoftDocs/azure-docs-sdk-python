@@ -11,7 +11,8 @@ summary: A client to interact with a specific file, although that file may not y
 constructor:
   syntax: 'ShareFileClient(account_url: str, share_name: str, file_path: str, snapshot:
     str | Dict[str, Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
-    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any)'
+    | AzureSasCredential | AsyncTokenCredential | None = None, *, token_intent: Literal[''backup'']
+    | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -64,6 +65,23 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  - name: token_intent
+    description: "Required when using *TokenCredential* for authentication and ignored\
+      \ for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
+      \ - Specifies requests are intended for backup/admin type operations, meaning\
+      \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
+      \ User must also have required RBAC permission."
+    types:
+    - <xref:Literal>[<xref:'backup'>]
+  - name: allow_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the target URI.
+    types:
+    - <xref:bool>
+  - name: allow_source_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the source URI.
+    types:
+    - <xref:bool>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -391,7 +409,7 @@ methods:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\101\\\\azure-storage-file-share-12.11.1\\\\samples\\\\file_samples_client_async.py\"\
+    \\101\\\\azure-storage-file-share-12.12.0\\\\samples\\\\file_samples_client_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create and allocate bytes for the file (no content added yet)\n   await\
@@ -433,7 +451,7 @@ methods:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\101\\\\azure-storage-file-share-12.11.1\\\\samples\\\\file_samples_client_async.py\"\
+    \\101\\\\azure-storage-file-share-12.12.0\\\\samples\\\\file_samples_client_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await my_file.delete_file()\n\n   ````\n"
@@ -527,7 +545,7 @@ methods:
   - "Download a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\101\\\\azure-storage-file-share-12.11.1\\\\samples\\\\file_samples_client_async.py\"\
+    \\101\\\\azure-storage-file-share-12.12.0\\\\samples\\\\file_samples_client_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(DEST_FILE, \"wb\") as data:\n       stream = await my_file.download_file()\n\
@@ -1085,7 +1103,7 @@ methods:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\101\\\\azure-storage-file-share-12.11.1\\\\samples\\\\file_samples_client_async.py\"\
+    dist_temp\\\\101\\\\azure-storage-file-share-12.12.0\\\\samples\\\\file_samples_client_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await destination_file.start_copy_from_url(source_url=source_url)\n\n   ````\n"
@@ -1243,7 +1261,7 @@ methods:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\101\\\\azure-storage-file-share-12.11.1\\\\samples\\\\file_samples_client_async.py\"\
+    \\101\\\\azure-storage-file-share-12.12.0\\\\samples\\\\file_samples_client_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(SOURCE_FILE, \"rb\") as source:\n       await my_file.upload_file(source)\n\
