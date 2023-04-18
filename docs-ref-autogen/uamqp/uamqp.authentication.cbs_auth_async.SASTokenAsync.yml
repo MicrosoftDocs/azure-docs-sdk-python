@@ -128,6 +128,261 @@ constructor:
     types:
     - <xref:int>
 methods:
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.close
+  name: close
+  summary: 'Close the authentication layer and cleanup
+
+    all the authentication wrapper objects.'
+  signature: close()
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.close_authenticator
+  name: close_authenticator
+  summary: Close the CBS auth channel and session.
+  signature: close_authenticator()
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.close_authenticator_async
+  name: close_authenticator_async
+  summary: Close the CBS auth channel and session asynchronously.
+  signature: async close_authenticator_async()
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.create_authenticator
+  name: create_authenticator
+  summary: 'Create the AMQP session and the CBS channel with which
+
+    to negotiate the token.'
+  signature: create_authenticator(connection, debug=False, **kwargs)
+  parameters:
+  - name: connection
+    description: 'The underlying AMQP connection on which
+
+      to create the session.'
+    isRequired: true
+    types:
+    - <xref:uamqp.connection.Connection>
+  - name: debug
+    description: 'Whether to emit network trace logging events for the
+
+      CBS session. Default is *False*. Logging events are set at INFO level.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  return:
+    types:
+    - <xref:uamqp.c_uamqp.CBSTokenAuth>
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.create_authenticator_async
+  name: create_authenticator_async
+  summary: 'Create the async AMQP session and the CBS channel with which
+
+    to negotiate the token.'
+  signature: async create_authenticator_async(connection, debug=False, loop=None,
+    **kwargs)
+  parameters:
+  - name: connection
+    description: 'The underlying AMQP connection on which
+
+      to create the session.'
+    isRequired: true
+    types:
+    - <xref:uamqp.async_ops.connection_async.ConnectionAsync>
+  - name: debug
+    description: 'Whether to emit network trace logging events for the
+
+      CBS session. Default is *False*. Logging events are set at INFO level.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: loop
+    defaultValue: None
+  return:
+    types:
+    - <xref:uamqp.c_uamqp.CBSTokenAuth>
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.from_shared_access_key
+  name: from_shared_access_key
+  summary: 'Attempt to create a CBS token session using a Shared Access Key such
+
+    as is used to connect to Azure services.
+
+
+    time to start the process of token refresh.
+
+    Default value is 10% of the remaining seconds until the token expires.'
+  signature: from_shared_access_key(uri, key_name, shared_access_key, expiry=None,
+    port=None, timeout=10, retry_policy=<uamqp.authentication.cbs_auth.TokenRetryPolicy
+    object>, verify=None, http_proxy=None, transport_type=TransportType.Amqp, encoding='UTF-8',
+    **kwargs)
+  parameters:
+  - name: uri
+    description: 'The AMQP endpoint URI. This must be provided as
+
+      a decoded string.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: key_name
+    description: 'The SAS token username, also referred to as the key
+
+      name or policy name.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: shared_access_key
+    description: The SAS token password, also referred to as the key.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: expiry
+    description: The lifetime in seconds for the generated token. Default is 1 hour.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: port
+    description: The TLS port - default for AMQP is 5671.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The timeout in seconds in which to negotiate the token.
+
+      The default value is 10 seconds.'
+    defaultValue: '10'
+    types:
+    - <xref:float>
+  - name: retry_policy
+    description: 'The retry policy for the PUT token request. The default
+
+      retry policy has 3 retries.'
+    types:
+    - <xref:uamqp.authentication.cbs_auth.TokenRetryPolicy>
+  - name: verify
+    description: The path to a user-defined certificate.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: http_proxy
+    description: 'HTTP proxy configuration. This should be a dictionary with
+
+      the following keys present: ''proxy_hostname'' and ''proxy_port''. Additional
+      optional
+
+      keys are ''username'' and ''password''.'
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: transport_type
+    description: 'The transport protocol type - default is ~uamqp.TransportType.Amqp.
+
+      ~uamqp.TransportType.AmqpOverWebsocket is applied when http_proxy is set or
+      the
+
+      transport type is explicitly requested.'
+    defaultValue: TransportType.Amqp
+    types:
+    - <xref:uamqp.TransportType>
+  - name: encoding
+    description: 'The encoding to use if hostname is provided as a str.
+
+      Default is ''UTF-8''.'
+    defaultValue: UTF-8
+    types:
+    - <xref:str>
+  - name: refresh_window
+    description: The time in seconds before the token expiration
+    types:
+    - <xref:int>
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.handle_token
+  name: handle_token
+  summary: 'This function is called periodically to check the status of the current
+
+    token if there is one, and request a new one if needed.
+
+    If the token request fails, it will be retried according to the retry policy.
+
+    A token refresh will be attempted if the token will expire soon.
+
+
+    This function will return a tuple of two booleans. The first represents whether
+
+    the token authentication has not completed within it''s given timeout window.
+    The
+
+    second indicates whether the token negotiation is still in progress.'
+  signature: handle_token()
+  return:
+    types:
+    - <xref:tuple>[<xref:bool>, <xref:bool>]
+  exceptions:
+  - type: uamqp.errors.AuthenticationException if the token authentication fails.
+  - type: uamqp.errors.TokenExpired if the token has expired and cannot berefreshed.
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.handle_token_async
+  name: handle_token_async
+  summary: 'This coroutine is called periodically to check the status of the current
+
+    token if there is one, and request a new one if needed.
+
+    If the token request fails, it will be retried according to the retry policy.
+
+    A token refresh will be attempted if the token will expire soon.
+
+
+    This function will return a tuple of two booleans. The first represents whether
+
+    the token authentication has not completed within it''s given timeout window.
+    The
+
+    second indicates whether the token negotiation is still in progress.'
+  signature: async handle_token_async()
+  return:
+    types:
+    - <xref:tuple>[<xref:bool>, <xref:bool>]
+  exceptions:
+  - type: uamqp.errors.AuthenticationException if the token authentication fails.
+  - type: uamqp.errors.TokenExpired if the token has expired and cannot berefreshed.
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.set_io
+  name: set_io
+  signature: set_io(hostname, port, http_proxy, transport_type)
+  parameters:
+  - name: hostname
+    isRequired: true
+  - name: port
+    isRequired: true
+  - name: http_proxy
+    isRequired: true
+  - name: transport_type
+    isRequired: true
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.set_tlsio
+  name: set_tlsio
+  summary: 'Setup the default underlying TLS IO layer. On Windows this is
+
+    Schannel, on Linux and MacOS this is OpenSSL.'
+  signature: set_tlsio(hostname, port)
+  parameters:
+  - name: hostname
+    description: The endpoint hostname.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: port
+    description: The TLS port.
+    isRequired: true
+    types:
+    - <xref:int>
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.set_wsio
+  name: set_wsio
+  summary: Setup the default underlying Web Socket IO layer.
+  signature: set_wsio(hostname, port, http_proxy)
+  parameters:
+  - name: hostname
+    description: The endpoint hostname.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: port
+    description: The WSS port.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: http_proxy
+    isRequired: true
 - uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.update_token
   name: update_token
   signature: async update_token()
+attributes:
+- uid: uamqp.authentication.cbs_auth_async.SASTokenAsync.loop
+  name: loop
