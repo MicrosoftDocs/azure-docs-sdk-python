@@ -185,6 +185,62 @@ constructor:
     types:
     - <xref:str>
 methods:
+- uid: uamqp.client.SendClient.auth_complete
+  name: auth_complete
+  summary: 'Whether the authentication handshake is complete during
+
+    connection initialization.'
+  signature: auth_complete()
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.client.SendClient.client_ready
+  name: client_ready
+  summary: 'Whether the handler has completed all start up processes such as
+
+    establishing the connection, session, link and authentication, and
+
+    is not ready to process messages.'
+  signature: client_ready()
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.client.SendClient.close
+  name: close
+  summary: 'Close the client. This includes closing the Session
+
+    and CBS authentication layer as well as the Connection.
+
+    If the client was opened using an external Connection,
+
+    this will be left intact.
+
+
+    No further messages can be sent or received and the client
+
+    cannot be re-opened.
+
+
+    All pending, unsent messages will remain uncleared to allow
+
+    them to be inspected and queued to a new client.'
+  signature: close()
+- uid: uamqp.client.SendClient.do_work
+  name: do_work
+  summary: 'Run a single connection iteration.
+
+    This will return *True* if the connection is still open
+
+    and ready to be used for further work, or *False* if it needs
+
+    to be shut down.'
+  signature: do_work(**kwargs)
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TimeoutError or uamqp.errors.ClientTimeout if CBS authentication timeout
+      reached.
 - uid: uamqp.client.SendClient.messages_pending
   name: messages_pending
   summary: 'Check whether the client is holding any unsent
@@ -194,6 +250,103 @@ methods:
   return:
     types:
     - <xref:bool>
+- uid: uamqp.client.SendClient.mgmt_request
+  name: mgmt_request
+  summary: 'Run a request/response operation. These are frequently used for management
+
+    tasks against a $management node, however any node name can be specified
+
+    and the available options will depend on the target service.'
+  signature: mgmt_request(message, operation, op_type=None, node=None, callback=None,
+    **kwargs)
+  parameters:
+  - name: message
+    description: The message to send in the management request.
+    isRequired: true
+    types:
+    - <xref:uamqp.message.Message>
+  - name: operation
+    description: 'The type of operation to be performed. This value will
+
+      be service-specific, but common values include READ, CREATE and UPDATE.
+
+      This value will be added as an application property on the message.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: op_type
+    description: 'The type on which to carry out the operation. This will
+
+      be specific to the entities of the service. This value will be added as
+
+      an application property on the message.'
+    defaultValue: None
+    types:
+    - <xref:bytes>
+  - name: node
+    description: The target node. Default is *b"$management"*.
+    defaultValue: None
+    types:
+    - <xref:bytes>
+  - name: timeout
+    description: 'Provide an optional timeout in milliseconds within which a response
+
+      to the management request must be received.'
+    isRequired: true
+    types:
+    - <xref:float>
+  - name: callback
+    description: 'The function to process the returned parameters of the management
+
+      request including status code and a description if available. This can be used
+
+      to reformat the response or raise an error based on content. The function must
+
+      take 3 arguments - status code, response message and description.'
+    defaultValue: None
+    types:
+    - <xref:callable>[<xref:int>, <xref:bytes>, <xref:uamqp.message.Message>]
+  - name: status_code_field
+    description: 'Provide an alternate name for the status code in the
+
+      response body which can vary between services due to the spec still being in
+      draft.
+
+      The default is *b"statusCode"*.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: description_fields
+    description: 'Provide an alternate name for the description in the
+
+      response body which can vary between services due to the spec still being in
+      draft.
+
+      The default is *b"statusDescription"*.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+  return:
+    types:
+    - <xref:uamqp.message.Message>
+- uid: uamqp.client.SendClient.open
+  name: open
+  summary: 'Open the client. The client can create a new Connection
+
+    or an existing Connection can be passed in. This existing Connection
+
+    may have an existing CBS authentication Session, which will be
+
+    used for this client as well. Otherwise a new Session will be
+
+    created.'
+  signature: open(connection=None)
+  parameters:
+  - name: connection
+    description: 'An existing Connection that may be shared between
+
+      multiple clients.'
+    defaultValue: None
 - uid: uamqp.client.SendClient.queue_message
   name: queue_message
   summary: "Add one or more messages to the send queue.\nNo further action will be\

@@ -115,6 +115,16 @@ constructor:
     types:
     - <xref:int>
 methods:
+- uid: uamqp.authentication.cbs_auth.JWTTokenAuth.close
+  name: close
+  summary: 'Close the authentication layer and cleanup
+
+    all the authentication wrapper objects.'
+  signature: close()
+- uid: uamqp.authentication.cbs_auth.JWTTokenAuth.close_authenticator
+  name: close_authenticator
+  summary: Close the CBS auth channel and session.
+  signature: close_authenticator()
 - uid: uamqp.authentication.cbs_auth.JWTTokenAuth.create_authenticator
   name: create_authenticator
   signature: create_authenticator(connection, debug=False, **kwargs)
@@ -123,6 +133,76 @@ methods:
     isRequired: true
   - name: debug
     defaultValue: 'False'
+- uid: uamqp.authentication.cbs_auth.JWTTokenAuth.handle_token
+  name: handle_token
+  summary: 'This function is called periodically to check the status of the current
+
+    token if there is one, and request a new one if needed.
+
+    If the token request fails, it will be retried according to the retry policy.
+
+    A token refresh will be attempted if the token will expire soon.
+
+
+    This function will return a tuple of two booleans. The first represents whether
+
+    the token authentication has not completed within it''s given timeout window.
+    The
+
+    second indicates whether the token negotiation is still in progress.'
+  signature: handle_token()
+  return:
+    types:
+    - <xref:tuple>[<xref:bool>, <xref:bool>]
+  exceptions:
+  - type: uamqp.errors.AuthenticationException if the token authentication fails.
+  - type: uamqp.errors.TokenExpired if the token has expired and cannot berefreshed.
+- uid: uamqp.authentication.cbs_auth.JWTTokenAuth.set_io
+  name: set_io
+  signature: set_io(hostname, port, http_proxy, transport_type)
+  parameters:
+  - name: hostname
+    isRequired: true
+  - name: port
+    isRequired: true
+  - name: http_proxy
+    isRequired: true
+  - name: transport_type
+    isRequired: true
+- uid: uamqp.authentication.cbs_auth.JWTTokenAuth.set_tlsio
+  name: set_tlsio
+  summary: 'Setup the default underlying TLS IO layer. On Windows this is
+
+    Schannel, on Linux and MacOS this is OpenSSL.'
+  signature: set_tlsio(hostname, port)
+  parameters:
+  - name: hostname
+    description: The endpoint hostname.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: port
+    description: The TLS port.
+    isRequired: true
+    types:
+    - <xref:int>
+- uid: uamqp.authentication.cbs_auth.JWTTokenAuth.set_wsio
+  name: set_wsio
+  summary: Setup the default underlying Web Socket IO layer.
+  signature: set_wsio(hostname, port, http_proxy)
+  parameters:
+  - name: hostname
+    description: The endpoint hostname.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: port
+    description: The WSS port.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: http_proxy
+    isRequired: true
 - uid: uamqp.authentication.cbs_auth.JWTTokenAuth.update_token
   name: update_token
   signature: update_token()
