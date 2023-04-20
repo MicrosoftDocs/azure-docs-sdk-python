@@ -8,6 +8,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: workloads
 ---
-# Azure Workloads SDK for Python - preview
-## Packages - preview
+# Azure Workloads SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](workloads-index.md)]
