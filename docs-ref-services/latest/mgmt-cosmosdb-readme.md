@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-cosmosdb, cosmos
 author: kushagraThapar
 ms.author: kuthapar
-ms.date: 02/16/2023
+ms.date: 04/21/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
@@ -55,8 +55,9 @@ client = CosmosDBManagementClient(credential=DefaultAzureCredential(), subscript
 
 ## Examples
 
-
-Code samples for this package can be found at [Cosmos DB Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Cosmos DB Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
