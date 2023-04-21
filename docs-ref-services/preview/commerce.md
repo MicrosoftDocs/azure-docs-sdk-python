@@ -8,9 +8,9 @@ ms.topic: reference
 ms.devlang: python
 ms.service: commerce
 keywords: Azure, python, SDK, API, Commerce
+ms.technology: azure
 manager: routlaw
 ms.date: 03/30/2023
-ms.technology: azure
 ---
 # Azure Commerce libraries for python
 

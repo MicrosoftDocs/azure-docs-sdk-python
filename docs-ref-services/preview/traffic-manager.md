@@ -8,9 +8,9 @@ ms.topic: reference
 ms.devlang: python
 ms.service: trafficmanager
 keywords: Azure, python, SDK, API, Traffic Manager
+ms.technology: azure
 manager: douge
 ms.date: 03/30/2023
-ms.technology: azure
 ---
 # Azure Traffic Manager libraries for python
 
