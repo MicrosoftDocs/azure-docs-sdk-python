@@ -3,7 +3,7 @@ title: Azure Batch SDK for Python
 description: Reference for Azure Batch SDK for Python
 author: cRui861
 ms.author: rechen
-ms.data: 04/21/2023
+ms.data: 04/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: batch
