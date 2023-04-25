@@ -209,6 +209,275 @@ methods:
   return:
     types:
     - <xref:azure.eventhub.async_ops.sender_async.SenderAsync>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.add_epoch_receiver
+  name: add_epoch_receiver
+  summary: 'Add a receiver to the client with an epoch value. Only a single epoch
+    receiver
+
+    can connect to a partition at any given time - additional epoch receivers must
+    have
+
+    a higher epoch value or they will be rejected. If a 2nd epoch receiver has
+
+    connected, the first will be closed.'
+  signature: add_epoch_receiver(consumer_group, partition, epoch, prefetch=300, operation=None,
+    keep_alive=30, auto_reconnect=True)
+  parameters:
+  - name: consumer_group
+    description: The name of the consumer group.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: partition
+    description: The ID of the partition.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: epoch
+    description: The epoch value for the receiver.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: prefetch
+    description: The message prefetch count of the receiver. Default is 300.
+    defaultValue: '300'
+    types:
+    - <xref:int>
+  - name: operation
+    defaultValue: None
+  - name: keep_alive
+    defaultValue: '30'
+  - name: auto_reconnect
+    defaultValue: 'True'
+  return:
+    types:
+    - <xref:azure.eventhub.receiver.Receiver>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.add_receiver
+  name: add_receiver
+  summary: Add a receiver to the client for a particular consumer group and partition.
+  signature: add_receiver(consumer_group, partition, offset=None, prefetch=300, operation=None,
+    keep_alive=30, auto_reconnect=True)
+  parameters:
+  - name: consumer_group
+    description: The name of the consumer group.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: partition
+    description: The ID of the partition.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: offset
+    description: The offset from which to start receiving.
+    defaultValue: None
+    types:
+    - <xref:azure.eventhub.common.Offset>
+  - name: prefetch
+    description: The message prefetch count of the receiver. Default is 300.
+    defaultValue: '300'
+    types:
+    - <xref:int>
+  - name: operation
+    defaultValue: None
+  - name: keep_alive
+    defaultValue: '30'
+  - name: auto_reconnect
+    defaultValue: 'True'
+  return:
+    types:
+    - <xref:azure.eventhub.receiver.Receiver>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.add_sender
+  name: add_sender
+  summary: Add a sender to the client to EventData object to an EventHub.
+  signature: add_sender(partition=None, operation=None, send_timeout=60, keep_alive=30,
+    auto_reconnect=True)
+  parameters:
+  - name: partition
+    description: 'Optionally specify a particular partition to send to.
+
+      If omitted, the events will be distributed to available partitions via
+
+      round-robin.'
+    defaultValue: None
+  - name: send_timeout
+    description: 'The timeout in seconds for an individual event to be sent from the
+      time that it is
+
+      queued. Default value is 60 seconds. If set to 0, there will be no timeout.'
+    defaultValue: '60'
+    types:
+    - <xref:int>
+  - name: keep_alive
+    description: 'The time interval in seconds between pinging the connection to keep
+      it alive during
+
+      periods of inactivity. The default value is 30 seconds. If set to *None*, the
+      connection will not
+
+      be pinged.'
+    defaultValue: '30'
+    types:
+    - <xref:int>
+  - name: auto_reconnect
+    description: 'Whether to automatically reconnect the sender if a retryable error
+      occurs.
+
+      Default value is *True*.'
+    defaultValue: 'True'
+  - name: operation
+    defaultValue: None
+  return:
+    types:
+    - <xref:azure.eventhub.sender.Sender>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.create_properties
+  name: create_properties
+  summary: 'Format the properties with which to instantiate the connection.
+
+    This acts like a user agent over HTTP.'
+  signature: create_properties()
+  return:
+    types:
+    - <xref:dict>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.from_connection_string
+  name: from_connection_string
+  summary: Create an EventHubClient from a connection string.
+  signature: from_connection_string(conn_str, eventhub=None, **kwargs)
+  parameters:
+  - name: conn_str
+    description: The connection string.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: eventhub
+    description: 'The name of the EventHub, if the EntityName is
+
+      not included in the connection string.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: debug
+    description: 'Whether to output network trace logs to the logger. Default
+
+      is *False*.'
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: http_proxy
+    description: 'HTTP proxy settings. This must be a dictionary with the following
+
+      keys: ''proxy_hostname'' (str value) and ''proxy_port'' (int value).
+
+      Additionally the following keys may also be present: ''username'', ''password''.'
+    isRequired: true
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+  - name: auth_timeout
+    description: 'The time in seconds to wait for a token to be authorized by the
+      service.
+
+      The default value is 60 seconds. If set to 0, no timeout will be enforced from
+      the client.'
+    isRequired: true
+    types:
+    - <xref:int>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.from_iothub_connection_string
+  name: from_iothub_connection_string
+  summary: Create an EventHubClient from an IoTHub connection string.
+  signature: from_iothub_connection_string(conn_str, **kwargs)
+  parameters:
+  - name: conn_str
+    description: The connection string.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: debug
+    description: 'Whether to output network trace logs to the logger. Default
+
+      is *False*.'
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: http_proxy
+    description: 'HTTP proxy settings. This must be a dictionary with the following
+
+      keys: ''proxy_hostname'' (str value) and ''proxy_port'' (int value).
+
+      Additionally the following keys may also be present: ''username'', ''password''.'
+    isRequired: true
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+  - name: auth_timeout
+    description: 'The time in seconds to wait for a token to be authorized by the
+      service.
+
+      The default value is 60 seconds. If set to 0, no timeout will be enforced from
+      the client.'
+    isRequired: true
+    types:
+    - <xref:int>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.from_sas_token
+  name: from_sas_token
+  summary: Create an EventHubClient from an existing auth token or token generator.
+  signature: from_sas_token(address, sas_token, eventhub=None, **kwargs)
+  parameters:
+  - name: address
+    description: The Event Hub address URL
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: 'A SAS token or function that returns a SAS token. If a function
+      is supplied,
+
+      it will be used to retrieve subsequent tokens in the case of token expiry. The
+      function should
+
+      take no arguments.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:callable>
+  - name: eventhub
+    description: The name of the EventHub, if not already included in the address
+      URL.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: debug
+    description: 'Whether to output network trace logs to the logger. Default
+
+      is *False*.'
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: http_proxy
+    description: 'HTTP proxy settings. This must be a dictionary with the following
+
+      keys: ''proxy_hostname'' (str value) and ''proxy_port'' (int value).
+
+      Additionally the following keys may also be present: ''username'', ''password''.'
+    isRequired: true
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+  - name: auth_timeout
+    description: 'The time in seconds to wait for a token to be authorized by the
+      service.
+
+      The default value is 60 seconds. If set to 0, no timeout will be enforced from
+      the client.'
+    isRequired: true
+    types:
+    - <xref:int>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.get_eventhub_info
+  name: get_eventhub_info
+  summary: "Get details on the specified EventHub.\nKeys in the details dictionary\
+    \ include:\n\n   -'name'\n   -'type'\n   -'created_at'\n   -'partition_count'\n\
+    \   -'partition_ids'"
+  signature: get_eventhub_info()
+  return:
+    types:
+    - <xref:dict>
 - uid: azure.eventhub.async_ops.EventHubClientAsync.get_eventhub_info_async
   name: get_eventhub_info_async
   summary: Get details on the specified EventHub async.
@@ -216,6 +485,25 @@ methods:
   return:
     types:
     - <xref:dict>
+- uid: azure.eventhub.async_ops.EventHubClientAsync.run
+  name: run
+  summary: 'Run the EventHubClient in blocking mode.
+
+    Opens the connection and starts running all Sender/Receiver clients.
+
+    Returns a list of the start up results. For a succcesful client start the
+
+    result will be *None*, otherwise the exception raised.
+
+    If all clients failed to start, then run will fail, shut down the connection
+
+    and raise an exception.
+
+    If at least one client starts up successfully the run command will succeed.'
+  signature: run()
+  return:
+    types:
+    - <xref:list>[<xref:azure.eventhub.common.EventHubError>]
 - uid: azure.eventhub.async_ops.EventHubClientAsync.run_async
   name: run_async
   summary: 'Run the EventHubClient asynchronously.
@@ -235,6 +523,10 @@ methods:
   return:
     types:
     - <xref:list>[<xref:azure.eventhub.common.EventHubError>]
+- uid: azure.eventhub.async_ops.EventHubClientAsync.stop
+  name: stop
+  summary: Stop the EventHubClient and all its Sender/Receiver clients.
+  signature: stop()
 - uid: azure.eventhub.async_ops.EventHubClientAsync.stop_async
   name: stop_async
   summary: Stop the EventHubClient and all its Sender/Receiver clients.

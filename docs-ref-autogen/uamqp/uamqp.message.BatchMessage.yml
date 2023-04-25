@@ -107,6 +107,45 @@ variables:
   types:
   - <xref:int>
 methods:
+- uid: uamqp.message.BatchMessage.accept
+  name: accept
+  summary: 'Send a response disposition to the service to indicate that
+
+    a received message has been accepted. If the client is running in PeekLock
+
+    mode, the service will wait on this disposition. Otherwise it will
+
+    be ignored. Returns *True* is message was accepted, or *False* if the message
+
+    was already settled.'
+  signature: accept()
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TypeError if the message is being sent rather than received.
+- uid: uamqp.message.BatchMessage.decode_from_bytes
+  name: decode_from_bytes
+  summary: 'Decode an AMQP message from a bytearray.
+
+    The returned message will not have a delivery context and
+
+    therefore will be considered to be in an "already settled" state.'
+  signature: decode_from_bytes(data)
+  parameters:
+  - name: data
+    description: The AMQP wire-encoded bytes to decode.
+    isRequired: true
+    types:
+    - <xref:bytes>
+    - <xref:bytearray>
+- uid: uamqp.message.BatchMessage.encode_message
+  name: encode_message
+  summary: Encode message to AMQP wire-encoded bytearray.
+  signature: encode_message()
+  return:
+    types:
+    - <xref:bytearray>
 - uid: uamqp.message.BatchMessage.gather
   name: gather
   summary: 'Return all the messages represented by this object. This will convert
@@ -118,7 +157,134 @@ methods:
   return:
     types:
     - <xref:list>[<xref:uamqp.message.Message>]
+- uid: uamqp.message.BatchMessage.get_data
+  name: get_data
+  summary: 'Get the body data of the message. The format may vary depending
+
+    on the body type.'
+  signature: get_data()
+  return:
+    types:
+    - <xref:generator>
+- uid: uamqp.message.BatchMessage.get_message
+  name: get_message
+  summary: Get the underlying C message from this object.
+  signature: get_message()
+  return:
+    types:
+    - <xref:uamqp.c_uamqp.cMessage>
+- uid: uamqp.message.BatchMessage.get_message_encoded_size
+  name: get_message_encoded_size
+  summary: 'Pre-emptively get the size of the message once it has been encoded
+
+    to go over the wire so we can raise an error if the message will be
+
+    rejected for being to large.
+
+
+    This method is not available for messages that have been received.'
+  signature: get_message_encoded_size()
+  return:
+    types:
+    - <xref:int>
+- uid: uamqp.message.BatchMessage.modify
+  name: modify
+  summary: 'Send a response disposition to the service to indicate that
+
+    a received message has been modified. If the client is running in PeekLock
+
+    mode, the service will wait on this disposition. Otherwise it will
+
+    be ignored. Returns *True* is message was modified, or *False* if the message
+
+    was already settled.'
+  signature: modify(failed, deliverable, annotations=None)
+  parameters:
+  - name: failed
+    description: 'Whether this delivery of this message failed. This does not
+
+      indicate whether subsequence deliveries of this message would also fail.'
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: deliverable
+    description: 'Whether this message will be deliverable to this client
+
+      on subsequent deliveries - i.e. whether delivery is retryable.'
+    isRequired: true
+    types:
+    - <xref:bool>
+  - name: annotations
+    description: Annotations to attach to response.
+    defaultValue: None
+    types:
+    - <xref:dict>
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TypeError if the message is being sent rather than received.
+- uid: uamqp.message.BatchMessage.reject
+  name: reject
+  summary: 'Send a response disposition to the service to indicate that
+
+    a received message has been rejected. If the client is running in PeekLock
+
+    mode, the service will wait on this disposition. Otherwise it will
+
+    be ignored. A rejected message will increment the messages delivery count.
+
+    Returns *True* is message was rejected, or *False* if the message
+
+    was already settled.'
+  signature: reject(condition=None, description=None, info=None)
+  parameters:
+  - name: condition
+    description: The AMQP rejection code. By default this is *amqp:internal-error*.
+    defaultValue: None
+    types:
+    - <xref:bytes>
+    - <xref:str>
+  - name: description
+    description: A description/reason to accompany the rejection.
+    defaultValue: None
+    types:
+    - <xref:bytes>
+    - <xref:str>
+  - name: info
+    description: Information about the error condition.
+    defaultValue: None
+    types:
+    - <xref:dict>
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TypeError if the message is being sent rather than received.
+- uid: uamqp.message.BatchMessage.release
+  name: release
+  summary: 'Send a response disposition to the service to indicate that
+
+    a received message has been released. If the client is running in PeekLock
+
+    mode, the service will wait on this disposition. Otherwise it will
+
+    be ignored. A released message will not incremenet the messages
+
+    delivery count. Returns *True* is message was released, or *False* if the message
+
+    was already settled.'
+  signature: release()
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TypeError if the message is being sent rather than received.
 attributes:
+- uid: uamqp.message.BatchMessage.annotations
+  name: annotations
+- uid: uamqp.message.BatchMessage.application_properties
+  name: application_properties
 - uid: uamqp.message.BatchMessage.data
   name: data
   summary: "Returns an iterable source of data, where each value will be considered\
@@ -126,6 +292,34 @@ attributes:
   return:
     types:
     - <xref:iterable>
+- uid: uamqp.message.BatchMessage.delivery_annotations
+  name: delivery_annotations
+- uid: uamqp.message.BatchMessage.footer
+  name: footer
+- uid: uamqp.message.BatchMessage.header
+  name: header
+- uid: uamqp.message.BatchMessage.message_annotations
+  name: message_annotations
+- uid: uamqp.message.BatchMessage.properties
+  name: properties
+- uid: uamqp.message.BatchMessage.sequence
+  name: sequence
+- uid: uamqp.message.BatchMessage.settled
+  name: settled
+  summary: 'Whether the message transaction for this message has been completed.
+
+    If this message is to be sent, the message will be *settled=True* once a
+
+    disposition has been received from the service.
+
+    If this message has been received, the message will be *settled=True* once
+
+    a disposition has been sent to the service.'
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.message.BatchMessage.value
+  name: value
 - uid: uamqp.message.BatchMessage.batch_format
   name: batch_format
   signature: batch_format = 2147563264
