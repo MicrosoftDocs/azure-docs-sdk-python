@@ -3,12 +3,12 @@ title: Azure Authorization SDK for Python
 description: Reference for Azure Authorization SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 04/27/2023
+ms.data: 04/28/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: authorization
-ms.date: 03/30/2023
 keywords: Azure, python, SDK, API, Authorization
+ms.date: 03/30/2023
 ms.technology: azure
 manager: routlaw
 ---
