@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 03/20/2023
+ms.date: 05/04/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -55,8 +55,9 @@ client = MonitorManagementClient(credential=DefaultAzureCredential(), subscripti
 
 ## Examples
 
-
-Code samples for this package can be found at [Monitor](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Monitor](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
