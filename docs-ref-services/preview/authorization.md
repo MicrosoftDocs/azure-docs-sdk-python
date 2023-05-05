@@ -7,10 +7,10 @@ ms.data: 05/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: authorization
-ms.technology: azure
-manager: routlaw
-ms.date: 03/30/2023
 keywords: Azure, python, SDK, API, Authorization
+ms.technology: azure
+ms.date: 03/30/2023
+manager: routlaw
 ---
 # Azure Authorization libraries for python
 

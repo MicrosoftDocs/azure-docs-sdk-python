@@ -8,8 +8,8 @@ ms.topic: reference
 ms.devlang: python
 ms.service: mediaservices
 keywords: Azure, python, SDK, API, Media Services
-manager: douge
 ms.prod: azure
+manager: douge
 ms.date: 03/30/2023
 ms.technology: azure
 ---
