@@ -1,9 +1,9 @@
 ---
-title: Azure Defender Easm SDK for Python
-description: Reference for Azure Defender Easm SDK for Python
+title: Azure Defender EASM SDK for Python
+description: Reference for Azure Defender EASM SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 05/05/2023
+ms.data: 05/08/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: defendereasm
