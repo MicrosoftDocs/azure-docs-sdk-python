@@ -29,7 +29,7 @@ constructor:
     types:
     - <xref:azure.core.credentials.TokenCredential>
   - name: endpoint
-    description: The endpoint to connect to. Defaults to '[https://api.loganalytics.io](https://api.loganalytics.io)'.
+    description: The endpoint to connect to. Defaults to '[https://api.loganalytics.io/v1](https://api.loganalytics.io/v1)'.
     types:
     - <xref:Optional>[<xref:str>]
 methods:
@@ -45,7 +45,7 @@ methods:
     \ Log Queries.<!--[!code-python[Main](les\\sample_batch_query.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    176\\\\azure-monitor-query-1.1.1\\\\samples\\\\sample_batch_query.py\", \"xml:space\"\
+    176\\\\azure-monitor-query-1.2.0\\\\samples\\\\sample_batch_query.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   requests =\
     \ [\n       LogsBatchQuery(\n           query=\"AzureActivity | summarize count()\"\
@@ -87,6 +87,91 @@ methods:
       The status of each response can be checked using *LogsQueryStatus* enum.'
     types:
     - <xref:list>[<xref:Union>[<xref:azure.monitor.query.LogsQueryResult>, <xref:azure.monitor.query.LogsQueryPartialResult,azure.monitor.query.LogsQueryError>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.monitor.query.LogsQueryClient.query_resource
+  name: query_resource
+  summary: "Execute a Kusto query on a resource.\n\nReturns all the Azure Monitor\
+    \ logs matching the given Kusto query for an Azure resource.\n\nGet a response\
+    \ for a single query on a resource's logs.<!--[!code-python[Main](les\\sample_resource_logs_query.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\176\\\\azure-monitor-query-1.2.0\\\\samples\\\\sample_resource_logs_query.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n   import pandas as pd\n   from datetime import timedelta\n  \
+    \ from azure.core.exceptions import HttpResponseError\n   from azure.identity\
+    \ import DefaultAzureCredential\n   from azure.monitor.query import LogsQueryClient,\
+    \ LogsQueryStatus\n\n\n   credential  = DefaultAzureCredential()\n   client =\
+    \ LogsQueryClient(credential)\n\n   query = \"\"\"AzureActivity | take 5\"\"\"\
+    \n\n   try:\n       response = client.query_resource(os.environ['LOGS_RESOURCE_ID'],\
+    \ query, timespan=timedelta(days=1))\n       if response.status == LogsQueryStatus.PARTIAL:\n\
+    \           error = response.partial_error\n           data = response.partial_data\n\
+    \           print(error)\n       elif response.status == LogsQueryStatus.SUCCESS:\n\
+    \           data = response.tables\n       for table in data:\n           df =\
+    \ pd.DataFrame(data=table.rows, columns=table.columns)\n           print(df)\n\
+    \   except HttpResponseError as err:\n       print(\"something fatal happened\"\
+    )\n       print(err)\n\n\n   ````"
+  signature: 'query_resource(resource_id: str, query: str, *, timespan: timedelta
+    | Tuple[datetime, timedelta] | Tuple[datetime, datetime] | None, **kwargs: Any)
+    -> LogsQueryResult | LogsQueryPartialResult'
+  parameters:
+  - name: resource_id
+    description: 'The identifier of the resource. The expected format is
+
+      ''/subscriptions/<sid>/resourceGroups/<rg>/providers/<providerName>/<resourceType>/<resourceName>''.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: query
+    description: The Kusto query. Learn more about the [Kusto query syntax](https://docs.microsoft.com/azure/data-explorer/kusto/query/).
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timespan
+    description: 'Required. The timespan for which to query the data. This can be
+      a timedelta,
+
+      a timedelta and a start datetime, or a start datetime/end datetime. Set to None
+      to not constrain
+
+      the query to a timespan.'
+    types:
+    - <xref:datetime.timedelta>
+    - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.timedelta>]
+    - <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.datetime>]
+    - <xref:None>
+  - name: server_timeout
+    description: 'the server timeout in seconds. The default timeout is 3 minutes,
+
+      and the maximum timeout is 10 minutes.'
+    types:
+    - <xref:int>
+  - name: include_statistics
+    description: To get information about query statistics.
+    types:
+    - <xref:bool>
+  - name: include_visualization
+    description: 'In the query language, it is possible to specify different
+
+      visualization options. By default, the API does not return information regarding
+      the type of
+
+      visualization to show. If your client requires this information, specify the
+      preference.'
+    types:
+    - <xref:bool>
+  - name: additional_workspaces
+    description: 'A list of workspaces that are included in the query.
+
+      These can be qualified workspace names, workspace IDs, or Azure resource IDs.'
+    types:
+    - <xref:Optional>[<xref:list>[<xref:str>]]
+  return:
+    description: LogsQueryResult if there is a success or LogsQueryPartialResult when
+      there is a partial success.
+    types:
+    - <xref:Union>[<xref:azure.monitor.query.LogsQueryResult>, <xref:azure.monitor.query.LogsQueryPartialResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.monitor.query.LogsQueryClient.query_workspace
@@ -142,13 +227,13 @@ methods:
       the type of
 
       visualization to show. If your client requires this information, specify the
-      preference'
+      preference.'
     types:
     - <xref:bool>
   - name: additional_workspaces
     description: 'A list of workspaces that are included in the query.
 
-      These can be qualified workspace names, workspace Ids, or Azure resource Ids.'
+      These can be qualified workspace names, workspace IDs, or Azure resource IDs.'
     types:
     - <xref:Optional>[<xref:list>[<xref:str>]]
   return:
