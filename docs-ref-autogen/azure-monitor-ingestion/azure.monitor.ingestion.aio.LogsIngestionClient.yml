@@ -28,3 +28,93 @@ constructor:
       this default value may result in unsupported behavior.'
     types:
     - <xref:str>
+methods:
+- uid: azure.monitor.ingestion.aio.LogsIngestionClient.close
+  name: close
+  signature: async close() -> None
+- uid: azure.monitor.ingestion.aio.LogsIngestionClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
+- uid: azure.monitor.ingestion.aio.LogsIngestionClient.upload
+  name: upload
+  summary: 'Ingestion API used to directly ingest data using Data Collection Rules.
+
+
+    A list of logs is divided into chunks of 1MB or less, then each chunk is gzip-compressed
+    and uploaded.
+
+    If an I/O stream is passed in, the stream is uploaded as-is.'
+  signature: 'async upload(rule_id: str, stream_name: str, logs: List[MutableMapping[str,
+    Any]] | IO, *, on_error: Callable[[LogsUploadError], Awaitable[None]] | None =
+    None, **kwargs: Any) -> None'
+  parameters:
+  - name: rule_id
+    description: The immutable ID of the Data Collection Rule resource.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: stream
+    description: The streamDeclaration name as defined in the Data Collection Rule.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: logs
+    description: An array of objects matching the schema defined by the provided stream.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:JSON>]
+    - <xref:IO>
+  - name: on_error
+    description: 'The callback function that is called when a chunk of logs fails
+      to upload.
+
+      This function should expect one argument that corresponds to an "LogsUploadError"
+      object.
+
+      If no function is provided, then the first exception encountered will be raised.'
+    types:
+    - <xref:Optional>[<xref:Callable>[[<xref:azure.monitor.ingestion.LogsUploadError>],
+      <xref:None>]]
+  - name: stream_name
+    isRequired: true
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
