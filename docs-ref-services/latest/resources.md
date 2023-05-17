@@ -33,7 +33,7 @@ resource_client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATI
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/azure.mgmt.resource)
+> [Explore the Management APIs](/python/api/overview/azure/azure-mgmt-resource)
 
 ## Samples
 [Manage Azure resources and resource groups](https://github.com/Azure-Samples/resource-manager-python-resources-and-groups)
