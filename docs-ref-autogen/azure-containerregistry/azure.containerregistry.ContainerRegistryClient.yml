@@ -8,7 +8,8 @@ inheritances:
 summary: Create a ContainerRegistryClient from an ACR endpoint and a credential.
 constructor:
   syntax: 'ContainerRegistryClient(endpoint: str, credential: TokenCredential | None
-    = None, **kwargs: Any)'
+    = None, *, api_version: str | None = None, audience: str = ''https://containerregistry.azure.net'',
+    **kwargs)'
   parameters:
   - name: endpoint
     description: An ACR endpoint.
@@ -16,10 +17,12 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: The credential with which to authenticate.
+    description: The credential with which to authenticate. This should be None in
+      anonymous access.
     defaultValue: None
     types:
     - <xref:azure.core.credentials.TokenCredential>
+    - <xref:None>
   - name: api_version
     description: 'API Version. The default value is "2021-07-01". Note that overriding
       this default value
@@ -31,23 +34,47 @@ constructor:
     description: 'URL to use for credential authentication with AAD. Its value could
       be
 
-      "[https://management.azure.com](https://management.azure.com)", "[https://management.chinacloudapi.cn](https://management.chinacloudapi.cn)",
-      "[https://management.microsoftazure.de](https://management.microsoftazure.de)"
+      "[https://management.azure.com](https://management.azure.com)", "[https://management.chinacloudapi.cn](https://management.chinacloudapi.cn)"
+      or
 
-      or "[https://management.usgovcloudapi.net](https://management.usgovcloudapi.net)".'
+      "[https://management.usgovcloudapi.net](https://management.usgovcloudapi.net)".
+      The default value is "[https://containerregistry.azure.net](https://containerregistry.azure.net)".'
     types:
     - <xref:str>
 examples:
 - "Instantiate an instance of *ContainerRegistryClient*<!--[!code-python[Main](les\\\
   sample_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
   \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-  \\1\\\\s\\\\dist_temp\\\\179\\\\azure-containerregistry-1.0.0\\\\samples\\\\sample_hello_world.py\"\
+  \\1\\\\s\\\\dist_temp\\\\179\\\\azure-containerregistry-1.1.0\\\\samples\\\\sample_hello_world.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   audience = \"\
-  https://management.azure.com\"\n   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"\
-  ]    \n\n   with ContainerRegistryClient(endpoint, DefaultAzureCredential(), audience=audience)\
-  \ as client:\n\n   ````\n"
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   with ContainerRegistryClient(self.endpoint,\
+  \ self.credential) as client:\n\n   ````\n"
 methods:
+- uid: azure.containerregistry.ContainerRegistryClient.delete_blob
+  name: delete_blob
+  summary: "Delete a blob. If the blob cannot be found or a response status code of\n\
+    404 is returned an error will not be raised.\n\nExample\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\"\
+    , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   from azure.containerregistry\
+    \ import ContainerRegistryClient\n   from azure.identity import DefaultAzureCredential\n\
+    \   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"]\n   client = ContainerRegistryClient(endpoint,\
+    \ DefaultAzureCredential(), audience=\"my_audience\")\n   client.delete_blob(\"\
+    my_repository\", \"my_digest\")\n   ````"
+  signature: 'delete_blob(repository: str, digest: str, **kwargs) -> None'
+  parameters:
+  - name: repository
+    description: Name of the repository the manifest belongs to
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: digest
+    description: Digest of the blob to be deleted
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
 - uid: azure.containerregistry.ContainerRegistryClient.delete_manifest
   name: delete_manifest
   summary: "Delete a manifest. If the manifest cannot be found or a response status\
@@ -59,8 +86,7 @@ methods:
     \   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"]\n   client = ContainerRegistryClient(endpoint,\
     \ DefaultAzureCredential(), audience=\"my_audience\")\n   client.delete_manifest(\"\
     my_repository\", \"my_tag_or_digest\")\n   ````"
-  signature: 'delete_manifest(repository: str, tag_or_digest: str, **kwargs: Any)
-    -> None'
+  signature: 'delete_manifest(repository: str, tag_or_digest: str, **kwargs) -> None'
   parameters:
   - name: repository
     description: Name of the repository the manifest belongs to
@@ -74,8 +100,6 @@ methods:
     - <xref:str>
   return:
     description: None
-    types:
-    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.containerregistry.ContainerRegistryClient.delete_repository
@@ -84,7 +108,7 @@ methods:
     code of
 
     404 is returned an error will not be raised.'
-  signature: 'delete_repository(repository: str, **kwargs: Any) -> None'
+  signature: 'delete_repository(repository: str, **kwargs) -> None'
   parameters:
   - name: repository
     description: The repository to delete
@@ -101,11 +125,11 @@ methods:
   - "Delete a repository from the *ContainerRegistryClient*<!--[!code-python[Main](les\\\
     sample_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\179\\\\azure-containerregistry-1.0.0\\\\samples\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\179\\\\azure-containerregistry-1.1.0\\\\samples\\\
     \\sample_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n               client.delete_repository(repository_name, tag.name)\n\
-    \n   ````\n"
+    \n````python\n\n               client.delete_repository(repository_name)\n\n \
+    \  ````\n"
 - uid: azure.containerregistry.ContainerRegistryClient.delete_tag
   name: delete_tag
   summary: "Delete a tag from a repository. If the tag cannot be found or a response\
@@ -118,7 +142,7 @@ methods:
     ]\n   client = ContainerRegistryClient(endpoint, DefaultAzureCredential(), audience=\"\
     my_audience\")\n   for tag in client.list_tag_properties(\"my_repository\"):\n\
     \       client.delete_tag(\"my_repository\", tag.name)\n   ````"
-  signature: 'delete_tag(repository: str, tag: str, **kwargs: Any) -> None'
+  signature: 'delete_tag(repository: str, tag: str, **kwargs) -> None'
   parameters:
   - name: repository
     description: Name of the repository the tag belongs to
@@ -136,6 +160,67 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.containerregistry.ContainerRegistryClient.download_blob
+  name: download_blob
+  summary: Download a blob that is part of an artifact to a stream.
+  signature: 'download_blob(repository: str, digest: str, **kwargs) -> DownloadBlobStream'
+  parameters:
+  - name: repository
+    description: Name of the repository.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: digest
+    description: The digest of the blob to download.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: DownloadBlobStream
+    types:
+    - <xref:azure.containerregistry.DownloadBlobStream>
+  exceptions:
+  - type: azure.containerregistry.DigestValidationError
+    description: If the content of retrieved blob digest does not match the requested
+      digest.
+  - type: ValueError
+    description: If the content-range header is missing or invalid in response.
+- uid: azure.containerregistry.ContainerRegistryClient.get_manifest
+  name: get_manifest
+  summary: Get the manifest for an artifact.
+  signature: 'get_manifest(repository: str, tag_or_digest: str, **kwargs) -> GetManifestResult'
+  parameters:
+  - name: repository
+    description: Name of the repository.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: tag_or_digest
+    description: 'The tag or digest of the manifest to get.
+
+      When digest is provided, will use this digest to compare with the one calculated
+      by the response payload.
+
+      When tag is provided, will use the digest in response headers to compare.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: GetManifestResult
+    types:
+    - <xref:azure.containerregistry.GetManifestResult>
+  exceptions:
+  - type: azure.containerregistry.DigestValidationError
+    description: 'If the content of retrieved manifest digest does not match the requested
+      digest, or
+
+      the server-computed digest does not match the client-computed digest when tag
+      is passing.'
+  - type: ValueError
+    description: 'If the content-length header is missing or invalid in response,
+      or the manifest size is
+
+      bigger than 4MB.'
 - uid: azure.containerregistry.ContainerRegistryClient.get_manifest_properties
   name: get_manifest_properties
   summary: "Get the properties of a registry artifact\n\nExample\n\n<!-- literal_block\
@@ -147,8 +232,8 @@ methods:
     \ DefaultAzureCredential(), audience=\"my_audience\")\n   for artifact in client.list_manifest_properties(\"\
     my_repository\"):\n       properties = client.get_manifest_properties(\"my_repository\"\
     , artifact.digest)\n   ````"
-  signature: 'get_manifest_properties(repository: str, tag_or_digest: str, **kwargs:
-    Any) -> ArtifactManifestProperties'
+  signature: 'get_manifest_properties(repository: str, tag_or_digest: str, **kwargs)
+    -> ArtifactManifestProperties'
   parameters:
   - name: repository
     description: Name of the repository
@@ -168,7 +253,7 @@ methods:
 - uid: azure.containerregistry.ContainerRegistryClient.get_repository_properties
   name: get_repository_properties
   summary: Get the properties of a repository
-  signature: 'get_repository_properties(repository: str, **kwargs: Any) -> RepositoryProperties'
+  signature: 'get_repository_properties(repository: str, **kwargs) -> RepositoryProperties'
   parameters:
   - name: repository
     description: Name of the repository
@@ -191,7 +276,7 @@ methods:
     \ DefaultAzureCredential(), audience=\"my_audience\")\n   for tag in client.list_tag_properties(\"\
     my_repository\"):\n       tag_properties = client.get_tag_properties(\"my_repository\"\
     , tag.name)\n   ````"
-  signature: 'get_tag_properties(repository: str, tag: str, **kwargs: Any) -> ArtifactTagProperties'
+  signature: 'get_tag_properties(repository: str, tag: str, **kwargs) -> ArtifactTagProperties'
   parameters:
   - name: repository
     description: Name of the repository
@@ -211,7 +296,7 @@ methods:
 - uid: azure.containerregistry.ContainerRegistryClient.list_manifest_properties
   name: list_manifest_properties
   summary: List the artifacts for a repository
-  signature: 'list_manifest_properties(repository: str, **kwargs: Any) -> ItemPaged[ArtifactManifestProperties]'
+  signature: 'list_manifest_properties(repository: str, **kwargs) -> ItemPaged[ArtifactManifestProperties]'
   parameters:
   - name: repository
     description: Name of the repository
@@ -236,7 +321,7 @@ methods:
 - uid: azure.containerregistry.ContainerRegistryClient.list_repository_names
   name: list_repository_names
   summary: List all repositories
-  signature: 'list_repository_names(**kwargs: Any) -> ItemPaged[str]'
+  signature: list_repository_names(**kwargs) -> ItemPaged[str]
   parameters:
   - name: results_per_page
     description: Number of repositories to return per page
@@ -252,13 +337,13 @@ methods:
   - "List repositories in a container registry account<!--[!code-python[Main](les\\\
     sample_delete_tags.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\179\\\\azure-containerregistry-1.0.0\\\\samples\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\179\\\\azure-containerregistry-1.1.0\\\\samples\\\
     \\sample_delete_tags.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n   audience = \"https://management.azure.com\"\n   endpoint =\
-    \ os.environ[\"CONTAINERREGISTRY_ENDPOINT\"]\n\n   with ContainerRegistryClient(endpoint,\
-    \ DefaultAzureCredential(), audience=audience) as client:\n       for repository\
-    \ in client.list_repository_names():\n           print(repository)\n\n   ````\n"
+    \n````python\n\n   with ContainerRegistryClient(self.endpoint, self.credential)\
+    \ as client:\n       # Iterate through all the repositories\n       for repository_name\
+    \ in client.list_repository_names():\n           print(repository_name)\n\n  \
+    \ ````\n"
 - uid: azure.containerregistry.ContainerRegistryClient.list_tag_properties
   name: list_tag_properties
   summary: "List the tags for a repository\n\nExample\n\n<!-- literal_block {\"ids\"\
@@ -270,7 +355,7 @@ methods:
     \ DefaultAzureCredential(), audience=\"my_audience\")\n   for tag in client.list_tag_properties(\"\
     my_repository\"):\n       tag_properties = client.get_tag_properties(\"my_repository\"\
     , tag.name)\n   ````"
-  signature: 'list_tag_properties(repository: str, **kwargs: Any) -> ItemPaged[ArtifactTagProperties]'
+  signature: 'list_tag_properties(repository: str, **kwargs) -> ItemPaged[ArtifactTagProperties]'
   parameters:
   - name: repository
     description: Name of the repository
@@ -292,152 +377,85 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.containerregistry.ArtifactTagProperties>]
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-- uid: azure.containerregistry.ContainerRegistryClient.update_manifest_properties
-  name: update_manifest_properties
-  summary: "Set the permission properties for a manifest.\n\nThe updatable properties\
-    \ include: *can_delete*, *can_list*, *can_read*, and *can_write*.\n\nExample\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   from azure.containerregistry import ContainerRegistryClient\n   from azure.identity\
-    \ import DefaultAzureCredential\n   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"\
-    ]\n   client = ContainerRegistryClient(endpoint, DefaultAzureCredential(), audience=\"\
-    my_audience\")\n   for artifact in client.list_manifest_properties(\"my_repository\"\
-    ):\n       received_properties = client.update_manifest_properties(\n        \
-    \   \"my_repository\",\n           artifact.digest,\n           can_delete=False,\n\
-    \           can_list=False,\n           can_read=False,\n           can_write=False,\n\
-    \       )\n   ````"
-  signature: update_manifest_properties(repository, tag_or_digest, properties, **kwargs)
+- uid: azure.containerregistry.ContainerRegistryClient.set_manifest
+  name: set_manifest
+  summary: Set a manifest for an artifact.
+  signature: 'set_manifest(repository: str, manifest: MutableMapping[str, Any] | IO[bytes],
+    *, tag: str | None = None, media_type: str = ''application/vnd.oci.image.manifest.v1+json'',
+    **kwargs) -> str'
   parameters:
   - name: repository
-    description: Repository the manifest belongs to.
+    description: Name of the repository
     isRequired: true
     types:
     - <xref:str>
-  - name: tag_or_digest
-    description: Tag or digest of the manifest.
+  - name: manifest
+    description: The manifest to set. It can be a JSON formatted dict or seekable
+      stream.
     isRequired: true
     types:
+    - <xref:dict>
+    - <xref:IO>
+  - name: tag
+    description: Tag of the manifest.
+    types:
     - <xref:str>
-  - name: properties
-    description: 'The property''s values to be set. This is a positional-only
+    - <xref:None>
+  - name: media_type
+    description: 'The media type of the manifest. If not specified, this value will
+      be set to
 
-      parameter. Please provide either this or individual keyword parameters.'
-    isRequired: true
+      a default value of "application/vnd.oci.image.manifest.v1+json". Note: the current
+      known media types are:
+
+      "application/vnd.oci.image.manifest.v1+json", and "application/vnd.docker.distribution.manifest.v2+json".'
     types:
-    - <xref:azure.containerregistry.ArtifactManifestProperties>
-  - name: can_delete
-    description: Delete permissions for a manifest.
-    types:
-    - <xref:bool>
-  - name: can_list
-    description: List permissions for a manifest.
-    types:
-    - <xref:bool>
-  - name: can_read
-    description: Read permissions for a manifest.
-    types:
-    - <xref:bool>
-  - name: can_write
-    description: Write permissions for a manifest.
-    types:
-    - <xref:bool>
+    - <xref:str>
   return:
+    description: The digest of the set manifest, calculated by the registry.
     types:
-    - <xref:azure.containerregistry.ArtifactManifestProperties>
+    - <xref:str>
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
+  - type: ValueError
+    description: If the parameter repository or manifest is None.
+  - type: azure.containerregistry.DigestValidationError
+    description: If the server-computed digest does not match the client-computed
+      digest.
+- uid: azure.containerregistry.ContainerRegistryClient.update_manifest_properties
+  name: update_manifest_properties
+  signature: 'update_manifest_properties(repository: str, tag_or_digest: str, properties:
+    ArtifactManifestProperties, **kwargs) -> ArtifactManifestProperties'
 - uid: azure.containerregistry.ContainerRegistryClient.update_repository_properties
   name: update_repository_properties
-  summary: 'Set the permission properties of a repository.
-
-
-    The updatable properties include: *can_delete*, *can_list*, *can_read*, and *can_write*.'
-  signature: update_repository_properties(repository, properties, **kwargs)
+  signature: 'update_repository_properties(repository: str, properties: RepositoryProperties,
+    **kwargs) -> RepositoryProperties'
+- uid: azure.containerregistry.ContainerRegistryClient.update_tag_properties
+  name: update_tag_properties
+  signature: 'update_tag_properties(repository: str, tag: str, properties: ArtifactTagProperties,
+    **kwargs) -> ArtifactTagProperties'
+- uid: azure.containerregistry.ContainerRegistryClient.upload_blob
+  name: upload_blob
+  summary: Upload an artifact blob.
+  signature: 'upload_blob(repository: str, data: IO[bytes], **kwargs) -> Tuple[str,
+    int]'
   parameters:
   - name: repository
     description: Name of the repository.
     isRequired: true
     types:
     - <xref:str>
-  - name: properties
-    description: 'Properties to set for the repository. This is a positional-only
-
-      parameter. Please provide either this or individual keyword parameters.'
+  - name: data
+    description: 'The blob to upload. Note: This must be a seekable stream.'
     isRequired: true
     types:
-    - <xref:azure.containerregistry.RepositoryProperties>
-  - name: can_delete
-    description: Delete permissions for a repository.
-    types:
-    - <xref:bool>
-  - name: can_list
-    description: List permissions for a repository.
-    types:
-    - <xref:bool>
-  - name: can_read
-    description: Read permissions for a repository.
-    types:
-    - <xref:bool>
-  - name: can_write
-    description: Write permissions for a repository.
-    types:
-    - <xref:bool>
+    - <xref:IO>
   return:
+    description: The digest and size in bytes of the uploaded blob.
     types:
-    - <xref:azure.containerregistry.RepositoryProperties>
+    - <xref:Tuple>[<xref:str>, <xref:int>]
   exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
-- uid: azure.containerregistry.ContainerRegistryClient.update_tag_properties
-  name: update_tag_properties
-  summary: "Set the permission properties for a tag.\n\nThe updatable properties include:\
-    \ *can_delete*, *can_list*, *can_read*, and *can_write*.\n\nExample\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\"\
-    , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   from azure.containerregistry\
-    \ import ContainerRegistryClient\n   from azure.identity import DefaultAzureCredential\n\
-    \   endpoint = os.environ[\"CONTAINERREGISTRY_ENDPOINT\"]\n   client = ContainerRegistryClient(endpoint,\
-    \ DefaultAzureCredential(), audience=\"my_audience\")\n   tag_identifier = \"\
-    latest\"\n   received = client.update_tag_properties(\n       \"my_repository\"\
-    ,\n       tag_identifier,\n       can_delete=False,\n       can_list=False,\n\
-    \       can_read=False,\n       can_write=False,\n   )\n   ````"
-  signature: update_tag_properties(repository, tag, properties, **kwargs)
-  parameters:
-  - name: repository
-    description: Repository the tag belongs to.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: tag
-    description: Tag to set properties for.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: properties
-    description: 'The property''s values to be set. This is a positional-only
-
-      parameter. Please provide either this or individual keyword parameters.'
-    isRequired: true
-    types:
-    - <xref:azure.containerregistry.ArtifactTagProperties>
-  - name: can_delete
-    description: Delete permissions for a tag.
-    types:
-    - <xref:bool>
-  - name: can_list
-    description: List permissions for a tag.
-    types:
-    - <xref:bool>
-  - name: can_read
-    description: Read permissions for a tag.
-    types:
-    - <xref:bool>
-  - name: can_write
-    description: Write permissions for a tag.
-    types:
-    - <xref:bool>
-  return:
-    types:
-    - <xref:azure.containerregistry.ArtifactTagProperties>
-  exceptions:
-  - type: azure.core.exceptions.ResourceNotFoundError
+  - type: ValueError
+    description: If the parameter repository or data is None.
+  - type: azure.containerregistry.DigestValidationError
+    description: If the server-computed digest does not match the client-computed
+      digest.

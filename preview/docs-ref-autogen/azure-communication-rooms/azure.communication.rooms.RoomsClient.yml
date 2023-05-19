@@ -5,53 +5,66 @@ fullName: azure.communication.rooms.RoomsClient
 module: azure.communication.rooms
 inheritances:
 - builtins.object
-summary: 'A client to interact with the AzureCommunicationService Rooms gateway.
-
-
-  This client provides operations to manage rooms.'
+summary: "A client to interact with the AzureCommunicationService Rooms gateway.\n\
+  \nThis client provides operations to manage rooms.\n\nThis client provides operations\
+  \ to manage rooms.\n\nparam Union[TokenCredential, AzureKeyCredential] credential:\n\
+  \   The access key we use to authenticate against the service."
 constructor:
-  syntax: 'RoomsClient(endpoint: str, credential: AzureKeyCredential, **kwargs)'
+  syntax: 'RoomsClient(endpoint: str, credential: TokenCredential | AzureKeyCredential,
+    **kwargs)'
   parameters:
   - name: endpoint
     description: The endpoint url for Azure Communication Service resource.
     isRequired: true
     types:
     - <xref:str>
-  - name: credential
-    description: The access key we use to authenticate against the service.
-    isRequired: true
-    types:
-    - <xref:azure.core.credentials.AzureKeyCredential>
-methods:
-- uid: azure.communication.rooms.RoomsClient.add_participants
-  name: add_participants
-  summary: 'Add participants to a room. Maximum room size is 350 participants. Adding
-    more participants
+  - name: api_version
+    description: 'Azure Communication Rooms API version.
 
-    will result in exceptions. Existing participants cannot be added again.'
-  signature: 'add_participants(*, room_id: str, participants: List[RoomParticipant],
-    **kwargs) -> None'
-  parameters:
-  - name: room_id
-    description: Required. Id of room to be updated
-    isRequired: true
+      Default value is "2023-03-31-preview".
+
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
-  - name: participants
-    description: Required. Collection of identities invited to the room.
-    isRequired: true
-    types:
-    - <xref:List>[<xref:azure.communication.rooms.RoomParticipant>]
-  return:
-    description: None
-  exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  - name: credential
+methods:
+- uid: azure.communication.rooms.RoomsClient.add_or_update_participants
+  name: add_or_update_participants
+  summary: 'Update participants to a room. It looks for the room participants based
+    on their
+
+    communication identifier and replace the existing participants with the value
+    passed in
+
+    this API.
+
+    :param room_id: Required. Id of room to be updated
+
+    :type room_id: str
+
+    :param participants: Required. Collection of identities invited to be updated
+
+    :type participants: List[~azure.communication.rooms.RoomParticipant]
+
+    :returns: None.
+
+    :rtype: None
+
+    :raises: ~azure.core.exceptions.HttpResponseError, ValueError'
+  signature: 'add_or_update_participants(*, room_id: str, participants: List[RoomParticipant],
+    **kwargs) -> None'
+- uid: azure.communication.rooms.RoomsClient.close
+  name: close
+  summary: 'Close the :class:
+
+    *~azure.communication.rooms.RoomsClient* session.'
+  signature: close() -> None
 - uid: azure.communication.rooms.RoomsClient.create_room
   name: create_room
   summary: Create a new room.
   signature: 'create_room(*, valid_from: datetime | None = None, valid_until: datetime
-    | None = None, room_join_policy: RoomJoinPolicy | None = None, participants: List[RoomParticipant]
-    | None = None, **kwargs) -> CommunicationRoom'
+    | None = None, participants: List[RoomParticipant] | None = None, **kwargs) ->
+    CommunicationRoom'
   parameters:
   - name: valid_from
     description: The timestamp from when the room is open for joining. Optional.
@@ -63,11 +76,6 @@ methods:
     isRequired: true
     types:
     - <xref:datetime.datetime>
-  - name: room_join_policy
-    description: The join policy of the room. Optional.
-    isRequired: true
-    types:
-    - <xref:azure.communication.rooms.models.RoomJoinPolicy>
   - name: participants
     description: Collection of identities invited to the room. Optional.
     isRequired: true
@@ -109,20 +117,6 @@ methods:
     description: Instance of RoomsClient.
     types:
     - <xref:azure.communication.room.RoomsClient>
-- uid: azure.communication.rooms.RoomsClient.get_participants
-  name: get_participants
-  summary: 'Get participants of a room
-
-    :param room_id: Required. Id of room whose participants to be fetched.
-
-    :type room_id: str
-
-    :returns: ParticipantsCollection containing all participants in the room.
-
-    :rtype: ~azure.communication.rooms.ParticipantsCollection
-
-    :raises: ~azure.core.exceptions.HttpResponseError'
-  signature: 'get_participants(room_id: str, **kwargs) -> ParticipantsCollection'
 - uid: azure.communication.rooms.RoomsClient.get_room
   name: get_room
   summary: Get a valid room
@@ -139,81 +133,58 @@ methods:
     - <xref:azure.communication.rooms.CommunicationRoom>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.rooms.RoomsClient.list_participants
+  name: list_participants
+  summary: 'Get participants of a room
+
+    :param room_id: Required. Id of room whose participants to be fetched.
+
+    :type room_id: str
+
+    :returns: An iterator like instance of RoomParticipant.
+
+    :rtype: ~azure.core.paging.ItemPaged[~azure.communication.rooms.RoomParticipant]
+
+    :raises: ~azure.core.exceptions.HttpResponseError'
+  signature: 'list_participants(room_id: str, **kwargs) -> ItemPaged[RoomParticipant]'
+- uid: azure.communication.rooms.RoomsClient.list_rooms
+  name: list_rooms
+  summary: List all rooms
+  signature: list_rooms(**kwargs) -> ItemPaged[CommunicationRoom]
+  return:
+    description: An iterator like instance of CommunicationRoom.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.rooms.CommunicationRoom>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.rooms.RoomsClient.remove_participants
   name: remove_participants
-  summary: 'Remove participants from a room
-
-    :param room_id: Required. Id of room to be updated
-
-    :type room_id: str
-
-    :param communication_identifiers: Required. Collection of identities to be removed
-    from the room.
-
-    :type communication_identifiers: List[~azure.communication.rooms._shared.models.CommunicationIdentifier]
-
-    :return: None
-
-    :raises: ~azure.core.exceptions.HttpResponseError, ValueError'
-  signature: 'remove_participants(*, room_id: str, communication_identifiers: List[CommunicationIdentifier],
-    **kwargs) -> None'
-- uid: azure.communication.rooms.RoomsClient.update_participants
-  name: update_participants
-  summary: 'Update participants to a room. It looks for the room participants based
-    on their
-
-    communication identifier and replace the existing participants with the value
-    passed in
-
-    this API.
-
-    :param room_id: Required. Id of room to be updated
-
-    :type room_id: str
-
-    :param participants: Required. Collection of identities invited to be updated
-
-    :type participants: List[~azure.communication.rooms.RoomParticipant]
-
-    :return: None
-
-    :raises: ~azure.core.exceptions.HttpResponseError, ValueError'
-  signature: 'update_participants(*, room_id: str, participants: List[RoomParticipant],
-    **kwargs) -> None'
+  summary: "Remove participants from a room\n:param room_id: Required. Id of room\
+    \ to be updated\n:type room_id: str\n:param participants: Required. Collection\
+    \ of identities to be removed from the room.\n:type participants:\n\n   List[Union[~azure.communication.rooms.RoomParticipant,\
+    \ ~azure.communication.rooms.CommunicationIdentifier]]"
+  signature: 'remove_participants(*, room_id: str, participants: List[RoomParticipant
+    | CommunicationIdentifier], **kwargs) -> None'
+  return:
+    description: None.
+    types:
+    - <xref:None>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
 - uid: azure.communication.rooms.RoomsClient.update_room
   name: update_room
   summary: 'Update a valid room''s attributes. For any argument that is passed
 
     in, the corresponding room property will be replaced with the new value.'
-  signature: 'update_room(*, room_id: str, valid_from: datetime | None = None, valid_until:
-    datetime | None = None, room_join_policy: RoomJoinPolicy | None = None, participants:
-    List[RoomParticipant] | None = None, **kwargs) -> CommunicationRoom'
+  signature: 'update_room(*, room_id: str, valid_from: datetime, valid_until: datetime,
+    **kwargs: Any) -> CommunicationRoom'
   parameters:
   - name: room_id
     description: Required. Id of room to be updated
-    isRequired: true
-    types:
-    - <xref:str>
   - name: valid_from
-    description: The timestamp from when the room is open for joining.Optional
-    isRequired: true
-    types:
-    - <xref:datetime.datetime>
+    description: Required. The timestamp from when the room is open for joining.
   - name: valid_until
-    description: The timestamp from when the room can no longer be joined. Optional.
-    isRequired: true
-    types:
-    - <xref:datetime.datetime>
-  - name: room_join_policy
-    description: The join policy of the room.Optional.
-    isRequired: true
-    types:
-    - <xref:azure.communication.rooms.models.RoomJoinPolicy>
-  - name: participants
-    description: Collection of identities invited to the room. Optional.
-    isRequired: true
-    types:
-    - <xref:List>[<xref:azure.communication.rooms.RoomParticipant>]
+    description: Required. The timestamp from when the room can no longer be joined.
   return:
     description: Updated room.
     types:
