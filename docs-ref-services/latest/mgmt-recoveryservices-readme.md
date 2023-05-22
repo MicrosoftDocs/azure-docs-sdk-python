@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservices, recoveryservices
 author: DheerendraRathor
 ms.author: DheerendraRathor
-ms.date: 02/16/2023
+ms.date: 05/22/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservices
@@ -55,8 +55,9 @@ client = RecoveryServicesClient(credential=DefaultAzureCredential(), subscriptio
 
 ## Examples
 
-
-Code samples for this package can be found at [Recovery Services](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Recovery Services](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
