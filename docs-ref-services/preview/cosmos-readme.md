@@ -3,7 +3,7 @@ title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, cosmos
 author: kushagraThapar
 ms.author: kuthapar
-ms.date: 04/12/2023
+ms.date: 05/22/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
@@ -11,7 +11,7 @@ ms.service: cosmos
 ## _Disclaimer_
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Azure Cosmos DB SQL API client library for Python - version 4.4.0b1 
+# Azure Cosmos DB SQL API client library for Python - version 4.4.0b2 
 
 
 Azure Cosmos DB is a globally distributed, multi-model database service that supports document, key-value, wide-column, and graph databases.
@@ -36,7 +36,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.4.0b1/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -675,6 +675,17 @@ client = CosmosClient(URL, credential=KEY, enable_diagnostics_logging=True)
 database = client.create_database(DATABASE_NAME, logger=logger)
 ```
 
+### Telemetry
+Azure Core provides the ability for our Python SDKs to use OpenTelemetry with them. The only packages that need to be installed
+to use this functionality are the following:
+```bash
+pip install azure-core-tracing-opentelemetry
+pip install opentelemetry-sdk
+```
+For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.4.0b2/sdk/core/azure-core-tracing-opentelemetry/README.md) 
+from Azure Core describing how to set it up. We have also added a [sample file][telemetry_sample] to show how it can
+be used with our SDK. This works the same way regardless of the Cosmos client you are using.
+
 ## Next steps
 
 For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos DB documentation][cosmos_docs] on docs.microsoft.com.
@@ -689,7 +700,7 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: /azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: /azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: /azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b1/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: /rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: /azure/cosmos-db/databases-containers-items#azure-cosmos-items
@@ -709,12 +720,13 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b1/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b1/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b1/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b1/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
+[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.4.0b2/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
 
 ## Contributing
 
