@@ -8,6 +8,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: unknownservice
 ---
-# Azure Unknown Service SDK for Python - preview
-## Packages - preview
+# Azure Unknown Service SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](unknown-service-index.md)]
