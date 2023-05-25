@@ -1,7 +1,6 @@
 | Reference | Package | Source |
 |---|---|---|
 |[Anomaly Detector](ai-anomalydetector-readme.md)|[azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector)|
-|[Content Safety](ai-contentsafety-readme.md)|[azure-ai-contentsafety](https://pypi.org/project/azure-ai-contentsafety)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentsafety/azure-ai-contentsafety)|
 |[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
 |[Conversational Language Understanding](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
 |[Question Answering](ai-language-questionanswering-readme.md)|[azure-ai-language-questionanswering](https://pypi.org/project/azure-ai-language-questionanswering)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-questionanswering)|

@@ -1,11 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[Unknown Display Name](ai-translation-text-readme.md)|[azure-ai-translation-text](https://pypi.org/project/azure-ai-translation-text)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-text)|
-|[Unknown Display Name](healthinsights-cancerprofiling-readme.md)|[azure-healthinsights-cancerprofiling](https://pypi.org/project/azure-healthinsights-cancerprofiling)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthinsights/azure-healthinsights-cancerprofiling)|
-|[Unknown Display Name](healthinsights-clinicalmatching-readme.md)|[azure-healthinsights-clinicalmatching](https://pypi.org/project/azure-healthinsights-clinicalmatching)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthinsights/azure-healthinsights-clinicalmatching)|
 |[Unknown Display Name](messaging-webpubsubclient-readme.md)|[azure-messaging-webpubsubclient](https://pypi.org/project/azure-messaging-webpubsubclient)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/webpubsub/azure-messaging-webpubsubclient)|
-|[Unknown Display Name](mgmt-devhub-readme.md)|[azure-mgmt-devhub](https://pypi.org/project/azure-mgmt-devhub)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/devhub/azure-mgmt-devhub)|
-|[Unknown Display Name](mgmt-networkcloud-readme.md)|[azure-mgmt-networkcloud](https://pypi.org/project/azure-mgmt-networkcloud)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/networkcloud/azure-mgmt-networkcloud)|
-|[Unknown Display Name](mgmt-paloaltonetworksngfw-readme.md)|[azure-mgmt-paloaltonetworksngfw](https://pypi.org/project/azure-mgmt-paloaltonetworksngfw)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/paloaltonetworks/azure-mgmt-paloaltonetworksngfw)|
-|[Unknown Display Name](mgmt-qumulo-readme.md)|[azure-mgmt-qumulo](https://pypi.org/project/azure-mgmt-qumulo)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/qumulo/azure-mgmt-qumulo)|
-|[Unknown Display Name](mgmt-selfhelp-readme.md)|[azure-mgmt-selfhelp](https://pypi.org/project/azure-mgmt-selfhelp)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/selfhelp/azure-mgmt-selfhelp)|
