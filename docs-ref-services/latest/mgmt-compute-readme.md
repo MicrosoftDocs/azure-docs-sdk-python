@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
 author: lmazuel
 ms.author: lmazuel
-ms.date: 01/18/2023
+ms.date: 05/25/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
@@ -55,8 +55,9 @@ client = ComputeManagementClient(credential=DefaultAzureCredential(), subscripti
 
 ## Examples
 
-
-Code samples for this package can be found at [Compute Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Compute Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
