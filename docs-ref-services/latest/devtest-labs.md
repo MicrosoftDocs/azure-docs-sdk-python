@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.data: 05/29/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: devtestlabs
+ms.service: devtest-lab
 ---
 # Azure DevTest Labs libraries for python
 
