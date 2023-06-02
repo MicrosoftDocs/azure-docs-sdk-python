@@ -3,7 +3,7 @@ title: Azure Selfhelp SDK for Python
 description: Reference for Azure Selfhelp SDK for Python
 author: lmazuel
 ms.author: lmazuel
-ms.data: 05/29/2023
+ms.data: 06/02/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: selfhelp
