@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.data: 05/29/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: devtestlabs
+ms.service: devtest-lab
 manager: routlaw
 ms.date: 03/30/2023
 ms.technology: azure
