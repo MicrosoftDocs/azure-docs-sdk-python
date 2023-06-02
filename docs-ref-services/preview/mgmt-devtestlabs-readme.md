@@ -6,7 +6,7 @@ ms.author: lmazuel
 ms.date: 10/31/2022
 ms.topic: reference
 ms.devlang: python
-ms.service: devtestlabs
+ms.service: devtest-lab
 ---
 # Microsoft Azure SDK for Python
 
