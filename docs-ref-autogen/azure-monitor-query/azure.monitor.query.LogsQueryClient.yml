@@ -39,33 +39,12 @@ methods:
   signature: close() -> None
 - uid: azure.monitor.query.LogsQueryClient.query_batch
   name: query_batch
-  summary: "Execute a list of Kusto queries. Each request can be either a LogsBatchQuery\n\
-    object or an equivalent serialized model.\n\n**NOTE**: The response is returned\
-    \ in the same order as that of the requests sent.\n\nGet a response for multiple\
-    \ Log Queries.<!--[!code-python[Main](les\\sample_batch_query.py )]-->\n\n<!--\
-    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
-    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-    176\\\\azure-monitor-query-1.2.0\\\\samples\\\\sample_batch_query.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   requests =\
-    \ [\n       LogsBatchQuery(\n           query=\"AzureActivity | summarize count()\"\
-    ,\n           timespan=timedelta(hours=1),\n           workspace_id= os.environ['LOGS_WORKSPACE_ID']\n\
-    \       ),\n       LogsBatchQuery(\n           query= \"\"\"bad query\"\"\",\n\
-    \           timespan=timedelta(days=1),\n           workspace_id= os.environ['LOGS_WORKSPACE_ID']\n\
-    \       ),\n       LogsBatchQuery(\n           query= \"\"\"let Weight = 92233720368547758;\n\
-    \           range x from 1 to 3 step 1\n           | summarize percentilesw(x,\
-    \ Weight * 100, 50)\"\"\",\n           workspace_id= os.environ['LOGS_WORKSPACE_ID'],\n\
-    \           timespan=(datetime(2021, 6, 2, tzinfo=timezone.utc), datetime(2021,\
-    \ 6, 5, tzinfo=timezone.utc)), # (start, end)\n           include_statistics=True\n\
-    \       ),\n   ]\n   results = client.query_batch(requests)\n\n   for res in results:\n\
-    \       if res.status == LogsQueryStatus.FAILURE:\n           # this will be a\
-    \ LogsQueryError\n           print(res)\n       elif res.status == LogsQueryStatus.PARTIAL:\n\
-    \           ## this will be a LogsQueryPartialResult\n           print(res.partial_error)\n\
-    \           for table in res.partial_data:\n               df = pd.DataFrame(table.rows,\
-    \ columns=table.columns)\n               print(df)\n       elif res.status ==\
-    \ LogsQueryStatus.SUCCESS:\n           ## this will be a LogsQueryResult\n   \
-    \        table = res.tables[0]\n           df = pd.DataFrame(table.rows, columns=table.columns)\n\
-    \           print(df)\n\n\n\n   ````"
+  summary: 'Execute a list of Kusto queries. Each request can be either a LogsBatchQuery
+
+    object or an equivalent serialized model.
+
+
+    **NOTE**: The response is returned in the same order as that of the requests sent.'
   signature: 'query_batch(queries: Sequence[Dict] | Sequence[LogsBatchQuery], **kwargs:
     Any) -> List[LogsQueryResult | LogsQueryError | LogsQueryPartialResult]'
   parameters:
@@ -91,27 +70,11 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.monitor.query.LogsQueryClient.query_resource
   name: query_resource
-  summary: "Execute a Kusto query on a resource.\n\nReturns all the Azure Monitor\
-    \ logs matching the given Kusto query for an Azure resource.\n\nGet a response\
-    \ for a single query on a resource's logs.<!--[!code-python[Main](les\\sample_resource_logs_query.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\176\\\\azure-monitor-query-1.2.0\\\\samples\\\\sample_resource_logs_query.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import os\n   import pandas as pd\n   from datetime import timedelta\n  \
-    \ from azure.core.exceptions import HttpResponseError\n   from azure.identity\
-    \ import DefaultAzureCredential\n   from azure.monitor.query import LogsQueryClient,\
-    \ LogsQueryStatus\n\n\n   credential  = DefaultAzureCredential()\n   client =\
-    \ LogsQueryClient(credential)\n\n   query = \"\"\"AzureActivity | take 5\"\"\"\
-    \n\n   try:\n       response = client.query_resource(os.environ['LOGS_RESOURCE_ID'],\
-    \ query, timespan=timedelta(days=1))\n       if response.status == LogsQueryStatus.PARTIAL:\n\
-    \           error = response.partial_error\n           data = response.partial_data\n\
-    \           print(error)\n       elif response.status == LogsQueryStatus.SUCCESS:\n\
-    \           data = response.tables\n       for table in data:\n           df =\
-    \ pd.DataFrame(data=table.rows, columns=table.columns)\n           print(df)\n\
-    \   except HttpResponseError as err:\n       print(\"something fatal happened\"\
-    )\n       print(err)\n\n\n   ````"
+  summary: 'Execute a Kusto query on a resource.
+
+
+    Returns all the Azure Monitor logs matching the given Kusto query for an Azure
+    resource.'
   signature: 'query_resource(resource_id: str, query: str, *, timespan: timedelta
     | Tuple[datetime, timedelta] | Tuple[datetime, datetime] | None, **kwargs: Any)
     -> LogsQueryResult | LogsQueryPartialResult'
