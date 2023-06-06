@@ -214,10 +214,357 @@ constructor:
   - name: loop
     defaultValue: None
 methods:
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.auth_complete
+  name: auth_complete
+  summary: 'Whether the authentication handshake is complete during
+
+    connection initialization.'
+  signature: auth_complete()
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.auth_complete_async
+  name: auth_complete_async
+  summary: 'Whether the authentication handshake is complete during
+
+    connection initialization.'
+  signature: async auth_complete_async()
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.client_ready
+  name: client_ready
+  summary: 'Whether the handler has completed all start up processes such as
+
+    establishing the connection, session, link and authentication, and
+
+    is not ready to process messages.'
+  signature: client_ready()
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.client_ready_async
+  name: client_ready_async
+  summary: 'Whether the handler has completed all start up processes such as
+
+    establishing the connection, session, link and authentication, and
+
+    is not ready to process messages.'
+  signature: async client_ready_async()
+  return:
+    types:
+    - <xref:bool>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.close
+  name: close
+  summary: 'Close the client. This includes closing the Session
+
+    and CBS authentication layer as well as the Connection.
+
+    If the client was opened using an external Connection,
+
+    this will be left intact.
+
+
+    No further messages can be sent or received and the client
+
+    cannot be re-opened.
+
+
+    All pending, unsent messages will remain uncleared to allow
+
+    them to be inspected and queued to a new client.'
+  signature: close()
 - uid: uamqp.async_ops.client_async.ReceiveClientAsync.close_async
   name: close_async
   summary: Asynchonously close the receive client.
   signature: async close_async()
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.do_work
+  name: do_work
+  summary: 'Run a single connection iteration.
+
+    This will return *True* if the connection is still open
+
+    and ready to be used for further work, or *False* if it needs
+
+    to be shut down.'
+  signature: do_work(**kwargs)
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TimeoutError or uamqp.errors.ClientTimeout if CBS authentication timeout
+      reached.
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.do_work_async
+  name: do_work_async
+  summary: 'Run a single connection iteration asynchronously.
+
+    This will return *True* if the connection is still open
+
+    and ready to be used for further work, or *False* if it needs
+
+    to be shut down.'
+  signature: async do_work_async(**kwargs)
+  return:
+    types:
+    - <xref:bool>
+  exceptions:
+  - type: TimeoutError or uamqp.errors.ClientTimeout if CBS authentication timeout
+      reached.
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.mgmt_request
+  name: mgmt_request
+  summary: 'Run a request/response operation. These are frequently used for management
+
+    tasks against a $management node, however any node name can be specified
+
+    and the available options will depend on the target service.'
+  signature: mgmt_request(message, operation, op_type=None, node=None, callback=None,
+    **kwargs)
+  parameters:
+  - name: message
+    description: The message to send in the management request.
+    isRequired: true
+    types:
+    - <xref:uamqp.message.Message>
+  - name: operation
+    description: 'The type of operation to be performed. This value will
+
+      be service-specific, but common values include READ, CREATE and UPDATE.
+
+      This value will be added as an application property on the message.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: op_type
+    description: 'The type on which to carry out the operation. This will
+
+      be specific to the entities of the service. This value will be added as
+
+      an application property on the message.'
+    defaultValue: None
+    types:
+    - <xref:bytes>
+  - name: node
+    description: The target node. Default is *b"$management"*.
+    defaultValue: None
+    types:
+    - <xref:bytes>
+  - name: timeout
+    description: 'Provide an optional timeout in milliseconds within which a response
+
+      to the management request must be received.'
+    isRequired: true
+    types:
+    - <xref:float>
+  - name: callback
+    description: 'The function to process the returned parameters of the management
+
+      request including status code and a description if available. This can be used
+
+      to reformat the response or raise an error based on content. The function must
+
+      take 3 arguments - status code, response message and description.'
+    defaultValue: None
+    types:
+    - <xref:callable>[<xref:int>, <xref:bytes>, <xref:uamqp.message.Message>]
+  - name: status_code_field
+    description: 'Provide an alternate name for the status code in the
+
+      response body which can vary between services due to the spec still being in
+      draft.
+
+      The default is *b"statusCode"*.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: description_fields
+    description: 'Provide an alternate name for the description in the
+
+      response body which can vary between services due to the spec still being in
+      draft.
+
+      The default is *b"statusDescription"*.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+  return:
+    types:
+    - <xref:uamqp.message.Message>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.mgmt_request_async
+  name: mgmt_request_async
+  summary: 'Run an asynchronous request/response operation. These are frequently used
+
+    for management tasks against a $management node, however any node name can be
+
+    specified and the available options will depend on the target service.'
+  signature: async mgmt_request_async(message, operation, op_type=None, node=None,
+    callback=None, **kwargs)
+  parameters:
+  - name: message
+    description: The message to send in the management request.
+    isRequired: true
+    types:
+    - <xref:uamqp.message.Message>
+  - name: operation
+    description: 'The type of operation to be performed. This value will
+
+      be service-specific, but common values include READ, CREATE and UPDATE.
+
+      This value will be added as an application property on the message.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+    - <xref:str>
+  - name: op_type
+    description: 'The type on which to carry out the operation. This will
+
+      be specific to the entities of the service. This value will be added as
+
+      an application property on the message.'
+    defaultValue: None
+    types:
+    - <xref:bytes>
+  - name: node
+    description: The target node. Default is *b"$management"*.
+    defaultValue: None
+    types:
+    - <xref:bytes>
+    - <xref:str>
+  - name: timeout
+    description: 'Provide an optional timeout in milliseconds within which a response
+
+      to the management request must be received.'
+    isRequired: true
+    types:
+    - <xref:float>
+  - name: callback
+    description: 'The function to process the returned parameters of the management
+
+      request including status code and a description if available. This can be used
+
+      to reformat the response or raise an error based on content. The function must
+
+      take 3 arguments - status code, response message and description.'
+    defaultValue: None
+    types:
+    - <xref:callable>[<xref:int>, <xref:bytes>, <xref:uamqp.message.Message>]
+  - name: status_code_field
+    description: 'Provide an alternate name for the status code in the
+
+      response body which can vary between services due to the spec still being in
+      draft.
+
+      The default is *b"statusCode"*.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+    - <xref:str>
+  - name: description_fields
+    description: 'Provide an alternate name for the description in the
+
+      response body which can vary between services due to the spec still being in
+      draft.
+
+      The default is *b"statusDescription"*.'
+    isRequired: true
+    types:
+    - <xref:bytes>
+    - <xref:str>
+  return:
+    types:
+    - <xref:uamqp.message.Message>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.open
+  name: open
+  summary: 'Open the client. The client can create a new Connection
+
+    or an existing Connection can be passed in. This existing Connection
+
+    may have an existing CBS authentication Session, which will be
+
+    used for this client as well. Otherwise a new Session will be
+
+    created.'
+  signature: open(connection=None)
+  parameters:
+  - name: connection
+    description: 'An existing Connection that may be shared between
+
+      multiple clients.'
+    defaultValue: None
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.open_async
+  name: open_async
+  summary: 'Asynchronously open the client. The client can create a new Connection
+
+    or an existing Connection can be passed in. This existing Connection
+
+    may have an existing CBS authentication Session, which will be
+
+    used for this client as well. Otherwise a new Session will be
+
+    created.'
+  signature: async open_async(connection=None)
+  parameters:
+  - name: connection
+    description: 'An existing Connection that may be shared between
+
+      multiple clients.'
+    defaultValue: None
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.receive_message_batch
+  name: receive_message_batch
+  summary: 'Receive a batch of messages. Messages returned in the batch have already
+    been
+
+    accepted - if you wish to add logic to accept or reject messages based on custom
+
+    criteria, pass in a callback. This method will return as soon as some messages
+    are
+
+    available rather than waiting to achieve a specific batch size, and therefore
+    the
+
+    number of messages returned per call will vary up to the maximum allowed.
+
+
+    If the receive client is configured with *auto_complete=True* then the messages
+    received
+
+    in the batch returned by this function will already be settled. Alternatively,
+    if
+
+    *auto_complete=False*, then each message will need to be explicitly settled before
+
+    it expires and is released.'
+  signature: receive_message_batch(max_batch_size=None, on_message_received=None,
+    timeout=0)
+  parameters:
+  - name: max_batch_size
+    description: 'The maximum number of messages that can be returned in
+
+      one call. This value cannot be larger than the prefetch value, and if not specified,
+
+      the prefetch value will be used.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: on_message_received
+    description: 'A callback to process messages as they arrive from the
+
+      service. It takes a single argument, a ~uamqp.message.Message object.'
+    defaultValue: None
+    types:
+    - <xref:callable>[<xref:uamqp.message.Message>]
+  - name: timeout
+    description: 'I timeout in milliseconds for which to wait to receive any messages.
+
+      If no messages are received in this time, an empty list will be returned. If
+      set to
+
+      0, the client will continue to wait until at least one message is received.
+      The
+
+      default is 0.'
+    defaultValue: '0'
+    types:
+    - <xref:float>
 - uid: uamqp.async_ops.client_async.ReceiveClientAsync.receive_message_batch_async
   name: receive_message_batch_async
   summary: 'Receive a batch of messages asynchronously. This method will return as
@@ -270,6 +617,34 @@ methods:
     defaultValue: '0'
     types:
     - <xref:float>
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.receive_messages
+  name: receive_messages
+  summary: 'Receive messages. This function will run indefinitely, until the client
+
+    closes either via timeout, error or forced interruption (e.g. keyboard interrupt).
+
+
+    If the receive client is configured with *auto_complete=True* then the messages
+    that
+
+    have not been settled on completion of the provided callback will automatically
+    be
+
+    accepted provided it has not expired. If an error occurs or the message has expired
+
+    it will be released. Alternatively if *auto_complete=False*, each message will
+    need
+
+    to be explicitly settled during the callback, otherwise it will be released.'
+  signature: receive_messages(on_message_received)
+  parameters:
+  - name: on_message_received
+    description: 'A callback to process messages as they arrive from the
+
+      service. It takes a single argument, a ~uamqp.message.Message object.'
+    isRequired: true
+    types:
+    - <xref:callable>[<xref:uamqp.message.Message>]
 - uid: uamqp.async_ops.client_async.ReceiveClientAsync.receive_messages_async
   name: receive_messages_async
   summary: 'Receive messages asynchronously. This function will run indefinitely,
@@ -298,6 +673,23 @@ methods:
 
       service. It takes a single argument, a ~uamqp.message.Message object.'
     isRequired: true
+    types:
+    - <xref:callable>[<xref:uamqp.message.Message>]
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.receive_messages_iter
+  name: receive_messages_iter
+  summary: 'Receive messages by generator. Messages returned in the generator have
+    already been
+
+    accepted - if you wish to add logic to accept or reject messages based on custom
+
+    criteria, pass in a callback.'
+  signature: receive_messages_iter(on_message_received=None)
+  parameters:
+  - name: on_message_received
+    description: 'A callback to process messages as they arrive from the
+
+      service. It takes a single argument, a ~uamqp.message.Message object.'
+    defaultValue: None
     types:
     - <xref:callable>[<xref:uamqp.message.Message>]
 - uid: uamqp.async_ops.client_async.ReceiveClientAsync.receive_messages_iter_async
@@ -331,6 +723,23 @@ methods:
   return:
     types:
     - <xref:Generator>[<xref:uamqp.message.Message>]
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.redirect
+  name: redirect
+  summary: 'Redirect the client endpoint using a Link DETACH redirect
+
+    response.'
+  signature: redirect(redirect, auth)
+  parameters:
+  - name: redirect
+    description: The Link DETACH redirect details.
+    isRequired: true
+    types:
+    - <xref:uamqp.errors.LinkRedirect>
+  - name: auth
+    description: Authentication credentials to the redirected endpoint.
+    isRequired: true
+    types:
+    - <xref:uamqp.authentication.common.AMQPAuth>
 - uid: uamqp.async_ops.client_async.ReceiveClientAsync.redirect_async
   name: redirect_async
   summary: 'Redirect the client endpoint using a Link DETACH redirect
@@ -348,3 +757,6 @@ methods:
     isRequired: true
     types:
     - <xref:uamqp.authentication.common.AMQPAuth>
+attributes:
+- uid: uamqp.async_ops.client_async.ReceiveClientAsync.loop
+  name: loop
