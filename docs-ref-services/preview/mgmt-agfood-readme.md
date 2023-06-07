@@ -1,21 +1,26 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-agfood, 
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 05/18/2021
+keywords: Azure, python, SDK, API, azure-mgmt-agfood, agfood
+author: lmazuel
+ms.author: lmazuel
+ms.date: 06/06/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: azure-farmbeats
+ms.service: agfood
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Agfood Management Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
+This package has been tested with Python 3.6+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
+## Deprecation notice
+
+This package reached the end of its life and is no longer supported as of 3/31/2023.
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Usage
 
@@ -24,8 +29,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Agfood Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](/python/api/overview/azure/)
+Code samples for this package can be found at [Agfood Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
