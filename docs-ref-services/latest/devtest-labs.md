@@ -10,7 +10,7 @@ ms.service: devtest-lab
 ---
 # Azure DevTest Labs libraries for python
 
-## [Management API](/python/api/overview/azure/devtest-labs/management)
+## Management API
 
 ```bash
 pip install azure-mgmt-devtestlabs
@@ -55,4 +55,4 @@ lab = async_lab.result() # Blocking wait
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/devtest-labs/management)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-devtestlabs-readme)
