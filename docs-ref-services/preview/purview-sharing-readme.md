@@ -3,12 +3,12 @@ title: Azure Purview Sharing client library for Python
 keywords: Azure, python, SDK, API, azure-purview-sharing, purview
 author: iscai-msft
 ms.author: iscai
-ms.date: 03/30/2023
+ms.date: 06/07/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview Sharing client library for Python - version 1.0.0b1 
+# Azure Purview Sharing client library for Python - version 1.0.0b2 
 
 
 Microsoft Purview Share is a fully managed cloud service.
@@ -54,7 +54,7 @@ client = PurviewSharingClient(endpoint="https://<my-account-name>.purview.azure.
 
 The following section shows you how to initialize and authenticate your client and share data.
 
-### Create sent share
+### Create share
 
 ```python Snippet:create_a_sent_share
 import os, uuid, json
@@ -89,7 +89,7 @@ artifact = {
 sent_share = {
     "properties": {
         "artifact": artifact,
-        "displayName": "sample=share",
+        "displayName": "sampleShare",
         "description": "A sample share"
     },
     "shareKind": "InPlace"
@@ -97,8 +97,7 @@ sent_share = {
 
 request = client.sent_shares.begin_create_or_replace(
     str(sent_share_id),
-    content_type="application/json",
-    content=json.dumps(sent_share))
+    sent_share=sent_share)
 
 response = request.result()
 print(response)
@@ -141,8 +140,8 @@ list_request = client.sent_shares.list(
     reference_name=provider_storage_account_resource_id,
     orderby="properties/createdAt desc")
 
-list_response = list_request.result()
-print(list_response)
+for list_response in list_request:
+    print(list_response)
 ```
 
 ### Create sent share invitation
@@ -176,7 +175,7 @@ invitation = {
 invitation_request = client.sent_shares.create_invitation(
     sent_share_id=str(sent_share_id),
     sent_share_invitation_id=str(sent_share_invitation_id),
-    sent_share_invitation=json.dumps(invitation))
+    sent_share_invitation=invitation)
 
 invitation_response = invitation_request.result()
 created_invitation = json.loads(invitation_response)
@@ -199,12 +198,12 @@ client = PurviewSharingClient(endpoint=endpoint, credential=credential)
 sent_share_id = uuid.uuid4()
 
 list_request = client.sent_shares.list_invitations(sent_share_id=str(sent_share_id))
-list_response = list_request.result()
-result_list = json.loads(list_response)
-print(result_list)
+
+for list_response in list_request:
+    print(list_response)
 ```
 
-### List detached received shares
+### List received shares
 
 ```python Snippet:get_all_detached_received_shares
 import os
@@ -221,7 +220,7 @@ list_detached_response = client.received_shares.list_detached(orderby="propertie
 print(list_detached_response)
 ```
 
-### Create a received share
+### Attach a received share
 
 ```python Snippet:attach_a_received_share
 import os, json
@@ -237,8 +236,7 @@ client = PurviewSharingClient(endpoint=endpoint,credential=credential)
 consumer_storage_account_resource_id = "/subscriptions/{subscription-id}/resourceGroups/consumer-storage-rg/providers/Microsoft.Storage/storageAccounts/consumerstorage"
 
 list_detached_response = client.received_shares.list_detached(orderby="properties/createdAt desc")
-list_detached = json.loads(list_detached_response)
-received_share = list_detached[0]
+received_share = next(x for x in list_detached_response)
 
 store_reference = {
     "referenceName": consumer_storage_account_resource_id,
@@ -288,7 +286,7 @@ retrieved_share = json.loads(get_share_response)
 print(retrieved_share)
 ```
 
-### List attached received shares
+### List attached shares
 
 ```python Snippet:list_attached_received_shares
 import os
@@ -405,7 +403,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b1/sdk/purview/azure-purview-sharing/azure/purview/sharing
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b2/sdk/purview/azure-purview-sharing/azure/purview/sharing
 [client_pypi_package]: https://aka.ms/azsdk/python/purviewsharing/pypi
 [sharing_ref_docs]: https://aka.ms/azsdk/python/purviewcatalog/ref-docs
 [sharing_product_documentation]: https://azure.microsoft.com/services/purview/
@@ -413,12 +411,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [purview_resource]: /azure/purview
 [pip]: https://pypi.org/project/pip/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b2/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
 [request_builders_and_client]: https://aka.ms/azsdk/python/protocol/quickstart
 [enable_aad]: /azure/purview/
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-purview-sharing_1.0.0b1/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-purview-sharing_1.0.0b2/sdk/core/azure-core/README.md
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
