@@ -6,15 +6,15 @@ ms.author: lmazuel
 ms.data: 06/07/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: devtestlabs
-keywords: Azure, python, SDK, API, DevTest Labs
+ms.service: devtest-lab
 manager: routlaw
+keywords: Azure, python, SDK, API, DevTest Labs
 ms.technology: azure
 ms.date: 03/30/2023
 ---
 # Azure DevTest Labs libraries for python
 
-## [Management API](/python/api/overview/azure/devtestlabs/management)
+## Management API
 
 ```bash
 pip install azure-mgmt-devtestlabs
@@ -59,4 +59,4 @@ lab = async_lab.result() # Blocking wait
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/devtestlabs/management)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-devtestlabs-readme)
