@@ -100,6 +100,59 @@ methods:
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: Item with the given ID already exists.
+- uid: azure.cosmos.ContainerProxy.delete_all_items_by_partition_key
+  name: delete_all_items_by_partition_key
+  summary: 'The delete by partition key feature is an asynchronous, background operation
+    that allows you to delete all
+
+    documents with the same logical partition key value, using the Cosmos SDK. The
+    delete by partition key
+
+    operation is constrained to consume at most 10% of the total
+
+    available RU/s on the container each second. This helps in limiting the resources
+    used by
+
+    this background task.'
+  signature: 'delete_all_items_by_partition_key(partition_key: str | int | float |
+    bool, **kwargs: Any) -> None'
+  parameters:
+  - name: partition_key
+    description: Partition key for the items to be deleted.
+    isRequired: true
+    types:
+    - <xref:Any>
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>
+  return:
+    types:
+    - <xref:None>
 - uid: azure.cosmos.ContainerProxy.delete_conflict
   name: delete_conflict
   summary: 'Delete a specified conflict from the container.
@@ -233,6 +286,70 @@ methods:
     description: An Iterable of conflicts (dicts).
     types:
     - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+- uid: azure.cosmos.ContainerProxy.patch_item
+  name: patch_item
+  summary: "**Provisional method** Patches the specified item with the provided operations\
+    \ if it\n   exists in the container.\n\nIf the item does not already exist in\
+    \ the container, an exception is raised."
+  signature: 'patch_item(item: str | Dict[str, Any], partition_key: str | int | float
+    | bool, patch_operations: List[Dict[str, Any]], **kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: item
+    description: The ID (name) or dict representing item to be patched.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: partition_key
+    description: The partition key of the object to patch.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  - name: patch_operations
+    description: The list of patch operations to apply to the item.
+    isRequired: true
+    types:
+    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+  - name: filter_predicate
+    description: conditional filter to apply to Patch operations.
+    types:
+    - <xref:str>
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:Callable>
+  return:
+    description: A dict representing the item after the patch operations went through.
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'The patch operations failed or the item with
+
+      given id does not exist.'
 - uid: azure.cosmos.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
@@ -348,7 +465,7 @@ methods:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.4.0\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import json\n\
     \n   for item in container.query_items(\n       query='SELECT * FROM products\
@@ -357,7 +474,7 @@ methods:
     \ query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.4.0\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   discontinued_items\
     \ = container.query_items(\n       query='SELECT * FROM products p WHERE p.productModel\
@@ -384,7 +501,7 @@ methods:
   - name: is_start_from_beginning
     description: 'Get whether change feed should start from
 
-      beginning (true) or from current (false). By default it''s start from current
+      beginning (true) or from current (false). By default, it''s start from current
       (false).'
     isRequired: true
   - name: continuation
@@ -521,7 +638,7 @@ methods:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
-    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.3.1\\\\samples\\\\examples.py\", \"\
+    \\s\\\\dist_temp\\\\113\\\\azure-cosmos-4.4.0\\\\samples\\\\examples.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   item = container.read_item(\"\
     item2\", partition_key=\"Widget\")\n   item[\"productModel\"] = \"DISCONTINUED\"\
