@@ -1,0 +1,187 @@
+### YamlMime:PythonClass
+uid: azure.datalake.store.multithread.ADLUploader
+name: ADLUploader
+fullName: azure.datalake.store.multithread.ADLUploader
+module: azure.datalake.store.multithread
+inheritances:
+- builtins.object
+summary: 'Upload local file(s) using chunks and threads
+
+
+  Launches multiple threads for efficient uploading, with *chunksize*
+
+  assigned to each. The path can be a single file, a directory
+
+  of files or a glob pattern.'
+constructor:
+  syntax: ADLUploader(adlfs, rpath, lpath, nthreads=None, chunksize=268435456, buffersize=4194304,
+    blocksize=4194304, client=None, run=True, overwrite=False, verbose=False, progress_callback=None,
+    timeout=0)
+  parameters:
+  - name: adlfs
+    isRequired: true
+    types:
+    - <xref:<xref:ADL filesystem instance>>
+  - name: rpath
+    description: 'remote path to upload to; if multiple files, this is the dircetory
+
+      root to write within'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: lpath
+    description: 'local path. Can be single file, directory (in which case, upload
+
+      recursively) or glob pattern. Recursive glob patterns using **** are
+
+      not supported.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: nthreads
+    description: Number of threads to use. If None, uses the number of cores.
+    defaultValue: None
+    types:
+    - <xref:int >[<xref:None>]
+  - name: chunksize
+    description: 'Number of bytes for a chunk. Large files are split into chunks.
+      Files
+
+      smaller than this number will always be transferred in a single thread.'
+    defaultValue: '268435456'
+    types:
+    - <xref:int >[<xref:228>]
+  - name: buffersize
+    description: 'Number of bytes for internal buffer. This block cannot be bigger
+      than
+
+      a chunk and cannot be smaller than a block.'
+    defaultValue: '4194304'
+    types:
+    - <xref:int >[<xref:222>]
+  - name: blocksize
+    description: 'Number of bytes for a block. Within each chunk, we write a smaller
+
+      block for each API call. This block cannot be bigger than a chunk.'
+    defaultValue: '4194304'
+    types:
+    - <xref:int >[<xref:222>]
+  - name: client
+    description: 'Set an instance of ADLTransferClient when finer-grained control
+      over
+
+      transfer parameters is needed. Ignores *nthreads* and *chunksize*
+
+      set by constructor.'
+    defaultValue: None
+    types:
+    - <xref:azure.datalake.store.transfer.ADLTransferClient >[<xref:None>]
+  - name: run
+    description: Whether to begin executing immediately.
+    defaultValue: 'True'
+    types:
+    - <xref:bool >[<xref:True>]
+  - name: overwrite
+    description: 'Whether to forcibly overwrite existing files/directories. If False
+      and
+
+      remote path is a directory, will quit regardless if any files would be
+
+      overwritten or not. If True, only matching filenames are actually
+
+      overwritten.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool >[<xref:False>]
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total) where
+
+      current is the number of bytes transfered so far, and total is the
+
+      size of the blob, or None if the total size is unknown.'
+    defaultValue: None
+    types:
+    - <xref:callable >[<xref:None>]
+  - name: timeout
+    description: 'Default value 0 means infinite timeout. Otherwise time in seconds
+      before the
+
+      process will stop and raise an exception if  transfer is still in progress'
+    defaultValue: '0'
+    types:
+    - <xref:int >(<xref:0>)
+  - name: verbose
+    defaultValue: 'False'
+methods:
+- uid: azure.datalake.store.multithread.ADLUploader.active
+  name: active
+  summary: Return whether the uploader is active
+  signature: active()
+- uid: azure.datalake.store.multithread.ADLUploader.clear_saved
+  name: clear_saved
+  summary: Remove references to all persisted uploads.
+  signature: static clear_saved()
+- uid: azure.datalake.store.multithread.ADLUploader.load
+  name: load
+  summary: Load list of persisted transfers from disk, for possible resumption.
+  signature: static load()
+  return:
+    description: "* *A dictionary of upload instances. The hashes are auto* \n\n*\
+      \ *generated unique. The state of the chunks completed, errored, etc.,* \n\n\
+      * *can be seen in the status attribute. Instances can be resumed with* \n\n\
+      * `run()`."
+- uid: azure.datalake.store.multithread.ADLUploader.run
+  name: run
+  summary: Populate transfer queue and execute downloads
+  signature: run(nthreads=None, monitor=True)
+  parameters:
+  - name: nthreads
+    description: Override default nthreads, if given
+    defaultValue: None
+    types:
+    - <xref:int >[<xref:None>]
+  - name: monitor
+    description: To watch and wait (block) until completion.
+    defaultValue: 'True'
+    types:
+    - <xref:bool >[<xref:True>]
+- uid: azure.datalake.store.multithread.ADLUploader.save
+  name: save
+  summary: 'Persist this upload
+
+
+    Saves a copy of this transfer process in its current state to disk.
+
+    This is done automatically for a running transfer, so that as a chunk
+
+    is completed, this is reflected. Thus, if a transfer is interrupted,
+
+    e.g., by user action, the transfer can be restarted at another time.
+
+    All chunks that were not already completed will be restarted at that
+
+    time.
+
+
+    See methods `load` to retrieved saved transfers and `run` to
+
+    resume a stopped transfer.'
+  signature: save(keep=True)
+  parameters:
+  - name: keep
+    description: 'If True, transfer will be saved if some chunks remain to be
+
+      completed; the transfer will be sure to be removed otherwise.'
+    defaultValue: 'True'
+    types:
+    - <xref:bool >(<xref:True>)
+- uid: azure.datalake.store.multithread.ADLUploader.successful
+  name: successful
+  summary: 'Return whether the uploader completed successfully.
+
+
+    It will raise AssertionError if the uploader is active.'
+  signature: successful()
+attributes:
+- uid: azure.datalake.store.multithread.ADLUploader.hash
+  name: hash
