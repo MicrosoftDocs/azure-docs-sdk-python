@@ -1,0 +1,524 @@
+### YamlMime:PythonClass
+uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations
+name: SnapshotOperations
+fullName: azure.cognitiveservices.vision.face.operations.SnapshotOperations
+module: azure.cognitiveservices.vision.face.operations
+inheritances:
+- builtins.object
+summary: 'SnapshotOperations operations.
+
+
+  You should not instantiate directly this class, but create a Client instance that
+  will create it for you and attach it as attribute.'
+constructor:
+  syntax: SnapshotOperations(client, config, serializer, deserializer)
+  parameters:
+  - name: client
+    description: Client for service requests.
+    isRequired: true
+  - name: config
+    description: Configuration of service client.
+    isRequired: true
+  - name: serializer
+    description: An object model serializer.
+    isRequired: true
+  - name: deserializer
+    description: An object model deserializer.
+    isRequired: true
+methods:
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.apply
+  name: apply
+  summary: 'Submit an operation to apply a snapshot to current subscription. For
+
+    each snapshot, only subscriptions included in the applyScope of
+
+    Snapshot - Take can apply it.<br />
+
+    The snapshot interfaces are for users to backup and restore their face
+
+    data from one face subscription to another, inside same region or
+
+    across regions. The workflow contains two phases, user first calls
+
+    Snapshot - Take to create a copy of the source object and store it as a
+
+    snapshot, then calls Snapshot - Apply to paste the snapshot to target
+
+    subscription. The snapshots are stored in a centralized location (per
+
+    Azure instance), so that they can be applied cross accounts and
+
+    regions.<br />
+
+    Applying snapshot is an asynchronous operation. An operation id can be
+
+    obtained from the "Operation-Location" field in response header, to be
+
+    used in OperationStatus - Get for tracking the progress of applying the
+
+    snapshot. The target object id will be included in the
+
+    "resourceLocation" field in OperationStatus - Get response when the
+
+    operation status is "succeeded".<br />
+
+    Snapshot applying time depends on the number of person and face entries
+
+    in the snapshot object. It could be in seconds, or up to 1 hour for
+
+    1,000,000 persons with multiple faces.<br />
+
+    Snapshots will be automatically expired and cleaned in 48 hours after
+
+    it is created by Snapshot - Take. So the target subscription is
+
+    required to apply the snapshot in 48 hours since its creation.<br />
+
+    Applying a snapshot will not block any other operations against the
+
+    target object, however it is not recommended because the correctness
+
+    cannot be guaranteed during snapshot applying. After snapshot applying
+
+    is completed, all operations towards the target object can work as
+
+    normal. Snapshot also includes the training results of the source
+
+    object, which means target subscription the snapshot applied to does
+
+    not need re-train the target object before calling
+
+    Identify/FindSimilar.<br />
+
+    One snapshot can be applied multiple times in parallel, while currently
+
+    only CreateNew apply mode is supported, which means the apply operation
+
+    will fail if target subscription already contains an object of same
+
+    type and using the same objectId. Users can specify the "objectId" in
+
+    request body to avoid such conflicts.<br />
+
+    * Free-tier subscription quota: 100 apply operations per month.
+
+    * S0-tier subscription quota: 100 apply operations per day.'
+  signature: apply(snapshot_id, object_id, mode='CreateNew', custom_headers=None,
+    raw=False, **operation_config)
+  parameters:
+  - name: snapshot_id
+    description: Id referencing a particular snapshot.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: object_id
+    description: 'User specified target object id to be created from
+
+      the snapshot.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: mode
+    description: 'Snapshot applying mode. Currently only CreateNew is
+
+      supported, which means the apply operation will fail if target
+
+      subscription already contains an object of same type and using the
+
+      same objectId. Users can specify the "objectId" in request body to
+
+      avoid such conflicts. Possible values include: ''CreateNew'''
+    defaultValue: CreateNew
+    types:
+    - <xref:str>
+    - <xref:azure.cognitiveservices.vision.face.models.SnapshotApplyMode>
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: None or ClientRawResponse if raw=true
+    types:
+    - <xref:None>
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.delete
+  name: delete
+  summary: 'Delete an existing snapshot according to the snapshotId. All object
+
+    data and information in the snapshot will also be deleted. Only the
+
+    source subscription who took the snapshot can delete the snapshot. If
+
+    the user does not delete a snapshot with this API, the snapshot will
+
+    still be automatically deleted in 48 hours after creation.'
+  signature: delete(snapshot_id, custom_headers=None, raw=False, **operation_config)
+  parameters:
+  - name: snapshot_id
+    description: Id referencing a particular snapshot.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: None or ClientRawResponse if raw=true
+    types:
+    - <xref:None>
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.get
+  name: get
+  summary: 'Retrieve information about a snapshot. Snapshot is only accessible to
+
+    the source subscription who took it, and target subscriptions included
+
+    in the applyScope in Snapshot - Take.'
+  signature: get(snapshot_id, custom_headers=None, raw=False, **operation_config)
+  parameters:
+  - name: snapshot_id
+    description: Id referencing a particular snapshot.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: Snapshot or ClientRawResponse if raw=true
+    types:
+    - <xref:azure.cognitiveservices.vision.face.models.Snapshot>
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.get_operation_status
+  name: get_operation_status
+  summary: Retrieve the status of a take/apply snapshot operation.
+  signature: get_operation_status(operation_id, custom_headers=None, raw=False, **operation_config)
+  parameters:
+  - name: operation_id
+    description: 'Id referencing a particular take/apply snapshot
+
+      operation.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: OperationStatus or ClientRawResponse if raw=true
+    types:
+    - <xref:azure.cognitiveservices.vision.face.models.OperationStatus>
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.list
+  name: list
+  summary: 'List all accessible snapshots with related information, including
+
+    snapshots that were taken by the user, or snapshots to be applied to
+
+    the user (subscription id was included in the applyScope in Snapshot -
+
+    Take).'
+  signature: list(type=None, apply_scope=None, custom_headers=None, raw=False, **operation_config)
+  parameters:
+  - name: type
+    description: 'User specified object type as a search filter. Possible
+
+      values include: ''FaceList'', ''LargeFaceList'', ''LargePersonGroup'',
+
+      ''PersonGroup'''
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.cognitiveservices.vision.face.models.SnapshotObjectType>
+  - name: apply_scope
+    description: 'User specified snapshot apply scopes as a search
+
+      filter. ApplyScope is an array of the target Azure subscription ids
+
+      for the snapshot, specified by the user who created the snapshot by
+
+      Snapshot - Take.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: list or ClientRawResponse if raw=true
+    types:
+    - <xref:list>[<xref:azure.cognitiveservices.vision.face.models.Snapshot>]
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.take
+  name: take
+  summary: 'Submit an operation to take a snapshot of face list, large face list,
+
+    person group or large person group, with user-specified snapshot type,
+
+    source object id, apply scope and an optional user data.<br />
+
+    The snapshot interfaces are for users to backup and restore their face
+
+    data from one face subscription to another, inside same region or
+
+    across regions. The workflow contains two phases, user first calls
+
+    Snapshot - Take to create a copy of the source object and store it as a
+
+    snapshot, then calls Snapshot - Apply to paste the snapshot to target
+
+    subscription. The snapshots are stored in a centralized location (per
+
+    Azure instance), so that they can be applied cross accounts and
+
+    regions.<br />
+
+    Taking snapshot is an asynchronous operation. An operation id can be
+
+    obtained from the "Operation-Location" field in response header, to be
+
+    used in OperationStatus - Get for tracking the progress of creating the
+
+    snapshot. The snapshot id will be included in the "resourceLocation"
+
+    field in OperationStatus - Get response when the operation status is
+
+    "succeeded".<br />
+
+    Snapshot taking time depends on the number of person and face entries
+
+    in the source object. It could be in seconds, or up to several hours
+
+    for 1,000,000 persons with multiple faces.<br />
+
+    Snapshots will be automatically expired and cleaned in 48 hours after
+
+    it is created by Snapshot - Take. User can delete the snapshot using
+
+    Snapshot - Delete by themselves any time before expiration.<br />
+
+    Taking snapshot for a certain object will not block any other
+
+    operations against the object. All read-only operations (Get/List and
+
+    Identify/FindSimilar/Verify) can be conducted as usual. For all
+
+    writable operations, including Add/Update/Delete the source object or
+
+    its persons/faces and Train, they are not blocked but not recommended
+
+    because writable updates may not be reflected on the snapshot during
+
+    its taking. After snapshot taking is completed, all readable and
+
+    writable operations can work as normal. Snapshot will also include the
+
+    training results of the source object, which means target subscription
+
+    the snapshot applied to does not need re-train the target object before
+
+    calling Identify/FindSimilar.<br />
+
+    * Free-tier subscription quota: 100 take operations per month.
+
+    * S0-tier subscription quota: 100 take operations per day.'
+  signature: take(type, object_id, apply_scope, user_data=None, custom_headers=None,
+    raw=False, **operation_config)
+  parameters:
+  - name: type
+    description: 'User specified type for the source object to take
+
+      snapshot from. Currently FaceList, PersonGroup, LargeFaceList and
+
+      LargePersonGroup are supported. Possible values include: ''FaceList'',
+
+      ''LargeFaceList'', ''LargePersonGroup'', ''PersonGroup'''
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.cognitiveservices.vision.face.models.SnapshotObjectType>
+  - name: object_id
+    description: 'User specified source object id to take snapshot
+
+      from.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: apply_scope
+    description: 'User specified array of target Face subscription
+
+      ids for the snapshot. For each snapshot, only subscriptions included
+
+      in the applyScope of Snapshot - Take can apply it.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  - name: user_data
+    description: 'User specified data about the snapshot for any
+
+      purpose. Length should not exceed 16KB.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: None or ClientRawResponse if raw=true
+    types:
+    - <xref:None>
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.update
+  name: update
+  summary: 'Update the information of a snapshot. Only the source subscription who
+
+    took the snapshot can update the snapshot.'
+  signature: update(snapshot_id, apply_scope=None, user_data=None, custom_headers=None,
+    raw=False, **operation_config)
+  parameters:
+  - name: snapshot_id
+    description: Id referencing a particular snapshot.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: apply_scope
+    description: 'Array of the target Face subscription ids for the
+
+      snapshot, specified by the user who created the snapshot when calling
+
+      Snapshot - Take. For each snapshot, only subscriptions included in the
+
+      applyScope of Snapshot - Take can apply it.'
+    defaultValue: None
+    types:
+    - <xref:list>[<xref:str>]
+  - name: user_data
+    description: 'User specified data about the snapshot for any
+
+      purpose. Length should not exceed 16KB.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: custom_headers
+    description: headers that will be added to the request
+    defaultValue: None
+    types:
+    - <xref:dict>
+  - name: raw
+    description: 'returns the direct response alongside the
+
+      deserialized response'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_config
+    description: '*Operation configuration
+
+      overrides*.'
+    isRequired: true
+  return:
+    description: None or ClientRawResponse if raw=true
+    types:
+    - <xref:None>
+    - <xref:msrest.pipeline.ClientRawResponse>
+  exceptions:
+  - type: azure.cognitiveservices.vision.face.models.APIErrorException
+attributes:
+- uid: azure.cognitiveservices.vision.face.operations.SnapshotOperations.models
+  name: models
+  signature: models = <module 'azure.cognitiveservices.vision.face.models' from 'C:\\hostedtoolcache\\windows\\Python\\3.11.3\\x64\\Lib\\site-packages\\azure\\cognitiveservices\\vision\\face\\models\\__init__.py'>
