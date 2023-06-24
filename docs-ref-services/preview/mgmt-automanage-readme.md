@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-automanage, automanage
 author: lmazuel
 ms.author: lmazuel
-ms.date: 12/16/2022
+ms.date: 06/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: automanage
