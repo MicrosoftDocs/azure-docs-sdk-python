@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-synapse, synapse
 author: wonner
 ms.author: wanyang
-ms.date: 02/16/2023
+ms.date: 06/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse
