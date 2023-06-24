@@ -3,12 +3,12 @@ title: Azure Cognitive Services Health Insights Clinical Matching client library
 keywords: Azure, python, SDK, API, azure-healthinsights-clinicalmatching, healthinsights
 author: lmazuel
 ms.author: lmazuel
-ms.date: 04/04/2023
+ms.date: 06/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: healthinsights
 ---
-# Azure Cognitive Services Health Insights Clinical Matching client library for Python - version 1.0.0b1 
+# Azure Cognitive Services Health Insights Clinical Matching client library for Python - version 1.0.0a20230623001 
 
 
 [Health Insights](https://review.learn.microsoft.com/azure/azure-health-insights/?branch=release-azure-health-insights) is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
@@ -235,10 +235,10 @@ additional questions or comments.
 [azure_portal]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesHealthInsights
 [azure_cli]: https://learn.microsoft.com/cli/azure/
 [clinical_matching_docs]: https://review.learn.microsoft.com/azure/cognitive-services/health-decision-support/trial-matcher/overview?branch=main
-<!-- [hi_pypi]: https://pypi.org/project/azure-healthinsights-clinicalmatching/ -->
+[hi_pypi]: https://pypi.org/project/azure-healthinsights-clinicalmatching/
 [hi_pypi]: https://pypi.org/
 [product_docs]: https://review.learn.microsoft.com/azure/cognitive-services/health-decision-support/trial-matcher/?branch=main
 [clinical_matching_api_documentation]: https://review.learn.microsoft.com/rest/api/cognitiveservices/healthinsights/trial-matcher?branch=healthin202303
-[hi_samples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-healthinsights-clinicalmatching_1.0.0b1/sdk/healthinsights/azure-healthinsights-clinicalmatching/samples
-[hi_source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-healthinsights-clinicalmatching_1.0.0b1/sdk/healthinsights/azure-healthinsights-clinicalmatching/azure/healthinsights/clinicalmatching
+[hi_samples]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthinsights/azure-healthinsights-clinicalmatching/samples
+[hi_source_code]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthinsights/azure-healthinsights-clinicalmatching/azure/healthinsights/clinicalmatching
 
