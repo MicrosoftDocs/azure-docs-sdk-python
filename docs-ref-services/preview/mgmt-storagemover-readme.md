@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-storagemover, storagemover
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/20/2023
+ms.date: 06/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: storagemover
@@ -46,11 +46,11 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.storagemover import 
+from azure.mgmt.storagemover import StorageMoverMgmtClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = (credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = StorageMoverMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
