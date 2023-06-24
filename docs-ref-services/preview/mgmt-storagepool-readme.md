@@ -1,9 +1,9 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storagepool, storagepool
-author: annatisch
-ms.author: antisch
-ms.date: 11/11/2022
+author: lmazuel
+ms.author: lmazuel
+ms.date: 06/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: storagepool
