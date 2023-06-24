@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-timeseriesinsights, timeseriesinsights
 author: lmazuel
 ms.author: lmazuel
-ms.date: 10/31/2022
+ms.date: 06/24/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: timeseriesinsights
