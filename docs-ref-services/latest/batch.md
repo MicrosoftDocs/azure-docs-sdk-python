@@ -59,7 +59,7 @@ client.pool.add(new_pool)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Client APIs](/python/api/azure-batch/?view=azure-python)
+> [Explore the Client APIs](/python/api/azure-batch)
 
 ## Management API
 Use the Azure Batch management libraries to create and delete batch accounts, read and regenerate batch account keys, and manage batch account storage.
@@ -107,4 +107,4 @@ creating.wait()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mgmt-batch-readme?view=azure-python)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-batch-readme)
