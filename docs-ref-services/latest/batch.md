@@ -29,20 +29,30 @@ pip install azure-batch
 Set up a pool of Linux compute nodes in a batch account:
 
 ```python
+import azure.batch
+from azure.batch import batch_auth, BatchServiceClient, models
+
 # create the batch client for an account using its URI and keys
-creds = batchauth.SharedKeyCredentials(account, key)
-config = batch.BatchServiceClientConfiguration(creds, base_url = batch_url)
-client = batch.BatchServiceClient(config)
+creds = batch_auth.SharedKeyCredentials(account, key)
+client = BatchServiceClient(creds, batch_url)
 
 # Create the VirtualMachineConfiguration, specifying
 # the VM image reference and the Batch node agent to
 # be installed on the node.
-vmc = batchmodels.VirtualMachineConfiguration(
-    image_reference = ir,
-    node_agent_sku_id = "batch.node.ubuntu 14.04")
+vmc = models.VirtualMachineConfiguration(
+    image_reference = models.ImageReference(
+        publisher='Canonical',
+        offer='UbuntuServer',
+        sku='18.04-LTS'
+        ),
+    node_agent_sku_id = "batch.node.ubuntu 18.04")
 
 # Assign the virtual machine configuration to the pool
-new_pool.virtual_machine_configuration = vmc
+new_pool = models.PoolAddParameter(
+    id = 'new_pool',
+    vm_size='standard_d2_v2',
+    virtual_machine_configuration = vmc
+)
 
 # Create pool in the Batch service
 client.pool.add(new_pool)
@@ -88,11 +98,11 @@ storage_account = storage_async_operation.result()
 
 # Create a Batch Account, specifying the storage account we want to link
 storage_resource = storage_account.id
-batch_account = azure.mgmt.batch.models.BatchAccountCreateParameters(
+batch_account_parameters = azure.mgmt.batch.models.BatchAccountCreateParameters(
     location=LOCATION,
     auto_storage=azure.mgmt.batch.models.AutoStorageBaseProperties(storage_resource)
 )
-creating = batch_client.account.create('MyBatchAccount', LOCATION, batch_account)
+creating = batch_client.batch_account.begin_create('MyBatchResourceGroup', 'MyBatchAccount', batch_account_parameters)
 creating.wait()
 ```
 
