@@ -8,6 +8,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: batch
 ---
+
 # Azure Batch libraries for python
 
 ## Overview
