@@ -54,4 +54,4 @@ while df.provisioning_state != 'Succeeded':
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/datafactory/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-datafactory)
