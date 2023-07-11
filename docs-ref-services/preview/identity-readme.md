@@ -3,17 +3,17 @@ title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
 author: pvaneck
 ms.author: paulvaneck
-ms.date: 06/06/2023
+ms.date: 07/11/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: identity
 ---
-# Azure Identity client library for Python - version 1.14.0b1 
+# Azure Identity client library for Python - version 1.14.0b2 
 
 
 The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [`TokenCredential`](https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.tokencredential?view=azure-python) implementations, which can be used to construct Azure SDK clients that support Azure AD token authentication.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [Package (Conda)](https://anaconda.org/microsoft/azure-identity/)
 | [API reference documentation][ref_docs]
@@ -305,7 +305,7 @@ Token caching is a feature provided by the Azure Identity library that allows ap
 - Improve resilience and performance.
 - Reduce the number of requests made to Azure AD to obtain access tokens.
 
-The Azure Identity library offers both in-memory and persistent disk caching. For more details, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/identity/azure-identity/TOKEN_CACHING.md).
+The Azure Identity library offers both in-memory and persistent disk caching. For more details, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/identity/azure-identity/TOKEN_CACHING.md).
 
 ## Troubleshooting
 
@@ -361,10 +361,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azd_cli_cred_ref]: https://aka.ms/azsdk/python/identity/azuredeveloperclicredential
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_developer_cli]:https://aka.ms/azure-dev
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/eventhub/azure-eventhub
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/storage/azure-storage-blob
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/eventhub/azure-eventhub
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/storage/azure-storage-blob
 [b2c]: https://learn.microsoft.com/azure/active-directory-b2c/overview
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/certificatecredential
 [chain_cred_ref]: https://aka.ms/azsdk/python/identity/chainedtokencredential
@@ -380,7 +380,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [powershell_cred_ref]: https://aka.ms/azsdk/python/identity/powershellcredential
 [ref_docs]: https://aka.ms/azsdk/python/identity/docs
 [ref_docs_aio]: https://aka.ms/azsdk/python/identity/aio/docs
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b1/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.14.0b2/sdk/identity/azure-identity/TROUBLESHOOTING.md
 [userpass_cred_ref]: https://aka.ms/azsdk/python/identity/usernamepasswordcredential
 [vscode_cred_ref]: https://aka.ms/azsdk/python/identity/vscodecredential
 [workload_id_cred_ref]: https://aka.ms/azsdk/python/identity/workloadidentitycredential
