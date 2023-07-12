@@ -8,9 +8,9 @@ inheritances:
 summary: "Represents a client that calls restful API of Azure App Configuration service.\n\
   \n   param str base_url:\n      Base url of the service.\n\n   param credential:\n\
   \      An object which can provide secrets for the app configuration service\n\n\
-  \   type credential:\n      <xref:azure.appconfiguration.AppConfigConnectionStringCredential>\n\
-  \      or <xref:azure.core.credentials_async.AsyncTokenCredential>\n\n   keyword\
-  \ api_version:\n      Api Version. Default value is \"1.0\". Note that overriding\
+  \   type credential:\n      ~azure.appconfiguration.AppConfigConnectionStringCredential\n\
+  \      or ~azure.core.credentials_async.AsyncTokenCredential\n\n   keyword api_version:\n\
+  \      Api Version. Default value is \"2022-11-01-preview\". Note that overriding\
   \ this default\n      value may result in unsupported behavior.\n\n   paramtype\
   \ api_version:\n      str\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
 constructor:
@@ -45,9 +45,89 @@ methods:
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
-  - type: azure.appconfiguration.aio.ResourceExistsError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
+  - type: azure.core.exceptions.ResourceExistsError
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.archive_snapshot
+  name: archive_snapshot
+  summary: 'Archive a configuration setting snapshot. It will update the status of
+    a snapshot from "ready" to "archived".
+
+    The retention period will start to count, the snapshot will expire when the entire
+    retention period elapses.'
+  signature: 'async archive_snapshot(name: str, *, match_condition: MatchConditions
+    = MatchConditions.Unconditionally, etag: str | None = None, **kwargs) -> Snapshot'
+  parameters:
+  - name: name
+    description: The name of the configuration setting snapshot to archive.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+  - name: etag
+    description: Check if the Snapshot is changed. Set None to skip checking etag.
+    types:
+    - <xref:str>
+  return:
+    description: The Snapshot returned from the service.
+    types:
+    - <xref:azure.appconfiguration.Snapshot>
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.begin_create_snapshot
+  name: begin_create_snapshot
+  summary: Create a snapshot of the configuration settings.
+  signature: 'async begin_create_snapshot(name: str, filters: List[ConfigurationSettingFilter],
+    *, composition_type: Literal[''key'', ''key_label''] | None = None, retention_period:
+    int | None = None, tags: Dict[str, str] | None = None, **kwargs) -> AsyncLROPoller[Snapshot]'
+  parameters:
+  - name: name
+    description: The name of the snapshot to create.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: filters
+    description: 'A list of filters used to filter the configuration settings by key
+      field and label field
+
+      included in the snapshot.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.appconfiguration.ConfigurationSettingFilter>]
+  - name: composition_type
+    description: 'The composition type describes how the key-values
+
+      within the snapshot are composed. Known values are: "key" and "key_label". The
+      "key" composition type
+
+      ensures there are no two key-values containing the same key. The ''key_label''
+      composition type ensures
+
+      there are no two key-values containing the same key and label.'
+    types:
+    - <xref:str>
+  - name: retention_period
+    description: 'The amount of time, in seconds, that a snapshot will remain in the
+
+      archived state before expiring. This property is only writable during the creation
+      of a
+
+      snapshot. If not specified, will set to 2592000(30 days). If specified, should
+      be
+
+      in range 3600(1 hour) to 7776000(90 days).'
+    types:
+    - <xref:int>
+  - name: tags
+    description: The tags of the snapshot.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  return:
+    description: 'A poller for create snapshot operation. Call *result()* on this
+      object to wait for the
+
+      operation to complete and get the created snapshot.'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.appconfiguration.Snapshot>]
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.close
   name: close
   summary: Close all connections made by the client
@@ -88,13 +168,13 @@ methods:
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
-  - type: azure.appconfiguration.aio.ResourceReadOnlyError
-  - type: azure.appconfiguration.aio.ResourceModifiedError
-  - type: azure.appconfiguration.aio.ResourceNotModifiedError
-  - type: azure.appconfiguration.aio.ResourceNotFoundError
-  - type: azure.appconfiguration.aio.ResourceExistsError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
+  - type: azure.core.exceptions.ResourceReadOnlyError
+  - type: azure.core.exceptions.ResourceModifiedError
+  - type: azure.core.exceptions.ResourceNotModifiedError
+  - type: azure.core.exceptions.ResourceNotFoundError
+  - type: azure.core.exceptions.ResourceExistsError
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.from_connection_string
   name: from_connection_string
   summary: "Create AzureAppConfigurationClient from a Connection String.\nThis is\
@@ -131,7 +211,7 @@ methods:
     \ async_client.get_configuration_setting(\n       key=\"MyKey\", label=\"MyLabel\"\
     \n   )\n   ````"
   signature: 'async get_configuration_setting(key: str, label: str | None = None,
-    etag: str | None = ''*'', match_condition: MatchConditions | None = MatchConditions.Unconditionally,
+    etag: str | None = ''*'', match_condition: MatchConditions = MatchConditions.Unconditionally,
     **kwargs) -> None | ConfigurationSetting'
   parameters:
   - name: key
@@ -157,31 +237,50 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: accept_datetime
-    description: the retrieved ConfigurationSetting that created no later than this
-      datetime
+    description: retrieve ConfigurationSetting existed at this datetime
     types:
-    - <xref:datetime>
+    - <xref:str>
   return:
     description: The matched ConfigurationSetting object
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
-  - type: azure.appconfiguration.aio.ResourceNotFoundError
-  - type: azure.appconfiguration.aio.ResourceModifiedError
-  - type: azure.appconfiguration.aio.ResourceExistsError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
+  - type: azure.core.exceptions.ResourceNotFoundError
+  - type: azure.core.exceptions.ResourceModifiedError
+  - type: azure.core.exceptions.ResourceExistsError
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.get_snapshot
+  name: get_snapshot
+  summary: Get a configuration setting snapshot.
+  signature: 'async get_snapshot(name: str, *, fields: List[str] | None = None, **kwargs)
+    -> Snapshot'
+  parameters:
+  - name: name
+    description: The name of the configuration setting snapshot to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: fields
+    description: Specify which fields to include in the results. Leave None to include
+      all fields.
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: The Snapshot returned from the service.
+    types:
+    - <xref:azure.appconfiguration.Snapshot>
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_configuration_settings
   name: list_configuration_settings
   summary: "List the configuration settings stored in the configuration service, optionally\
-    \ filtered by\nlabel and accept_datetime\n\nExample\n\n<!-- literal_block {\"\
-    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   from datetime\
-    \ import datetime, timedelta\n\n   accept_datetime = datetime.today() + timedelta(days=-1)\n\
+    \ filtered by\nkey, label and accept_datetime.\n\nExample\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\"\
+    , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   from datetime\
+    \ import datetime, timedelta\n\n   accept_datetime = datetime.utcnow() + timedelta(days=-1)\n\
     \n   all_listed = async_client.list_configuration_settings()\n   async for item\
     \ in all_listed:\n       pass  # do something\n\n   filtered_listed = async_client.list_configuration_settings(\n\
-    \       label_filter=\"Labe*\", key_filter=\"Ke*\", accept_datetime=accept_datetime\n\
+    \       label_filter=\"Labe*\", key_filter=\"Ke*\", accept_datetime=str(accept_datetime)\n\
     \   )\n   async for item in filtered_listed:\n       pass  # do something\n  \
     \ ````"
   signature: 'list_configuration_settings(key_filter: str | None = None, label_filter:
@@ -202,32 +301,33 @@ methods:
     types:
     - <xref:str>
   - name: accept_datetime
-    description: filter out ConfigurationSetting created after this datetime
+    description: retrieve ConfigurationSetting existed at this datetime
     types:
-    - <xref:datetime>
+    - <xref:str>
   - name: fields
     description: specify which fields to include in the results. Leave None to include
       all fields
     types:
-    - <xref:List>[<xref:str>]
+    - <xref:list>[<xref:str>]
   return:
-    description: An iterator of <xref:azure.appconfiguration.aio.ConfigurationSetting>
+    description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.appconfiguration.ConfigurationSetting>]
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_revisions
   name: list_revisions
-  summary: "Find the ConfigurationSetting revision history.\n\nExample\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\"\
-    , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   # in async\
-    \ function\n   from datetime import datetime, timedelta\n\n   accept_datetime\
-    \ = datetime.today() + timedelta(days=-1)\n\n   all_revisions = async_client.list_revisions()\n\
-    \   async for item in all_revisions:\n       pass  # do something\n\n   filtered_revisions\
+  summary: "Find the ConfigurationSetting revision history, optionally filtered by\
+    \ key, label and accept_datetime.\n\nExample\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {}, \"linenos\": false} -->\n\n````python\n\n   # in async function\n   from\
+    \ datetime import datetime, timedelta\n\n   accept_datetime = datetime.utcnow()\
+    \ + timedelta(days=-1)\n\n   all_revisions = async_client.list_revisions()\n \
+    \  async for item in all_revisions:\n       pass  # do something\n\n   filtered_revisions\
     \ = async_client.list_revisions(\n       label_filter=\"Labe*\", key_filter=\"\
-    Ke*\", accept_datetime=accept_datetime\n   )\n   async for item in filtered_revisions:\n\
+    Ke*\", accept_datetime=str(accept_datetime)\n   )\n   async for item in filtered_revisions:\n\
     \       pass  # do something\n   ````"
   signature: 'list_revisions(key_filter: str | None = None, label_filter: str | None
     = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
@@ -247,21 +347,96 @@ methods:
     types:
     - <xref:str>
   - name: accept_datetime
-    description: filter out ConfigurationSetting created after this datetime
+    description: retrieve ConfigurationSetting existed at this datetime
     types:
-    - <xref:datetime>
+    - <xref:str>
   - name: fields
     description: specify which fields to include in the results. Leave None to include
       all fields
     types:
-    - <xref:List>[<xref:str>]
+    - <xref:list>[<xref:str>]
   return:
-    description: An iterator of <xref:azure.appconfiguration.aio.ConfigurationSetting>
+    description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.appconfiguration.ConfigurationSetting>]
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_snapshot_configuration_settings
+  name: list_snapshot_configuration_settings
+  summary: 'List the configuration settings stored under a snapshot in the configuration
+    service, optionally filtered by
+
+    accept_datetime and fields to present in return.'
+  signature: 'list_snapshot_configuration_settings(name: str, *, accept_datetime:
+    str | None = None, fields: List[str] | None = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
+  parameters:
+  - name: name
+    description: The snapshot name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: accept_datetime
+    description: Filter out ConfigurationSetting created after this datetime.
+    types:
+    - <xref:str>
+  - name: fields
+    description: Specify which fields to include in the results. Leave None to include
+      all fields.
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
+    types:
+    - <xref:azure.core.paging.AsyncItemPaged>[<xref:azure.appconfiguration.ConfigurationSetting>]
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_snapshots
+  name: list_snapshots
+  summary: 'List the configuration setting snapshots stored in the configuration service,
+    optionally filtered by
+
+    snapshot name, snapshot status and fields to present in return.'
+  signature: 'list_snapshots(*, name: str | None = None, fields: List[str] | None
+    = None, status: List[str] | None = None, **kwargs) -> AsyncItemPaged[Snapshot]'
+  parameters:
+  - name: name
+    description: Filter results based on snapshot name.
+    types:
+    - <xref:str>
+  - name: fields
+    description: Specify which fields to include in the results. Leave None to include
+      all fields.
+    types:
+    - <xref:list>[<xref:str>]
+  - name: status
+    description: Filter results based on snapshot keys.
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: An iterator of <xref:azure.appconfiguration.Snapshot>
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.appconfiguration.Snapshot>]
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.recover_snapshot
+  name: recover_snapshot
+  summary: Recover a configuration setting snapshot. It will update the status of
+    a snapshot from "archived" to "ready".
+  signature: 'async recover_snapshot(name: str, *, match_condition: MatchConditions
+    = MatchConditions.Unconditionally, etag: str | None = None, **kwargs) -> Snapshot'
+  parameters:
+  - name: name
+    description: The name of the configuration setting snapshot to recover.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+  - name: etag
+    description: Check if the Snapshot is changed. Set None to skip checking etag.
+    types:
+    - <xref:str>
+  return:
+    description: The Snapshot returned from the service.
+    types:
+    - <xref:azure.appconfiguration.Snapshot>
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.set_configuration_setting
   name: set_configuration_setting
   summary: "Add or update a ConfigurationSetting.\nIf the configuration setting identified\
@@ -279,11 +454,11 @@ methods:
     -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
-    description: the ConfigurationSetting to be added (if not exists)         or updated
-      (if exists) to the service
+    description: the ConfigurationSetting to be added (if not exists)             or
+      updated (if exists) to the service
     isRequired: true
     types:
-    - <xref:azure.appconfiguration.aio.ConfigurationSetting>
+    - <xref:azure.appconfiguration.ConfigurationSetting>
   - name: match_condition
     description: The match condition to use upon the etag
     isRequired: true
@@ -299,13 +474,13 @@ methods:
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
-  - type: azure.appconfiguration.aio.ResourceReadOnlyError
-  - type: azure.appconfiguration.aio.ResourceModifiedError
-  - type: azure.appconfiguration.aio.ResourceNotModifiedError
-  - type: azure.appconfiguration.aio.ResourceNotFoundError
-  - type: azure.appconfiguration.aio.ResourceExistsError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
+  - type: azure.core.exceptions.ResourceReadOnlyError
+  - type: azure.core.exceptions.ResourceModifiedError
+  - type: azure.core.exceptions.ResourceNotModifiedError
+  - type: azure.core.exceptions.ResourceNotFoundError
+  - type: azure.core.exceptions.ResourceExistsError
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.set_read_only
   name: set_read_only
   summary: "Set a configuration setting read only\n\nExample\n\n<!-- literal_block\
@@ -316,14 +491,14 @@ methods:
     MyLabel\"\n   )\n\n   read_only_config_setting = await async_client.set_read_only(config_setting)\n\
     \   read_only_config_setting = await client.set_read_only(config_setting, read_only=False)\n\
     \   ````"
-  signature: 'set_read_only(configuration_setting: ConfigurationSetting, read_only:
+  signature: 'async set_read_only(configuration_setting: ConfigurationSetting, read_only:
     bool = True, **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be set read only
     isRequired: true
     types:
-    - <xref:azure.appconfiguration.aio.ConfigurationSetting>
+    - <xref:azure.appconfiguration.ConfigurationSetting>
   - name: read_only
     description: set the read only setting if true, else clear the read only setting
     isRequired: true
@@ -343,13 +518,13 @@ methods:
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
-  - type: azure.appconfiguration.aio.HttpResponseError
-  - type: azure.appconfiguration.aio.ClientAuthenticationError
-  - type: azure.appconfiguration.aio.ResourceNotFoundError
+  - type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.ClientAuthenticationError
+  - type: azure.core.exceptions.ResourceNotFoundError
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.update_sync_token
   name: update_sync_token
   summary: Add a sync token to the internal list of tokens.
-  signature: 'update_sync_token(token: str) -> None'
+  signature: 'async update_sync_token(token: str) -> None'
   parameters:
   - name: token
     description: The sync token to be added to the internal list of tokens

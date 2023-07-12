@@ -7,7 +7,7 @@ inheritances:
 - azure.core.pipeline.policies._base.SansIOHTTPPolicy
 summary: Policy for decoding unstreamed response content.
 constructor:
-  syntax: 'ContentDecodePolicy(response_encoding: str | None = None, **kwargs)'
+  syntax: 'ContentDecodePolicy(response_encoding: str | None = None, **kwargs: Any)'
   parameters:
   - name: response_encoding
     description: The encoding to use if known for this service (will disable auto-detection)
@@ -21,17 +21,25 @@ methods:
 
 
     Headers will tested for "content-type"'
-  signature: 'deserialize_from_http_generics(response: HTTPResponseType, encoding:
-    str | None = None)'
+  signature: 'deserialize_from_http_generics(response: _HttpResponseBase | _HttpResponseBase,
+    encoding: str | None = None) -> Any'
   parameters:
   - name: response
     description: The HTTP response
     isRequired: true
+    types:
+    - <xref:any>
   - name: encoding
     description: The encoding to use if known for this service (will disable auto-detection)
     defaultValue: None
+    types:
+    - <xref:str>
   return:
-    description: A dict or XML tree, depending of the mime-type
+    description: A dict (JSON), XML tree or str, depending of the mime_type
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:xml.etree.ElementTree.Element>
+    - <xref:str>
   exceptions:
   - type: azure.core.exceptions.DecodeError
     description: If deserialization fails
@@ -44,13 +52,20 @@ methods:
 
     If no content-type, will return the string version (not bytes, not stream)'
   signature: 'deserialize_from_text(data: AnyStr | IO | None, mime_type: str | None
-    = None, response: HTTPResponseType | None = None)'
+    = None, response: _HttpResponseBase | _HttpResponseBase | None = None) -> Any'
   parameters:
+  - name: data
+    description: The data to deserialize.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:bytes>
+    - <xref:<xref:file-like object>>
   - name: response
     description: The HTTP response.
     defaultValue: None
     types:
-    - <xref:azure.core.pipeline.transport.HttpResponse>
+    - <xref:any>
   - name: mime_type
     description: The mime type. As mime type, charset is not expected.
     defaultValue: None
@@ -59,10 +74,12 @@ methods:
   - name: response
     description: If passed, exception will be annotated with that response
     isRequired: true
-  - name: data
-    isRequired: true
   return:
-    description: A dict or XML tree, depending of the mime_type
+    description: A dict (JSON), XML tree or str, depending of the mime_type
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:xml.etree.ElementTree.Element>
+    - <xref:str>
   exceptions:
   - type: azure.core.exceptions.DecodeError
     description: If deserialization fails
@@ -81,8 +98,9 @@ methods:
     Will follow Content-Type to parse.
 
     We assume everything is UTF8 (BOM acceptable).'
-  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
-    HTTPResponseType]) -> None'
+  signature: 'on_response(request: PipelineRequest[HttpRequest | HttpRequest], response:
+    PipelineResponse[HttpRequest | HttpRequest, _HttpResponseBase | _HttpResponseBase])
+    -> None'
   parameters:
   - name: request
     description: The PipelineRequest object.
@@ -94,12 +112,6 @@ methods:
     isRequired: true
     types:
     - <xref:azure.core.pipeline.PipelineResponse>
-  - name: raw_data
-    description: Data to be processed.
-    isRequired: true
-  - name: content_type
-    description: How to parse if raw_data is a string/bytes.
-    isRequired: true
   exceptions:
   - type: JSONDecodeError
     description: If JSON is requested and parsing is impossible.
