@@ -8,6 +8,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cloudngfwbypaloaltonetworks
 ---
-# Azure Cloud NGFW by Palo Alto Networks SDK for Python - preview
-## Packages - preview
+# Azure Cloud NGFW by Palo Alto Networks SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](cloud-ngfw-by-palo-alto-networks-index.md)]
