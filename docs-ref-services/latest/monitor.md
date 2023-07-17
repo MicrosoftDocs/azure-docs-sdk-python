@@ -3,10 +3,10 @@ title: Azure Monitor SDK for Python
 description: Reference for Azure Monitor SDK for Python
 author: pvaneck
 ms.author: paulvaneck
-ms.data: 06/28/2023
+ms.date: 06/28/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: monitor
+ms.service: azure-monitor
 ---
 # Azure Monitoring libraries for python
 
@@ -14,7 +14,7 @@ ms.service: monitor
 
 Monitoring provides data to ensure that your application stays up and running in a healthy state. It also helps you to stave off potential problems or troubleshoot past ones. In addition, you can use monitoring data to gain deep insights about your application. That knowledge can help you to improve application performance or maintainability, or automate actions that would otherwise require manual intervention.
 
-Learn more about Azure Monitor [here](https://learn.microsoft.com/azure/azure-monitor/overview).
+To learn more about Azure Monitor, see [Azure Monitor overview](/azure/azure-monitor/overview).
 
 ## Packages - latest
 
