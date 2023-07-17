@@ -4,6 +4,7 @@ name: LROBasePolling
 fullName: azure.core.polling.base_polling.LROBasePolling
 module: azure.core.polling.base_polling
 inheritances:
+- azure.core.polling.base_polling._SansIOLROBasePolling
 - azure.core.polling._poller.PollingMethod
 summary: 'A base LRO poller.
 
@@ -19,8 +20,9 @@ summary: 'A base LRO poller.
 
   If your polling need are more specific, you could implement a PollingMethod directly'
 constructor:
-  syntax: LROBasePolling(timeout=30, lro_algorithms=None, lro_options=None, path_format_arguments=None,
-    **operation_config)
+  syntax: 'LROBasePolling(timeout: float = 30, lro_algorithms: List[LongRunningOperation]
+    | None = None, lro_options: Dict[str, Any] | None = None, path_format_arguments:
+    Dict[str, str] | None = None, **operation_config: Any)'
   parameters:
   - name: timeout
     defaultValue: '30'
@@ -31,63 +33,28 @@ constructor:
   - name: path_format_arguments
     defaultValue: None
 methods:
-- uid: azure.core.polling.base_polling.LROBasePolling.finished
-  name: finished
-  summary: 'Is this polling finished?
-
-    :rtype: bool'
-  signature: finished()
-- uid: azure.core.polling.base_polling.LROBasePolling.from_continuation_token
-  name: from_continuation_token
-  signature: 'from_continuation_token(continuation_token: str, **kwargs) -> Tuple[Any,
-    Any, Callable]'
-  parameters:
-  - name: continuation_token
-    isRequired: true
-- uid: azure.core.polling.base_polling.LROBasePolling.get_continuation_token
-  name: get_continuation_token
-  signature: get_continuation_token() -> str
-- uid: azure.core.polling.base_polling.LROBasePolling.initialize
-  name: initialize
-  summary: Set the initial status of this LRO.
-  signature: initialize(client, initial_response, deserialization_callback)
-  parameters:
-  - name: initial_response
-    description: The initial response of the poller
-    isRequired: true
-  - name: client
-    isRequired: true
-  - name: deserialization_callback
-    isRequired: true
-  exceptions:
-  - type: HttpResponseError if initial status is incorrect LRO state
 - uid: azure.core.polling.base_polling.LROBasePolling.request_status
   name: request_status
   summary: 'Do a simple GET to this status link.
 
 
     This method re-inject ''x-ms-client-request-id''.'
-  signature: request_status(status_link)
+  signature: 'request_status(status_link: str) -> PipelineResponse[HttpRequestTypeVar,
+    HttpResponseTypeVar]'
   parameters:
   - name: status_link
+    description: The URL to poll.
     isRequired: true
+    types:
+    - <xref:str>
   return:
+    description: The response of the status request.
     types:
     - <xref:azure.core.pipeline.PipelineResponse>
-- uid: azure.core.polling.base_polling.LROBasePolling.resource
-  name: resource
-  summary: Return the built resource.
-  signature: resource()
 - uid: azure.core.polling.base_polling.LROBasePolling.run
   name: run
-  signature: run()
-- uid: azure.core.polling.base_polling.LROBasePolling.status
-  name: status
-  summary: 'Return the current status as a string.
-
-    :rtype: str'
-  signature: status()
+  signature: run() -> None
 - uid: azure.core.polling.base_polling.LROBasePolling.update_status
   name: update_status
   summary: Update the current status of the LRO.
-  signature: update_status()
+  signature: update_status() -> None

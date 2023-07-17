@@ -29,8 +29,23 @@ constructor:
     types:
     - <xref:dict>[<xref:str,str>]
   - name: files
-    description: Files list.
+    description: 'Dictionary of `''name'': file-like-objects` (or `{''name'': file-tuple}`)
+      for multipart
+
+      encoding upload. `file-tuple` can be a 2-tuple `(''filename'', fileobj)`, 3-tuple
+
+      `(''filename'', fileobj, ''content_type'')` or a 4-tuple
+
+      `(''filename'', fileobj, ''content_type'', custom_headers)`, where `''content_type''`
+      is a string
+
+      defining the content type of the given file and `custom_headers`
+
+      a dict-like object containing additional headers to add for the file.'
     defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:tuple>[<xref:str>, <xref:IO>, <xref:str>, <xref:dict>]]
+    - <xref:dict>[<xref:str>, <xref:IO>]
   - name: data
     description: Body to be sent.
     defaultValue: None
@@ -79,6 +94,7 @@ methods:
   summary: Serialize this request using application/http spec.
   signature: serialize() -> bytes
   return:
+    description: The requests serialized as HTTP low-level message in bytes.
     types:
     - <xref:bytes>
 - uid: azure.core.pipeline.transport.HttpRequest.set_bytes_body
@@ -112,6 +128,8 @@ methods:
   - name: data
     description: A JSON serializable object
     isRequired: true
+    types:
+    - <xref:dict>
 - uid: azure.core.pipeline.transport.HttpRequest.set_multipart_mixed
   name: set_multipart_mixed
   summary: 'Set the part of a multipart/mixed.
@@ -133,6 +151,11 @@ methods:
     configuration.'
   signature: 'set_multipart_mixed(*requests: HttpRequest, **kwargs) -> None'
   parameters:
+  - name: requests
+    description: The requests to add to the multipart/mixed
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.transport.HttpRequest>
   - name: policies
     description: SansIOPolicy to apply at preparation time
     types:
@@ -141,9 +164,6 @@ methods:
     description: Optional boundary
     types:
     - <xref:str>
-  - name: requests
-    description: HttpRequests object
-    isRequired: true
 - uid: azure.core.pipeline.transport.HttpRequest.set_streamed_data_body
   name: set_streamed_data_body
   summary: Set a streamable data body.
@@ -181,6 +201,7 @@ attributes:
   name: body
   summary: Alias to data.
   return:
+    description: The body of the request.
     types:
     - <xref:bytes>
     - <xref:dict>
@@ -188,5 +209,6 @@ attributes:
   name: query
   summary: The query parameters of the request as a dict.
   return:
+    description: The query parameters of the request as a dict.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]

@@ -15,7 +15,9 @@ summary: 'A simple policy that sets the given request id in the header.
 
   operations, and additional request id can also be set dynamically per operation.'
 constructor:
-  syntax: RequestIdPolicy(**kwargs)
+  syntax: 'RequestIdPolicy(*, request_id: str | ~typing.Any = <class ''azure.core.pipeline.policies._universal._Unset''>,
+    auto_request_id: bool = True, request_id_header_name: str = ''x-ms-client-request-id'',
+    **kwargs: ~typing.Any)'
   parameters:
   - name: request_id
     description: The request id to be added into header.
@@ -25,11 +27,15 @@ constructor:
     description: Auto generates a unique request ID per call if true which is by default.
     types:
     - <xref:bool>
+  - name: request_id_header_name
+    description: Header name to use. Default is "x-ms-client-request-id".
+    types:
+    - <xref:str>
 examples:
 - "Configuring a request id policy.<!--[!code-python[Main](les\\test_example_sansio.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  79\\\\azure-core-1.27.1\\\\samples\\\\test_example_sansio.py\", \"xml:space\": \"\
+  79\\\\azure-core-1.28.0\\\\samples\\\\test_example_sansio.py\", \"xml:space\": \"\
   preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
   linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.policies\
   \ import HeadersPolicy\n\n   request_id_policy = RequestIdPolicy()\n   request_id_policy.set_request_id(\"\
@@ -44,7 +50,7 @@ methods:
   name: on_request
   summary: Updates with the given request id before sending the request to the next
     policy.
-  signature: 'on_request(request: PipelineRequest[HTTPRequestType]) -> None'
+  signature: 'on_request(request: PipelineRequest[HttpRequest | HttpRequest]) -> None'
   parameters:
   - name: request
     description: The PipelineRequest object
