@@ -9,7 +9,7 @@ ms.devlang: python
 ms.service: azure-monitor
 ---
 
-# Azure Monitoring libraries for python
+# Azure Monitor libraries for Python
 
 ## Overview
 
