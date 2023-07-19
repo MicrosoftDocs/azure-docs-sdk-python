@@ -81,6 +81,93 @@ variables:
   types:
   - <xref:str>
 methods:
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.acquire_lease
+  name: acquire_lease
+  summary: 'Requests a new lease. If the file or directory does not have an active
+    lease,
+
+    the DataLake service creates a lease on the file/directory and returns a new
+
+    lease ID.'
+  signature: 'async acquire_lease(lease_duration: int | None = -1, lease_id: str |
+    None = None, **kwargs) -> DataLakeLeaseClient'
+  parameters:
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change. Default is -1 (infinite lease).'
+    defaultValue: '-1'
+    types:
+    - <xref:int>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: A DataLakeLeaseClient object, that can be run in a context manager.
+    types:
+    - <xref:azure.storage.filedatalake.aio.DataLakeLeaseClient>
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close() -> None
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.create_directory
   name: create_directory
   summary: Create a new directory.
@@ -713,6 +800,136 @@ methods:
     - <xref:int>
   return:
     description: boolean
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.from_connection_string
+  name: from_connection_string
+  summary: Create DataLakeDirectoryClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, file_system_name: str, directory_name:
+    str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_system_name
+    description: The name of file system to interact with.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The name of directory to interact with. The directory is under file
+      system.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      Credentials provided here will take precedence over those in the connection
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: a DataLakeDirectoryClient
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_access_control
+  name: get_access_control
+  summary: Get the owner, group, permissions, or access control list for a path.
+  signature: 'async get_access_control(upn: bool | None = None, **kwargs) -> Dict[str,
+    Any]'
+  parameters:
+  - name: upn
+    description: 'Optional. Valid only when Hierarchical Namespace is
+
+      enabled for the account. If "true", the user identity values returned
+
+      in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be
+
+      transformed from Azure Active Directory Object IDs to User Principal
+
+      Names.  If "false", the values will be returned as Azure Active
+
+      Directory Object IDs. The default value is false. Note that group and
+
+      application Object IDs are not translated because they do not have
+
+      unique friendly names.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: lease
+    description: 'Required if the file/directory has an active lease. Value can be
+      a LeaseClient object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.aio.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  - name: response dict
+    description: response dict.
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_directory_properties
   name: get_directory_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
@@ -830,6 +1047,93 @@ methods:
     description: A DataLakeDirectoryClient.
     types:
     - <xref:azure.storage.filedatalake.aio.DataLakeDirectoryClient>
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.remove_access_control_recursive
+  name: remove_access_control_recursive
+  summary: Removes the Access Control on a path and sub-paths.
+  signature: 'async remove_access_control_recursive(acl: str, **kwargs: Any) -> AccessControlChangeResult'
+  parameters:
+  - name: acl
+    description: 'Removes POSIX access control rights on files and directories.
+
+      The value is a comma-separated list of access control entries. Each
+
+      access control entry (ACE) consists of a scope, a type, and a user or
+
+      group identifier in the format "[scope:][type]:[id]".'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: progress_hook
+    description: 'Callback where the caller can track progress of the operation
+
+      as well as collect paths that failed to change Access Control.'
+    types:
+    - <xref:func>(<xref:azure.storage.filedatalake.AccessControlChanges>)
+  - name: continuation_token
+    description: Optional continuation token that can be used to resume previously
+      stopped operation.
+    types:
+    - <xref:str>
+  - name: batch_size
+    description: 'Optional. If data set size exceeds batch size then operation will
+      be split into multiple
+
+      requests so that progress can be tracked. Batch size should be between 1 and
+      2000.
+
+      The default when unspecified is 2000.'
+    types:
+    - <xref:int>
+  - name: max_batches
+    description: 'Optional. Defines maximum number of batches that single change Access
+      Control operation can execute.
+
+      If maximum is reached before all sub-paths are processed,
+
+      then continuation token can be used to resume operation.
+
+      Empty value indicates that maximum number of batches in unbound and operation
+      continues till end.'
+    types:
+    - <xref:int>
+  - name: continue_on_failure
+    description: 'If set to False, the operation will terminate quickly on encountering
+      user errors (4XX).
+
+      If True, the operation will ignore user errors and proceed with the operation
+      on other sub-entities of
+
+      the directory.
+
+      Continuation token will only be returned when continue_on_failure is True in
+      case of user errors.
+
+      If not set the default value is False for this.'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'A summary of the recursive operations, including the count of successes
+      and failures,
+
+      as well as a continuation token in case the operation was terminated prematurely.'
+    types:
+    - <xref:<xref::~azure.storage.filedatalake.AccessControlChangeResult`>>
+  exceptions:
+  - type: azure.core.exceptions.AzureError
+    description: User can restart the operation using continuation_token field of
+      AzureError if the token is available.
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.rename_directory
   name: rename_directory
   summary: Rename the source directory.
@@ -943,3 +1247,488 @@ methods:
     - <xref:int>
   return:
     description: DataLakeDirectoryClient
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_access_control
+  name: set_access_control
+  summary: Set the owner, group, permissions, or access control list for a path.
+  signature: 'async set_access_control(owner: str | None = None, group: str | None
+    = None, permissions: str | None = None, acl: str | None = None, **kwargs) -> Dict[str,
+    str | datetime]'
+  parameters:
+  - name: owner
+    description: Optional. The owner of the file or directory.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: group
+    description: Optional. The owning group of the file or directory.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: permissions
+    description: 'Optional and only valid if Hierarchical Namespace
+
+      is enabled for the account. Sets POSIX access permissions for the file
+
+      owner, the file owning group, and others. Each class may be granted
+
+      read, write, or execute permission.  The sticky bit is also supported.
+
+      Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are
+
+      supported.
+
+      permissions and acl are mutually exclusive.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories.
+
+      The value is a comma-separated list of access control entries. Each
+
+      access control entry (ACE) consists of a scope, a type, a user or
+
+      group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".
+
+      permissions and acl are mutually exclusive.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: lease
+    description: 'Required if the file/directory has an active lease. Value can be
+      a LeaseClient object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.filedatalake.aio.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  - name: response dict
+    description: response dict (Etag and last modified).
+    types:
+    - <xref:<xref:Etag and last modified>>
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_access_control_recursive
+  name: set_access_control_recursive
+  summary: Sets the Access Control on a path and sub-paths.
+  signature: 'async set_access_control_recursive(acl: str, **kwargs: Any) -> AccessControlChangeResult'
+  parameters:
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories.
+
+      The value is a comma-separated list of access control entries. Each
+
+      access control entry (ACE) consists of a scope, a type, a user or
+
+      group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: progress_hook
+    description: 'Callback where the caller can track progress of the operation
+
+      as well as collect paths that failed to change Access Control.'
+    types:
+    - <xref:func>(<xref:azure.storage.filedatalake.AccessControlChanges>)
+  - name: continuation_token
+    description: Optional continuation token that can be used to resume previously
+      stopped operation.
+    types:
+    - <xref:str>
+  - name: batch_size
+    description: 'Optional. If data set size exceeds batch size then operation will
+      be split into multiple
+
+      requests so that progress can be tracked. Batch size should be between 1 and
+      2000.
+
+      The default when unspecified is 2000.'
+    types:
+    - <xref:int>
+  - name: max_batches
+    description: 'Optional. Defines maximum number of batches that single change Access
+      Control operation can execute.
+
+      If maximum is reached before all sub-paths are processed,
+
+      then continuation token can be used to resume operation.
+
+      Empty value indicates that maximum number of batches in unbound and operation
+      continues till end.'
+    types:
+    - <xref:int>
+  - name: continue_on_failure
+    description: 'If set to False, the operation will terminate quickly on encountering
+      user errors (4XX).
+
+      If True, the operation will ignore user errors and proceed with the operation
+      on other sub-entities of
+
+      the directory.
+
+      Continuation token will only be returned when continue_on_failure is True in
+      case of user errors.
+
+      If not set the default value is False for this.'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'A summary of the recursive operations, including the count of successes
+      and failures,
+
+      as well as a continuation token in case the operation was terminated prematurely.'
+    types:
+    - <xref:<xref::~azure.storage.filedatalake.AccessControlChangeResult`>>
+  exceptions:
+  - type: azure.core.exceptions.AzureError
+    description: User can restart the operation using continuation_token field of
+      AzureError if the token is available.
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_http_headers
+  name: set_http_headers
+  summary: 'Sets system properties on the file or directory.
+
+
+    If one property is set for the content_settings, all properties will be overridden.'
+  signature: 'async set_http_headers(content_settings: ContentSettings | None = None,
+    **kwargs) -> Dict[str, Any]'
+  parameters:
+  - name: content_settings
+    description: ContentSettings object used to set file/directory properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.filedatalake.ContentSettings>
+  - name: lease
+    description: 'If specified, set_file_system_metadata only succeeds if the
+
+      file system''s lease is active and matches this ID.'
+    types:
+    - <xref:azure.storage.filedatalake.aio.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: file/directory-updated property dict (Etag and last modified)
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Any>]
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.set_metadata
+  name: set_metadata
+  summary: 'Sets one or more user-defined name-value pairs for the specified
+
+    file system. Each call to this operation replaces all existing metadata
+
+    attached to the file system. To remove all metadata from the file system,
+
+    call this operation with no metadata dict.'
+  signature: 'async set_metadata(metadata: Dict[str, str], **kwargs) -> Dict[str,
+    str | datetime]'
+  parameters:
+  - name: metadata
+    description: 'A dict containing name-value pairs to associate with the file system
+      as
+
+      metadata. Example: {''category'':''test''}'
+    isRequired: true
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: lease
+    description: 'If specified, set_file_system_metadata only succeeds if the
+
+      file system''s lease is active and matches this ID.'
+    types:
+    - <xref:azure.storage.filedatalake.aio.DataLakeLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: file system-updated property dict (Etag and last modified).
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.update_access_control_recursive
+  name: update_access_control_recursive
+  summary: Modifies the Access Control on a path and sub-paths.
+  signature: 'async update_access_control_recursive(acl: str, **kwargs: Any) -> AccessControlChangeResult'
+  parameters:
+  - name: acl
+    description: 'Modifies POSIX access control rights on files and directories.
+
+      The value is a comma-separated list of access control entries. Each
+
+      access control entry (ACE) consists of a scope, a type, a user or
+
+      group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: progress_hook
+    description: 'Callback where the caller can track progress of the operation
+
+      as well as collect paths that failed to change Access Control.'
+    types:
+    - <xref:func>(<xref:azure.storage.filedatalake.AccessControlChanges>)
+  - name: continuation_token
+    description: Optional continuation token that can be used to resume previously
+      stopped operation.
+    types:
+    - <xref:str>
+  - name: batch_size
+    description: 'Optional. If data set size exceeds batch size then operation will
+      be split into multiple
+
+      requests so that progress can be tracked. Batch size should be between 1 and
+      2000.
+
+      The default when unspecified is 2000.'
+    types:
+    - <xref:int>
+  - name: max_batches
+    description: 'Optional. Defines maximum number of batches that single,
+
+      change Access Control operation can execute.
+
+      If maximum is reached before all sub-paths are processed,
+
+      then continuation token can be used to resume operation.
+
+      Empty value indicates that maximum number of batches in unbound and operation
+      continues till end.'
+    types:
+    - <xref:int>
+  - name: continue_on_failure
+    description: 'If set to False, the operation will terminate quickly on encountering
+      user errors (4XX).
+
+      If True, the operation will ignore user errors and proceed with the operation
+      on other sub-entities of
+
+      the directory.
+
+      Continuation token will only be returned when continue_on_failure is True in
+      case of user errors.
+
+      If not set the default value is False for this.'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'A summary of the recursive operations, including the count of successes
+      and failures,
+
+      as well as a continuation token in case the operation was terminated prematurely.'
+    types:
+    - <xref:<xref::~azure.storage.filedatalake.AccessControlChangeResult`>>
+  exceptions:
+  - type: azure.core.exceptions.AzureError
+    description: User can restart the operation using continuation_token field of
+      AzureError if the token is available.
+attributes:
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.aio.DataLakeDirectoryClient.location_mode>.'

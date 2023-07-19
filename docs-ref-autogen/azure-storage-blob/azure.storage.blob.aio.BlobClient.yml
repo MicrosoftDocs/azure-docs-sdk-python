@@ -18,7 +18,7 @@ constructor:
     description: 'The URI to the storage account. In order to create a client given
       the full URI to the blob,
 
-      use the <xref:azure.storage.blob.aio.from_blob_url> classmethod.'
+      use the <xref:azure.storage.blob.aio.BlobClient.from_blob_url> classmethod.'
     isRequired: true
     types:
     - <xref:str>
@@ -710,6 +710,12 @@ methods:
     description: Blob-updated property dict (Etag and last modified).
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
+- uid: azure.storage.blob.aio.BlobClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close()
 - uid: azure.storage.blob.aio.BlobClient.commit_block_list
   name: commit_block_list
   summary: 'The Commit Block List operation writes a blob by specifying the list of
@@ -1646,6 +1652,118 @@ methods:
     - <xref:int>
   return:
     description: boolean
+- uid: azure.storage.blob.aio.BlobClient.from_blob_url
+  name: from_blob_url
+  summary: Create BlobClient from a blob url. This doesn't support customized blob
+    url with '/' in blob name.
+  signature: 'from_blob_url(blob_url: str, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, snapshot: str | Dict[str,
+    Any] | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: blob_url
+    description: 'The full endpoint URL to the Blob, including SAS token and snapshot
+      if used. This could be
+
+      either the primary endpoint, or the secondary endpoint depending on the current
+      *location_mode*.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: snapshot
+    description: 'The optional blob snapshot on which to operate. This can be the
+      snapshot ID string
+
+      or the response returned from <xref:azure.storage.blob.aio.BlobClient.create_snapshot>.
+      If specified, this will override
+
+      the snapshot in the url.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A Blob client.
+    types:
+    - <xref:azure.storage.blob.BlobClient>
+- uid: azure.storage.blob.aio.BlobClient.from_connection_string
+  name: from_connection_string
+  summary: Create BlobClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, container_name: str, blob_name:
+    str, snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str,
+    str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
+    None, **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: container_name
+    description: The container name for the blob.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: blob_name
+    description: The name of the blob with which to interact.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: 'The optional blob snapshot on which to operate. This can be the
+      snapshot ID string
+
+      or the response returned from <xref:azure.storage.blob.aio.BlobClient.create_snapshot>.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      Credentials provided here will take precedence over those in the connection
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A Blob client.
+    types:
+    - <xref:azure.storage.blob.BlobClient>
 - uid: azure.storage.blob.aio.BlobClient.get_account_information
   name: get_account_information
   summary: 'Gets information related to the storage account in which the blob resides.
@@ -2221,6 +2339,140 @@ methods:
     description: An iterable (auto-paging) of PageRange.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.blob.PageRange>]
+- uid: azure.storage.blob.aio.BlobClient.query_blob
+  name: query_blob
+  summary: 'Enables users to select/project on blob/or blob snapshot data by providing
+    simple query expressions.
+
+    This operations returns a BlobQueryReader, users need to use readall() or readinto()
+    to get query data.'
+  signature: 'query_blob(query_expression: str, **kwargs: Any) -> BlobQueryReader'
+  parameters:
+  - name: query_expression
+    description: Required. a query statement.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: on_error
+    description: A function to be called on any processing errors returned by the
+      service.
+    types:
+    - <xref:Callable>[<xref:azure.storage.blob.BlobQueryError>]
+  - name: blob_format
+    description: 'Optional. Defines the serialization of the data currently stored
+      in the blob. The default is to
+
+      treat the blob data as CSV data formatted in the default dialect. This can be
+      overridden with
+
+      a custom DelimitedTextDialect, or DelimitedJsonDialect or "ParquetDialect" (passed
+      as a string or enum).
+
+      These dialects can be passed through their respective classes, the QuickQueryDialect
+      enum or as a string'
+    types:
+    - <xref:azure.storage.blob.DelimitedTextDialect>
+    - <xref:azure.storage.blob.DelimitedJsonDialect>
+    - <xref:azure.storage.blob.QuickQueryDialect>
+    - <xref:str>
+  - name: output_format
+    description: 'Optional. Defines the output serialization for the data stream.
+      By default the data will be returned
+
+      as it is represented in the blob (Parquet formats default to DelimitedTextDialect).
+
+      By providing an output format, the blob data will be reformatted according to
+      that profile.
+
+      This value can be a DelimitedTextDialect or a DelimitedJsonDialect or ArrowDialect.
+
+      These dialects can be passed through their respective classes, the QuickQueryDialect
+      enum or as a string'
+    types:
+    - <xref:azure.storage.blob.DelimitedTextDialect>
+    - <xref:azure.storage.blob.DelimitedJsonDialect>
+    - <xref:list>[<xref:azure.storage.blob.ArrowDialect>]
+    - <xref:azure.storage.blob.QuickQueryDialect>
+    - <xref:str>
+  - name: lease
+    description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    types:
+    - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: A streaming object (BlobQueryReader)
+    types:
+    - <xref:azure.storage.blob.BlobQueryReader>
 - uid: azure.storage.blob.aio.BlobClient.resize_blob
   name: resize_blob
   summary: 'Resizes a page blob to the specified size.
@@ -4331,3 +4583,47 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+attributes:
+- uid: azure.storage.blob.aio.BlobClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.blob.aio.BlobClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.blob.aio.BlobClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.blob.aio.BlobClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.blob.aio.BlobClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.blob.aio.BlobClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.blob.aio.BlobClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.blob.aio.BlobClient.location_mode>.'

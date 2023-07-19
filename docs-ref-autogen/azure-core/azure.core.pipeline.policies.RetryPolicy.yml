@@ -101,6 +101,154 @@ examples:
   \       retry_status=5,\n       retry_backoff_factor=0.5,\n       retry_backoff_max=120,\n\
   \       retry_on_methods=[\"GET\"],\n   )\n\n   ````\n"
 methods:
+- uid: azure.core.pipeline.policies.RetryPolicy.configure_retries
+  name: configure_retries
+  summary: Configures the retry settings.
+  signature: configure_retries(options)
+  parameters:
+  - name: options
+    description: keyword arguments from context.
+    isRequired: true
+    types:
+    - <xref:dict>
+  return:
+    description: A dict containing settings and history for retries.
+    types:
+    - <xref:dict>
+- uid: azure.core.pipeline.policies.RetryPolicy.get_backoff_time
+  name: get_backoff_time
+  summary: Returns the current backoff time.
+  signature: get_backoff_time(settings)
+  parameters:
+  - name: settings
+    description: The retry settings.
+    isRequired: true
+    types:
+    - <xref:dict>
+  return:
+    description: The current backoff value.
+    types:
+    - <xref:float>
+- uid: azure.core.pipeline.policies.RetryPolicy.get_retry_after
+  name: get_retry_after
+  summary: Get the value of Retry-After in seconds.
+  signature: get_retry_after(response)
+  parameters:
+  - name: response
+    description: The PipelineResponse object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  return:
+    description: Value of Retry-After in seconds.
+    types:
+    - <xref:float>
+    - <xref:None>
+- uid: azure.core.pipeline.policies.RetryPolicy.increment
+  name: increment
+  summary: Increment the retry counters.
+  signature: increment(settings, response=None, error=None)
+  parameters:
+  - name: settings
+    description: The retry settings.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: response
+    description: A pipeline response object.
+    defaultValue: None
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  - name: error
+    description: 'An error encountered during the request, or
+
+      None if the response was received successfully.'
+    defaultValue: None
+    types:
+    - <xref:azure.core.exceptions.AzureError>
+  return:
+    description: 'Whether any retry attempt is available
+
+      True if more retry attempts available, False otherwise'
+    types:
+    - <xref:bool>
+- uid: azure.core.pipeline.policies.RetryPolicy.is_exhausted
+  name: is_exhausted
+  summary: Checks if any retries left.
+  signature: is_exhausted(settings)
+  parameters:
+  - name: settings
+    description: the retry settings
+    isRequired: true
+    types:
+    - <xref:dict>
+  return:
+    description: False if have more retries. True if retries exhausted.
+    types:
+    - <xref:bool>
+- uid: azure.core.pipeline.policies.RetryPolicy.is_retry
+  name: is_retry
+  summary: 'Checks if method/status code is retryable.
+
+
+    Based on allowlists and control variables such as the number of
+
+    total retries to allow, whether to respect the Retry-After header,
+
+    whether this header is present, and whether the returned status
+
+    code is on the list of status codes to be retried upon on the
+
+    presence of the aforementioned header.
+
+
+    The behavior is:
+
+    -       If status_code < 400: don''t retry
+
+    -       Else if Retry-After present: retry
+
+    -       Else: retry based on the safe status code list ([408, 429, 500, 502, 503,
+    504])'
+  signature: is_retry(settings, response)
+  parameters:
+  - name: settings
+    description: The retry settings.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: response
+    description: The PipelineResponse object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  return:
+    description: True if method/status code is retryable. False if not retryable.
+    types:
+    - <xref:bool>
+- uid: azure.core.pipeline.policies.RetryPolicy.no_retries
+  name: no_retries
+  summary: Disable retries.
+  signature: no_retries()
+  return:
+    description: A retry policy with retries disabled.
+    types:
+    - <xref:azure.core.pipeline.policies.RetryPolicy>
+    - <xref:azure.core.pipeline.policies.AsyncRetryPolicy>
+- uid: azure.core.pipeline.policies.RetryPolicy.parse_retry_after
+  name: parse_retry_after
+  summary: Helper to parse Retry-After and get value in seconds.
+  signature: 'parse_retry_after(retry_after: str) -> float'
+  parameters:
+  - name: retry_after
+    description: Retry-After header
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Value of Retry-After in seconds.
+    types:
+    - <xref:float>
 - uid: azure.core.pipeline.policies.RetryPolicy.send
   name: send
   summary: Sends the PipelineRequest object to the next policy. Uses retry settings
@@ -148,3 +296,28 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.core.pipeline.PipelineResponse>
+- uid: azure.core.pipeline.policies.RetryPolicy.update_context
+  name: update_context
+  summary: Updates retry history in pipeline context.
+  signature: update_context(context, retry_settings)
+  parameters:
+  - name: context
+    description: The pipeline context.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineContext>
+  - name: retry_settings
+    description: The retry settings.
+    isRequired: true
+    types:
+    - <xref:dict>
+attributes:
+- uid: azure.core.pipeline.policies.RetryPolicy.BACKOFF_MAX
+  name: BACKOFF_MAX
+  summary: Maximum backoff time.
+  signature: BACKOFF_MAX = 120
+- uid: azure.core.pipeline.policies.RetryPolicy.next
+  name: next
+  summary: Pointer to the next policy or a transport (wrapped as a policy). Will be
+    set at pipeline creation.
+  signature: 'next: HTTPPolicy[HTTPRequestTypeVar, HTTPResponseTypeVar]'
