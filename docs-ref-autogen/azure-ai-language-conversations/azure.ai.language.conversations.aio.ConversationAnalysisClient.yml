@@ -47,3 +47,261 @@ constructor:
       Retry-After header is present.'
     types:
     - <xref:int>
+methods:
+- uid: azure.ai.language.conversations.aio.ConversationAnalysisClient.analyze_conversation
+  name: analyze_conversation
+  summary: 'Analyzes the input conversation utterance.
+
+
+    See
+
+    [https://learn.microsoft.com/rest/api/language/2023-04-01/conversation-analysis-runtime/analyze-conversation](https://learn.microsoft.com/rest/api/language/2023-04-01/conversation-analysis-runtime/analyze-conversation)
+
+    for more information.'
+  signature: 'async analyze_conversation(task: MutableMapping[str, Any] | IO, **kwargs:
+    Any) -> MutableMapping[str, Any]'
+  parameters:
+  - name: task
+    description: 'A single conversational task to execute. Is either a JSON type or
+      a IO type.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:IO>
+  - name: content_type
+    description: 'Body Parameter content-type. Known values are: ''application/json''.
+
+      Default value is None.'
+    types:
+    - <xref:str>
+  return:
+    description: JSON object
+    types:
+    - <xref:JSON>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The input is polymorphic. The following are possible polymorphic inputs\
+    \ based off\n     discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"Conversation\":\n   analyze_conversation_task = {\n       \"analysisInput\"\
+    : {\n           \"conversationItem\": {\n               \"id\": \"str\",  # The\
+    \ ID of a conversation item. Required.\n               \"participantId\": \"str\"\
+    ,  # The participant ID of a\n                 conversation item. Required.\n\
+    \               \"language\": \"str\",  # Optional. The override language of a\n\
+    \                 conversation item in BCP 47 language representation.\n     \
+    \          \"modality\": \"str\",  # Optional. Enumeration of supported\n    \
+    \             conversational modalities. Known values are: \"transcript\" and\
+    \ \"text\".\n               \"role\": \"str\"  # Optional. Role of the participant.\
+    \ Known\n                 values are: \"agent\", \"customer\", and \"generic\"\
+    .\n           }\n       },\n       \"kind\": \"Conversation\",\n       \"parameters\"\
+    : {\n           \"deploymentName\": \"str\",  # The name of the deployment to\
+    \ use.\n             Required.\n           \"projectName\": \"str\",  # The name\
+    \ of the project to use. Required.\n           \"directTarget\": \"str\",  # Optional.\
+    \ The name of a target project to\n             forward the request to.\n    \
+    \       \"isLoggingEnabled\": bool,  # Optional. If true, the service will keep\n\
+    \             the query for further review.\n           \"stringIndexType\": \"\
+    TextElements_v8\",  # Optional. Default value is\n             \"TextElements_v8\"\
+    . Specifies the method used to interpret string offsets. Set\n             to\
+    \ \"UnicodeCodePoint\" for Python strings. Known values are:\n             \"\
+    TextElements_v8\", \"UnicodeCodePoint\", and \"Utf16CodeUnit\".\n           \"\
+    targetProjectParameters\": {\n               \"str\": analysis_parameters\n  \
+    \         },\n           \"verbose\": bool  # Optional. If true, the service will\
+    \ return more\n             detailed information in the response.\n       }\n\
+    \   }\n\n   # JSON input template you can fill out and use as your body input.\n\
+    \   task = analyze_conversation_task\n   # The response is polymorphic. The following\
+    \ are possible polymorphic responses based\n     off discriminator \"kind\":\n\
+    \n   # JSON input template for discriminator value \"ConversationResult\":\n \
+    \  analyze_conversation_task_result = {\n       \"kind\": \"ConversationResult\"\
+    ,\n       \"result\": {\n           \"prediction\": base_prediction,\n       \
+    \    \"query\": \"str\",  # The conversation utterance given by the caller.\n\
+    \             Required.\n           \"detectedLanguage\": \"str\"  # Optional.\
+    \ The system detected language\n             for the query in BCP 47 language\
+    \ representation..\n       }\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Conversation\":\n   base_prediction = {\n       \"entities\": [\n  \
+    \         {\n               \"category\": \"str\",  # The entity category. Required.\n\
+    \               \"confidenceScore\": 0.0,  # The entity confidence score.\n  \
+    \               Required.\n               \"length\": 0,  # The length of the\
+    \ text. Required.\n               \"offset\": 0,  # The starting index of this\
+    \ entity in the\n                 query. Required.\n               \"text\": \"\
+    str\",  # The predicted entity text. Required.\n               \"extraInformation\"\
+    : [\n                   base_extra_information\n               ],\n          \
+    \     \"resolutions\": [\n                   base_resolution\n               ]\n\
+    \           }\n       ],\n       \"intents\": [\n           {\n              \
+    \ \"category\": \"str\",  # A predicted class. Required.\n               \"confidenceScore\"\
+    : 0.0  # The confidence score of the class\n                 from 0.0 to 1.0.\
+    \ Required.\n           }\n       ],\n       \"projectKind\": \"Conversation\"\
+    ,\n       \"topIntent\": \"str\"  # Optional. The intent with the highest score.\n\
+    \   }\n\n   # JSON input template for discriminator value \"Orchestration\":\n\
+    \   base_prediction = {\n       \"intents\": {\n           \"str\": target_intent_result\n\
+    \       },\n       \"projectKind\": \"Orchestration\",\n       \"topIntent\":\
+    \ \"str\"  # Optional. The intent with the highest score.\n   }\n\n   # response\
+    \ body for status code(s): 200\n   response == analyze_conversation_task_result\n\
+    \   ````\n"
+- uid: azure.ai.language.conversations.aio.ConversationAnalysisClient.begin_conversation_analysis
+  name: begin_conversation_analysis
+  summary: 'Submit analysis job for conversations.
+
+
+    Submit a collection of conversations for analysis. Specify one or more unique
+    tasks to be
+
+    executed.
+
+
+    See [https://learn.microsoft.com/rest/api/language/2023-04-01/analyze-conversation/submit-job](https://learn.microsoft.com/rest/api/language/2023-04-01/analyze-conversation/submit-job)
+
+    for more information.'
+  signature: 'async begin_conversation_analysis(task: MutableMapping[str, Any] | IO,
+    **kwargs: Any) -> AsyncLROPoller[MutableMapping[str, Any]]'
+  parameters:
+  - name: task
+    description: 'Collection of conversations to analyze and one or more tasks to
+      execute. Is either
+
+      a JSON type or a IO type. Required.'
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:IO>
+  - name: content_type
+    description: 'Body Parameter content-type. Known values are: ''application/json''.
+
+      Default value is None.'
+    types:
+    - <xref:str>
+  - name: continuation_token
+    description: A continuation token to restart a poller from a saved state.
+    types:
+    - <xref:str>
+  - name: polling
+    description: 'By default, your polling method will be AsyncLROBasePolling. Pass
+      in False
+
+      for this operation to not poll, or pass in your own initialized polling object
+      for a personal
+
+      polling strategy.'
+    types:
+    - <xref:bool>
+    - <xref:azure.core.polling.AsyncPollingMethod>
+  - name: polling_interval
+    description: 'Default waiting time between two polls for LRO operations if no
+
+      Retry-After header is present.'
+    types:
+    - <xref:int>
+  return:
+    description: An instance of AsyncLROPoller that returns JSON object
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:JSON>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   task\
+    \ = {\n       \"analysisInput\": {\n           \"conversations\": [\n        \
+    \       conversation\n           ]\n       },\n       \"tasks\": [\n         \
+    \  analyze_conversation_lro_task\n       ],\n       \"displayName\": \"str\" \
+    \ # Optional. Display name for the analysis job.\n   }\n\n   # response body for\
+    \ status code(s): 200\n   response == {\n       \"createdDateTime\": \"2020-02-20\
+    \ 00:00:00\",  # Required.\n       \"jobId\": \"str\",  # Required.\n       \"\
+    lastUpdatedDateTime\": \"2020-02-20 00:00:00\",  # Required.\n       \"status\"\
+    : \"str\",  # The status of the task at the mentioned last update time.\n    \
+    \     Required. Known values are: \"notStarted\", \"running\", \"succeeded\",\
+    \ \"failed\",\n         \"cancelled\", \"cancelling\", and \"partiallyCompleted\"\
+    .\n       \"tasks\": {\n           \"completed\": 0,  # Count of tasks that finished\
+    \ successfully.\n             Required.\n           \"failed\": 0,  # Count of\
+    \ tasks that failed. Required.\n           \"inProgress\": 0,  # Count of tasks\
+    \ that are currently in progress.\n             Required.\n           \"total\"\
+    : 0,  # Total count of tasks submitted as part of the job.\n             Required.\n\
+    \           \"items\": [\n               analyze_conversation_job_result\n   \
+    \        ]\n       },\n       \"displayName\": \"str\",  # Optional.\n       \"\
+    errors\": [\n           {\n               \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n                 Required. Known values are: \"InvalidRequest\"\
+    , \"InvalidArgument\",\n                 \"Unauthorized\", \"Forbidden\", \"NotFound\"\
+    , \"ProjectNotFound\",\n                 \"OperationNotFound\", \"AzureCognitiveSearchNotFound\"\
+    ,\n                 \"AzureCognitiveSearchIndexNotFound\", \"TooManyRequests\"\
+    ,\n                 \"AzureCognitiveSearchThrottling\",\n                 \"AzureCognitiveSearchIndexLimitReached\"\
+    , \"InternalServerError\",\n                 \"ServiceUnavailable\", \"Timeout\"\
+    , \"QuotaExceeded\", \"Conflict\", and\n                 \"Warning\".\n      \
+    \         \"message\": \"str\",  # A human-readable representation of the\n  \
+    \               error. Required.\n               \"details\": [\n            \
+    \       ...\n               ],\n               \"innererror\": {\n           \
+    \        \"code\": \"str\",  # One of a server-defined set of\n              \
+    \       error codes. Required. Known values are: \"InvalidRequest\",\n       \
+    \              \"InvalidParameterValue\", \"KnowledgeBaseNotFound\",\n       \
+    \              \"AzureCognitiveSearchNotFound\", \"AzureCognitiveSearchThrottling\"\
+    ,\n                     \"ExtractionFailure\", \"InvalidRequestBodyFormat\", \"\
+    EmptyRequest\",\n                     \"MissingInputDocuments\", \"InvalidDocument\"\
+    , \"ModelVersionIncorrect\",\n                     \"InvalidDocumentBatch\", \"\
+    UnsupportedLanguageCode\", and\n                     \"InvalidCountryHint\".\n\
+    \                   \"message\": \"str\",  # Error message. Required.\n      \
+    \             \"details\": {\n                       \"str\": \"str\"  # Optional.\
+    \ Error details.\n                   },\n                   \"innererror\": ...,\n\
+    \                   \"target\": \"str\"  # Optional. Error target.\n         \
+    \      },\n               \"target\": \"str\"  # Optional. The target of the error.\n\
+    \           }\n       ],\n       \"expirationDateTime\": \"2020-02-20 00:00:00\"\
+    ,  # Optional.\n       \"nextLink\": \"str\",  # Optional.\n       \"statistics\"\
+    : {\n           \"conversationsCount\": 0,  # Number of conversations submitted\
+    \ in the\n             request. Required.\n           \"documentsCount\": 0, \
+    \ # Number of documents submitted in the request.\n             Required.\n  \
+    \         \"erroneousConversationsCount\": 0,  # Number of invalid documents.\n\
+    \             This includes documents that are empty, over the size limit, or\
+    \ in\n             unsupported languages. Required.\n           \"erroneousDocumentsCount\"\
+    : 0,  # Number of invalid documents. This\n             includes empty, over-size\
+    \ limit or non-supported languages documents.\n             Required.\n      \
+    \     \"transactionsCount\": 0,  # Number of transactions for the request.\n \
+    \            Required.\n           \"validConversationsCount\": 0,  # Number of\
+    \ conversation documents.\n             This excludes documents that are empty,\
+    \ over the size limit, or in\n             unsupported languages. Required.\n\
+    \           \"validDocumentsCount\": 0  # Number of valid documents. This excludes\n\
+    \             empty, over-size limit or non-supported languages documents. Required.\n\
+    \       }\n   }\n   ````\n"
+- uid: azure.ai.language.conversations.aio.ConversationAnalysisClient.close
+  name: close
+  signature: async close() -> None
+- uid: azure.ai.language.conversations.aio.ConversationAnalysisClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
