@@ -8,6 +8,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: managednetworkfabric
 ---
-# Azure Managednetworkfabric SDK for Python - preview
-## Packages - preview
+# Azure Managednetworkfabric SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](managednetworkfabric-index.md)]
