@@ -1,0 +1,920 @@
+### YamlMime:PythonClass
+uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient
+name: JobRouterAdministrationClient
+fullName: azure.communication.jobrouter.aio.JobRouterAdministrationClient
+module: azure.communication.jobrouter.aio
+inheritances:
+- builtins.object
+summary: 'A client to interact with the AzureCommunicationService JobRouter service.
+
+
+  This client provides operations to create, update, list and delete the following
+  entities: classification policy,
+
+  exception policy, distribution policy and queue.'
+constructor:
+  syntax: 'JobRouterAdministrationClient(endpoint: str, credential: AzureKeyCredential,
+    **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: The endpoint of the Azure Communication resource.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: The credentials with which to authenticate
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+  - name: api_version
+    description: 'Azure Communication Job Router API version.
+
+      Default value is "2022-07-18-preview".
+
+      Note that overriding this default value may result in unsupported behavior.'
+methods:
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.close
+  name: close
+  signature: async close() -> None
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.create_classification_policy
+  name: create_classification_policy
+  summary: Create a classification policy
+  signature: 'async create_classification_policy(classification_policy_id: str, classification_policy:
+    ClassificationPolicy, **kwargs: Any) -> ClassificationPolicy'
+  parameters:
+  - name: classification_policy_id
+    description: Id of the classification policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: classification_policy
+    description: An instance of Classification policy.
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.ClassificationPolicy>
+  return:
+    description: Instance of ClassificationPolicy
+    types:
+    - <xref:azure.communication.jobrouter.ClassificationPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to create a classification policy<!--[!code-python[Main](les\\\
+    classification_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\classification_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       ClassificationPolicy,\n       StaticRouterRule,\n       ExpressionRouterRule,\n\
+    \       StaticQueueSelectorAttachment,\n       ConditionalQueueSelectorAttachment,\n\
+    \       RouterQueueSelector,\n       ConditionalWorkerSelectorAttachment,\n  \
+    \     RouterWorkerSelector,\n       LabelOperator\n   )\n\n   # set `connection_string`\
+    \ to an existing ACS endpoint\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
+    )\n\n   async with router_admin_client:\n       classification_policy: ClassificationPolicy\
+    \ = await router_admin_client.create_classification_policy(\n           classification_policy_id\
+    \ = policy_id,\n           classification_policy = ClassificationPolicy(\n   \
+    \            prioritization_rule = StaticRouterRule(value = 10),\n           \
+    \    queue_selectors = [\n                   StaticQueueSelectorAttachment(\n\
+    \                       queue_selector = RouterQueueSelector(\n              \
+    \             key = \"Region\",\n                           label_operator = LabelOperator.EQUAL,\n\
+    \                           value = \"NA\"\n                       )\n       \
+    \            ),\n                   ConditionalQueueSelectorAttachment(\n    \
+    \                   condition = ExpressionRouterRule(expression = \"If(job.Product\
+    \ = \\\"O365\\\", true, false)\"),\n                       queue_selectors = [\n\
+    \                           RouterQueueSelector(key = \"Product\", label_operator\
+    \ = LabelOperator.EQUAL, value = \"O365\"),\n                           RouterQueueSelector(key\
+    \ = \"QGroup\", label_operator = LabelOperator.EQUAL, value = \"NA_O365\")\n \
+    \                      ]\n                   ),\n               ],\n         \
+    \      worker_selectors = [\n                   ConditionalWorkerSelectorAttachment(\n\
+    \                       condition = ExpressionRouterRule(expression = \"If(job.Product\
+    \ = \\\"O365\\\", true, false)\"),\n                       worker_selectors =\
+    \ [\n                           RouterWorkerSelector(key = \"Skill_O365\", label_operator\
+    \ = LabelOperator.EQUAL, value = True),\n                           RouterWorkerSelector(\n\
+    \                               key = \"Skill_O365_Lvl\",\n                  \
+    \             label_operator = LabelOperator.GREATER_THAN_EQUAL,\n           \
+    \                    value = 1\n                           )\n               \
+    \        ]\n                   ),\n                   ConditionalWorkerSelectorAttachment(\n\
+    \                       condition = ExpressionRouterRule(expression = \"If(job.HighPriority\
+    \ = \\\"true\\\", true, false)\"),\n                       worker_selectors =\
+    \ [\n                           RouterWorkerSelector(\n                      \
+    \         key = \"Skill_O365_Lvl\",\n                               label_operator\
+    \ = LabelOperator.GREATER_THAN_EQUAL,\n                               value =\
+    \ 10\n                           )\n                       ]\n               \
+    \    )\n               ]\n           )\n       )\n\n       print(f\"Classification\
+    \ Policy successfully created with id: {classification_policy.id}\")\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.create_distribution_policy
+  name: create_distribution_policy
+  summary: Create a new distribution policy.
+  signature: 'async create_distribution_policy(distribution_policy_id: str, distribution_policy:
+    DistributionPolicy, **kwargs: Any) -> DistributionPolicy'
+  parameters:
+  - name: distribution_policy_id
+    description: Id of the distribution policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: distribution_policy
+    description: An instance of distribution policy.
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.DistributionPolicy>
+  return:
+    description: Instance of DistributionPolicy
+    types:
+    - <xref:azure.communication.jobrouter.DistributionPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to create a distribution policy<!--[!code-python[Main](les\\\
+    distribution_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\distribution_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       DistributionPolicy,\n       LongestIdleMode,\n   )\n\n   #\
+    \ set `connection_string` to an existing ACS endpoint\n   router_admin_client\
+    \ = JobRouterAdministrationClient.from_connection_string(conn_str = connection_string)\n\
+    \   print(\"JobRouterAdministrationClient created successfully!\")\n\n   async\
+    \ with router_admin_client:\n       distribution_policy: DistributionPolicy =\
+    \ await router_admin_client.create_distribution_policy(\n           distribution_policy_id\
+    \ = policy_id,\n           distribution_policy = DistributionPolicy(\n       \
+    \        offer_expires_after_seconds = 1 * 60,\n               mode = LongestIdleMode(\n\
+    \                   min_concurrent_offers = 1,\n                   max_concurrent_offers\
+    \ = 1\n               )\n           )\n       )\n\n       print(f\"Distribution\
+    \ Policy successfully created with id: {distribution_policy.id}\")\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.create_exception_policy
+  name: create_exception_policy
+  summary: Create a new exception policy.
+  signature: 'async create_exception_policy(exception_policy_id: str, exception_policy:
+    ExceptionPolicy, **kwargs: Any) -> ExceptionPolicy'
+  parameters:
+  - name: exception_policy_id
+    description: Id of the exception policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: exception_policy
+    description: An instance of exception policy.
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.ExceptionPolicy>
+  return:
+    description: Instance of ExceptionPolicy
+    types:
+    - <xref:azure.communication.jobrouter.ExceptionPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to create an exception policy<!--[!code-python[Main](les\\\
+    exception_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\exception_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       WaitTimeExceptionTrigger,\n       QueueLengthExceptionTrigger,\n\
+    \       ReclassifyExceptionAction,\n       ExceptionRule,\n       ExceptionPolicy\n\
+    \   )\n\n   # set `connection_string` to an existing ACS endpoint\n   router_admin_client\
+    \ = JobRouterAdministrationClient.from_connection_string(conn_str = connection_string)\n\
+    \   print(\"JobRouterAdministrationClient created successfully!\")\n\n   # we\
+    \ are going to create 2 rules:\n   # 1. EscalateJobOnQueueOverFlowTrigger: triggers\
+    \ when queue has more than 10 jobs already en-queued,\n   #                  \
+    \                     then reclassifies job adding additional labels on the job.\n\
+    \   # 2. EscalateJobOnWaitTimeExceededTrigger: triggers when job has waited in\
+    \ the queue for more than 10 minutes,\n   #                                  \
+    \        then reclassifies job adding additional labels on the job\n\n   # define\
+    \ exception trigger for queue over flow\n   queue_length_exception_trigger: QueueLengthExceptionTrigger\
+    \ = QueueLengthExceptionTrigger(threshold = 10)\n\n   # define exception actions\
+    \ that needs to be executed when trigger condition is satisfied\n   escalate_job_on_queue_over_flow:\
+    \ ReclassifyExceptionAction = ReclassifyExceptionAction(\n       classification_policy_id\
+    \ = \"escalation-on-q-over-flow\",\n       labels_to_upsert = {\n           \"\
+    EscalateJob\": True,\n           \"EscalationReasonCode\": \"QueueOverFlow\"\n\
+    \       }\n   )\n\n   # define second exception trigger for wait time\n   wait_time_exception_trigger:\
+    \ WaitTimeExceptionTrigger = WaitTimeExceptionTrigger(threshold_seconds = 10 *\
+    \ 60)\n\n   # define exception actions that needs to be executed when trigger\
+    \ condition is satisfied\n   escalate_job_on_wait_time_exceeded: ReclassifyExceptionAction\
+    \ = ReclassifyExceptionAction(\n       classification_policy_id = \"escalation-on-wait-time-exceeded\"\
+    ,\n       labels_to_upsert = {\n           \"EscalateJob\": True,\n          \
+    \ \"EscalationReasonCode\": \"WaitTimeExceeded\"\n       }\n   )\n\n   # define\
+    \ exception rule\n\n   exception_rule = {\n       \"EscalateJobOnQueueOverFlowTrigger\"\
+    : ExceptionRule(\n           trigger = queue_length_exception_trigger,\n     \
+    \      actions = {\n               \"EscalationJobActionOnQueueOverFlow\": escalate_job_on_queue_over_flow\n\
+    \           }\n       ),\n       \"EscalateJobOnWaitTimeExceededTrigger\": ExceptionRule(\n\
+    \           trigger = wait_time_exception_trigger,\n           actions = {\n \
+    \              \"EscalationJobActionOnWaitTimeExceed\": escalate_job_on_wait_time_exceeded\n\
+    \           }\n       )\n   }\n\n   # create the exception policy\n   # set a\
+    \ unique value to `policy_id`\n   async with router_admin_client:\n       exception_policy\
+    \ = await router_admin_client.create_exception_policy(\n           exception_policy_id\
+    \ = policy_id,\n           exception_policy = ExceptionPolicy(\n             \
+    \  name = \"TriggerJobCancellationWhenQueueLenIs10\",\n               exception_rules\
+    \ = exception_rule\n           )\n       )\n\n       print(f\"Exception policy\
+    \ has been successfully created with id: {exception_policy.id}\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.create_queue
+  name: create_queue
+  summary: Create a job queue
+  signature: 'async create_queue(queue_id: str, queue: RouterQueue, **kwargs: Any)
+    -> RouterQueue'
+  parameters:
+  - name: queue_id
+    description: Id of the queue.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: queue
+    description: An instance of JobQueue.
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.RouterQueue>
+  return:
+    description: Instance of RouterQueue
+    types:
+    - <xref:azure.communication.jobrouter.RouterQueue>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to create a queue<!--[!code-python[Main](les\\\
+    job_queue_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\job_queue_crud_ops_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       RouterQueue,\n   )\n\n   # set `connection_string` to an existing\
+    \ ACS endpoint\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
+    )\n\n   async with router_admin_client:\n       job_queue: RouterQueue = await\
+    \ router_admin_client.create_queue(\n           queue_id = job_queue_id,\n   \
+    \        queue = RouterQueue(\n               distribution_policy_id = distribution_policy_id,\n\
+    \               name = \"My job queue\"\n           )\n       )\n\n       print(f\"\
+    Job queue successfully created with id: {job_queue.id}\")\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.delete_classification_policy
+  name: delete_classification_policy
+  summary: Delete a classification policy by Id.
+  signature: 'async delete_classification_policy(classification_policy_id: str, **kwargs:
+    Any) -> None'
+  parameters:
+  - name: classification_policy_id
+    description: The id of classification policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to delete a classification policy<!--[!code-python[Main](les\\\
+    classification_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\classification_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       await router_admin_client.delete_classification_policy(classification_policy_id\
+    \ = policy_id)\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.delete_distribution_policy
+  name: delete_distribution_policy
+  summary: Delete a distribution policy by Id.
+  signature: 'async delete_distribution_policy(distribution_policy_id: str, **kwargs:
+    Any) -> None'
+  parameters:
+  - name: distribution_policy_id
+    description: Id of the policy to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to delete a distribution policy<!--[!code-python[Main](les\\\
+    distribution_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\distribution_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       await router_admin_client.delete_distribution_policy(distribution_policy_id\
+    \ = policy_id)\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.delete_exception_policy
+  name: delete_exception_policy
+  summary: Delete an exception policy by Id.
+  signature: 'async delete_exception_policy(exception_policy_id: str, **kwargs: Any)
+    -> None'
+  parameters:
+  - name: exception_policy_id
+    description: Id of the policy to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to delete an exception policy<!--[!code-python[Main](les\\\
+    exception_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\exception_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       await router_admin_client.delete_exception_policy(exception_policy_id\
+    \ = policy_id)\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.delete_queue
+  name: delete_queue
+  summary: Deletes a queue by Id.
+  signature: 'async delete_queue(queue_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: queue_id
+    description: Id of the queue to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to delete a queue<!--[!code-python[Main](les\\\
+    job_queue_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\job_queue_crud_ops_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       await router_admin_client.delete_queue(queue_id\
+    \ = job_queue_id)\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.from_connection_string
+  name: from_connection_string
+  summary: Create JobRouterClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> JobRouterAdministrationClient'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Communication Service resource.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Instance of JobRouterAdministrationClient.
+    types:
+    - <xref:azure.communication.jobrouter.aio.JobRouterAdministrationClient>
+  examples:
+  - "Authenticating a JobRouterAdministrationClient from a connection_string<!--[!code-python[Main](les\\\
+    sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\sample_authentication_async.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   # set `connection_string` to an existing\
+    \ ACS endpoint\n   router_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
+    )\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.get_classification_policy
+  name: get_classification_policy
+  summary: Retrieves an existing classification policy by Id.
+  signature: 'async get_classification_policy(classification_policy_id: str, **kwargs:
+    Any) -> ClassificationPolicy'
+  parameters:
+  - name: classification_policy_id
+    description: The id of classification policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Instance of ClassificationPolicy
+    types:
+    - <xref:azure.communication.jobrouter.ClassificationPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to get a classification policy<!--[!code-python[Main](les\\\
+    classification_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\classification_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       classification_policy\
+    \ = await router_admin_client.get_classification_policy(\n           classification_policy_id\
+    \ = policy_id)\n\n       print(f\"Successfully fetched classification policy with\
+    \ id: {classification_policy.id}\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.get_distribution_policy
+  name: get_distribution_policy
+  summary: Retrieves an existing distribution policy by Id.
+  signature: 'async get_distribution_policy(distribution_policy_id: str, **kwargs:
+    Any) -> DistributionPolicy'
+  parameters:
+  - name: distribution_policy_id
+    description: Id of the policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Instance of DistributionPolicy
+    types:
+    - <xref:azure.communication.jobrouter.DistributionPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to get a distribution policy<!--[!code-python[Main](les\\\
+    distribution_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\distribution_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       distribution_policy\
+    \ = await router_admin_client.get_distribution_policy(distribution_policy_id =\
+    \ policy_id)\n\n       print(f\"Successfully fetched distribution policy with\
+    \ id: {distribution_policy.id}\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.get_exception_policy
+  name: get_exception_policy
+  summary: Retrieves an existing distribution policy by Id.
+  signature: 'async get_exception_policy(exception_policy_id: str, **kwargs: Any)
+    -> ExceptionPolicy'
+  parameters:
+  - name: exception_policy_id
+    description: Id of the policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Instance of ExceptionPolicy
+    types:
+    - <xref:azure.communication.jobrouter.ExceptionPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to get an exception policy<!--[!code-python[Main](les\\\
+    exception_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\exception_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       exception_policy\
+    \ = await router_admin_client.get_exception_policy(exception_policy_id = policy_id)\n\
+    \n       print(f\"Successfully fetched exception policy with id: {exception_policy.id}\"\
+    )\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.get_queue
+  name: get_queue
+  summary: Retrieves an existing queue by Id.
+  signature: 'async get_queue(queue_id: str, **kwargs: Any) -> RouterQueue'
+  parameters:
+  - name: queue_id
+    description: Id of the queue.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Instance of RouterQueue
+    types:
+    - <xref:azure.communication.jobrouter.RouterQueue>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to get a queue<!--[!code-python[Main](les\\\
+    job_queue_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\job_queue_crud_ops_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       job_queue\
+    \ = await router_admin_client.get_queue(queue_id = job_queue_id)\n\n       print(f\"\
+    Successfully fetched router queue with id: {job_queue.id}\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.list_classification_policies
+  name: list_classification_policies
+  summary: Retrieves existing classification policies.
+  signature: 'list_classification_policies(*, results_per_page: int | None = None,
+    **kwargs: Any) -> AsyncItemPaged[ClassificationPolicyItem]'
+  parameters:
+  - name: results_per_page
+    description: The maximum number of results to be returned per page.
+    types:
+    - <xref:Optional>[<xref:int>]
+  return:
+    description: An iterator like instance of ClassificationPolicyItem
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.jobrouter.ClassificationPolicyItem>]
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to list classification policies in batches<!--[!code-python[Main](les\\\
+    classification_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\classification_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       classification_policy_iterator\
+    \ = router_admin_client.list_classification_policies(results_per_page = 10)\n\n\
+    \       async for policy_page in classification_policy_iterator.by_page():\n \
+    \          policies_in_page = [i async for i in policy_page]\n           print(f\"\
+    Retrieved {len(policies_in_page)} policies in current page\")\n\n           for\
+    \ cp in policies_in_page:\n               print(f\"Retrieved classification policy\
+    \ with id: {cp.classification_policy.id}\")\n\n       print(f\"Successfully completed\
+    \ fetching classification policies\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.list_distribution_policies
+  name: list_distribution_policies
+  summary: Retrieves existing distribution policies.
+  signature: 'list_distribution_policies(*, results_per_page: int | None = None, **kwargs:
+    Any) -> AsyncItemPaged[DistributionPolicyItem]'
+  parameters:
+  - name: results_per_page
+    description: The maximum number of results to be returned per page.
+    types:
+    - <xref:Optional>[<xref:int>]
+  return:
+    description: An iterator like instance of DistributionPolicyItem
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.jobrouter.DistributionPolicyItem>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Use a JobRouterAdministrationClient to list distribution policies in batches<!--[!code-python[Main](les\\\
+    distribution_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\distribution_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       distribution_policy_iterator\
+    \ = router_admin_client.list_distribution_policies(results_per_page = 10)\n\n\
+    \       async for policy_page in distribution_policy_iterator.by_page():\n   \
+    \        policies_in_page = [i async for i in policy_page]\n           print(f\"\
+    Retrieved {len(policies_in_page)} policies in current page\")\n\n           for\
+    \ dp in policies_in_page:\n               print(f\"Retrieved distribution policy\
+    \ with id: {dp.distribution_policy.id}\")\n\n       print(f\"Successfully completed\
+    \ fetching distribution policies\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.list_exception_policies
+  name: list_exception_policies
+  summary: Retrieves existing exception policies.
+  signature: 'list_exception_policies(*, results_per_page: int | None = None, **kwargs:
+    Any) -> AsyncItemPaged[ExceptionPolicyItem]'
+  parameters:
+  - name: results_per_page
+    description: The maximum number of results to be returned per page.
+    types:
+    - <xref:Optional>[<xref:int>]
+  return:
+    description: An iterator like instance of ExceptionPolicyItem
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.jobrouter.ExceptionPolicyItem>]
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to list exception policies in batches<!--[!code-python[Main](les\\\
+    exception_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\exception_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       exception_policy_iterator\
+    \ = router_admin_client.list_exception_policies(results_per_page = 10)\n\n   \
+    \    async for policy_page in exception_policy_iterator.by_page():\n         \
+    \  policies_in_page = [i async for i in policy_page]\n           print(f\"Retrieved\
+    \ {len(policies_in_page)} policies in current page\")\n\n           for ep in\
+    \ policies_in_page:\n               print(f\"Retrieved exception policy with id:\
+    \ {ep.exception_policy.id}\")\n\n       print(f\"Successfully completed fetching\
+    \ exception policies\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.list_queues
+  name: list_queues
+  summary: Retrieves existing queues.
+  signature: 'list_queues(*, results_per_page: int | None = None, **kwargs: Any) ->
+    AsyncItemPaged[RouterQueueItem]'
+  parameters:
+  - name: results_per_page
+    description: The maximum number of results to be returned per page.
+    types:
+    - <xref:Optional>[<xref:int>]
+  return:
+    description: An iterator like instance of RouterQueueItem
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.communication.jobrouter.RouterQueueItem>]
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to list queues in batches<!--[!code-python[Main](les\\\
+    job_queue_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\job_queue_crud_ops_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n\n   async with router_admin_client:\n       job_queue_iterator\
+    \ = router_admin_client.list_queues(results_per_page = 10)\n\n       async for\
+    \ queue_page in job_queue_iterator.by_page():\n           job_queues_in_page =\
+    \ [i async for i in queue_page]\n           print(f\"Retrieved {len(job_queues_in_page)}\
+    \ queues in current page\")\n\n           for q in job_queues_in_page:\n     \
+    \          print(f\"Retrieved queue policy with id: {q.queue.id}\")\n\n      \
+    \ print(f\"Successfully completed fetching job queues\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.update_classification_policy
+  name: update_classification_policy
+  summary: Update a classification policy
+  signature: 'async update_classification_policy(classification_policy_id: str, classification_policy:
+    ClassificationPolicy, **kwargs: Any) -> ClassificationPolicy'
+  parameters:
+  - name: classification_policy_id
+    description: Id of the classification policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: classification_policy
+    description: 'An instance of Classification policy. This is a positional-only
+
+      parameter. Please provide either this or individual keyword parameters.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.ClassificationPolicy>
+  - name: name
+    description: Friendly name of this policy.
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: fallback_queue_id
+    description: The fallback queue to select if the queue selector doesn't find a
+      match.
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: queue_selectors
+    description: The queue selectors to resolve a queue for a given job.
+    types:
+    - <xref:Optional>[<xref:List>[<xref:Union>[<xref:azure.communication.jobrouter.StaticQueueSelectorAttachment,azure.communication.jobrouter.ConditionalQueueSelectorAttachment,azure.communication.jobrouter.RuleEngineQueueSelectorAttachment,azure.communication.jobrouter.PassThroughQueueSelectorAttachment,azure.communication.jobrouter.WeightedAllocationQueueSelectorAttachment>]]]
+  - name: prioritization_rule
+    description: The rule to determine a priority score for a given job.
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:azure.communication.jobrouter.StaticRouterRule,azure.communication.jobrouter.ExpressionRouterRule,azure.communication.jobrouter.FunctionRouterRule,azure.communication.jobrouter.WebhookRouterRule>]]
+  - name: worker_selectors
+    description: The worker label selectors to attach to a given job.
+    types:
+    - <xref:Optional>[<xref:List>[<xref:Union>[<xref:azure.communication.jobrouter.StaticWorkerSelectorAttachment,azure.communication.jobrouter.ConditionalWorkerSelectorAttachment,azure.communication.jobrouter.RuleEngineWorkerSelectorAttachment,azure.communication.jobrouter.PassThroughWorkerSelectorAttachment,azure.communication.jobrouter.WeightedAllocationWorkerSelectorAttachment>]]]
+  return:
+    description: Instance of ClassificationPolicy
+    types:
+    - <xref:azure.communication.jobrouter.ClassificationPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to update a classification policy<!--[!code-python[Main](les\\\
+    classification_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\":\
+    \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\classification_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       ClassificationPolicy,\n       ExpressionRouterRule,\n   )\n\
+    \n   # set `connection_string` to an existing ACS endpoint\n   router_admin_client\
+    \ = JobRouterAdministrationClient.from_connection_string(conn_str = connection_string)\n\
+    \   print(\"JobRouterAdministrationClient created successfully!\")\n\n   async\
+    \ with router_admin_client:\n       updated_classification_policy: ClassificationPolicy\
+    \ = \\\n           await router_admin_client.update_classification_policy(\n \
+    \              classification_policy_id = policy_id,\n               prioritization_rule\
+    \ = ExpressionRouterRule(\n                   expression = \"If(job.HighPriority\
+    \ = \\\"true\\\", 50, 10)\"\n               )\n           )\n\n       print(f\"\
+    Classification policy successfully update with new prioritization rule\")\n\n\
+    \   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.update_distribution_policy
+  name: update_distribution_policy
+  summary: Update a distribution policy.
+  signature: 'async update_distribution_policy(distribution_policy_id: str, distribution_policy:
+    DistributionPolicy, **kwargs: Any) -> DistributionPolicy'
+  parameters:
+  - name: distribution_policy_id
+    description: Id of the distribution policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: distribution_policy
+    description: 'An instance of distribution policy. This is a positional-only parameter.
+
+      Please provide either this or individual keyword parameters.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.DistributionPolicy>
+  - name: offer_expires_after_seconds
+    description: 'The expiry time of any offers created under this policy
+
+      will be governed by the offer time to live.'
+    types:
+    - <xref:Optional>[<xref:float>]
+  - name: mode
+    description: Specified distribution mode
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:azure.communication.jobrouter.BestWorkerMode,azure.communication.jobrouter.LongestIdleMode>,
+      <xref:azure.communication.jobrouter.RoundRobinMode>]]
+  - name: name
+    description: The name of this policy.
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: distribution_policy
+    description: 'An instance of distribution policy. Properties defined in
+
+      class instance will not be considered if they are also specified in keyword
+      arguments.'
+    types:
+    - <xref:Optional>[<xref:azure.communication.jobrouter.DistributionPolicy>]
+  return:
+    description: Instance of DistributionPolicy
+    types:
+    - <xref:azure.communication.jobrouter.DistributionPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to update a distribution policy<!--[!code-python[Main](les\\\
+    distribution_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\distribution_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       DistributionPolicy,\n       RoundRobinMode,\n   )\n\n   # set\
+    \ `connection_string` to an existing ACS endpoint\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
+    )\n\n   async with router_admin_client:\n       updated_distribution_policy: DistributionPolicy\
+    \ = await router_admin_client.update_distribution_policy(\n           distribution_policy_id\
+    \ = policy_id,\n           mode = RoundRobinMode(\n               min_concurrent_offers\
+    \ = 1,\n               max_concurrent_offers = 1\n           )\n       )\n\n \
+    \      print(f\"Distribution policy successfully update with new distribution\
+    \ mode\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.update_exception_policy
+  name: update_exception_policy
+  summary: Update an exception policy.
+  signature: 'async update_exception_policy(exception_policy_id: str, exception_policy:
+    ExceptionPolicy, **kwargs: Any) -> ExceptionPolicy'
+  parameters:
+  - name: exception_policy_id
+    description: Id of the exception policy.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: exception_policy
+    description: 'An instance of exception policy. This is a positional-only parameter.
+
+      Please provide either this or individual keyword parameters.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.ExceptionPolicy>
+  - name: exception_rules
+    description: '(Optional) A dictionary collection of exception rules on the exception
+
+      policy. Key is the Id of each exception rule.'
+    types:
+    - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:azure.communication.jobrouter.ExceptionRule>]]
+  - name: name
+    description: The name of this policy.
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: exception_policy
+    description: 'An instance of exception policy. Properties defined in
+
+      class instance will not be considered if they are also specified in keyword
+      arguments.'
+    types:
+    - <xref:Optional>[<xref:azure.communication.jobrouter.ExceptionPolicy>]
+  return:
+    description: Instance of ExceptionPolicy
+    types:
+    - <xref:azure.communication.jobrouter.ExceptionPolicy>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to update an exception policy<!--[!code-python[Main](les\\\
+    exception_policy_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+    classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\exception_policy_crud_ops_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       WaitTimeExceptionTrigger,\n       ReclassifyExceptionAction,\n\
+    \       ExceptionPolicy,\n       ExceptionRule,\n       QueueLengthExceptionTrigger,\n\
+    \   )\n\n   # set `connection_string` to an existing ACS endpoint\n   router_admin_client\
+    \ = JobRouterAdministrationClient.from_connection_string(conn_str = connection_string)\n\
+    \   print(\"JobRouterAdministrationClient created successfully!\")\n\n   # we\
+    \ are going to\n   # 1. Add an exception rule: EscalateJobOnWaitTimeExceededTrigger2Min:\
+    \ triggers when job has waited in the\n   # queue for more than 2 minutes, then\
+    \ reclassifies job adding additional labels on the job\n   # 2. Modify an existing\
+    \ rule: EscalateJobOnQueueOverFlowTrigger: change 'threshold' to 100\n   # 3.\
+    \ Delete an exception rule: EscalateJobOnWaitTimeExceededTrigger to be deleted\n\
+    \n   # let's define the new rule to be added\n   # define exception trigger\n\
+    \   escalate_job_on_wait_time_exceed2: WaitTimeExceptionTrigger = WaitTimeExceptionTrigger(\n\
+    \       threshold_seconds = 2 * 60\n   )\n\n   # define exception action\n   escalate_job_on_wait_time_exceeded2:\
+    \ ReclassifyExceptionAction = ReclassifyExceptionAction(\n       classification_policy_id\
+    \ = \"escalation-on-wait-time-exceeded\",\n       labels_to_upsert = {\n     \
+    \      \"EscalateJob\": True,\n           \"EscalationReasonCode\": \"WaitTimeExceeded2Min\"\
+    \n       }\n   )\n\n   async with router_admin_client:\n       updated_exception_policy:\
+    \ ExceptionPolicy = await router_admin_client.update_exception_policy(\n     \
+    \      exception_policy_id = policy_id,\n           exception_rules = {\n    \
+    \           # adding new rule\n               \"EscalateJobOnWaitTimeExceededTrigger2Min\"\
+    : ExceptionRule(\n                   trigger = escalate_job_on_wait_time_exceed2,\n\
+    \                   actions = {\n                       \"EscalationJobActionOnWaitTimeExceed\"\
+    : escalate_job_on_wait_time_exceeded2\n                   }\n               ),\n\
+    \               # modifying existing rule\n               \"EscalateJobOnQueueOverFlowTrigger\"\
+    : ExceptionRule(\n                   trigger = QueueLengthExceptionTrigger(threshold\
+    \ = 100),\n                   actions = {\n                       \"EscalationJobActionOnQueueOverFlow\"\
+    : ReclassifyExceptionAction(\n                           classification_policy_id\
+    \ = \"escalation-on-q-over-flow\",\n                           labels_to_upsert\
+    \ = {\n                               \"EscalateJob\": True,\n               \
+    \                \"EscalationReasonCode\": \"QueueOverFlow\"\n               \
+    \            }\n                       )\n                   }\n             \
+    \  ),\n               # deleting existing rule\n               \"EscalateJobOnWaitTimeExceededTrigger\"\
+    : None\n           }\n       )\n\n       print(f\"Exception policy updated with\
+    \ rules: {[k for k,v in updated_exception_policy.exception_rules.items()]}\")\n\
+    \       print(\"Exception policy has been successfully updated\")\n\n\n   ````\n"
+- uid: azure.communication.jobrouter.aio.JobRouterAdministrationClient.update_queue
+  name: update_queue
+  summary: Update a job queue
+  signature: 'async update_queue(queue_id: str, queue: RouterQueue, **kwargs: Any)
+    -> RouterQueue'
+  parameters:
+  - name: queue_id
+    description: Id of the queue.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: queue
+    description: 'An instance of JobQueue. This is a positional-only parameter.
+
+      Please provide either this or individual keyword parameters.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.jobrouter.RouterQueue>
+  - name: distribution_policy_id
+    description: 'The ID of the distribution policy that will determine
+
+      how a job is distributed to workers.'
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: name
+    description: The name of this queue.
+    types:
+    - <xref:Optional>[<xref:str>]
+  - name: labels
+    description: 'A set of key/value pairs that are
+
+      identifying attributes used by the rules engines to make decisions.'
+    types:
+    - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:Union>[<xref:int>, <xref:float>,
+      <xref:str>, <xref:bool>]]]
+  - name: exception_policy_id
+    description: 'The ID of the exception policy that determines various
+
+      job escalation rules.'
+    types:
+    - <xref:Optional>[<xref:str>]
+  return:
+    description: Instance of RouterQueue
+    types:
+    - <xref:azure.communication.jobrouter.RouterQueue>
+  exceptions:
+  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  examples:
+  - "Use a JobRouterAdministrationClient to update a queue<!--[!code-python[Main](les\\\
+    job_queue_crud_ops_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\259\\\\azure-communication-jobrouter-1.0.0b1\\\
+    \\samples\\\\job_queue_crud_ops_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.communication.jobrouter.aio\
+    \ import JobRouterAdministrationClient\n   from azure.communication.jobrouter\
+    \ import (\n       RouterQueue,\n   )\n\n   # set `connection_string` to an existing\
+    \ ACS endpoint\n   router_admin_client = JobRouterAdministrationClient.from_connection_string(conn_str\
+    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
+    )\n\n   async with router_admin_client:\n       updated_job_queue: RouterQueue\
+    \ = await router_admin_client.update_queue(\n           queue_id = job_queue_id,\n\
+    \           labels = {\n               \"Additional-Queue-Label\": \"ChatQueue\"\
+    \n           }\n       )\n\n       print(f\"Router queue successfully update with\
+    \ labels {updated_job_queue.labels}\")\n\n   ````\n"
