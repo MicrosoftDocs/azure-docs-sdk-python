@@ -18,18 +18,18 @@ Use the management API to create resource groups and deploy resources from templ
 
 ```bash
 pip install azure-mgmt-resource
+pip install azure-identity
 ```
 ### Example
 Create a new resource group in the Azure Eastern US region.
 
 ```python
+from azure.identity import DefaultAzureCredential
 from azure.mgmt.resource import ResourceManagementClient
+import os
 
-LOCATION = 'eastus'
-GROUP_NAME ='sample_resource_group'
-
-resource_client = ResourceManagementClient(credentials, subscription_id)
-resource_client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
+sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
+client = ResourceManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 > [!div class="nextstepaction"]
