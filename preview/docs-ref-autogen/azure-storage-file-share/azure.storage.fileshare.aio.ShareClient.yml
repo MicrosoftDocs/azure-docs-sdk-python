@@ -25,7 +25,7 @@ constructor:
     description: 'The URI to the storage account. In order to create a client given
       the full URI to the share,
 
-      use the <xref:azure.storage.fileshare.aio.from_share_url> classmethod.'
+      use the <xref:azure.storage.fileshare.aio.ShareClient.from_share_url> classmethod.'
     isRequired: true
     types:
     - <xref:str>
@@ -148,6 +148,12 @@ methods:
     description: A ShareLeaseClient object.
     types:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
+- uid: azure.storage.fileshare.aio.ShareClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close()
 - uid: azure.storage.fileshare.aio.ShareClient.create_directory
   name: create_directory
   summary: 'Creates a directory in the share and returns a client to interact
@@ -365,6 +371,102 @@ methods:
 
 
       This keyword argument was introduced in API version ''2020-08-04''.'
+- uid: azure.storage.fileshare.aio.ShareClient.from_connection_string
+  name: from_connection_string
+  summary: Create ShareClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, share_name: str, snapshot: str
+    | Dict[str, Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: share_name
+    description: The name of the share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: 'The optional share snapshot on which to operate. This can be the
+      snapshot ID string
+
+      or the response returned from <xref:azure.storage.fileshare.aio.ShareClient.create_snapshot>.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A share client.
+    types:
+    - <xref:azure.storage.fileshare.ShareClient>
+- uid: azure.storage.fileshare.aio.ShareClient.from_share_url
+  name: from_share_url
+  signature: 'from_share_url(share_url: str, snapshot: str | Dict[str, Any] | None
+    = None, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: share_url
+    description: The full URI to the share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: 'An optional share snapshot on which to operate. This can be the
+      snapshot ID string
+
+      or the response returned from <xref:azure.storage.fileshare.aio.ShareClient.create_snapshot>.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A share client.
+    types:
+    - <xref:azure.storage.fileshare.ShareClient>
 - uid: azure.storage.fileshare.aio.ShareClient.get_directory_client
   name: get_directory_client
   summary: 'Get a client to interact with the specified directory.
@@ -779,3 +881,47 @@ methods:
     description: Share-updated property dict (Etag and last modified).
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
+attributes:
+- uid: azure.storage.fileshare.aio.ShareClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.fileshare.aio.ShareClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.fileshare.aio.ShareClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.fileshare.aio.ShareClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.fileshare.aio.ShareClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.fileshare.aio.ShareClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.fileshare.aio.ShareClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.fileshare.aio.ShareClient.location_mode>.'

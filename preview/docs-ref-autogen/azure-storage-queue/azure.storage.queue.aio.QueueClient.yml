@@ -17,7 +17,7 @@ constructor:
     description: 'The URL to the storage account. In order to create a client given
       the full URI to the queue,
 
-      use the <xref:azure.storage.queue.aio.from_queue_url> classmethod.'
+      use the <xref:azure.storage.queue.aio.QueueClient.from_queue_url> classmethod.'
     isRequired: true
     types:
     - <xref:str>
@@ -90,6 +90,12 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
     types:
     - <xref:int>
+- uid: azure.storage.queue.aio.QueueClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close()
 - uid: azure.storage.queue.aio.QueueClient.create_queue
   name: create_queue
   summary: 'Creates a new queue in the storage account.
@@ -214,6 +220,85 @@ methods:
   return:
     types:
     - <xref:None>
+- uid: azure.storage.queue.aio.QueueClient.from_connection_string
+  name: from_connection_string
+  summary: Create QueueClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, queue_name: str, credential: str
+    | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: queue_name
+    description: The queue name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      Credentials provided here will take precedence over those in the connection
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A queue client.
+    types:
+    - <xref:azure.storage.queue.QueueClient>
+- uid: azure.storage.queue.aio.QueueClient.from_queue_url
+  name: from_queue_url
+  summary: A client to interact with a specific Queue.
+  signature: 'from_queue_url(queue_url: str, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: queue_url
+    description: The full URI to the queue, including SAS token if used.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A queue client.
+    types:
+    - <xref:azure.storage.queue.QueueClient>
 - uid: azure.storage.queue.aio.QueueClient.get_queue_access_policy
   name: get_queue_access_policy
   summary: 'Returns details about any stored access policies specified on the
@@ -679,3 +764,47 @@ methods:
       by the service.'
     types:
     - <xref:azure.storage.queue.QueueMessage>
+attributes:
+- uid: azure.storage.queue.aio.QueueClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.queue.aio.QueueClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.queue.aio.QueueClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.queue.aio.QueueClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.queue.aio.QueueClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.queue.aio.QueueClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.queue.aio.QueueClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.queue.aio.QueueClient.location_mode>.'

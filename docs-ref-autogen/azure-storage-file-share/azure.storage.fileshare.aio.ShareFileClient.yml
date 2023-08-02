@@ -18,7 +18,8 @@ constructor:
     description: 'The URI to the storage account. In order to create a client given
       the full URI to the
 
-      file, use the <xref:azure.storage.fileshare.aio.from_file_url> classmethod.'
+      file, use the <xref:azure.storage.fileshare.aio.ShareFileClient.from_file_url>
+      classmethod.'
     isRequired: true
     types:
     - <xref:str>
@@ -229,6 +230,12 @@ methods:
     description: File-updated property dict (Etag and last modified).
     types:
     - <xref:Dict>[<xref:str>, <xref:Any>]
+- uid: azure.storage.fileshare.aio.ShareFileClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close()
 - uid: azure.storage.fileshare.aio.ShareFileClient.close_all_handles
   name: close_all_handles
   summary: 'Close any open file handles.
@@ -550,6 +557,120 @@ methods:
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(DEST_FILE, \"wb\") as data:\n       stream = await my_file.download_file()\n\
     \       data.write(await stream.readall())\n\n   ````\n"
+- uid: azure.storage.fileshare.aio.ShareFileClient.from_connection_string
+  name: from_connection_string
+  summary: Create ShareFileClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, share_name: str, file_path: str,
+    snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: share_name
+    description: The name of the share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_path
+    description: The file path.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: 'An optional file snapshot on which to operate. This can be the snapshot
+      ID string
+
+      or the response returned from <xref:azure.storage.fileshare.aio.ShareClient.create_snapshot>.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A File client.
+    types:
+    - <xref:azure.storage.fileshare.ShareFileClient>
+  examples:
+  - "Creates the file client with connection string.<!--[!code-python[Main](les\\\
+    file_samples_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\82\\\\azure-storage-file-share-12.13.0\\\\\
+    samples\\\\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare import\
+    \ ShareFileClient\n   file = ShareFileClient.from_connection_string(\n       self.connection_string,\n\
+    \       share_name=\"helloworld2\",\n       file_path=\"myfile\")\n\n   ````\n"
+- uid: azure.storage.fileshare.aio.ShareFileClient.from_file_url
+  name: from_file_url
+  summary: A client to interact with a specific file, although that file may not yet
+    exist.
+  signature: 'from_file_url(file_url: str, snapshot: str | Dict[str, Any] | None =
+    None, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | TokenCredential | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: file_url
+    description: The full URI to the file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: 'An optional file snapshot on which to operate. This can be the snapshot
+      ID string
+
+      or the response returned from <xref:azure.storage.fileshare.aio.ShareClient.create_snapshot>.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A File client.
+    types:
+    - <xref:azure.storage.fileshare.ShareFileClient>
 - uid: azure.storage.fileshare.aio.ShareFileClient.get_file_properties
   name: get_file_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
@@ -1475,3 +1596,47 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+attributes:
+- uid: azure.storage.fileshare.aio.ShareFileClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.fileshare.aio.ShareFileClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.fileshare.aio.ShareFileClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.fileshare.aio.ShareFileClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.fileshare.aio.ShareFileClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.fileshare.aio.ShareFileClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.fileshare.aio.ShareFileClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.fileshare.aio.ShareFileClient.location_mode>.'
