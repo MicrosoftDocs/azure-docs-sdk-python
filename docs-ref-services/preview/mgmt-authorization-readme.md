@@ -3,10 +3,10 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-authorization, authorization
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/15/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-python
+ms.service: authorization
 ---
 # Microsoft Azure SDK for Python
 
@@ -55,8 +55,9 @@ client = AuthorizationManagementClient(credential=DefaultAzureCredential(), subs
 
 ## Examples
 
-
-Code samples for this package can be found at [Authorization Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Authorization Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
