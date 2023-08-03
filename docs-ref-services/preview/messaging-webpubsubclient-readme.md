@@ -3,12 +3,12 @@ title: Azure Web PubSub client library for Python
 keywords: Azure, python, SDK, API, azure-messaging-webpubsubclient, webpubsub
 author: msyyc
 ms.author: yuchaoyan
-ms.date: 04/28/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: webpubsub
 ---
-# Azure Web PubSub client library for Python - version 1.0.0b1 
+# Azure Web PubSub client library for Python - version 1.0.0a20230803001 
 
 
 [Azure Web PubSub](https://aka.ms/awps/doc) is a cloud service that helps developers easily build real-time features in web applications with publish-subscribe patterns at scale.
@@ -216,7 +216,7 @@ You can also find [more samples here](https://github.com/Azure/azure-webpubsub/t
 
 ## Contributing
 
-If you'd like to contribute to this library, please read the [contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-messaging-webpubsubclient_1.0.0b1/CONTRIBUTING.md) to learn more about how to build and test the code.
+If you'd like to contribute to this library, please read the [contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md) to learn more about how to build and test the code.
 
 [azure_sub]: https://azure.microsoft.com/free/
 [create_instance]: https://learn.microsoft.com/azure/azure-web-pubsub/howto-develop-create-instance
