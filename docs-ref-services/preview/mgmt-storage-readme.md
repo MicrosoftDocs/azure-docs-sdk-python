@@ -3,12 +3,11 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-storage, storage
 author: annatisch
 ms.author: antisch
-ms.date: 02/20/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Storage Management Client Library.
