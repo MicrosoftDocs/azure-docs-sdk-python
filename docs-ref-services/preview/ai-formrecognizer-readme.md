@@ -3,12 +3,12 @@ title: Azure Form Recognizer client library for Python
 keywords: Azure, python, SDK, API, azure-ai-formrecognizer, formrecognizer
 author: kristapratico
 ms.author: krpratic
-ms.date: 04/13/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: formrecognizer
 ---
-# Azure Form Recognizer client library for Python - version 3.3.0b1 
+# Azure Form Recognizer client library for Python - version 3.3.0a20230802003 
 
 
 Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents. It includes the following main features:
@@ -41,17 +41,17 @@ Azure Form Recognizer is a cloud service that uses machine learning to analyze t
 Install the Azure Form Recognizer client library for Python with [pip][pip]:
 
 ```bash
-pip install azure-ai-formrecognizer --pre
+pip install azure-ai-formrecognizer
 ```
 
-> Note: This version of the client library defaults to the `2023-02-28-preview` version of the service.
+> Note: This version of the client library defaults to the `2023-07-31` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|3.3.0bX - Latest beta release | 2.0, 2.1, 2022-08-31, 2023-02-28-preview (default)
-|3.2.X - Latest GA release | 2.0, 2.1, 2022-08-31 (default)
+|3.3.X - Latest GA release | 2.0, 2.1, 2022-08-31, 2023-07-31 (default)
+|3.2.X | 2.0, 2.1, 2022-08-31 (default)
 |3.1.X| 2.0, 2.1 (default)
 |3.0.0| 2.0
 
@@ -62,7 +62,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
-|2023-02-28-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2023-07-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
@@ -462,70 +462,60 @@ with open(path_to_sample_documents, "rb") as f:
 receipts = poller.result()
 
 for idx, receipt in enumerate(receipts.documents):
-    print("--------Analysis of receipt #{}--------".format(idx + 1))
-    print("Receipt type: {}".format(receipt.doc_type or "N/A"))
+    print(f"--------Analysis of receipt #{idx + 1}--------")
+    print(f"Receipt type: {receipt.doc_type if receipt.doc_type else 'N/A'}")
     merchant_name = receipt.fields.get("MerchantName")
     if merchant_name:
         print(
-            "Merchant Name: {} has confidence: {}".format(
-                merchant_name.value, merchant_name.confidence
-            )
+            f"Merchant Name: {merchant_name.value} has confidence: "
+            f"{merchant_name.confidence}"
         )
     transaction_date = receipt.fields.get("TransactionDate")
     if transaction_date:
         print(
-            "Transaction Date: {} has confidence: {}".format(
-                transaction_date.value, transaction_date.confidence
-            )
+            f"Transaction Date: {transaction_date.value} has confidence: "
+            f"{transaction_date.confidence}"
         )
     if receipt.fields.get("Items"):
         print("Receipt items:")
         for idx, item in enumerate(receipt.fields.get("Items").value):
-            print("...Item #{}".format(idx + 1))
+            print(f"...Item #{idx + 1}")
             item_description = item.value.get("Description")
             if item_description:
                 print(
-                    "......Item Description: {} has confidence: {}".format(
-                        item_description.value, item_description.confidence
-                    )
+                    f"......Item Description: {item_description.value} has confidence: "
+                    f"{item_description.confidence}"
                 )
             item_quantity = item.value.get("Quantity")
             if item_quantity:
                 print(
-                    "......Item Quantity: {} has confidence: {}".format(
-                        item_quantity.value, item_quantity.confidence
-                    )
+                    f"......Item Quantity: {item_quantity.value} has confidence: "
+                    f"{item_quantity.confidence}"
                 )
             item_price = item.value.get("Price")
             if item_price:
                 print(
-                    "......Individual Item Price: {} has confidence: {}".format(
-                        item_price.value, item_price.confidence
-                    )
+                    f"......Individual Item Price: {item_price.value} has confidence: "
+                    f"{item_price.confidence}"
                 )
             item_total_price = item.value.get("TotalPrice")
             if item_total_price:
                 print(
-                    "......Total Item Price: {} has confidence: {}".format(
-                        item_total_price.value, item_total_price.confidence
-                    )
+                    f"......Total Item Price: {item_total_price.value} has confidence: "
+                    f"{item_total_price.confidence}"
                 )
     subtotal = receipt.fields.get("Subtotal")
     if subtotal:
-        print(
-            "Subtotal: {} has confidence: {}".format(
-                subtotal.value, subtotal.confidence
-            )
-        )
+        print(f"Subtotal: {subtotal.value} has confidence: {subtotal.confidence}")
     tax = receipt.fields.get("TotalTax")
     if tax:
-        print("Total tax: {} has confidence: {}".format(tax.value, tax.confidence))
+        print(f"Total tax: {tax.value} has confidence: {tax.confidence}")
     tip = receipt.fields.get("Tip")
     if tip:
-        print("Tip: {} has confidence: {}".format(tip.value, tip.confidence))
+        print(f"Tip: {tip.value} has confidence: {tip.confidence}")
     total = receipt.fields.get("Total")
     if total:
-        print("Total: {} has confidence: {}".format(total.value, total.confidence))
+        print(f"Total: {total.value} has confidence: {total.confidence}")
     print("--------------------------------------")
 ```
 
@@ -543,29 +533,40 @@ More details on setting up a container and required file structure can be found 
 <!-- SNIPPET:sample_build_model.build_model -->
 
 ```python
-from azure.ai.formrecognizer import DocumentModelAdministrationClient, ModelBuildMode
+from azure.ai.formrecognizer import (
+    DocumentModelAdministrationClient,
+    ModelBuildMode,
+)
 from azure.core.credentials import AzureKeyCredential
 
 endpoint = os.environ["AZURE_FORM_RECOGNIZER_ENDPOINT"]
 key = os.environ["AZURE_FORM_RECOGNIZER_KEY"]
 container_sas_url = os.environ["CONTAINER_SAS_URL"]
 
-document_model_admin_client = DocumentModelAdministrationClient(endpoint, AzureKeyCredential(key))
+document_model_admin_client = DocumentModelAdministrationClient(
+    endpoint, AzureKeyCredential(key)
+)
 poller = document_model_admin_client.begin_build_document_model(
-    ModelBuildMode.TEMPLATE, blob_container_url=container_sas_url, description="my model description"
+    ModelBuildMode.TEMPLATE,
+    blob_container_url=container_sas_url,
+    description="my model description",
 )
 model = poller.result()
 
-print("Model ID: {}".format(model.model_id))
-print("Description: {}".format(model.description))
-print("Model created on: {}\n".format(model.created_on))
+print(f"Model ID: {model.model_id}")
+print(f"Description: {model.description}")
+print(f"Model created on: {model.created_on}")
+print(f"Model expires on: {model.expires_on}")
 print("Doc types the model can recognize:")
 for name, doc_type in model.doc_types.items():
-    print("\nDoc Type: '{}' built with '{}' mode which has the following fields:".format(name, doc_type.build_mode))
+    print(
+        f"Doc Type: '{name}' built with '{doc_type.build_mode}' mode which has the following fields:"
+    )
     for field_name, field in doc_type.field_schema.items():
-        print("Field: '{}' has type '{}' and confidence score {}".format(
-            field_name, field["type"], doc_type.field_confidence[field_name]
-        ))
+        print(
+            f"Field: '{field_name}' has type '{field['type']}' and confidence score "
+            f"{doc_type.field_confidence[field_name]}"
+        )
 ```
 
 <!-- END SNIPPET -->
@@ -597,42 +598,37 @@ with open(path_to_sample_documents, "rb") as f:
 result = poller.result()
 
 for idx, document in enumerate(result.documents):
-    print("--------Analyzing document #{}--------".format(idx + 1))
-    print("Document has type {}".format(document.doc_type))
-    print("Document has confidence {}".format(document.confidence))
-    print("Document was analyzed by model with ID {}".format(result.model_id))
+    print(f"--------Analyzing document #{idx + 1}--------")
+    print(f"Document has type {document.doc_type}")
+    print(f"Document has document type confidence {document.confidence}")
+    print(f"Document was analyzed with model with ID {result.model_id}")
     for name, field in document.fields.items():
         field_value = field.value if field.value else field.content
-        print("......found field of type '{}' with value '{}' and with confidence {}".format(field.value_type, field_value, field.confidence))
-
+        print(
+            f"......found field of type '{field.value_type}' with value '{field_value}' and with confidence {field.confidence}"
+        )
 
 # iterate over tables, lines, and selection marks on each page
 for page in result.pages:
-    print("\nLines found on page {}".format(page.page_number))
+    print(f"\nLines found on page {page.page_number}")
     for line in page.lines:
-        print("...Line '{}'".format(line.content))
+        print(f"...Line '{line.content}'")
     for word in page.words:
-        print(
-            "...Word '{}' has a confidence of {}".format(
-                word.content, word.confidence
+        print(f"...Word '{word.content}' has a confidence of {word.confidence}")
+    if page.selection_marks:
+        print(f"\nSelection marks found on page {page.page_number}")
+        for selection_mark in page.selection_marks:
+            print(
+                f"...Selection mark is '{selection_mark.state}' and has a confidence of {selection_mark.confidence}"
             )
-        )
-    for selection_mark in page.selection_marks:
-        print(
-            "...Selection mark is '{}' and has a confidence of {}".format(
-                selection_mark.state, selection_mark.confidence
-            )
-        )
 
 for i, table in enumerate(result.tables):
-    print("\nTable {} can be found on page:".format(i + 1))
+    print(f"\nTable {i + 1} can be found on page:")
     for region in table.bounding_regions:
-        print("...{}".format(region.page_number))
+        print(f"...{region.page_number}")
     for cell in table.cells:
         print(
-            "...Cell[{}][{}] has content '{}'".format(
-                cell.row_index, cell.column_index, cell.content
-            )
+            f"...Cell[{cell.row_index}][{cell.column_index}] has text '{cell.content}'"
         )
 print("-----------------------------------")
 ```
@@ -734,11 +730,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python-fr-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/formrecognizer/azure-ai-formrecognizer/azure/ai/formrecognizer
+[python-fr-src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/azure/ai/formrecognizer
 [python-fr-pypi]: https://pypi.org/project/azure-ai-formrecognizer/
 [python-fr-product-docs]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/overview?view=form-recog-3.0.0
 [python-fr-ref-docs]: https://aka.ms/azsdk/python/formrecognizer/docs
-[python-fr-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/formrecognizer/azure-ai-formrecognizer/samples
+[python-fr-samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/samples
 
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_portal]: https://ms.portal.azure.com/
@@ -764,8 +760,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cognitive_authentication_api_key]: /azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [register_aad_app]: /azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [custom_subdomain]: /azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/identity/azure-identity
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/identity/azure-identity#defaultazurecredential
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [service_recognize_receipt]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
 [service_recognize_business_cards]: https://aka.ms/azsdk/formrecognizer/businesscardfieldschema
 [service_recognize_invoice]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema
@@ -773,10 +769,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [service_recognize_tax_documents]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
 [service_prebuilt_document]: /azure/applied-ai-services/form-recognizer/concept-general-document#general-document-features
 [sdk_logging_docs]: /azure/developer/python/sdk/azure-sdk-logging
-[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/formrecognizer/azure-ai-formrecognizer/samples
-[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
-[migration-guide]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/formrecognizer/azure-ai-formrecognizer/MIGRATION_GUIDE.md
-[classify_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.0b1/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2/sample_classify_document.py
+[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/samples
+[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
+[migration-guide]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/MIGRATION_GUIDE.md
+[classify_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2/sample_classify_document.py
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
