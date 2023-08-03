@@ -1,14 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-search-entitysearch, cognitiveservices
-author: lmazuel
-ms.author: lmazuel
-ms.date: 03/31/2022
+author: kristapratico
+ms.author: krpratic
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: bing-entity-search
+ms.service: cognitiveservices
 ---
 # Microsoft Azure SDK for Python
 
@@ -22,7 +20,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 
-For code examples, see [Cognitive Services Entity Search](https://docs.microsoft.com/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
+For code examples, see [Cognitive Services Entity Search](/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
 
 
 # Provide Feedback

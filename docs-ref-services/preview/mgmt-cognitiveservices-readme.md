@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-cognitiveservices, cognitiveservices
 author: kristapratico
 ms.author: krpratic
-ms.date: 12/30/2022
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitiveservices
@@ -55,7 +55,9 @@ client = CognitiveServicesManagementClient(credential=DefaultAzureCredential(), 
 
 ## Examples
 
-Code samples for this package can be found at [Cognitive Services Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://github.com/Azure-Samples/azure-samples-python-management/tree/main/samples/cognitiveservices)
+Code samples for this package can be found at:
+- [Search Cognitive Services Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting

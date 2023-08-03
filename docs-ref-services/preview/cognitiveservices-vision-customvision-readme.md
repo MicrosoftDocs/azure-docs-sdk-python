@@ -1,14 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-customvision, cognitiveservices
-author: areddish
-ms.author: areddish
-ms.date: 03/31/2022
+author: kristapratico
+ms.author: krpratic
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: custom-vision
+ms.service: cognitiveservices
 ---
 # Microsoft Azure SDK for Python
 
@@ -22,7 +20,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 
-For code examples, see [Custom Vision](https://docs.microsoft.com/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
+For code examples, see [Custom Vision](/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
 
 
 # Provide Feedback
