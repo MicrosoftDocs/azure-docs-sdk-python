@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-scvmm, scvmm
 author: lmazuel
 ms.author: lmazuel
-ms.date: 11/24/2022
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: scvmm
