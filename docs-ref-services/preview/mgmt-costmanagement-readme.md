@@ -1,50 +1,71 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-costmanagement, costmanagement
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 12/10/2020
+author: lmazuel
+ms.author: lmazuel
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: cost-management-billing
-ms.subservice: cost-management
+ms.service: costmanagement
 ---
-
-## Microsoft Azure SDK for Python
+# Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Cost Management Client Library.
+This package has been tested with Python 3.7+.
+For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
-Azure Resource Manager (ARM) is the next generation of management APIs
-that replace the old Azure Service Management (ASM).
+## _Disclaimer_
 
-This package has been tested with Python 2.7, 3.4, 3.5, 3.6 and 3.7.
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-For the older Azure Service Management (ASM) libraries, see
-[azure-servicemanagement-legacy](https://pypi.python.org/pypi/azure-servicemanagement-legacy)
-library.
+## Getting started
 
-For a more complete set of Azure libraries, see the
-[azure sdk python release](https://aka.ms/azsdk/python/all).
+### Prerequisites
 
-## Usage
+- Python 3.7+ is required to use this package.
+- [Azure subscription](https://azure.microsoft.com/free/)
+
+### Install the package
+
+```bash
+pip install azure-mgmt-costmanagement
+pip install azure-identity
+```
+
+### Authentication
+
+By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configure of following environment variables.
+
+- `AZURE_CLIENT_ID` for Azure client ID.
+- `AZURE_TENANT_ID` for Azure tenant ID.
+- `AZURE_CLIENT_SECRET` for Azure client secret.
+
+With above configuration, client can be authenticated by following code:
+
+```python
+from azure.identity import DefaultAzureCredential
+from azure.mgmt.costmanagement import CostManagementClient
+
+client = CostManagementClient(credential=DefaultAzureCredential())
+```
+
+## Examples
+
+Code samples for this package can be found at:
+- [Search Cost Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
-To learn how to use this package, see the [quickstart guide](https://aka.ms/azsdk/python/mgmt)
+## Troubleshooting
 
-
-
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Cost Management Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
-Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples
-
+## Next steps
 
 ## Provide Feedback
 
-If you encounter any bugs or have suggestions, please file an issue in
-the [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
-section of the project.
+If you encounter any bugs or have suggestions, please file an issue in the
+[Issues](https://github.com/Azure/azure-sdk-for-python/issues)
+section of the project. 
 
-![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-costmanagement%2FREADME.png)
 
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-costmanagement%2FREADME.png)
 
