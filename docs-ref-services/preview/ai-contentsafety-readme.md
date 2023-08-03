@@ -3,13 +3,13 @@ title: Azure AI Content Safety client library for Python
 keywords: Azure, python, SDK, API, azure-ai-contentsafety, contentsafety
 author: lmazuel
 ms.author: lmazuel
-ms.date: 05/22/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: contentsafety
 ---
 
-# Azure AI Content Safety client library for Python - version 1.0.0b1 
+# Azure AI Content Safety client library for Python - version 1.0.0a20230803001 
 
 [Azure AI Content Safety][contentsafety_overview] detects harmful user-generated and AI-generated content in applications and services. Content Safety includes text and image APIs that allow you to detect material that is harmful.
 
@@ -21,7 +21,7 @@ ms.service: contentsafety
 - You need an [Azure subscription][azure_sub] to use this package.
 - An existing [Azure AI Content Safety][contentsafety_overview] instance.
 
-### Installing the package
+### Install the package
 
 ```bash
 pip install azure-ai-contentsafety
@@ -63,7 +63,7 @@ client = ContentSafetyClient(endpoint, credential)
 ### Available features
 There are different types of analysis available from this service. The following table describes the currently available APIs.
 
-|Feature|Description|
+|Feature  |Description  |
 |---------|---------|
 |Text Analysis API|Scans text for sexual content, violence, hate, and self harm with multi-severity levels.|
 |Image Analysis API|Scans images for sexual content, violence, hate, and self harm with multi-severity levels.|
@@ -112,7 +112,7 @@ The following section provides several code snippets covering some of the most c
 - [Analyze image](#analyze-image)
 - [Manage text blocklist](#manage-text-blocklist)
 
-Please refer to [sample data](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.0.0b1/sdk/contentsafety/azure-ai-contentsafety/samples/sample_data) for the data used here. For more samples, please refer to [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.0.0b1/sdk/contentsafety/azure-ai-contentsafety/samples).
+Please refer to [sample data](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentsafety/azure-ai-contentsafety/samples/sample_data) for the data used here. For more samples, please refer to [samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/contentsafety/azure-ai-contentsafety/samples).
 
 ### Analyze text
 
@@ -125,19 +125,16 @@ Please refer to [sample data](https://github.com/Azure/azure-sdk-for-python/tree
     from azure.ai.contentsafety import ContentSafetyClient
     from azure.core.credentials import AzureKeyCredential
     from azure.core.exceptions import HttpResponseError
-    from azure.ai.contentsafety.models import AnalyzeTextOptions, TextCategory
+    from azure.ai.contentsafety.models import AnalyzeTextOptions
 
     key = os.environ["CONTENT_SAFETY_KEY"]
     endpoint = os.environ["CONTENT_SAFETY_ENDPOINT"]
-    text_path = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "./sample_data/text.txt"))
 
     # Create an Content Safety client
     client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
 
-    # Read sample data
-    with open(text_path) as f:
-        # Build request
-        request = AnalyzeTextOptions(text=f.readline(), categories=[TextCategory.HATE, TextCategory.SELF_HARM])
+    # Construct a request
+    request = AnalyzeTextOptions(text="You are an idiot")
 
     # Analyze text
     try:
@@ -155,6 +152,10 @@ Please refer to [sample data](https://github.com/Azure/azure-sdk-for-python/tree
         print(f"Hate severity: {response.hate_result.severity}")
     if response.self_harm_result:
         print(f"SelfHarm severity: {response.self_harm_result.severity}")
+    if response.sexual_result:
+        print(f"Sexual severity: {response.sexual_result.severity}")
+    if response.violence_result:
+        print(f"Violence severity: {response.violence_result.severity}")
 ```
 
 <!-- END SNIPPET -->
@@ -624,9 +625,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-contentsafety_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [contentsafety_overview]: https://aka.ms/acs-doc
