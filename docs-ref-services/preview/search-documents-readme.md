@@ -3,12 +3,12 @@ title: Azure Cognitive Search client library for Python
 keywords: Azure, python, SDK, API, azure-search-documents, cognitive-search
 author: xiangyan99
 ms.author: xiangyan
-ms.date: 07/11/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-search
 ---
-# Azure Cognitive Search client library for Python - version 11.4.0b6 
+# Azure Cognitive Search client library for Python - version 11.4.0a20230803001 
 
 
 [Azure Cognitive Search](/azure/search/) is a
@@ -45,12 +45,12 @@ Use the Azure.Search.Documents client library to:
 * Create and manage analyzers for advanced text analysis or multi-lingual content.
 * Optimize results through scoring profiles to factor in business logic or freshness.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-search-documents_11.4.0b6/sdk/search/azure-search-documents)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/search/azure-search-documents)
 | [Package (PyPI)](https://pypi.org/project/azure-search-documents/)
 | [Package (Conda)](https://anaconda.org/microsoft/azure-search-documents/)
 | [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-search-documents/latest/index.html)
 | [Product documentation](/azure/search/search-what-is-azure-search)
-| [Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/search/azure-search-documents/samples)
+| [Samples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/search/azure-search-documents/samples)
 
 ## _Disclaimer_
 
@@ -126,9 +126,9 @@ search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(ke
 #### Create a client using Azure Active Directory authentication
 
 You can also create a `SearchClient`, `SearchIndexClient`, or `SearchIndexerClient` using Azure Active Directory (AAD) authentication. Your user or service principal must be assigned the "Search Index Data Reader" role.
-Using the [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/identity/azure-identity/README.md#defaultazurecredential) you can authenticate a service using Managed Identity or a service principal, authenticate as a developer working on an application, and more all without changing code. Please refer the [documentation](https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal) for instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
+Using the [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential) you can authenticate a service using Managed Identity or a service principal, authenticate as a developer working on an application, and more all without changing code. Please refer the [documentation](https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal) for instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
 
-Before you can use the `DefaultAzureCredential`, or any credential type from [Azure.Identity](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/identity/azure-identity/README.md), you'll first need to [install the Azure.Identity package](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/identity/azure-identity/README.md#install-the-package).
+Before you can use the `DefaultAzureCredential`, or any credential type from [Azure.Identity](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/README.md), you'll first need to [install the Azure.Identity package](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/README.md#install-the-package).
 
 To use `DefaultAzureCredential` with a client ID and secret, you'll need to set the `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` environment variables; alternatively, you can pass those values
 to the `ClientSecretCredential` also in Azure.Identity.
@@ -185,7 +185,7 @@ To learn more about Semantic Search, you can refer to the [documentation](https:
 
 **Vector Search** is an information retrieval technique that overcomes the limitations of traditional keyword-based search. Instead of relying solely on lexical analysis and matching individual query terms, Vector Search utilizes machine learning models to capture the contextual meaning of words and phrases. It represents documents and queries as vectors in a high-dimensional space called an embedding. By understanding the intent behind the query, Vector Search can deliver more relevant results that align with the user's requirements, even if the exact terms are not present in the document. Moreover, Vector Search can be applied to various types of content, including images and videos, not just text.
 
-To learn how to index vector fields and perform vector search, you can refer to the [sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/search/azure-search-documents/samples/sample_vector_search.py). This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.
+To learn how to index vector fields and perform vector search, you can refer to the [sample](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/search/azure-search-documents/samples/sample_vector_search.py). This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.
 
 Additionally, for more comprehensive information about Vector Search, including its concepts and usage, you can refer to the [documentation](https://learn.microsoft.com/azure/search/vector-search-overview). The documentation provides in-depth explanations and guidance on leveraging the power of Vector Search in Azure Cognitive Search.
 
@@ -199,7 +199,7 @@ exploring online resources._
 
 The following examples all use a simple [Hotel data set](https://github.com/Azure-Samples/azure-search-sample-data/blob/master/README.md)
 that you can [import into your own index from the Azure portal.](/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source)
-These are just a few of the basics - please [check out our Samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/search/azure-search-documents/samples) for
+These are just a few of the basics - please [check out our Samples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/search/azure-search-documents/samples) for
 much more.
 
 
@@ -254,6 +254,7 @@ models. Indexes can also define suggesters, lexical analyzers, and more.
 <!-- SNIPPET:sample_index_crud_operations.create_index -->
 
 ```python
+client = SearchIndexClient(service_endpoint, AzureKeyCredential(key))
 name = "hotels"
 fields = [
     SimpleField(name="hotelId", type=SearchFieldDataType.String, key=True),
@@ -288,11 +289,11 @@ to be aware of.
 
 ```python
 DOCUMENT = {
-    "Category": "Hotel",
-    "HotelId": "1000",
-    "Rating": 4.0,
-    "Rooms": [],
-    "HotelName": "Azure Inn",
+    "category": "Hotel",
+    "hotelId": "1000",
+    "rating": 4.0,
+    "rooms": [],
+    "hotelName": "Azure Inn",
 }
 
 result = search_client.upload_documents(documents=[DOCUMENT])
@@ -341,9 +342,9 @@ search_client = SearchClient(service_endpoint, index_name, AzureKeyCredential(ke
 result = search_client.get_document(key="23")
 
 print("Details for hotel '23' are:")
-print("        Name: {}".format(result["HotelName"]))
-print("      Rating: {}".format(result["Rating"]))
-print("    Category: {}".format(result["Category"]))
+print("        Name: {}".format(result["hotelName"]))
+print("      Rating: {}".format(result["rating"]))
+print("    Category: {}".format(result["category"]))
 ```
 
 <!-- END SNIPPET -->
@@ -353,7 +354,7 @@ print("    Category: {}".format(result["Category"]))
 This library includes a complete async API. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
-[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/core/azure-core/README.md#transport)
+[azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#transport)
 for more information.
 
 <!-- SNIPPET:sample_simple_query_async.simple_query_async -->
@@ -369,7 +370,7 @@ async with search_client:
 
     print("Hotels containing 'spa' in the name (or other fields):")
     async for result in results:
-        print("    Name: {} (rating {})".format(result["HotelName"], result["Rating"]))
+        print("    Name: {} (rating {})".format(result["hotelName"], result["rating"]))
 ```
 
 <!-- END SNIPPET -->
@@ -415,7 +416,7 @@ result =  client.search(search_text="spa", logging_enable=True)
 
 ## Next steps
 
-* Go further with Azure.Search.Documents and our [https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/search/azure-search-documents/samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/search/azure-search-documents/samples)
+* Go further with Azure.Search.Documents and our [https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/search/azure-search-documents/samples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/search/azure-search-documents/samples)
 * Watch a [demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
 * Read more about the [Azure Cognitive Search service](/azure/search/search-what-is-azure-search)
 
@@ -445,7 +446,7 @@ additional questions or comments.
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fsearch%2Fazure-search-documents%2FREADME.png)
 
 [azure_cli]: /cli/azure
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [azure_sub]: https://azure.microsoft.com/free/
 [search_resource]: /azure/search/search-create-service-portal
 [azure_portal]: https://portal.azure.com
@@ -453,7 +454,7 @@ additional questions or comments.
 [create_search_service_docs]: /azure/search/search-create-service-portal
 [create_search_service_ps]: /azure/search/search-manage-powershell#create-or-delete-a-service
 [create_search_service_cli]: /cli/azure/search/service?view=azure-cli-latest#az-search-service-create
-[search_contrib]: https://github.com/Azure/azure-sdk-for-python/blob/azure-search-documents_11.4.0b6/CONTRIBUTING.md
+[search_contrib]: https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 
 [cla]: https://cla.microsoft.com
