@@ -1,13 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-batchai, batchai
-author: cRui861
-ms.author: rechen
-ms.date: 03/31/2022
+author: lmazuel
+ms.author: lmazuel
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: batch-ai
+ms.service: batchai
 ---
 # Microsoft Azure SDK for Python
 
@@ -26,8 +25,8 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 
 
  
-For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
-Code samples for this package can be found at [Batch AI Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
+For docs and references, see [Python SDK References](/python/api/overview/azure/)
+Code samples for this package can be found at [Batch AI Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
