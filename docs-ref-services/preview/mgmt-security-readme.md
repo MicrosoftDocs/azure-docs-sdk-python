@@ -3,12 +3,11 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-security, security
 author: lmazuel
 ms.author: lmazuel
-ms.date: 03/07/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: security-center
+ms.service: security
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Security Center Management Client Library.
@@ -56,8 +55,9 @@ client = SecurityCenter(credential=DefaultAzureCredential(), subscription_id=sub
 
 ## Examples
 
-
-Code samples for this package can be found at [Security Center Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Security Center Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
