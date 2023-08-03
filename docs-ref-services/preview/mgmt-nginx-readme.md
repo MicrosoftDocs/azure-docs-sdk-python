@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-nginx, nginx
 author: lmazuel
 ms.author: lmazuel
-ms.date: 12/30/2022
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: nginx
@@ -55,8 +55,10 @@ client = NginxManagementClient(credential=DefaultAzureCredential(), subscription
 
 ## Examples
 
-
-Code samples for this package can be found at [Nginx Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Nginx Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+- [Other Nginx Management doc](https://github.com/nginxinc/nginxaas-for-azure-snippets/tree/main/snippets/sdk/python)
 
 
 ## Troubleshooting
