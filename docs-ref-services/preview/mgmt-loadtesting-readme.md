@@ -1,12 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-loadtesting, loadtestservice
+keywords: Azure, python, SDK, API, azure-mgmt-loadtesting, load-testing
 author: lmazuel
 ms.author: lmazuel
-ms.date: 01/06/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: loadtestservice
+ms.service: load-testing
 ---
 # Microsoft Azure SDK for Python
 
