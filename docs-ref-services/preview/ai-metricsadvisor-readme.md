@@ -1,17 +1,14 @@
 ---
 title: Azure Metrics Advisor client library for Python
 keywords: Azure, python, SDK, API, azure-ai-metricsadvisor, metricsadvisor
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 06/07/2021
+author: xiangyan99
+ms.author: xiangyan
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: metrics-advisor
+ms.service: metricsadvisor
 ---
-
-# Azure Metrics Advisor client library for Python - version 1.0.0b4 
+# Azure Metrics Advisor client library for Python - version 1.1.0a20230803002 
 
 Metrics Advisor is a scalable real-time time series monitoring, alerting, and root cause analysis platform. Use Metrics Advisor to:
 
@@ -20,7 +17,16 @@ Metrics Advisor is a scalable real-time time series monitoring, alerting, and ro
 - Configure and fine-tune the anomaly detection model used on your data
 - Diagnose anomalies and help with root cause analysis
 
-[Source code][src_code] | [Package (Pypi)][package] | [API reference documentation][reference_documentation] | [Product documentation][ma_docs] | [Samples][samples_readme]
+[Source code][src_code]
+| [Package (Pypi)][package]
+| [Package (Conda)](https://anaconda.org/microsoft/azure-ai-metricsadvisor/)
+| [API reference documentation][reference_documentation]
+| [Product documentation][ma_docs]
+| [Samples][samples_readme]
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
@@ -29,13 +35,13 @@ Metrics Advisor is a scalable real-time time series monitoring, alerting, and ro
 Install the Azure Metrics Advisor client library for Python with pip:
 
 ```commandline
-pip install azure-ai-metricsadvisor --pre
+pip install azure-ai-metricsadvisor
 ```
 
 ### Prerequisites
 
-* Python 2.7, or 3.6 or later is required to use this package.
-* You need an [Azure subscription][azure_sub], and a [Metrics Advisor serivce][ma_service] to use this package.
+* Python 3.7 or later is required to use this package.
+* You need an [Azure subscription][azure_sub], and a [Metrics Advisor service][ma_service] to use this package.
 
 ### Authenticate the client
 
@@ -46,24 +52,35 @@ You will need two keys to authenticate the client:
 
 We can use the keys to create a new `MetricsAdvisorClient` or `MetricsAdvisorAdministrationClient`.
 
-```py
-import os
-from azure.ai.metricsadvisor import (
-    MetricsAdvisorKeyCredential,
-    MetricsAdvisorClient,
-    MetricsAdvisorAdministrationClient,
-)
+<!-- SNIPPET:sample_authentication.authentication_client_with_metrics_advisor_credential -->
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
+```python
+from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient
+
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
 
 client = MetricsAdvisorClient(service_endpoint,
-                            MetricsAdvisorKeyCredential(subscription_key, api_key))
-
-admin_client = MetricsAdvisorAdministrationClient(service_endpoint,
-                            MetricsAdvisorKeyCredential(subscription_key, api_key))
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 ```
+
+<!-- END SNIPPET -->
+
+<!-- SNIPPET:sample_authentication.administration_client_with_metrics_advisor_credential -->
+
+```python
+from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
+
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+
+client = MetricsAdvisorAdministrationClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
+```
+
+<!-- END SNIPPET -->
 
 ## Key concepts
 
@@ -100,7 +117,7 @@ A `DataFeedMetric` is a quantifiable measure that is used to monitor and assess 
 
 ### AnomalyDetectionConfiguration
 
-`AnomalyDetectionConfiguration` is required for every time series, and determines whether a point in the time series is an anomaly. 
+`AnomalyDetectionConfiguration` is required for every time series, and determines whether a point in the time series is an anomaly.
 
 ### Anomaly & Incident
 
@@ -129,29 +146,27 @@ Metrics Advisor lets you create and subscribe to real-time alerts. These alerts 
 
 Metrics Advisor supports connecting different types of data sources. Here is a sample to ingest data from SQL Server.
 
-```py
-import os
-import datetime
+<!-- SNIPPET:sample_data_feeds.create_data_feed -->
+
+```python
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 from azure.ai.metricsadvisor.models import (
-        SqlServerDataFeedSource,
-        DataFeedSchema,
-        DataFeedMetric,
-        DataFeedDimension,
-        DataFeedRollupSettings,
-        DataFeedMissingDataPointFillSettings
-    )
-
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-sql_server_connection_string = os.getenv("SQL_SERVER_CONNECTION_STRING")
-query = os.getenv("SQL_SERVER_QUERY")
-
-client = MetricsAdvisorAdministrationClient(
-    service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
+    SqlServerDataFeedSource,
+    DataFeedSchema,
+    DataFeedMetric,
+    DataFeedDimension,
+    DataFeedRollupSettings,
+    DataFeedMissingDataPointFillSettings,
 )
+
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+sql_server_connection_string = os.getenv("METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING")
+query = os.getenv("METRICS_ADVISOR_SQL_SERVER_QUERY")
+
+client = MetricsAdvisorAdministrationClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 data_feed = client.create_data_feed(
     name="My data feed",
@@ -167,7 +182,7 @@ data_feed = client.create_data_feed(
         ],
         dimensions=[
             DataFeedDimension(name="category", display_name="Category"),
-            DataFeedDimension(name="city", display_name="City")
+            DataFeedDimension(name="region", display_name="region")
         ],
         timestamp_column="Timestamp"
     ),
@@ -187,22 +202,25 @@ data_feed = client.create_data_feed(
 return data_feed
 ```
 
+<!-- END SNIPPET -->
+
 ### Check ingestion status
 
 After we start the data ingestion, we can check the ingestion status.
 
-```py
+<!-- SNIPPET:sample_ingestion.list_data_feed_ingestion_status -->
+
+```python
 import datetime
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-data_feed_id = os.getenv("DATA_FEED_ID")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+data_feed_id = os.getenv("METRICS_ADVISOR_DATA_FEED_ID")
 
 client = MetricsAdvisorAdministrationClient(service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 ingestion_status = client.list_data_feed_ingestion_status(
     data_feed_id,
@@ -215,11 +233,15 @@ for status in ingestion_status:
     print("Message: {}\n".format(status.message))
 ```
 
+<!-- END SNIPPET -->
+
 ### Configure anomaly detection configuration
 
 While a default detection configuration is automatically applied to each metric, we can tune the detection modes used on our data by creating a customized anomaly detection configuration.
 
-```py
+<!-- SNIPPET:sample_detection_configuration.create_detection_config -->
+
+```python
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 from azure.ai.metricsadvisor.models import (
     ChangeThresholdCondition,
@@ -229,15 +251,13 @@ from azure.ai.metricsadvisor.models import (
     MetricDetectionCondition,
 )
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-metric_id = os.getenv("METRIC_ID")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+metric_id = os.getenv("METRICS_ADVISOR_METRIC_ID")
 
-client = MetricsAdvisorAdministrationClient(
-    service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
+client = MetricsAdvisorAdministrationClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 change_threshold_condition = ChangeThresholdCondition(
     anomaly_detector_direction="Both",
@@ -271,20 +291,25 @@ detection_config = client.create_detection_configuration(
     metric_id=metric_id,
     description="anomaly detection config for metric",
     whole_series_detection_condition=MetricDetectionCondition(
-        cross_conditions_operator="OR",
+        condition_operator="OR",
         change_threshold_condition=change_threshold_condition,
         hard_threshold_condition=hard_threshold_condition,
         smart_detection_condition=smart_detection_condition
     )
 )
+
 return detection_config
 ```
+
+<!-- END SNIPPET -->
 
 ### Configure alert configuration
 
 Then let's configure in which conditions an alert needs to be triggered.
 
-```py
+<!-- SNIPPET:sample_alert_configuration.create_alert_config -->
+
+```python
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 from azure.ai.metricsadvisor.models import (
     MetricAlertConfiguration,
@@ -295,16 +320,14 @@ from azure.ai.metricsadvisor.models import (
     MetricBoundaryCondition,
     MetricAnomalyAlertSnoozeCondition,
 )
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-anomaly_detection_configuration_id = os.getenv("DETECTION_CONFIGURATION_ID")
-hook_id = os.getenv("HOOK_ID")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+detection_configuration_id = os.getenv("METRICS_ADVISOR_DETECTION_CONFIGURATION_ID")
+hook_id = os.getenv("METRICS_ADVISOR_HOOK_ID")
 
-client = MetricsAdvisorAdministrationClient(
-    service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
+client = MetricsAdvisorAdministrationClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 alert_config = client.create_alert_configuration(
     name="my alert config",
@@ -312,7 +335,7 @@ alert_config = client.create_alert_configuration(
     cross_metrics_operator="AND",
     metric_alert_configurations=[
         MetricAlertConfiguration(
-            detection_configuration_id=anomaly_detection_configuration_id,
+            detection_configuration_id=detection_configuration_id,
             alert_scope=MetricAnomalyAlertScope(
                 scope_type="WholeSeries"
             ),
@@ -324,7 +347,7 @@ alert_config = client.create_alert_configuration(
             )
         ),
         MetricAlertConfiguration(
-            detection_configuration_id=anomaly_detection_configuration_id,
+            detection_configuration_id=detection_configuration_id,
             alert_scope=MetricAnomalyAlertScope(
                 scope_type="TopN",
                 top_n_group_in_scope=TopNGroupScope(
@@ -352,66 +375,88 @@ alert_config = client.create_alert_configuration(
 return alert_config
 ```
 
+<!-- END SNIPPET -->
+
 ### Query anomaly detection results
 
 We can query the alerts and anomalies.
 
-```py
+<!-- SNIPPET:sample_alert_configuration.list_alerts -->
+
+```python
 import datetime
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-alert_config_id = os.getenv("ALERT_CONFIG_ID")
-alert_id = os.getenv("ALERT_ID")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
 
 client = MetricsAdvisorClient(service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 results = client.list_alerts(
     alert_configuration_id=alert_config_id,
-    start_time=datetime.datetime(2020, 1, 1),
-    end_time=datetime.datetime(2020, 9, 9),
+    start_time=datetime.datetime(2021, 1, 1),
+    end_time=datetime.datetime(2021, 9, 9),
     time_mode="AnomalyTime",
 )
+
+tolist = []
 for result in results:
+    tolist.append(result)
     print("Alert id: {}".format(result.id))
-    print("Create on: {}".format(result.created_on))
+    print("Create time: {}".format(result.created_time))
+return tolist
+```
+
+<!-- END SNIPPET -->
+
+<!-- SNIPPET:sample_alert_configuration.list_anomalies_for_alert -->
+
+```python
+from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient
+
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+
+client = MetricsAdvisorClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 results = client.list_anomalies(
-    alert_configuration_id=alert_config_id,
-    alert_id=alert_id,
-)
+        alert_configuration_id=alert_config_id,
+        alert_id=alert_id,
+    )
 for result in results:
-    print("Create on: {}".format(result.created_on))
+    print("Create time: {}".format(result.created_time))
     print("Severity: {}".format(result.severity))
     print("Status: {}".format(result.status))
 ```
+
+<!-- END SNIPPET -->
 
 ### Query incidents
 
 We can query the incidents for a detection configuration.
 
-```py
+<!-- SNIPPET:sample_incidents.list_incidents_for_detection_configuration -->
+
+```python
 import datetime
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-anomaly_detection_configuration_id = os.getenv("DETECTION_CONFIGURATION_ID")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+detection_configuration_id = os.getenv("METRICS_ADVISOR_DETECTION_CONFIGURATION_ID")
 
 client = MetricsAdvisorClient(service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
-
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 results = client.list_incidents(
-            detection_configuration_id=anomaly_detection_configuration_id,
-            start_time=datetime.datetime(2020, 1, 1),
-            end_time=datetime.datetime(2020, 9, 9),
-        )
+    detection_configuration_id=detection_configuration_id,
+    start_time=datetime.datetime(2021, 1, 1),
+    end_time=datetime.datetime(2021, 9, 9),
+)
 for result in results:
     print("Metric id: {}".format(result.metric_id))
     print("Incident ID: {}".format(result.id))
@@ -419,82 +464,106 @@ for result in results:
     print("Status: {}".format(result.status))
 ```
 
+<!-- END SNIPPET -->
+
 ### Query root causes
 
 We can also query the root causes of an incident
 
-```py
+<!-- SNIPPET:sample_incidents.list_incident_root_cause -->
+
+```python
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
-anomaly_detection_configuration_id = os.getenv("DETECTION_CONFIGURATION_ID")
-incident_id = os.getenv("INCIDENT_ID")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+detection_configuration_id = os.getenv("METRICS_ADVISOR_DETECTION_CONFIGURATION_ID")
+incident_id = os.getenv("METRICS_ADVISOR_INCIDENT_ID")
 
 client = MetricsAdvisorClient(service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
-
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 results = client.list_incident_root_causes(
-            detection_configuration_id=anomaly_detection_configuration_id,
-            incident_id=incident_id,
-        )
+    detection_configuration_id=detection_configuration_id,
+    incident_id=incident_id,
+)
 for result in results:
     print("Score: {}".format(result.score))
     print("Description: {}".format(result.description))
-
 ```
 
+<!-- END SNIPPET -->
 
 ### Add hooks for receiving anomaly alerts
 
 We can add some hooks so when an alert is triggered, we can get call back.
 
-```py
+<!-- SNIPPET:sample_hooks.create_hook -->
+
+```python
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorAdministrationClient
 from azure.ai.metricsadvisor.models import EmailNotificationHook
 
-service_endpoint = os.getenv("ENDPOINT")
-subscription_key = os.getenv("SUBSCRIPTION_KEY")
-api_key = os.getenv("API_KEY")
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
 
 client = MetricsAdvisorAdministrationClient(service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key))
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 
 hook = client.create_hook(
     hook=EmailNotificationHook(
         name="email hook",
         description="my email hook",
         emails_to_alert=["alertme@alertme.com"],
-        external_link="https://docs.microsoft.com/en-us/azure/cognitive-services/metrics-advisor/how-tos/alerts"
+        external_link="/azure/cognitive-services/metrics-advisor/how-tos/alerts"
     )
 )
+
+return hook
 ```
+
+<!-- END SNIPPET -->
 
 ### Async APIs
 
-This library includes a complete async API supported on Python 3.6+. To use it, you must
+This library includes a complete set of async APIs. To use them, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
 See
 [azure-core documentation][azure_core_docs]
 for more information.
 
+<!-- SNIPPET:sample_authentication_async.authentication_client_with_metrics_advisor_credential_async -->
 
-```py
+```python
 from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential
-from azure.ai.metricsadvisor.aio import MetricsAdvisorClient, MetricsAdvisorAdministrationClient
+from azure.ai.metricsadvisor.aio import MetricsAdvisorClient
 
-client = MetricsAdvisorClient(
-    service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
 
-admin_client = MetricsAdvisorAdministrationClient(
-    service_endpoint,
-    MetricsAdvisorKeyCredential(subscription_key, api_key)
-)
+client = MetricsAdvisorClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
 ```
+
+<!-- END SNIPPET -->
+
+<!-- SNIPPET:sample_authentication_async.administration_client_with_metrics_advisor_credential_async -->
+
+```python
+from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential
+from azure.ai.metricsadvisor.aio import MetricsAdvisorAdministrationClient
+
+service_endpoint = os.getenv("METRICS_ADVISOR_ENDPOINT")
+subscription_key = os.getenv("METRICS_ADVISOR_SUBSCRIPTION_KEY")
+api_key = os.getenv("METRICS_ADVISOR_API_KEY")
+
+client = MetricsAdvisorAdministrationClient(service_endpoint,
+                              MetricsAdvisorKeyCredential(subscription_key, api_key))
+```
+
+<!-- END SNIPPET -->
 
 ## Troubleshooting
 
@@ -532,18 +601,18 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[src_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-metricsadvisor_1.0.0b4/sdk/metricsadvisor/azure-ai-metricsadvisor
+[src_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor
 [reference_documentation]: https://aka.ms/azsdk/python/metricsadvisor/docs
-[ma_docs]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[ma_docs]: https://learn.microsoft.com/azure/applied-ai-services/metrics-advisor/overview
+[azure_cli]: /cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [package]: https://aka.ms/azsdk/python/metricsadvisor/pypi
 [ma_service]: https://go.microsoft.com/fwlink/?linkid=2142156
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [azure_core]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
-[azure_core_docs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b4/sdk/core/azure-core/README.md#transport
-[sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
-[samples_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-metricsadvisor_1.0.0b4/sdk/metricsadvisor/azure-ai-metricsadvisor/samples/README.md
+[azure_core_docs]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md#transport
+[sdk_logging_docs]: /azure/developer/python/sdk/azure-sdk-logging
+[samples_readme]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/samples/README.md
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
