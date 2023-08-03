@@ -3,10 +3,10 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-redhatopenshift, redhatopenshift
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/16/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-redhat-openshift
+ms.service: redhatopenshift
 ---
 # Microsoft Azure SDK for Python
 
