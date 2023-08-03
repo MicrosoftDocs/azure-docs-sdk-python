@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-managednetworkfabric, managednetworkfabric
 author: lmazuel
 ms.author: lmazuel
-ms.date: 06/29/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: managednetworkfabric
