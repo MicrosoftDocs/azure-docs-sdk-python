@@ -1,14 +1,14 @@
 ---
 title: Azure Communication Phone Numbers Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-phonenumbers, communication
-author: miguhern
-ms.author: miguelher
-ms.date: 01/10/2023
+author: acsdevx-msft
+ms.author: acsdevx-msft
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Phone Numbers Package client library for Python - version 1.1.0b3 
+# Azure Communication Phone Numbers Package client library for Python - version 1.1.1a20230803001 
 
 
 Azure Communication Phone Numbers client package is used to administer Phone Numbers.
@@ -100,7 +100,7 @@ Phone numbers can also be released using the release API.
 
 Direct routing feature allows connecting customer-provided telephony infrastructure to Azure Communication Resources. In order to setup routing configuration properly, customer needs to supply the SIP trunk configuration and SIP routing rules for calls. SIP routing client provides the necessary interface for setting this configuration.
 
-When the call arrives, system tries to match the destination number with regex number patterns of defined routes. The first route to match the number will be selected. The order of regex matching is the same as the order of routes in configuration, therefore the order of routes matters.
+When a call is made, system tries to match the destination number with regex number patterns of defined routes. The first route to match the number will be selected. The order of regex matching is the same as the order of routes in configuration, therefore the order of routes matters.
 Once a route is matched, the call is routed to the first trunk in the route's trunks list. If the trunk is not available, next trunk in the list is selected.
 
 ## Examples
@@ -169,7 +169,7 @@ purchase_poller = phone_numbers_client.begin_purchase_phone_numbers(
 Releases an acquired phone number.
 
 ```python
-poller = self.phone_number_client.begin_release_phone_number(
+poller = phone_numbers_client.begin_release_phone_number(
     "<phone number>",
     polling = True
 )
@@ -185,7 +185,7 @@ Updates the specified phone number capabilities for Calling and SMS to one of:
 - `PhoneNumberCapabilityType.INBOUND_OUTBOUND`
 
 ```python
-poller = self.phone_number_client.begin_update_phone_number_capabilities(
+poller = phone_numbers_client.begin_update_phone_number_capabilities(
     "<phone number>",
     PhoneNumberCapabilityType.OUTBOUND,
     PhoneNumberCapabilityType.INBOUND_OUTBOUND,
@@ -251,7 +251,7 @@ The Phone Numbers Administration client will raise exceptions defined in [Azure 
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-phonenumbers_1.1.0b3/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/communication/azure-communication-phonenumbers/samples) directory for detailed examples of how to use this library.
 
 ## Provide Feedback
 
@@ -268,5 +268,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-phonenumbers_1.1.0b3/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 
