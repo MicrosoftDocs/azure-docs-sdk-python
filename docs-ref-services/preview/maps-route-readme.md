@@ -2,19 +2,19 @@
 title: Azure Maps Route Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-route, maps
 author: alextts627
-ms.author: ttsao
-ms.date: 10/14/2022
+ms.author: alextts627
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Route Package client library for Python - version 1.0.0b1 
+# Azure Maps Route Package client library for Python - version 1.0.0a20230803001 
 
 
 This package contains a Python SDK for Azure Maps Services for Route.
 Read more about Azure Maps Services [here](/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b1/sdk/maps/azure-maps-route) | [API reference documentation](/rest/api/maps/route) | [Product documentation](/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route) | [API reference documentation](/rest/api/maps/route) | [Product documentation](/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -104,7 +104,7 @@ Once you initialized a `MapsRouteClient` class, you can explore the methods on t
 ### Async Clients
 
 This library includes a complete async API supported on Python 3.5+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
 objects are async context managers and define async `close` methods.
@@ -120,27 +120,27 @@ The following sections provide several code snippets covering some of the most c
 
 ### Request and Get Route Directions
 
-This service request returns a route between an origin and a destination, passing through waypoints if they are specified. The route will take into account factors such as current traffic and the typical road speeds on the requested day of the week and time of day.
+This service request returns a route between an origin and a destination, passing through waypoints if they are specified. The route will take into account factors such as current traffic and the typical road speeds on the requested day of the week and time of day. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_directions.py).
 
 ```python
 from azure.maps.route import MapsRouteClient
 
-route_directions_result = client.get_route_directions(route_points=[LatLon(47.60323, -122.33028), LatLon(53.2, -106)]);
+route_directions_result = client.get_route_directions(route_points=[(47.60323, -122.33028), (53.2, -106)]);
 ```
 
 ### Request and Get Route Range
 
-This service will calculate a set of locations that can be reached from the origin point by given coordinates and based on fuel, energy,  time or distance budget that is specified.
+This service will calculate a set of locations that can be reached from the origin point by given coordinates and based on fuel, energy,  time or distance budget that is specified. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_range.py).
 
 ```python
 from azure.maps.route import MapsRouteClient
 
-route_range_result = client.get_route_range(coordinates=LatLon(47.60323, -122.33028), time_budget_in_sec=6000);
+route_range_result = client.get_route_range(coordinates=(47.60323, -122.33028), time_budget_in_sec=6000);
 ```
 
 ### Get Route Matrix
 
-If the Matrix Route request was accepted successfully, the Location header in the response contains the URL to download the results of the request.
+If the Matrix Route request was accepted successfully, the Location header in the response contains the URL to download the results of the request. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_matrix.py).
 
 Retrieves the result of a previous route matrix request.
 The method returns a poller for retrieving the result.
@@ -154,7 +154,7 @@ route_matrix_result = client.begin_get_route_matrix_result(matrix_id="11111111-2
 ### Get Route Directions Batch
 
 Retrieves the result of a previous route direction batch request.
-The method returns a poller for retrieving the result.
+The method returns a poller for retrieving the result. Refer sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_directions_batch_sync.py).
 
 ```python
 from azure.maps.route import MapsRouteClient
@@ -166,7 +166,7 @@ route_directions_batch_poller_result = client.begin_get_route_directions_batch_r
 
 ### General
 
-Maps Route clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b1/sdk/core/azure-core/README.md).
+Maps Route clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -200,7 +200,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Route samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b1/sdk/maps/azure-maps-route/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b1/sdk/maps/azure-maps-route/samples/async_samples)).
+Get started with our [Maps Route samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route/samples/async_samples)).
 
 Several Azure Maps Route Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Route
 
@@ -221,7 +221,7 @@ python samples/async_samples/sample_get_route_directions_async.py
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b1/sdk/maps/azure-maps-route/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route/samples/README.md)
 
 ### Additional documentation
 
@@ -237,11 +237,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
 [azure_cli]: /cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: /powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
 [maps_authentication_aad]: /azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
