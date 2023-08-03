@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-ai-anomalydetector, anomalydetector
 author: conhua
 ms.author: conhua
-ms.date: 12/09/2022
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: anomalydetector
@@ -220,7 +220,7 @@ else:
 
 ### Multivariate Anomaly Detection Sample
 
-To see how to use Anomaly Detector library to conduct Multivariate Anomaly Detection, see this [sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-anomalydetector_3.0.0b6/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_multivariate_detect.py).
+To see how to use Anomaly Detector library to conduct Multivariate Anomaly Detection, see this [sample](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_multivariate_detect.py).
 
 To get more details of Anomaly Detector package, refer to this [azure.ai.anomalydetector package](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-ai-anomalydetector/latest/azure.ai.anomalydetector.html#).
 
@@ -248,15 +248,15 @@ The azure-core [reference documentation](https://azuresdkdocs.blob.core.windows.
 
 ## Next steps
 
-These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-anomalydetector_3.0.0b6/sdk/anomalydetector/azure-ai-anomalydetector/samples/) directory.
+These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/samples/) directory.
 
-- Univariate Anomaly Detection - Batch Detection: [sample_detect_entire_series_anomaly.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-anomalydetector_3.0.0b6/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_detect_entire_series_anomaly.py)
+- Univariate Anomaly Detection - Batch Detection: [sample_detect_entire_series_anomaly.py](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_detect_entire_series_anomaly.py)
 
-- Univariate Anomaly Detection - Streaming Detection: [sample_detect_last_point_anomaly.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-anomalydetector_3.0.0b6/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_detect_last_point_anomaly.py)
+- Univariate Anomaly Detection - Streaming Detection: [sample_detect_last_point_anomaly.py](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_detect_last_point_anomaly.py)
 
-- Univariate Anomaly Detection - Change Point Detection: [sample_detect_change_point.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-anomalydetector_3.0.0b6/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_detect_change_point.py)
+- Univariate Anomaly Detection - Change Point Detection: [sample_detect_change_point.py](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_detect_change_point.py)
 
-- Multivariate Anomaly Detection: [sample_multivariate_detect.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-anomalydetector_3.0.0b6/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_multivariate_detect.py)
+- Multivariate Anomaly Detection: [sample_multivariate_detect.py](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/samples/sample_multivariate_detect.py)
 
 ### Additional documentation
 
