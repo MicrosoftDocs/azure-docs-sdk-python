@@ -3,13 +3,13 @@ title: Azure DevCenter Service client library for Python
 keywords: Azure, python, SDK, API, azure-developer-devcenter, devcenter
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/09/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: devcenter
 ---
 
-# Azure DevCenter Service client library for Python - version 1.0.0b2 
+# Azure DevCenter Service client library for Python - version 1.0.0a20230803001 
 
 The Azure DevCenter package provides access to manage resources for Microsoft Dev Box and Azure Deployment Environments. This SDK enables managing developer machines and environments in Azure.
 
@@ -52,7 +52,8 @@ Use the returned token credential to authenticate the client:
 >>> from azure.developer.devcenter import DevCenterClient
 >>> from azure.identity import DefaultAzureCredential
 >>> tenant_id = os.environ['AZURE_TENANT_ID']
->>> client = DevCenterClient(tenant_id=tenant_id, dev_center="my_dev_center", credential=DefaultAzureCredential())
+>>> endpoint = os.environ["DEVCENTER_ENDPOINT"]
+>>> client = DevCenterClient(endpoint, credential=DefaultAzureCredential())
 ```
 
 ## Examples
@@ -64,7 +65,8 @@ Use the returned token credential to authenticate the client:
 >>> from azure.identity import DefaultAzureCredential
 >>> from azure.core.exceptions import HttpResponseError
 >>> tenant_id = os.environ['AZURE_TENANT_ID']
->>> client = DevCenterClient(tenant_id=tenant_id, dev_center="my_dev_center", credential=DefaultAzureCredential())
+>>> endpoint = os.environ["DEVCENTER_ENDPOINT"]
+>>> client = DevCenterClient(endpoint, credential=DefaultAzureCredential())
 >>> try:
         # Fetch control plane resource dependencies
         projects = list(client.dev_center.list_projects(top=1))
@@ -99,26 +101,30 @@ Use the returned token credential to authenticate the client:
 >>> from azure.identity import DefaultAzureCredential
 >>> from azure.core.exceptions import HttpResponseError
 >>> tenant_id = os.environ['AZURE_TENANT_ID']
->>> client = DevCenterClient(tenant_id=tenant_id, dev_center="my_dev_center", credential=DefaultAzureCredential())
+>>> endpoint = os.environ["DEVCENTER_ENDPOINT"]
+>>> client = DevCenterClient(endpoint, credential=DefaultAzureCredential())
 >>> try:
         # Fetch control plane resource dependencies
         target_project_name = list(client.dev_center.list_projects(top=1))[0]['name']
         target_catalog_item_name = list(client.environments.list_catalog_items(target_project_name, top=1))[0]['name']
         target_environment_type_name = list(client.environments.list_environment_types(target_project_name, top=1))[0]['name']
+        target_catalog_name = list(client.environments.list_catalog_items(target_project_name, top=1))[0]['catalogName']
 
         # Stand up a new environment
-        create_response = client.environments.begin_create_environment(target_project_name,
+        create_response = client.environments.begin_create_or_update_environment(target_project_name,
                                                            "Dev_Environment",
-                                                           {"catalogItemName": target_catalog_item_name, "environmentType": target_environment_type_name})
+                                                           {"catalogName": target_catalog_name,
+                                                            "catalogItemName": target_catalog_item_name,
+                                                            "environmentType": target_environment_type_name
+                                                            })     
+        
         environment_result = create_response.result()
 
         LOG.info(f"Provisioned environment with status {environment_result['provisioningState']}.")
 
         # Fetch deployment artifacts
-        artifact_response = client.environments.list_artifacts_by_environment(target_project_name, "Dev_Environment")
-
-        for artifact in artifact_response:
-            LOG.info(artifact)
+        environment = client.environments.get_environment_by_user(target_project_name, "Dev_Environment")
+        LOG.info(environment)
 
         # Tear down the environment when finished
         delete_response = client.environments.begin_delete_environment(target_project_name, "Dev_Environment")
@@ -160,9 +166,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-devcenter_1.0.0b2/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-devcenter_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 
