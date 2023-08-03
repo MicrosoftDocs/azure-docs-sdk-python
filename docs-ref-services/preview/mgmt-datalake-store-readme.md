@@ -3,10 +3,10 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-datalake-store, datalake
 author: ro-joowan
 ms.author: ro-joowan
-ms.date: 02/16/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: data-lake-store
+ms.service: datalake
 ---
 # Microsoft Azure SDK for Python
 
