@@ -3,10 +3,10 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-digitaltwins, digitaltwins
 author: johngallardo
 ms.author: jgalla
-ms.date: 02/16/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: digital-twins
+ms.service: digitaltwins
 ---
 # Microsoft Azure SDK for Python
 

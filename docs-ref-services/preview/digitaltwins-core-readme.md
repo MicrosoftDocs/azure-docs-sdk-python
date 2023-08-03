@@ -3,13 +3,12 @@ title: Azure Azure Digital Twins Core client library for Python
 keywords: Azure, python, SDK, API, azure-digitaltwins-core, digitaltwins
 author: johngallardo
 ms.author: jgalla
-ms.date: 03/31/2022
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: digital-twins
+ms.service: digitaltwins
 ---
-# Azure Azure Digital Twins Core client library for Python - version 1.2.0b1 
+# Azure Azure Digital Twins Core client library for Python - version 1.2.1a20230803001 
 
 
 This package contains an SDK for Azure Digital Twins API to provide access to the Azure Digital Twins service for managing twins, models, relationships, etc.
@@ -22,9 +21,9 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Introduction
 
-Azure Digital Twins is a developer platform for next-generation IoT solutions that lets you create, run, and manage digital representations of your business environment, securely and efficiently in the cloud. With Azure Digital Twins, creating live operational state representations is quick and cost-effective, and digital representations stay current with real-time data from IoT and other data sources. If you are new to Azure Digital Twins and would like to learn more about the platform, please make sure you check out the Azure Digital Twins [official documentation page](https://docs.microsoft.com/azure/digital-twins/overview).
+Azure Digital Twins is a developer platform for next-generation IoT solutions that lets you create, run, and manage digital representations of your business environment, securely and efficiently in the cloud. With Azure Digital Twins, creating live operational state representations is quick and cost-effective, and digital representations stay current with real-time data from IoT and other data sources. If you are new to Azure Digital Twins and would like to learn more about the platform, please make sure you check out the Azure Digital Twins [official documentation page](/azure/digital-twins/overview).
 
-For an introduction on how to program against the Azure Digital Twins service, visit the [coding tutorial page](https://docs.microsoft.com/azure/digital-twins/tutorial-code) for an easy step-by-step guide. Visit [this tutorial](https://docs.microsoft.com/azure/digital-twins/tutorial-command-line-app) to learn how to interact with an Azure Digital Twin instance using a command-line client application. Finally, for a quick guide on how to build an end-to-end Azure Digital Twins solution that is driven by live data from your environment, make sure you check out [this helpful guide](https://docs.microsoft.com/azure/digital-twins/tutorial-end-to-end).
+For an introduction on how to program against the Azure Digital Twins service, visit the [coding tutorial page](/azure/digital-twins/tutorial-code) for an easy step-by-step guide. Visit [this tutorial](/azure/digital-twins/tutorial-command-line-app) to learn how to interact with an Azure Digital Twin instance using a command-line client application. Finally, for a quick guide on how to build an end-to-end Azure Digital Twins solution that is driven by live data from your environment, make sure you check out [this helpful guide](/azure/digital-twins/tutorial-end-to-end).
 
 The guides mentioned above can help you get started with key elements of Azure Digital Twins, such as creating Azure Digital Twins instances, models, twin graphs, etc. Use this samples guide below to familiarize yourself with the various APIs that help you program against Azure Digital Twins.
 
@@ -44,8 +43,8 @@ authentication as demonstrated below.
 
 To create a new digital twins client, you need the endpoint to an Azure Digital Twin instance and credentials.
 For the samples below, the `AZURE_URL`, `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` environment variables have to be set.
-The client requires an instance of [TokenCredential](https://docs.microsoft.com/dotnet/api/azure.core.tokencredential?view=azure-dotnet) or [ServiceClientCredentials](https://docs.microsoft.com/dotnet/api/microsoft.rest.serviceclientcredentials?view=azure-dotnet).
-In this samples, we illustrate how to use one derived class: [DefaultAzureCredentials](https://docs.microsoft.com/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet).
+The client requires an instance of [TokenCredential](/dotnet/api/azure.core.tokencredential?view=azure-dotnet) or [ServiceClientCredentials](/dotnet/api/microsoft.rest.serviceclientcredentials?view=azure-dotnet).
+In this samples, we illustrate how to use one derived class: [DefaultAzureCredentials](/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet).
 
 > Note: In order to access the data plane for the Digital Twins service, the entity must be given permissions.
 > To do this, use the Azure CLI command: `az dt rbac assign-role --assignee '<user-email | application-id>' --role owner -n '<your-digital-twins-instance>'`
@@ -56,6 +55,9 @@ It attempts to use multiple credential types in an order until it finds a workin
 ##### Sample code
 
 ```python Snippet:dt_create_digitaltwins_service_client.py
+from azure.identity import DefaultAzureCredential
+from azure.digitaltwins.core import DigitalTwinsClient
+
 # DefaultAzureCredential supports different authentication mechanisms and determines the appropriate credential type based of the environment it is executing in.
 # It attempts to use multiple credential types in an order until it finds a working credential.
 
@@ -73,7 +75,7 @@ service_client = DigitalTwinsClient(url, credential)
 ## Key concepts
 
 Azure Digital Twins is an Azure IoT service that creates comprehensive models of the physical environment. It can create spatial intelligence graphs to model the relationships and interactions between people, spaces, and devices.
-You can learn more about Azure Digital Twins by visiting [Azure Digital Twins Documentation](https://docs.microsoft.com/azure/digital-twins/).
+You can learn more about Azure Digital Twins by visiting [Azure Digital Twins Documentation](/azure/digital-twins/).
 
 ## Examples
 
@@ -95,7 +97,7 @@ The samples project demonstrates the following:
 
 Let's create models using the code below. You need to pass an array containing list of models.
 
-```Python Snippet:dt_models_lifecycle
+```python Snippet:dt_models_lifecycle
 temporary_component = {
     "@id": component_id,
     "@type": "Interface",
@@ -148,7 +150,7 @@ print(models)
 ### List models
 Using `list_models` to retrieve all created models
 
-```Python Snippet:dt_models_lifecycle
+```python Snippet:dt_models_lifecycle
 listed_models = service_client.list_models()
 for model in listed_models:
     print(model)
@@ -157,7 +159,7 @@ for model in listed_models:
 ### Get model
 Use `get_model` with model's unique identifier to get a specific model.
 
-```Python Snippet:dt_models_lifecycle
+```python Snippet:dt_models_lifecycle
 # Get a model
 get_model = service_client.get_model(model_id)
 print('Get Model:')
@@ -167,7 +169,7 @@ print(get_model)
 ### Decommission model
 To decommision a model, pass in a model Id for the model you want to decommision.
 
-```Python Snippet:dt_models_lifecycle
+```python Snippet:dt_models_lifecycle
 # Decommission a model
 service_client.decommission_model(model_id)
 ```
@@ -175,7 +177,7 @@ service_client.decommission_model(model_id)
 ### Delete model
 To delete a model, pass in a model Id for the model you want to delete.
 
-```Python Snippet:dt_models_lifecycle
+```python Snippet:dt_models_lifecycle
 # Delete a model
 service_client.delete_model(model_id)
 ```
@@ -183,9 +185,9 @@ service_client.delete_model(model_id)
 ## Create and delete digital twins
 
 ### Create digital twins
-For Creating Twin you will need to provide Id of a digital Twin such as `my_twin` and the application/json digital twin based on the model created earlier. You can look at sample application/json [here](https://github.com/Azure/azure-sdk-for-python/tree/azure-digitaltwins-core_1.2.0b1/sdk/digitaltwins/azure-digitaltwins-core/samples/dtdl/digital_twins).
+For Creating Twin you will need to provide Id of a digital Twin such as `my_twin` and the application/json digital twin based on the model created earlier. You can look at sample application/json [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/digitaltwins/azure-digitaltwins-core/samples/dtdl/digital_twins).
 
-```Python Snippet:dt_digitaltwins_lifecycle
+```python Snippet:dt_digitaltwins_lifecycle
 digital_twin_id = 'digitalTwin-' + str(uuid.uuid4())
 temporary_twin = {
     "$metadata": {
@@ -203,7 +205,7 @@ print(created_twin)
 ### Get a digital twin
 
 Getting a digital twin is extremely easy.
-```Python Snippet:dt_digitaltwins_lifecycle
+```python Snippet:dt_digitaltwins_lifecycle
 get_twin = service_client.get_digital_twin(digital_twin_id)
 print('Get Digital Twin:')
 print(get_twin)
@@ -211,12 +213,12 @@ print(get_twin)
 
 ### Query digital twins
 
-Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store lanaguage](https://docs.microsoft.com/azure/digital-twins/concepts-query-language). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
+Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store lanaguage](/azure/digital-twins/concepts-query-language). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
 
 Note that there may be a delay between before changes in your instance are reflected in queries.
-For more details on query limitations, see (https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations)
+For more details on query limitations, see (/azure/digital-twins/how-to-query-graph#query-limitations)
 
-```Python Snippet:dt_digitaltwins_query
+```python Snippet:dt_digitaltwins_query
 query_expression = 'SELECT * FROM digitaltwins'
 query_result = service_client.query_twins(query_expression)
 print('DigitalTwins:')
@@ -228,7 +230,7 @@ for twin in query_result:
 
 Delete a digital twin simply by providing Id of a digital twin as below.
 
-```Python Snippet:dt_digitaltwins_lifecycle
+```python Snippet:dt_digitaltwins_lifecycle
 service_client.delete_digital_twin(digital_twin_id)
 ```
 
@@ -238,7 +240,7 @@ service_client.delete_digital_twin(digital_twin_id)
 
 To update a component or in other words to replace, remove and/or add a component property or subproperty within Digital Twin, you would need Id of a digital twin, component name and application/json-patch+json operations to be performed on the specified digital twin's component. Here is the sample code on how to do it.
 
-```Python Snippet:dt_component_lifecycle
+```python Snippet:dt_component_lifecycle
 component_name = "Component1"
 patch = [
     {
@@ -254,7 +256,7 @@ service_client.update_component(digital_twin_id, component_name, patch)
 
 Get a component by providing name of a component and Id of digital twin to which it belongs.
 
-```Python Snippet:dt_component_lifecycle
+```python Snippet:dt_component_lifecycle
 get_component = service_client.get_component(digital_twin_id, component_name)
 print('Get Component:')
 print(get_component)
@@ -264,9 +266,9 @@ print(get_component)
 
 ### Create digital twin relationships
 
-`upsert_relationship` creates a relationship on a digital twin provided with Id of a digital twin, name of relationship such as "contains", Id of an relationship such as "FloorContainsRoom" and an application/json relationship to be created. Must contain property with key "\$targetId" to specify the target of the relationship. Sample payloads for relationships can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-digitaltwins-core_1.2.0b1/sdk/digitaltwins/azure-digitaltwins-core/samples/dtdl/relationships/hospitalRelationships.json).
+`upsert_relationship` creates a relationship on a digital twin provided with Id of a digital twin, name of relationship such as "contains", Id of an relationship such as "FloorContainsRoom" and an application/json relationship to be created. Must contain property with key "\$targetId" to specify the target of the relationship. Sample payloads for relationships can be found [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/digitaltwins/azure-digitaltwins-core/samples/dtdl/relationships/hospitalRelationships.json).
 
-```Python Snippet:dt_scenario
+```python Snippet:dt_scenario
 hospital_relationships = [
     {
         "$relationshipId": "BuildingHasFloor",
@@ -307,13 +309,13 @@ for relationship in hospital_relationships:
 
 `list_relationships` and `list_incoming_relationships` lists all the relationships and all incoming relationships respectively of a digital twin.
 
-```Python Snippet:dt_relationships_list
+```python Snippet:dt_relationships_list
 relationships = service_client.list_relationships(digital_twint_id)
 for relationship in relationships:
     print(relationship)
 ```
 
-```Python Snippet:dt_incoming_relationships_list
+```python Snippet:dt_incoming_relationships_list
 incoming_relationships = service_client.list_incoming_relationships(digital_twin_id)
 for incoming_relationship in incoming_relationships:
     print(incoming_relationship)
@@ -325,7 +327,7 @@ for incoming_relationship in incoming_relationships:
 
 To create an event route, provide an Id of an event route such as "myEventRouteId" and event route data containing the endpoint and optional filter like the example shown below.
 
-```Python Snippet:dt_scenario
+```python Snippet:dt_scenario
 event_route_id = 'eventRoute-' + str(uuid.uuid4())
 event_filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'"
 route = DigitalTwinsEventRoute(
@@ -341,7 +343,7 @@ For more information on the event route filter language, see the "how to manage 
 
 List a specific event route given event route Id or all event routes setting options with `list_event_routes`.
 
-```Python Snippet:dt_event_routes_list
+```python Snippet:dt_event_routes_list
 event_routes = service_client.list_event_routes()
 for event_route in event_routes:
     print(event_route)
@@ -351,7 +353,7 @@ for event_route in event_routes:
 
 Delete an event route given event route Id.
 
-```Python Snippet:dt_scenario
+```python Snippet:dt_scenario
 service_client.delete_event_route(event_route_id)
 ```
 
@@ -359,7 +361,7 @@ service_client.delete_event_route(event_route_id)
 
 To publish a telemetry message for a digital twin, you need to provide the digital twin Id, along with the payload on which telemetry that needs the update.
 
-```Python Snippet:dt_publish_telemetry
+```python Snippet:dt_publish_telemetry
 digita_twin_id = "<DIGITAL TWIN ID>"
 telemetry_payload = '{"Telemetry1": 5}'
 service_client.publish_telemetry(
@@ -370,7 +372,7 @@ service_client.publish_telemetry(
 
 You can also publish a telemetry message for a specific component in a digital twin. In addition to the digital twin Id and payload, you need to specify the target component Id.
 
-```Python Snippet:dt_publish_component_telemetry
+```python Snippet:dt_publish_component_telemetry
 digita_twin_id = "<DIGITAL TWIN ID>"
 component_name = "<COMPONENT_NAME>"
 telemetry_payload = '{"Telemetry1": 5}'
@@ -421,7 +423,7 @@ model = service_client.get_model(model_id, logging_enable=True)
 ### Optional Configuration
 Optional keyword arguments can be passed in at the client and per-operation level. The azure-core [reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/latest/azure.core.html) describes available configurations for retries, logging, transport protocols, and more.
 
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-digitaltwins-core_1.2.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
 [azure_identity_pypi]: https://pypi.org/project/azure-identity/
 [default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
 [pip]: https://pypi.org/project/pip/
@@ -447,3 +449,4 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
