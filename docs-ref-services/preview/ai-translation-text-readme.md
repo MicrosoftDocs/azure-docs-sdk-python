@@ -3,12 +3,12 @@ title: Azure Text Translation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-translation-text, translation
 author: kristapratico
 ms.author: krpratic
-ms.date: 04/19/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: translation
 ---
-# Azure Text Translation client library for Python - version 1.0.0b1 
+# Azure Text Translation client library for Python - version 1.0.0a20230803001 
 
 
 Text Translation is a cloud-based REST API feature of the Translator service that uses neural machine translation technology to enable quick and accurate source-to-target text translation in real time across all supported languages.
@@ -290,11 +290,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python-dt-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/azure/ai/translation/text
+[python-dt-src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/azure/ai/translation/text
 [python-dt-pypi]: https://aka.ms/azsdk/python/texttranslation/pypi
 [python-dt-product-docs]: https://learn.microsoft.com/azure/cognitive-services/translator/
 [python-dt-ref-docs]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference
-[python-dt-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples
+[python-dt-samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples
 
 [pip]: https://pypi.org/project/pip/
 [azure_cli]: /cli/azure
@@ -302,7 +302,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 [translator_resource_create]: https://learn.microsoft.com/azure/cognitive-services/Translator/create-translator-resource
 
-[translator_client_class]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/azure/ai/translation/text/_client.py
+[translator_client_class]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/azure/ai/translation/text/_client.py
 
 [translator_auth]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference#authentication
 [translator_limits]: https://learn.microsoft.com/azure/cognitive-services/translator/request-limits
@@ -315,14 +315,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [dictionarylookup_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-dictionary-lookup
 [dictionaryexamples_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-dictionary-examples
 
-[languages_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples/Sample1_GetLanguages.md
-[translate_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples/Sample2_Translate.md
-[transliterate_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples/Sample3_Transliterate.md
-[breaksentence_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples/Sample4_BreakSentence.md
-[dictionarylookup_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples/Sample5_DictionaryLookup.md
-[dictionaryexamples_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples/Sample6_DictionaryExamples.md
+[languages_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples/Sample1_GetLanguages.md
+[translate_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples/Sample2_Translate.md
+[transliterate_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples/Sample3_Transliterate.md
+[breaksentence_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples/Sample4_BreakSentence.md
+[dictionarylookup_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples/Sample5_DictionaryLookup.md
+[dictionaryexamples_sample]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples/Sample6_DictionaryExamples.md
 
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-translation-text_1.0.0b1/sdk/translation/azure-ai-translation-text/samples
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/translation/azure-ai-translation-text/samples
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
