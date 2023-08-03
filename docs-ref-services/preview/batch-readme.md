@@ -1,30 +1,29 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-batch, batch
-author: cRui861
-ms.author: rechen
-ms.date: 03/31/2022
+author: jingjlii
+ms.author: jingjli
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: batch
 ---
-# Microsoft Azure Batch SDK for Python (Preview)
+# Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Batch Client Library.
 
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8
+This package has been tested with Python 3.6+
 
 For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all
 
-## Usage
+# Usage
 
 For code examples, see [the Batch samples repo](https://github.com/Azure/azure-batch-samples/tree/master/Python)
-on GitHub or see [Batch](https://docs.microsoft.com/python/api/overview/azure/batch)
+on GitHub or see [Batch](/python/api/overview/azure/batch)
 on docs.microsoft.com.
 
 
-## Provide Feedback
+# Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
