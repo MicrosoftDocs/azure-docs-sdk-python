@@ -1,40 +1,38 @@
 ---
 title: Azure Mixed Reality Authentication Package client library for Python
 keywords: Azure, python, SDK, API, azure-mixedreality-authentication, mixedreality
-author: maggiepint
-ms.author: magpint
-ms.date: 11/12/2021
+author: lmazuel
+ms.author: lmazuel
+ms.date: 08/03/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: azure-python
+ms.service: mixedreality
 ---
-
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Mixed Reality Authentication Package client library for Python - version 1.0.0b1 
+# Azure Mixed Reality Authentication Package client library for Python - version 1.0.0a20230803001 
 
 
 Mixed Reality services, like Azure Spatial Anchors, Azure Remote Rendering, and others, use the Mixed Reality security
 token service (STS) for authentication. This package supports exchanging Mixed Reality account credentials for an access
 token from the STS that can be used to access Mixed Reality services.
 
-![Mixed Reality service authentication diagram](https://docs.microsoft.com/azure/spatial-anchors/concepts/media/spatial-anchors-authentication-overview.png)
+![Mixed Reality service authentication diagram](/azure/spatial-anchors/concepts/media/spatial-anchors-authentication-overview.png)
 
 # Getting started
 
 ## Currently supported environments
 
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7, 3.8, and 3.9.
+This package has been tested with Python 3.7+.
 
 ## Prerequisites
 
 - An [Azure subscription][azure_sub].
 - You must have an account with an [Azure Mixed Reality service](https://azure.microsoft.com/topic/mixed-reality/):
-  - [Azure Remote Rendering](https://docs.microsoft.com/azure/remote-rendering/)
-  - [Azure Spatial Anchors](https://docs.microsoft.com/azure/spatial-anchors/)
+  - [Azure Remote Rendering](/azure/remote-rendering/)
+  - [Azure Spatial Anchors](/azure/spatial-anchors/)
 - Familiarity with the authentication and credential concepts from the [Azure Identity library][azure_identity].
-- Python 2.7, or 3.5 or later is required to use this package.
+- Python 3.7 or later is required to use this package.
 
 ## Install the package
 
@@ -74,7 +72,7 @@ Once you have an account key, you can use the `AzureKeyCredential` class to auth
 from azure.core.credentials import AzureKeyCredential
 from azure.mixedreality.authentication import MixedRealityStsClient
 
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 account_key = "<ACCOUNT_KEY>"
 key_credential = AzureKeyCredential(account_key)
@@ -98,7 +96,7 @@ by assigning the appropriate role for your Mixed Reality service to your service
 from azure.identity import DefaultAzureCredential
 from azure.mixedreality.authentication import MixedRealityStsClient
 
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 default_credential = DefaultAzureCredential()
 
@@ -127,7 +125,7 @@ authentication scenarios.
 from azure.core.credentials import AzureKeyCredential
 from azure.mixedreality.authentication import MixedRealityStsClient
 
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 account_key = "<ACCOUNT_KEY>"
 key_credential = AzureKeyCredential(account_key)
@@ -143,7 +141,7 @@ token = client.get_token()
 from azure.core.credentials import AzureKeyCredential
 from azure.mixedreality.authentication.aio import MixedRealityStsClient
 
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 account_key = "<ACCOUNT_KEY>"
 key_credential = AzureKeyCredential(account_key)
@@ -175,7 +173,7 @@ python samples\client_sample_async.py
 
 # Troubleshooting
 
-The [troubleshooting](https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-authentication_1.0.0b1/sdk/identity/azure-identity#troubleshooting)
+The [troubleshooting](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#troubleshooting)
 section for Azure Identity can be helpful when troubleshooting authentication issues.
 
 # Next steps
@@ -199,15 +197,15 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 If you'd like to contribute to this library, please read the
-[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-mixedreality-authentication_1.0.0b1/CONTRIBUTING.md) to learn more about how to
+[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/main/CONTRIBUTING.md) to learn more about how to
 build and test the code.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftemplate%2Fazure-template%2FREADME.png)
 
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: /cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_portal]: https://portal.azure.com
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-authentication_1.0.0b1/sdk/identity/azure-identity
-[register_aad_app]: https://docs.microsoft.com/azure/spatial-anchors/concepts/authentication
-[defaultazurecredential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-authentication_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
+[register_aad_app]: /azure/spatial-anchors/concepts/authentication
+[defaultazurecredential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 
