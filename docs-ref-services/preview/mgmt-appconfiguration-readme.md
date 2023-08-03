@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-appconfiguration, appconfiguration
 author: xiangyan99
 ms.author: xiangyan
-ms.date: 02/15/2023
+ms.date: 08/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: appconfiguration
@@ -55,8 +55,9 @@ client = AppConfigurationManagementClient(credential=DefaultAzureCredential(), s
 
 ## Examples
 
-
-Code samples for this package can be found at [App Configuration Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search App Configuration Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
