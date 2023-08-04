@@ -7,11 +7,11 @@ ms.data: 08/04/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: mediaservices
-ms.prod: azure
-ms.technology: azure
 manager: douge
-keywords: Azure, python, SDK, API, Media Services
+ms.technology: azure
 ms.date: 03/30/2023
+keywords: Azure, python, SDK, API, Media Services
+ms.prod: azure
 ---
 # Azure Media Services libraries for python
 
