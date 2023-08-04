@@ -10,8 +10,8 @@ ms.service: mediaservices
 ms.prod: azure
 ms.date: 03/30/2023
 manager: douge
-ms.technology: azure
 keywords: Azure, python, SDK, API, Media Services
+ms.technology: azure
 ---
 # Azure Media Services libraries for python
 
