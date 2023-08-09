@@ -7,6 +7,6 @@
 |[Document Translation](ai-translation-document-readme.md)|[azure-ai-translation-document](https://pypi.org/project/azure-ai-translation-document)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-document)|
 |Spell Check|[azure-cognitiveservices-language-spellcheck](https://pypi.org/project/azure-cognitiveservices-language-spellcheck)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |Speech|[azure-cognitiveservices-speech](https://pypi.org/project/azure-cognitiveservices-speech)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
-|Content Moderator|[azure-cognitiveservices-vision-contentmoderator](https://pypi.org/project/azure-cognitiveservices-vision-contentmoderator)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|Content Safety|[azure-cognitiveservices-vision-contentmoderator](https://pypi.org/project/azure-cognitiveservices-vision-contentmoderator)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Custom Vision](cognitiveservices-vision-customvision-readme.md)|[azure-cognitiveservices-vision-customvision](https://pypi.org/project/azure-cognitiveservices-vision-customvision)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
 |[Resource Management - Cognitive Services](mgmt-cognitiveservices-readme.md)|[azure-mgmt-cognitiveservices](https://pypi.org/project/azure-mgmt-cognitiveservices)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitiveservices/azure-mgmt-cognitiveservices)|
