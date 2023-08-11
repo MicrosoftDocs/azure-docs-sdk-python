@@ -16,17 +16,45 @@ summary: 'ComponentOperations.
 constructor:
   syntax: 'ComponentOperations(operation_scope: OperationScope, operation_config:
     OperationConfig, service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
-    all_operations: OperationsContainer, **kwargs: Dict)'
+    all_operations: OperationsContainer, preflight_operation: DeploymentsOperations
+    | None = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    description: The operation scope.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationScope>
   - name: operation_config
+    description: The operation configuration.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationConfig>
   - name: service_client
+    description: The service client for API operations.
+    isRequired: true
+    types:
+    - <xref:Union>[<xref:azure.ai.ml._restclient.v2022_10_01.AzureMachineLearningWorkspaces,azure.ai.ml._restclient.v2021_10_01_dataplanepreview.AzureMachineLearningWorkspaces>]
   - name: all_operations
+    description: The container for all available operations.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationsContainer>
+  - name: preflight_operation
+    description: The preflight operation for deployments.
+    defaultValue: None
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml._vendor.azure_resources.operations.DeploymentsOperations>]
+  - name: kwargs
+    description: Additional keyword arguments.
+    isRequired: true
+    types:
+    - <xref:Dict>
 methods:
 - uid: azure.ai.ml.operations.ComponentOperations.archive
   name: archive
   summary: Archive a component.
-  signature: 'archive(name: str, version: str = None, label: str = None) -> None'
+  signature: 'archive(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of the component.
@@ -39,7 +67,7 @@ methods:
     types:
     - <xref:str>
   - name: label
-    description: Label of the component. (mutually exclusive with version)
+    description: Label of the component. (mutually exclusive with version).
     isRequired: true
     types:
     - <xref:str>
@@ -65,7 +93,8 @@ methods:
     types:
     - <xref:str>
   - name: skip_validation
-    description: whether to skip validation before creating/updating the component
+    description: whether to skip validation before creating/updating the component,
+      defaults to False
     isRequired: true
     types:
     - <xref:bool>
@@ -111,7 +140,7 @@ methods:
     types:
     - <xref:Optional>[<xref:str>]
   - name: label
-    description: Label of the component. (mutually exclusive with version)
+    description: Label of the component, mutually exclusive with version.
     isRequired: true
     types:
     - <xref:Optional>[<xref:str>]
@@ -139,9 +168,6 @@ methods:
     description: 'View type for including/excluding (for example) archived components.
 
       Default: ACTIVE_ONLY.'
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:ListViewType>]
   return:
     description: An iterator like instance of component objects
     types:
@@ -149,7 +175,8 @@ methods:
 - uid: azure.ai.ml.operations.ComponentOperations.restore
   name: restore
   summary: Restore an archived component.
-  signature: 'restore(name: str, version: str = None, label: str = None) -> None'
+  signature: 'restore(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of the component.
@@ -162,7 +189,7 @@ methods:
     types:
     - <xref:str>
   - name: label
-    description: Label of the component. (mutually exclusive with version)
+    description: Label of the component. (mutually exclusive with version).
     isRequired: true
     types:
     - <xref:str>
@@ -179,8 +206,8 @@ methods:
     validate a specified component. if there are inline defined
 
     entities, e.g. Environment, Code, they won''t be created.'
-  signature: 'validate(component: Component | function, raise_on_failure: bool = False)
-    -> ValidationResult'
+  signature: 'validate(component: Component | function, raise_on_failure: bool = False,
+    **kwargs) -> ValidationResult'
   parameters:
   - name: component
     description: The component object or a mldesigner component function that generates
@@ -189,7 +216,7 @@ methods:
     types:
     - <xref:Union>[<xref:azure.ai.ml.entities.Component>, <xref:types.FunctionType>]
   - name: raise_on_failure
-    description: whether to raise exception on validation error
+    description: whether to raise exception on validation error, defaults to False
     isRequired: true
     types:
     - <xref:bool>

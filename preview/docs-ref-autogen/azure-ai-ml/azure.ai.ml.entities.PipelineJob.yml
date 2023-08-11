@@ -6,90 +6,97 @@ module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._job.job.Job
 - azure.ai.ml.entities._mixins.YamlTranslatableMixin
-- azure.ai.ml.entities._job.pipeline._io.PipelineIOMixin
+- azure.ai.ml.entities._job.pipeline._io.mixin.PipelineJobIOMixin
 - azure.ai.ml.entities._validation.SchemaValidatableMixin
 summary: 'Pipeline job.
 
 
   You should not instantiate this class directly. Instead, you should
 
-  use @pipeline decorator to create a PipelineJob'
+  use the *@pipeline* decorator to create a *PipelineJob*.
+
+
+  ], optional
+
+  :param compute: Compute target name of the built pipeline. Defaults to None
+
+  :type compute: str, optional
+
+  :param tags: Tag dictionary. Tags can be added, removed, and updated. Defaults to
+  None
+
+  :type tags: dict[str, str], optional
+
+  :param kwargs: A dictionary of additional configuration parameters. Defaults to
+  None
+
+  :type kwargs: dict, optional'
 constructor:
-  syntax: 'PipelineJob(*, component: str | PipelineComponent = None, inputs: Dict[str,
-    int | str | float | bool | Input] = None, outputs: Dict[str, Output] = None, name:
-    str = None, description: str = None, display_name: str = None, experiment_name:
-    str = None, jobs: Dict[str, BaseNode] = None, settings: PipelineJobSettings =
-    None, identity: ManagedIdentity | AmlToken | UserIdentity = None, compute: str
-    = None, tags: Dict[str, str] = None, **kwargs)'
+  syntax: 'PipelineJob(*, component: str | PipelineComponent | None = None, inputs:
+    Dict[str, int | str | float | bool | Input] | None = None, outputs: Dict[str,
+    Output] | None = None, name: str | None = None, description: str | None = None,
+    display_name: str | None = None, experiment_name: str | None = None, jobs: Dict[str,
+    BaseNode] | None = None, settings: PipelineJobSettings | None = None, identity:
+    ManagedIdentityConfiguration | AmlTokenConfiguration | UserIdentityConfiguration
+    | None = None, compute: str | None = None, tags: Dict[str, str] | None = None,
+    **kwargs)'
   parameters:
   - name: component
-    description: Pipeline component version. The field is mutual exclusive with 'jobs'.
+    description: Pipeline component version. The field is mutually exclusive with
+      'jobs'.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.PipelineComponent>]
+    - <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities._component.pipeline_component.PipelineComponent>]
   - name: inputs
     description: Inputs to the pipeline job.
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>,
-      <xref:int>, <xref:float>]]
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Input>, <xref:str>,
+      <xref:bool>, <xref:int>, <xref:float>]]
   - name: outputs
-    description: Outputs the pipeline job.
+    description: Outputs of the pipeline job.
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.Output>]
+    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.entities.Output>]
   - name: name
-    description: Name of the PipelineJob.
+    description: Name of the PipelineJob. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: description
-    description: Description of the pipeline job.
+    description: Description of the pipeline job. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: display_name
-    description: Display name of the pipeline job.
+    description: Display name of the pipeline job. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: experiment_name
-    description: Name of the experiment the job will be created under,         if
-      None is provided, experiment will be set to current directory.
+    description: 'Name of the experiment the job will be created under.
+
+      If None is provided, the experiment will be set to the current directory. Defaults
+      to None'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: jobs
-    description: Pipeline component node name to component object.
+    description: Pipeline component node name to component object. Defaults to None
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:BaseNode>]
+    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.entities._builders.BaseNode>], <xref:optional>
   - name: settings
-    description: Setting of pipeline job.
+    description: Setting of the pipeline job. Defaults to None
     isRequired: true
     types:
-    - <xref:azure.ai.ml.entities.PipelineJobSettings>
+    - <xref:azure.ai.ml.entities.PipelineJobSettings>, <xref:optional>
   - name: identity
-    description: Identity that training job will use while running on compute.
+    description: Identity that the training job will use while running on compute.
+      Defaults to None
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.ai.ml.ManagedIdentity>, <xref:azure.ai.ml.AmlToken>,
-      <xref:azure.ai.ml.UserIdentity>]
-  - name: compute
-    description: Compute target name of the built pipeline.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: tags
-    description: Tag dictionary. Tags can be added, removed, and updated.
-    isRequired: true
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: kwargs
-    description: A dictionary of additional configuration parameters.
-    isRequired: true
-    types:
-    - <xref:dict>
+    - <xref:Union>[<xref:azure.ai.ml.entities._credentials.ManagedIdentityConfiguration,azure.ai.ml.entities._credentials.AmlTokenConfiguration,azure.ai.ml.entities._credentials.UserIdentityConfiguration>
 methods:
 - uid: azure.ai.ml.entities.PipelineJob.dump
   name: dump
@@ -125,21 +132,22 @@ attributes:
   return:
     description: Creation metadata of the resource.
     types:
-    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.PipelineJob.id
   name: id
   summary: Resource ID.
   return:
     description: Global id of the resource, Azure Resource Manager ID
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.PipelineJob.inputs
   name: inputs
   summary: Inputs of the pipeline job.
   return:
     description: Inputs of the pipeline job.
     types:
-    - <xref:dict>
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Input>, <xref:str>,
+      <xref:bool>, <xref:int>, <xref:float>]]
 - uid: azure.ai.ml.entities.PipelineJob.jobs
   name: jobs
   summary: Return jobs of pipeline job.
@@ -160,7 +168,7 @@ attributes:
   return:
     description: Outputs of the pipeline job.
     types:
-    - <xref:dict>
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.Output>]]
 - uid: azure.ai.ml.entities.PipelineJob.settings
   name: settings
   summary: Settings of the pipeline job.

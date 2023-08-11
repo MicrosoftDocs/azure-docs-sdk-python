@@ -1,0 +1,156 @@
+### YamlMime:PythonClass
+uid: azure.batch.models.StartTask
+name: StartTask
+fullName: azure.batch.models.StartTask
+module: azure.batch.models
+inheritances:
+- msrest.serialization.Model
+summary: 'A Task which is run when a Node joins a Pool in the Azure Batch service,
+  or
+
+  when the Compute Node is rebooted or reimaged.
+
+
+  Batch will retry Tasks when a recovery operation is triggered on a Node.
+
+  Examples of recovery operations include (but are not limited to) when an
+
+  unhealthy Node is rebooted or a Compute Node disappeared due to host
+
+  failure. Retries due to recovery operations are independent of and are not
+
+  counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
+
+  an internal retry due to a recovery operation may occur. Because of this,
+
+  all Tasks should be idempotent. This means Tasks need to tolerate being
+
+  interrupted and restarted without causing any corruption or duplicate data.
+
+  The best practice for long running Tasks is to use some form of
+
+  checkpointing. In some cases the StartTask may be re-run even though the
+
+  Compute Node was not rebooted. Special care should be taken to avoid
+
+  StartTasks which create breakaway process or install/launch services from
+
+  the StartTask working directory, as this will block Batch from being able
+
+  to re-run the StartTask.
+
+
+  All required parameters must be populated in order to send to Azure.'
+constructor:
+  syntax: 'StartTask(*, command_line: str, container_settings=None, resource_files=None,
+    environment_settings=None, user_identity=None, max_task_retry_count: int = None,
+    wait_for_success: bool = None, **kwargs)'
+  parameters:
+  - name: command_line
+    description: 'Required. The command line does not run under a
+
+      shell, and therefore cannot take advantage of shell features such as
+
+      environment variable expansion. If you want to take advantage of such
+
+      features, you should invoke the shell in the command line, for example
+
+      using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If
+
+      the command line refers to file paths, it should use a relative path
+
+      (relative to the Task working directory), or use the Batch provided
+
+      environment variable
+
+      ([https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables](https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables)).'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: container_settings
+    description: 'The settings for the container under which the
+
+      StartTask runs. When this is specified, all directories recursively below
+
+      the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the
+
+      node) are mapped into the container, all Task environment variables are
+
+      mapped into the container, and the Task command line is executed in the
+
+      container. Files produced in the container outside of
+
+      AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning
+
+      that Batch file APIs will not be able to access those files.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.TaskContainerSettings>
+  - name: resource_files
+    description: 'Files listed under this element are located in the
+
+      Task''s working directory.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.ResourceFile>]
+  - name: environment_settings
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.batch.models.EnvironmentSetting>]
+  - name: user_identity
+    description: 'The user identity under which the StartTask runs. If
+
+      omitted, the Task runs as a non-administrative user unique to the Task.'
+    isRequired: true
+    types:
+    - <xref:azure.batch.models.UserIdentity>
+  - name: max_task_retry_count
+    description: 'The maximum number of times the Task may be
+
+      retried. The Batch service retries a Task if its exit code is nonzero.
+
+      Note that this value specifically controls the number of retries. The
+
+      Batch service will try the Task once, and may then retry up to this limit.
+
+      For example, if the maximum retry count is 3, Batch tries the Task up to 4
+
+      times (one initial try and 3 retries). If the maximum retry count is 0,
+
+      the Batch service does not retry the Task. If the maximum retry count is
+
+      -1, the Batch service retries the Task without limit, however this is not
+
+      recommended for a start task or any task. The default value is 0 (no
+
+      retries).'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: wait_for_success
+    description: 'Whether the Batch service should wait for the
+
+      StartTask to complete successfully (that is, to exit with exit code 0)
+
+      before scheduling any Tasks on the Compute Node. If true and the StartTask
+
+      fails on a Node, the Batch service retries the StartTask up to its maximum
+
+      retry count (maxTaskRetryCount). If the Task has still not completed
+
+      successfully after all retries, then the Batch service marks the Node
+
+      unusable, and will not schedule Tasks to it. This condition can be
+
+      detected via the Compute Node state and failure info details. If false,
+
+      the Batch service will not wait for the StartTask to complete. In this
+
+      case, other Tasks can start executing on the Compute Node while the
+
+      StartTask is still running; and even if the StartTask fails, new Tasks
+
+      will continue to be scheduled on the Compute Node. The default is true.'
+    isRequired: true
+    types:
+    - <xref:bool>

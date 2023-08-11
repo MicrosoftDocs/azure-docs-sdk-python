@@ -15,12 +15,12 @@ summary: 'JobOperations.
   attaches it as an attribute.'
 constructor:
   syntax: 'JobOperations(operation_scope: OperationScope, operation_config: OperationConfig,
-    service_client_06_2022_preview: AzureMachineLearningWorkspaces, all_operations:
+    service_client_02_2023_preview: AzureMachineLearningWorkspaces, all_operations:
     OperationsContainer, credential: TokenCredential, **kwargs: Any)'
   parameters:
   - name: operation_scope
   - name: operation_config
-  - name: service_client_06_2022_preview
+  - name: service_client_02_2023_preview
   - name: all_operations
   - name: credential
 methods:
@@ -37,7 +37,7 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.begin_cancel
   name: begin_cancel
   summary: Cancel job resource.
-  signature: 'begin_cancel(name: str) -> LROPoller[None]'
+  signature: 'begin_cancel(name: str, **kwargs) -> LROPoller[None]'
   parameters:
   - name: name
     description: Name of the job.
@@ -54,9 +54,9 @@ methods:
   summary: 'Create or update a job, if there''re inline defined entities, e.g.
 
     Environment, Code, they''ll be created together with the job.'
-  signature: 'create_or_update(job: Job, *, description: str = None, compute: str
-    = None, tags: dict = None, experiment_name: str = None, skip_validation: bool
-    = False, **kwargs) -> Job'
+  signature: 'create_or_update(job: Job, *, description: str | None = None, compute:
+    str | None = None, tags: dict | None = None, experiment_name: str | None = None,
+    skip_validation: bool = False, **kwargs) -> Job'
   parameters:
   - name: job
     description: Job definition or object which can be translate to a job.
@@ -65,35 +65,20 @@ methods:
     - <xref:azure.ai.ml.entities.Job>
   - name: description
     description: Description to overwrite when submitting the pipeline.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: compute
     description: Compute target to overwrite when submitting the pipeline.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: tags
     description: Tags to overwrite when submitting the pipeline.
-    isRequired: true
-    types:
-    - <xref:dict>
   - name: experiment_name
     description: 'Name of the experiment the job will be created under, if None is
       provided,
 
       job will be created under experiment ''Default''.'
-    isRequired: true
-    types:
-    - <xref:str>
   - name: skip_validation
     description: 'whether to skip validation before creating/updating the job. Note
       that dependent
 
       resources like anonymous component won''t skip their validation in creating.'
-    isRequired: true
-    types:
-    - <xref:bool>
   return:
     description: Created or updated job.
     types:
@@ -129,7 +114,7 @@ methods:
   name: download
   summary: Download logs and output of a job.
   signature: 'download(name: str, *, download_path: PathLike | str = ''.'', output_name:
-    str = None, all: bool = False) -> None'
+    str | None = None, all: bool = False) -> None'
   parameters:
   - name: name
     description: Name of a job.
@@ -138,31 +123,10 @@ methods:
     - <xref:str>
   - name: download_path
     description: Local path as download destination, defaults to '.'.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:PathLike>, <xref:str>]
   - name: output_name
     description: Named output to download, defaults to None.
-    isRequired: true
-    types:
-    - <xref:str>
   - name: all
     description: Whether to download logs and all named outputs, defaults to False.
-    isRequired: true
-    types:
-    - <xref:bool>
-  - name: name
-    description: Name of a job.
-    isRequired: true
-  - name: download_path
-    description: Local path as download destination, defaults to '.'.
-    isRequired: true
-  - name: output_name
-    description: Named output to download, defaults to None.
-    isRequired: true
-  - name: all
-    description: Whether to download logs and all named outputs, defaults to False.
-    isRequired: true
   exceptions:
   - type: azure.ai.ml.exceptions.JobException
     description: 'Raised if Job is not yet in a terminal state.
@@ -189,20 +153,14 @@ methods:
 - uid: azure.ai.ml.operations.JobOperations.list
   name: list
   summary: List jobs of the workspace.
-  signature: 'list(*, parent_job_name: str = None, list_view_type: ListViewType =
-    ListViewType.ACTIVE_ONLY, **kwargs) -> Iterable[Job]'
+  signature: 'list(*, parent_job_name: str | None = None, list_view_type: ListViewType
+    = ListViewType.ACTIVE_ONLY, **kwargs) -> Iterable[Job]'
   parameters:
   - name: parent_job_name
     description: When provided, returns children of named job.
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:str>]
   - name: list_view_type
     description: 'View type for including/excluding (for example) archived jobs. Default:
       ACTIVE_ONLY.'
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:ListViewType>]
   return:
     description: An iterator like instance of Job objects.
     types:
@@ -217,6 +175,26 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+- uid: azure.ai.ml.operations.JobOperations.show_services
+  name: show_services
+  summary: Get services associated with a job's node.
+  signature: 'show_services(name: str, node_index: int = 0) -> Dict[str, ServiceInstance]'
+  parameters:
+  - name: name
+    description: Name of the job.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: node_index
+    description: Index of the node.
+    isRequired: true
+    types:
+    - <xref:int>
+  return:
+    description: The Services associated with the job for the given node.
+    types:
+    - '<xref:Dict>[<xref:str>, <xref:azure.ai.ml.entities.ServiceInstance>]<xref:
+      Map of service names to ServiceInstance.>'
 - uid: azure.ai.ml.operations.JobOperations.stream
   name: stream
   summary: Stream logs of a job.
@@ -227,12 +205,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-- uid: azure.ai.ml.operations.JobOperations.try_get_compute_arm_id
-  name: try_get_compute_arm_id
-  signature: 'try_get_compute_arm_id(compute: Compute | str)'
-  parameters:
-  - name: compute
-    isRequired: true
 - uid: azure.ai.ml.operations.JobOperations.validate
   name: validate
   summary: '> [!NOTE]
@@ -257,9 +229,6 @@ methods:
     - <xref:azure.ai.ml.entities.Job>
   - name: raise_on_failure
     description: Whether raise error when there are validation errors.
-    isRequired: true
-    types:
-    - <xref:bool>
   return:
     description: a ValidationResult object containing all found errors.
     types:

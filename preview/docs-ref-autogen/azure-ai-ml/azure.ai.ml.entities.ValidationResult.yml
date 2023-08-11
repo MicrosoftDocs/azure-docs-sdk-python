@@ -8,98 +8,31 @@ inheritances:
 summary: 'Represents the result of job/asset validation.
 
 
-  This class is used to organize and parse diagnostics from both
+  This class is used to organize and parse diagnostics from both client & server side
+  before expose them. The result
 
-  client & server side before expose them to users. In this way, we
-
-  may improve user experience without changing the validation logic &
-
-  API.'
+  is immutable.'
 constructor:
-  syntax: 'ValidationResult(diagnostics: List[Diagnostic] = None, data: Dict[str,
-    Any] = None, valid_data: List[Dict[str, Any]] | Dict[str, Any] | None = None)'
-  parameters:
-  - name: diagnostics
-    defaultValue: None
-  - name: data
-    defaultValue: None
-  - name: valid_data
-    defaultValue: None
-methods:
-- uid: azure.ai.ml.entities.ValidationResult.append_error
-  name: append_error
-  signature: 'append_error(yaml_path: str = ''*'', message: str = None, error_code:
-    str = None)'
-  parameters:
-  - name: yaml_path
-    defaultValue: '*'
-  - name: message
-    defaultValue: None
-  - name: error_code
-    defaultValue: None
-- uid: azure.ai.ml.entities.ValidationResult.append_warning
-  name: append_warning
-  signature: 'append_warning(yaml_path: str = ''*'', message: str = None, error_code:
-    str = None)'
-  parameters:
-  - name: yaml_path
-    defaultValue: '*'
-  - name: message
-    defaultValue: None
-  - name: error_code
-    defaultValue: None
-- uid: azure.ai.ml.entities.ValidationResult.merge_with
-  name: merge_with
-  summary: 'Merge two validation results.
-
-
-    Will update current validation result.'
-  signature: 'merge_with(other: ValidationResult, field_name: str = None, condition_skip:
-    Callable = None)'
-  parameters:
-  - name: other
-    isRequired: true
-  - name: field_name
-    defaultValue: None
-  - name: condition_skip
-    defaultValue: None
-- uid: azure.ai.ml.entities.ValidationResult.resolve_location_for_diagnostics
-  name: resolve_location_for_diagnostics
-  summary: Resolve location for diagnostics.
-  signature: 'resolve_location_for_diagnostics(source_path: str, resolve_value: bool
-    = False)'
-  parameters:
-  - name: source_path
-    isRequired: true
-  - name: resolve_value
-    defaultValue: 'False'
-- uid: azure.ai.ml.entities.ValidationResult.try_raise
-  name: try_raise
-  summary: 'Try to raise an error from the validation result.
-
-
-    If the validation is passed or raise_error is False, this method
-
-    will return the validation result.'
-  signature: 'try_raise(error_target: ErrorTarget, error_category: ErrorCategory =
-    ''UserError'', raise_error: bool = True, schema: Schema = None, additional_message:
-    str = '''', raise_mashmallow_error: bool = False) -> ValidationResult'
-  parameters:
-  - name: error_target
-    isRequired: true
-  - name: error_category
-    defaultValue: UserError
-  - name: raise_error
-    defaultValue: 'True'
-  - name: schema
-    defaultValue: None
-  - name: additional_message
-  - name: raise_mashmallow_error
-    defaultValue: 'False'
+  syntax: ValidationResult()
 attributes:
-- uid: azure.ai.ml.entities.ValidationResult.invalid_fields
-  name: invalid_fields
-- uid: azure.ai.ml.entities.ValidationResult.messages
-  name: messages
+- uid: azure.ai.ml.entities.ValidationResult.error_messages
+  name: error_messages
+  summary: "Return all messages of errors in the validation result.\nFor example,\
+    \ if repr(self) is:\n{\n\n   \"errors\": [\n      {\n         \"path\": \"jobs.job_a.inputs.input_str\"\
+    ,\n         \"message\": \"input_str is required\",\n         \"value\": None,\n\
+    \n      },\n      {\n\n         \"path\": \"jobs.job_a.inputs.input_str\",\n \
+    \        \"message\": \"input_str must be in the format of xxx\",\n         \"\
+    value\": None,\n\n      },\n      {\n\n         \"path\": \"settings.on_init\"\
+    ,\n         \"message\": \"On_init job name job_b not exists in jobs.\",\n   \
+    \      \"value\": None,\n\n      },\n\n   ],\n   \"warnings\": [\n\n      {\n\
+    \         \"path\": \"jobs.job_a.inputs.input_str\",\n         \"message\": \"\
+    input_str is required\",\n         \"value\": None,\n\n      }\n\n   ]\n\n}\n\
+    then the error_messages will be:\n{\n\n   \"jobs.job_a.inputs.input_str\": \"\
+    input_str is required; input_str must be in the format of xxx\",\n   \"settings.on_init\"\
+    : \"On_init job name job_b not exists in jobs.\",\n\n}"
 - uid: azure.ai.ml.entities.ValidationResult.passed
   name: passed
+  summary: 'Return whether the validation passed.
+
+
+    If there is no error, then it passed.'

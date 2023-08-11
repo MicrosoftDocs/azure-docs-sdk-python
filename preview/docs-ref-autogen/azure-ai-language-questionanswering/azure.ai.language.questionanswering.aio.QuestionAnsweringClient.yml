@@ -4,16 +4,18 @@ name: QuestionAnsweringClient
 fullName: azure.ai.language.questionanswering.aio.QuestionAnsweringClient
 module: azure.ai.language.questionanswering.aio
 inheritances:
-- azure.ai.language.questionanswering.aio._question_answering_client.QuestionAnsweringClient
+- azure.ai.language.questionanswering.aio._client.QuestionAnsweringClient
 summary: 'The language service API is a suite of natural language processing (NLP)
-  skills built with best-in-class Microsoft machine learning algorithms.
+  skills built with best-in-class
+
+  Microsoft machine learning algorithms.
 
 
   The API can be used to analyze unstructured text for tasks such as sentiment
 
   analysis, key phrase extraction, language detection and question answering.
 
-  Further documentation can be found in [https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview](https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview)'
+  Further documentation can be found in [https://learn.microsoft.com/azure/cognitive-services/language-service/overview](https://learn.microsoft.com/azure/cognitive-services/language-service/overview)'
 constructor:
   syntax: 'QuestionAnsweringClient(endpoint: str, credential: AzureKeyCredential |
     AsyncTokenCredential, **kwargs: Any)'
@@ -21,7 +23,7 @@ constructor:
   - name: endpoint
     description: 'Supported Cognitive Services endpoint (e.g.,
 
-      [https:/](https:/)/<resource-name>.api.cognitiveservices.azure.com).'
+      [https://](https://)`<resource-name>`.cognitiveservices.azure.com).'
     isRequired: true
     types:
     - <xref:str>
@@ -39,6 +41,13 @@ constructor:
     description: Sets the default language to use for all operations.
     types:
     - <xref:str>
+  - name: api_version
+    description: 'Api Version. Default value is "2021-10-01". Note that overriding
+      this
+
+      default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.ai.language.questionanswering.aio.QuestionAnsweringClient.close
   name: close
@@ -49,9 +58,11 @@ methods:
   signature: async get_answers(*args, **kwargs) -> AnswersResult
   parameters:
   - name: options
-    description: 'Positional only. POST body of the request. Either provide this
+    description: 'Positional only. POST body of the request. Provide either *options*,
+      OR
 
-      value or individual keyword arguments.'
+      individual keyword arguments. If both are provided, only the options object
+      will be used.'
     isRequired: true
     types:
     - <xref:azure.ai.language.questionanswering.models.AnswersOptions>
@@ -116,6 +127,30 @@ methods:
     - <xref:azure.ai.language.questionanswering.models.AnswersResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Answer the specified question using your knowledge base.<!--[!code-python[Main](les\\\
+    async_samples\\sample_query_knowledgebase_async.py )]-->\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-ai-language-questionanswering-1.1.1a20230803001\\\
+    \\samples\\\\async_samples\\\\sample_query_knowledgebase_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.language.questionanswering.aio\
+    \ import QuestionAnsweringClient\n   from azure.ai.language.questionanswering\
+    \ import models as qna\n\n   endpoint = os.environ[\"AZURE_QUESTIONANSWERING_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_QUESTIONANSWERING_KEY\"]\n   knowledge_base_project\
+    \ = os.environ[\"AZURE_QUESTIONANSWERING_PROJECT\"]\n\n   client = QuestionAnsweringClient(endpoint,\
+    \ AzureKeyCredential(key))\n   async with client:\n       question=\"How long\
+    \ should my Surface battery last?\"\n       output = await client.get_answers(\n\
+    \           question=question,\n           top=3,\n           confidence_threshold=0.2,\n\
+    \           include_unstructured_sources=True,\n           short_answer_options=qna.ShortAnswerOptions(\n\
+    \               confidence_threshold=0.2,\n               top=1\n           ),\n\
+    \           project_name=knowledge_base_project,\n           deployment_name=\"\
+    test\"\n       )\n       if output.answers:\n           best_candidate = [a for\
+    \ a in output.answers if a.confidence and a.confidence > 0.7][0]\n           print(\"\
+    Q: {}\".format(question))\n           print(\"A: {}\".format(best_candidate.answer))\n\
+    \       else:\n           print(f\"No answers returned from question '{question}'\"\
+    )\n\n\n   ````\n"
 - uid: azure.ai.language.questionanswering.aio.QuestionAnsweringClient.get_answers_from_text
   name: get_answers_from_text
   summary: Answers the specified question using the provided text in the body.
@@ -155,6 +190,34 @@ methods:
     - <xref:azure.ai.language.questionanswering.models.AnswersFromTextResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Answers the specified question using the provided text.<!--[!code-python[Main](les\\\
+    async_samples\\sample_query_text_async.py )]-->\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-ai-language-questionanswering-1.1.1a20230803001\\\
+    \\samples\\\\async_samples\\\\sample_query_text_async.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from\
+    \ azure.core.credentials import AzureKeyCredential\n   from azure.ai.language.questionanswering.aio\
+    \ import QuestionAnsweringClient\n   from azure.ai.language.questionanswering\
+    \ import models as qna\n\n   endpoint = os.environ[\"AZURE_QUESTIONANSWERING_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_QUESTIONANSWERING_KEY\"]\n\n   client = QuestionAnsweringClient(endpoint,\
+    \ AzureKeyCredential(key))\n   async with client:\n       question = \"How long\
+    \ it takes to charge surface?\"\n       input = qna.AnswersFromTextOptions(\n\
+    \           question=question,\n           text_documents=[\n               \"\
+    Power and charging. It takes two to four hours to charge the Surface Pro 4 battery\
+    \ fully from an empty state. \" +\n               \"It can take longer if you're\
+    \ using your Surface for power-intensive activities like gaming or video streaming\
+    \ while you're charging it.\",\n               \"You can use the USB port on your\
+    \ Surface Pro 4 power supply to charge other devices, like a phone, while your\
+    \ Surface charges. \" +\n               \"The USB port on the power supply is\
+    \ only for charging, not for data transfer. If you want to use a USB device, plug\
+    \ it into the USB port on your Surface.\",\n           ]\n       )\n\n       output\
+    \ = await client.get_answers_from_text(input)\n       if output.answers:\n   \
+    \        best_answer = [a for a in output.answers if a.confidence and a.confidence\
+    \ > 0.9][0]\n           print(\"Q: {}\".format(question))\n           print(\"\
+    A: {}\".format(best_answer.answer))\n       else:\n           print(f\"No answers\
+    \ returned from question '{question}'\")\n\n\n   ````\n"
 - uid: azure.ai.language.questionanswering.aio.QuestionAnsweringClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
@@ -176,7 +239,7 @@ methods:
     ```
 
 
-    For more information on this code flow, see [https://aka.ms/azsdk/python/protocol/quickstart](https://aka.ms/azsdk/python/protocol/quickstart)'
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
   signature: 'send_request(request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]'
   parameters:
   - name: request

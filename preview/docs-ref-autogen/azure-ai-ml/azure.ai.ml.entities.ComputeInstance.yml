@@ -8,11 +8,13 @@ inheritances:
 summary: Compute Instance resource.
 constructor:
   syntax: 'ComputeInstance(*, name: str, description: str | None = None, size: str
-    | None = None, ssh_public_access_enabled: bool | None = None, create_on_behalf_of:
-    AssignedUserConfiguration | None = None, network_settings: NetworkSettings | None
-    = None, ssh_settings: ComputeInstanceSshSettings | None = None, schedules: ComputeSchedules
-    | None = None, identity: IdentityConfiguration = None, idle_time_before_shutdown:
-    str | None = None, setup_scripts: SetupScripts | None = None, **kwargs)'
+    | None = None, tags: dict | None = None, ssh_public_access_enabled: bool | None
+    = None, create_on_behalf_of: AssignedUserConfiguration | None = None, network_settings:
+    NetworkSettings | None = None, ssh_settings: ComputeInstanceSshSettings | None
+    = None, schedules: ComputeSchedules | None = None, identity: IdentityConfiguration
+    | None = None, idle_time_before_shutdown: str | None = None, idle_time_before_shutdown_minutes:
+    int | None = None, setup_scripts: SetupScripts | None = None, enable_node_public_ip:
+    bool = True, custom_applications: List[CustomApplications] | None = None, **kwargs)'
   parameters:
   - name: name
     description: Name of the compute
@@ -34,6 +36,11 @@ constructor:
     isRequired: true
     types:
     - <xref:Optional>[<xref:str>], <xref:optional>
+  - name: tags
+    description: A set of tags. Contains resource tags defined as key/value pairs.
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: create_on_behalf_of
     description: defaults to None
     isRequired: true
@@ -82,18 +89,48 @@ constructor:
     types:
     - <xref:azure.ai.ml.entities.IdentityConfiguration>, <xref:optional>
   - name: idle_time_before_shutdown
-    description: 'Stops compute instance after user defined period of
+    description: 'Deprecated. Use the *idle_time_before_shutdown_minutes* parameter
+      instead.
 
-      inactivity. Time is defined in ISO8601 format. Minimum is 15 min, maximum is
-      3 days.'
+      Stops compute instance after user defined period of inactivity.
+
+      Time is defined in ISO8601 format. Minimum is 15 minutes, maximum is 3 days.'
     isRequired: true
     types:
     - <xref:Optional>[<xref:str>], <xref:optional>
+  - name: idle_time_before_shutdown_minutes
+    description: 'Stops compute instance after a user defined period of
+
+      inactivity in minutes. Minimum is 15 minutes, maximum is 3 days.'
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:int>], <xref:optional>
+  - name: enable_node_public_ip
+    description: 'Enable or disable node public IP address provisioning. Possible
+      values are:
+
+      True - Indicates that the compute nodes will have public IPs provisioned.
+
+      False - Indicates that the compute nodes will have a private endpoint and no
+      public IPs.
+
+      Default Value: True.'
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:bool>], <xref:optional>
   - name: setup_scripts
     description: Details of customized scripts to execute for setting up the cluster.
     isRequired: true
     types:
-    - <xref:Optional>[<xref:SetupScripts>], <xref:optional>
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SetupScripts>], <xref:optional>
+  - name: custom_applications
+    description: 'List of custom applications and their endpoints
+
+      for the compute instance.'
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:List>[<xref:azure.ai.ml.entities.CustomApplications>]],
+      <xref:optional>
 variables:
 - description: defaults to None
   name: state
@@ -143,14 +180,14 @@ attributes:
   return:
     description: Creation metadata of the resource.
     types:
-    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.ComputeInstance.id
   name: id
   summary: Resource ID.
   return:
     description: Global id of the resource, Azure Resource Manager ID
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.ComputeInstance.last_operation
   name: last_operation
   summary: 'The last operation.
@@ -159,6 +196,14 @@ attributes:
     return: The last operation.
 
     rtype: str'
+- uid: azure.ai.ml.entities.ComputeInstance.os_image_metadata
+  name: os_image_metadata
+  summary: 'Metadata about the operating system image for this compute instance.
+
+
+    return: Operating system image metadata.
+
+    rtype: ImageMetadata'
 - uid: azure.ai.ml.entities.ComputeInstance.provisioning_errors
   name: provisioning_errors
   summary: Provisioning errors.
@@ -188,9 +233,10 @@ attributes:
     rtype: str'
 - uid: azure.ai.ml.entities.ComputeInstance.type
   name: type
-  summary: 'The type of the compute, possible values are ["amlcompute",
+  summary: 'The type of the compute, possible values are ["amlcompute", "computeinstance",
+    "virtualmachine",
 
-    "computeinstance", "virtualmachine", "kubernetes", "synapsespark"]'
+    "kubernetes", "synapsespark"]'
   return:
     description: The type of the compute
     types:

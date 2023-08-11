@@ -45,10 +45,10 @@ examples:
 - "Creating the DocumentTranslationClient with an endpoint and API key.<!--[!code-python[Main](les\\\
   sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
   \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\25\\\\azure-ai-translation-document-1.0.0b6\\\\\
-  samples\\\\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
-  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-  : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
+  \\_work\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-ai-translation-document-1.0.1a20230803001\\\
+  \\samples\\\\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
   \   from azure.ai.translation.document import DocumentTranslationClient\n\n   endpoint\
   \ = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key = os.environ[\"\
   AZURE_DOCUMENT_TRANSLATION_KEY\"]\n\n   document_translation_client = DocumentTranslationClient(endpoint,\
@@ -56,7 +56,7 @@ examples:
   \ with a token credential.<!--[!code-python[Main](les\\sample_authentication.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  25\\\\azure-ai-translation-document-1.0.0b6\\\\samples\\\\sample_authentication.py\"\
+  10\\\\azure-ai-translation-document-1.0.1a20230803001\\\\samples\\\\sample_authentication.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   \"\"\"DefaultAzureCredential\
   \ will use the values from these environment\n   variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,\
@@ -77,8 +77,8 @@ methods:
     1) To perform translation on documents from a single source container to a single
     target container, pass the
 
-    *source_url*, *target_url*, and *target_language_code* parameters including any
-    optional keyword arguments.
+    *source_url*, *target_url*, and *target_language* parameters including any optional
+    keyword arguments.
 
 
     2) To pass multiple inputs for translation (multiple sources or targets), pass
@@ -90,8 +90,8 @@ methods:
     For supported languages and document formats, see the service documentation:
 
     [https://docs.microsoft.com/azure/cognitive-services/translator/document-translation/overview](https://docs.microsoft.com/azure/cognitive-services/translator/document-translation/overview)'
-  signature: 'begin_translation(source_url: str, target_url: str, target_language_code:
-    str, *, source_language_code: str | None = None, prefix: str | None = None, suffix:
+  signature: 'begin_translation(source_url: str, target_url: str, target_language:
+    str, *, source_language: str | None = None, prefix: str | None = None, suffix:
     str | None = None, storage_type: str | StorageInputType | None = None, category_id:
     str | None = None, glossaries: List[TranslationGlossary] | None = None, **kwargs:
     Any) -> DocumentTranslationLROPoller[ItemPaged[DocumentStatus]]'
@@ -128,8 +128,9 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: target_language_code
-    description: 'This is the language you want your documents to be translated to.
+  - name: target_language
+    description: 'This is the language code you want your documents to be translated
+      to.
 
       See supported language codes here:
 
@@ -147,7 +148,7 @@ methods:
     isRequired: true
     types:
     - <xref:List>[<xref:azure.ai.translation.document.DocumentTranslationInput>]
-  - name: source_language_code
+  - name: source_language
     description: 'Language code for the source documents.
 
       If none is specified, the source language will be auto-detected for each document.'
@@ -193,14 +194,14 @@ methods:
 
       returned for each translation on a document.'
     types:
-    - <xref:azure.ai.translation.document.DocumentTranslationLROPoller>[<xref:ItemPaged>[<xref:azure.ai.translation.document.DocumentStatus>]]
+    - <xref:azure.ai.translation.document.DocumentTranslationLROPoller>[<xref:azure.core.paging.ItemPaged>[<xref:azure.ai.translation.document.DocumentStatus>]]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Translate the documents in your storage container.<!--[!code-python[Main](les\\\
     sample_begin_translation.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\25\\\\azure-ai-translation-document-1.0.0b6\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-ai-translation-document-1.0.1a20230803001\\\
     \\samples\\\\sample_begin_translation.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
@@ -221,8 +222,8 @@ methods:
     :\n           print(f\"Source document location: {document.source_document_url}\"\
     )\n           print(f\"Translated document location: {document.translated_document_url}\"\
     )\n           print(f\"Translated to language: {document.translated_to}\\n\")\n\
-    \       else:\n           print(f\"Error Code: {document.error.code}, Message:\
-    \ {document.error.message}\\n\")\n\n   ````\n"
+    \       elif document.error:\n           print(f\"Error Code: {document.error.code},\
+    \ Message: {document.error.message}\\n\")\n\n   ````\n"
 - uid: azure.ai.translation.document.DocumentTranslationClient.cancel_translation
   name: cancel_translation
   summary: 'Cancel a currently processing or queued translation operation.
@@ -325,10 +326,10 @@ methods:
   name: list_document_statuses
   summary: List all the document statuses for a given translation operation.
   signature: 'list_document_statuses(translation_id: str, *, top: int | None = None,
-    skip: int | None = None, results_per_page: int | None = None, document_ids: List[str]
-    | None = None, statuses: List[str] | None = None, created_after: str | datetime
-    | None = None, created_before: str | datetime | None = None, order_by: List[str]
-    | None = None, **kwargs: Any) -> ItemPaged[DocumentStatus]'
+    skip: int | None = None, document_ids: List[str] | None = None, statuses: List[str]
+    | None = None, created_after: str | datetime | None = None, created_before: str
+    | datetime | None = None, order_by: List[str] | None = None, **kwargs: Any) ->
+    ItemPaged[DocumentStatus]'
   parameters:
   - name: translation_id
     description: ID of translation operation to list documents for.
@@ -336,25 +337,21 @@ methods:
     types:
     - <xref:str>
   - name: top
-    description: the total number of documents to return (across all pages).
+    description: The total number of documents to return (across all pages).
     types:
     - <xref:int>
   - name: skip
-    description: 'the number of documents to skip (from beginning).
+    description: 'The number of documents to skip (from beginning).
 
       By default, we sort by all documents in descending order by start time.'
     types:
     - <xref:int>
-  - name: results_per_page
-    description: is the number of documents returned per page.
-    types:
-    - <xref:int>
   - name: document_ids
-    description: document IDs to filter by.
+    description: Document IDs to filter by.
     types:
     - <xref:list>[<xref:str>]
   - name: statuses
-    description: 'document statuses to filter by. Options include
+    description: 'Document statuses to filter by. Options include
 
       ''NotStarted'', ''Running'', ''Succeeded'', ''Failed'', ''Canceled'', ''Canceling'',
 
@@ -362,17 +359,17 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   - name: created_after
-    description: get document created after certain datetime.
+    description: Get documents created after a certain datetime.
     types:
     - <xref:str>
     - <xref:datetime.datetime>
   - name: created_before
-    description: get document created before certain datetime.
+    description: Get documents created before a certain datetime.
     types:
     - <xref:str>
     - <xref:datetime.datetime>
   - name: order_by
-    description: 'the sorting query for the documents. Currently only
+    description: 'The sorting query for the documents. Currently only
 
       ''created_on'' is supported.
 
@@ -391,7 +388,7 @@ methods:
   - "List all the document statuses as they are being translated.<!--[!code-python[Main](les\\\
     sample_check_document_statuses.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\25\\\\azure-ai-translation-document-1.0.0b6\\\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-ai-translation-document-1.0.1a20230803001\\\
     \\samples\\\\sample_check_document_statuses.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   import time\n\
@@ -408,46 +405,42 @@ methods:
     Document at {document.source_document_url} was translated to {document.translated_to}\
     \ \"\n                         f\"language. You can find translated document at\
     \ {document.translated_document_url}\")\n                   completed_docs.append(document.id)\n\
-    \               if document.status == \"Failed\":\n                   print(f\"\
-    Document at {document.source_document_url} failed translation. \"\n          \
-    \               f\"Error Code: {document.error.code}, Message: {document.error.message}\"\
-    )\n                   completed_docs.append(document.id)\n               if document.status\
-    \ == \"Running\":\n                   print(f\"Document ID: {document.id}, translation\
-    \ progress is \"\n                         f\"{document.translation_progress *\
-    \ 100} percent\")\n\n   print(\"\\nTranslation completed.\")\n\n   ````\n"
+    \               if document.status == \"Failed\" and document.error:\n       \
+    \            print(f\"Document at {document.source_document_url} failed translation.\
+    \ \"\n                         f\"Error Code: {document.error.code}, Message:\
+    \ {document.error.message}\")\n                   completed_docs.append(document.id)\n\
+    \               if document.status == \"Running\":\n                   print(f\"\
+    Document ID: {document.id}, translation progress is \"\n                     \
+    \    f\"{document.translation_progress * 100} percent\")\n\n   print(\"\\nTranslation\
+    \ completed.\")\n\n   ````\n"
 - uid: azure.ai.translation.document.DocumentTranslationClient.list_translation_statuses
   name: list_translation_statuses
   summary: List all the submitted translation operations under the Document Translation
     resource.
   signature: 'list_translation_statuses(*, top: int | None = None, skip: int | None
-    = None, results_per_page: int | None = None, translation_ids: List[str] | None
-    = None, statuses: List[str] | None = None, created_after: str | datetime | None
-    = None, created_before: str | datetime | None = None, order_by: List[str] | None
-    = None, **kwargs: Any) -> ItemPaged[TranslationStatus]'
+    = None, translation_ids: List[str] | None = None, statuses: List[str] | None =
+    None, created_after: str | datetime | None = None, created_before: str | datetime
+    | None = None, order_by: List[str] | None = None, **kwargs: Any) -> ItemPaged[TranslationStatus]'
   parameters:
   - name: top
-    description: the total number of operations to return (across all pages) from
+    description: The total number of operations to return (across all pages) from
       all submitted translations.
     types:
     - <xref:int>
   - name: skip
-    description: 'the number of operations to skip (from beginning of all submitted
+    description: 'The number of operations to skip (from beginning of all submitted
       operations).
 
       By default, we sort by all submitted operations in descending order by start
       time.'
     types:
     - <xref:int>
-  - name: results_per_page
-    description: is the number of operations returned per page.
-    types:
-    - <xref:int>
   - name: translation_ids
-    description: translation operations ids to filter by.
+    description: Translation operations ids to filter by.
     types:
     - <xref:list>[<xref:str>]
   - name: statuses
-    description: 'translation operation statuses to filter by. Options include
+    description: 'Translation operation statuses to filter by. Options include
 
       ''NotStarted'', ''Running'', ''Succeeded'', ''Failed'', ''Canceled'', ''Canceling'',
 
@@ -455,17 +448,17 @@ methods:
     types:
     - <xref:list>[<xref:str>]
   - name: created_after
-    description: get operations created after certain datetime.
+    description: Get operations created after a certain datetime.
     types:
     - <xref:str>
     - <xref:datetime.datetime>
   - name: created_before
-    description: get operations created before certain datetime.
+    description: Get operations created before a certain datetime.
     types:
     - <xref:str>
     - <xref:datetime.datetime>
   - name: order_by
-    description: 'the sorting query for the operations returned. Currently only
+    description: 'The sorting query for the operations returned. Currently only
 
       ''created_on'' supported.
 
@@ -484,21 +477,20 @@ methods:
   - "List all submitted translations under the resource.<!--[!code-python[Main](les\\\
     sample_list_translations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\25\\\\azure-ai-translation-document-1.0.0b6\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\10\\\\azure-ai-translation-document-1.0.1a20230803001\\\
     \\samples\\\\sample_list_translations.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
     \   from azure.ai.translation.document import DocumentTranslationClient\n\n\n\
     \   endpoint = os.environ[\"AZURE_DOCUMENT_TRANSLATION_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_DOCUMENT_TRANSLATION_KEY\"]\n\n   client = DocumentTranslationClient(endpoint,\
-    \ AzureKeyCredential(key))\n   operations = client.list_translation_statuses()\
-    \  # type: ItemPaged[TranslationStatus]\n\n   for operation in operations:\n \
-    \      print(f\"ID: {operation.id}\")\n       print(f\"Status: {operation.status}\"\
-    )\n       print(f\"Created on: {operation.created_on}\")\n       print(f\"Last\
-    \ updated on: {operation.last_updated_on}\")\n       print(f\"Total number of\
-    \ operations on documents: {operation.documents_total_count}\")\n       print(f\"\
-    Total number of characters charged: {operation.total_characters_charged}\")\n\n\
-    \       print(\"\\nOf total documents...\")\n       print(f\"{operation.documents_failed_count}\
+    \ AzureKeyCredential(key))\n   operations = client.list_translation_statuses()\n\
+    \n   for operation in operations:\n       print(f\"ID: {operation.id}\")\n   \
+    \    print(f\"Status: {operation.status}\")\n       print(f\"Created on: {operation.created_on}\"\
+    )\n       print(f\"Last updated on: {operation.last_updated_on}\")\n       print(f\"\
+    Total number of operations on documents: {operation.documents_total_count}\")\n\
+    \       print(f\"Total number of characters charged: {operation.total_characters_charged}\"\
+    )\n\n       print(\"\\nOf total documents...\")\n       print(f\"{operation.documents_failed_count}\
     \ failed\")\n       print(f\"{operation.documents_succeeded_count} succeeded\"\
     )\n       print(f\"{operation.documents_canceled_count} canceled\\n\")\n\n\n \
     \  ````\n"

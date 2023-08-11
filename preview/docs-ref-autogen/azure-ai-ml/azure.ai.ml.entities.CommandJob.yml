@@ -9,18 +9,19 @@ inheritances:
 - azure.ai.ml.entities._job.job_io_mixin.JobIOMixin
 summary: Command job.
 constructor:
-  syntax: 'CommandJob(*, inputs: Dict[str, int | str | float | bool | Input] = None,
-    outputs: Dict[str, Output] = None, limits: CommandJobLimits = None, identity:
-    ManagedIdentity | AmlToken | UserIdentity = None, services: Dict[str, JobService]
-    = None, **kwargs)'
+  syntax: 'CommandJob(*, inputs: Dict[str, int | str | float | bool | Input] | None
+    = None, outputs: Dict[str, Output] | None = None, limits: CommandJobLimits | None
+    = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration | UserIdentityConfiguration
+    | None = None, services: Dict[str, JobService | JupyterLabJobService | SshJobService
+    | TensorBoardJobService | VsCodeJobService] | None = None, **kwargs)'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
   - name: description
-    description: Description of the job.
+    description: The job description.
     isRequired: true
     types:
     - <xref:str>
@@ -30,29 +31,30 @@ constructor:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: display_name
-    description: Display name of the job.
+    description: The job display name.
     isRequired: true
     types:
     - <xref:str>
   - name: properties
-    description: The asset property dictionary.
+    description: A dictionary of properties for the job.
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: experiment_name
-    description: 'Name of the experiment the job will be created under.
+    description: 'The name of the experiment that the job will be created under. Defaults
+      to current
 
-      If None is provided, default will be set to current directory name.'
+      directory name.'
     isRequired: true
     types:
     - <xref:str>
   - name: services
-    description: Information on services associated with the job, readonly.
+    description: Read-only information on services associated with the job.
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:azure.ai.ml.entities.JobService>]
   - name: inputs
-    description: Inputs to the command.
+    description: Mapping of output data bindings used in the command.
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>,
@@ -63,7 +65,7 @@ constructor:
     types:
     - <xref:dict>[<xref:str>, <xref:azure.ai.ml.Output>]
   - name: command
-    description: Command to be executed in training.
+    description: The command to be executed.
     isRequired: true
     types:
     - <xref:str>
@@ -73,34 +75,33 @@ constructor:
     types:
     - <xref:str>
   - name: resources
-    description: Compute Resource configuration for the job.
+    description: The compute resource configuration for the job.
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.ResourceConfiguration>
   - name: code
-    description: 'A local path or http:, https:, azureml: url pointing to a remote
-      location.'
+    description: A local path or "http:", "https:", or "azureml:" url pointing to
+      a remote location.
     isRequired: true
     types:
     - <xref:str>
   - name: distribution
-    description: Distribution configuration for distributed training.
+    description: The distribution configuration for distributed jobs.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.ai.ml.PyTorchDistribution,azure.ai.ml.MpiDistribution,azure.ai.ml.TensorFlowDistribution>]
+    - <xref:Union>[<xref:azure.ai.ml.PyTorchDistribution,azure.ai.ml.MpiDistribution,azure.ai.ml.TensorFlowDistribution,azure.ai.ml.RayDistribution>]
   - name: environment
-    description: Environment that training job will run in.
+    description: The environment that the job will run in.
     isRequired: true
     types:
     - <xref:Union>[<xref:azure.ai.ml.entities.Environment>, <xref:str>]
   - name: identity
-    description: Identity that training job will use while running on compute.
+    description: The identity that the job will use while running on compute.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.ai.ml.ManagedIdentity>, <xref:azure.ai.ml.AmlToken>,
-      <xref:azure.ai.ml.UserIdentity>]
+    - <xref:Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration,azure.ai.ml.AmlTokenConfiguration,azure.ai.ml.UserIdentityConfiguration>]
   - name: limits
-    description: Command Job limit.
+    description: The limits for the job.
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.CommandJobLimits>
@@ -108,7 +109,7 @@ constructor:
     description: A dictionary of additional configuration parameters.
     isRequired: true
     types:
-    - <xref:dict>
+    - <xref:dict>[<xref:str>, <xref:Any>]
 methods:
 - uid: azure.ai.ml.entities.CommandJob.dump
   name: dump
@@ -144,16 +145,23 @@ attributes:
   return:
     description: Creation metadata of the resource.
     types:
-    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.CommandJob.distribution
   name: distribution
+  summary: 'The configuration for the distributed command component or job.
+
+
+    ~azure.ai.ml.TensorFlowDistribution, ~azure.ai.ml.RayDistribution]'
+  return:
+    types:
+    - <xref:Union>[<xref:azure.ai.ml.PyTorchDistribution>, <xref:azure.ai.ml.MpiDistribution,>
 - uid: azure.ai.ml.entities.CommandJob.id
   name: id
   summary: Resource ID.
   return:
     description: Global id of the resource, Azure Resource Manager ID
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.CommandJob.inputs
   name: inputs
 - uid: azure.ai.ml.entities.CommandJob.log_files
@@ -174,6 +182,10 @@ attributes:
     - <xref:Dict>[<xref:str>, <xref:str>]
 - uid: azure.ai.ml.entities.CommandJob.resources
   name: resources
+  summary: The compute resource configuration for the command component or job.
+  return:
+    types:
+    - <xref:azure.ai.ml.entities.JobResourceConfiguration>
 - uid: azure.ai.ml.entities.CommandJob.status
   name: status
   summary: "Status of the job.\n\nCommon values returned include \"Running\", \"Completed\"\

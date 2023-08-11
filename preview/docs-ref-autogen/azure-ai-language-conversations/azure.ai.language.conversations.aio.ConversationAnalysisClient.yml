@@ -8,25 +8,10 @@ inheritances:
 summary: 'The language service conversations API is a suite of natural language processing
   (NLP) skills
 
-  that can be used to analyze structured conversations (textual or spoken). The synchronous
-  API
+  that can be used to analyze structured conversations (textual or spoken). Further
+  documentation
 
-  in this suite accepts a request and mediates among multiple language projects, such
-  as LUIS
-
-  Generally Available, Question Answering, Conversational Language Understanding,
-  and then calls
-
-  the best candidate service to handle the request. At last, it returns a response
-  with the
-
-  candidate service''s response as a payload.
-
-
-  See [https://docs.microsoft.com/rest/api/language/conversation-analysis-runtime/](https://docs.microsoft.com/rest/api/language/conversation-analysis-runtime/)
-  for more information about
-
-  requests and responses you can pass to this client.'
+  can be found in [https://docs.microsoft.com/azure/cognitive-services/language-service/overview](https://docs.microsoft.com/azure/cognitive-services/language-service/overview).'
 constructor:
   syntax: 'ConversationAnalysisClient(endpoint: str, credential: AzureKeyCredential
     | AsyncTokenCredential, **kwargs: Any)'
@@ -49,12 +34,11 @@ constructor:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
   - name: api_version
-    description: 'Api Version. Available values are "2022-10-01-preview", "2022-05-15-preview",
+    description: 'Api Version. Available values are "2023-04-01" and "2022-05-01".
+      Default value is
 
-      "2022-05-01". Default value is "2022-10-01-preview". Note that overriding this
-      default value may result in
-
-      unsupported behavior.'
+      "2023-04-01". Note that overriding this default value may result in unsupported
+      behavior.'
     types:
     - <xref:str>
   - name: polling_interval
@@ -71,15 +55,15 @@ methods:
 
     See
 
-    [https://learn.microsoft.com/rest/api/language/2022-10-01-preview/conversation-analysis/analyze-conversation](https://learn.microsoft.com/rest/api/language/2022-10-01-preview/conversation-analysis/analyze-conversation)
+    [https://learn.microsoft.com/rest/api/language/2023-04-01/conversation-analysis-runtime/analyze-conversation](https://learn.microsoft.com/rest/api/language/2023-04-01/conversation-analysis-runtime/analyze-conversation)
 
     for more information.'
   signature: 'async analyze_conversation(task: MutableMapping[str, Any] | IO, **kwargs:
     Any) -> MutableMapping[str, Any]'
   parameters:
   - name: task
-    description: 'A single conversational task to execute. Is either a model type
-      or a IO type.
+    description: 'A single conversational task to execute. Is either a JSON type or
+      a IO type.
 
       Required.'
     isRequired: true
@@ -102,34 +86,62 @@ methods:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # The response is polymorphic. The following are possible polymorphic responses\
-    \ based\n     off discriminator \"kind\":\n\n   # JSON input template for discriminator\
-    \ value \"ConversationResult\":\n   analyze_conversation_task_result = {\n   \
-    \    \"kind\": \"ConversationResult\",\n       \"result\": {\n           \"prediction\"\
-    : base_prediction,\n           \"query\": \"str\",  # The conversation utterance\
-    \ given by the caller.\n             Required.\n           \"detectedLanguage\"\
-    : \"str\"  # Optional. The system detected language\n             for the query\
-    \ in BCP 47 language representation..\n       }\n   }\n\n   # JSON input template\
-    \ for discriminator value \"Conversation\":\n   base_prediction = {\n       \"\
-    entities\": [\n           {\n               \"category\": \"str\",  # The entity\
-    \ category. Required.\n               \"confidenceScore\": 0.0,  # The entity\
-    \ confidence score.\n                 Required.\n               \"length\": 0,\
-    \  # The length of the text. Required.\n               \"offset\": 0,  # The starting\
-    \ index of this entity in the\n                 query. Required.\n           \
-    \    \"text\": \"str\",  # The predicted entity text. Required.\n            \
-    \   \"extraInformation\": [\n                   base_extra_information\n     \
-    \          ],\n               \"resolutions\": [\n                   base_resolution\n\
-    \               ]\n           }\n       ],\n       \"intents\": [\n          \
-    \ {\n               \"category\": \"str\",  # A predicted class. Required.\n \
-    \              \"confidenceScore\": 0.0  # The confidence score of the class\n\
-    \                 from 0.0 to 1.0. Required.\n           }\n       ],\n      \
-    \ \"projectKind\": \"Conversation\",\n       \"topIntent\": \"str\"  # Optional.\
-    \ The intent with the highest score.\n   }\n\n   # JSON input template for discriminator\
-    \ value \"Orchestration\":\n   base_prediction = {\n       \"intents\": {\n  \
-    \         \"str\": target_intent_result\n       },\n       \"projectKind\": \"\
-    Orchestration\",\n       \"topIntent\": \"str\"  # Optional. The intent with the\
-    \ highest score.\n   }\n\n   # response body for status code(s): 200\n   response\
-    \ == analyze_conversation_task_result\n   ````\n"
+    \   # The input is polymorphic. The following are possible polymorphic inputs\
+    \ based off\n     discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"Conversation\":\n   analyze_conversation_task = {\n       \"analysisInput\"\
+    : {\n           \"conversationItem\": {\n               \"id\": \"str\",  # The\
+    \ ID of a conversation item. Required.\n               \"participantId\": \"str\"\
+    ,  # The participant ID of a\n                 conversation item. Required.\n\
+    \               \"language\": \"str\",  # Optional. The override language of a\n\
+    \                 conversation item in BCP 47 language representation.\n     \
+    \          \"modality\": \"str\",  # Optional. Enumeration of supported\n    \
+    \             conversational modalities. Known values are: \"transcript\" and\
+    \ \"text\".\n               \"role\": \"str\"  # Optional. Role of the participant.\
+    \ Known\n                 values are: \"agent\", \"customer\", and \"generic\"\
+    .\n           }\n       },\n       \"kind\": \"Conversation\",\n       \"parameters\"\
+    : {\n           \"deploymentName\": \"str\",  # The name of the deployment to\
+    \ use.\n             Required.\n           \"projectName\": \"str\",  # The name\
+    \ of the project to use. Required.\n           \"directTarget\": \"str\",  # Optional.\
+    \ The name of a target project to\n             forward the request to.\n    \
+    \       \"isLoggingEnabled\": bool,  # Optional. If true, the service will keep\n\
+    \             the query for further review.\n           \"stringIndexType\": \"\
+    TextElements_v8\",  # Optional. Default value is\n             \"TextElements_v8\"\
+    . Specifies the method used to interpret string offsets. Set\n             to\
+    \ \"UnicodeCodePoint\" for Python strings. Known values are:\n             \"\
+    TextElements_v8\", \"UnicodeCodePoint\", and \"Utf16CodeUnit\".\n           \"\
+    targetProjectParameters\": {\n               \"str\": analysis_parameters\n  \
+    \         },\n           \"verbose\": bool  # Optional. If true, the service will\
+    \ return more\n             detailed information in the response.\n       }\n\
+    \   }\n\n   # JSON input template you can fill out and use as your body input.\n\
+    \   task = analyze_conversation_task\n   # The response is polymorphic. The following\
+    \ are possible polymorphic responses based\n     off discriminator \"kind\":\n\
+    \n   # JSON input template for discriminator value \"ConversationResult\":\n \
+    \  analyze_conversation_task_result = {\n       \"kind\": \"ConversationResult\"\
+    ,\n       \"result\": {\n           \"prediction\": base_prediction,\n       \
+    \    \"query\": \"str\",  # The conversation utterance given by the caller.\n\
+    \             Required.\n           \"detectedLanguage\": \"str\"  # Optional.\
+    \ The system detected language\n             for the query in BCP 47 language\
+    \ representation..\n       }\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Conversation\":\n   base_prediction = {\n       \"entities\": [\n  \
+    \         {\n               \"category\": \"str\",  # The entity category. Required.\n\
+    \               \"confidenceScore\": 0.0,  # The entity confidence score.\n  \
+    \               Required.\n               \"length\": 0,  # The length of the\
+    \ text. Required.\n               \"offset\": 0,  # The starting index of this\
+    \ entity in the\n                 query. Required.\n               \"text\": \"\
+    str\",  # The predicted entity text. Required.\n               \"extraInformation\"\
+    : [\n                   base_extra_information\n               ],\n          \
+    \     \"resolutions\": [\n                   base_resolution\n               ]\n\
+    \           }\n       ],\n       \"intents\": [\n           {\n              \
+    \ \"category\": \"str\",  # A predicted class. Required.\n               \"confidenceScore\"\
+    : 0.0  # The confidence score of the class\n                 from 0.0 to 1.0.\
+    \ Required.\n           }\n       ],\n       \"projectKind\": \"Conversation\"\
+    ,\n       \"topIntent\": \"str\"  # Optional. The intent with the highest score.\n\
+    \   }\n\n   # JSON input template for discriminator value \"Orchestration\":\n\
+    \   base_prediction = {\n       \"intents\": {\n           \"str\": target_intent_result\n\
+    \       },\n       \"projectKind\": \"Orchestration\",\n       \"topIntent\":\
+    \ \"str\"  # Optional. The intent with the highest score.\n   }\n\n   # response\
+    \ body for status code(s): 200\n   response == analyze_conversation_task_result\n\
+    \   ````\n"
 - uid: azure.ai.language.conversations.aio.ConversationAnalysisClient.begin_conversation_analysis
   name: begin_conversation_analysis
   summary: 'Submit analysis job for conversations.
@@ -141,19 +153,17 @@ methods:
     executed.
 
 
-    See
-
-    [https://learn.microsoft.com/rest/api/language/2022-10-01-preview/conversation-analysis-runtime/submit-job](https://learn.microsoft.com/rest/api/language/2022-10-01-preview/conversation-analysis-runtime/submit-job)
+    See [https://learn.microsoft.com/rest/api/language/2023-04-01/analyze-conversation/submit-job](https://learn.microsoft.com/rest/api/language/2023-04-01/analyze-conversation/submit-job)
 
     for more information.'
   signature: 'async begin_conversation_analysis(task: MutableMapping[str, Any] | IO,
     **kwargs: Any) -> AsyncLROPoller[MutableMapping[str, Any]]'
   parameters:
   - name: task
-    description: 'The collection of conversations to analyze and one or more tasks
-      to execute. Is
+    description: 'Collection of conversations to analyze and one or more tasks to
+      execute. Is either
 
-      either a model type or a IO type. Required.'
+      a JSON type or a IO type. Required.'
     isRequired: true
     types:
     - <xref:JSON>
@@ -195,25 +205,30 @@ methods:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 200\n   response == {\n       \"createdDateTime\"\
-    : \"2020-02-20 00:00:00\",  # Required.\n       \"jobId\": \"str\",  # Required.\n\
-    \       \"lastUpdatedDateTime\": \"2020-02-20 00:00:00\",  # Required.\n     \
-    \  \"status\": \"str\",  # The status of the task at the mentioned last update\
-    \ time.\n         Required. Known values are: \"notStarted\", \"running\", \"\
-    succeeded\", \"failed\",\n         \"cancelled\", \"cancelling\", and \"partiallyCompleted\"\
-    .\n       \"tasks\": {\n           \"completed\": 0,  # Count of tasks completed\
-    \ successfully. Required.\n           \"failed\": 0,  # Count of tasks that failed.\
-    \ Required.\n           \"inProgress\": 0,  # Count of tasks in progress currently.\
-    \ Required.\n           \"total\": 0,  # Total count of tasks submitted as part\
-    \ of the job.\n             Required.\n           \"items\": [\n             \
-    \  analyze_conversation_job_result\n           ]\n       },\n       \"displayName\"\
-    : \"str\",  # Optional.\n       \"errors\": [\n           {\n               \"\
-    code\": \"str\",  # One of a server-defined set of error codes.\n            \
-    \     Required. Known values are: \"InvalidRequest\", \"InvalidArgument\",\n \
-    \                \"Unauthorized\", \"Forbidden\", \"NotFound\", \"ProjectNotFound\"\
-    ,\n                 \"OperationNotFound\", \"AzureCognitiveSearchNotFound\",\n\
-    \                 \"AzureCognitiveSearchIndexNotFound\", \"TooManyRequests\",\n\
-    \                 \"AzureCognitiveSearchThrottling\",\n                 \"AzureCognitiveSearchIndexLimitReached\"\
+    \   # JSON input template you can fill out and use as your body input.\n   task\
+    \ = {\n       \"analysisInput\": {\n           \"conversations\": [\n        \
+    \       conversation\n           ]\n       },\n       \"tasks\": [\n         \
+    \  analyze_conversation_lro_task\n       ],\n       \"displayName\": \"str\" \
+    \ # Optional. Display name for the analysis job.\n   }\n\n   # response body for\
+    \ status code(s): 200\n   response == {\n       \"createdDateTime\": \"2020-02-20\
+    \ 00:00:00\",  # Required.\n       \"jobId\": \"str\",  # Required.\n       \"\
+    lastUpdatedDateTime\": \"2020-02-20 00:00:00\",  # Required.\n       \"status\"\
+    : \"str\",  # The status of the task at the mentioned last update time.\n    \
+    \     Required. Known values are: \"notStarted\", \"running\", \"succeeded\",\
+    \ \"failed\",\n         \"cancelled\", \"cancelling\", and \"partiallyCompleted\"\
+    .\n       \"tasks\": {\n           \"completed\": 0,  # Count of tasks that finished\
+    \ successfully.\n             Required.\n           \"failed\": 0,  # Count of\
+    \ tasks that failed. Required.\n           \"inProgress\": 0,  # Count of tasks\
+    \ that are currently in progress.\n             Required.\n           \"total\"\
+    : 0,  # Total count of tasks submitted as part of the job.\n             Required.\n\
+    \           \"items\": [\n               analyze_conversation_job_result\n   \
+    \        ]\n       },\n       \"displayName\": \"str\",  # Optional.\n       \"\
+    errors\": [\n           {\n               \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n                 Required. Known values are: \"InvalidRequest\"\
+    , \"InvalidArgument\",\n                 \"Unauthorized\", \"Forbidden\", \"NotFound\"\
+    , \"ProjectNotFound\",\n                 \"OperationNotFound\", \"AzureCognitiveSearchNotFound\"\
+    ,\n                 \"AzureCognitiveSearchIndexNotFound\", \"TooManyRequests\"\
+    ,\n                 \"AzureCognitiveSearchThrottling\",\n                 \"AzureCognitiveSearchIndexLimitReached\"\
     , \"InternalServerError\",\n                 \"ServiceUnavailable\", \"Timeout\"\
     , \"QuotaExceeded\", \"Conflict\", and\n                 \"Warning\".\n      \
     \         \"message\": \"str\",  # A human-readable representation of the\n  \
@@ -238,16 +253,16 @@ methods:
     \ in the\n             request. Required.\n           \"documentsCount\": 0, \
     \ # Number of documents submitted in the request.\n             Required.\n  \
     \         \"erroneousConversationsCount\": 0,  # Number of invalid documents.\n\
-    \             This includes empty, over-size limit or non-supported languages\
-    \ documents.\n             Required.\n           \"erroneousDocumentsCount\":\
-    \ 0,  # Number of invalid documents. This\n             includes empty, over-size\
+    \             This includes documents that are empty, over the size limit, or\
+    \ in\n             unsupported languages. Required.\n           \"erroneousDocumentsCount\"\
+    : 0,  # Number of invalid documents. This\n             includes empty, over-size\
     \ limit or non-supported languages documents.\n             Required.\n      \
     \     \"transactionsCount\": 0,  # Number of transactions for the request.\n \
     \            Required.\n           \"validConversationsCount\": 0,  # Number of\
-    \ conversations documents.\n             This excludes empty, over-size limit\
-    \ or non-supported languages documents.\n             Required.\n           \"\
-    validDocumentsCount\": 0  # Number of valid documents. This excludes\n       \
-    \      empty, over-size limit or non-supported languages documents. Required.\n\
+    \ conversation documents.\n             This excludes documents that are empty,\
+    \ over the size limit, or in\n             unsupported languages. Required.\n\
+    \           \"validDocumentsCount\": 0  # Number of valid documents. This excludes\n\
+    \             empty, over-size limit or non-supported languages documents. Required.\n\
     \       }\n   }\n   ````\n"
 - uid: azure.ai.language.conversations.aio.ConversationAnalysisClient.close
   name: close

@@ -4,16 +4,18 @@ name: QuestionAnsweringClient
 fullName: azure.ai.language.questionanswering.QuestionAnsweringClient
 module: azure.ai.language.questionanswering
 inheritances:
-- azure.ai.language.questionanswering._question_answering_client.QuestionAnsweringClient
+- azure.ai.language.questionanswering._client.QuestionAnsweringClient
 summary: 'The language service API is a suite of natural language processing (NLP)
-  skills built with best-in-class Microsoft machine learning algorithms.
+  skills built with best-in-class
+
+  Microsoft machine learning algorithms.
 
 
   The API can be used to analyze unstructured text for tasks such as sentiment
 
   analysis, key phrase extraction, language detection and question answering.
 
-  Further documentation can be found in [https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview](https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview)'
+  Further documentation can be found in [https://learn.microsoft.com/azure/cognitive-services/language-service/overview](https://learn.microsoft.com/azure/cognitive-services/language-service/overview)'
 constructor:
   syntax: 'QuestionAnsweringClient(endpoint: str, credential: AzureKeyCredential |
     TokenCredential, **kwargs: Any)'
@@ -21,7 +23,7 @@ constructor:
   - name: endpoint
     description: 'Supported Cognitive Services endpoint (e.g.,
 
-      [https:/](https:/)/<resource-name>.api.cognitiveservices.azure.com).'
+      [https://](https://)`<resource-name>`.cognitiveservices.azure.com).'
     isRequired: true
     types:
     - <xref:str>
@@ -37,6 +39,13 @@ constructor:
     - <xref:azure.core.credentials.TokenCredential>
   - name: default_language
     description: Sets the default language to use for all operations.
+    types:
+    - <xref:str>
+  - name: api_version
+    description: 'Api Version. Default value is "2021-10-01". Note that overriding
+      this
+
+      default value may result in unsupported behavior.'
     types:
     - <xref:str>
 methods:
@@ -56,7 +65,7 @@ methods:
       will be used.'
     isRequired: true
     types:
-    - <xref:azure.ai.language.questionanswering.AnswersOptions>
+    - <xref:azure.ai.language.questionanswering.models.AnswersOptions>
   - name: project_name
     description: The name of the knowledge base project to use.
     types:
@@ -91,7 +100,7 @@ methods:
   - name: answer_context
     description: Context object with previous QnA's information.
     types:
-    - <xref:azure.ai.language.questionanswering.KnowledgeBaseAnswerContext>
+    - <xref:azure.ai.language.questionanswering.models.KnowledgeBaseAnswerContext>
   - name: ranker_kind
     description: 'Type of ranker to be used. Possible
 
@@ -101,11 +110,11 @@ methods:
   - name: filters
     description: Filter QnAs based on given metadata list and knowledge base sources.
     types:
-    - <xref:azure.ai.language.questionanswering.QueryFilters>
+    - <xref:azure.ai.language.questionanswering.models.QueryFilters>
   - name: short_answer_options
     description: To configure Answer span prediction feature.
     types:
-    - <xref:azure.ai.language.questionanswering.ShortAnswerOptions>
+    - <xref:azure.ai.language.questionanswering.models.ShortAnswerOptions>
   - name: include_unstructured_sources
     description: '(Optional) Flag to enable Query over Unstructured
 
@@ -115,9 +124,33 @@ methods:
   return:
     description: AnswersResult
     types:
-    - <xref:azure.ai.language.questionanswering.AnswersResult>
+    - <xref:azure.ai.language.questionanswering.models.AnswersResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Answer the specified question using your knowledge base.<!--[!code-python[Main](les\\\
+    sample_query_knowledgebase.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-ai-language-questionanswering-1.1.1a20230803001\\\
+    \\samples\\\\sample_query_knowledgebase.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.ai.language.questionanswering import\
+    \ QuestionAnsweringClient\n   from azure.ai.language.questionanswering import\
+    \ models as qna\n\n   endpoint = os.environ[\"AZURE_QUESTIONANSWERING_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_QUESTIONANSWERING_KEY\"]\n   knowledge_base_project\
+    \ = os.environ[\"AZURE_QUESTIONANSWERING_PROJECT\"]\n\n   client = QuestionAnsweringClient(endpoint,\
+    \ AzureKeyCredential(key))\n   with client:\n       question=\"How long should\
+    \ my Surface battery last?\"\n       output = client.get_answers(\n          \
+    \ question=question,\n           top=3,\n           confidence_threshold=0.2,\n\
+    \           include_unstructured_sources=True,\n           short_answer_options=qna.ShortAnswerOptions(\n\
+    \               confidence_threshold=0.2,\n               top=1\n           ),\n\
+    \           project_name=knowledge_base_project,\n           deployment_name=\"\
+    test\"\n       )\n       if output.answers:\n           best_candidate = [a for\
+    \ a in output.answers if a.confidence and a.confidence > 0.7][0]\n           print(\"\
+    Q: {}\".format(question))\n           print(\"A: {}\".format(best_candidate.answer))\n\
+    \       else:\n           print(f\"No answers returned from question '{question}'\"\
+    )\n\n\n   ````\n"
 - uid: azure.ai.language.questionanswering.QuestionAnsweringClient.get_answers_from_text
   name: get_answers_from_text
   summary: Answers the specified question using the provided text in the body.
@@ -158,6 +191,33 @@ methods:
     - <xref:azure.ai.language.questionanswering.models.AnswersFromTextResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Answers the specified question using the provided text.<!--[!code-python[Main](les\\\
+    sample_query_text.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\5\\\\azure-ai-language-questionanswering-1.1.1a20230803001\\\
+    \\samples\\\\sample_query_text.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   import os\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.language.questionanswering import QuestionAnsweringClient\n\
+    \   from azure.ai.language.questionanswering import models as qna\n\n   endpoint\
+    \ = os.environ[\"AZURE_QUESTIONANSWERING_ENDPOINT\"]\n   key = os.environ[\"AZURE_QUESTIONANSWERING_KEY\"\
+    ]\n\n   client = QuestionAnsweringClient(endpoint, AzureKeyCredential(key))\n\
+    \   with client:\n       question=\"How long it takes to charge surface?\"\n \
+    \      input = qna.AnswersFromTextOptions(\n           question=question,\n  \
+    \         text_documents=[\n               \"Power and charging. It takes two\
+    \ to four hours to charge the Surface Pro 4 battery fully from an empty state.\
+    \ \" +\n               \"It can take longer if you're using your Surface for power-intensive\
+    \ activities like gaming or video streaming while you're charging it.\",\n   \
+    \            \"You can use the USB port on your Surface Pro 4 power supply to\
+    \ charge other devices, like a phone, while your Surface charges. \" +\n     \
+    \          \"The USB port on the power supply is only for charging, not for data\
+    \ transfer. If you want to use a USB device, plug it into the USB port on your\
+    \ Surface.\",\n           ]\n       )\n\n       output = client.get_answers_from_text(input)\n\
+    \       if output.answers:\n           best_answer = [a for a in output.answers\
+    \ if a.confidence and a.confidence > 0.9][0]\n           print(\"Q: {}\".format(question))\n\
+    \           print(\"A: {}\".format(best_answer.answer))\n       else:\n      \
+    \     print(f\"No answers returned from question '{question}'\")\n\n\n   ````\n"
 - uid: azure.ai.language.questionanswering.QuestionAnsweringClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
@@ -179,7 +239,7 @@ methods:
     ```
 
 
-    For more information on this code flow, see [https://aka.ms/azsdk/python/protocol/quickstart](https://aka.ms/azsdk/python/protocol/quickstart)'
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
   signature: 'send_request(request: HttpRequest, **kwargs: Any) -> HttpResponse'
   parameters:
   - name: request

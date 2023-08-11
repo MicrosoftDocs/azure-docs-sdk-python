@@ -6,72 +6,78 @@ module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._component.component.Component
 - azure.ai.ml.entities._job.parallel.parameterized_parallel.ParameterizedParallel
+- azure.ai.ml.entities._component.code.ComponentCodeMixin
 summary: Parallel component version, used to define a parallel component.
 constructor:
-  syntax: 'ParallelComponent(*, name: str = None, version: str = None, description:
-    str = None, tags: Dict[str, Any] = None, display_name: str = None, retry_settings:
-    RetrySettings = None, logging_level: str = None, max_concurrency_per_instance:
-    int = None, error_threshold: int = None, mini_batch_error_threshold: int = None,
-    task: ParallelTask = None, mini_batch_size: str = None, input_data: str = None,
-    resources: JobResourceConfiguration = None, inputs: Dict = None, outputs: Dict
-    = None, code: str = None, instance_count: int = None, is_deterministic: bool =
-    True, **kwargs)'
+  syntax: 'ParallelComponent(*, name: str | None = None, version: str | None = None,
+    description: str | None = None, tags: Dict[str, Any] | None = None, display_name:
+    str | None = None, retry_settings: RetrySettings | None = None, logging_level:
+    str | None = None, max_concurrency_per_instance: int | None = None, error_threshold:
+    int | None = None, mini_batch_error_threshold: int | None = None, task: ParallelTask
+    | None = None, mini_batch_size: str | None = None, partition_keys: List | None
+    = None, input_data: str | None = None, resources: JobResourceConfiguration | None
+    = None, inputs: Dict | None = None, outputs: Dict | None = None, code: str | None
+    = None, instance_count: int | None = None, is_deterministic: bool = True, **kwargs)'
   parameters:
   - name: name
-    description: Name of the component.
+    description: Name of the component. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str >, <xref:optional>
   - name: version
-    description: Version of the component.
+    description: Version of the component. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: description
-    description: Description of the component.
+    description: Description of the component. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: tags
-    description: Tag dictionary. Tags can be added, removed, and updated.
+    description: Tag dictionary. Tags can be added, removed, and updated. Defaults
+      to None
     isRequired: true
     types:
-    - <xref:dict>
+    - <xref:dict>, <xref:optional>
   - name: display_name
-    description: Display name of the component.
+    description: Display name of the component. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: retry_settings
-    description: parallel component run failed retry
+    description: parallel component run failed retry. Defaults to None
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.BatchRetrySettings>
   - name: logging_level
-    description: A string of the logging level name
+    description: A string of the logging level name. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: max_concurrency_per_instance
-    description: The max parallellism that each compute instance has.
+    description: The max parallellism that each compute instance has. Defaults to
+      None
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:int>, <xref:optional>
   - name: error_threshold
-    description: The number of item processing failures should be ignored.
+    description: The number of item processing failures should be ignored. Defaults
+      to None
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:int>, <xref:optional>
   - name: mini_batch_error_threshold
-    description: The number of mini batch processing failures should be ignored.
+    description: The number of mini batch processing failures should be ignored. Defaults
+      to None
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:int>, <xref:optional>
   - name: task
-    description: The parallel task.
+    description: The parallel task. Defaults to None
     isRequired: true
     types:
-    - <xref:azure.ai.ml.entities.ParallelTask>
+    - <xref:azure.ai.ml.entities.ParallelTask>, <xref:optional>
   - name: mini_batch_size
     description: 'For FileDataset input, this field is the number of files a user
       script can process
@@ -87,42 +93,59 @@ constructor:
       through PipelineParameter.'
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
+  - name: partition_keys
+    description: 'The keys used to partition dataset into mini-batches. Defaults to
+      None
+
+      If specified, the data with the same key will be partitioned into the same mini-batch.
+
+      If both partition_keys and mini_batch_size are specified, partition_keys will
+      take effect.
+
+      The input(s) must be partitioned dataset(s),
+
+      and the partition_keys must be a subset of the keys of every input dataset for
+      this to work.'
+    isRequired: true
+    types:
+    - <xref:list>, <xref:optional>
   - name: input_data
-    description: The input data.
+    description: The input data. Defaults to None
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: resources
-    description: Compute Resource configuration for the component.
+    description: Compute Resource configuration for the component. Defaults to None
     isRequired: true
     types:
-    - <xref:Union>[<xref:dict>, <xref:azure.ai.ml.entities.JobResourceConfiguration>]
+    - <xref:Union>[<xref:dict>, <xref:azure.ai.ml.entities.JobResourceConfiguration>],
+      <xref:optional>
   - name: inputs
-    description: Inputs of the component.
+    description: Inputs of the component. Defaults to None
     isRequired: true
     types:
-    - <xref:dict>
+    - <xref:dict>, <xref:optional>
   - name: outputs
-    description: Outputs of the component.
+    description: Outputs of the component. Defaults to None
     isRequired: true
     types:
-    - <xref:dict>
+    - <xref:dict>, <xref:optional>
   - name: code
     description: promoted property from task.code
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:str>, <xref:optional>
   - name: instance_count
-    description: promoted property from resources.instance_count
+    description: promoted property from resources.instance_count. Defaults to None
     isRequired: true
     types:
-    - <xref:int>
+    - <xref:int>, <xref:optional>
   - name: is_deterministic
-    description: Whether the parallel component is deterministic.
+    description: Whether the parallel component is deterministic. Defaults to True
     isRequired: true
     types:
-    - <xref:bool>
+    - <xref:bool>, <xref:optional>
 methods:
 - uid: azure.ai.ml.entities.ParallelComponent.dump
   name: dump
@@ -167,7 +190,7 @@ attributes:
   return:
     description: Creation metadata of the resource.
     types:
-    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.ParallelComponent.display_name
   name: display_name
   summary: Display name of the component.
@@ -190,7 +213,7 @@ attributes:
   return:
     description: Global id of the resource, Azure Resource Manager ID
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.ParallelComponent.inputs
   name: inputs
   summary: Inputs of the component.
@@ -234,3 +257,8 @@ attributes:
     - <xref:str>
 - uid: azure.ai.ml.entities.ParallelComponent.version
   name: version
+  summary: Version of the component.
+  return:
+    description: Version of the component.
+    types:
+    - <xref:str>

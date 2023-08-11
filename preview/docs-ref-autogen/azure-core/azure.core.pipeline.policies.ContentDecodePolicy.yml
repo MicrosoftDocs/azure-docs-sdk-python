@@ -1,0 +1,130 @@
+### YamlMime:PythonClass
+uid: azure.core.pipeline.policies.ContentDecodePolicy
+name: ContentDecodePolicy
+fullName: azure.core.pipeline.policies.ContentDecodePolicy
+module: azure.core.pipeline.policies
+inheritances:
+- azure.core.pipeline.policies._base.SansIOHTTPPolicy
+summary: Policy for decoding unstreamed response content.
+constructor:
+  syntax: 'ContentDecodePolicy(response_encoding: str | None = None, **kwargs: Any)'
+  parameters:
+  - name: response_encoding
+    description: The encoding to use if known for this service (will disable auto-detection)
+    defaultValue: None
+    types:
+    - <xref:str>
+methods:
+- uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_http_generics
+  name: deserialize_from_http_generics
+  summary: 'Deserialize from HTTP response.
+
+
+    Headers will tested for "content-type"'
+  signature: 'deserialize_from_http_generics(response: _HttpResponseBase | _HttpResponseBase,
+    encoding: str | None = None) -> Any'
+  parameters:
+  - name: response
+    description: The HTTP response
+    isRequired: true
+    types:
+    - <xref:any>
+  - name: encoding
+    description: The encoding to use if known for this service (will disable auto-detection)
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A dict (JSON), XML tree or str, depending of the mime_type
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:xml.etree.ElementTree.Element>
+    - <xref:str>
+  exceptions:
+  - type: azure.core.exceptions.DecodeError
+    description: If deserialization fails
+- uid: azure.core.pipeline.policies.ContentDecodePolicy.deserialize_from_text
+  name: deserialize_from_text
+  summary: 'Decode response data according to content-type.
+
+
+    Accept a stream of data as well, but will be load at once in memory for now.
+
+    If no content-type, will return the string version (not bytes, not stream)'
+  signature: 'deserialize_from_text(data: AnyStr | IO | None, mime_type: str | None
+    = None, response: _HttpResponseBase | _HttpResponseBase | None = None) -> Any'
+  parameters:
+  - name: data
+    description: The data to deserialize.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:bytes>
+    - <xref:<xref:file-like object>>
+  - name: response
+    description: The HTTP response.
+    defaultValue: None
+    types:
+    - <xref:any>
+  - name: mime_type
+    description: The mime type. As mime type, charset is not expected.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: response
+    description: If passed, exception will be annotated with that response
+    isRequired: true
+  return:
+    description: A dict (JSON), XML tree or str, depending of the mime_type
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:xml.etree.ElementTree.Element>
+    - <xref:str>
+  exceptions:
+  - type: azure.core.exceptions.DecodeError
+    description: If deserialization fails
+- uid: azure.core.pipeline.policies.ContentDecodePolicy.on_request
+  name: on_request
+  signature: 'on_request(request: PipelineRequest[HttpRequest | HttpRequest]) -> None'
+  parameters:
+  - name: request
+    isRequired: true
+- uid: azure.core.pipeline.policies.ContentDecodePolicy.on_response
+  name: on_response
+  summary: 'Extract data from the body of a REST response object.
+
+    This will load the entire payload in memory.
+
+    Will follow Content-Type to parse.
+
+    We assume everything is UTF8 (BOM acceptable).'
+  signature: 'on_response(request: PipelineRequest[HttpRequest | HttpRequest], response:
+    PipelineResponse[HttpRequest | HttpRequest, _HttpResponseBase | _HttpResponseBase])
+    -> None'
+  parameters:
+  - name: request
+    description: The PipelineRequest object.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  - name: response
+    description: The PipelineResponse object.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  exceptions:
+  - type: JSONDecodeError
+    description: If JSON is requested and parsing is impossible.
+  - type: UnicodeDecodeError
+    description: If bytes is not UTF8
+  - type: xml.etree.ElementTree.ParseError
+    description: If bytes is not valid XML
+  - type: azure.core.exceptions.DecodeError
+    description: If deserialization fails
+attributes:
+- uid: azure.core.pipeline.policies.ContentDecodePolicy.CONTEXT_NAME
+  name: CONTEXT_NAME
+  signature: CONTEXT_NAME = 'deserialized_data'
+- uid: azure.core.pipeline.policies.ContentDecodePolicy.JSON_REGEXP
+  name: JSON_REGEXP
+  signature: JSON_REGEXP = re.compile('^(application|text)/([0-9a-z+.-]+\\+)?json$')

@@ -1,0 +1,217 @@
+### YamlMime:PythonClass
+uid: azure.core.pipeline.transport.HttpRequest
+name: HttpRequest
+fullName: azure.core.pipeline.transport.HttpRequest
+module: azure.core.pipeline.transport
+inheritances:
+- builtins.object
+summary: 'Represents an HTTP request.
+
+
+  URL can be given without query parameters, to be added later using "format_parameters".'
+constructor:
+  syntax: 'HttpRequest(method: str, url: str, headers: Mapping[str, str] | None =
+    None, files: Any | None = None, data: bytes | str | Dict[str, str | int] | None
+    = None)'
+  parameters:
+  - name: method
+    description: HTTP method (GET, HEAD, etc.)
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: url
+    description: At least complete scheme/host/path
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: headers
+    description: HTTP headers
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str,str>]
+  - name: files
+    description: 'Dictionary of `''name'': file-like-objects` (or `{''name'': file-tuple}`)
+      for multipart
+
+      encoding upload. `file-tuple` can be a 2-tuple `(''filename'', fileobj)`, 3-tuple
+
+      `(''filename'', fileobj, ''content_type'')` or a 4-tuple
+
+      `(''filename'', fileobj, ''content_type'', custom_headers)`, where `''content_type''`
+      is a string
+
+      defining the content type of the given file and `custom_headers`
+
+      a dict-like object containing additional headers to add for the file.'
+    defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:tuple>[<xref:str>, <xref:IO>, <xref:str>, <xref:dict>]]
+    - <xref:dict>[<xref:str>, <xref:IO>]
+  - name: data
+    description: Body to be sent.
+    defaultValue: None
+    types:
+    - <xref:bytes>
+    - <xref:dict >(<xref:for form>)
+methods:
+- uid: azure.core.pipeline.transport.HttpRequest.format_parameters
+  name: format_parameters
+  summary: 'Format parameters into a valid query string.
+
+    It''s assumed all parameters have already been quoted as
+
+    valid URL strings.'
+  signature: 'format_parameters(params: Dict[str, str]) -> None'
+  parameters:
+  - name: params
+    description: A dictionary of parameters.
+    isRequired: true
+    types:
+    - <xref:dict>
+- uid: azure.core.pipeline.transport.HttpRequest.prepare_multipart_body
+  name: prepare_multipart_body
+  summary: 'Will prepare the body of this request according to the multipart information.
+
+
+    This call assumes the on_request policies have been applied already in their
+
+    correct context (sync/async)
+
+
+    Does nothing if "set_multipart_mixed" was never called.'
+  signature: 'prepare_multipart_body(content_index: int = 0) -> int'
+  parameters:
+  - name: content_index
+    description: The current index of parts within the batch message.
+    defaultValue: '0'
+    types:
+    - <xref:int>
+  return:
+    description: The updated index after all parts in this request have been added.
+    types:
+    - <xref:int>
+- uid: azure.core.pipeline.transport.HttpRequest.serialize
+  name: serialize
+  summary: Serialize this request using application/http spec.
+  signature: serialize() -> bytes
+  return:
+    description: The requests serialized as HTTP low-level message in bytes.
+    types:
+    - <xref:bytes>
+- uid: azure.core.pipeline.transport.HttpRequest.set_bytes_body
+  name: set_bytes_body
+  summary: 'Set generic bytes as the body of the request.
+
+
+    Will set content-length.'
+  signature: 'set_bytes_body(data: bytes) -> None'
+  parameters:
+  - name: data
+    description: The request field data.
+    isRequired: true
+    types:
+    - <xref:bytes>
+- uid: azure.core.pipeline.transport.HttpRequest.set_formdata_body
+  name: set_formdata_body
+  summary: Set form-encoded data as the body of the request.
+  signature: 'set_formdata_body(data: Dict[str, str] | None = None) -> None'
+  parameters:
+  - name: data
+    description: The request field data.
+    defaultValue: None
+    types:
+    - <xref:dict>
+- uid: azure.core.pipeline.transport.HttpRequest.set_json_body
+  name: set_json_body
+  summary: Set a JSON-friendly object as the body of the request.
+  signature: 'set_json_body(data: Any) -> None'
+  parameters:
+  - name: data
+    description: A JSON serializable object
+    isRequired: true
+    types:
+    - <xref:dict>
+- uid: azure.core.pipeline.transport.HttpRequest.set_multipart_mixed
+  name: set_multipart_mixed
+  summary: 'Set the part of a multipart/mixed.
+
+
+    Only supported args for now are HttpRequest objects.
+
+
+    boundary is optional, and one will be generated if you don''t provide one.
+
+    Note that no verification are made on the boundary, this is considered advanced
+
+    enough so you know how to respect RFC1341 7.2.1 and provide a correct boundary.
+
+
+    Any additional kwargs will be passed into the pipeline context for per-request
+    policy
+
+    configuration.'
+  signature: 'set_multipart_mixed(*requests: HttpRequest, **kwargs: Any) -> None'
+  parameters:
+  - name: requests
+    description: The requests to add to the multipart/mixed
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.transport.HttpRequest>
+  - name: policies
+    description: SansIOPolicy to apply at preparation time
+    types:
+    - <xref:list>[<xref:azure.core.pipeline.policies.SansIOHTTPPolicy>]
+  - name: boundary
+    description: Optional boundary
+    types:
+    - <xref:str>
+- uid: azure.core.pipeline.transport.HttpRequest.set_streamed_data_body
+  name: set_streamed_data_body
+  summary: Set a streamable data body.
+  signature: 'set_streamed_data_body(data: Any) -> None'
+  parameters:
+  - name: data
+    description: The request field data.
+    isRequired: true
+    types:
+    - <xref:stream>
+    - <xref:generator>
+    - <xref:asyncgenerator>
+- uid: azure.core.pipeline.transport.HttpRequest.set_text_body
+  name: set_text_body
+  summary: Set a text as body of the request.
+  signature: 'set_text_body(data: str) -> None'
+  parameters:
+  - name: data
+    description: A text to send as body.
+    isRequired: true
+    types:
+    - <xref:str>
+- uid: azure.core.pipeline.transport.HttpRequest.set_xml_body
+  name: set_xml_body
+  summary: Set an XML element tree as the body of the request.
+  signature: 'set_xml_body(data: Any) -> None'
+  parameters:
+  - name: data
+    description: The request field data.
+    isRequired: true
+    types:
+    - <xref:<xref:XML node>>
+attributes:
+- uid: azure.core.pipeline.transport.HttpRequest.body
+  name: body
+  summary: Alias to data.
+  return:
+    description: The body of the request.
+    types:
+    - <xref:bytes>
+    - <xref:str>
+    - <xref:dict>
+    - <xref:None>
+- uid: azure.core.pipeline.transport.HttpRequest.query
+  name: query
+  summary: The query parameters of the request as a dict.
+  return:
+    description: The query parameters of the request as a dict.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]

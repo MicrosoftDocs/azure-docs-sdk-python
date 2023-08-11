@@ -24,10 +24,7 @@ constructor:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:None>
   - name: api_version
-    description: 'API Version. The default value is "2021-07-01". Note that overriding
-      this default value
-
-      may result in unsupported behavior.'
+    description: API Version. The default value is "2021-07-01".
     types:
     - <xref:str>
   - name: audience
@@ -172,9 +169,11 @@ methods:
     types:
     - <xref:azure.containerregistry.aio.AsyncDownloadBlobStream>
   exceptions:
+  - type: azure.containerregistry.DigestValidationError
+    description: If the content of retrieved blob digest does not match the requested
+      digest.
   - type: ValueError
-    description: If the requested digest does not match the digest of the received
-      blob.
+    description: If the content-range header is missing or invalid in response.
 - uid: azure.containerregistry.aio.ContainerRegistryClient.get_manifest
   name: get_manifest
   summary: Get the manifest for an artifact.
@@ -201,9 +200,17 @@ methods:
     types:
     - <xref:azure.containerregistry.GetManifestResult>
   exceptions:
+  - type: azure.containerregistry.DigestValidationError
+    description: 'If the content of retrieved manifest digest does not match the requested
+      digest, or
+
+      the server-computed digest does not match the client-computed digest when tag
+      is passing.'
   - type: ValueError
-    description: If the requested digest does not match the digest of the received
-      manifest.
+    description: 'If the content-length header is missing or invalid in response,
+      or the manifest size is
+
+      bigger than 4MB.'
 - uid: azure.containerregistry.aio.ContainerRegistryClient.get_manifest_properties
   name: get_manifest_properties
   summary: "Get the properties of a registry artifact\n\nExample\n\n<!-- literal_block\
@@ -229,6 +236,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of a registry artifact
     types:
     - <xref:azure.containerregistry.ArtifactManifestProperties>
   exceptions:
@@ -244,6 +252,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of a repository.
     types:
     - <xref:azure.containerregistry.RepositoryProperties>
   exceptions:
@@ -272,6 +281,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties for a tag.
     types:
     - <xref:azure.containerregistry.ArtifactTagProperties>
   exceptions:
@@ -389,9 +399,10 @@ methods:
     - <xref:str>
   exceptions:
   - type: ValueError
-    description: 'If the parameter repository or manifest is None,
-
-      or the digest in the response does not match the digest of the set manifest.'
+    description: If the parameter repository or manifest is None.
+  - type: azure.containerregistry.DigestValidationError
+    description: If the server-computed digest does not match the client-computed
+      digest.
 - uid: azure.containerregistry.aio.ContainerRegistryClient.update_manifest_properties
   name: update_manifest_properties
   signature: 'async update_manifest_properties(repository: str, tag_or_digest: str,
@@ -427,3 +438,6 @@ methods:
   exceptions:
   - type: ValueError
     description: If the parameter repository or data is None.
+  - type: azure.containerregistry.DigestValidationError
+    description: If the server-computed digest does not match the client-computed
+      digest.

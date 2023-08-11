@@ -24,10 +24,7 @@ constructor:
     - <xref:azure.core.credentials.TokenCredential>
     - <xref:None>
   - name: api_version
-    description: 'API Version. The default value is "2021-07-01". Note that overriding
-      this default value
-
-      may result in unsupported behavior.'
+    description: API Version. The default value is "2021-07-01".
     types:
     - <xref:str>
   - name: audience
@@ -45,10 +42,11 @@ examples:
 - "Instantiate an instance of *ContainerRegistryClient*<!--[!code-python[Main](les\\\
   sample_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
   \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-  \\1\\\\s\\\\dist_temp\\\\41\\\\azure-containerregistry-1.1.0b4\\\\samples\\\\sample_hello_world.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   with ContainerRegistryClient(self.endpoint,\
-  \ self.credential, audience=self.audience) as client:\n\n   ````\n"
+  \\1\\\\s\\\\dist_temp\\\\47\\\\azure-containerregistry-1.2.1a20230802002\\\\samples\\\
+  \\sample_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+  : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
+  \n````python\n\n   with ContainerRegistryClient(self.endpoint, self.credential)\
+  \ as client:\n\n   ````\n"
 methods:
 - uid: azure.containerregistry.ContainerRegistryClient.close
   name: close
@@ -131,11 +129,11 @@ methods:
   - "Delete a repository from the *ContainerRegistryClient*<!--[!code-python[Main](les\\\
     sample_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\41\\\\azure-containerregistry-1.1.0b4\\\\samples\\\
-    \\sample_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n               client.delete_repository(repository_name)\n\n \
-    \  ````\n"
+    _work\\\\1\\\\s\\\\dist_temp\\\\47\\\\azure-containerregistry-1.2.1a20230802002\\\
+    \\samples\\\\sample_hello_world.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n               client.delete_repository(repository_name)\n\
+    \n   ````\n"
 - uid: azure.containerregistry.ContainerRegistryClient.delete_tag
   name: delete_tag
   summary: "Delete a tag from a repository. If the tag cannot be found or a response\
@@ -186,9 +184,11 @@ methods:
     types:
     - <xref:azure.containerregistry.DownloadBlobStream>
   exceptions:
+  - type: azure.containerregistry.DigestValidationError
+    description: If the content of retrieved blob digest does not match the requested
+      digest.
   - type: ValueError
-    description: If the requested digest does not match the digest of the received
-      blob.
+    description: If the content-range header is missing or invalid in response.
 - uid: azure.containerregistry.ContainerRegistryClient.get_manifest
   name: get_manifest
   summary: Get the manifest for an artifact.
@@ -214,9 +214,17 @@ methods:
     types:
     - <xref:azure.containerregistry.GetManifestResult>
   exceptions:
+  - type: azure.containerregistry.DigestValidationError
+    description: 'If the content of retrieved manifest digest does not match the requested
+      digest, or
+
+      the server-computed digest does not match the client-computed digest when tag
+      is passing.'
   - type: ValueError
-    description: If the requested digest does not match the digest of the received
-      manifest.
+    description: 'If the content-length header is missing or invalid in response,
+      or the manifest size is
+
+      bigger than 4MB.'
 - uid: azure.containerregistry.ContainerRegistryClient.get_manifest_properties
   name: get_manifest_properties
   summary: "Get the properties of a registry artifact\n\nExample\n\n<!-- literal_block\
@@ -242,6 +250,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of a registry artifact
     types:
     - <xref:azure.containerregistry.ArtifactManifestProperties>
   exceptions:
@@ -257,6 +266,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of a repository
     types:
     - <xref:azure.containerregistry.RepositoryProperties>
   exceptions:
@@ -285,6 +295,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties for a tag
     types:
     - <xref:azure.containerregistry.ArtifactTagProperties>
   exceptions:
@@ -333,11 +344,13 @@ methods:
   - "List repositories in a container registry account<!--[!code-python[Main](les\\\
     sample_delete_tags.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\41\\\\azure-containerregistry-1.1.0b4\\\\samples\\\
-    \\sample_delete_tags.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n       for repository in client.list_repository_names():\n   \
-    \        print(repository)\n\n   ````\n"
+    _work\\\\1\\\\s\\\\dist_temp\\\\47\\\\azure-containerregistry-1.2.1a20230802002\\\
+    \\samples\\\\sample_delete_tags.py\", \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   with ContainerRegistryClient(self.endpoint,\
+    \ self.credential) as client:\n       # Iterate through all the repositories\n\
+    \       for repository_name in client.list_repository_names():\n           print(repository_name)\n\
+    \n   ````\n"
 - uid: azure.containerregistry.ContainerRegistryClient.list_tag_properties
   name: list_tag_properties
   summary: "List the tags for a repository\n\nExample\n\n<!-- literal_block {\"ids\"\
@@ -411,9 +424,10 @@ methods:
     - <xref:str>
   exceptions:
   - type: ValueError
-    description: 'If the parameter repository or manifest is None,
-
-      or the digest in the response does not match the digest of the set manifest.'
+    description: If the parameter repository or manifest is None.
+  - type: azure.containerregistry.DigestValidationError
+    description: If the server-computed digest does not match the client-computed
+      digest.
 - uid: azure.containerregistry.ContainerRegistryClient.update_manifest_properties
   name: update_manifest_properties
   signature: 'update_manifest_properties(repository: str, tag_or_digest: str, properties:
@@ -449,3 +463,6 @@ methods:
   exceptions:
   - type: ValueError
     description: If the parameter repository or data is None.
+  - type: azure.containerregistry.DigestValidationError
+    description: If the server-computed digest does not match the client-computed
+      digest.

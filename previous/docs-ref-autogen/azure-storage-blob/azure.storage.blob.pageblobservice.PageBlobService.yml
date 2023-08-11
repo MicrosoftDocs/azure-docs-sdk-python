@@ -323,6 +323,31 @@ methods:
     - <xref:int>
   return:
     description: str
+- uid: azure.storage.blob.pageblobservice.PageBlobService.batch_delete_blobs
+  name: batch_delete_blobs
+  summary: 'Sends a batch of multiple blob delete requests.
+
+
+    The blob delete method deletes the specified blob or snapshot. Note that deleting
+    a blob also deletes all its
+
+    snapshots. For more information, see [https://docs.microsoft.com/rest/api/storageservices/delete-blob](https://docs.microsoft.com/rest/api/storageservices/delete-blob)'
+  signature: batch_delete_blobs(batch_delete_sub_requests, timeout=None)
+  parameters:
+  - name: batch_delete_sub_requests
+    description: The blob delete requests to send as a batch.
+    isRequired: true
+    types:
+    - <xref:list>(<xref:azure.storage.blob.models.BatchDeleteSubRequest>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: parsed batch delete HTTP response
+    types:
+    - list of <xref:azure.storage.blob.models.BatchSubResponse>
 - uid: azure.storage.blob.pageblobservice.PageBlobService.break_blob_lease
   name: break_blob_lease
   summary: 'Breaks the lease, if the blob has an active lease. Once a lease is broken,
@@ -1032,7 +1057,8 @@ methods:
     progress notifications.'
   signature: create_blob(container_name, blob_name, content_length, content_settings=None,
     sequence_number=None, metadata=None, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1140,6 +1166,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.storage.blob.models.PremiumPageBlobTier>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the new Page Blob
     types:
@@ -1155,7 +1192,8 @@ methods:
   signature: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1292,6 +1330,17 @@ methods:
 
       premium storage accounts.'
     defaultValue: None
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the Page Blob
     types:
@@ -1307,7 +1356,7 @@ methods:
   signature: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_none_match=None, timeout=None, premium_page_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1432,6 +1481,17 @@ methods:
 
       premium storage accounts.'
     defaultValue: None
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the Page Blob
     types:
@@ -1447,7 +1507,7 @@ methods:
   signature: create_blob_from_stream(container_name, blob_name, stream, count, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_none_match=None, timeout=None, premium_page_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1582,6 +1642,17 @@ methods:
 
       premium storage accounts.'
     defaultValue: None
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the Page Blob
     types:
@@ -1597,7 +1668,15 @@ methods:
     timeout=None)
   parameters:
   - name: container_name
-    description: Name of container to create.
+    description: 'Name of container to create.
+
+      The container name may only contain lowercase letters, numbers, and hyphens,
+      and must begin with a letter or
+
+      a number. Each hyphen must be preceded and followed by a non-hyphen character.
+      The name must also be
+
+      between 3 and 63 characters long.'
     isRequired: true
     types:
     - <xref:str>
@@ -1925,12 +2004,13 @@ methods:
     - <xref:str>
 - uid: azure.storage.blob.pageblobservice.PageBlobService.generate_blob_shared_access_signature
   name: generate_blob_shared_access_signature
-  summary: 'Generates a shared access signature for the blob.
+  summary: 'Generates a shared access signature for the blob or one of its snapshots.
 
     Use the returned signature with the sas_token parameter of any BlobService.'
-  signature: generate_blob_shared_access_signature(container_name, blob_name, permission=None,
-    expiry=None, start=None, id=None, ip=None, protocol=None, cache_control=None,
-    content_disposition=None, content_encoding=None, content_language=None, content_type=None)
+  signature: generate_blob_shared_access_signature(container_name, blob_name, snapshot=None,
+    permission=None, expiry=None, start=None, id=None, ip=None, protocol=None, cache_control=None,
+    content_disposition=None, content_encoding=None, content_language=None, content_type=None,
+    user_delegation_key=None)
   parameters:
   - name: container_name
     description: Name of container.
@@ -1940,6 +2020,13 @@ methods:
   - name: blob_name
     description: Name of blob.
     isRequired: true
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: 'The snapshot parameter is an opaque DateTime value that,
+
+      when present, specifies the blob snapshot to grant permission.'
+    defaultValue: None
     types:
     - <xref:str>
   - name: permission
@@ -2053,6 +2140,19 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: user_delegation_key
+    description: 'Instead of an account key, the user could pass in a user delegation
+      key.
+
+      A user delegation key can be obtained from the service by authenticating with
+      an AAD identity;
+
+      this can be accomplished by calling get_user_delegation_key.
+
+      When present, the SAS is signed with the user delegation key instead.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.UserDelegationKey>
   return:
     description: A Shared Access Signature (sas) token.
     types:
@@ -2064,7 +2164,8 @@ methods:
     Use the returned signature with the sas_token parameter of any BlobService.'
   signature: generate_container_shared_access_signature(container_name, permission=None,
     expiry=None, start=None, id=None, ip=None, protocol=None, cache_control=None,
-    content_disposition=None, content_encoding=None, content_language=None, content_type=None)
+    content_disposition=None, content_encoding=None, content_language=None, content_type=None,
+    user_delegation_key=None)
   parameters:
   - name: container_name
     description: Name of container.
@@ -2184,6 +2285,19 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: user_delegation_key
+    description: 'Instead of an account key, the user could pass in a user delegation
+      key.
+
+      A user delegation key can be obtained from the service by authenticating with
+      an AAD identity;
+
+      this can be accomplished by calling get_user_delegation_key.
+
+      When present, the SAS is signed with the user delegation key instead.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.UserDelegationKey>
   return:
     description: A Shared Access Signature (sas) token.
     types:
@@ -2223,7 +2337,7 @@ methods:
   summary: Returns all user-defined metadata for the specified blob or snapshot.
   signature: get_blob_metadata(container_name, blob_name, snapshot=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -2294,6 +2408,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -2314,7 +2439,7 @@ methods:
     with <xref:azure.storage.blob.models.BlobProperties> and a metadata dict.'
   signature: get_blob_properties(container_name, blob_name, snapshot=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -2385,6 +2510,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -2465,7 +2601,7 @@ methods:
   signature: get_blob_to_bytes(container_name, blob_name, snapshot=None, start_range=None,
     end_range=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -2616,6 +2752,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -2645,7 +2792,7 @@ methods:
   signature: get_blob_to_path(container_name, blob_name, file_path, open_mode='wb',
     snapshot=None, start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -2810,6 +2957,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -2839,7 +2997,7 @@ methods:
   signature: get_blob_to_stream(container_name, blob_name, stream, snapshot=None,
     start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -2995,6 +3153,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -3024,7 +3193,7 @@ methods:
   signature: get_blob_to_text(container_name, blob_name, encoding='utf-8', snapshot=None,
     start_range=None, end_range=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -3180,6 +3349,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -3532,6 +3712,32 @@ methods:
     description: A list of different Page Ranges for the Page Blob.
     types:
     - <xref:list>(<xref:azure.storage.blob.models.PageRange>)
+- uid: azure.storage.blob.pageblobservice.PageBlobService.get_user_delegation_key
+  name: get_user_delegation_key
+  summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
+
+    A token credential must be present on the service object for this request to succeed.'
+  signature: get_user_delegation_key(key_start_time, key_expiry_time, timeout=None)
+  parameters:
+  - name: key_start_time
+    description: A DateTime value. Indicates when the key becomes valid.
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: key_expiry_time
+    description: A DateTime value. Indicates when the key stops being valid.
+    isRequired: true
+    types:
+    - <xref:datetime>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: The user delegation key.
+    types:
+    - <xref:azure.storage.blob.models.UserDelegationKey>
 - uid: azure.storage.blob.pageblobservice.PageBlobService.incremental_copy_blob
   name: incremental_copy_blob
   summary: 'Copies an incremental copy of a blob asynchronously. This operation returns
@@ -4336,7 +4542,7 @@ methods:
     name-value pairs.'
   signature: set_blob_metadata(container_name, blob_name, metadata=None, lease_id=None,
     if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
-    timeout=None)
+    timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -4409,6 +4615,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -4425,7 +4642,7 @@ methods:
     content_settings, all properties will be overriden.'
   signature: set_blob_properties(container_name, blob_name, content_settings=None,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -4494,6 +4711,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -4855,7 +5083,8 @@ methods:
   name: snapshot_blob
   summary: Creates a read-only snapshot of a blob.
   signature: snapshot_blob(container_name, blob_name, metadata=None, if_modified_since=None,
-    if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None)
+    if_unmodified_since=None, if_match=None, if_none_match=None, lease_id=None, timeout=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -4932,6 +5161,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -4971,7 +5211,7 @@ methods:
   signature: update_page(container_name, blob_name, page, start_range, end_range,
     validate_content=False, lease_id=None, if_sequence_number_lte=None, if_sequence_number_lt=None,
     if_sequence_number_eq=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, cpk=None, timeout=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -5099,6 +5339,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -5108,6 +5359,207 @@ methods:
     description: ETag and last modified properties for the updated Page Blob
     types:
     - <xref:azure.storage.blob.models.ResourceProperties>
+- uid: azure.storage.blob.pageblobservice.PageBlobService.update_page_from_url
+  name: update_page_from_url
+  summary: Updates a range of pages to a page blob where the contents are read from
+    a URL.
+  signature: update_page_from_url(container_name, blob_name, start_range, end_range,
+    copy_source_url, source_range_start, source_content_md5=None, source_if_modified_since=None,
+    source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
+    lease_id=None, if_sequence_number_lte=None, if_sequence_number_lt=None, if_sequence_number_eq=None,
+    if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
+    cpk=None, timeout=None)
+  parameters:
+  - name: container_name
+    description: Name of existing container.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: blob_name
+    description: Name of blob.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for writing to a section of the blob.
+
+      Pages must be aligned with 512-byte boundaries, the start offset
+
+      must be a modulus of 512 and the end offset must be a modulus of
+
+      512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for writing to a section of the blob.
+
+      Pages must be aligned with 512-byte boundaries, the start offset
+
+      must be a modulus of 512 and the end offset must be a modulus of
+
+      512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: copy_source_url
+    description: 'The URL of the source data. It can point to any Azure Blob or File,
+      that is either public or has a
+
+      shared access signature attached.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: source_range_start
+    description: 'This indicates the start of the range of bytes(inclusive) that has
+      to be taken from the copy source.
+
+      The service will read the same number of bytes as the destination range (end_range-start_range).'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: source_content_md5
+    description: If given, the service will calculate the MD5 hash of the block content
+      and compare against this value.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: source_if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the source resource has been modified since the specified time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: source_if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the source resource has not been modified since the specified date/time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: source_if_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+      to perform
+
+      the operation only if the source resource''s ETag matches the value specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: source_if_none_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+
+      to perform the operation only if the source resource''s ETag does not match
+
+      the value specified. Specify the wildcard character (*) to perform
+
+      the operation only if the source resource does not exist, and fail the
+
+      operation if it does exist.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: Required if the blob has an active lease.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: if_sequence_number_lte
+    description: 'If the blob''s sequence number is less than or equal to
+
+      the specified value, the request proceeds; otherwise it fails.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: if_sequence_number_lt
+    description: 'If the blob''s sequence number is less than the specified
+
+      value, the request proceeds; otherwise it fails.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: if_sequence_number_eq
+    description: 'If the blob''s sequence number is equal to the specified
+
+      value, the request proceeds; otherwise it fails.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: if_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+      to perform
+
+      the operation only if the resource''s ETag matches the value specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: if_none_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+
+      to perform the operation only if the resource''s ETag does not match
+
+      the value specified. Specify the wildcard character (*) to perform
+
+      the operation only if the resource does not exist, and fail the
+
+      operation if it does exist.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
 attributes:
 - uid: azure.storage.blob.pageblobservice.PageBlobService.protocol
   name: protocol

@@ -7,43 +7,54 @@ inheritances:
 - azure.ai.ml.entities._resource.Resource
 summary: Azure ML registry.
 constructor:
-  syntax: 'Registry(*, name: str, location: str, description: str = None, tags: Dict[str,
-    str] = None, public_network_access: str = None, discovery_url: str = None, intellectual_property_publisher:
-    str = None, managed_resource_group: str = None, mlflow_registry_uri: str = None,
-    region_details: List[RegistryRegionArmDetails], **kwargs)'
+  syntax: 'Registry(*, name: str, location: str, identity: IdentityConfiguration |
+    None = None, tags: Dict[str, str] | None = None, public_network_access: str |
+    None = None, discovery_url: str | None = None, intellectual_property: IntellectualProperty
+    | None = None, managed_resource_group: str | None = None, mlflow_registry_uri:
+    str | None = None, replication_locations: List[RegistryRegionDetails], **kwargs)'
   parameters:
   - name: name
     description: Name of the registry. Must be globally unique and is immutable.
     isRequired: true
     types:
     - <xref:str>
-  - name: tags
-    description: Tags of the registry.
-    isRequired: true
-    types:
-    - <xref:dict>
   - name: location
     description: The location this registry resource is located in.
     isRequired: true
     types:
     - <xref:str>
-  - name: description
-    description: Description of the registry.
+  - name: identity
+    description: registry's System Managed Identity
     isRequired: true
     types:
-    - <xref:str>
+    - <xref:ManagedServiceIdentity>
+  - name: tags
+    description: Tags of the registry.
+    isRequired: true
+    types:
+    - <xref:dict>
   - name: public_network_access
     description: Whether to allow public endpoint connectivity.
     isRequired: true
     types:
     - <xref:str>
-  - name: intellectual_property_publisher
-    description: Intellectual property publisher.
+  - name: discovery_url
+    description: Backend service base url for the registry.
     isRequired: true
     types:
     - <xref:str>
+  - name: intellectual_property
+    description: '**Experimental** Intellectual property publisher.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.IntellectualProperty>
   - name: managed_resource_group
     description: Managed resource group created for the registry.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: mlflow_registry_uri
+    description: Ml flow tracking uri for the registry.
     isRequired: true
     types:
     - <xref:str>
@@ -51,7 +62,7 @@ constructor:
     description: Details of each region the registry is in.
     isRequired: true
     types:
-    - <xref:List>[<xref:azure.ai.ml.entities.RegistryRegionArmDetails>]
+    - <xref:List>[<xref:azure.ai.ml.entities.RegistryRegionDetails>]
   - name: kwargs
     description: A dictionary of additional configuration parameters.
     isRequired: true
@@ -63,14 +74,12 @@ methods:
   summary: Dump the registry spec into a file in yaml format.
   signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
   parameters:
-  - name: path
+  - name: dest
     description: Path to a local file as the target, new file will be created, raises
       exception if the file exists.
     isRequired: true
     types:
     - <xref:str>
-  - name: dest
-    isRequired: true
 attributes:
 - uid: azure.ai.ml.entities.Registry.base_path
   name: base_path
@@ -85,11 +94,11 @@ attributes:
   return:
     description: Creation metadata of the resource.
     types:
-    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.Registry.id
   name: id
   summary: Resource ID.
   return:
     description: Global id of the resource, Azure Resource Manager ID
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]

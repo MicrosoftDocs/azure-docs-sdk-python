@@ -6,61 +6,69 @@ module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._job.sweep.parameterized_sweep.ParameterizedSweep
 - azure.ai.ml.entities._builders.base_node.BaseNode
-summary: 'Base class for sweep node, used for command component version
-
-  consumption.
+summary: 'Base class for sweep node.
 
 
-  You should not instantiate this class directly. Instead, you should
-
-  create from builder function: sweep.'
+  This class should not be instantiated directly. Instead, it should be created via
+  the builder function: sweep.'
 constructor:
-  syntax: 'Sweep(*, trial: CommandComponent | str = None, compute: str = None, limits:
-    SweepJobLimits = None, sampling_algorithm: str | SamplingAlgorithm = None, objective:
-    Objective = None, early_termination: EarlyTerminationPolicy = None, search_space:
-    Dict[str, SweepDistribution] = None, inputs: Dict[str, int | str | float | bool
-    | Input] = None, outputs: Dict[str, str | Output] = None, identity: ManagedIdentity
-    | AmlToken | UserIdentity = None, **kwargs)'
+  syntax: 'Sweep(*, trial: CommandComponent | str | None = None, compute: str | None
+    = None, limits: SweepJobLimits | None = None, sampling_algorithm: str | SamplingAlgorithm
+    | None = None, objective: Objective | None = None, early_termination: BanditPolicy
+    | MedianStoppingPolicy | TruncationSelectionPolicy | None = None, search_space:
+    Dict[str, Choice | LogNormal | LogUniform | Normal | QLogNormal | QLogUniform
+    | QNormal | QUniform | Randint | Uniform] | None = None, inputs: Dict[str, int
+    | str | float | bool | Input] | None = None, outputs: Dict[str, str | Output]
+    | None = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration
+    | UserIdentityConfiguration | None = None, queue_settings: QueueSettings | None
+    = None, **kwargs)'
   parameters:
   - name: trial
-    description: Id or instance of the command component/job to be run for the step
+    description: The ID or instance of the command component or job to be run for
+      the step.
     isRequired: true
     types:
     - <xref:Union>[<xref:azure.ai.ml.entities.CommandComponent>, <xref:str>]
   - name: compute
-    description: Compute definition containing the compute information for the step
+    description: The compute definition containing the compute information for the
+      step.
     isRequired: true
     types:
     - <xref:str>
   - name: limits
-    description: limits in running the sweep node.
+    description: The limits for the sweep node.
     isRequired: true
     types:
     - <xref:azure.ai.ml.sweep.SweepJobLimits>
   - name: sampling_algorithm
-    description: sampling algorithm to sample inside search space
+    description: 'The sampling algorithm to use to sample inside the search space.
+
+      Accepted values are: "random", "grid", or "bayesian".'
     isRequired: true
     types:
-    - '<xref:str>, <xref:valid values: random>, <xref:grid>'
-    - <xref:bayesian>
+    - <xref:str>
   - name: objective
-    description: the objective used to pick target run with the local optimal hyperparameter
-      in search space.
+    description: 'The objective used to determine the target run with the local optimal
+
+      hyperparameter in search space.'
     isRequired: true
     types:
     - <xref:azure.ai.ml.sweep.Objective>
   - name: early_termination_policy
-    description: early termination policy of the sweep node.
+    description: The early termination policy of the sweep node.
     isRequired: true
     types:
-    - <xref:EarlyTerminationPolicy>
+    - <xref:Union>[<xref:azure.mgmt.machinelearningservices.models.BanditPolicy,azure.mgmt.machinelearningservices.models.MedianStoppingPolicy,azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy>]
   - name: search_space
-    description: hyperparameter search space to run trials.
+    description: The hyperparameter search space to run trials in.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:SweepDistribution>]
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Choice>, <xref:azure.ai.ml.entities.LogNormal,azure.ai.ml.entities.LogUniform>,
+      <xref:azure.ai.ml.entities.Normal>, <xref:azure.ai.ml.entities.QLogNormal,azure.ai.ml.entities.QLogUniform>,
+      <xref:azure.ai.ml.entities.QNormal>, <xref:azure.ai.ml.entities.QUniform,azure.ai.ml.entities.Randint>,
+      <xref:azure.ai.ml.entities.Uniform>]]
   - name: inputs
-    description: Inputs to the command.
+    description: Mapping of input data bindings used in the job.
     isRequired: true
     types:
     - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>,
@@ -71,11 +79,15 @@ constructor:
     types:
     - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.ai.ml.Output>]]
   - name: identity
-    description: Identity that training job will use while running on compute.
+    description: The identity that the training job will use while running on compute.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.ai.ml.ManagedIdentity>, <xref:azure.ai.ml.AmlToken>,
-      <xref:azure.ai.ml.UserIdentity>]
+    - <xref:Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration>, <xref:azure.ai.ml.AmlTokenConfiguration,azure.ai.ml.UserIdentityConfiguration>]
+  - name: queue_settings
+    description: The queue settings for the job.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.QueueSettings>
 methods:
 - uid: azure.ai.ml.entities.Sweep.clear
   name: clear
@@ -146,50 +158,39 @@ methods:
   signature: popitem()
 - uid: azure.ai.ml.entities.Sweep.set_limits
   name: set_limits
-  summary: 'Set limits for Sweep node. Leave parameters as None if you don''t
-
-    want to update corresponding values.'
-  signature: 'set_limits(*, max_concurrent_trials: int = None, max_total_trials: int
-    = None, timeout: int = None, trial_timeout: int = None) -> None'
+  summary: Set limits for Sweep node. Leave parameters as None if you don't want to
+    update corresponding values.
+  signature: 'set_limits(*, max_concurrent_trials: int | None = None, max_total_trials:
+    int | None = None, timeout: int | None = None, trial_timeout: int | None = None)
+    -> None'
   parameters:
   - name: max_concurrent_trials
     description: maximum concurrent trial number.
-    isRequired: true
-    types:
-    - <xref:int>
   - name: max_total_trials
     description: maximum total trial number.
-    isRequired: true
-    types:
-    - <xref:int>
   - name: timeout
     description: total timeout in seconds for sweep node
-    isRequired: true
-    types:
-    - <xref:int>
   - name: trial_timeout
     description: timeout in seconds for each trial
-    isRequired: true
-    types:
-    - <xref:int>
 - uid: azure.ai.ml.entities.Sweep.set_objective
   name: set_objective
-  summary: 'Set the sweep object.
+  summary: 'Set the sweep object.. Leave parameters as None if you don''t want to
+    update corresponding values.
 
 
-    include: "minimize", "maximize".
+    "minimize", "maximize".
 
     :type goal: str
 
-    :param primary_metric: Required. Name of the metric to optimize.
+    :keyword primary_metric: Name of the metric to optimize.
 
     :type primary_metric: str'
-  signature: 'set_objective(*, goal: str = None, primary_metric: str = None) -> None'
+  signature: 'set_objective(*, goal: str | None = None, primary_metric: str | None
+    = None) -> None'
   parameters:
   - name: goal
-    description: Required. Defines supported metric goals for hyperparameter tuning.
-      Possible values
-    isRequired: true
+    description: 'Defines supported metric goals for hyperparameter tuning. Acceptable
+      values are:'
 - uid: azure.ai.ml.entities.Sweep.setdefault
   name: setdefault
   summary: 'Insert key with a value of default if key is not in the dictionary.
@@ -229,20 +230,35 @@ attributes:
   return:
     description: Creation metadata of the resource.
     types:
-    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.Sweep.early_termination
   name: early_termination
+  summary: The early termination policy for the sweep job.
+  return:
+    types:
+    - <xref:Union>[<xref:str>, <xref:azure.ai.ml.sweep.BanditPolicy>, <xref:azure.ai.ml.sweep.MedianStoppingPolicy,azure.ai.ml.sweep.TruncationSelectionPolicy>]
 - uid: azure.ai.ml.entities.Sweep.id
   name: id
   summary: Resource ID.
   return:
     description: Global id of the resource, Azure Resource Manager ID
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Sweep.inputs
   name: inputs
+  summary: Get the inputs for the object.
+  return:
+    description: A dictionary containing the inputs for the object.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Input>, <xref:str>,
+      <xref:bool>, <xref:int>, <xref:float>]]
 - uid: azure.ai.ml.entities.Sweep.limits
   name: limits
+  summary: Limits for sweep job.
+  return:
+    description: Limits for sweep job.
+    types:
+    - <xref:azure.ai.ml.sweep.SweepJobLimits>
 - uid: azure.ai.ml.entities.Sweep.log_files
   name: log_files
   summary: Job output files.
@@ -250,10 +266,39 @@ attributes:
     description: Dictionary of log names to url.
     types:
     - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
+- uid: azure.ai.ml.entities.Sweep.name
+  name: name
+  summary: Get the name of the node.
+  return:
+    description: The name of the node.
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.entities.Sweep.outputs
   name: outputs
+  summary: Get the outputs of the object.
+  return:
+    description: A dictionary containing the outputs for the object.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.Output>]]
 - uid: azure.ai.ml.entities.Sweep.sampling_algorithm
   name: sampling_algorithm
+  summary: Sampling algorithm for sweep job.
+  return:
+    description: Sampling algorithm for sweep job.
+    types:
+    - <xref:azure.ai.ml.sweep.SamplingAlgorithm>
+- uid: azure.ai.ml.entities.Sweep.search_space
+  name: search_space
+  summary: 'Dictionary of the hyperparameter search space.
+
+
+    Each key is the name of a hyperparameter and its value is the parameter expression.'
+  return:
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Choice>, <xref:azure.ai.ml.entities.LogNormal,azure.ai.ml.entities.LogUniform>,
+      <xref:azure.ai.ml.entities.Normal>, <xref:azure.ai.ml.entities.QLogNormal,azure.ai.ml.entities.QLogUniform>,
+      <xref:azure.ai.ml.entities.QNormal>, <xref:azure.ai.ml.entities.QUniform,azure.ai.ml.entities.Randint>,
+      <xref:azure.ai.ml.entities.Uniform>]]
 - uid: azure.ai.ml.entities.Sweep.status
   name: status
   summary: "Status of the job.\n\nCommon values returned include \"Running\", \"Completed\"\
@@ -288,7 +333,10 @@ attributes:
     - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Sweep.trial
   name: trial
-  summary: Id or instance of the command component/job to be run for the step.
+  summary: The ID or instance of the command component or job to be run for the step.
+  return:
+    types:
+    - <xref:azure.ai.ml.entities.CommandComponent>
 - uid: azure.ai.ml.entities.Sweep.type
   name: type
   summary: Type of the job, supported are 'command' and 'sweep'.

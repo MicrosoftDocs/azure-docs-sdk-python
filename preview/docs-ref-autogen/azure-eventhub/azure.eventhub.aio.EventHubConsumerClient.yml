@@ -187,11 +187,11 @@ constructor:
       in memory, and the *EventHubConsumerClient* instance will receive events without
       load-balancing.'
     types:
-    - <xref:azure.eventhub.aio.CheckpointStore>
+    - <xref:Optional>[<xref:azure.eventhub.aio.CheckpointStore>]
   - name: load_balancing_interval
     description: 'When load-balancing kicks in. This is the interval, in seconds,
 
-      between two load-balancing evaluations. Default is 10 seconds.'
+      between two load-balancing evaluations. Default is 30 seconds.'
     types:
     - <xref:float>
   - name: partition_ownership_expiration_interval
@@ -200,10 +200,10 @@ constructor:
       of seconds. Every load-balancing evaluation will automatically extend the ownership
       expiration time.
 
-      Default is 6 * load_balancing_interval, i.e. 60 seconds when using the default
+      Default is 6 * load_balancing_interval, i.e. 180 seconds when using the default
       load_balancing_interval
 
-      of 10 seconds.'
+      of 30 seconds.'
     types:
     - <xref:float>
   - name: load_balancing_strategy
@@ -248,7 +248,7 @@ constructor:
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   - name: connection_verify
     description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
       used to
@@ -257,7 +257,7 @@ constructor:
 
       Default is None in which case *certifi.where()* will be used.'
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -265,18 +265,34 @@ constructor:
       False and the Pure Python AMQP library will be used as the underlying transport.'
     types:
     - <xref:bool>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If EventHubsConnectionError errors
+      are occurring due to write
+
+      timing out, a larger than default value may need to be passed in. This is for
+      advanced usage scenarios
+
+      and ordinarily the default value should be sufficient.'
+    types:
+    - <xref:float>
 examples:
 - "Create a new instance of the EventHubConsumerClient.<!--[!code-python[Main](les\\\
   async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\75\\\\azure-eventhub-5.8.0b2\\\\\
-  samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
-  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-  : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio\
-  \ import EventHubConsumerClient, EventHubSharedKeyCredential\n\n   fully_qualified_namespace\
-  \ = os.environ['EVENT_HUB_HOSTNAME']\n   eventhub_name = os.environ['EVENT_HUB_NAME']\n\
-  \   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n   shared_access_key\
-  \ = os.environ['EVENT_HUB_SAS_KEY']\n\n   consumer = EventHubConsumerClient(fully_qualified_namespace=fully_qualified_namespace,\n\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\59\\\\azure-eventhub-5.11.4a20230803001\\\
+  \\samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from\
+  \ azure.eventhub.aio import EventHubConsumerClient, EventHubSharedKeyCredential\n\
+  \n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n   eventhub_name\
+  \ = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
+  \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   consumer = EventHubConsumerClient(fully_qualified_namespace=fully_qualified_namespace,\n\
   \                                     consumer_group='$Default',\n             \
   \                        eventhub_name=eventhub_name,\n                        \
   \             credential=EventHubSharedKeyCredential(shared_access_policy, shared_access_key))\n\
@@ -294,10 +310,10 @@ methods:
   - "Close down the client.<!--[!code-python[Main](les\\async_samples\\sample_code_eventhub_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\75\\\\azure-eventhub-5.8.0b2\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   import os\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
+    dist_temp\\\\59\\\\azure-eventhub-5.11.4a20230803001\\\\samples\\\\async_samples\\\
+    \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   import os\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
     \   eventhub_name = os.environ['EVENT_HUB_NAME']\n\n   from azure.eventhub.aio\
     \ import EventHubConsumerClient\n   consumer = EventHubConsumerClient.from_connection_string(\n\
     \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
@@ -320,7 +336,7 @@ methods:
     str | None = None, logging_enable: bool = False, http_proxy: Dict[str, str | int]
     | None = None, auth_timeout: float = 60, user_agent: str | None = None, retry_total:
     int = 3, transport_type: TransportType = TransportType.Amqp, checkpoint_store:
-    ''CheckpointStore'' | None = None, load_balancing_interval: float = 10, **kwargs:
+    ''CheckpointStore'' | None = None, load_balancing_interval: float = 30, **kwargs:
     Any) -> EventHubConsumerClient'
   parameters:
   - name: conn_str
@@ -449,11 +465,11 @@ methods:
       in memory, and the *EventHubConsumerClient* instance will receive events without
       load-balancing.'
     types:
-    - <xref:azure.eventhub.aio.CheckpointStore>
+    - <xref:Optional>[<xref:azure.eventhub.aio.CheckpointStore>]
   - name: load_balancing_interval
     description: 'When load-balancing kicks in. This is the interval, in seconds,
 
-      between two load-balancing evaluations. Default is 10 seconds.'
+      between two load-balancing evaluations. Default is 30 seconds.'
     types:
     - <xref:float>
   - name: partition_ownership_expiration_interval
@@ -462,10 +478,10 @@ methods:
       of seconds. Every load-balancing evaluation will automatically extend the ownership
       expiration time.
 
-      Default is 6 * load_balancing_interval, i.e. 60 seconds when using the default
+      Default is 6 * load_balancing_interval, i.e. 180 seconds when using the default
       load_balancing_interval
 
-      of 10 seconds.'
+      of 30 seconds.'
     types:
     - <xref:float>
   - name: load_balancing_strategy
@@ -510,7 +526,7 @@ methods:
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
   - name: connection_verify
     description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
       used to
@@ -519,7 +535,14 @@ methods:
 
       Default is None in which case *certifi.where()* will be used.'
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
+  - name: uamqp_transport
+    description: 'Whether to use the *uamqp* library as the underlying transport.
+      The default value is
+
+      False and the Pure Python AMQP library will be used as the underlying transport.'
+    types:
+    - <xref:bool>
   return:
     types:
     - <xref:azure.eventhub.aio.EventHubConsumerClient>
@@ -527,11 +550,11 @@ methods:
   - "Create a new instance of the EventHubConsumerClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\75\\\\azure-eventhub-5.8.0b2\\\\\
-    samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"\
-    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from\
-    \ azure.eventhub.aio import EventHubConsumerClient\n   event_hub_connection_str\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\59\\\\azure-eventhub-5.11.4a20230803001\\\
+    \\samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.eventhub.aio import EventHubConsumerClient\n   event_hub_connection_str\
     \ = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name = os.environ['EVENT_HUB_NAME']\n\
     \   consumer = EventHubConsumerClient.from_connection_string(\n       conn_str=event_hub_connection_str,\n\
     \       consumer_group='$Default',\n       eventhub_name=eventhub_name  # EventHub\
@@ -751,17 +774,17 @@ methods:
   - "Receive events from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\75\\\\azure-eventhub-5.8.0b2\\\\samples\\\
-    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n       logger = logging.getLogger(\"\
-    azure.eventhub\")\n\n       async def on_event(partition_context, event):\n  \
-    \         # Put your code here.\n           # If the operation is i/o intensive,\
-    \ async will have better performance.\n           logger.info(\"Received event\
-    \ from partition: {}\".format(partition_context.partition_id))\n\n       async\
-    \ with consumer:\n           await consumer.receive(\n               on_event=on_event,\n\
-    \               starting_position=\"-1\",  # \"-1\" is from the beginning of the\
-    \ partition.\n           )\n\n   ````\n"
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\59\\\\azure-eventhub-5.11.4a20230803001\\\
+    \\samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n       logger\
+    \ = logging.getLogger(\"azure.eventhub\")\n\n       async def on_event(partition_context,\
+    \ event):\n           # Put your code here.\n           # If the operation is\
+    \ i/o intensive, async will have better performance.\n           logger.info(\"\
+    Received event from partition: {}\".format(partition_context.partition_id))\n\n\
+    \       async with consumer:\n           await consumer.receive(\n           \
+    \    on_event=on_event,\n               starting_position=\"-1\",  # \"-1\" is\
+    \ from the beginning of the partition.\n           )\n\n   ````\n"
 - uid: azure.eventhub.aio.EventHubConsumerClient.receive_batch
   name: receive_batch
   summary: Receive events from partition(s) in batches, with optional load-balancing
@@ -955,14 +978,15 @@ methods:
   - "Receive events in batches from the EventHub.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\75\\\\azure-eventhub-5.8.0b2\\\\samples\\\
-    \\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n       logger = logging.getLogger(\"\
-    azure.eventhub\")\n\n       async def on_event_batch(partition_context, event_batch):\n\
-    \           # Put your code here.\n           # If the operation is i/o intensive,\
-    \ async will have better performance.\n           logger.info(\n             \
-    \  \"{} events received from partition: {}\".format(len(event_batch), partition_context.partition_id)\n\
-    \           )\n\n       async with consumer:\n           await consumer.receive_batch(\n\
-    \               on_event_batch=on_event_batch,\n               starting_position=\"\
-    -1\",  # \"-1\" is from the beginning of the partition.\n           )\n\n   ````\n"
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\59\\\\azure-eventhub-5.11.4a20230803001\\\
+    \\samples\\\\async_samples\\\\sample_code_eventhub_async.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n       logger\
+    \ = logging.getLogger(\"azure.eventhub\")\n\n       async def on_event_batch(partition_context,\
+    \ event_batch):\n           # Put your code here.\n           # If the operation\
+    \ is i/o intensive, async will have better performance.\n           logger.info(\n\
+    \               \"{} events received from partition: {}\".format(len(event_batch),\
+    \ partition_context.partition_id)\n           )\n\n       async with consumer:\n\
+    \           await consumer.receive_batch(\n               on_event_batch=on_event_batch,\n\
+    \               starting_position=\"-1\",  # \"-1\" is from the beginning of the\
+    \ partition.\n           )\n\n   ````\n"
