@@ -93,7 +93,7 @@ methods:
       between 15 and 60 seconds. A lease duration cannot be changed
 
       using renew or change. Default is -1 (infinite lease).'
-    defaultValue: '-1'
+    isRequired: true
     types:
     - <xref:int>
   - name: lease_id
@@ -101,7 +101,7 @@ methods:
       returns
 
       400 (Invalid request) if the proposed lease ID is not in the correct format.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: if_modified_since
@@ -170,7 +170,7 @@ methods:
     isRequired: true
   - name: length
     description: Size of the data in bytes.
-    defaultValue: None
+    isRequired: true
   - name: flush
     description: If true, will commit the data after it is appended.
     types:
@@ -251,14 +251,14 @@ methods:
   parameters:
   - name: content_settings
     description: ContentSettings object used to set path properties.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    defaultValue: None
+    isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
   - name: lease
     description: 'Required if the file has an active lease. Value can be a DataLakeLeaseClient
       object
@@ -491,14 +491,14 @@ methods:
     description: 'Start of byte range to use for downloading a section of the file.
 
       Must be set if length is provided.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   - name: length
     description: 'Number of bytes to read from the stream. This is optional, but
 
       should be supplied for optimal performance.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   - name: lease
@@ -592,7 +592,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: boolean
+    description: True if a file exists, False otherwise.
+    types:
+    - <xref:bool>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.flush_data
   name: flush_data
   summary: Commit the previous appended data.
@@ -618,7 +620,7 @@ methods:
       this optional parameter allows data after the flush position to be
 
       retained for a future flush operation.'
-    defaultValue: 'False'
+    isRequired: true
     types:
     - <xref:bool>
   - name: content_settings
@@ -759,14 +761,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: directory_name
-    description: The name of directory to interact with. The directory is under file
-      system.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: file_name
-    description: The name of file to interact with. The file is under directory.
+  - name: file_path
+    description: 'The whole file path, so that to interact with a specific file.
+
+      eg. "{directory}/{subdirectory}/{file}"'
     isRequired: true
     types:
     - <xref:str>
@@ -791,8 +789,15 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
-  - name: file_path
-    isRequired: true
+  - name: directory_name
+    description: The name of directory to interact with. The directory is under file
+      system.
+    types:
+    - <xref:str>
+  - name: file_name
+    description: The name of file to interact with. The file is under directory.
+    types:
+    - <xref:str>
 - uid: azure.storage.filedatalake.aio.DataLakeFileClient.get_access_control
   name: get_access_control
   summary: Get the owner, group, permissions, or access control list for a path.
@@ -815,7 +820,7 @@ methods:
       application Object IDs are not translated because they do not have
 
       unique friendly names.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:bool>
   - name: lease
@@ -1286,12 +1291,12 @@ methods:
   parameters:
   - name: owner
     description: Optional. The owner of the file or directory.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: group
     description: Optional. The owning group of the file or directory.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: permissions
@@ -1308,7 +1313,7 @@ methods:
       supported.
 
       permissions and acl are mutually exclusive.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: acl
@@ -1323,7 +1328,7 @@ methods:
       "[scope:][type]:[id]:[permissions]".
 
       permissions and acl are mutually exclusive.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: lease
@@ -1492,7 +1497,7 @@ methods:
     description: 'The time to set the file to expiry.
 
       When expiry_options is RelativeTo*, expires_on should be an int in milliseconds'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:datetime>
     - <xref:int>
@@ -1522,7 +1527,7 @@ methods:
   parameters:
   - name: content_settings
     description: ContentSettings object used to set file/directory properties.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   - name: lease
@@ -1767,12 +1772,12 @@ methods:
     isRequired: true
   - name: length
     description: Size of the data in bytes.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   - name: overwrite
     description: to overwrite an existing file or not.
-    defaultValue: 'False'
+    isRequired: true
     types:
     - <xref:bool>
   - name: content_settings
@@ -1782,7 +1787,7 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
   - name: lease
     description: 'Required if the blob has an active lease. Value can be a DataLakeLeaseClient
       object
@@ -1955,4 +1960,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.aio.DataLakeFileClient.location_mode>.'
+    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.aio.DataLakeFileClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

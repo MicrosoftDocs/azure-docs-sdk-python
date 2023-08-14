@@ -98,7 +98,7 @@ methods:
       between 15 and 60 seconds. A lease duration cannot be changed
 
       using renew or change. Default is -1 (infinite lease).'
-    defaultValue: '-1'
+    isRequired: true
     types:
     - <xref:int>
   - name: lease_id
@@ -106,7 +106,7 @@ methods:
       returns
 
       400 (Invalid request) if the proposed lease ID is not in the correct format.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: if_modified_since
@@ -174,7 +174,7 @@ methods:
   parameters:
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: content_settings
@@ -504,7 +504,7 @@ methods:
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: content_settings
@@ -797,7 +797,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: boolean
+    description: True if a directory exists, False otherwise.
+    types:
+    - <xref:bool>
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.from_connection_string
   name: from_connection_string
   summary: Create DataLakeDirectoryClient from a Connection String.
@@ -815,6 +817,28 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
   - name: directory_name
     description: The name of directory to interact with. The directory is under file
       system.
@@ -841,7 +865,7 @@ methods:
       account name, and "key"
 
       should be the storage account key.'
-    defaultValue: None
+    isRequired: true
   return:
     description: a DataLakeDirectoryClient
     types:
@@ -868,7 +892,7 @@ methods:
       application Object IDs are not translated because they do not have
 
       unique friendly names.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:bool>
   - name: lease
@@ -1254,12 +1278,12 @@ methods:
   parameters:
   - name: owner
     description: Optional. The owner of the file or directory.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: group
     description: Optional. The owning group of the file or directory.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: permissions
@@ -1276,7 +1300,7 @@ methods:
       supported.
 
       permissions and acl are mutually exclusive.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: acl
@@ -1291,7 +1315,7 @@ methods:
       "[scope:][type]:[id]:[permissions]".
 
       permissions and acl are mutually exclusive.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: lease
@@ -1453,7 +1477,7 @@ methods:
   parameters:
   - name: content_settings
     description: ContentSettings object used to set file/directory properties.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:azure.storage.filedatalake.ContentSettings>
   - name: lease
@@ -1728,4 +1752,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.DataLakeDirectoryClient.location_mode>.'
+    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.DataLakeDirectoryClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

@@ -92,7 +92,7 @@ methods:
       between 15 and 60 seconds. A lease duration cannot be changed
 
       using renew or change. Default is -1 (infinite lease).'
-    defaultValue: '-1'
+    isRequired: true
     types:
     - <xref:int>
   - name: lease_id
@@ -100,7 +100,7 @@ methods:
       returns
 
       400 (Invalid request) if the proposed lease ID is not in the correct format.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: if_modified_since
@@ -177,7 +177,7 @@ methods:
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: content_settings
@@ -496,13 +496,13 @@ methods:
     description: 'A dict with name-value pairs to associate with the
 
       file system as metadata. Example: *{''Category'':''test''}*'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: public_access
     description: To specify whether data in the file system may be accessed publicly
       and the level of access.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:azure.storage.filedatalake.PublicAccess>
   - name: encryption_scope_options
@@ -763,7 +763,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: boolean
+    description: True if a file system exists, False otherwise.
+    types:
+    - <xref:bool>
 - uid: azure.storage.filedatalake.FileSystemClient.from_connection_string
   name: from_connection_string
   summary: 'Create FileSystemClient from a Connection String.
@@ -922,16 +924,21 @@ methods:
   parameters:
   - name: path
     description: Filters the results to return only paths under the specified path.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
+  - name: recursive
+    description: Optional. Set True for recursive, False for iterative.
+    isRequired: true
+    types:
+    - <xref:Optional>[<xref:bool>]
   - name: max_results
     description: 'An optional value that specifies the maximum
 
       number of items to return per page. If omitted or greater than 5,000, the
 
       response will include up to 5,000 items per page.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   - name: upn
@@ -962,8 +969,6 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
-  - name: recursive
-    defaultValue: 'True'
   return:
     description: An iterable (auto-paging) response of PathProperties.
     types:
@@ -1033,7 +1038,7 @@ methods:
   - name: public_access
     description: To specify whether data in the file system may be accessed publicly
       and the level of access.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:azure.storage.filedatalake.PublicAccess>
   - name: lease
@@ -1161,6 +1166,8 @@ methods:
     - <xref:int>
   return:
     description: filesystem-updated property dict (Etag and last modified).
+    types:
+    - <xref:Dict>[<xref:str>, <xref:str>]
 attributes:
 - uid: azure.storage.filedatalake.FileSystemClient.api_version
   name: api_version
@@ -1204,4 +1211,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.FileSystemClient.location_mode>.'
+    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.FileSystemClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'
