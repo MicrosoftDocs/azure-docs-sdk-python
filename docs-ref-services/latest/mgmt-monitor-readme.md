@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-monitor, monitor
 author: lmazuel
 ms.author: lmazuel
-ms.date: 05/04/2023
+ms.date: 08/22/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
