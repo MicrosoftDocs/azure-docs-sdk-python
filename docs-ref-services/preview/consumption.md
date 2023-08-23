@@ -1,18 +1,17 @@
 ---
-title: Azure Consumption libraries for python
-description: Reference for Azure Consumption libraries for python
-keywords: Azure, python, SDK, API, Consumption
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
+title: Azure Consumption SDK for Python
+description: Reference for Azure Consumption SDK for Python
+author: sandeepnl
+ms.author: sandeepnl
+ms.data: 08/23/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: azure-python
+ms.service: consumption
+manager: douge
+keywords: Azure, python, SDK, API, Consumption
+ms.date: 07/10/2017
+ms.technology: azure
 ---
-
 # Azure Consumption libraries for python
 
 ## Install the libraries
