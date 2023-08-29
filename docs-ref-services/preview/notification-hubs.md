@@ -8,8 +8,8 @@ ms.topic: reference
 ms.devlang: python
 ms.service: notificationhubs
 manager: routlaw
-ms.date: 02/22/2018
 keywords: Azure, python, SDK, API, Notification Hubs
+ms.date: 02/22/2018
 ms.technology: azure
 ---
 # Azure Notification Hubs libraries for python
