@@ -1,6 +1,6 @@
 ---
-title: Azure AgriFood SDK for Python
-description: Reference for Azure AgriFood SDK for Python
+title: Azure Agrifood SDK for Python
+description: Reference for Azure Agrifood SDK for Python
 author: lmazuel
 ms.author: lmazuel
 ms.data: 08/30/2023
