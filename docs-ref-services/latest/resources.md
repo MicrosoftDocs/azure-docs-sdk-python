@@ -40,6 +40,6 @@ client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
 > [Explore the Management APIs](/python/api/overview/azure/azure.mgmt.resource)
 
 ## Samples
-[Manage Azure resources and resource groups](https://github.com/Azure-Samples/resource-manager-python-resources-and-groups)
+[Manage Azure resources and resource groups](https://github.com/Azure-Samples/azure-samples-python-management)
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=resource) of Azure Resource Manager samples.
