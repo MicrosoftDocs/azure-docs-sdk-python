@@ -28,14 +28,18 @@ from azure.identity import DefaultAzureCredential
 from azure.mgmt.resource import ResourceManagementClient
 import os
 
+LOCATION = 'eastus'
+GROUP_NAME ='sample_resource_group'
+
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
 client = ResourceManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
 ```
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/azure.mgmt.resource)
 
 ## Samples
-[Manage Azure resources and resource groups](https://github.com/Azure-Samples/resource-manager-python-resources-and-groups)
+[Manage Azure resources and resource groups](https://github.com/Azure-Samples/azure-samples-python-management)
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=resource) of Azure Resource Manager samples.
