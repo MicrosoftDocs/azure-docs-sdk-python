@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-rdbms, rdbms
 author: lmazuel
 ms.author: lmazuel
-ms.date: 05/15/2023
+ms.date: 06/08/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: rdbms
@@ -46,11 +46,11 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.rdbms import 
+from azure.mgmt.rdbms.mysql import MySQLManagementClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = (credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = MySQLManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples

@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-storagecache, storage
 author: annatisch
 ms.author: antisch
-ms.date: 02/16/2023
+ms.date: 06/21/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
@@ -55,8 +55,9 @@ client = StorageCacheManagementClient(credential=DefaultAzureCredential(), subsc
 
 ## Examples
 
-
-Code samples for this package can be found at [Storage Cache Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Storage Cache Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting

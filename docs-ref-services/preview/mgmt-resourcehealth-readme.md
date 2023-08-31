@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-resourcehealth, resourcehealth
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/16/2023
+ms.date: 05/22/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: resourcehealth
@@ -46,17 +46,18 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.resourcehealth import MicrosoftResourceHealth
+from azure.mgmt.resourcehealth import ResourceHealthMgmtClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = MicrosoftResourceHealth(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = ResourceHealthMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
-
-Code samples for this package can be found at [Resource Health Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Resource Health Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting

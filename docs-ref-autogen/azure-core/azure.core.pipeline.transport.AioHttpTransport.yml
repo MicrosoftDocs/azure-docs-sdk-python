@@ -10,15 +10,15 @@ summary: 'AioHttp HTTP sender implementation.
 
   Fully asynchronous implementation using the aiohttp library.'
 constructor:
-  syntax: 'AioHttpTransport(*, session: ClientSession | None = None, loop=None, session_owner=True,
-    **kwargs)'
+  syntax: 'AioHttpTransport(*, session: ClientSession | None = None, loop=None, session_owner:
+    bool = True, **kwargs)'
   parameters:
   - name: session
     description: The client session.
-    isRequired: true
+    types:
+    - <xref:aiohttp.ClientSession>
   - name: session_owner
     description: Session owner. Defaults True.
-    isRequired: true
     types:
     - <xref:bool>
   - name: use_env_settings
@@ -28,10 +28,10 @@ constructor:
 examples:
 - "Asynchronous transport with aiohttp.<!--[!code-python[Main](les\\test_example_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  98\\\\azure-core-1.26.4\\\\samples\\\\test_example_async.py\", \"xml:space\": \"\
-  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.transport\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\36\\\\azure-core-1.29.3\\\\samples\\\\test_example_async.py\", \"xml:space\":\
+  \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\":\
+  \ {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.transport\
   \ import AioHttpTransport\n\n   async with AsyncPipeline(AioHttpTransport(), policies=policies)\
   \ as pipeline:\n       response = await pipeline.run(request)\n\n   ````\n"
 methods:
@@ -51,17 +51,17 @@ methods:
     Will pre-load the body into memory to be available with a sync method.
 
     Pass stream=True to avoid this behavior.'
-  signature: 'async send(request: HttpRequest, **config: Any) -> AsyncHttpResponse
-    | None'
+  signature: 'async send(request: HttpRequest, **config: Any) -> AsyncHttpResponse'
   parameters:
   - name: request
     description: The HttpRequest object
     isRequired: true
     types:
-    - <xref:azure.core.pipeline.transport.HttpRequest>
+    - <xref:azure.core.rest.HttpRequest>
   - name: config
     description: Any keyword arguments
-    isRequired: true
+    types:
+    - <xref:any>
   - name: stream
     description: Defaults to False.
     types:
@@ -78,4 +78,31 @@ methods:
   return:
     description: The AsyncHttpResponse
     types:
-    - <xref:azure.core.pipeline.transport.AsyncHttpResponse>
+    - <xref:azure.core.rest.AsyncHttpResponse>
+- uid: azure.core.pipeline.transport.AioHttpTransport.sleep
+  name: sleep
+  summary: 'Sleep for the specified duration.
+
+
+    You should always ask the transport to sleep, and not call directly
+
+    the stdlib. This is mostly important in async, as the transport
+
+    may not use asyncio but other implementation like trio and they their own
+
+    way to sleep, but to keep design
+
+    consistent, it''s cleaner to always ask the transport to sleep and let the transport
+
+    implementor decide how to do it.
+
+    By default, this method will use "asyncio", and don''t need to be overridden
+
+    if your transport does too.'
+  signature: 'async sleep(duration: float) -> None'
+  parameters:
+  - name: duration
+    description: The number of seconds to sleep.
+    isRequired: true
+    types:
+    - <xref:float>

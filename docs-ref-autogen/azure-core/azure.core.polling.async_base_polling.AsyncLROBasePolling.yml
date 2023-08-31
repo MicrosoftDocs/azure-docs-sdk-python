@@ -4,11 +4,25 @@ name: AsyncLROBasePolling
 fullName: azure.core.polling.async_base_polling.AsyncLROBasePolling
 module: azure.core.polling.async_base_polling
 inheritances:
-- azure.core.polling.base_polling.LROBasePolling
-summary: A subclass or LROBasePolling that redefine "run" as async.
+- azure.core.polling.base_polling._SansIOLROBasePolling
+- azure.core.polling._async_poller.AsyncPollingMethod
+summary: 'A base LRO async poller.
+
+
+  This assumes a basic flow:
+
+  - I analyze the response to decide the polling approach
+
+  - I poll
+
+  - I ask the final resource depending of the polling approach
+
+
+  If your polling need are more specific, you could implement a PollingMethod directly'
 constructor:
-  syntax: AsyncLROBasePolling(timeout=30, lro_algorithms=None, lro_options=None, path_format_arguments=None,
-    **operation_config)
+  syntax: 'AsyncLROBasePolling(timeout: float = 30, lro_algorithms: Sequence[LongRunningOperation[HttpRequestTypeVar,
+    AllHttpResponseTypeVar]] | None = None, lro_options: Dict[str, Any] | None = None,
+    path_format_arguments: Dict[str, str] | None = None, **operation_config: Any)'
   parameters:
   - name: timeout
     defaultValue: '30'
@@ -19,23 +33,86 @@ constructor:
   - name: path_format_arguments
     defaultValue: None
 methods:
+- uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.finished
+  name: finished
+  summary: Is this polling finished?
+  signature: finished() -> bool
+  return:
+    description: True if finished, False otherwise.
+    types:
+    - <xref:bool>
+- uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.from_continuation_token
+  name: from_continuation_token
+  signature: 'from_continuation_token(continuation_token: str, **kwargs: Any) -> Tuple[Any,
+    Any, Callable[[Any], PollingReturnType_co]]'
+  parameters:
+  - name: continuation_token
+    isRequired: true
+- uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.get_continuation_token
+  name: get_continuation_token
+  signature: get_continuation_token() -> str
+- uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.initialize
+  name: initialize
+  summary: Set the initial status of this LRO.
+  signature: 'initialize(client: PipelineClientType, initial_response: PipelineResponse[HttpRequestTypeVar,
+    AllHttpResponseTypeVar], deserialization_callback: Callable[[PipelineResponse[HttpRequestTypeVar,
+    AllHttpResponseTypeVar]], PollingReturnType_co]) -> None'
+  parameters:
+  - name: client
+    description: The Azure Core Pipeline client used to make request.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineClient>
+  - name: initial_response
+    description: The initial response for the call.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
+  - name: deserialization_callback
+    description: A callback function to deserialize the final response.
+    isRequired: true
+    types:
+    - <xref:callable>
+  exceptions:
+  - type: HttpResponseError if initial status is incorrect LRO state
 - uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.request_status
   name: request_status
   summary: 'Do a simple GET to this status link.
 
 
     This method re-inject ''x-ms-client-request-id''.'
-  signature: async request_status(status_link)
+  signature: 'async request_status(status_link: str) -> PipelineResponse[HttpRequestTypeVar,
+    AsyncHttpResponseTypeVar]'
   parameters:
   - name: status_link
+    description: URL to poll.
     isRequired: true
+    types:
+    - <xref:str>
   return:
+    description: The response of the status request.
     types:
     - <xref:azure.core.pipeline.PipelineResponse>
+- uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.resource
+  name: resource
+  summary: Return the built resource.
+  signature: resource() -> PollingReturnType_co
+  return:
+    description: The built resource.
+    types:
+    - <xref:any>
 - uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.run
   name: run
-  signature: async run()
+  signature: async run() -> None
+- uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.status
+  name: status
+  summary: Return the current status as a string.
+  signature: status() -> str
+  return:
+    description: The current status.
+    types:
+    - <xref:str>
 - uid: azure.core.polling.async_base_polling.AsyncLROBasePolling.update_status
   name: update_status
   summary: Update the current status of the LRO.
-  signature: async update_status()
+  signature: async update_status() -> None

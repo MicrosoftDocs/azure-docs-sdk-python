@@ -14,11 +14,14 @@ summary: 'A pipeline implementation.
   of the HTTP sender. The transport is the last node in the pipeline.'
 constructor:
   syntax: 'Pipeline(transport: HttpTransport[HTTPRequestType, HTTPResponseType], policies:
-    List[HTTPPolicy | SansIOHTTPPolicy] | None = None)'
+    Iterable[HTTPPolicy[HTTPRequestType, HTTPResponseType] | SansIOHTTPPolicy[HTTPRequestType,
+    HTTPResponseType]] | None = None)'
   parameters:
   - name: transport
     description: The Http Transport instance
     isRequired: true
+    types:
+    - <xref:azure.core.pipeline.transport.HttpTransport>
   - name: policies
     description: List of configured policies.
     defaultValue: None
@@ -27,15 +30,16 @@ constructor:
 examples:
 - "Builds the pipeline for synchronous transport.<!--[!code-python[Main](les\\test_example_sync.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  98\\\\azure-core-1.26.4\\\\samples\\\\test_example_sync.py\", \"xml:space\": \"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\36\\\\azure-core-1.29.3\\\\samples\\\\test_example_sync.py\", \"xml:space\": \"\
   preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
   linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline\
   \ import Pipeline\n   from azure.core.pipeline.policies import RedirectPolicy, UserAgentPolicy\n\
-  \   from azure.core.pipeline.transport import RequestsTransport, HttpRequest\n\n\
-  \   # example: create request and policies\n   request = HttpRequest(\"GET\", \"\
-  https://bing.com\")\n   policies = [UserAgentPolicy(\"myuseragent\"), RedirectPolicy()]\n\
-  \n   # run the pipeline\n   with Pipeline(transport=RequestsTransport(), policies=policies)\
+  \   from azure.core.rest import HttpRequest\n   from azure.core.pipeline.transport\
+  \ import RequestsTransport\n\n   # example: create request and policies\n   request\
+  \ = HttpRequest(\"GET\", \"https://bing.com\")\n   policies: Iterable[Union[HTTPPolicy,\
+  \ SansIOHTTPPolicy]] = [UserAgentPolicy(\"myuseragent\"), RedirectPolicy()]\n\n\
+  \   # run the pipeline\n   with Pipeline(transport=RequestsTransport(), policies=policies)\
   \ as pipeline:\n       response = pipeline.run(request)\n\n   ````\n"
 methods:
 - uid: azure.core.pipeline.Pipeline.run

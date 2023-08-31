@@ -8,7 +8,7 @@ inheritances:
 summary: Methods for accessing response body data.
 constructor:
   syntax: 'AioHttpTransportResponse(request: HttpRequest, aiohttp_response: ClientResponse,
-    block_size=None, *, decompress=True)'
+    block_size: int | None = None, *, decompress: bool = True)'
   parameters:
   - name: request
     description: The HttpRequest object
@@ -19,7 +19,7 @@ constructor:
     description: Returned from ClientSession.request().
     isRequired: true
     types:
-    - <xref:[<xref:aiohttp.ClientResponse object>](<xref:aiohttp.ClientResponse object>)>
+    - <xref:<xref:aiohttp.ClientResponse object>>
   - name: block_size
     description: block size of data sent over connection.
     defaultValue: None
@@ -29,7 +29,6 @@ constructor:
     description: 'If True which is default, will attempt to decode the body based
 
       on the *content-encoding* header.'
-    isRequired: true
     types:
     - <xref:bool>
 methods:
@@ -37,10 +36,32 @@ methods:
   name: body
   summary: Return the whole body as bytes in memory.
   signature: body() -> bytes
+  return:
+    description: The whole response body.
+    types:
+    - <xref:bytes>
 - uid: azure.core.pipeline.transport.AioHttpTransportResponse.load_body
   name: load_body
   summary: Load in memory the body, so it could be accessible from sync methods.
   signature: async load_body() -> None
+- uid: azure.core.pipeline.transport.AioHttpTransportResponse.parts
+  name: parts
+  summary: Assuming the content-type is multipart/mixed, will return the parts as
+    an async iterator.
+  signature: parts() -> AsyncIterator[AsyncHttpResponse]
+  return:
+    description: An async iterator of the parts
+    types:
+    - <xref:AsyncIterator>
+  exceptions:
+  - type: ValueError
+    description: If the content is not multipart/mixed
+- uid: azure.core.pipeline.transport.AioHttpTransportResponse.raise_for_status
+  name: raise_for_status
+  summary: 'Raises an HttpResponseError if the response has an error status code.
+
+    If response is good, does nothing.'
+  signature: raise_for_status() -> None
 - uid: azure.core.pipeline.transport.AioHttpTransportResponse.stream_download
   name: stream_download
   summary: Generator for streaming response body data.
@@ -50,13 +71,17 @@ methods:
     description: The pipeline object
     isRequired: true
     types:
-    - <xref:azure.core.pipeline.Pipeline>
+    - <xref:azure.core.pipeline.AsyncPipeline>
   - name: decompress
     description: 'If True which is default, will attempt to decode the body based
 
       on the *content-encoding* header.'
     types:
     - <xref:bool>
+  return:
+    description: An iterator of bytes chunks.
+    types:
+    - <xref:AsyncIterator>[<xref:bytes>]
 - uid: azure.core.pipeline.transport.AioHttpTransportResponse.text
   name: text
   summary: 'Return the whole body as a string.
@@ -68,5 +93,9 @@ methods:
   - name: encoding
     description: The encoding to apply.
     defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: The whole response body as a string.
     types:
     - <xref:str>

@@ -59,6 +59,22 @@ constructor:
     description: An event loop. If not specified the default event loop will be used.
     defaultValue: None
 methods:
+- uid: azure.eventhub.async_ops.sender_async.AsyncSender.close
+  name: close
+  summary: 'Close down the handler. If the handler has already closed,
+
+    this will be a no op. An optional exception can be passed in to
+
+    indicate that the handler was shutdown due to error.'
+  signature: close(exception=None)
+  parameters:
+  - name: exception
+    description: 'An optional exception if the handler is closing
+
+      due to an error.'
+    defaultValue: None
+    types:
+    - <xref:Exception>
 - uid: azure.eventhub.async_ops.sender_async.AsyncSender.close_async
   name: close_async
   summary: 'Close down the handler. If the handler has already closed,
@@ -75,6 +91,15 @@ methods:
     defaultValue: None
     types:
     - <xref:Exception>
+- uid: azure.eventhub.async_ops.sender_async.AsyncSender.get_handler_state
+  name: get_handler_state
+  summary: 'Get the state of the underlying handler with regards to start
+
+    up processes.'
+  signature: get_handler_state()
+  return:
+    types:
+    - <xref:uamqp.constants.MessageSenderState>
 - uid: azure.eventhub.async_ops.sender_async.AsyncSender.has_started
   name: has_started
   summary: 'Whether the handler has completed all start up processes such as
@@ -88,6 +113,18 @@ methods:
   return:
     types:
     - <xref:bool>
+- uid: azure.eventhub.async_ops.sender_async.AsyncSender.open
+  name: open
+  summary: 'Open the Sender using the supplied conneciton.
+
+    If the handler has previously been redirected, the redirect
+
+    context will be used to create a new handler before opening it.'
+  signature: open()
+  parameters:
+  - name: connection
+    description: The underlying client shared connection.
+    isRequired: true
 - uid: azure.eventhub.async_ops.sender_async.AsyncSender.open_async
   name: open_async
   summary: 'Open the Sender using the supplied conneciton.
@@ -100,6 +137,12 @@ methods:
   - name: connection
     description: The underlying client shared connection.
     isRequired: true
+- uid: azure.eventhub.async_ops.sender_async.AsyncSender.reconnect
+  name: reconnect
+  summary: 'If the Sender was disconnected from the service with
+
+    a retryable error - attempt to reconnect.'
+  signature: reconnect()
 - uid: azure.eventhub.async_ops.sender_async.AsyncSender.reconnect_async
   name: reconnect_async
   summary: 'If the Receiver was disconnected from the service with
@@ -120,6 +163,28 @@ methods:
     - <xref:azure.eventhub.common.EventData>
   exceptions:
   - type: azure.eventhub.common.EventHubError if the message fails tosend.
+- uid: azure.eventhub.async_ops.sender_async.AsyncSender.transfer
+  name: transfer
+  summary: Transfers an event data and notifies the callback when the operation is
+    done.
+  signature: transfer(event_data, callback=None)
+  parameters:
+  - name: event_data
+    description: The event to be sent.
+    isRequired: true
+    types:
+    - <xref:azure.eventhub.common.EventData>
+  - name: callback
+    description: 'Callback to be run once the message has been send.
+
+      This must be a function that accepts two arguments.'
+    defaultValue: None
+    types:
+    - <xref:callable>[<xref:uamqp.constants.MessageSendResult>, <xref:azure.eventhub.common.EventHubError>]
+- uid: azure.eventhub.async_ops.sender_async.AsyncSender.wait
+  name: wait
+  summary: Wait until all transferred events have been sent.
+  signature: wait()
 - uid: azure.eventhub.async_ops.sender_async.AsyncSender.wait_async
   name: wait_async
   summary: Wait until all transferred events have been sent.

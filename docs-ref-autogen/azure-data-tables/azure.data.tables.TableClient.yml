@@ -10,7 +10,8 @@ summary: 'A client to interact with a specific Table in an Azure Tables account.
 
   Create TableClient from a Credential.'
 constructor:
-  syntax: 'TableClient(endpoint: str, table_name: str, **kwargs: Any)'
+  syntax: 'TableClient(endpoint: str, table_name: str, *, credential: AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, **kwargs)'
   parameters:
   - name: endpoint
     description: A URL to an Azure Tables account.
@@ -56,18 +57,24 @@ variables:
   types:
   - <xref:str>
 methods:
+- uid: azure.data.tables.TableClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: close() -> None
 - uid: azure.data.tables.TableClient.create_entity
   name: create_entity
   summary: Insert entity in a table.
-  signature: 'create_entity(entity: TableEntity | Mapping[str, Any], **kwargs: Any)
-    -> Dict[str, str]'
+  signature: 'create_entity(entity: TableEntity | Mapping[str, Any], **kwargs) ->
+    Dict[str, str]'
   parameters:
   - name: entity
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.data.tables.TableEntity>, <xref:Mapping>[<xref:str>,
-      <xref:Any>]]
+    - <xref:typing.Union>[<xref:azure.data.tables.TableEntity>, <xref:typing.Mapping>[<xref:str>,
+      <xref:typing.Any>]]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
@@ -78,7 +85,7 @@ methods:
   - "Creating and adding an entity to a Table<!--[!code-python[Main](les\\sample_insert_delete_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_insert_delete_entities.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_insert_delete_entities.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   try:\n       resp = table_client.create_entity(entity=self.entity)\n    \
@@ -87,7 +94,7 @@ methods:
 - uid: azure.data.tables.TableClient.create_table
   name: create_table
   summary: Creates a new table under the current account.
-  signature: 'create_table(**kwargs: Any) -> TableItem'
+  signature: create_table(**kwargs) -> TableItem
   return:
     description: A TableItem representing the created table.
     types:
@@ -99,7 +106,7 @@ methods:
   - "Creating a table from the TableClient object<!--[!code-python[Main](les\\sample_create_delete_table.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_create_delete_table.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_create_delete_table.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with TableClient.from_connection_string(\n       conn_str=self.connection_string,\
@@ -112,7 +119,7 @@ methods:
   summary: 'Deletes the specified entity in a table. No error will be raised if
 
     the entity or PartitionKey-RowKey pairing is not found.'
-  signature: delete_entity(partition_key, row_key, **kwargs)
+  signature: 'delete_entity(partition_key: str, row_key: str, **kwargs) -> None'
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -128,7 +135,7 @@ methods:
     description: The entity to delete
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.data.tables.TableEntity>, <xref:Mapping>[<xref:str>,
+    - <xref:typing.Union>[<xref:azure.data.tables.TableEntity>, <xref:typing.Mapping>[<xref:str>,
       <xref:str>]]
   - name: etag
     description: Etag of the entity
@@ -152,7 +159,7 @@ methods:
   - "Deleting an entity of a Table<!--[!code-python[Main](les\\sample_insert_delete_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_insert_delete_entities.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_insert_delete_entities.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   table_client.delete_entity(row_key=self.entity[\"RowKey\"], partition_key=self.entity[\"\
@@ -162,7 +169,7 @@ methods:
   summary: 'Deletes the table under the current account. No error will be raised
 
     if the table does not exist'
-  signature: 'delete_table(**kwargs: Any) -> None'
+  signature: delete_table(**kwargs) -> None
   return:
     description: None
     types:
@@ -173,7 +180,7 @@ methods:
   - "Deleting a table from the TableClient object<!--[!code-python[Main](les\\sample_create_delete_table.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_create_delete_table.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_create_delete_table.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with TableClient.from_connection_string(\n       conn_str=self.connection_string,\
@@ -182,8 +189,8 @@ methods:
 - uid: azure.data.tables.TableClient.from_connection_string
   name: from_connection_string
   summary: Create TableClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, table_name: str, **kwargs: Any)
-    -> TableClient'
+  signature: 'from_connection_string(conn_str: str, table_name: str, **kwargs) ->
+    TableClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Tables account.
@@ -203,7 +210,7 @@ methods:
   - "Authenticating a TableServiceClient from a connection_string<!--[!code-python[Main](les\\\
     sample_create_client.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\
     \\sample_create_client.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.data.tables import TableClient\n\n\
@@ -213,7 +220,8 @@ methods:
 - uid: azure.data.tables.TableClient.from_table_url
   name: from_table_url
   summary: A client to interact with a specific Table.
-  signature: 'from_table_url(table_url: str, **kwargs: Any) -> TableClient'
+  signature: 'from_table_url(table_url: str, *, credential: AzureNamedKeyCredential
+    | AzureSasCredential | None = None, **kwargs) -> TableClient'
   parameters:
   - name: table_url
     description: The full URI to the table, including SAS token if used.
@@ -237,7 +245,7 @@ methods:
 - uid: azure.data.tables.TableClient.get_entity
   name: get_entity
   summary: Get a single entity in a table.
-  signature: 'get_entity(partition_key: str, row_key: str, **kwargs: Any) -> TableEntity'
+  signature: 'get_entity(partition_key: str, row_key: str, **kwargs) -> TableEntity'
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -253,7 +261,7 @@ methods:
     description: Specify desired properties of an entity to return.
     types:
     - <xref:str>
-    - <xref:List>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
@@ -264,7 +272,7 @@ methods:
   - "Get a single entity from a table<!--[!code-python[Main](les\\sample_update_upsert_merge_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get Entity by partition and row key\n   got_entity = table.get_entity(partition_key=my_entity[\"\
@@ -276,8 +284,7 @@ methods:
     that may be
 
     used with Shared Access Signatures.'
-  signature: 'get_table_access_policy(**kwargs: Any) -> Dict[str, TableAccessPolicy
-    | None]'
+  signature: get_table_access_policy(**kwargs) -> Dict[str, TableAccessPolicy | None]
   return:
     description: Dictionary of SignedIdentifiers
     types:
@@ -287,7 +294,7 @@ methods:
 - uid: azure.data.tables.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
-  signature: 'list_entities(**kwargs: Any) -> ItemPaged[TableEntity]'
+  signature: list_entities(**kwargs) -> ItemPaged[TableEntity]
   parameters:
   - name: results_per_page
     description: Number of entities returned per service request.
@@ -297,7 +304,7 @@ methods:
     description: Specify desired properties of an entity to return.
     types:
     - <xref:str>
-    - <xref:List>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   return:
     description: ItemPaged[<xref:azure.data.tables.TableEntity>]
     types:
@@ -308,7 +315,7 @@ methods:
   - "List all entities held within a table<!--[!code-python[Main](les\\sample_update_upsert_merge_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Query the entities in the table\n   entities = list(table.list_entities())\n\
@@ -317,7 +324,7 @@ methods:
 - uid: azure.data.tables.TableClient.query_entities
   name: query_entities
   summary: Lists entities in a table.
-  signature: 'query_entities(query_filter: str, **kwargs: Dict[str, Any]) -> ItemPaged[TableEntity]'
+  signature: 'query_entities(query_filter: str, **kwargs) -> ItemPaged[TableEntity]'
   parameters:
   - name: query_filter
     description: 'Specify a filter to return certain entities. For more information
@@ -334,11 +341,11 @@ methods:
     description: Specify desired properties of an entity to return.
     types:
     - <xref:str>
-    - <xref:List>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   - name: parameters
     description: Dictionary for formatting query with additional, user defined parameters
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: ItemPaged[<xref:azure.data.tables.TableEntity>]
     types:
@@ -349,7 +356,7 @@ methods:
   - "Query entities held within a table<!--[!code-python[Main](les\\sample_query_table.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_query_table.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_query_table.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with TableClient.from_connection_string(self.connection_string, self.table_name)\
@@ -391,7 +398,7 @@ methods:
     description: Access policies to set for the table
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:Optional>[<xref:azure.data.tables.TableAccessPolicy>]]
+    - Dict[str, Optional[<xref:azure.data.tables.TableAccessPolicy>]]
   return:
     description: None
     types:
@@ -406,8 +413,7 @@ methods:
     If any one of these operations fails, the entire transaction will be rejected.'
   signature: 'submit_transaction(operations: Iterable[Tuple[TransactionOperation |
     str, TableEntity | Mapping[str, Any]] | Tuple[TransactionOperation | str, TableEntity
-    | Mapping[str, Any], Mapping[str, Any]]], **kwargs: Any) -> List[Mapping[str,
-    Any]]'
+    | Mapping[str, Any], Mapping[str, Any]]], **kwargs) -> List[Mapping[str, Any]]'
   parameters:
   - name: operations
     description: "The list of operations to commit in a transaction. This should be\
@@ -420,8 +426,8 @@ methods:
       \ 'A', 'RowKey': 'B'}, {'mode': UpdateMode.REPLACE})\n   ````"
     isRequired: true
     types:
-    - <xref:Iterable>[<xref:Tuple>[<xref:str>, <xref:azure.data.tables.TableEntity>,
-      <xref:Mapping>[<xref:str>, <xref:Any>]]]
+    - <xref:typing.Iterable>[<xref:typing.Tuple>[<xref:str>, <xref:azure.data.tables.TableEntity>,
+      <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]]]
   return:
     description: A list of mappings with response metadata for each operation in the
       transaction.
@@ -433,7 +439,7 @@ methods:
   - "Using transactions to send multiple requests at once<!--[!code-python[Main](les\\\
     sample_batching.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
-    _work\\\\1\\\\s\\\\dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\\
+    _work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\\
     sample_batching.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
     \n````python\n\n   from azure.data.tables import TableClient, TableTransactionError\n\
@@ -452,14 +458,13 @@ methods:
   name: update_entity
   summary: Update entity in a table.
   signature: 'update_entity(entity: TableEntity | Mapping[str, Any], mode: UpdateMode
-    = UpdateMode.MERGE, **kwargs: Any) -> Dict[str, str]'
+    = UpdateMode.MERGE, **kwargs) -> Dict[str, str]'
   parameters:
   - name: entity
     description: The properties for the table entity.
     isRequired: true
     types:
     - <xref:azure.data.tables.TableEntity>
-    - <xref:Dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
@@ -487,7 +492,7 @@ methods:
   - "Updating an already exiting entity in a Table<!--[!code-python[Main](les\\sample_update_upsert_merge_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Update the entity\n   created[\"text\"] = \"NewMarker\"\n   table.update_entity(mode=UpdateMode.REPLACE,\
@@ -502,14 +507,13 @@ methods:
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
   signature: 'upsert_entity(entity: TableEntity | Mapping[str, Any], mode: UpdateMode
-    = UpdateMode.MERGE, **kwargs: Any) -> Dict[str, str]'
+    = UpdateMode.MERGE, **kwargs) -> Dict[str, str]'
   parameters:
   - name: entity
     description: The properties for the table entity.
     isRequired: true
     types:
     - <xref:azure.data.tables.TableEntity>
-    - <xref:Dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
@@ -525,7 +529,7 @@ methods:
   - "Update/merge or insert an entity into a table<!--[!code-python[Main](les\\sample_update_upsert_merge_entities.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\164\\\\azure-data-tables-12.4.2\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\sample_update_upsert_merge_entities.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Try Replace and insert on fail\n   insert_entity = table.upsert_entity(mode=UpdateMode.REPLACE,\
@@ -533,3 +537,15 @@ methods:
     \   created[\"text\"] = \"NewMarker\"\n   merged_entity = table.upsert_entity(mode=UpdateMode.MERGE,\
     \ entity=entity)\n   print(\"Merged entity: {}\".format(merged_entity))\n\n  \
     \ ````\n"
+attributes:
+- uid: azure.data.tables.TableClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.data.tables.TableClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.data.tables.location_mode>.'

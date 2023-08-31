@@ -7,7 +7,7 @@ inheritances:
 - azure.core.pipeline.policies._base.SansIOHTTPPolicy
 summary: The policy to create spans for Azure calls.
 constructor:
-  syntax: DistributedTracingPolicy(**kwargs)
+  syntax: 'DistributedTracingPolicy(**kwargs: Any)'
   parameters:
   - name: network_span_namer
     description: A callable to customize the span name
@@ -17,31 +17,42 @@ methods:
 - uid: azure.core.pipeline.policies.DistributedTracingPolicy.end_span
   name: end_span
   summary: Ends the span that is tracing the network and updates its status.
-  signature: 'end_span(request: PipelineRequest, response: HttpResponseType | None
-    = None, exc_info: Tuple | None = None) -> None'
+  signature: 'end_span(request: PipelineRequest[HTTPRequestType], response: HTTPResponseType
+    | None = None, exc_info: Tuple[Type[BaseException], BaseException, TracebackType]
+    | Tuple[None, None, None] | None = None) -> None'
   parameters:
   - name: request
+    description: The PipelineRequest object
     isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
   - name: response
+    description: The HttpResponse object
     defaultValue: None
+    types:
+    - <xref:azure.core.rest.HTTPResponse>
+    - <xref:azure.core.pipeline.transport.HttpResponse>
   - name: exc_info
+    description: The exception information
     defaultValue: None
+    types:
+    - <xref:tuple>
 - uid: azure.core.pipeline.policies.DistributedTracingPolicy.on_exception
   name: on_exception
-  signature: 'on_exception(request: PipelineRequest) -> None'
+  signature: 'on_exception(request: PipelineRequest[HTTPRequestType]) -> None'
   parameters:
   - name: request
     isRequired: true
 - uid: azure.core.pipeline.policies.DistributedTracingPolicy.on_request
   name: on_request
-  signature: 'on_request(request: PipelineRequest) -> None'
+  signature: 'on_request(request: PipelineRequest[HTTPRequestType]) -> None'
   parameters:
   - name: request
     isRequired: true
 - uid: azure.core.pipeline.policies.DistributedTracingPolicy.on_response
   name: on_response
-  signature: 'on_response(request: PipelineRequest, response: PipelineResponse) ->
-    None'
+  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
+    HTTPResponseType]) -> None'
   parameters:
   - name: request
     isRequired: true

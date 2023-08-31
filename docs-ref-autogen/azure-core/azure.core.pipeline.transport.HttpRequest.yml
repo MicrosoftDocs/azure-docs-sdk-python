@@ -5,13 +5,14 @@ fullName: azure.core.pipeline.transport.HttpRequest
 module: azure.core.pipeline.transport
 inheritances:
 - builtins.object
-summary: 'Represents a HTTP request.
+summary: 'Represents an HTTP request.
 
 
   URL can be given without query parameters, to be added later using "format_parameters".'
 constructor:
   syntax: 'HttpRequest(method: str, url: str, headers: Mapping[str, str] | None =
-    None, files: Any | None = None, data: bytes | Dict[str, str | int] | None = None)'
+    None, files: Any | None = None, data: bytes | str | Dict[str, str | int] | None
+    = None)'
   parameters:
   - name: method
     description: HTTP method (GET, HEAD, etc.)
@@ -27,16 +28,32 @@ constructor:
     description: HTTP headers
     defaultValue: None
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: files
-    description: Files list.
+    description: 'Dictionary of `''name'': file-like-objects` (or `{''name'': file-tuple}`)
+      for multipart
+
+      encoding upload. `file-tuple` can be a 2-tuple `(''filename'', fileobj)`, 3-tuple
+
+      `(''filename'', fileobj, ''content_type'')` or a 4-tuple
+
+      `(''filename'', fileobj, ''content_type'', custom_headers)`, where `''content_type''`
+      is a string
+
+      defining the content type of the given file and `custom_headers`
+
+      a dict-like object containing additional headers to add for the file.'
     defaultValue: None
+    types:
+    - <xref:dict>[<xref:str>, <xref:tuple>[<xref:str>, <xref:typing.IO>, <xref:str>,
+      <xref:dict>]]
+    - <xref:dict>[<xref:str>, <xref:typing.IO>]
   - name: data
     description: Body to be sent.
     defaultValue: None
     types:
     - <xref:bytes>
-    - <xref:dict >(<xref:for form>)
+    - <xref:dict> (<xref:for form>)
 methods:
 - uid: azure.core.pipeline.transport.HttpRequest.format_parameters
   name: format_parameters
@@ -79,6 +96,7 @@ methods:
   summary: Serialize this request using application/http spec.
   signature: serialize() -> bytes
   return:
+    description: The requests serialized as HTTP low-level message in bytes.
     types:
     - <xref:bytes>
 - uid: azure.core.pipeline.transport.HttpRequest.set_bytes_body
@@ -87,7 +105,7 @@ methods:
 
 
     Will set content-length.'
-  signature: set_bytes_body(data)
+  signature: 'set_bytes_body(data: bytes) -> None'
   parameters:
   - name: data
     description: The request field data.
@@ -97,7 +115,7 @@ methods:
 - uid: azure.core.pipeline.transport.HttpRequest.set_formdata_body
   name: set_formdata_body
   summary: Set form-encoded data as the body of the request.
-  signature: set_formdata_body(data=None)
+  signature: 'set_formdata_body(data: Dict[str, str] | None = None) -> None'
   parameters:
   - name: data
     description: The request field data.
@@ -107,11 +125,13 @@ methods:
 - uid: azure.core.pipeline.transport.HttpRequest.set_json_body
   name: set_json_body
   summary: Set a JSON-friendly object as the body of the request.
-  signature: set_json_body(data)
+  signature: 'set_json_body(data: Any) -> None'
   parameters:
   - name: data
     description: A JSON serializable object
     isRequired: true
+    types:
+    - <xref:dict>
 - uid: azure.core.pipeline.transport.HttpRequest.set_multipart_mixed
   name: set_multipart_mixed
   summary: 'Set the part of a multipart/mixed.
@@ -131,8 +151,13 @@ methods:
     policy
 
     configuration.'
-  signature: 'set_multipart_mixed(*requests: HttpRequest, **kwargs) -> None'
+  signature: 'set_multipart_mixed(*requests: HttpRequest, **kwargs: Any) -> None'
   parameters:
+  - name: requests
+    description: The requests to add to the multipart/mixed
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.transport.HttpRequest>
   - name: policies
     description: SansIOPolicy to apply at preparation time
     types:
@@ -141,13 +166,10 @@ methods:
     description: Optional boundary
     types:
     - <xref:str>
-  - name: requests
-    description: HttpRequests object
-    isRequired: true
 - uid: azure.core.pipeline.transport.HttpRequest.set_streamed_data_body
   name: set_streamed_data_body
   summary: Set a streamable data body.
-  signature: set_streamed_data_body(data)
+  signature: 'set_streamed_data_body(data: Any) -> None'
   parameters:
   - name: data
     description: The request field data.
@@ -159,7 +181,7 @@ methods:
 - uid: azure.core.pipeline.transport.HttpRequest.set_text_body
   name: set_text_body
   summary: Set a text as body of the request.
-  signature: set_text_body(data)
+  signature: 'set_text_body(data: str) -> None'
   parameters:
   - name: data
     description: A text to send as body.
@@ -169,7 +191,7 @@ methods:
 - uid: azure.core.pipeline.transport.HttpRequest.set_xml_body
   name: set_xml_body
   summary: Set an XML element tree as the body of the request.
-  signature: set_xml_body(data)
+  signature: 'set_xml_body(data: Any) -> None'
   parameters:
   - name: data
     description: The request field data.
@@ -181,12 +203,16 @@ attributes:
   name: body
   summary: Alias to data.
   return:
+    description: The body of the request.
     types:
     - <xref:bytes>
+    - <xref:str>
     - <xref:dict>
+    - <xref:None>
 - uid: azure.core.pipeline.transport.HttpRequest.query
   name: query
   summary: The query parameters of the request as a dict.
   return:
+    description: The query parameters of the request as a dict.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]

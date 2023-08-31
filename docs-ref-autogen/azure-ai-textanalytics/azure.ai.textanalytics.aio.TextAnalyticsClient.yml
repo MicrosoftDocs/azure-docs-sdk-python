@@ -21,7 +21,8 @@ summary: 'The Language service API is a suite of natural language processing (NL
   [https://docs.microsoft.com/azure/cognitive-services/language-service/overview](https://docs.microsoft.com/azure/cognitive-services/language-service/overview)'
 constructor:
   syntax: 'TextAnalyticsClient(endpoint: str, credential: AzureKeyCredential | AsyncTokenCredential,
-    **kwargs: Any)'
+    *, default_language: str | None = None, default_country_hint: str | None = None,
+    api_version: str | TextAnalyticsApiVersion | None = None, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: 'Supported Cognitive Services or Language resource
@@ -67,24 +68,25 @@ examples:
 - "Creating the TextAnalyticsClient with endpoint and API key.<!--[!code-python[Main](les\\\
   async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
   \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"\
   preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-  \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-  \   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"\
-  ]\n\n   text_analytics_client = TextAnalyticsClient(endpoint, AzureKeyCredential(key))\n\
-  \n   ````\n\nCreating the TextAnalyticsClient with endpoint and token credential\
-  \ from Azure Active Directory.<!--[!code-python[Main](les\\async_samples\\sample_authentication_async.py\
-  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  114\\\\azure-ai-textanalytics-5.2.1\\\\samples\\\\async_samples\\\\sample_authentication_async.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.textanalytics.aio\
-  \ import TextAnalyticsClient\n   from azure.identity.aio import DefaultAzureCredential\n\
-  \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   credential = DefaultAzureCredential()\n\
-  \n   text_analytics_client = TextAnalyticsClient(endpoint, credential=credential)\n\
-  \n   ````\n"
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from\
+  \ azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+  \ import TextAnalyticsClient\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+  ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint,\
+  \ AzureKeyCredential(key))\n\n   ````\n\nCreating the TextAnalyticsClient with endpoint\
+  \ and token credential from Azure Active Directory.<!--[!code-python[Main](les\\\
+  async_samples\\sample_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\"\
+  : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
+  \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from\
+  \ azure.ai.textanalytics.aio import TextAnalyticsClient\n   from azure.identity.aio\
+  \ import DefaultAzureCredential\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+  ]\n   credential = DefaultAzureCredential()\n\n   text_analytics_client = TextAnalyticsClient(endpoint,\
+  \ credential=credential)\n\n   ````\n"
 methods:
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.analyze_sentiment
   name: analyze_sentiment
@@ -106,7 +108,10 @@ methods:
     New in version v3.1: The *show_opinion_mining*, *disable_service_logs*, and *string_index_type*
     keyword arguments.'
   signature: 'async analyze_sentiment(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], **kwargs: Any) -> List[AnalyzeSentimentResult | DocumentError]'
+    | List[Dict[str, str]], *, disable_service_logs: bool | None = None, language:
+    str | None = None, model_version: str | None = None, show_opinion_mining: bool
+    | None = None, show_stats: bool | None = None, string_index_type: str | None =
+    None, **kwargs: Any) -> List[AnalyzeSentimentResult | DocumentError]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -153,11 +158,10 @@ methods:
     types:
     - <xref:str>
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -221,13 +225,13 @@ methods:
   - "Analyze sentiment in a batch of documents.<!--[!code-python[Main](les\\async_samples\\\
     sample_analyze_sentiment_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_analyze_sentiment_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
     \ credential=AzureKeyCredential(key))\n\n   documents = [\n       \"\"\"I had\
     \ the best day of my life. I decided to go sky-diving and it made me appreciate\
     \ my whole life so much more.\n       I developed a deep-connection with my instructor\
@@ -245,6 +249,176 @@ methods:
     \ the sentiment of each of these documents\")\n   for idx, doc in enumerate(docs):\n\
     \       print(f\"Document text: {documents[idx]}\")\n       print(f\"Overall sentiment:\
     \ {doc.sentiment}\")\n\n   ````\n"
+- uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_abstract_summary
+  name: begin_abstract_summary
+  summary: 'Start a long-running abstractive summarization operation.
+
+
+    For a conceptual discussion of abstractive summarization, see the service documentation:
+
+    [https://learn.microsoft.com/azure/cognitive-services/language-service/summarization/overview](https://learn.microsoft.com/azure/cognitive-services/language-service/summarization/overview)
+
+
+    New in version 2023-04-01: The *begin_abstract_summary* client method.'
+  signature: 'async begin_abstract_summary(documents: List[str] | List[TextDocumentInput]
+    | List[Dict[str, str]], *, continuation_token: str | None = None, disable_service_logs:
+    bool | None = None, display_name: str | None = None, language: str | None = None,
+    polling_interval: int | None = None, show_stats: bool | None = None, model_version:
+    str | None = None, string_index_type: str | None = None, sentence_count: int |
+    None = None, **kwargs: Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[AbstractiveSummaryResult
+    | DocumentError]]'
+  parameters:
+  - name: documents
+    description: 'The set of documents to process as part of this batch.
+
+      If you wish to specify the ID and language on a per-item basis you must
+
+      use as input a list[<xref:azure.ai.textanalytics.TextDocumentInput>] or a list
+      of
+
+      dict representations of <xref:azure.ai.textanalytics.TextDocumentInput>, like
+
+      *{"id": "1", "language": "en", "text": "hello world"}*.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.ai.textanalytics.TextDocumentInput>]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:str>]]
+  - name: language
+    description: 'The 2 letter ISO 639-1 representation of language for the
+
+      entire batch. For example, use "en" for English; "es" for Spanish etc.
+
+      If not set, uses "en" for English as default.
+
+      Per-document language will take precedence over whole batch language.
+
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
+    types:
+    - <xref:str>
+  - name: show_stats
+    description: If set to true, response will contain document level statistics.
+    types:
+    - <xref:bool>
+  - name: sentence_count
+    description: It controls the approximate number of sentences in the output summaries.
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  - name: model_version
+    description: 'The model version to use for the analysis, e.g. "latest".
+
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: string_index_type
+    description: Specifies the method used to interpret string offsets.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: disable_service_logs
+    description: 'If set to true, you opt-out of having your text input
+
+      logged on the service side for troubleshooting. By default, the Language service
+      logs your
+
+      input text for 48 hours, solely to allow for troubleshooting issues in providing
+      you with
+
+      the service''s natural language processing functions. Setting this parameter
+      to true,
+
+      disables input logging and may limit our ability to remediate issues that occur.
+      Please see
+
+      Cognitive Services Compliance and Privacy notes at [https://aka.ms/cs-compliance](https://aka.ms/cs-compliance)
+      for
+
+      additional details, and Microsoft Responsible AI principles at
+
+      [https://www.microsoft.com/ai/responsible-ai](https://www.microsoft.com/ai/responsible-ai).'
+    types:
+    - <xref:bool>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: 'Call *continuation_token()* on the poller object to save the long-running
+      operation (LRO)
+
+      state into an opaque token. Pass the value as the *continuation_token* keyword
+      argument
+
+      to restart the LRO from a saved state.'
+    types:
+    - <xref:str>
+  - name: display_name
+    description: An optional display name to set for the requested analysis.
+    types:
+    - <xref:str>
+  return:
+    description: 'An instance of an AsyncTextAnalysisLROPoller. Call *result()* on
+      the this
+
+      object to return a heterogeneous pageable of
+
+      <xref:azure.ai.textanalytics.AbstractiveSummaryResult> and
+
+      <xref:azure.ai.textanalytics.DocumentError>.'
+    types:
+    - <xref:azure.ai.textanalytics.AsyncTextAnalysisLROPoller>[<xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.textanalytics.AbstractiveSummaryResult>
+    - <xref:azure.ai.textanalytics.DocumentError>]]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Perform abstractive summarization on a batch of documents.<!--[!code-python[Main](les\\\
+    async_samples\\sample_abstract_summary_async.py )]-->\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
+    \\samples\\\\async_samples\\\\sample_abstract_summary_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n\
+    \       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n   )\n\
+    \n   document = [\n       \"At Microsoft, we have been on a quest to advance AI\
+    \ beyond existing techniques, by taking a more holistic, \"\n       \"human-centric\
+    \ approach to learning and understanding. As Chief Technology Officer of Azure\
+    \ AI Cognitive \"\n       \"Services, I have been working with a team of amazing\
+    \ scientists and engineers to turn this quest into a \"\n       \"reality. In\
+    \ my role, I enjoy a unique perspective in viewing the relationship among three\
+    \ attributes of \"\n       \"human cognition: monolingual text (X), audio or visual\
+    \ sensory signals, (Y) and multilingual (Z). At the \"\n       \"intersection\
+    \ of all three, there's magic-what we call XYZ-code as illustrated in Figure 1-a\
+    \ joint \"\n       \"representation to create more powerful AI that can speak,\
+    \ hear, see, and understand humans better. \"\n       \"We believe XYZ-code will\
+    \ enable us to fulfill our long-term vision: cross-domain transfer learning, \"\
+    \n       \"spanning modalities and languages. The goal is to have pretrained models\
+    \ that can jointly learn \"\n       \"representations to support a broad range\
+    \ of downstream AI tasks, much in the way humans do today. \"\n       \"Over the\
+    \ past five years, we have achieved human performance on benchmarks in conversational\
+    \ speech \"\n       \"recognition, machine translation, conversational question\
+    \ answering, machine reading comprehension, \"\n       \"and image captioning.\
+    \ These five breakthroughs provided us with strong signals toward our more ambitious\
+    \ \"\n       \"aspiration to produce a leap in AI capabilities, achieving multisensory\
+    \ and multilingual learning that \"\n       \"is closer in line with how humans\
+    \ learn and understand. I believe the joint XYZ-code is a foundational \"\n  \
+    \     \"component of this aspiration, if grounded with external knowledge sources\
+    \ in the downstream AI tasks.\"\n   ]\n   async with text_analytics_client:\n\
+    \       poller = await text_analytics_client.begin_abstract_summary(document)\n\
+    \       abstract_summary_results = await poller.result()\n       async for result\
+    \ in abstract_summary_results:\n           if result.kind == \"AbstractiveSummarization\"\
+    :\n               print(\"Summaries abstracted:\")\n               [print(f\"\
+    {summary.text}\\n\") for summary in result.summaries]\n           elif result.is_error\
+    \ is True:\n               print(\"...Is an error with code '{}' and message '{}'\"\
+    .format(\n                   result.error.code, result.error.message\n       \
+    \        ))\n\n   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_analyze_actions
   name: begin_analyze_actions
   summary: 'Start a long-running operation to perform a variety of text analysis actions
@@ -281,15 +455,25 @@ methods:
 
     corresponding *RecognizeCustomEntitiesResult*, *ClassifyDocumentResult*,
 
-    and *AnalyzeHealthcareEntitiesResult* result objects'
+    and *AnalyzeHealthcareEntitiesResult* result objects
+
+
+    New in version 2023-04-01: The *ExtractiveSummaryAction* and *AbstractiveSummaryAction*
+    input options and the corresponding
+
+    *ExtractiveSummaryResult* and *AbstractiveSummaryResult* result objects.'
   signature: 'async begin_analyze_actions(documents: List[str] | List[TextDocumentInput]
     | List[Dict[str, str]], actions: List[RecognizeEntitiesAction | RecognizeLinkedEntitiesAction
     | RecognizePiiEntitiesAction | ExtractKeyPhrasesAction | AnalyzeSentimentAction
     | RecognizeCustomEntitiesAction | SingleLabelClassifyAction | MultiLabelClassifyAction
-    | AnalyzeHealthcareEntitiesAction], **kwargs: Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[List[RecognizeEntitiesResult
+    | AnalyzeHealthcareEntitiesAction | ExtractiveSummaryAction | AbstractiveSummaryAction],
+    *, continuation_token: str | None = None, display_name: str | None = None, language:
+    str | None = None, polling_interval: int | None = None, show_stats: bool | None
+    = None, **kwargs: Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[List[RecognizeEntitiesResult
     | RecognizeLinkedEntitiesResult | RecognizePiiEntitiesResult | ExtractKeyPhrasesResult
     | AnalyzeSentimentResult | RecognizeCustomEntitiesResult | ClassifyDocumentResult
-    | AnalyzeHealthcareEntitiesResult | DocumentError]]]'
+    | AnalyzeHealthcareEntitiesResult | ExtractiveSummaryResult | AbstractiveSummaryResult
+    | DocumentError]]]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -324,7 +508,9 @@ methods:
     - <xref:azure.ai.textanalytics.RecognizeCustomEntitiesAction>
     - <xref:azure.ai.textanalytics.SingleLabelClassifyAction>
     - <xref:azure.ai.textanalytics.MultiLabelClassifyAction>
-    - <xref:azure.ai.textanalytics.AnalyzeHealthcareEntitiesAction>]
+    - <xref:azure.ai.textanalytics.AnalyzeHealthcareEntitiesAction>
+    - <xref:azure.ai.textanalytics.AbstractiveSummaryAction>
+    - <xref:azure.ai.textanalytics.ExtractiveSummaryAction>]
   - name: display_name
     description: An optional display name to set for the requested analysis.
     types:
@@ -334,12 +520,12 @@ methods:
 
       entire batch. For example, use "en" for English; "es" for Spanish etc.
 
-      If not set, uses "en" for English as default. Per-document language will
+      If not set, uses "en" for English as default.
 
-      take precedence over whole batch language. See [https://aka.ms/talangs](https://aka.ms/talangs)
-      for
+      Per-document language will take precedence over whole batch language.
 
-      supported languages in Language API.'
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
     types:
     - <xref:str>
   - name: show_stats
@@ -398,6 +584,8 @@ methods:
     - <xref:azure.ai.textanalytics.RecognizeCustomEntitiesResult>
     - <xref:azure.ai.textanalytics.ClassifyDocumentResult>
     - <xref:azure.ai.textanalytics.AnalyzeHealthcareEntitiesResult>
+    - <xref:azure.ai.textanalytics.ExtractiveSummaryResult>
+    - <xref:azure.ai.textanalytics.AbstractiveSummaryResult>
     - <xref:azure.ai.textanalytics.DocumentError>]]]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
@@ -408,57 +596,58 @@ methods:
     \ over\na batch of documents.<!--[!code-python[Main](les\\async_samples\\sample_analyze_actions_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\\samples\\\\async_samples\\\
-    \\sample_analyze_actions_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\\samples\\\\async_samples\\\\\
+    sample_analyze_actions_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
-    \   from azure.ai.textanalytics.aio import TextAnalyticsClient\n   from azure.ai.textanalytics\
-    \ import (\n       RecognizeEntitiesAction,\n       RecognizeLinkedEntitiesAction,\n\
-    \       RecognizePiiEntitiesAction,\n       ExtractKeyPhrasesAction,\n       AnalyzeSentimentAction,\n\
-    \   )\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n   \
-    \    endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n   )\n\n\
-    \   documents = [\n       'We went to Contoso Steakhouse located at midtown NYC\
-    \ last week for a dinner party, and we adore the spot! '\n       'They provide\
-    \ marvelous food and they have a great menu. The chief cook happens to be the\
-    \ owner (I think his name is John Doe) '\n       'and he is super nice, coming\
-    \ out of the kitchen and greeted us all.'\n       ,\n\n       'We enjoyed very\
-    \ much dining in the place! '\n       'The Sirloin steak I ordered was tender\
-    \ and juicy, and the place was impeccably clean. You can even pre-order from their\
-    \ '\n       'online menu at www.contososteakhouse.com, call 312-555-0176 or send\
-    \ email to order@contososteakhouse.com! '\n       'The only complaint I have is\
-    \ the food didn\\'t come fast enough. Overall I highly recommend it!'\n   ]\n\n\
-    \   async with text_analytics_client:\n       poller = await text_analytics_client.begin_analyze_actions(\n\
-    \           documents,\n           display_name=\"Sample Text Analysis\",\n  \
-    \         actions=[\n               RecognizeEntitiesAction(),\n             \
-    \  RecognizePiiEntitiesAction(),\n               ExtractKeyPhrasesAction(),\n\
-    \               RecognizeLinkedEntitiesAction(),\n               AnalyzeSentimentAction(),\n\
-    \           ]\n       )\n\n       pages = await poller.result()\n\n       # To\
-    \ enumerate / zip for async, unless you install a third party library,\n     \
-    \  # you have to read in all of the elements into memory first.\n       # If you're\
-    \ not looking to enumerate / zip, we recommend you just asynchronously\n     \
-    \  # loop over it immediately, without going through this step of reading them\
-    \ into memory\n       document_results = []\n       async for page in pages:\n\
-    \           document_results.append(page)\n\n   for doc, action_results in zip(documents,\
-    \ document_results):\n       print(f\"\\nDocument text: {doc}\")\n       for result\
-    \ in action_results:\n           if result.kind == \"EntityRecognition\":\n  \
-    \             print(\"...Results of Recognize Entities Action:\")\n          \
-    \     for entity in result.entities:\n                   print(f\"......Entity:\
-    \ {entity.text}\")\n                   print(f\".........Category: {entity.category}\"\
-    )\n                   print(f\".........Confidence Score: {entity.confidence_score}\"\
-    )\n                   print(f\".........Offset: {entity.offset}\")\n\n       \
-    \    elif result.kind == \"PiiEntityRecognition\":\n               print(\"...Results\
-    \ of Recognize PII Entities action:\")\n               for entity in result.entities:\n\
+    : false} -->\n\n````python\n\n   import os\n   from azure.core.credentials import\
+    \ AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
+    \   from azure.ai.textanalytics import (\n       RecognizeEntitiesAction,\n  \
+    \     RecognizeLinkedEntitiesAction,\n       RecognizePiiEntitiesAction,\n   \
+    \    ExtractKeyPhrasesAction,\n       AnalyzeSentimentAction,\n   )\n\n   endpoint\
+    \ = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"\
+    ]\n\n   text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\n\
+    \       credential=AzureKeyCredential(key),\n   )\n\n   documents = [\n      \
+    \ 'We went to Contoso Steakhouse located at midtown NYC last week for a dinner\
+    \ party, and we adore the spot! '\n       'They provide marvelous food and they\
+    \ have a great menu. The chief cook happens to be the owner (I think his name\
+    \ is John Doe) '\n       'and he is super nice, coming out of the kitchen and\
+    \ greeted us all.'\n       ,\n\n       'We enjoyed very much dining in the place!\
+    \ '\n       'The Sirloin steak I ordered was tender and juicy, and the place was\
+    \ impeccably clean. You can even pre-order from their '\n       'online menu at\
+    \ www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com!\
+    \ '\n       'The only complaint I have is the food didn\\'t come fast enough.\
+    \ Overall I highly recommend it!'\n   ]\n\n   async with text_analytics_client:\n\
+    \       poller = await text_analytics_client.begin_analyze_actions(\n        \
+    \   documents,\n           display_name=\"Sample Text Analysis\",\n          \
+    \ actions=[\n               RecognizeEntitiesAction(),\n               RecognizePiiEntitiesAction(),\n\
+    \               ExtractKeyPhrasesAction(),\n               RecognizeLinkedEntitiesAction(),\n\
+    \               AnalyzeSentimentAction(),\n           ]\n       )\n\n       pages\
+    \ = await poller.result()\n\n       # To enumerate / zip for async, unless you\
+    \ install a third party library,\n       # you have to read in all of the elements\
+    \ into memory first.\n       # If you're not looking to enumerate / zip, we recommend\
+    \ you just asynchronously\n       # loop over it immediately, without going through\
+    \ this step of reading them into memory\n       document_results = []\n      \
+    \ async for page in pages:\n           document_results.append(page)\n\n   for\
+    \ doc, action_results in zip(documents, document_results):\n       print(f\"\\\
+    nDocument text: {doc}\")\n       for result in action_results:\n           if\
+    \ result.kind == \"EntityRecognition\":\n               print(\"...Results of\
+    \ Recognize Entities Action:\")\n               for entity in result.entities:\n\
     \                   print(f\"......Entity: {entity.text}\")\n                \
     \   print(f\".........Category: {entity.category}\")\n                   print(f\"\
-    .........Confidence Score: {entity.confidence_score}\")\n\n           elif result.kind\
-    \ == \"KeyPhraseExtraction\":\n               print(\"...Results of Extract Key\
-    \ Phrases action:\")\n               print(f\"......Key Phrases: {result.key_phrases}\"\
-    )\n\n           elif result.kind == \"EntityLinking\":\n               print(\"\
-    ...Results of Recognize Linked Entities action:\")\n               for linked_entity\
-    \ in result.entities:\n                   print(f\"......Entity name: {linked_entity.name}\"\
-    )\n                   print(f\".........Data source: {linked_entity.data_source}\"\
-    )\n                   print(f\".........Data source language: {linked_entity.language}\"\
+    .........Confidence Score: {entity.confidence_score}\")\n                   print(f\"\
+    .........Offset: {entity.offset}\")\n\n           elif result.kind == \"PiiEntityRecognition\"\
+    :\n               print(\"...Results of Recognize PII Entities action:\")\n  \
+    \             for pii_entity in result.entities:\n                   print(f\"\
+    ......Entity: {pii_entity.text}\")\n                   print(f\".........Category:\
+    \ {pii_entity.category}\")\n                   print(f\".........Confidence Score:\
+    \ {pii_entity.confidence_score}\")\n\n           elif result.kind == \"KeyPhraseExtraction\"\
+    :\n               print(\"...Results of Extract Key Phrases action:\")\n     \
+    \          print(f\"......Key Phrases: {result.key_phrases}\")\n\n           elif\
+    \ result.kind == \"EntityLinking\":\n               print(\"...Results of Recognize\
+    \ Linked Entities action:\")\n               for linked_entity in result.entities:\n\
+    \                   print(f\"......Entity name: {linked_entity.name}\")\n    \
+    \               print(f\".........Data source: {linked_entity.data_source}\")\n\
+    \                   print(f\".........Data source language: {linked_entity.language}\"\
     )\n                   print(\n                       f\".........Data source entity\
     \ ID: {linked_entity.data_source_entity_id}\"\n                   )\n        \
     \           print(f\".........Data source URL: {linked_entity.url}\")\n      \
@@ -474,7 +663,7 @@ methods:
     \           neutral={result.confidence_scores.neutral}; \\\n                 \
     \  negative={result.confidence_scores.negative} \\n\"\n               )\n\n  \
     \         elif result.is_error is True:\n               print(\n             \
-    \      f\"...Is an error with code '{result.code}' and message '{result.message}'\"\
+    \      f\"...Is an error with code '{result.error.code}' and message '{result.error.message}'\"\
     \n               )\n\n       print(\"------------------------------------------\"\
     )\n\n\n   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_analyze_healthcare_entities
@@ -501,7 +690,10 @@ methods:
 
     New in version 2022-05-01: The *display_name* keyword argument.'
   signature: 'async begin_analyze_healthcare_entities(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], **kwargs: Any) -> AsyncAnalyzeHealthcareEntitiesLROPoller[AsyncItemPaged[AnalyzeHealthcareEntitiesResult
+    | List[Dict[str, str]], *, continuation_token: str | None = None, disable_service_logs:
+    bool | None = None, display_name: str | None = None, language: str | None = None,
+    model_version: str | None = None, polling_interval: int | None = None, show_stats:
+    bool | None = None, string_index_type: str | None = None, **kwargs: Any) -> AsyncAnalyzeHealthcareEntitiesLROPoller[AsyncItemPaged[AnalyzeHealthcareEntitiesResult
     | DocumentError]]'
   parameters:
   - name: documents
@@ -521,11 +713,10 @@ methods:
     - <xref:list>[<xref:azure.ai.textanalytics.TextDocumentInput>]
     - <xref:list>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -539,12 +730,12 @@ methods:
 
       entire batch. For example, use "en" for English; "es" for Spanish etc.
 
-      If not set, uses "en" for English as default. Per-document language will
+      If not set, uses "en" for English as default.
 
-      take precedence over whole batch language. See [https://aka.ms/talangs](https://aka.ms/talangs)
-      for
+      Per-document language will take precedence over whole batch language.
 
-      supported languages in Text Analytics API.'
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
     types:
     - <xref:str>
   - name: display_name
@@ -615,16 +806,16 @@ methods:
   - "Analyze healthcare entities in a batch of documents.<!--[!code-python[Main](les\\\
     async_samples\\sample_analyze_healthcare_entities_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_analyze_healthcare_entities_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
-    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics\
-    \ import HealthcareEntityRelation\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n   \
-    \    endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n   )\n\n\
-    \   documents = [\n       \"\"\"\n       Patient needs to take 100 mg of ibuprofen,\
+    \   import typing\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.ai.textanalytics import HealthcareEntityRelation\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n\
+    \       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n   )\n\
+    \n   documents = [\n       \"\"\"\n       Patient needs to take 100 mg of ibuprofen,\
     \ and 3 mg of potassium. Also needs to take\n       10 mg of Zocor.\n       \"\
     \"\",\n       \"\"\"\n       Patient needs to take 50 mg of ibuprofen, and 2 mg\
     \ of Coumadin.\n       \"\"\"\n   ]\n\n   async with text_analytics_client:\n\
@@ -651,6 +842,180 @@ methods:
     )\n   dosage_of_medication_relations = [\n       entity_relation\n       for doc\
     \ in docs\n       for entity_relation in doc.entity_relations if entity_relation.relation_type\
     \ == HealthcareEntityRelation.DOSAGE_OF_MEDICATION\n   ]\n\n   ````\n"
+- uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_extract_summary
+  name: begin_extract_summary
+  summary: 'Start a long-running extractive summarization operation.
+
+
+    For a conceptual discussion of extractive summarization, see the service documentation:
+
+    [https://learn.microsoft.com/azure/cognitive-services/language-service/summarization/overview](https://learn.microsoft.com/azure/cognitive-services/language-service/summarization/overview)
+
+
+    New in version 2023-04-01: The *begin_extract_summary* client method.'
+  signature: 'async begin_extract_summary(documents: List[str] | List[TextDocumentInput]
+    | List[Dict[str, str]], *, continuation_token: str | None = None, disable_service_logs:
+    bool | None = None, display_name: str | None = None, language: str | None = None,
+    polling_interval: int | None = None, show_stats: bool | None = None, model_version:
+    str | None = None, string_index_type: str | None = None, max_sentence_count: int
+    | None = None, order_by: Literal[''Rank'', ''Offset''] | None = None, **kwargs:
+    Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[ExtractiveSummaryResult | DocumentError]]'
+  parameters:
+  - name: documents
+    description: 'The set of documents to process as part of this batch.
+
+      If you wish to specify the ID and language on a per-item basis you must
+
+      use as input a list[<xref:azure.ai.textanalytics.TextDocumentInput>] or a list
+      of
+
+      dict representations of <xref:azure.ai.textanalytics.TextDocumentInput>, like
+
+      *{"id": "1", "language": "en", "text": "hello world"}*.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.ai.textanalytics.TextDocumentInput>]
+    - <xref:list>[<xref:dict>[<xref:str>, <xref:str>]]
+  - name: language
+    description: 'The 2 letter ISO 639-1 representation of language for the
+
+      entire batch. For example, use "en" for English; "es" for Spanish etc.
+
+      If not set, uses "en" for English as default.
+
+      Per-document language will take precedence over whole batch language.
+
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
+    types:
+    - <xref:str>
+  - name: show_stats
+    description: If set to true, response will contain document level statistics.
+    types:
+    - <xref:bool>
+  - name: max_sentence_count
+    description: Maximum number of sentences to return. Defaults to 3.
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  - name: order_by
+    description: 'Possible values include: "Offset", "Rank". Default value: "Offset".'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: model_version
+    description: 'The model version to use for the analysis, e.g. "latest".
+
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
+
+      See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: string_index_type
+    description: Specifies the method used to interpret string offsets.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: disable_service_logs
+    description: 'If set to true, you opt-out of having your text input
+
+      logged on the service side for troubleshooting. By default, the Language service
+      logs your
+
+      input text for 48 hours, solely to allow for troubleshooting issues in providing
+      you with
+
+      the service''s natural language processing functions. Setting this parameter
+      to true,
+
+      disables input logging and may limit our ability to remediate issues that occur.
+      Please see
+
+      Cognitive Services Compliance and Privacy notes at [https://aka.ms/cs-compliance](https://aka.ms/cs-compliance)
+      for
+
+      additional details, and Microsoft Responsible AI principles at
+
+      [https://www.microsoft.com/ai/responsible-ai](https://www.microsoft.com/ai/responsible-ai).'
+    types:
+    - <xref:bool>
+  - name: polling_interval
+    description: 'Waiting time between two polls for LRO operations
+
+      if no Retry-After header is present. Defaults to 5 seconds.'
+    types:
+    - <xref:int>
+  - name: continuation_token
+    description: 'Call *continuation_token()* on the poller object to save the long-running
+      operation (LRO)
+
+      state into an opaque token. Pass the value as the *continuation_token* keyword
+      argument
+
+      to restart the LRO from a saved state.'
+    types:
+    - <xref:str>
+  - name: display_name
+    description: An optional display name to set for the requested analysis.
+    types:
+    - <xref:str>
+  return:
+    description: 'An instance of an AsyncTextAnalysisLROPoller. Call *result()* on
+      the this
+
+      object to return a heterogeneous pageable of
+
+      <xref:azure.ai.textanalytics.ExtractiveSummaryResult> and
+
+      <xref:azure.ai.textanalytics.DocumentError>.'
+    types:
+    - <xref:azure.ai.textanalytics.AsyncTextAnalysisLROPoller>[<xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.ai.textanalytics.ExtractiveSummaryResult>
+    - <xref:azure.ai.textanalytics.DocumentError>]]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Perform extractive summarization on a batch of documents.<!--[!code-python[Main](les\\\
+    async_samples\\sample_extract_summary_async.py )]-->\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
+    \\samples\\\\async_samples\\\\sample_extract_summary_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n\
+    \       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n   )\n\
+    \n   document = [\n       \"At Microsoft, we have been on a quest to advance AI\
+    \ beyond existing techniques, by taking a more holistic, \"\n       \"human-centric\
+    \ approach to learning and understanding. As Chief Technology Officer of Azure\
+    \ AI Cognitive \"\n       \"Services, I have been working with a team of amazing\
+    \ scientists and engineers to turn this quest into a \"\n       \"reality. In\
+    \ my role, I enjoy a unique perspective in viewing the relationship among three\
+    \ attributes of \"\n       \"human cognition: monolingual text (X), audio or visual\
+    \ sensory signals, (Y) and multilingual (Z). At the \"\n       \"intersection\
+    \ of all three, there's magic-what we call XYZ-code as illustrated in Figure 1-a\
+    \ joint \"\n       \"representation to create more powerful AI that can speak,\
+    \ hear, see, and understand humans better. \"\n       \"We believe XYZ-code will\
+    \ enable us to fulfill our long-term vision: cross-domain transfer learning, \"\
+    \n       \"spanning modalities and languages. The goal is to have pretrained models\
+    \ that can jointly learn \"\n       \"representations to support a broad range\
+    \ of downstream AI tasks, much in the way humans do today. \"\n       \"Over the\
+    \ past five years, we have achieved human performance on benchmarks in conversational\
+    \ speech \"\n       \"recognition, machine translation, conversational question\
+    \ answering, machine reading comprehension, \"\n       \"and image captioning.\
+    \ These five breakthroughs provided us with strong signals toward our more ambitious\
+    \ \"\n       \"aspiration to produce a leap in AI capabilities, achieving multisensory\
+    \ and multilingual learning that \"\n       \"is closer in line with how humans\
+    \ learn and understand. I believe the joint XYZ-code is a foundational \"\n  \
+    \     \"component of this aspiration, if grounded with external knowledge sources\
+    \ in the downstream AI tasks.\"\n   ]\n\n   async with text_analytics_client:\n\
+    \       poller = await text_analytics_client.begin_extract_summary(document)\n\
+    \       extract_summary_results = await poller.result()\n       async for result\
+    \ in extract_summary_results:\n           if result.kind == \"ExtractiveSummarization\"\
+    :\n               print(\"Summary extracted: \\n{}\".format(\n               \
+    \    \" \".join([sentence.text for sentence in result.sentences]))\n         \
+    \      )\n           elif result.is_error is True:\n               print(\"...Is\
+    \ an error with code '{}' and message '{}'\".format(\n                   result.error.code,\
+    \ result.error.message\n               ))\n\n   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_multi_label_classify
   name: begin_multi_label_classify
   summary: 'Start a long-running custom multi label classification operation.
@@ -664,8 +1029,11 @@ methods:
 
     New in version 2022-05-01: The *begin_multi_label_classify* client method.'
   signature: 'async begin_multi_label_classify(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], project_name: str, deployment_name: str, **kwargs: Any)
-    -> AsyncTextAnalysisLROPoller[AsyncItemPaged[ClassifyDocumentResult | DocumentError]]'
+    | List[Dict[str, str]], project_name: str, deployment_name: str, *, continuation_token:
+    str | None = None, disable_service_logs: bool | None = None, display_name: str
+    | None = None, language: str | None = None, polling_interval: int | None = None,
+    show_stats: bool | None = None, **kwargs: Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[ClassifyDocumentResult
+    | DocumentError]]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -698,12 +1066,12 @@ methods:
 
       entire batch. For example, use "en" for English; "es" for Spanish etc.
 
-      If not set, uses "en" for English as default. Per-document language will
+      If not set, uses "en" for English as default.
 
-      take precedence over whole batch language. See [https://aka.ms/talangs](https://aka.ms/talangs)
-      for
+      Per-document language will take precedence over whole batch language.
 
-      supported languages in Language API.'
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
     types:
     - <xref:str>
   - name: show_stats
@@ -771,21 +1139,22 @@ methods:
   - "Perform multi label classification on a batch of documents.<!--[!code-python[Main](les\\\
     async_samples\\sample_multi_label_classify_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_multi_label_classify_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n   project_name = os.environ[\"MULTI_LABEL_CLASSIFY_PROJECT_NAME\"\
-    ]\n   deployment_name = os.environ[\"MULTI_LABEL_CLASSIFY_DEPLOYMENT_NAME\"]\n\
-    \   path_to_sample_document = os.path.abspath(\n       os.path.join(\n       \
-    \    os.path.abspath(__file__),\n           \"..\",\n           \"..\",\n    \
-    \       \"./text_samples/custom_classify_sample.txt\",\n       )\n   )\n\n   with\
-    \ open(path_to_sample_document) as fd:\n       document = [fd.read()]\n\n   text_analytics_client\
-    \ = TextAnalyticsClient(\n       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n\
-    \   )\n\n   async with text_analytics_client:\n       poller = await text_analytics_client.begin_multi_label_classify(\n\
-    \           document,\n           project_name=project_name,\n           deployment_name=deployment_name\n\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n   project_name = os.environ[\"\
+    MULTI_LABEL_CLASSIFY_PROJECT_NAME\"]\n   deployment_name = os.environ[\"MULTI_LABEL_CLASSIFY_DEPLOYMENT_NAME\"\
+    ]\n   path_to_sample_document = os.path.abspath(\n       os.path.join(\n     \
+    \      os.path.abspath(__file__),\n           \"..\",\n           \"..\",\n  \
+    \         \"./text_samples/custom_classify_sample.txt\",\n       )\n   )\n\n \
+    \  with open(path_to_sample_document) as fd:\n       document = [fd.read()]\n\n\
+    \   text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\n\
+    \       credential=AzureKeyCredential(key),\n   )\n\n   async with text_analytics_client:\n\
+    \       poller = await text_analytics_client.begin_multi_label_classify(\n   \
+    \        document,\n           project_name=project_name,\n           deployment_name=deployment_name\n\
     \       )\n\n       pages = await poller.result()\n       document_results = []\n\
     \       async for page in pages:\n           document_results.append(page)\n\n\
     \   for doc, classification_result in zip(document, document_results):\n     \
@@ -796,8 +1165,8 @@ methods:
     \ confidence score {}.\".format(\n                   classification.category,\
     \ classification.confidence_score\n               ))\n       elif classification_result.is_error\
     \ is True:\n           print(\"Movie plot '{}' has an error with code '{}' and\
-    \ message '{}'\".format(\n               doc, classification_result.code, classification_result.message\n\
-    \           ))\n\n   ````\n"
+    \ message '{}'\".format(\n               doc, classification_result.error.code,\
+    \ classification_result.error.message\n           ))\n\n   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_recognize_custom_entities
   name: begin_recognize_custom_entities
   summary: 'Start a long-running custom named entity recognition operation.
@@ -811,8 +1180,12 @@ methods:
 
     New in version 2022-05-01: The *begin_recognize_custom_entities* client method.'
   signature: 'async begin_recognize_custom_entities(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], project_name: str, deployment_name: str, **kwargs: Any)
-    -> AsyncTextAnalysisLROPoller[AsyncItemPaged[RecognizeCustomEntitiesResult | DocumentError]]'
+    | List[Dict[str, str]], project_name: str, deployment_name: str, *, continuation_token:
+    str | None = None, disable_service_logs: bool | None = None, display_name: str
+    | None = None, language: str | None = None, polling_interval: int | None = None,
+    show_stats: bool | None = None, string_index_type: str | None = None, **kwargs:
+    Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[RecognizeCustomEntitiesResult
+    | DocumentError]]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -845,12 +1218,12 @@ methods:
 
       entire batch. For example, use "en" for English; "es" for Spanish etc.
 
-      If not set, uses "en" for English as default. Per-document language will
+      If not set, uses "en" for English as default.
 
-      take precedence over whole batch language. See [https://aka.ms/talangs](https://aka.ms/talangs)
-      for
+      Per-document language will take precedence over whole batch language.
 
-      supported languages in Language API.'
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
     types:
     - <xref:str>
   - name: show_stats
@@ -929,18 +1302,19 @@ methods:
   - "Recognize custom entities in a batch of documents.<!--[!code-python[Main](les\\\
     async_samples\\sample_recognize_custom_entities_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_recognize_custom_entities_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n   project_name = os.environ[\"CUSTOM_ENTITIES_PROJECT_NAME\"\
-    ]\n   deployment_name = os.environ[\"CUSTOM_ENTITIES_DEPLOYMENT_NAME\"]\n   path_to_sample_document\
-    \ = os.path.abspath(\n       os.path.join(\n           os.path.abspath(__file__),\n\
-    \           \"..\",\n           \"..\",\n           \"./text_samples/custom_entities_sample.txt\"\
-    ,\n       )\n   )\n\n   text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\n\
-    \       credential=AzureKeyCredential(key),\n   )\n\n   with open(path_to_sample_document)\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n   project_name = os.environ[\"\
+    CUSTOM_ENTITIES_PROJECT_NAME\"]\n   deployment_name = os.environ[\"CUSTOM_ENTITIES_DEPLOYMENT_NAME\"\
+    ]\n   path_to_sample_document = os.path.abspath(\n       os.path.join(\n     \
+    \      os.path.abspath(__file__),\n           \"..\",\n           \"..\",\n  \
+    \         \"./text_samples/custom_entities_sample.txt\",\n       )\n   )\n\n \
+    \  text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\n \
+    \      credential=AzureKeyCredential(key),\n   )\n\n   with open(path_to_sample_document)\
     \ as fd:\n       document = [fd.read()]\n\n   async with text_analytics_client:\n\
     \       poller = await text_analytics_client.begin_recognize_custom_entities(\n\
     \           document,\n           project_name=project_name,\n           deployment_name=deployment_name\n\
@@ -952,7 +1326,7 @@ methods:
     \ entity.category, entity.confidence_score\n                       )\n       \
     \            )\n           elif custom_entities_result.is_error is True:\n   \
     \            print(\"...Is an error with code '{}' and message '{}'\".format(\n\
-    \                   custom_entities_result.code, custom_entities_result.message\n\
+    \                   custom_entities_result.error.code, custom_entities_result.error.message\n\
     \                   )\n               )\n\n   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.begin_single_label_classify
   name: begin_single_label_classify
@@ -967,8 +1341,11 @@ methods:
 
     New in version 2022-05-01: The *begin_single_label_classify* client method.'
   signature: 'async begin_single_label_classify(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], project_name: str, deployment_name: str, **kwargs: Any)
-    -> AsyncTextAnalysisLROPoller[AsyncItemPaged[ClassifyDocumentResult | DocumentError]]'
+    | List[Dict[str, str]], project_name: str, deployment_name: str, *, continuation_token:
+    str | None = None, disable_service_logs: bool | None = None, display_name: str
+    | None = None, language: str | None = None, polling_interval: int | None = None,
+    show_stats: bool | None = None, **kwargs: Any) -> AsyncTextAnalysisLROPoller[AsyncItemPaged[ClassifyDocumentResult
+    | DocumentError]]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -1001,12 +1378,12 @@ methods:
 
       entire batch. For example, use "en" for English; "es" for Spanish etc.
 
-      If not set, uses "en" for English as default. Per-document language will
+      If not set, uses "en" for English as default.
 
-      take precedence over whole batch language. See [https://aka.ms/talangs](https://aka.ms/talangs)
-      for
+      Per-document language will take precedence over whole batch language.
 
-      supported languages in Language API.'
+      See [https://aka.ms/talangs](https://aka.ms/talangs) for supported languages
+      in Language API.'
     types:
     - <xref:str>
   - name: show_stats
@@ -1074,21 +1451,22 @@ methods:
   - "Perform single label classification on a batch of documents.<!--[!code-python[Main](les\\\
     async_samples\\sample_single_label_classify_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_single_label_classify_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n   project_name = os.environ[\"SINGLE_LABEL_CLASSIFY_PROJECT_NAME\"\
-    ]\n   deployment_name = os.environ[\"SINGLE_LABEL_CLASSIFY_DEPLOYMENT_NAME\"]\n\
-    \   path_to_sample_document = os.path.abspath(\n       os.path.join(\n       \
-    \    os.path.abspath(__file__),\n           \"..\",\n           \"..\",\n    \
-    \       \"./text_samples/custom_classify_sample.txt\",\n       )\n   )\n\n   text_analytics_client\
-    \ = TextAnalyticsClient(\n       endpoint=endpoint,\n       credential=AzureKeyCredential(key),\n\
-    \   )\n\n   with open(path_to_sample_document) as fd:\n       document = [fd.read()]\n\
-    \n   async with text_analytics_client:\n       poller = await text_analytics_client.begin_single_label_classify(\n\
-    \           document,\n           project_name=project_name,\n           deployment_name=deployment_name\n\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n   project_name = os.environ[\"\
+    SINGLE_LABEL_CLASSIFY_PROJECT_NAME\"]\n   deployment_name = os.environ[\"SINGLE_LABEL_CLASSIFY_DEPLOYMENT_NAME\"\
+    ]\n   path_to_sample_document = os.path.abspath(\n       os.path.join(\n     \
+    \      os.path.abspath(__file__),\n           \"..\",\n           \"..\",\n  \
+    \         \"./text_samples/custom_classify_sample.txt\",\n       )\n   )\n\n \
+    \  text_analytics_client = TextAnalyticsClient(\n       endpoint=endpoint,\n \
+    \      credential=AzureKeyCredential(key),\n   )\n\n   with open(path_to_sample_document)\
+    \ as fd:\n       document = [fd.read()]\n\n   async with text_analytics_client:\n\
+    \       poller = await text_analytics_client.begin_single_label_classify(\n  \
+    \         document,\n           project_name=project_name,\n           deployment_name=deployment_name\n\
     \       )\n\n       pages = await poller.result()\n\n       document_results =\
     \ []\n       async for page in pages:\n           document_results.append(page)\n\
     \n   for doc, classification_result in zip(document, document_results):\n    \
@@ -1098,8 +1476,14 @@ methods:
     \               doc, classification.category, classification.confidence_score)\n\
     \           )\n       elif classification_result.is_error is True:\n         \
     \  print(\"Document text '{}' has an error with code '{}' and message '{}'\".format(\n\
-    \               doc, classification_result.code, classification_result.message\n\
+    \               doc, classification_result.error.code, classification_result.error.message\n\
     \           ))\n\n   ````\n"
+- uid: azure.ai.textanalytics.aio.TextAnalyticsClient.close
+  name: close
+  summary: 'Close sockets opened by the client.
+
+    Calling this method is unnecessary when using the client as a context manager.'
+  signature: async close() -> None
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.detect_language
   name: detect_language
   summary: 'Detect language for a batch of documents.
@@ -1119,7 +1503,9 @@ methods:
 
     New in version v3.1: The *disable_service_logs* keyword argument.'
   signature: 'async detect_language(documents: List[str] | List[DetectLanguageInput]
-    | List[Dict[str, str]], **kwargs: Any) -> List[DetectLanguageResult | DocumentError]'
+    | List[Dict[str, str]], *, country_hint: str | None = None, disable_service_logs:
+    bool | None = None, model_version: str | None = None, show_stats: bool | None
+    = None, **kwargs: Any) -> List[DetectLanguageResult | DocumentError]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -1148,11 +1534,10 @@ methods:
     types:
     - <xref:str>
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -1203,10 +1588,10 @@ methods:
   - "Detecting language in a batch of documents.<!--[!code-python[Main](les\\async_samples\\\
     sample_detect_language_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\\samples\\\
     \\async_samples\\\\sample_detect_language_async.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
     \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
@@ -1247,7 +1632,9 @@ methods:
 
     New in version v3.1: The *disable_service_logs* keyword argument.'
   signature: 'async extract_key_phrases(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], **kwargs: Any) -> List[ExtractKeyPhrasesResult | DocumentError]'
+    | List[Dict[str, str]], *, disable_service_logs: bool | None = None, language:
+    str | None = None, model_version: str | None = None, show_stats: bool | None =
+    None, **kwargs: Any) -> List[ExtractKeyPhrasesResult | DocumentError]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -1279,11 +1666,10 @@ methods:
     types:
     - <xref:str>
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -1336,13 +1722,13 @@ methods:
   - "Extract the key phrases in a batch of documents.<!--[!code-python[Main](les\\\
     async_samples\\sample_extract_key_phrases_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_extract_key_phrases_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
     \ credential=AzureKeyCredential(key))\n   articles = [\n       \"\"\"\n      \
     \ Washington, D.C. Autumn in DC is a uniquely beautiful season. The leaves fall\
     \ from the trees\n       in a city chock-full of forests, leaving yellow leaves\
@@ -1354,9 +1740,10 @@ methods:
     \ new coffee shop that will open on campus\n       once workers no longer have\
     \ to work remotely...\n       \"\"\"\n   ]\n\n   async with text_analytics_client:\n\
     \       result = await text_analytics_client.extract_key_phrases(articles)\n\n\
-    \   for idx, doc in enumerate(result):\n       if not doc.is_error:\n        \
-    \   print(\"Key phrases in article #{}: {}\".format(\n               idx + 1,\n\
-    \               \", \".join(doc.key_phrases)\n           ))\n\n   ````\n"
+    \   articles_that_mention_microsoft = []\n   for idx, doc in enumerate(result):\n\
+    \       if not doc.is_error:\n           print(\"Key phrases in article #{}: {}\"\
+    .format(\n               idx + 1,\n               \", \".join(doc.key_phrases)\n\
+    \           ))\n\n   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.recognize_entities
   name: recognize_entities
   summary: 'Recognize entities for a batch of documents.
@@ -1376,7 +1763,10 @@ methods:
     New in version v3.1: The *disable_service_logs* and *string_index_type* keyword
     arguments.'
   signature: 'async recognize_entities(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], **kwargs: Any) -> List[RecognizeEntitiesResult | DocumentError]'
+    | List[Dict[str, str]], *, disable_service_logs: bool | None = None, language:
+    str | None = None, model_version: str | None = None, show_stats: bool | None =
+    None, string_index_type: str | None = None, **kwargs: Any) -> List[RecognizeEntitiesResult
+    | DocumentError]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -1408,11 +1798,10 @@ methods:
     types:
     - <xref:str>
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -1476,26 +1865,32 @@ methods:
   - "Recognize entities in a batch of documents.<!--[!code-python[Main](les\\async_samples\\\
     sample_recognize_entities_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_recognize_entities_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
-    \ credential=AzureKeyCredential(key))\n   reviews = [\n       \"\"\"I work for\
-    \ Foo Company, and we hired Contoso for our annual founding ceremony. The food\n\
-    \       was amazing and we all can't say enough good words about the quality and\
-    \ the level of service.\"\"\",\n       \"\"\"We at the Foo Company re-hired Contoso\
-    \ after all of our past successes with the company.\n       Though the food was\
-    \ still great, I feel there has been a quality drop since their last time\n  \
-    \     catering for us. Is anyone else running into the same problem?\"\"\",\n\
-    \       \"\"\"Bar Company is over the moon about the service we received from\
-    \ Contoso, the best sliders ever!!!!\"\"\"\n   ]\n\n   async with text_analytics_client:\n\
-    \       result = await text_analytics_client.recognize_entities(reviews)\n\n \
-    \  result = [review for review in result if not review.is_error]\n\n   for idx,\
-    \ review in enumerate(result):\n       for entity in review.entities:\n      \
-    \     print(f\"Entity '{entity.text}' has category '{entity.category}'\")\n\n\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   import typing\n   from azure.core.credentials import AzureKeyCredential\n\
+    \   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\n   endpoint\
+    \ = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"\
+    ]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=AzureKeyCredential(key))\n\
+    \   reviews = [\n       \"\"\"I work for Foo Company, and we hired Contoso for\
+    \ our annual founding ceremony. The food\n       was amazing and we all can't\
+    \ say enough good words about the quality and the level of service.\"\"\",\n \
+    \      \"\"\"We at the Foo Company re-hired Contoso after all of our past successes\
+    \ with the company.\n       Though the food was still great, I feel there has\
+    \ been a quality drop since their last time\n       catering for us. Is anyone\
+    \ else running into the same problem?\"\"\",\n       \"\"\"Bar Company is over\
+    \ the moon about the service we received from Contoso, the best sliders ever!!!!\"\
+    \"\"\n   ]\n\n   async with text_analytics_client:\n       result = await text_analytics_client.recognize_entities(reviews)\n\
+    \n   result = [review for review in result if not review.is_error]\n   organization_to_reviews:\
+    \ typing.Dict[str, typing.List[str]] = {}\n\n   for idx, review in enumerate(result):\n\
+    \       for entity in review.entities:\n           print(f\"Entity '{entity.text}'\
+    \ has category '{entity.category}'\")\n\n           if entity.category == 'Organization':\n\
+    \               organization_to_reviews.setdefault(entity.text, [])\n        \
+    \       organization_to_reviews[entity.text].append(reviews[idx])\n\n   for organization,\
+    \ reviews in organization_to_reviews.items():\n       print(\n           \"\\\
+    n\\nOrganization '{}' has left us the following review(s): {}\".format(\n    \
+    \           organization, \"\\n\\n\".join(reviews)\n           )\n       )\n\n\
     \   ````\n"
 - uid: azure.ai.textanalytics.aio.TextAnalyticsClient.recognize_linked_entities
   name: recognize_linked_entities
@@ -1520,8 +1915,10 @@ methods:
     New in version v3.1: The *disable_service_logs* and *string_index_type* keyword
     arguments.'
   signature: 'async recognize_linked_entities(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], **kwargs: Any) -> List[RecognizeLinkedEntitiesResult |
-    DocumentError]'
+    | List[Dict[str, str]], *, disable_service_logs: bool | None = None, language:
+    str | None = None, model_version: str | None = None, show_stats: bool | None =
+    None, string_index_type: str | None = None, **kwargs: Any) -> List[RecognizeLinkedEntitiesResult
+    | DocumentError]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -1553,11 +1950,10 @@ methods:
     types:
     - <xref:str>
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -1619,13 +2015,13 @@ methods:
   - "Recognize linked entities in a batch of documents.<!--[!code-python[Main](les\\\
     async_samples\\sample_recognize_linked_entities_async.py )]-->\n\n<!-- literal_block\
     \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    : [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\async_samples\\\\sample_recognize_linked_entities_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
-    \ import AzureKeyCredential\n   from azure.ai.textanalytics.aio import TextAnalyticsClient\n\
-    \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
-    AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+    \   from azure.core.credentials import AzureKeyCredential\n   from azure.ai.textanalytics.aio\
+    \ import TextAnalyticsClient\n\n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"\
+    ]\n   key = os.environ[\"AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(endpoint=endpoint,\
     \ credential=AzureKeyCredential(key))\n   documents = [\n       \"\"\"\n     \
     \  Microsoft was founded by Bill Gates with some friends he met at Harvard. One\
     \ of his friends,\n       Steve Ballmer, eventually became CEO after Bill Gates\
@@ -1650,7 +2046,7 @@ methods:
 
     "Bank Account", etc) in the document.  For the list of supported entity types,
 
-    check [https://aka.ms/tanerpii](https://aka.ms/tanerpii)
+    check [https://aka.ms/azsdk/language/pii](https://aka.ms/azsdk/language/pii)
 
 
     See [https://aka.ms/azsdk/textanalytics/data-limits](https://aka.ms/azsdk/textanalytics/data-limits)
@@ -1659,7 +2055,11 @@ methods:
 
     New in version v3.1: The *recognize_pii_entities* client method.'
   signature: 'async recognize_pii_entities(documents: List[str] | List[TextDocumentInput]
-    | List[Dict[str, str]], **kwargs: Any) -> List[RecognizePiiEntitiesResult | DocumentError]'
+    | List[Dict[str, str]], *, categories_filter: List[str | PiiEntityCategory] |
+    None = None, disable_service_logs: bool | None = None, domain_filter: str | PiiEntityDomain
+    | None = None, language: str | None = None, model_version: str | None = None,
+    show_stats: bool | None = None, string_index_type: str | None = None, **kwargs:
+    Any) -> List[RecognizePiiEntitiesResult | DocumentError]'
   parameters:
   - name: documents
     description: 'The set of documents to process as part of this batch.
@@ -1691,11 +2091,10 @@ methods:
     types:
     - <xref:str>
   - name: model_version
-    description: 'This value indicates which model will
+    description: 'The model version to use for the analysis, e.g. "latest".
 
-      be used for scoring, e.g. "latest", "2019-10-01". If a model-version
-
-      is not specified, the API will default to the latest, non-preview version.
+      If a model version is not specified, the API will default to the latest, non-preview
+      version.
 
       See here for more info: [https://aka.ms/text-analytics-model-versioning](https://aka.ms/text-analytics-model-versioning)'
     types:
@@ -1713,7 +2112,8 @@ methods:
       I.e., if set to ''phi'', will only return entities in the Protected Healthcare
       Information domain.
 
-      See [https://aka.ms/tanerpii](https://aka.ms/tanerpii) for more information.'
+      See [https://aka.ms/azsdk/language/pii](https://aka.ms/azsdk/language/pii) for
+      more information.'
     types:
     - <xref:str>
     - <xref:azure.ai.textanalytics.PiiEntityDomain>
@@ -1778,10 +2178,10 @@ methods:
   - "Recognize personally identifiable information entities in a batch of documents.<!--[!code-python[Main](les\\\
     sample_recognize_pii_entities.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
-    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\114\\\\azure-ai-textanalytics-5.2.1\\\
+    \ \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\11\\\\azure-ai-textanalytics-5.3.0\\\
     \\samples\\\\sample_recognize_pii_entities.py\", \"xml:space\": \"preserve\",\
     \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.credentials\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.core.credentials\
     \ import AzureKeyCredential\n   from azure.ai.textanalytics import TextAnalyticsClient\n\
     \n   endpoint = os.environ[\"AZURE_LANGUAGE_ENDPOINT\"]\n   key = os.environ[\"\
     AZURE_LANGUAGE_KEY\"]\n\n   text_analytics_client = TextAnalyticsClient(\n   \

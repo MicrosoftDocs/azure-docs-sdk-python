@@ -1,3 +1,3 @@
 | Reference | Package | Source |
 |---|---|---|
-|[Unknown Display Name](purview-sharing-readme.md)|[azure-purview-sharing](https://pypi.org/project/azure-purview-sharing)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/purview/azure-purview-sharing)|
+|[Unknown Display Name](iot-deviceprovisioning-readme.md)|[azure-iot-deviceprovisioning](https://pypi.org/project/azure-iot-deviceprovisioning)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/iothub/azure-iot-deviceprovisioning)|

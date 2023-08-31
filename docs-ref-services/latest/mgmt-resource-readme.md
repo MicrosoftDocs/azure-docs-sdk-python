@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-resource, resources
 author: lmazuel
 ms.author: lmazuel
-ms.date: 03/28/2023
+ms.date: 05/18/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: resources
@@ -46,11 +46,11 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.resource import 
+from azure.mgmt.resource import ResourceManagementClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = (credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = ResourceManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
