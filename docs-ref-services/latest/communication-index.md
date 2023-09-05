@@ -1,5 +1,6 @@
 | Reference | Package | Source |
 |---|---|---|
+|[Communication Call Automation](communication-callautomation-readme.md)|[azure-communication-callautomation](https://pypi.org/project/azure-communication-callautomation)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-callautomation)|
 |[Communication Chat](communication-chat-readme.md)|[azure-communication-chat](https://pypi.org/project/azure-communication-chat)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-chat)|
 |[Communication Email](communication-email-readme.md)|[azure-communication-email](https://pypi.org/project/azure-communication-email)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-email)|
 |[Communication Identity](communication-identity-readme.md)|[azure-communication-identity](https://pypi.org/project/azure-communication-identity)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/communication/azure-communication-identity)|
