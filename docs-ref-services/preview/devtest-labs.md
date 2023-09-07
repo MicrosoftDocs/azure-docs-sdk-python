@@ -1,22 +1,20 @@
 ---
-title: Azure DevTest Labs libraries for python
-description: Reference for Azure DevTest Labs libraries for python
-keywords: Azure, python, SDK, API, DevTest Labs
-author: lisawong19
-ms.author: ramyar
-manager: routlaw
-
-ms.date: 02/21/2018
+title: Azure DevTest Labs SDK for Python
+description: Reference for Azure DevTest Labs SDK for Python
+author: lmazuel
+ms.author: lmazuel
+ms.data: 09/06/2023
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: devtest-lab
+ms.date: 03/30/2023
+ms.technology: azure
+manager: routlaw
+keywords: Azure, python, SDK, API, DevTest Labs
 ---
-
 # Azure DevTest Labs libraries for python
 
-## [Management API](/python/api/overview/azure/devtestlabs/management)
+## Management API
 
 ```bash
 pip install azure-mgmt-devtestlabs
@@ -61,4 +59,4 @@ lab = async_lab.result() # Blocking wait
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/devtestlabs/management)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-devtestlabs-readme)

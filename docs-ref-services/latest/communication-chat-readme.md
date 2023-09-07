@@ -5,13 +5,12 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 09/16/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
 
-# Azure Communication Chat Package client library for Python - Version 1.1.0 
+# Azure Communication Chat Package client library for Python - version 1.1.0 
 
 
 This package contains a Python SDK for Azure Communication Services for Chat.

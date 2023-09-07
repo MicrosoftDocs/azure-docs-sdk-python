@@ -18,7 +18,8 @@ summary: 'A client to interact with the DataLake directory, even if the director
   functions.'
 constructor:
   syntax: 'DataLakeDirectoryClient(account_url: str, file_system_name: str, directory_name:
-    str, credential: Optional[Any] = None, **kwargs: Any)'
+    str, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
+    | AsyncTokenCredential | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -42,16 +43,30 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
-    isRequired: true
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
 variables:
 - description: The full endpoint URL to the file system, including SAS token if used.
   name: url
@@ -65,26 +80,16 @@ variables:
   name: primary_hostname
   types:
   - <xref:str>
-examples:
-- "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
-  datalake_samples_instantiate_client_async.py )]-->\n\n<!-- literal_block {\"ids\"\
-  : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\70\\\\azure-storage-file-datalake-12.6.0b2\\\
-  \\samples\\\\datalake_samples_instantiate_client_async.py\", \"xml:space\": \"preserve\"\
-  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake.aio\
-  \ import DataLakeDirectoryClient\n   DataLakeDirectoryClient.from_connection_string(connection_string,\
-  \ \"myfilesystem\", \"mydirectory\")\n\n   ````\n"
 methods:
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.create_directory
   name: create_directory
   summary: Create a new directory.
-  signature: 'create_directory(metadata: Optional[Dict[str, str]] = None, **kwargs)
-    -> Dict[str, Union[str, datetime]]'
+  signature: 'async create_directory(metadata: Dict[str, str] | None = None, **kwargs)
+    -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: content_settings
@@ -119,6 +124,43 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -168,24 +210,32 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
-    description: response dict (Etag and last modified).
-  examples:
-  - "Create directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\70\\\\azure-storage-file-datalake-12.6.0b2\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await directory_client.create_directory()\n\n   ````\n"
+    description: A dictionary of response headers.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:datetime>]]
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.create_file
   name: create_file
   summary: Create a new file and return the file client to be interacted with.
-  signature: 'create_file(file: Union[FileProperties, str], **kwargs) -> DataLakeFileClient'
+  signature: 'async create_file(file: FileProperties | str, **kwargs) -> DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -230,6 +280,58 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
+  - name: expires_on
+    description: 'The time to set the file to expiry.
+
+      If the type of expires_on is an int, expiration time will be set
+
+      as the number of milliseconds elapsed from creation time.
+
+      If the type of expires_on is datetime, expiration time will be set
+
+      absolute to the time provided. If no time zone info is provided, this
+
+      will be interpreted as UTC.'
+    types:
+    - <xref:datetime>
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -279,8 +381,22 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -289,8 +405,8 @@ methods:
   name: create_sub_directory
   summary: Create a subdirectory and return the subdirectory client to be interacted
     with.
-  signature: 'create_sub_directory(sub_directory: Union[DirectoryProperties, str],
-    metadata: Optional[Dict[str, str]] = None, **kwargs) -> DataLakeDirectoryClient'
+  signature: 'async create_sub_directory(sub_directory: DirectoryProperties | str,
+    metadata: Dict[str, str] | None = None, **kwargs) -> DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -303,7 +419,7 @@ methods:
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: content_settings
@@ -338,6 +454,43 @@ methods:
       The umask must be specified in 4-digit octal notation (e.g. 0766).'
     types:
     - <xref:str>
+  - name: owner
+    description: The owner of the file or directory.
+    types:
+    - <xref:str>
+  - name: group
+    description: The owning group of the file or directory.
+    types:
+    - <xref:str>
+  - name: acl
+    description: 'Sets POSIX access control rights on files and directories. The value
+      is a
+
+      comma-separated list of access control entries. Each access control entry (ACE)
+      consists of a
+
+      scope, a type, a user or group identifier, and permissions in the format
+
+      "[scope:][type]:[id]:[permissions]".'
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: 'Proposed lease ID, in a GUID string format. The DataLake service
+      returns
+
+      400 (Invalid request) if the proposed lease ID is not in the correct format.'
+    types:
+    - <xref:str>
+  - name: lease_duration
+    description: 'Specifies the duration of the lease, in seconds, or negative one
+
+      (-1) for a lease that never expires. A non-infinite lease can be
+
+      between 15 and 60 seconds. A lease duration cannot be changed
+
+      using renew or change.'
+    types:
+    - <xref:int>
   - name: permissions
     description: 'Optional and only valid if Hierarchical Namespace
 
@@ -387,8 +540,22 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -396,7 +563,7 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.delete_directory
   name: delete_directory
   summary: Marks the specified directory for deletion.
-  signature: delete_directory(**kwargs) -> None
+  signature: async delete_directory(**kwargs) -> None
   parameters:
   - name: lease
     description: 'Required if the directory has an active lease. Value can be a LeaseClient
@@ -442,23 +609,23 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: None
-  examples:
-  - "Delete directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\70\\\\azure-storage-file-datalake-12.6.0b2\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await new_directory.delete_directory()\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.delete_sub_directory
   name: delete_sub_directory
   summary: Marks the specified subdirectory for deletion.
-  signature: 'delete_sub_directory(sub_directory: Union[DirectoryProperties, str],
+  signature: 'async delete_sub_directory(sub_directory: DirectoryProperties | str,
     **kwargs) -> DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
@@ -514,7 +681,15 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -522,20 +697,30 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.exists
   name: exists
   summary: Returns True if a directory exists and returns False otherwise.
-  signature: 'exists(**kwargs: Any) -> bool'
+  signature: 'async exists(**kwargs: Any) -> bool'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
-    description: boolean
+    description: True if a directory exists, False otherwise.
+    types:
+    - <xref:bool>
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_directory_properties
   name: get_directory_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the directory. It does not return the content of the directory.'
-  signature: 'get_directory_properties(**kwargs: Any) -> azure.storage.filedatalake._models.DirectoryProperties'
+  signature: 'async get_directory_properties(**kwargs: Any) -> DirectoryProperties'
   parameters:
   - name: lease
     description: 'Required if the directory or file has an active lease. Value can
@@ -580,28 +765,36 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: cpk
+    description: 'Decrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      Required if the directory was created with a customer-provided key.'
+    types:
+    - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:azure.storage.filedatalake.DirectoryProperties>
-  examples:
-  - "Getting the properties for a file/directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\70\\\\azure-storage-file-datalake-12.6.0b2\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   props = await new_directory.get_directory_properties()\n\n   ````\n"
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.get_file_client
   name: get_file_client
   summary: 'Get a client to interact with the specified file.
 
 
     The file need not already exist.'
-  signature: 'get_file_client(file: Union[FileProperties, str]) -> DataLakeFileClient'
+  signature: 'get_file_client(file: FileProperties | str) -> DataLakeFileClient'
   parameters:
   - name: file
     description: 'The file with which to interact. This can either be the name of
@@ -623,8 +816,8 @@ methods:
 
 
     The sub subdirectory need not already exist.'
-  signature: 'get_sub_directory_client(sub_directory: Union[DirectoryProperties, str])
-    -> DataLakeDirectoryClient'
+  signature: 'get_sub_directory_client(sub_directory: DirectoryProperties | str) ->
+    DataLakeDirectoryClient'
   parameters:
   - name: sub_directory
     description: 'The directory with which to interact. This can either be the name
@@ -642,7 +835,7 @@ methods:
 - uid: azure.storage.filedatalake.aio.DataLakeDirectoryClient.rename_directory
   name: rename_directory
   summary: Rename the source directory.
-  signature: 'rename_directory(new_name: str, **kwargs) -> azure.storage.filedatalake.aio._data_lake_directory_client_async.DataLakeDirectoryClient'
+  signature: 'async rename_directory(new_name: str, **kwargs) -> DataLakeDirectoryClient'
   parameters:
   - name: new_name
     description: 'the new directory name the user want to rename to.
@@ -654,7 +847,7 @@ methods:
   - name: source_lease
     description: 'A lease ID for the source path. If specified,
 
-      the source path must have an active lease and the leaase ID must
+      the source path must have an active lease and the lease ID must
 
       match.'
     types:
@@ -739,19 +932,16 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: DataLakeDirectoryClient
-  examples:
-  - "Rename the source directory.<!--[!code-python[Main](les\\datalake_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\70\\\\azure-storage-file-datalake-12.6.0b2\\\\samples\\\\datalake_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   new_dir_name = \"testdir2\"\n   print(\"Renaming the directory named '{}'\
-    \ to '{}'.\".format(dir_name, new_dir_name))\n   new_directory = await directory_client\\\
-    \n       .rename_directory(new_name=directory_client.file_system_name + '/' +\
-    \ new_dir_name)\n\n   ````\n"

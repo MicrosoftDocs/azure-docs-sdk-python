@@ -5,11 +5,52 @@ fullName: azure.storage.blob.LinearRetry
 module: azure.storage.blob
 inheritances:
 - azure.storage.blob._shared.policies.StorageRetryPolicy
-summary: Linear retry.
+summary: 'Linear retry.
+
+
+  Constructs a Linear retry object.'
 constructor:
   syntax: LinearRetry(backoff=15, retry_total=3, retry_to_secondary=False, random_jitter_range=3,
     **kwargs)
+  parameters:
+  - name: backoff
+    description: The backoff interval, in seconds, between retries.
+    defaultValue: '15'
+    types:
+    - <xref:int>
+  - name: max_attempts
+    description: The maximum number of retry attempts.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: retry_to_secondary
+    description: 'Whether the request should be retried to secondary, if able. This
+      should
+
+      only be enabled of RA-GRS accounts are used and potentially stale data
+
+      can be handled.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: random_jitter_range
+    description: 'A number in seconds which indicates a range to jitter/randomize
+      for the back-off interval.
+
+      For example, a random_jitter_range of 3 results in the back-off interval x to
+      vary between x+3 and x-3.'
+    defaultValue: '3'
+    types:
+    - <xref:int>
+  - name: retry_total
+    defaultValue: '3'
 methods:
+- uid: azure.storage.blob.LinearRetry.configure_retries
+  name: configure_retries
+  signature: configure_retries(request)
+  parameters:
+  - name: request
+    isRequired: true
 - uid: azure.storage.blob.LinearRetry.get_backoff_time
   name: get_backoff_time
   summary: Calculates how long to sleep before retrying.
@@ -24,3 +65,42 @@ methods:
     types:
     - <xref:int>
     - <xref:None>
+- uid: azure.storage.blob.LinearRetry.increment
+  name: increment
+  summary: Increment the retry counters.
+  signature: increment(settings, request, response=None, error=None)
+  parameters:
+  - name: response
+    description: A pipeline response object.
+    defaultValue: None
+  - name: error
+    description: 'An error encountered during the request, or
+
+      None if the response was received successfully.'
+    defaultValue: None
+  - name: settings
+    isRequired: true
+  - name: request
+    isRequired: true
+  return:
+    description: Whether the retry attempts are exhausted.
+- uid: azure.storage.blob.LinearRetry.send
+  name: send
+  signature: send(request)
+  parameters:
+  - name: request
+    isRequired: true
+- uid: azure.storage.blob.LinearRetry.sleep
+  name: sleep
+  signature: sleep(settings, transport)
+  parameters:
+  - name: settings
+    isRequired: true
+  - name: transport
+    isRequired: true
+attributes:
+- uid: azure.storage.blob.LinearRetry.next
+  name: next
+  summary: Pointer to the next policy or a transport (wrapped as a policy). Will be
+    set at pipeline creation.
+  signature: 'next: HTTPPolicy[HTTPRequestType, HTTPResponseType]'

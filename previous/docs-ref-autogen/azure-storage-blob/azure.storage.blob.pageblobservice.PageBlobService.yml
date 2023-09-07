@@ -20,11 +20,106 @@ summary: 'Page blobs are a collection of 512-byte pages optimized for random rea
 
   Writes to page blobs happen in-place and are immediately committed to the
 
-  blob. The maximum size for a page blob is 8 TB.'
+  blob. The maximum size for a page blob is 8 TB.
+
+
+  :type *~azure.storage.common.TokenCredential*'
 constructor:
   syntax: PageBlobService(account_name=None, account_key=None, sas_token=None, is_emulated=False,
     protocol='https', endpoint_suffix='core.windows.net', custom_domain=None, request_session=None,
     connection_string=None, socket_timeout=None, token_credential=None)
+  parameters:
+  - name: account_name
+    description: 'The storage account name. This is used to authenticate requests
+
+      signed with an account key and to construct the storage endpoint. It
+
+      is required unless a connection string is given, or if a custom
+
+      domain is used with anonymous authentication.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: account_key
+    description: 'The storage account key. This is used for shared key authentication.
+
+      If neither account key or sas token is specified, anonymous access
+
+      will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: 'A shared access signature token to use to authenticate requests
+
+      instead of the account key. If account key and sas token are both
+
+      specified, account key will be used to sign. If neither are
+
+      specified, anonymous access will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: is_emulated
+    description: 'Whether to use the emulator. Defaults to False. If specified, will
+
+      override all other parameters besides connection string and request
+
+      session.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: protocol
+    description: The protocol to use for requests. Defaults to https.
+    defaultValue: https
+    types:
+    - <xref:str>
+  - name: endpoint_suffix
+    description: 'The host base component of the url, minus the account name. Defaults
+
+      to Azure (core.windows.net). Override this to use the China cloud
+
+      (core.chinacloudapi.cn).'
+    defaultValue: core.windows.net
+    types:
+    - <xref:str>
+  - name: custom_domain
+    description: 'The custom domain to use. This can be set in the Azure Portal. For
+
+      example, ''www.mydomain.com''.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: request_session
+    description: The session object to use for http requests.
+    defaultValue: None
+    types:
+    - <xref:requests.Session>
+  - name: connection_string
+    description: 'If specified, this will override all other parameters besides
+
+      request session. See
+
+      [http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/](http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/)
+
+      for the connection string format.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'If specified, this will override the default socket timeout. The
+      timeout specified is in seconds.
+
+      See DEFAULT_SOCKET_TIMEOUT in _constants.py for the default value.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: token_credential
+    description: 'A token credential used to authenticate HTTPS requests. The token
+      value
+
+      should be updated before its expiration.'
+    defaultValue: None
 variables:
 - description: 'The size of the pages put by create_blob_from_* methods. Smaller pages
 
@@ -247,7 +342,7 @@ methods:
       metadata, and metadata is not copied from the source blob or file.'
     defaultValue: None
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:dict>(<xref:str>, <xref:str>)<xref:./>
   - name: source_if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
 
@@ -418,7 +513,8 @@ methods:
     progress notifications.'
   signature: create_blob(container_name, blob_name, content_length, content_settings=None,
     sequence_number=None, metadata=None, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -526,6 +622,17 @@ methods:
     defaultValue: None
     types:
     - <xref:azure.storage.blob.models.PremiumPageBlobTier>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the new Page Blob
     types:
@@ -541,7 +648,8 @@ methods:
   signature: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_match=None, if_none_match=None, timeout=None, premium_page_blob_tier=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -678,6 +786,17 @@ methods:
 
       premium storage accounts.'
     defaultValue: None
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the Page Blob
     types:
@@ -693,7 +812,7 @@ methods:
   signature: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_none_match=None, timeout=None, premium_page_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -818,6 +937,17 @@ methods:
 
       premium storage accounts.'
     defaultValue: None
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the Page Blob
     types:
@@ -833,7 +963,7 @@ methods:
   signature: create_blob_from_stream(container_name, blob_name, stream, count, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None, premium_page_blob_tier=None)
+    if_none_match=None, timeout=None, premium_page_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -968,6 +1098,17 @@ methods:
 
       premium storage accounts.'
     defaultValue: None
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   return:
     description: ETag and last modified properties for the Page Blob
     types:
@@ -1281,7 +1422,7 @@ methods:
       metadata, and metadata is not copied from the source blob or file.'
     defaultValue: None
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:dict>(<xref:str>, <xref:str>)<xref:./>
   - name: destination_if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
 
@@ -1595,7 +1736,7 @@ methods:
   signature: update_page(container_name, blob_name, page, start_range, end_range,
     validate_content=False, lease_id=None, if_sequence_number_lte=None, if_sequence_number_lt=None,
     if_sequence_number_eq=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, cpk=None, timeout=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1723,6 +1864,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -1732,6 +1884,207 @@ methods:
     description: ETag and last modified properties for the updated Page Blob
     types:
     - <xref:azure.storage.blob.models.ResourceProperties>
+- uid: azure.storage.blob.pageblobservice.PageBlobService.update_page_from_url
+  name: update_page_from_url
+  summary: Updates a range of pages to a page blob where the contents are read from
+    a URL.
+  signature: update_page_from_url(container_name, blob_name, start_range, end_range,
+    copy_source_url, source_range_start, source_content_md5=None, source_if_modified_since=None,
+    source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
+    lease_id=None, if_sequence_number_lte=None, if_sequence_number_lt=None, if_sequence_number_eq=None,
+    if_modified_since=None, if_unmodified_since=None, if_match=None, if_none_match=None,
+    cpk=None, timeout=None)
+  parameters:
+  - name: container_name
+    description: Name of existing container.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: blob_name
+    description: Name of blob.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for writing to a section of the blob.
+
+      Pages must be aligned with 512-byte boundaries, the start offset
+
+      must be a modulus of 512 and the end offset must be a modulus of
+
+      512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for writing to a section of the blob.
+
+      Pages must be aligned with 512-byte boundaries, the start offset
+
+      must be a modulus of 512 and the end offset must be a modulus of
+
+      512-1. Examples of valid byte ranges are 0-511, 512-1023, etc.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: copy_source_url
+    description: 'The URL of the source data. It can point to any Azure Blob or File,
+      that is either public or has a
+
+      shared access signature attached.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: source_range_start
+    description: 'This indicates the start of the range of bytes(inclusive) that has
+      to be taken from the copy source.
+
+      The service will read the same number of bytes as the destination range (end_range-start_range).'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: source_content_md5
+    description: If given, the service will calculate the MD5 hash of the block content
+      and compare against this value.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: source_if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the source resource has been modified since the specified time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: source_if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the source resource has not been modified since the specified date/time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: source_if_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+      to perform
+
+      the operation only if the source resource''s ETag matches the value specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: source_if_none_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+
+      to perform the operation only if the source resource''s ETag does not match
+
+      the value specified. Specify the wildcard character (*) to perform
+
+      the operation only if the source resource does not exist, and fail the
+
+      operation if it does exist.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: lease_id
+    description: Required if the blob has an active lease.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: if_sequence_number_lte
+    description: 'If the blob''s sequence number is less than or equal to
+
+      the specified value, the request proceeds; otherwise it fails.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: if_sequence_number_lt
+    description: 'If the blob''s sequence number is less than the specified
+
+      value, the request proceeds; otherwise it fails.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: if_sequence_number_eq
+    description: 'If the blob''s sequence number is equal to the specified
+
+      value, the request proceeds; otherwise it fails.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+  - name: if_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+      to perform
+
+      the operation only if the resource''s ETag matches the value specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: if_none_match
+    description: 'An ETag value, or the wildcard character (*). Specify this header
+
+      to perform the operation only if the resource''s ETag does not match
+
+      the value specified. Specify the wildcard character (*) to perform
+
+      the operation only if the resource does not exist, and fail the
+
+      operation if it does exist.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
 attributes:
 - uid: azure.storage.blob.pageblobservice.PageBlobService.MAX_PAGE_SIZE
   name: MAX_PAGE_SIZE

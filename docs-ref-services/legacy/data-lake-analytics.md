@@ -8,10 +8,9 @@ manager: douge
 
 ms.date: 08/04/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: data-lake-analytics
 ---
 
 # Azure Data Lake Analytics libraries for python

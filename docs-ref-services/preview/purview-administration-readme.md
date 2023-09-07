@@ -5,13 +5,12 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/15/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: purview
 ---
 
-# Azure Purview Administration client library for Python - Version 1.0.0b1 
+# Azure Purview Administration client library for Python - version 1.0.0b1 
 
 
 Azure Purview is a fully managed cloud service.

@@ -14,21 +14,49 @@ methods:
 - uid: azure.core.pipeline.transport.AsyncHttpTransport.close
   name: close
   summary: Close the session if it is not externally owned.
-  signature: close()
+  signature: abstract async close() -> None
 - uid: azure.core.pipeline.transport.AsyncHttpTransport.open
   name: open
   summary: Assign new session if one does not already exist.
-  signature: open()
+  signature: abstract async open() -> None
 - uid: azure.core.pipeline.transport.AsyncHttpTransport.send
   name: send
   summary: Send the request using this HTTP sender.
-  signature: send(request, **kwargs)
+  signature: 'abstract async send(request: HTTPRequestType, **kwargs: Any) -> AsyncHTTPResponseType'
   parameters:
   - name: request
+    description: The request object. Exact type can be inferred from the pipeline.
     isRequired: true
+    types:
+    - <xref:any>
+  return:
+    description: The response object. Exact type can be inferred from the pipeline.
+    types:
+    - <xref:any>
 - uid: azure.core.pipeline.transport.AsyncHttpTransport.sleep
   name: sleep
-  signature: sleep(duration)
+  summary: 'Sleep for the specified duration.
+
+
+    You should always ask the transport to sleep, and not call directly
+
+    the stdlib. This is mostly important in async, as the transport
+
+    may not use asyncio but other implementation like trio and they their own
+
+    way to sleep, but to keep design
+
+    consistent, it''s cleaner to always ask the transport to sleep and let the transport
+
+    implementor decide how to do it.
+
+    By default, this method will use "asyncio", and don''t need to be overridden
+
+    if your transport does too.'
+  signature: 'async sleep(duration: float) -> None'
   parameters:
   - name: duration
+    description: The number of seconds to sleep.
     isRequired: true
+    types:
+    - <xref:float>

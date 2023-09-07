@@ -1,30 +1,32 @@
 ---
 title: Azure Communication Network Traversal Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-networktraversal, communication
-author: maggiepint
-ms.author: magpint
-ms.date: 11/18/2021
+author: acsdevx-msft
+ms.author: acsdevx-msft
+ms.date: 03/23/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
 ---
-
-# Azure Communication Network Traversal Package client library for Python - Version 1.0.0b2 
+# Azure Communication Network Traversal Package client library for Python - version 1.1.0b1 
 
 
 Azure Communication Network Traversal is managing TURN credentials for Azure Communication Services.
 
 It will provide TURN credentials to a user.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.0.0b2/sdk/communication) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.0.0b2/sdk/communication)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.1.0b1/sdk/communication) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.1.0b1/sdk/communication)
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Getting started
 
 ### Prerequisites
 
-- Python 2.7, or 3.6 or later is required to use this package.
+- Python 3.6 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
 - A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
@@ -77,7 +79,7 @@ relay_client = CommunicationRelayClient.from_connection_string(self.connection_s
 ```python
 # We need a user from Identity
 user = identity_client.create_user()
-relay_configuration = relay_client.get_relay_configuration(user)
+relay_configuration = relay_client.get_relay_configuration(user=user)
 
 for iceServer in config.ice_servers:
     assert iceServer.username is not None
@@ -113,7 +115,7 @@ for iceServer in config.ice_servers:
 ```python
 # We need a user from Identity
 user = identity_client.create_user()
-relay_configuration = relay_client.get_relay_configuration(user, RouteType.NEAREST)
+relay_configuration = relay_client.get_relay_configuration(user=user, route_type=RouteType.NEAREST)
 
 for iceServer in config.ice_servers:
     assert iceServer.username is not None
@@ -151,5 +153,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.0.0b2/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-networktraversal_1.1.0b1/sdk/core/azure-core/README.md
 

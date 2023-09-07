@@ -8,7 +8,7 @@ inheritances:
 summary: Poller for long running operations.
 constructor:
   syntax: 'LROPoller(client: Any, initial_response: Any, deserialization_callback:
-    Callable, polling_method: PollingMethod[PollingReturnType])'
+    Callable[[Any], PollingReturnType_co], polling_method: PollingMethod[PollingReturnType_co])'
   parameters:
   - name: client
     description: A pipeline service client
@@ -66,11 +66,9 @@ methods:
     - <xref:bool>
 - uid: azure.core.polling.LROPoller.from_continuation_token
   name: from_continuation_token
-  signature: 'from_continuation_token(polling_method: PollingMethod[PollingReturnType],
-    continuation_token: str, **kwargs: Any) -> LROPoller[PollingReturnType]'
+  signature: 'from_continuation_token(polling_method: PollingMethod[PollingReturnType_co],
+    continuation_token: str, **kwargs: Any) -> LROPoller[PollingReturnType_co]'
   parameters:
-  - name: cls
-    isRequired: true
   - name: polling_method
     isRequired: true
   - name: continuation_token
@@ -78,7 +76,11 @@ methods:
 - uid: azure.core.polling.LROPoller.polling_method
   name: polling_method
   summary: Return the polling method associated to this poller.
-  signature: polling_method() -> azure.core.polling._poller.PollingMethod[PollingReturnType]
+  signature: polling_method() -> PollingMethod[PollingReturnType_co]
+  return:
+    description: The polling method
+    types:
+    - <xref:azure.core.polling.PollingMethod>
 - uid: azure.core.polling.LROPoller.remove_done_callback
   name: remove_done_callback
   summary: Remove a callback from the long running operation.
@@ -90,24 +92,29 @@ methods:
     types:
     - <xref:callable>
   exceptions:
-  - description: if the long running operation has already completed.
-    type: ValueError
+  - type: ValueError
+    description: if the long running operation has already completed.
 - uid: azure.core.polling.LROPoller.result
   name: result
   summary: 'Return the result of the long running operation, or
 
     the result available after the specified timeout.'
-  signature: 'result(timeout: Optional[int] = None) -> PollingReturnType'
+  signature: 'result(timeout: float | None = None) -> PollingReturnType_co'
   parameters:
   - name: timeout
+    description: Period of time to wait before getting back control.
     defaultValue: None
+    types:
+    - <xref:float>
   return:
-    description: 'The deserialized resource of the long running operation,
-
-      if one is available.'
+    description: The deserialized resource of the long running operation, if one is
+      available.
+    types:
+    - <xref:any>
+    - <xref:None>
   exceptions:
-  - description: Server problem with the query.
-    type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.HttpResponseError
+    description: Server problem with the query.
 - uid: azure.core.polling.LROPoller.status
   name: status
   summary: Returns the current status string.
@@ -123,7 +130,7 @@ methods:
     of time. You can check if this call as ended with timeout with the
 
     "done()" method.'
-  signature: 'wait(timeout: Optional[float] = None) -> None'
+  signature: 'wait(timeout: float | None = None) -> None'
   parameters:
   - name: timeout
     description: 'Period of time to wait for the long running
@@ -133,5 +140,5 @@ methods:
     types:
     - <xref:float>
   exceptions:
-  - description: Server problem with the query.
-    type: azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.HttpResponseError
+    description: Server problem with the query.

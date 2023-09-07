@@ -9,7 +9,7 @@ inheritances:
 summary: A buffered sender for document indexing actions.
 constructor:
   syntax: 'SearchIndexingBufferedSender(endpoint: str, index_name: str, credential:
-    AzureKeyCredential, **kwargs: Any)'
+    AzureKeyCredential | TokenCredential, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
@@ -26,6 +26,7 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
   - name: auto_flush_interval
     description: 'how many max seconds if between 2 flushes. This only takes effect
 
@@ -49,19 +50,19 @@ constructor:
       is a new IndexAction added. This may be called from main thread or a worker
       thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: on_progress
     description: 'If it is set, the client will call corresponding methods when there
 
       is a IndexAction succeeds. This may be called from main thread or a worker thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: on_error
     description: 'If it is set, the client will call corresponding methods when there
 
       is a IndexAction fails. This may be called from main thread or a worker thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: on_remove
     description: 'If it is set, the client will call corresponding methods when there
 
@@ -70,9 +71,19 @@ constructor:
 
       thread or a worker thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: api_version
     description: The Search API version to use for requests.
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'sets the Audience to use for authentication with Azure Active Directory
+      (AAD). The
+
+      audience is not considered when using a shared key. If audience is not provided,
+      the public cloud audience
+
+      will be assumed.'
     types:
     - <xref:str>
 methods:
@@ -83,15 +94,17 @@ methods:
 - uid: azure.search.documents.SearchIndexingBufferedSender.delete_documents
   name: delete_documents
   summary: Queue delete documents actions
+  signature: delete_documents()
   parameters:
   - name: documents
     description: A list of documents to delete.
     isRequired: true
     types:
-    - <xref:List>[<xref:dict>]
+    - <xref:typing.List>[<xref:dict>]
 - uid: azure.search.documents.SearchIndexingBufferedSender.flush
   name: flush
   summary: Flush the batch.
+  signature: flush()
   parameters:
   - name: timeout
     description: time out setting. Default is 86400s (one day)
@@ -103,8 +116,7 @@ methods:
     types:
     - <xref:bool>
   exceptions:
-  - description: ''
-    type: azure.core.exceptions.ServiceResponseTimeoutError
+  - type: azure.core.exceptions.ServiceResponseTimeoutError
 - uid: azure.search.documents.SearchIndexingBufferedSender.index_documents
   name: index_documents
   summary: 'Specify a document operations to perform as a batch.
@@ -124,30 +136,33 @@ methods:
 - uid: azure.search.documents.SearchIndexingBufferedSender.merge_documents
   name: merge_documents
   summary: Queue merge documents actions
+  signature: merge_documents()
   parameters:
   - name: documents
     description: A list of documents to merge.
     isRequired: true
     types:
-    - <xref:List>[<xref:dict>]
+    - <xref:typing.List>[<xref:dict>]
 - uid: azure.search.documents.SearchIndexingBufferedSender.merge_or_upload_documents
   name: merge_or_upload_documents
   summary: Queue merge documents or upload documents actions
+  signature: merge_or_upload_documents()
   parameters:
   - name: documents
     description: A list of documents to merge or upload.
     isRequired: true
     types:
-    - <xref:List>[<xref:dict>]
+    - <xref:typing.List>[<xref:dict>]
 - uid: azure.search.documents.SearchIndexingBufferedSender.upload_documents
   name: upload_documents
   summary: Queue upload documents actions.
+  signature: upload_documents()
   parameters:
   - name: documents
     description: A list of documents to upload.
     isRequired: true
     types:
-    - <xref:List>[<xref:dict>]
+    - <xref:typing.List>[<xref:dict>]
 attributes:
 - uid: azure.search.documents.SearchIndexingBufferedSender.actions
   name: actions

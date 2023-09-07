@@ -7,9 +7,10 @@ inheritances:
 - builtins.object
 summary: A speech synthesizer.
 constructor:
-  syntax: 'SpeechSynthesizer(speech_config: azure.cognitiveservices.speech.SpeechConfig,
-    audio_config: Optional[azure.cognitiveservices.speech.audio.AudioOutputConfig]
-    = ''None'', auto_detect_source_language_config: Optional[azure.cognitiveservices.speech.languageconfig.AutoDetectSourceLanguageConfig]
+  syntax: 'SpeechSynthesizer(speech_config: ~azure.cognitiveservices.speech.SpeechConfig,
+    audio_config: ~azure.cognitiveservices.speech.audio.AudioOutputConfig | None =
+    <azure.cognitiveservices.speech.audio.AudioOutputConfig object>, auto_detect_source_language_config:
+    ~azure.cognitiveservices.speech.languageconfig.AutoDetectSourceLanguageConfig
     = None)'
   parameters:
   - name: speech_config
@@ -25,15 +26,14 @@ constructor:
       If it is None, the output audio will be dropped.
 
       None can be used for scenarios like performance test.'
-    isRequired: true
   - name: auto_detect_source_language_config
     description: The auto detection source language config
-    isRequired: true
+    defaultValue: None
 methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.get_voices_async
   name: get_voices_async
   summary: Get the available voices, asynchronously.
-  signature: 'get_voices_async(locale: str = '''') -> azure.cognitiveservices.speech.ResultFuture'
+  signature: 'get_voices_async(locale: str = '''') -> ResultFuture'
   parameters:
   - name: locale
     description: Specify the locale of voices, in BCP-47 format; or leave it empty
@@ -44,7 +44,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.speak_ssml
   name: speak_ssml
   summary: Performs synthesis on ssml in a blocking (synchronous) mode.
-  signature: 'speak_ssml(ssml: str) -> azure.cognitiveservices.speech.SpeechSynthesisResult'
+  signature: 'speak_ssml(ssml: str) -> SpeechSynthesisResult'
   parameters:
   - name: ssml
     isRequired: true
@@ -53,7 +53,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.speak_ssml_async
   name: speak_ssml_async
   summary: Performs synthesis on ssml in a non-blocking (asynchronous) mode.
-  signature: 'speak_ssml_async(ssml: str) -> azure.cognitiveservices.speech.ResultFuture'
+  signature: 'speak_ssml_async(ssml: str) -> ResultFuture'
   parameters:
   - name: ssml
     isRequired: true
@@ -62,7 +62,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.speak_text
   name: speak_text
   summary: Performs synthesis on plain text in a blocking (synchronous) mode.
-  signature: 'speak_text(text: str) -> azure.cognitiveservices.speech.SpeechSynthesisResult'
+  signature: 'speak_text(text: str) -> SpeechSynthesisResult'
   parameters:
   - name: text
     isRequired: true
@@ -71,7 +71,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.speak_text_async
   name: speak_text_async
   summary: Performs synthesis on plain text in a non-blocking (asynchronous) mode.
-  signature: 'speak_text_async(text: str) -> azure.cognitiveservices.speech.ResultFuture'
+  signature: 'speak_text_async(text: str) -> ResultFuture'
   parameters:
   - name: text
     isRequired: true
@@ -80,7 +80,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.start_speaking_ssml
   name: start_speaking_ssml
   summary: Starts synthesis on ssml in a blocking (synchronous) mode.
-  signature: 'start_speaking_ssml(ssml: str) -> azure.cognitiveservices.speech.SpeechSynthesisResult'
+  signature: 'start_speaking_ssml(ssml: str) -> SpeechSynthesisResult'
   parameters:
   - name: ssml
     isRequired: true
@@ -89,7 +89,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.start_speaking_ssml_async
   name: start_speaking_ssml_async
   summary: Starts synthesis on ssml in a non-blocking (asynchronous) mode.
-  signature: 'start_speaking_ssml_async(ssml: str) -> azure.cognitiveservices.speech.ResultFuture'
+  signature: 'start_speaking_ssml_async(ssml: str) -> ResultFuture'
   parameters:
   - name: ssml
     isRequired: true
@@ -98,7 +98,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.start_speaking_text
   name: start_speaking_text
   summary: Starts synthesis on plain text in a blocking (synchronous) mode.
-  signature: 'start_speaking_text(text: str) -> azure.cognitiveservices.speech.SpeechSynthesisResult'
+  signature: 'start_speaking_text(text: str) -> SpeechSynthesisResult'
   parameters:
   - name: text
     isRequired: true
@@ -107,7 +107,7 @@ methods:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.start_speaking_text_async
   name: start_speaking_text_async
   summary: Starts synthesis on plain text in a non-blocking (asynchronous) mode.
-  signature: 'start_speaking_text_async(text: str) -> azure.cognitiveservices.speech.ResultFuture'
+  signature: 'start_speaking_text_async(text: str) -> ResultFuture'
   parameters:
   - name: text
     isRequired: true
@@ -118,20 +118,19 @@ methods:
   summary: 'Synchronously terminates ongoing synthesis operation.
 
     This method will stop playback and clear unread data in PullAudioOutputStream.'
-  signature: stop_speaking()
+  signature: stop_speaking() -> None
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.stop_speaking_async
   name: stop_speaking_async
   summary: 'Asynchronously terminates ongoing synthesis operation.
 
     This method will stop playback and clear unread data in PullAudioOutputStream.'
-  signature: stop_speaking_async()
+  signature: stop_speaking_async() -> ResultFuture
   return:
     description: A future that is fulfilled once synthesis has been stopped.
 attributes:
 - uid: azure.cognitiveservices.speech.SpeechSynthesizer.authorization_token
   name: authorization_token
   summary: 'The authorization token that will be used for connecting to the service.
-
 
 
     > [!NOTE]
@@ -157,7 +156,6 @@ attributes:
     Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.SpeechSynthesisBookmarkEventArgs>
 
     instance as the single argument.
-
 
 
     > [!NOTE]
@@ -216,7 +214,6 @@ attributes:
     Callbacks connected to this signal are called with a <xref:azure.cognitiveservices.speech.SpeechSynthesisVisemeEventArgs>
 
     instance as the single argument.
-
 
 
     > [!NOTE]

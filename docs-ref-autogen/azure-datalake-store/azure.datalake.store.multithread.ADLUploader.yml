@@ -21,7 +21,7 @@ constructor:
   - name: adlfs
     isRequired: true
     types:
-    - <xref:<xref:ADL filesystem instance>>
+    - <xref:<xref:azure.datalake.store.multithread.ADL filesystem instance>>
   - name: rpath
     description: 'remote path to upload to; if multiple files, this is the dircetory
 
@@ -40,7 +40,7 @@ constructor:
     - <xref:str>
   - name: nthreads
     description: Number of threads to use. If None, uses the number of cores.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int >[<xref:None>]
   - name: chunksize
@@ -48,24 +48,24 @@ constructor:
       Files
 
       smaller than this number will always be transferred in a single thread.'
-    isRequired: true
+    defaultValue: '268435456'
     types:
-    - <xref:int >[<xref:228>]
+    - <xref:int >[<xref:2**28>]
   - name: buffersize
     description: 'Number of bytes for internal buffer. This block cannot be bigger
       than
 
       a chunk and cannot be smaller than a block.'
-    isRequired: true
+    defaultValue: '4194304'
     types:
-    - <xref:int >[<xref:222>]
+    - <xref:int >[<xref:2**22>]
   - name: blocksize
     description: 'Number of bytes for a block. Within each chunk, we write a smaller
 
       block for each API call. This block cannot be bigger than a chunk.'
-    isRequired: true
+    defaultValue: '4194304'
     types:
-    - <xref:int >[<xref:222>]
+    - <xref:int >[<xref:2**22>]
   - name: client
     description: 'Set an instance of ADLTransferClient when finer-grained control
       over
@@ -73,12 +73,12 @@ constructor:
       transfer parameters is needed. Ignores *nthreads* and *chunksize*
 
       set by constructor.'
-    isRequired: true
+    defaultValue: None
     types:
-    - <xref:azure.datalake.store.transfer.ADLTransferClient >[<xref:None>]
+    - <xref:ADLTransferClient >[<xref:None>]
   - name: run
     description: Whether to begin executing immediately.
-    isRequired: true
+    defaultValue: 'True'
     types:
     - <xref:bool >[<xref:True>]
   - name: overwrite
@@ -90,7 +90,7 @@ constructor:
       overwritten or not. If True, only matching filenames are actually
 
       overwritten.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool >[<xref:False>]
   - name: progress_callback
@@ -99,7 +99,7 @@ constructor:
       current is the number of bytes transfered so far, and total is the
 
       size of the blob, or None if the total size is unknown.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:callable >[<xref:None>]
   - name: timeout
@@ -107,9 +107,11 @@ constructor:
       before the
 
       process will stop and raise an exception if  transfer is still in progress'
-    isRequired: true
+    defaultValue: '0'
     types:
     - <xref:int >(<xref:0>)
+  - name: verbose
+    defaultValue: 'False'
 methods:
 - uid: azure.datalake.store.multithread.ADLUploader.active
   name: active
@@ -118,16 +120,17 @@ methods:
 - uid: azure.datalake.store.multithread.ADLUploader.clear_saved
   name: clear_saved
   summary: Remove references to all persisted uploads.
-  signature: clear_saved()
+  signature: static clear_saved()
 - uid: azure.datalake.store.multithread.ADLUploader.load
   name: load
   summary: Load list of persisted transfers from disk, for possible resumption.
-  signature: load()
+  signature: static load()
   return:
-    description: "* *A dictionary of upload instances. The hashes are auto* \n\n*\
-      \ *generated unique. The state of the chunks completed, errored, etc.,* \n\n\
-      * *can be seen in the status attribute. Instances can be resumed with* \n\n\
-      * `run()`."
+    description: "* <xref:azure.datalake.store.multithread.A dictionary> of <xref:upload\
+      \ instances. The hashes are auto> \n\n* <xref:generated unique. The state> of\
+      \ <xref:azure.datalake.store.multithread.the chunks completed>, <xref:azure.datalake.store.multithread.errored>,\
+      \ <xref:etc.,> \n\n* can be seen in the status attribute. Instances can be resumed\
+      \ with \n\n* `run()`."
 - uid: azure.datalake.store.multithread.ADLUploader.run
   name: run
   summary: Populate transfer queue and execute downloads

@@ -9,10 +9,10 @@ summary: 'A Message Receiver that opens its own exclsuive Link on an
 
   existing Session.'
 constructor:
-  syntax: 'MessageReceiver(session, source, target, on_message_received, name=None,
-    receive_settle_mode=<ReceiverSettleMode.PeekLock: 1>, send_settle_mode=<SenderSettleMode.Unsettled:
-    0>, max_message_size=1048576, prefetch=300, properties=None, error_policy=None,
-    debug=False, encoding=''UTF-8'', desired_capabilities=None)'
+  syntax: MessageReceiver(session, source, target, on_message_received, name=None,
+    receive_settle_mode=ReceiverSettleMode.PeekLock, send_settle_mode=SenderSettleMode.Unsettled,
+    max_message_size=1048576, prefetch=300, properties=None, error_policy=None, debug=False,
+    encoding='UTF-8', desired_capabilities=None)
   parameters:
   - name: session
     description: The underlying Session with which to receive.
@@ -32,7 +32,7 @@ constructor:
     - <xref:bytes>
   - name: name
     description: A unique name for the receiver. If not specified a GUID will be used.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:bytes>
@@ -48,7 +48,7 @@ constructor:
       will assume successful receipt of the message and clear it from the queue. The
 
       default is *PeekLock*.'
-    isRequired: true
+    defaultValue: ReceiverSettleMode.PeekLock
     types:
     - <xref:uamqp.constants.ReceiverSettleMode>
   - name: send_settle_mode
@@ -59,7 +59,7 @@ constructor:
       from the service that the message was successfully sent. If set to ''Settled'',
 
       the client will not wait for confirmation and assume success.'
-    isRequired: true
+    defaultValue: SenderSettleMode.Unsettled
     types:
     - <xref:uamqp.constants.SenderSettleMode>
   - name: desired_capabilities
@@ -67,47 +67,48 @@ constructor:
       \ a desired_capabilities object, please do as follows:\n\n   * 1. Create an\
       \ array of desired capability symbols: *capabilities_symbol_array = [types.AMQPSymbol(string)]*\
       \ \n\n\n   * 2. Transform the array to AMQPValue object: *utils.data_factory(types.AMQPArray(capabilities_symbol_array))*"
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:uamqp.c_uamqp.AMQPValue>
   - name: max_message_size
     description: The maximum allowed message size negotiated for the Link.
-    isRequired: true
+    defaultValue: '1048576'
     types:
     - <xref:int>
   - name: prefetch
     description: 'The receiver Link credit that determines how many
 
       messages the Link will attempt to handle per connection iteration.'
-    isRequired: true
+    defaultValue: '300'
     types:
     - <xref:int>
   - name: properties
     description: Metadata to be sent in the Link ATTACH frame.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:dict>
   - name: error_policy
     description: 'A policy for parsing errors on link, connection and message
 
       disposition to determine whether the error should be retryable.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:uamqp.errors.ErrorPolicy>
   - name: debug
     description: 'Whether to turn on network trace logs. If *True*, trace logs
 
       will be logged at INFO level. Default is *False*.'
-    isRequired: true
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: encoding
     description: 'The encoding to use for parameters supplied as strings.
 
       Default is ''UTF-8'''
-    isRequired: true
+    defaultValue: UTF-8
     types:
     - <xref:str>
+  - name: on_message_received
 variables:
 - description: 'The mode by which to settle message receive
 
@@ -174,11 +175,8 @@ methods:
   summary: Open the MessageReceiver in order to start processing messages.
   signature: open()
   exceptions:
-  - type: '~uamqp.errors.AMQPConnectionError if the Receiver raises
-
-      an error on opening. This can happen if the source URI is invalid
-
-      or the credentials are rejected.'
+  - type: uamqp.errors.AMQPConnectionError if the Receiver raisesan error on opening.
+      This can happen if the source URI is invalidor the credentials are rejected.
 - uid: uamqp.receiver.MessageReceiver.reset_link_credit
   name: reset_link_credit
   summary: Reset the link credit. This method would send flow control frame to the

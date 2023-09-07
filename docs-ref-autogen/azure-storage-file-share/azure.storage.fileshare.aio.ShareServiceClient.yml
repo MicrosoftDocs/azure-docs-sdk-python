@@ -18,8 +18,9 @@ summary: 'A client to interact with the File Share Service at the account level.
   can also be retrieved using the <xref:azure.storage.fileshare.aio.ShareServiceClient.get_share_client>
   function.'
 constructor:
-  syntax: 'ShareServiceClient(account_url: str, credential: Optional[Any] = None,
-    **kwargs: Any)'
+  syntax: 'ShareServiceClient(account_url: str, credential: str | Dict[str, str] |
+    AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None = None,
+    *, token_intent: Literal[''backup''] | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the file share storage account. Any other entities included
@@ -31,18 +32,50 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
-    isRequired: true
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: token_intent
+    description: "Required when using *TokenCredential* for authentication and ignored\
+      \ for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
+      \ - Specifies requests are intended for backup/admin type operations, meaning\
+      \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
+      \ User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
+  - name: allow_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the target URI.
+    types:
+    - <xref:bool>
+  - name: allow_source_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the source URI.
+    types:
+    - <xref:bool>
   - name: api_version
-    description: 'The Storage API version to use for requests. Default value is ''2019-07-07''.
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
 
-      Setting to an older version may result in reduced feature compatibility.
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.
 
 
       New in version 12.1.0.'
@@ -52,8 +85,6 @@ constructor:
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
-  - name: loop
-    description: The event loop to run the asynchronous tasks.
   - name: max_range_size
     description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
     types:
@@ -62,13 +93,20 @@ examples:
 - "Create the share service client with url and credential.<!--[!code-python[Main](les\\\
   file_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
   classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
-  D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\
-  \\file_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare.aio import\
-  \ ShareServiceClient\n   share_service_client = ShareServiceClient(\n       account_url=self.account_url,\n\
-  \       credential=self.access_key\n   )\n\n   ````\n"
+  D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\
+  \\samples\\\\file_samples_authentication_async.py\", \"xml:space\": \"preserve\"\
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare.aio\
+  \ import ShareServiceClient\n   share_service_client = ShareServiceClient(\n   \
+  \    account_url=self.account_url,\n       credential=self.access_key\n   )\n\n\
+  \   ````\n"
 methods:
+- uid: azure.storage.fileshare.aio.ShareServiceClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close()
 - uid: azure.storage.fileshare.aio.ShareServiceClient.create_share
   name: create_share
   summary: 'Creates a new share under the specified account. If the share
@@ -76,7 +114,7 @@ methods:
     with the same name already exists, the operation fails. Returns a client with
 
     which to interact with the newly created share.'
-  signature: 'create_share(share_name: str, **kwargs) -> azure.storage.fileshare.aio._share_client_async.ShareClient'
+  signature: 'async create_share(share_name: str, **kwargs) -> ShareClient'
   parameters:
   - name: share_name
     description: The name of the share to create.
@@ -88,13 +126,21 @@ methods:
 
       share as metadata. Example:{''Category'':''test''}'
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: quota
     description: Quota in bytes.
     types:
     - <xref:int>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -103,8 +149,8 @@ methods:
   examples:
   - "Create a share in the file share service.<!--[!code-python[Main](les\\file_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\\file_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await file_service.create_share(share_name=\"fileshare1\")\n\n   ````\n"
@@ -113,8 +159,8 @@ methods:
   summary: 'Marks the specified share for deletion. The share is
 
     later deleted during garbage collection.'
-  signature: 'delete_share(share_name: Union[ShareProperties, str], delete_snapshots:
-    Optional[bool] = False, **kwargs) -> None'
+  signature: 'async delete_share(share_name: ShareProperties | str, delete_snapshots:
+    bool | None = False, **kwargs) -> None'
   parameters:
   - name: share_name
     description: 'The share to delete. This can either be the name of the share,
@@ -130,7 +176,15 @@ methods:
     types:
     - <xref:bool>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -139,20 +193,76 @@ methods:
   examples:
   - "Delete a share in the file share service.<!--[!code-python[Main](les\\file_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\\file_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await file_service.delete_share(share_name=\"fileshare1\")\n\n   ````\n"
+- uid: azure.storage.fileshare.aio.ShareServiceClient.from_connection_string
+  name: from_connection_string
+  summary: Create ShareServiceClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  return:
+    description: A File Share service client.
+    types:
+    - <xref:azure.storage.fileshare.ShareServiceClient>
+  examples:
+  - "Create the share service client with connection string.<!--[!code-python[Main](les\\\
+    file_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\
+    \\samples\\\\file_samples_authentication.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare\
+    \ import ShareServiceClient\n   share_service_client = ShareServiceClient.from_connection_string(self.connection_string)\n\
+    \n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareServiceClient.get_service_properties
   name: get_service_properties
   summary: 'Gets the properties of a storage account''s File Share service, including
 
     Azure Storage Analytics.'
-  signature: 'get_service_properties(**kwargs: Any) -> Dict[str, Any]'
+  signature: 'async get_service_properties(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -164,8 +274,8 @@ methods:
   examples:
   - "Get file share service properties.<!--[!code-python[Main](les\\file_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\\file_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = await file_service.get_service_properties()\n\n   ````\n"
@@ -174,8 +284,8 @@ methods:
   summary: 'Get a client to interact with the specified share.
 
     The share need not already exist.'
-  signature: 'get_share_client(share: Union[ShareProperties, str], snapshot: Optional[Union[Dict[str,
-    Any], str]] = None) -> ShareClient'
+  signature: 'get_share_client(share: ShareProperties | str, snapshot: Dict[str, Any]
+    | str | None = None) -> ShareClient'
   parameters:
   - name: share
     description: 'The share. This can either be the name of the share,
@@ -200,8 +310,8 @@ methods:
   examples:
   - "Gets the share client.<!--[!code-python[Main](les\\file_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\\file_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.storage.fileshare.aio import ShareServiceClient\n   file_service\
@@ -216,9 +326,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service and stop when all shares have been returned.'
-  signature: 'list_shares(name_starts_with: Optional[str] = None, include_metadata:
-    Optional[bool] = False, include_snapshots: Optional[bool] = False, **kwargs: Any)
-    -> azure.core.async_paging.AsyncItemPaged'
+  signature: 'list_shares(name_starts_with: str | None = None, include_metadata: bool
+    | None = False, include_snapshots: bool | None = False, **kwargs: Any) -> AsyncItemPaged'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only shares whose names
@@ -244,7 +353,15 @@ methods:
     types:
     - <xref:bool>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -254,8 +371,8 @@ methods:
   examples:
   - "List shares in the file share service.<!--[!code-python[Main](les\\file_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\\file_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List the shares in the file service\n   my_shares = []\n   async for s\
@@ -268,9 +385,9 @@ methods:
     Azure Storage Analytics. If an element (e.g. hour_metrics) is left as None, the
 
     existing settings on the service for that functionality are preserved.'
-  signature: 'set_service_properties(hour_metrics: Optional[Metrics] = None, minute_metrics:
-    Optional[Metrics] = None, cors: Optional[List[CorsRule]] = None, protocol: Optional[ShareProtocolSettings],
-    = None, **kwargs) -> None'
+  signature: 'async set_service_properties(hour_metrics: Metrics | None = None, minute_metrics:
+    Metrics | None = None, cors: List[CorsRule] | None = None, protocol: ShareProtocolSettings
+    | None = None, **kwargs) -> None'
   parameters:
   - name: hour_metrics
     description: 'The hour metrics settings provide a summary of request
@@ -294,12 +411,20 @@ methods:
       and CORS will be disabled for the service.'
     isRequired: true
     types:
-    - <xref:list>(<xref:azure.storage.fileshare.CorsRule>)
+    - list(<xref:azure.storage.fileshare.CorsRule>)
   - name: protocol_settings
     description: Sets protocol settings
     isRequired: true
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -308,8 +433,8 @@ methods:
   examples:
   - "Sets file share service properties.<!--[!code-python[Main](les\\file_samples_service_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\103\\\\azure-storage-file-share-12.6.0\\\\samples\\\\file_samples_service_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\211\\\\azure-storage-file-share-12.13.0\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create service properties\n   from azure.storage.fileshare import Metrics,\
@@ -339,8 +464,8 @@ methods:
 
 
     New in version 12.2.0: This operation was introduced in API version ''2019-12-12''.'
-  signature: 'undelete_share(deleted_share_name: str, deleted_share_version: str,
-    **kwargs: Any) -> azure.storage.fileshare.aio._share_client_async.ShareClient'
+  signature: 'async undelete_share(deleted_share_name: str, deleted_share_version:
+    str, **kwargs: Any) -> ShareClient'
   parameters:
   - name: deleted_share_name
     description: Specifies the name of the deleted share to restore.
@@ -353,9 +478,61 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:azure.storage.fileshare.aio.ShareClient>
+attributes:
+- uid: azure.storage.fileshare.aio.ShareServiceClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.fileshare.aio.ShareServiceClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.fileshare.aio.ShareServiceClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.fileshare.aio.ShareServiceClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.fileshare.aio.ShareServiceClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.fileshare.aio.ShareServiceClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.fileshare.aio.ShareServiceClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.fileshare.aio.ShareServiceClient.location_mode>.'

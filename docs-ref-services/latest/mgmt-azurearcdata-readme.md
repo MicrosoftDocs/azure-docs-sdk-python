@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/29/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: azurearcdata
+ms.service: azure-arc
+ms.subservice: azure-arc-data
 ---
 
 # Microsoft Azure SDK for Python

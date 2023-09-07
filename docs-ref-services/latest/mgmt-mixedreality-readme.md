@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 04/28/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: mixedreality
+ms.service: azure-python
 ---
 
 ## Microsoft Azure SDK for Python

@@ -1,18 +1,17 @@
 ---
 title: Azure Video Analyzer Edge client library for Python
 keywords: Azure, python, SDK, API, azure-media-videoanalyzer-edge, videoanalyzer
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/27/2021
+author: hivyas
+ms.author: hivyas
+ms.date: 04/30/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: videoanalyzer
 ---
+# Azure Video Analyzer Edge client library for Python - version 1.0.0b4 
 
-# Azure Video Analyzer Edge client library for Python - Version 1.0.0b3 
 
+Deprecated. We’re retiring the Azure Video Analyzer preview service, you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is not longer maintained.
 
 Azure Video Analyzer is an [Azure Applied AI Service][applied-ai-service] that provides a platform for you to build intelligent video applications that can span both edge and cloud infrastructures. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services at the edge or in the cloud. It is designed to be an extensible platform, enabling you to connect different video inferencing edge modules such as Cognitive services modules, or custom inferencing modules that have been trained with your own data using either open-source machine learning or [Azure Machine Learning][machine-learning].
 
@@ -75,15 +74,14 @@ To create a pipeline topology you need to define sources and sinks.
 user_name_param = ParameterDeclaration(name="rtspUserName",type="String",default="testusername")
 password_param = ParameterDeclaration(name="rtspPassword",type="SecretString",default="testpassword")
 url_param = ParameterDeclaration(name="rtspUrl",type="String",default="rtsp://www.sample.com")
-hub_param = ParameterDeclaration(name="hubSinkOutputName",type="String")
 
 #Source and Sink
 source = RtspSource(name="rtspSource", endpoint=UnsecuredEndpoint(url="${rtspUrl}",credentials=UsernamePasswordCredentials(username="${rtspUserName}",password="${rtspPassword}")))
 node = NodeInput(node_name="rtspSource")
-sink = IotHubMessageSink("msgSink", nodeInput, "${hubSinkOutputName}")
-
+sink = VideoSink(name="videoSink", inputs=[node], video_name="video", local_media_cache_path="/var/lib/videoanalyzer/tmp/", local_media_cache_maximum_size_mi_b="1024");
+    
 pipeline_topology_properties = PipelineTopologyProperties()
-pipeline_topology_properties.parameters = [user_name_param, password_param, url_param, hub_param]
+pipeline_topology_properties.parameters = [user_name_param, password_param, url_param]
 pipeline_topology_properties.sources = [source]
 pipeline_topology_properties.sinks = [sink]
 pipeline_topology = PipelineTopology(name=pipeline_topology_name,properties=pipeline_topology_properties)
@@ -148,7 +146,7 @@ see the Code of Conduct FAQ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: /cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 
 [cla]: https://cla.microsoft.com
@@ -157,8 +155,8 @@ additional questions or comments.
 [coc_contact]: mailto:opencode@microsoft.com
 [doc_pipelines]: https://go.microsoft.com/fwlink/?linkid=2162396
 [package]: https://aka.ms/ava/sdk/client/python
-[source]: https://github.com/Azure/azure-sdk-for-python/tree/azure-media-videoanalyzer-edge_1.0.0b3/sdk/videoanalyzer
-[samples]: https://github.com/Azure-Samples/live-video-analytics-iot-edge-python
+[source]: https://github.com/Azure/azure-sdk-for-python/tree/azure-media-videoanalyzer-edge_1.0.0b4/sdk/videoanalyzer
+[samples]: https://go.microsoft.com/fwlink/?linkid=2162278
 [doc_product]: https://go.microsoft.com/fwlink/?linkid=2162396
 [doc_direct_methods]: https://go.microsoft.com/fwlink/?linkid=2162396
 [iot-device-sdk]: https://pypi.org/project/azure-iot-device/

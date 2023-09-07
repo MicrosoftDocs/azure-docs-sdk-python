@@ -1,25 +1,26 @@
 ---
 title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
-author: xiangyan99
-ms.author: xiangyan
-ms.date: 02/09/2022
+author: lmazuel
+ms.author: lmazuel
+ms.date: 08/22/2023
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: core
 ---
 
-# Azure Core shared client library for Python - Version 1.22.1 
+# Azure Core shared client library for Python - version 1.29.3 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries.
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python/guidelines/index.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.22.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.29.3/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.22.1/sdk/core/azure-core/) | [Package (Pypi)][package] | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.22.1/sdk/core/azure-core/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.29.3/sdk/core/azure-core/) 
+| [Package (Pypi)][package]
+| [Package (Conda)](https://anaconda.org/microsoft/azure-core/)
+| [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.29.3/sdk/core/azure-core/)
 
 ## _Disclaimer_
 
@@ -208,11 +209,11 @@ MatchConditions is an enum to describe match conditions.
 
 ```python
 class MatchConditions(Enum):
-    Unconditionally = 1
-    IfNotModified = 2
-    IfModified = 3
-    IfPresent = 4
-    IfMissing = 5
+    Unconditionally = 1  # Matches any condition
+    IfNotModified = 2  # If the target object is not modified. Usually it maps to etag=<specific etag>
+    IfModified = 3  # Only if the target object is modified. Usually it maps to etag!=<specific etag>
+    IfPresent = 4   # If the target object exists. Usually it maps to etag='*'
+    IfMissing = 5   # If the target object does not exist. Usually it maps to etag!='*'
 ```
 
 #### CaseInsensitiveEnumMeta
@@ -221,11 +222,10 @@ A metaclass to support case-insensitive enums.
 
 ```python
 from enum import Enum
-from six import with_metaclass
 
 from azure.core import CaseInsensitiveEnumMeta
 
-class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
+class MyCustomEnum(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     FOO = 'foo'
     BAR = 'bar'
 ```

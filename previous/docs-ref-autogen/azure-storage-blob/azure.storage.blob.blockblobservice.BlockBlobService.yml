@@ -19,11 +19,106 @@ summary: 'Block blobs let you upload large blobs efficiently. Block blobs are co
 
   blob that is no more than 64 MB in size, you can upload it in its entirety with
 
-  a single write operation; see create_blob_from_bytes.'
+  a single write operation; see create_blob_from_bytes.
+
+
+  :type *~azure.storage.common.TokenCredential*'
 constructor:
   syntax: BlockBlobService(account_name=None, account_key=None, sas_token=None, is_emulated=False,
     protocol='https', endpoint_suffix='core.windows.net', custom_domain=None, request_session=None,
     connection_string=None, socket_timeout=None, token_credential=None)
+  parameters:
+  - name: account_name
+    description: 'The storage account name. This is used to authenticate requests
+
+      signed with an account key and to construct the storage endpoint. It
+
+      is required unless a connection string is given, or if a custom
+
+      domain is used with anonymous authentication.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: account_key
+    description: 'The storage account key. This is used for shared key authentication.
+
+      If neither account key or sas token is specified, anonymous access
+
+      will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: 'A shared access signature token to use to authenticate requests
+
+      instead of the account key. If account key and sas token are both
+
+      specified, account key will be used to sign. If neither are
+
+      specified, anonymous access will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: is_emulated
+    description: 'Whether to use the emulator. Defaults to False. If specified, will
+
+      override all other parameters besides connection string and request
+
+      session.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: protocol
+    description: The protocol to use for requests. Defaults to https.
+    defaultValue: https
+    types:
+    - <xref:str>
+  - name: endpoint_suffix
+    description: 'The host base component of the url, minus the account name. Defaults
+
+      to Azure (core.windows.net). Override this to use the China cloud
+
+      (core.chinacloudapi.cn).'
+    defaultValue: core.windows.net
+    types:
+    - <xref:str>
+  - name: custom_domain
+    description: 'The custom domain to use. This can be set in the Azure Portal. For
+
+      example, ''www.mydomain.com''.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: request_session
+    description: The session object to use for http requests.
+    defaultValue: None
+    types:
+    - <xref:requests.Session>
+  - name: connection_string
+    description: 'If specified, this will override all other parameters besides
+
+      request session. See
+
+      [http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/](http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/)
+
+      for the connection string format.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'If specified, this will override the default socket timeout. The
+      timeout specified is in seconds.
+
+      See DEFAULT_SOCKET_TIMEOUT in _constants.py for the default value.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: token_credential
+    description: 'A token credential used to authenticate HTTPS requests. The token
+      value
+
+      should be updated before its expiration.'
+    defaultValue: None
 variables:
 - description: 'The largest size upload supported in a single put call. This is used
     by
@@ -57,6 +152,32 @@ variables:
   types:
   - <xref:int>
 methods:
+- uid: azure.storage.blob.blockblobservice.BlockBlobService.batch_set_standard_blob_tier
+  name: batch_set_standard_blob_tier
+  summary: 'Sends a batch of multiple set block blob tiers requests.
+
+    This API is only supported for block blobs on standard storage accounts.'
+  signature: batch_set_standard_blob_tier(batch_set_blob_tier_sub_requests, timeout=None)
+  parameters:
+  - name: batch_set_blob_tier_sub_requests
+    description: The set block blob tier requests to send as a batch.
+    isRequired: true
+    types:
+    - <xref:list>(<xref:azure.storage.blob.models.BatchSetBlobTierSubRequest>)
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: parsed batch set tier HTTP response which indicates if each sub-request
+      is successful.
+    types:
+    - list of <xref:azure.storage.blob.models.BatchSubResponse>
 - uid: azure.storage.blob.blockblobservice.BlockBlobService.copy_blob
   name: copy_blob
   summary: 'Copies a blob. This operation returns a copy operation
@@ -255,6 +376,16 @@ methods:
 
     Enforces that the service will not return a response until the copy is complete.
 
+    :param StandardBlobTier standard_blob_tier:
+
+    A standard blob tier value to set the blob to. For this version of the library,
+
+    this is only applicable to block blobs on standard storage accounts.
+
+    :param <xref:azure.storage.blob.models.RehydratePriority> rehydrate_priority:
+
+    Indicates the priority with which to rehydrate an archived blob
+
     :return: Copy operation properties such as status, source, and ID.
 
     :rtype: <xref:azure.storage.blob.models.CopyProperties>'
@@ -262,7 +393,7 @@ methods:
     source_if_unmodified_since=None, source_if_match=None, source_if_none_match=None,
     destination_if_modified_since=None, destination_if_unmodified_since=None, destination_if_match=None,
     destination_if_none_match=None, destination_lease_id=None, source_lease_id=None,
-    timeout=None, requires_sync=None)
+    timeout=None, requires_sync=None, standard_blob_tier=None, rehydrate_priority=None)
   parameters:
   - name: container_name
     isRequired: true
@@ -298,6 +429,10 @@ methods:
     defaultValue: None
   - name: requires_sync
     defaultValue: None
+  - name: standard_blob_tier
+    defaultValue: None
+  - name: rehydrate_priority
+    defaultValue: None
 - uid: azure.storage.blob.blockblobservice.BlockBlobService.create_blob_from_bytes
   name: create_blob_from_bytes
   summary: 'Creates a new blob from an array of bytes, or updates the content
@@ -308,7 +443,7 @@ methods:
   signature: create_blob_from_bytes(container_name, blob_name, blob, index=0, count=None,
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -432,6 +567,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -441,6 +587,14 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: standard_blob_tier
+    description: 'A standard blob tier value to set the blob to. For this version
+      of the library,
+
+      this is only applicable to block blobs on standard storage accounts.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.StandardBlobTier>
   return:
     description: ETag and last modified properties for the Block Blob
     types:
@@ -453,7 +607,7 @@ methods:
   signature: create_blob_from_path(container_name, blob_name, file_path, content_settings=None,
     metadata=None, validate_content=False, progress_callback=None, max_connections=2,
     lease_id=None, if_modified_since=None, if_unmodified_since=None, if_match=None,
-    if_none_match=None, timeout=None)
+    if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -569,6 +723,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -578,6 +743,14 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: standard_blob_tier
+    description: 'A standard blob tier value to set the blob to. For this version
+      of the library,
+
+      this is only applicable to block blobs on standard storage accounts.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.StandardBlobTier>
   return:
     description: ETag and last modified properties for the Block Blob
     types:
@@ -592,7 +765,8 @@ methods:
   signature: create_blob_from_stream(container_name, blob_name, stream, count=None,
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None, use_byte_buffer=False)
+    if_match=None, if_none_match=None, timeout=None, use_byte_buffer=False, standard_blob_tier=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -715,6 +889,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -769,6 +954,14 @@ methods:
     defaultValue: 'False'
     types:
     - <xref:bool>
+  - name: standard_blob_tier
+    description: 'A standard blob tier value to set the blob to. For this version
+      of the library,
+
+      this is only applicable to block blobs on standard storage accounts.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.StandardBlobTier>
   return:
     description: ETag and last modified properties for the Block Blob
     types:
@@ -781,7 +974,7 @@ methods:
   signature: create_blob_from_text(container_name, blob_name, text, encoding='utf-8',
     content_settings=None, metadata=None, validate_content=False, progress_callback=None,
     max_connections=2, lease_id=None, if_modified_since=None, if_unmodified_since=None,
-    if_match=None, if_none_match=None, timeout=None)
+    if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -898,6 +1091,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: 'The timeout parameter is expressed in seconds. This method may make
 
@@ -907,6 +1111,14 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: standard_blob_tier
+    description: 'A standard blob tier value to set the blob to. For this version
+      of the library,
+
+      this is only applicable to block blobs on standard storage accounts.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.StandardBlobTier>
   return:
     description: ETag and last modified properties for the Block Blob
     types:
@@ -965,7 +1177,7 @@ methods:
   name: put_block
   summary: Creates a new block to be committed as part of a blob.
   signature: put_block(container_name, blob_name, block, block_id, validate_content=False,
-    lease_id=None, timeout=None)
+    lease_id=None, timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -982,19 +1194,14 @@ methods:
     isRequired: true
     types:
     - <xref:io.IOBase>
-    - '<xref:<xref:bytes
-
-      Content of the block.>>'
+    - <xref:<xref:bytes Content> of <xref:the block.>>
   - name: block_id
-    description: 'A valid Base64 string value that identifies the block. Prior to
+    description: 'A string value that identifies the block. The string should be less
+      than
 
-      encoding, the string must be less than or equal to 64 bytes in size.
+      or equal to 64 bytes in size.
 
-      For a given blob, the length of the value specified for the blockid
-
-      parameter must be the same size for each block. Note that the Base64
-
-      string must be URL-encoded.'
+      For a given blob, the block_id must be the same size for each block.'
     isRequired: true
     types:
     - <xref:str>
@@ -1018,6 +1225,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -1026,8 +1244,9 @@ methods:
 - uid: azure.storage.blob.blockblobservice.BlockBlobService.put_block_from_url
   name: put_block_from_url
   summary: Creates a new block to be committed as part of a blob.
-  signature: put_block_from_url(container_name, blob_name, copy_source_url, source_range_start,
-    source_range_end, block_id, source_content_md5=None, lease_id=None, timeout=None)
+  signature: put_block_from_url(container_name, blob_name, copy_source_url, block_id,
+    source_range_start=None, source_range_end=None, source_content_md5=None, lease_id=None,
+    timeout=None, cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1050,25 +1269,22 @@ methods:
   - name: source_range_start
     description: This indicates the start of the range of bytes(inclusive) that has
       to be taken from the copy source.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: source_range_end
     description: This indicates the end of the range of bytes(inclusive) that has
       to be taken from the copy source.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:int>
   - name: block_id
-    description: 'A valid Base64 string value that identifies the block. Prior to
+    description: 'A string value that identifies the block. The string should be less
+      than
 
-      encoding, the string must be less than or equal to 64 bytes in size.
+      or equal to 64 bytes in size.
 
-      For a given blob, the length of the value specified for the blockid
-
-      parameter must be the same size for each block. Note that the Base64
-
-      string must be URL-encoded.'
+      For a given blob, the block_id must be the same size for each block.'
     isRequired: true
     types:
     - <xref:str>
@@ -1083,6 +1299,17 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
@@ -1110,7 +1337,8 @@ methods:
     belong to.'
   signature: put_block_list(container_name, blob_name, block_list, content_settings=None,
     metadata=None, validate_content=False, lease_id=None, if_modified_since=None,
-    if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None)
+    if_unmodified_since=None, if_match=None, if_none_match=None, timeout=None, standard_blob_tier=None,
+    cpk=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1127,7 +1355,7 @@ methods:
       the block ids and block state.
     isRequired: true
     types:
-    - <xref:list>(<xref:azure.storage.blob.models.BlobBlock>)
+    - list(<xref:azure.storage.blob.models.BlobBlock>)
   - name: content_settings
     description: ContentSettings object used to set properties on the blob.
     defaultValue: None
@@ -1205,21 +1433,42 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: cpk
+    description: 'Encrypts the data on the service-side with the given key.
+
+      Use of customer-provided keys must be done over HTTPS.
+
+      As the encryption key itself is provided in the request,
+
+      a secure connection must be established to transfer the key.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.CustomerProvidedEncryptionKey>
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     defaultValue: None
     types:
     - <xref:int>
+  - name: standard_blob_tier
+    description: 'A standard blob tier value to set the blob to. For this version
+      of the library,
+
+      this is only applicable to block blobs on standard storage accounts.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.blob.models.StandardBlobTier>
   return:
     description: ETag and last modified properties for the updated Block Blob
     types:
     - <xref:azure.storage.blob.models.ResourceProperties>
 - uid: azure.storage.blob.blockblobservice.BlockBlobService.set_standard_blob_tier
   name: set_standard_blob_tier
-  summary: Sets the block blob tiers on the blob. This API is only supported for block
-    blobs on standard storage accounts.
+  summary: "Sets the block blob tiers on the blob. This API is only supported for\
+    \ block blobs on standard storage accounts.\n\n:param <xref:azure.storage.blob.models.RehydratePriority>\
+    \ rehydrate_priority:\n   Indicates the priority with which to rehydrate an archived\
+    \ blob"
   signature: set_standard_blob_tier(container_name, blob_name, standard_blob_tier,
-    timeout=None)
+    timeout=None, rehydrate_priority=None)
   parameters:
   - name: container_name
     description: Name of existing container.
@@ -1248,6 +1497,8 @@ methods:
     defaultValue: None
     types:
     - <xref:int>
+  - name: rehydrate_priority
+    defaultValue: None
 attributes:
 - uid: azure.storage.blob.blockblobservice.BlockBlobService.MAX_BLOCK_SIZE
   name: MAX_BLOCK_SIZE

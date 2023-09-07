@@ -10,7 +10,7 @@ summary: "Settings for globally used Azure configuration values.\n\nYou probably
   <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
   \ \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
   : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-  \   from azure.common.settings import settings\n   settings.log_level = log_level\
+  \   from azure.core.settings import settings\n   settings.log_level = log_level\
   \ = logging.DEBUG\n   ````\n\nThe following methods are searched in order for a\
   \ setting:\n\n4. immediate values\n3. previously user-set value\n2. environment\
   \ variable\n1. system setting\n0. implicit default\n\nAn implicit default is (optionally)\
@@ -31,7 +31,7 @@ summary: "Settings for globally used Azure configuration values.\n\nYou probably
   \ setting searches other methods according to the\nprecedence rules.\n\nImmutable\
   \ configuration snapshots can be created with the following methods:\n\n* settings.defaults\
   \ returns the base defaultsvalues , ignoring any environment or system or user settings\
-  \ \n\n* settings.current returns the current computation of settings including prioritizatiom\
+  \ \n\n* settings.current returns the current computation of settings including prioritization\
   \ of configuration sources, unless defaults_only is set to True (in which case the\
   \ result is identical to settings.defaults) \n\n* settings.config can be called\
   \ with specific values to override what settings.current would provide \n\n<!--\
@@ -39,9 +39,9 @@ summary: "Settings for globally used Azure configuration values.\n\nYou probably
   \ \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
   : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
   \   # return current settings with log level overridden\n   settings.config(log_level=logging.DEBUG)\n\
-  \   ````\n\n\n```\n\n>>> import logging\n>>> from azure.core.settings import settings\n\
-  >>> settings.log_level = logging.DEBUG\n>>> settings.log_level()\n10\n```\n\n\n\
-  ```\n\n>>> settings.log_level(logging.WARN)\n30\n```"
+  \   ````\n\n```\n\n>>> import logging\n>>> from azure.core.settings import settings\n\
+  >>> settings.log_level = logging.DEBUG\n>>> settings.log_level()\n10\n```\n\n```\n\
+  \n>>> settings.log_level(logging.WARN)\n30\n```"
 constructor:
   syntax: Settings()
 variables:
@@ -60,12 +60,23 @@ methods:
     \ \"force\": false, \"language\": \"python\", \"highlight_args\": {}, \"linenos\"\
     : false} -->\n\n````python\n\n   # return current settings with log level overridden\n\
     \   settings.config(log_level=logging.DEBUG)\n   ````"
-  signature: config(**kwargs)
+  signature: 'config(**kwargs: Any) -> Tuple[Any, ...]'
+  parameters:
+  - name: kwargs
+    description: Settings to override
+    types:
+    - <xref:dict>
+  return:
+    description: The current values for all settings, with values overridden by parameter
+      values
+    types:
+    - <xref:namedtuple>
 attributes:
 - uid: azure.core.settings.Settings.current
   name: current
   summary: Return the current values for all settings.
   return:
+    description: The current values for all settings
     types:
     - <xref:namedtuple>
 - uid: azure.core.settings.Settings.defaults
@@ -73,6 +84,7 @@ attributes:
   summary: Return implicit default values for all settings, ignoring environment and
     system.
   return:
+    description: The implicit default values for all settings
     types:
     - <xref:namedtuple>
 - uid: azure.core.settings.Settings.defaults_only
@@ -80,6 +92,8 @@ attributes:
   summary: Whether to ignore environment and system settings and return only base
     default values.
   return:
+    description: Whether to ignore environment and system settings and return only
+      base default values.
     types:
     - <xref:bool>
 - uid: azure.core.settings.Settings.log_level
@@ -108,22 +122,34 @@ attributes:
 
     setting values, e.g. `"AZURE_LOG_LEVEL"`.
 
+    If a `convert` function is provided, the result will be converted before being
+    used.
+
 
     The optional `system_hook` can be used to specify a function that will
 
     attempt to look up a value for the setting from system-wide configurations.
 
+    If a `convert` function is provided, the hook result will be converted before
+    being used.
+
 
     The optional `default` argument specified an implicit default value for
 
-    the setting that is returned if no other methods provide a value.
+    the setting that is returned if no other methods provide a value. If a `convert`
+    function is provided,
+
+    `default` will be converted before being used.
 
 
-    A `convert` agument may be provided to convert values before they are
+    A `convert` argument may be provided to convert values before they are
 
     returned. For instance to concert log levels in environment variables
 
-    to `logging` module values.'
+    to `logging` module values. If a `convert` function is provided, it must support
+
+    str as valid input type.'
+  signature: 'log_level: PrioritizedSetting[str | int, int]'
 - uid: azure.core.settings.Settings.tracing_enabled
   name: tracing_enabled
   summary: 'Return a value for a global setting according to configuration precedence.
@@ -150,22 +176,34 @@ attributes:
 
     setting values, e.g. `"AZURE_LOG_LEVEL"`.
 
+    If a `convert` function is provided, the result will be converted before being
+    used.
+
 
     The optional `system_hook` can be used to specify a function that will
 
     attempt to look up a value for the setting from system-wide configurations.
 
+    If a `convert` function is provided, the hook result will be converted before
+    being used.
+
 
     The optional `default` argument specified an implicit default value for
 
-    the setting that is returned if no other methods provide a value.
+    the setting that is returned if no other methods provide a value. If a `convert`
+    function is provided,
+
+    `default` will be converted before being used.
 
 
-    A `convert` agument may be provided to convert values before they are
+    A `convert` argument may be provided to convert values before they are
 
     returned. For instance to concert log levels in environment variables
 
-    to `logging` module values.'
+    to `logging` module values. If a `convert` function is provided, it must support
+
+    str as valid input type.'
+  signature: 'tracing_enabled: PrioritizedSetting[str | bool, bool]'
 - uid: azure.core.settings.Settings.tracing_implementation
   name: tracing_implementation
   summary: 'Return a value for a global setting according to configuration precedence.
@@ -192,19 +230,32 @@ attributes:
 
     setting values, e.g. `"AZURE_LOG_LEVEL"`.
 
+    If a `convert` function is provided, the result will be converted before being
+    used.
+
 
     The optional `system_hook` can be used to specify a function that will
 
     attempt to look up a value for the setting from system-wide configurations.
 
+    If a `convert` function is provided, the hook result will be converted before
+    being used.
+
 
     The optional `default` argument specified an implicit default value for
 
-    the setting that is returned if no other methods provide a value.
+    the setting that is returned if no other methods provide a value. If a `convert`
+    function is provided,
+
+    `default` will be converted before being used.
 
 
-    A `convert` agument may be provided to convert values before they are
+    A `convert` argument may be provided to convert values before they are
 
     returned. For instance to concert log levels in environment variables
 
-    to `logging` module values.'
+    to `logging` module values. If a `convert` function is provided, it must support
+
+    str as valid input type.'
+  signature: 'tracing_implementation: PrioritizedSetting[str | Type[AbstractSpan]
+    | None, Type[AbstractSpan] | None]'

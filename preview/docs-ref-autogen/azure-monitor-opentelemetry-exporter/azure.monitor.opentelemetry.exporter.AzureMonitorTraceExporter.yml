@@ -6,24 +6,50 @@ module: azure.monitor.opentelemetry.exporter
 inheritances:
 - azure.monitor.opentelemetry.exporter.export._base.BaseExporter
 - opentelemetry.sdk.trace.export.SpanExporter
-summary: Azure Monitor base exporter for OpenTelemetry.
+summary: 'Azure Monitor Trace exporter for OpenTelemetry.
+
+
+  Azure Monitor base exporter for OpenTelemetry.'
 constructor:
   syntax: 'AzureMonitorTraceExporter(**kwargs: Any)'
+  parameters:
+  - name: api_version
+    description: The service API version used. Defaults to latest.
+    types:
+    - <xref:str>
+  - name: connection_string
+    description: The connection string used for your Application Insights resource.
+    types:
+    - <xref:str>
+  - name: credential
+    description: Token credential, such as ManagedIdentityCredential or ClientSecretCredential,
+      used for Azure Active Directory (AAD) authentication. Defaults to None.
+    types:
+    - <xref:<xref:ManagedIdentityCredential/ClientSecretCredential>>
+  - name: disable_offline_storage
+    description: Determines whether to disable storing failed telemetry records for
+      retry. Defaults to *False*.
+    types:
+    - <xref:bool>
+  - name: storage_directory
+    description: Storage path in which to store retry files. Defaults to *<tempfile.gettempdir()>/opentelemetry-python-<your-instrumentation-key>*.
+    types:
+    - <xref:str>
 methods:
 - uid: azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter.export
   name: export
-  summary: 'Export data
-
-    :param spans: Open Telemetry Spans to export.
-
-    :type spans: Sequence[~opentelemetry.trace.Span]
-
-    :rtype: ~opentelemetry.sdk.trace.export.SpanExportResult'
-  signature: 'export(spans: Sequence[opentelemetry.trace.span.Span], **kwargs: Any)
-    -> opentelemetry.sdk.trace.export.SpanExportResult'
+  summary: Export span data.
+  signature: 'export(spans: Sequence[ReadableSpan], **kwargs: Any) -> SpanExportResult'
   parameters:
   - name: spans
+    description: Open Telemetry Spans to export.
     isRequired: true
+    types:
+    - <xref:typing.Sequence>[<xref:opentelemetry.trace.Span>]
+  return:
+    description: The result of the export.
+    types:
+    - <xref:opentelemetry.sdk.trace.export.SpanExportResult>
 - uid: azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter.from_connection_string
   name: from_connection_string
   summary: 'Create an AzureMonitorTraceExporter from a connection string.
@@ -38,8 +64,10 @@ methods:
     of the exporter can be called directly.
 
 
-    :returns an instance of ~AzureMonitorTraceExporter'
-  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> azure.monitor.opentelemetry.exporter.export.trace._exporter.AzureMonitorTraceExporter'
+    :returns an instance of ~AzureMonitorTraceExporter
+
+    :rtype: ~azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter'
+  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> AzureMonitorTraceExporter'
   parameters:
   - name: conn_str
     description: The connection string to be used for authentication.

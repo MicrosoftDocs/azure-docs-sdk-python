@@ -5,13 +5,12 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 08/26/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: databasemigrationservice
+ms.service: dms
 ---
 
-## Microsoft Azure SDK for Python
+# Microsoft Azure Data Migration SDK for Python
 
 This is the Microsoft Azure Data Migration Client Library.
 

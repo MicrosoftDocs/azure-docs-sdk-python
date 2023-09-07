@@ -1,23 +1,21 @@
 ---
 title: Azure Event Hubs client library for Python
-keywords: Azure, python, SDK, API, azure-eventhub, eventhubs
+keywords: Azure, python, SDK, API, azure-eventhub, eventhub
 author: annatisch
-ms.author: annatisch
-ms.date: 01/13/2022
+ms.author: antisch
+ms.date: 08/08/2023
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: eventhubs
+ms.service: eventhub
 ---
-# Azure Event Hubs client library for Python - Version 5.7.0 
+# Azure Event Hubs client library for Python - version 5.11.4 
 
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream
 them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected
 devices and applications. Once Event Hubs has collected the data, you can retrieve, transform, and store it by using
 any real-time analytics provider or with batching/storage adapters. If you would like to know more about Azure Event Hubs,
-you may wish to review: [What is Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-about)?
+you may wish to review: [What is Event Hubs](/azure/event-hubs/event-hubs-about)?
 
 The Azure Event Hubs client library allows for publishing and consuming of Azure Event Hubs events and may be used to:
 
@@ -26,7 +24,12 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
 - Observe interesting operations and interactions happening within your business or other ecosystem, allowing loosely coupled systems to interact without the need to bind them together.
 - Receive events from one or more publishers, transform them to better meet the needs of your ecosystem, then publish the transformed events to a new stream for consumers to observe.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub/) | [Package (PyPi)](https://pypi.org/project/azure-eventhub/) | [API reference documentation][api_reference] | [Product documentation](https://docs.microsoft.com/azure/event-hubs/) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub/samples)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/)
+| [Package (PyPi)](https://pypi.org/project/azure-eventhub/)
+| [Package (Conda)](https://anaconda.org/microsoft/azure-eventhub/)
+| [API reference documentation][api_reference]
+| [Product documentation](/azure/event-hubs/)
+| [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/samples)
 
 ## _Disclaimer_
 
@@ -36,13 +39,13 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.6 or later.
+- Python 3.7 or later.
 - **Microsoft Azure Subscription:**  To use Azure services, including Azure Event Hubs, you'll need a subscription.
 If you do not have an existing Azure account, you may sign up for a free trial or use your MSDN subscriber benefits when you [create an account](https://account.windowsazure.com/Home/Index).
 
 - **Event Hubs namespace with an Event Hub:** To interact with Azure Event Hubs, you'll also need to have a namespace and Event Hub  available.
 If you are not familiar with creating Azure resources, you may wish to follow the step-by-step guide
-for [creating an Event Hub using the Azure portal](https://docs.microsoft.com/azure/event-hubs/event-hubs-create).
+for [creating an Event Hub using the Azure portal](/azure/event-hubs/event-hubs-create).
 There, you can also find detailed instructions for using the Azure CLI, Azure PowerShell, or Azure Resource Manager (ARM) templates to create an Event Hub.
 
 ### Install the package
@@ -57,21 +60,21 @@ $ pip install azure-eventhub
 
 Interaction with Event Hubs starts with an instance of EventHubConsumerClient or EventHubProducerClient class. You need either the host name, SAS/AAD credential and event hub name or a connection string to instantiate the client object.
 
-**[Create client from connection string:](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub/samples/sync_samples/connection_string_authentication.py)**
+**[Create client from connection string:](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/samples/sync_samples/connection_string_authentication.py)**
 
 For the Event Hubs client library to interact with an Event Hub, the easiest means is to use a connection string, which is created automatically when creating an Event Hubs namespace.
-If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to [get an Event Hubs connection string](https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string).
+If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to [get an Event Hubs connection string](/azure/event-hubs/event-hubs-get-connection-string).
 
 - The `from_connection_string` method takes the connection string of the form
 `Endpoint=sb://<yournamespace>.servicebus.windows.net/;SharedAccessKeyName=<yoursharedaccesskeyname>;SharedAccessKey=<yoursharedaccesskey>` and
-entity name to your Event Hub instance. You can get the connection string from the [Azure portal](https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string#get-connection-string-from-the-portal).
+entity name to your Event Hub instance. You can get the connection string from the [Azure portal](/azure/event-hubs/event-hubs-get-connection-string#get-connection-string-from-the-portal).
 
-**[Create client using the azure-identity library:](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub/samples/sync_samples/client_identity_authentication.py)**
+**[Create client using the azure-identity library:](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/samples/sync_samples/client_identity_authentication.py)**
 
 Alternately, one can use a Credential object to authenticate via AAD with the azure-identity package.
 
 - This constructor demonstrated in the sample linked above takes the host name and entity name of your Event Hub instance and credential that implements the
-[TokenCredential](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/core/azure-core/azure/core/credentials.py)
+[TokenCredential](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/core/azure-core/azure/core/credentials.py)
 protocol. There are implementations of the `TokenCredential` protocol available in the
 [azure-identity package](https://pypi.org/project/azure-identity/). The host name is of the format `<yournamespace.servicebus.windows.net>`.
 - To use the credential types provided by `azure-identity`, please install the package:
@@ -80,7 +83,7 @@ protocol. There are implementations of the `TokenCredential` protocol available 
 ```pip install aiohttp```
 - When using Azure Active Directory, your principal must be assigned a role which allows access to Event Hubs, such as the
 Azure Event Hubs Data Owner role. For more information about using Azure Active Directory authorization with Event Hubs,
-please refer to [the associated documentation](https://docs.microsoft.com/azure/event-hubs/authorize-access-azure-active-directory).
+please refer to [the associated documentation](/azure/event-hubs/authorize-access-azure-active-directory).
 
 ## Key concepts
 
@@ -103,7 +106,7 @@ There can be at most 5 concurrent readers on a partition per consumer group; how
 one active consumer for a given partition and consumer group pairing. Each active reader receives all of the events from
 its partition; if there are multiple readers on the same partition, then they will receive duplicate events.
 
-For more concepts and deeper discussion, see: [Event Hubs Features](https://docs.microsoft.com/azure/event-hubs/event-hubs-features).
+For more concepts and deeper discussion, see: [Event Hubs Features](/azure/event-hubs/event-hubs-features).
 Also, the concepts for AMQP are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 1.0](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html).
 
 ## Examples
@@ -124,38 +127,44 @@ The following sections provide several code snippets covering some of the most c
 
 Get the partition ids of an Event Hub.
 
+<!-- SNIPPET:connection_string_authentication.connection_string_authentication -->
+
 ```python
+import os
 from azure.eventhub import EventHubConsumerClient
 
-connection_str = '<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>'
-consumer_group = '<< CONSUMER GROUP >>'
-eventhub_name = '<< NAME OF THE EVENT HUB >>'
-client = EventHubConsumerClient.from_connection_string(connection_str, consumer_group, eventhub_name=eventhub_name)
-partition_ids = client.get_partition_ids()
+CONNECTION_STR = os.environ["EVENT_HUB_CONN_STR"]
+EVENTHUB_NAME = os.environ['EVENT_HUB_NAME']
+
+consumer_client = EventHubConsumerClient.from_connection_string(
+    conn_str=CONNECTION_STR,
+    consumer_group='$Default',
+    eventhub_name=EVENTHUB_NAME,
+)
+
+with consumer_client:
+    pass # consumer_client is now ready to be used.
 ```
+
+<!-- END SNIPPET -->
 
 ### Publish events to an Event Hub
 
 Use the `create_batch` method on `EventHubProducerClient` to create an `EventDataBatch` object which can then be sent using the `send_batch` method.
 Events may be added to the `EventDataBatch` using the `add` method until the maximum batch size limit in bytes has been reached.
+
+<!-- SNIPPET:send.send_event_data_batch -->
+
 ```python
-from azure.eventhub import EventHubProducerClient, EventData
-
-connection_str = '<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>'
-eventhub_name = '<< NAME OF THE EVENT HUB >>'
-client = EventHubProducerClient.from_connection_string(connection_str, eventhub_name=eventhub_name)
-
-event_data_batch = client.create_batch()
-can_add = True
-while can_add:
-    try:
-        event_data_batch.add(EventData('Message inside EventBatchData'))
-    except ValueError:
-        can_add = False  # EventDataBatch object reaches max_size.
-
-with client:
-    client.send_batch(event_data_batch)
+def send_event_data_batch(producer):
+    # Without specifying partition_id or partition_key
+    # the events will be distributed to available partitions via round-robin.
+    event_data_batch = producer.create_batch()
+    event_data_batch.add(EventData('Single message'))
+    producer.send_batch(event_data_batch)
 ```
+
+<!-- END SNIPPET -->
 
 ### Consume events from an Event Hub
 
@@ -338,11 +347,11 @@ Search pypi with the prefix `azure-eventhub-checkpointstore` to
 find packages that support this and use the `CheckpointStore` implementation from one such package. Please note that both sync and async libraries are provided.
 
 In the below example, we create an instance of `EventHubConsumerClient` and use a `BlobCheckpointStore`. You need
-to [create an Azure Storage account](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal)
-and a [Blob Container](https://docs.microsoft.com/azure/storage/blobs/storage-quickstart-blobs-portal#create-a-container) to run the code.
+to [create an Azure Storage account](/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal)
+and a [Blob Container](/azure/storage/blobs/storage-quickstart-blobs-portal#create-a-container) to run the code.
 
-[Azure Blob Storage Checkpoint Store Async](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio)
-and [Azure Blob Storage Checkpoint Store Sync](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub-checkpointstoreblob)
+[Azure Blob Storage Checkpoint Store Async](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio)
+and [Azure Blob Storage Checkpoint Store Sync](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub-checkpointstoreblob)
 are one of the `CheckpointStore` implementations we provide that applies Azure Blob Storage as the persistent store.
 
 
@@ -389,7 +398,7 @@ if __name__ == '__main__':
 You can use `EventHubConsumerClient` to work with IoT Hub as well. This is useful for receiving telemetry data of IoT Hub from the
 linked EventHub. The associated connection string will not have send claims, hence sending events is not possible.
 
-Please notice that the connection string needs to be for an [Event Hub-compatible endpoint](https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messages-read-builtin),
+Please notice that the connection string needs to be for an [Event Hub-compatible endpoint](/azure/iot-hub/iot-hub-devguide-messages-read-builtin),
 e.g. "Endpoint=sb://my-iothub-namespace-[uid].servicebus.windows.net/;SharedAccessKeyName=my-SA-name;SharedAccessKey=my-SA-key;EntityPath=my-iot-hub-name"
 
 There are two ways to get the Event Hubs compatible endpoint:
@@ -404,61 +413,65 @@ client = EventHubConsumerClient.from_connection_string(connection_str, consumer_
 partition_ids = client.get_partition_ids()
 ```
 - Programmatically retrieve the built-in Event Hubs compatible endpoint.
-Refer to [IoT Hub Connection String Sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub/samples/async_samples/iot_hub_connection_string_receive_async.py).
+Refer to [IoT Hub Connection String Sample](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/samples/async_samples/iot_hub_connection_string_receive_async.py).
 
 ## Troubleshooting
 
-### General
-
-The Event Hubs APIs generate the following exceptions in azure.eventhub.exceptions
-
-- **AuthenticationError:** Failed to authenticate because of wrong address, SAS policy/key pair, SAS token or azure identity.
-- **ConnectError:** Failed to connect to the EventHubs. The AuthenticationError is a type of ConnectError.
-- **ConnectionLostError:** Lose connection after a connection has been built.
-- **EventDataError:** The EventData to be sent fails data validation. For instance, this error is raised if you try to send an EventData that is already sent.
-- **EventDataSendError:** The Eventhubs service responds with an error when an EventData is sent.
-- **OperationTimeoutError:** EventHubConsumer.send() times out.
-- **EventHubError:** All other Eventhubs related errors. It is also the root error class of all the errors described above.
-
-### Logging
-
-- Enable `azure.eventhub` logger to collect traces from the library.
-- Enable `uamqp` logger to collect traces from the underlying uAMQP library.
-- Enable AMQP frame level trace by setting `logging_enable=True` when creating the client.
-- There may be cases where you consider the `uamqp` logging to be too verbose. To suppress unnecessary logging, add the following snippet to the top of your code:
-```python
-import logging
-
-# The logging levels below may need to be adjusted based on the logging that you want to suppress.
-uamqp_logger = logging.getLogger('uamqp')
-uamqp_logger.setLevel(logging.ERROR)
-
-# or even further fine-grained control, suppressing the warnings in uamqp.connection module
-uamqp_connection_logger = logging.getLogger('uamqp.connection')
-uamqp_connection_logger.setLevel(logging.ERROR)
-```
+See the `azure-eventhubs` [troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
 ### More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.7.0/sdk/eventhub/azure-eventhub/samples) directory for detailed examples of how to use this library to send and receive events to/from Event Hubs.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub_5.11.4/sdk/eventhub/azure-eventhub/samples) directory for detailed examples of how to use this library to send and receive events to/from Event Hubs.
 
 ### Documentation
 
 Reference documentation is available [here](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-eventhub/latest/azure.eventhub.html).
 
-### Schema Registry and Avro Serializer
+### Schema Registry and Avro Encoder
 
 The EventHubs SDK integrates nicely with the [Schema Registry][schemaregistry_service] service and [Avro][avro].
-For more information, please refer to [Schema Registry SDK][schemaregistry_repo] and [Schema Registry Avro Serializer SDK][schemaregistry_avroserializer_repo].
+For more information, please refer to [Schema Registry SDK][schemaregistry_repo] and [Schema Registry Avro Encoder SDK][schemaregistry_avroencoder_repo].
+
+### Pure Python AMQP Transport and Backward Compatibility Support
+
+The Azure Event Hubs client library is now based on a pure Python AMQP implementation. `uAMQP` has been removed as required dependency.
+
+To use `uAMQP` as the underlying transport:
+
+1. Install `uamqp` with pip.
+
+```
+$ pip install uamqp 
+```
+
+2. Pass `uamqp_transport=True` during client construction.
+
+```python
+from azure.eventhub import EventHubProducerClient, EventHubConsumerClient
+
+connection_str = '<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>'
+consumer_group = '<< CONSUMER GROUP >>'
+eventhub_name = '<< NAME OF THE EVENT HUB >>'
+
+client = EventHubProducerClient.from_connection_string(
+    connection_str, eventhub_name=eventhub_name, uamqp_transport=True
+)
+client = EventHubConsumerClient.from_connection_string(
+    connection_str, consumer_group, eventhub_name=eventhub_name, uamqp_transport=True
+)
+```
+
+Note: The `message` attribute on `EventData`/`EventDataBatch`, which previously exposed the `uamqp.Message`, has been deprecated.
+ The "Legacy" objects returned by `EventData.message`/`EventDataBatch.message` have been introduced to help facilitate the transition.
 
 ### Building uAMQP wheel from source
 
-`azure-eventhub` depends on the [uAMQP](https://pypi.org/project/uamqp/) for the AMQP protocol implementation.
-uAMQP wheels are provided for most major operating systems and will be installed automatically when installing `azure-eventhub`.
+If [uAMQP](https://pypi.org/project/uamqp/) is intended to be used as the underlying AMQP protocol implementation for `azure-eventhub`,
+uAMQP wheels can be found for most major operating systems.
 
-If you're running on a platform for which uAMQP wheels are not provided, please follow
+If you intend to use `uAMQP` and you're running on a platform for which uAMQP wheels are not provided, please follow
  the [uAMQP Installation](https://github.com/Azure/azure-uamqp-python#installation) guidance to install from source.
 
 ### Provide Feedback
@@ -477,10 +490,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 [avro]: https://avro.apache.org/
-[api_reference]: https://docs.microsoft.com/python/api/overview/azure/eventhub-readme
+[api_reference]: /python/api/overview/azure/eventhub-readme
 [schemaregistry_service]: https://aka.ms/schemaregistry
-[schemaregistry_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventhub_5.7.0/sdk/schemaregistry/azure-schemaregistry
-[schemaregistry_avroserializer_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventhub_5.7.0/sdk/schemaregistry/azure-schemaregistry-avroserializer
+[schemaregistry_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventhub_5.11.4/sdk/schemaregistry/azure-schemaregistry
+[schemaregistry_avroencoder_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-eventhub_5.11.4/sdk/schemaregistry/azure-schemaregistry-avroencoder
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/eventhub/azure-eventhub/README.png)
 

@@ -5,14 +5,13 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/09/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: core
+ms.service: azure-python
 ---
 
 
-# Azure Core shared client library for Python - Version 1.9.0 
+# Azure Core shared client library for Python - version 1.9.0 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries. 

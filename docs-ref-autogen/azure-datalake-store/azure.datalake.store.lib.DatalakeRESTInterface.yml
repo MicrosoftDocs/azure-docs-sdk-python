@@ -12,19 +12,19 @@ constructor:
   parameters:
   - name: store_name
     description: The name of the Data Lake Store account to execute operations against.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: token
-    description: from *auth()* or *refresh_token()* or other ADAL source
-    isRequired: true
+    description: from *auth()* or *refresh_token()* or other MSAL source
+    defaultValue: None
     types:
     - <xref:dict>
   - name: url_suffix
     description: 'Domain to send REST requests to. The end-point URL is constructed
 
       using this and the store_name. If None, use default.'
-    isRequired: true
+    defaultValue: azuredatalakestore.net
     types:
     - <xref:str >(<xref:None>)
   - name: api_version
@@ -33,12 +33,12 @@ constructor:
       change the behavior of the requests, and can cause unexpected behavior or
 
       breaking changes. Changes to this value should be undergone with caution.'
-    isRequired: true
+    defaultValue: '2018-09-01'
     types:
     - <xref:str >(<xref:2018-09-01>)
   - name: req_timeout_s
     description: This is the timeout for each requests library call.
-    isRequired: true
+    defaultValue: '60'
     types:
     - <xref:float>(<xref:60>)
   - name: kwargs
@@ -47,7 +47,7 @@ constructor:
       values from environment variables if not provided.'
     isRequired: true
     types:
-    - <xref:<xref:optional arguments to auth>>
+    - <xref:azure.datalake.store.lib.optional arguments> to <xref:azure.datalake.store.lib.auth>
 methods:
 - uid: azure.datalake.store.lib.DatalakeRESTInterface.call
   name: call
@@ -95,9 +95,11 @@ methods:
     description: 'other parameters, as defined by the webHDFS standard and
 
       [https://msdn.microsoft.com/en-us/library/mt710547.aspx](https://msdn.microsoft.com/en-us/library/mt710547.aspx)'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>
+  - name: retry_policy
+    defaultValue: None
   - name: headers
     defaultValue: '{}'
 - uid: azure.datalake.store.lib.DatalakeRESTInterface.is_successful_response
@@ -123,18 +125,18 @@ attributes:
   name: session
 - uid: azure.datalake.store.lib.DatalakeRESTInterface.ends
   name: ends
-  signature: 'ends = {''APPEND'': (''post'', set(), {''syncFlag'', ''append'', ''filesessionid'',
-    ''leaseid'', ''offset''}), ''CHECKACCESS'': (''get'', set(), {''fsaction''}),
+  signature: 'ends = {''APPEND'': (''post'', set(), {''leaseid'', ''offset'', ''filesessionid'',
+    ''append'', ''syncFlag''}), ''CHECKACCESS'': (''get'', set(), {''fsaction''}),
     ''CONCAT'': (''post'', {''sources''}, {''sources''}), ''CREATE'': (''put'', set(),
-    {''write'', ''syncFlag'', ''overwrite'', ''leaseid'', ''filesessionid''}), ''DELETE'':
+    {''leaseid'', ''overwrite'', ''filesessionid'', ''write'', ''syncFlag''}), ''DELETE'':
     (''delete'', set(), {''recursive''}), ''GETCONTENTSUMMARY'': (''get'', set(),
     set()), ''GETFILESTATUS'': (''get'', set(), set()), ''LISTSTATUS'': (''get'',
     set(), {''listAfter'', ''listSize''}), ''MKDIRS'': (''put'', set(), set()), ''MODIFYACLENTRIES'':
     (''put'', {''aclSpec''}, {''aclSpec''}), ''MSCONCAT'': (''post'', set(), {''deleteSourceDirectory''}),
-    ''MSGETACLSTATUS'': (''get'', set(), set()), ''OPEN'': (''get'', set(), {''offset'',
-    ''filesessionid'', ''length'', ''read''}), ''REMOVEACL'': (''put'', set(), set()),
+    ''MSGETACLSTATUS'': (''get'', set(), set()), ''OPEN'': (''get'', set(), {''read'',
+    ''offset'', ''filesessionid'', ''length''}), ''REMOVEACL'': (''put'', set(), set()),
     ''REMOVEACLENTRIES'': (''put'', {''aclSpec''}, {''aclSpec''}), ''REMOVEDEFAULTACL'':
     (''put'', set(), set()), ''RENAME'': (''put'', {''destination''}, {''destination''}),
     ''SETACL'': (''put'', {''aclSpec''}, {''aclSpec''}), ''SETEXPIRY'': (''put'',
-    {''expiryOption''}, {''expireTime'', ''expiryOption''}), ''SETOWNER'': (''put'',
+    {''expiryOption''}, {''expiryOption'', ''expireTime''}), ''SETOWNER'': (''put'',
     set(), {''group'', ''owner''}), ''SETPERMISSION'': (''put'', set(), {''permission''})}'

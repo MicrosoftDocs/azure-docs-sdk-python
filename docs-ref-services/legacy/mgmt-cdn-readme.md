@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 12/01/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: contentdeliverynetwork
+ms.service: azure-cdn
 ---
 
 # Microsoft Azure SDK for Python

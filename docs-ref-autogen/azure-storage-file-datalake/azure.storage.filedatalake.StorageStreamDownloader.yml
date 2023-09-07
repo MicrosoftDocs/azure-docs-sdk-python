@@ -8,6 +8,8 @@ inheritances:
 summary: A streaming object to download from Azure Storage.
 constructor:
   syntax: StorageStreamDownloader(downloader)
+  parameters:
+  - name: downloader
 variables:
 - description: The name of the file being downloaded.
   name: name
@@ -21,7 +23,7 @@ variables:
   types:
   - <xref:azure.storage.filedatalake.FileProperties>
 - description: 'The size of the total data in the stream. This will be the byte range
-    if speficied,
+    if specified,
 
     otherwise the total size of the file.'
   name: size
@@ -35,6 +37,23 @@ methods:
   return:
     types:
     - <xref:Iterator>[<xref:bytes>]
+- uid: azure.storage.filedatalake.StorageStreamDownloader.read
+  name: read
+  summary: 'Read up to size bytes from the stream and return them. If size
+
+    is unspecified or is -1, all bytes will be read.'
+  signature: 'read(size: int | None = -1) -> bytes'
+  parameters:
+  - name: size
+    description: 'The number of bytes to download from the stream. Leave unspecified
+
+      or set to -1 to download all bytes.'
+    defaultValue: '-1'
+  return:
+    description: The requested data as bytes. If the return value is empty, there
+      is no more data to read.
+    types:
+    - <xref:bytes>
 - uid: azure.storage.filedatalake.StorageStreamDownloader.readall
   name: readall
   summary: 'Download the contents of this file.
@@ -42,12 +61,12 @@ methods:
 
     This operation is blocking until all data is downloaded.
 
-    :rtype: bytes or str'
-  signature: readall()
+    :rtype: bytes'
+  signature: readall() -> bytes
 - uid: azure.storage.filedatalake.StorageStreamDownloader.readinto
   name: readinto
   summary: Download the contents of this file to a stream.
-  signature: readinto(stream)
+  signature: 'readinto(stream: IO[bytes]) -> int'
   parameters:
   - name: stream
     description: 'The stream to download to. This can be an open file-handle,

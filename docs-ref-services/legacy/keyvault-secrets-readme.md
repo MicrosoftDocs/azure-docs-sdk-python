@@ -9,7 +9,7 @@ ms.devlang: python
 ms.service: key-vault
 ---
 
-# Azure Key Vault Secret client library for Python - Version 4.2.0 
+# Azure Key Vault Secret client library for Python - version 4.2.0 
 
 Azure Key Vault helps solve the following problems:
 

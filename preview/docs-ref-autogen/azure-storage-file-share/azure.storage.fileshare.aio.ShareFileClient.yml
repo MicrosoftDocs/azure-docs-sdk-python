@@ -10,8 +10,9 @@ summary: A client to interact with a specific file, although that file may not y
   exist.
 constructor:
   syntax: 'ShareFileClient(account_url: str, share_name: str, file_path: str, snapshot:
-    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any] = None,
-    **kwargs: Any)'
+    str | Dict[str, Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | AsyncTokenCredential | None = None, *, token_intent: Literal[''backup'']
+    | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -39,18 +40,48 @@ constructor:
       ID string
 
       or the response returned from <xref:azure.storage.fileshare.aio.ShareClient.create_snapshot>.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
-    isRequired: true
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: token_intent
+    description: "Required when using *TokenCredential* for authentication and ignored\
+      \ for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
+      \ - Specifies requests are intended for backup/admin type operations, meaning\
+      \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
+      \ User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
+  - name: allow_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the target URI.
+    types:
+    - <xref:bool>
+  - name: allow_source_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the source URI.
+    types:
+    - <xref:bool>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -66,8 +97,6 @@ constructor:
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
-  - name: loop
-    description: The event loop to run the asynchronous tasks.
   - name: max_range_size
     description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
     types:
@@ -81,7 +110,7 @@ methods:
     This will leave a destination file with zero length and full metadata.
 
     This will raise an error if the copy operation has already ended.'
-  signature: 'abort_copy(copy_id: Union[str, FileProperties], **kwargs: Any) -> None'
+  signature: 'async abort_copy(copy_id: str | FileProperties, **kwargs: Any) -> None'
   parameters:
   - name: copy_id
     description: 'The copy operation to abort. This can be either an ID, or an
@@ -103,7 +132,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -117,7 +154,7 @@ methods:
     If the file does not have an active lease, the File
 
     Service creates a lease on the blob and returns a new lease.'
-  signature: 'acquire_lease(lease_id: Optional[str] = None, **kwargs: Any) -> azure.storage.fileshare.aio._lease_async.ShareLeaseClient'
+  signature: 'async acquire_lease(lease_id: str | None = None, **kwargs: Any) -> ShareLeaseClient'
   parameters:
   - name: lease_id
     description: 'Proposed lease ID, in a GUID string format. The File Service
@@ -129,7 +166,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -141,7 +186,7 @@ methods:
   summary: 'Clears the specified range and releases the space used in storage for
 
     that range.'
-  signature: 'clear_range(offset: int, length: int, **kwargs) -> Dict[str, Any]'
+  signature: 'async clear_range(offset: int, length: int, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for clearing a section of the file.
@@ -169,7 +214,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -182,10 +235,18 @@ methods:
 
 
     This operation will block until the service has closed all open handles.'
-  signature: 'close_all_handles(**kwargs: Any) -> Dict[str, int]'
+  signature: 'async close_all_handles(**kwargs: Any) -> Dict[str, int]'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -198,7 +259,7 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareFileClient.close_handle
   name: close_handle
   summary: Close an open file handle.
-  signature: 'close_handle(handle: Union[str, HandleItem], **kwargs: Any) -> Dict[str,
+  signature: 'async close_handle(handle: str | Handle, **kwargs: Any) -> Dict[str,
     int]'
   parameters:
   - name: handle
@@ -208,7 +269,15 @@ methods:
     - <xref:str>
     - <xref:azure.storage.fileshare.Handle>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -224,10 +293,10 @@ methods:
 
 
     Note that it only initializes the file with no content.'
-  signature: 'create_file(size: int, file_attributes: Union[str, NTFSAttributes] =
-    ''none'', file_creation_time: Union[str, datetime] = ''now'', file_last_write_time:
-    Union[str, datetime] = ''now'', file_permission: Optional[str] = None, permission_key:
-    Optional[str] = None, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async create_file(size: int, file_attributes: str | NTFSAttributes =
+    ''none'', file_creation_time: str | datetime | None = ''now'', file_last_write_time:
+    str | datetime | None = ''now'', file_permission: str | None = None, permission_key:
+    str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: size
     description: 'Specifies the maximum size for the file,
@@ -247,7 +316,6 @@ methods:
       file_attributes value is not case sensitive.'
     isRequired: true
     types:
-    - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'Creation time for the file
@@ -289,6 +357,15 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the file. If not specified, change time will be
+      set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: content_settings
     description: 'ContentSettings object used to set file properties. Used to set
       content type, encoding,
@@ -299,7 +376,7 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
       object
@@ -312,28 +389,27 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
-  examples:
-  - "Create a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\81\\\\\
-    azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_client_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Create and allocate bytes for the file (no content added yet)\n   await\
-    \ my_allocated_file.create_file(size=100)\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.delete_file
   name: delete_file
   summary: 'Marks the specified file for deletion. The file is
 
     later deleted during garbage collection.'
-  signature: 'delete_file(**kwargs: Any) -> None'
+  signature: 'async delete_file(**kwargs: Any) -> None'
   parameters:
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
@@ -347,20 +423,20 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Delete a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\81\\\\\
-    azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_client_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await my_file.delete_file()\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.download_file
   name: download_file
   summary: 'Downloads a file to the StorageStreamDownloader. The readall() method
@@ -371,8 +447,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'download_file(offset: Optional[int] = None, length: Optional[int] =
-    None, **kwargs: Any) -> azure.storage.fileshare.aio._download_async.StorageStreamDownloader'
+  signature: 'async download_file(offset: int | None = None, length: int | None =
+    None, **kwargs: Any) -> StorageStreamDownloader'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the file.
@@ -422,29 +498,37 @@ methods:
     types:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
+  - name: progress_hook
+    description: 'An async callback to track the progress of a long running download.
+      The signature is
+
+      function(current: int, total: int) where current is the number of bytes transferred
+
+      so far, and total is the size of the blob or None if the size is unknown.'
+    types:
+    - <xref:typing.Callable>[[<xref:int>, <xref:int>], <xref:typing.Awaitable>[<xref:None>]]
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: A streaming object (StorageStreamDownloader)
     types:
     - <xref:azure.storage.fileshare.aio.StorageStreamDownloader>
-  examples:
-  - "Download a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\81\\\\\
-    azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_client_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   with open(DEST_FILE, \"wb\") as data:\n       stream = await my_file.download_file()\n\
-    \       data.write(await stream.readall())\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.get_file_properties
   name: get_file_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the file.'
-  signature: 'get_file_properties(**kwargs: Any) -> FileProperties'
+  signature: 'async get_file_properties(**kwargs: Any) -> FileProperties'
   parameters:
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
@@ -458,7 +542,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -470,7 +562,7 @@ methods:
   summary: 'Returns the list of valid page ranges for a file or snapshot
 
     of a file.'
-  signature: 'get_ranges(offset: Optional[int] = None, length: Optional[int] = None,
+  signature: 'async get_ranges(offset: int | None = None, length: int | None = None,
     **kwargs: Any) -> List[Dict[str, int]]'
   parameters:
   - name: offset
@@ -495,7 +587,15 @@ methods:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -510,9 +610,9 @@ methods:
 
 
     New in version 12.6.0.'
-  signature: 'get_ranges_diff(previous_sharesnapshot: Union[str, Dict[str, Any]],
-    offset: Optional[int] = None, length: Optional[int] = None, **kwargs: Any) ->
-    Tuple[List[Dict[str, int]], List[Dict[str, int]]]'
+  signature: 'async get_ranges_diff(previous_sharesnapshot: str | Dict[str, Any],
+    offset: int | None = None, length: int | None = None, **kwargs: Any) -> Tuple[List[Dict[str,
+    int]], List[Dict[str, int]]]'
   parameters:
   - name: offset
     description: Specifies the start offset of bytes over which to get ranges.
@@ -543,7 +643,15 @@ methods:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -557,26 +665,46 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareFileClient.list_handles
   name: list_handles
   summary: Lists handles for file.
-  signature: 'list_handles(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged'
+  signature: 'list_handles(**kwargs: Any) -> AsyncItemPaged[Handle]'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
-    description: An auto-paging iterable of HandleItem
+    description: An auto-paging iterable of Handle
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.HandleItem>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.Handle>]
 - uid: azure.storage.fileshare.aio.ShareFileClient.rename_file
   name: rename_file
   summary: "Rename the source file.\n\n:paramtype file_attributes:~azure.storage.fileshare.NTFSAttributes\
     \ or str\n:keyword file_creation_time:\n\n   Creation time for the file.\n\n:paramtype\
     \ file_creation_time:~datetime.datetime or str\n:keyword file_last_write_time:\n\
     \n   Last write time for the file.\n\n:paramtype file_last_write_time:~datetime.datetime\
-    \ or str\n:keyword dict(str,str) metadata:\n\n   A name-value pair to associate\
-    \ with a file storage object."
-  signature: 'rename_file(new_name: str, **kwargs: Any) -> azure.storage.fileshare.aio._file_client_async.ShareFileClient'
+    \ or str\n:keyword file_change_time:\n\n   Change time for the file. If not specified,\
+    \ change time will be set to the current date/time.\n\n   New in version 12.8.0:\
+    \ This parameter was introduced in API version '2021-06-08'."
+  signature: 'async rename_file(new_name: str, **kwargs: Any) -> ShareFileClient'
   parameters:
+  - name: content_type
+    description: 'The Content Type of the new file.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+  - name: metadata
+    description: A name-value pair to associate with a file storage object.
+    types:
+    - <xref:typing.Dict>[<xref:str>,<xref:str>]
   - name: source_lease
     description: 'Required if the source file has an active lease. Value can be a
       ShareLeaseClient object
@@ -600,7 +728,7 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareFileClient.resize_file
   name: resize_file
   summary: Resizes a file to the specified size.
-  signature: 'resize_file(size: int, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async resize_file(size: int, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: size
     description: Size to resize file to (in bytes)
@@ -619,7 +747,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -638,7 +774,7 @@ methods:
     attached to the file. To remove all metadata from the file,
 
     call this operation with no metadata dict.'
-  signature: 'set_file_metadata(metadata: Optional[Dict[str, Any]] = None, **kwargs:
+  signature: 'async set_file_metadata(metadata: Dict[str, Any] | None = None, **kwargs:
     Any) -> Dict[str, Any]'
   parameters:
   - name: metadata
@@ -658,7 +794,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -668,11 +812,11 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareFileClient.set_http_headers
   name: set_http_headers
   summary: Sets HTTP headers on the file.
-  signature: 'set_http_headers(content_settings: ContentSettings, file_attributes:
-    Union[str, NTFSAttributes] = ''preserve'', file_creation_time: Union[str, datetime]
-    = ''preserve'', file_last_write_time: Union[str, datetime] = ''preserve'', file_permission:
-    Optional[str] = None, permission_key: Optional[str] = None, **kwargs: Any) ->
-    Dict[str, Any]'
+  signature: 'async set_http_headers(content_settings: ContentSettings, file_attributes:
+    str | NTFSAttributes = ''preserve'', file_creation_time: str | datetime | None
+    = ''preserve'', file_last_write_time: str | datetime | None = ''preserve'', file_permission:
+    str | None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: content_settings
     description: 'ContentSettings object used to set file properties. Used to set
@@ -690,7 +834,6 @@ methods:
       Here is an example for when the var type is str: ''Temporary|Archive'''
     isRequired: true
     types:
-    - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'Creation time for the file
@@ -732,6 +875,15 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the file. If not specified, change time will be
+      set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
       object
@@ -744,7 +896,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -761,7 +921,7 @@ methods:
     The status of this copy operation can be found using the *get_properties*
 
     method.'
-  signature: 'start_copy_from_url(source_url: str, **kwargs: Any) -> Any'
+  signature: 'async start_copy_from_url(source_url: str, **kwargs: Any) -> Any'
   parameters:
   - name: source_url
     description: Specifies the URL of the source file.
@@ -820,7 +980,6 @@ methods:
 
       New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
     types:
-    - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'This value can be set to "source" to copy the creation time from
@@ -851,6 +1010,15 @@ methods:
 
 
       New in version 12.1.0: This parameter was introduced in API version ''2019-07-07''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_change_time
+    description: 'Change time for the file. If not specified, change time will be
+      set to the current date/time.
+
+
+      New in version 12.9.0: This parameter was introduced in API version ''2021-06-08''.'
     types:
     - <xref:str>
     - <xref:datetime.datetime>
@@ -888,34 +1056,32 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
-  examples:
-  - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_client_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await destination_file.start_copy_from_url(source_url=source_url)\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.upload_file
   name: upload_file
   summary: Uploads a new file.
-  signature: 'upload_file(data: Any, length: Optional[int] = None, file_attributes:
-    Union[str, NTFSAttributes] = ''none'', file_creation_time: Union[str, datetime]
-    = ''now'', file_last_write_time: Union[str, datetime] = ''now'', file_permission:
-    Optional[str] = None, permission_key: Optional[str] = None, **kwargs: Any) ->
-    Dict[str, Any]'
+  signature: 'async upload_file(data: bytes | str | Iterable | AsyncIterable | IO,
+    length: int | None = None, file_attributes: str | NTFSAttributes = ''none'', file_creation_time:
+    str | datetime | None = ''now'', file_last_write_time: str | datetime | None =
+    ''now'', file_permission: str | None = None, permission_key: str | None = None,
+    **kwargs) -> Dict[str, Any]'
   parameters:
   - name: data
     description: Content of the file.
     isRequired: true
-    types:
-    - <xref:Any>
   - name: length
     description: Length of the file in bytes. Specify its maximum size, up to 1 TiB.
     isRequired: true
@@ -974,10 +1140,19 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the file. If not specified, change time will be
+      set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: content_settings
     description: 'ContentSettings object used to set file properties. Used to set
       content type, encoding,
@@ -1019,28 +1194,37 @@ methods:
     types:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
+  - name: progress_hook
+    description: 'An async callback to track the progress of a long running upload.
+      The signature is
+
+      function(current: int, total: Optional[int]) where current is the number of
+      bytes transferred
+
+      so far, and total is the size of the blob or None if the size is unknown.'
+    types:
+    - <xref:typing.Callable>[[<xref:int>, <xref:typing.Optional>[<xref:int>]], <xref:typing.Awaitable>[<xref:None>]]
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: File-updated property dict (Etag and last modified).
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
-  examples:
-  - "Upload a file.<!--[!code-python[Main](les\\file_samples_client_async.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\81\\\\\
-    azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_client_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   with open(SOURCE_FILE, \"rb\") as source:\n       await my_file.upload_file(source)\n\
-    \n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareFileClient.upload_range
   name: upload_range
   summary: Upload a range of bytes to a file.
-  signature: 'upload_range(data: bytes, offset: int, length: int, **kwargs) -> Dict[str,
-    Any]'
+  signature: 'async upload_range(data: bytes, offset: int, length: int, **kwargs)
+    -> Dict[str, Any]'
   parameters:
   - name: data
     description: The data to upload.
@@ -1075,6 +1259,19 @@ methods:
       file.'
     types:
     - <xref:bool>
+  - name: file_last_write_mode
+    description: 'If the file last write time should be preserved or overwritten.
+      Possible values
+
+      are "preserve" or "now". If not specified, file last write time will be changed
+      to
+
+      the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:typing.Literal>["preserve", "now"]
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
       object
@@ -1087,7 +1284,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: encoding
@@ -1102,8 +1307,8 @@ methods:
   name: upload_range_from_url
   summary: Writes the bytes from one Azure File endpoint into the specified range
     of another Azure File endpoint.
-  signature: 'upload_range_from_url(source_url: str, offset: int, length: int, source_offset:
-    int, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async upload_range_from_url(source_url: str, offset: int, length: int,
+    source_offset: int, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for updating a section of the file.
@@ -1146,6 +1351,54 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  - name: source_if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this conditional header to copy the blob only if the source
+
+      blob has been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: source_if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this conditional header to copy the blob only if the source blob
+
+      has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: source_etag
+    description: 'The source ETag value, or the wildcard character (*). Used to check
+      if the resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: source_match_condition
+    description: The source match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: file_last_write_mode
+    description: 'If the file last write time should be preserved or overwritten.
+      Possible values
+
+      are "preserve" or "now". If not specified, file last write time will be changed
+      to
+
+      the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:typing.Literal>["preserve", "now"]
   - name: lease
     description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
       object
@@ -1158,7 +1411,15 @@ methods:
     - <xref:azure.storage.fileshare.aio.ShareLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: source_authorization

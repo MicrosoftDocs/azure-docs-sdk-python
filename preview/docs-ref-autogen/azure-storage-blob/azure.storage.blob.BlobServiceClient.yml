@@ -5,6 +5,7 @@ fullName: azure.storage.blob.BlobServiceClient
 module: azure.storage.blob
 inheritances:
 - azure.storage.blob._shared.base_client.StorageAccountHostsMixin
+- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: 'A client to interact with the Blob Service at the account level.
 
 
@@ -21,8 +22,9 @@ summary: 'A client to interact with the Blob Service at the account level.
 
   [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#optional-configuration).'
 constructor:
-  syntax: 'BlobServiceClient(account_url: str, credential: Optional[Any] = None, **kwargs:
-    Any)'
+  syntax: 'BlobServiceClient(account_url: str, credential: str | Dict[str, str] |
+    AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the blob storage account. Any other entities included
@@ -40,16 +42,22 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
-    isRequired: true
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -109,27 +117,6 @@ constructor:
       or 4MB.'
     types:
     - <xref:int>
-examples:
-- "Creating the BlobServiceClient with account url and credential.<!--[!code-python[Main](les\\\
-  blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_authentication.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.blob\
-  \ import BlobServiceClient\n   blob_service_client = BlobServiceClient(account_url=self.url,\
-  \ credential=self.shared_access_key)\n\n   ````\n\nCreating the BlobServiceClient\
-  \ with Azure Identity credentials.<!--[!code-python[Main](les\\blob_samples_authentication.py\
-  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\
-  \\samples\\\\blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   # Get a token credential for authentication\n\
-  \   from azure.identity import ClientSecretCredential\n   token_credential = ClientSecretCredential(\n\
-  \       self.active_directory_tenant_id,\n       self.active_directory_application_id,\n\
-  \       self.active_directory_application_secret\n   )\n\n   # Instantiate a BlobServiceClient\
-  \ using a token credential\n   from azure.storage.blob import BlobServiceClient\n\
-  \   blob_service_client = BlobServiceClient(account_url=self.oauth_url, credential=token_credential)\n\
-  \n   ````\n"
 methods:
 - uid: azure.storage.blob.BlobServiceClient.create_container
   name: create_container
@@ -141,8 +128,8 @@ methods:
     be raised. This method returns a client with which to interact with the newly
 
     created container.'
-  signature: 'create_container(name: str, metadata: Optional[Dict[str, str]] = None,
-    public_access: Optional[Union[PublicAccess, str]] = None, **kwargs) -> ContainerClient'
+  signature: 'create_container(name: str, metadata: Dict[str, str] | None = None,
+    public_access: PublicAccess | str | None = None, **kwargs) -> ContainerClient'
   parameters:
   - name: name
     description: The name of the container to create.
@@ -174,22 +161,20 @@ methods:
     - <xref:dict>
     - <xref:azure.storage.blob.ContainerEncryptionScope>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:azure.storage.blob.ContainerClient>
-  examples:
-  - "Creating a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_service.py\",\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   try:\n       new_container = blob_service_client.create_container(\"containerfromblobservice\"\
-    )\n       properties = new_container.get_container_properties()\n   except ResourceExistsError:\n\
-    \       print(\"Container already exists.\")\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.delete_container
   name: delete_container
   summary: 'Marks the specified container for deletion.
@@ -199,8 +184,8 @@ methods:
     collection.
 
     If the container is not found, a ResourceNotFoundError will be raised.'
-  signature: 'delete_container(container: Union[ContainerProperties, str], lease:
-    Optional[Union[BlobLeaseClient, str]] = None, **kwargs) -> None'
+  signature: 'delete_container(container: ContainerProperties | str, lease: BlobLeaseClient
+    | str | None = None, **kwargs) -> None'
   parameters:
   - name: container
     description: 'The container to delete. This can either be the name of the container,
@@ -253,22 +238,20 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Deleting a container in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_service.py\",\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Delete container if it exists\n   try:\n       blob_service_client.delete_container(\"\
-    containerfromblobservice\")\n   except ResourceNotFoundError:\n       print(\"\
-    Container already deleted.\")\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.find_blobs_by_tags
   name: find_blobs_by_tags
   summary: 'The Filter Blobs operation enables callers to list blobs across all
@@ -294,7 +277,15 @@ methods:
     types:
     - <xref:int>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -304,8 +295,9 @@ methods:
 - uid: azure.storage.blob.BlobServiceClient.from_connection_string
   name: from_connection_string
   summary: Create BlobServiceClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Optional[Any] = None,
-    **kwargs: Any) -> ClassType'
+  signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
+    **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -320,30 +312,23 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
-    isRequired: true
-  - name: credential
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A Blob service client.
     types:
     - <xref:azure.storage.blob.BlobServiceClient>
-  examples:
-  - "Creating the BlobServiceClient from a connection string.<!--[!code-python[Main](les\\\
-    blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\\
-    blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.storage.blob import BlobServiceClient\n\
-    \   blob_service_client = BlobServiceClient.from_connection_string(self.connection_string)\n\
-    \n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.get_account_information
   name: get_account_information
   summary: 'Gets information related to the storage account.
@@ -358,23 +343,15 @@ methods:
     description: A dict of account information (SKU and account type).
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
-  examples:
-  - "Getting account information for the blob service.<!--[!code-python[Main](les\\\
-    blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\\
-    blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n   account_info = blob_service_client.get_account_information()\n\
-    \   print('Using Storage SKU: {}'.format(account_info['sku_name']))\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.get_blob_client
   name: get_blob_client
   summary: 'Get a client to interact with the specified blob.
 
 
     The blob need not already exist.'
-  signature: 'get_blob_client(container: Union[ContainerProperties, str], blob: Union[BlobProperties,
-    str], snapshot: Optional[Union[Dict[str, Any], str]] = None) -> BlobClient'
+  signature: 'get_blob_client(container: ContainerProperties | str, blob: BlobProperties
+    | str, snapshot: Dict[str, Any] | str | None = None, *, version_id: str | None
+    = None) -> BlobClient'
   parameters:
   - name: container
     description: 'The container that the blob is in. This can either be the name of
@@ -402,29 +379,25 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime value that, when
+      present,
+
+      specifies the version of the blob to operate on.'
+    types:
+    - <xref:str>
   return:
     description: A BlobClient.
     types:
     - <xref:azure.storage.blob.BlobClient>
-  examples:
-  - "Getting the blob client to interact with a specific blob.<!--[!code-python[Main](les\\\
-    blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\\
-    blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n   blob_client = blob_service_client.get_blob_client(container=\"\
-    containertest\", blob=\"my_blob\")\n   try:\n       stream = blob_client.download_blob()\n\
-    \   except ResourceNotFoundError:\n       print(\"No blob found.\")\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.get_container_client
   name: get_container_client
   summary: 'Get a client to interact with the specified container.
 
 
     The container need not already exist.'
-  signature: 'get_container_client(container: Union[ContainerProperties, str]) ->
-    ContainerClient'
+  signature: 'get_container_client(container: ContainerProperties | str) -> ContainerClient'
   parameters:
   - name: container
     description: 'The container. This can either be the name of the container,
@@ -438,18 +411,6 @@ methods:
     description: A ContainerClient.
     types:
     - <xref:azure.storage.blob.ContainerClient>
-  examples:
-  - "Getting the container client to interact with a specific container.<!--[!code-python[Main](les\\\
-    blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\\
-    blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n   # Get a client to interact with a specific container - though\
-    \ it may not yet exist\n   container_client = blob_service_client.get_container_client(\"\
-    containertest\")\n   try:\n       for blob in container_client.list_blobs():\n\
-    \           print(\"Found blob: \", blob.name)\n   except ResourceNotFoundError:\n\
-    \       print(\"Container not found.\")\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.get_service_properties
   name: get_service_properties
   summary: 'Gets the properties of a storage account''s Blob service, including
@@ -458,7 +419,15 @@ methods:
   signature: 'get_service_properties(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -467,15 +436,6 @@ methods:
       analytics logging, hour/minute metrics, cors rules, etc.'
     types:
     - <xref:Dict>[<xref:str>, <xref:Any>]
-  examples:
-  - "Getting service properties for the blob service.<!--[!code-python[Main](les\\\
-    blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\\
-    blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n   properties = blob_service_client.get_service_properties()\n\
-    \n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.get_service_stats
   name: get_service_stats
   summary: 'Retrieves statistics related to replication for the Blob service.
@@ -512,21 +472,21 @@ methods:
   signature: 'get_service_stats(**kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: The blob service stats.
     types:
     - <xref:Dict>[<xref:str>, <xref:Any>]
-  examples:
-  - "Getting service stats for the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_service.py\",\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   stats = blob_service_client.get_service_stats()\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.get_user_delegation_key
   name: get_user_delegation_key
   summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
@@ -546,7 +506,15 @@ methods:
     types:
     - <xref:datetime.datetime>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -561,8 +529,8 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service and stop when all containers have been returned.'
-  signature: 'list_containers(name_starts_with: Optional[str] = None, include_metadata:
-    Optional[bool] = False, **kwargs) -> ItemPaged[ContainerProperties]'
+  signature: 'list_containers(name_starts_with: str | None = None, include_metadata:
+    bool | None = False, **kwargs) -> ItemPaged[ContainerProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only containers whose names
@@ -600,25 +568,21 @@ methods:
     types:
     - <xref:int>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: An iterable (auto-paging) of ContainerProperties.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.blob.ContainerProperties>]
-  examples:
-  - "Listing the containers in the blob service.<!--[!code-python[Main](les\\blob_samples_service.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_service.py\",\
-    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # List all containers\n   all_containers = blob_service_client.list_containers(include_metadata=True)\n\
-    \   for container in all_containers:\n       print(container['name'], container['metadata'])\n\
-    \n   # Filter results with name prefix\n   test_containers = blob_service_client.list_containers(name_starts_with='test-')\n\
-    \   for container in test_containers:\n       print(container['name'], container['metadata'])\n\
-    \n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.set_service_properties
   name: set_service_properties
   summary: 'Sets the properties of a storage account''s Blob service, including
@@ -629,11 +593,11 @@ methods:
     If an element (e.g. analytics_logging) is left as None, the
 
     existing settings on the service for that functionality are preserved.'
-  signature: 'set_service_properties(analytics_logging: Optional[BlobAnalyticsLogging]
-    = None, hour_metrics: Optional[Metrics] = None, minute_metrics: Optional[Metrics]
-    = None, cors: Optional[List[CorsRule]] = None, target_version: Optional[str] =
-    None, delete_retention_policy: Optional[RetentionPolicy] = None, static_website:
-    Optional[StaticWebsite] = None, **kwargs) -> None'
+  signature: 'set_service_properties(analytics_logging: BlobAnalyticsLogging | None
+    = None, hour_metrics: Metrics | None = None, minute_metrics: Metrics | None =
+    None, cors: List[CorsRule] | None = None, target_version: str | None = None, delete_retention_policy:
+    RetentionPolicy | None = None, static_website: StaticWebsite | None = None, **kwargs)
+    -> None'
   parameters:
   - name: analytics_logging
     description: Groups the Azure Analytics Logging settings.
@@ -686,29 +650,20 @@ methods:
     types:
     - <xref:azure.storage.blob.StaticWebsite>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Setting service properties for the blob service.<!--[!code-python[Main](les\\\
-    blob_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\\
-    blob_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
-    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
-    \n````python\n\n   # Create service properties\n   from azure.storage.blob import\
-    \ BlobAnalyticsLogging, Metrics, CorsRule, RetentionPolicy\n\n   # Create logging\
-    \ settings\n   logging = BlobAnalyticsLogging(read=True, write=True, delete=True,\
-    \ retention_policy=RetentionPolicy(enabled=True, days=5))\n\n   # Create metrics\
-    \ for requests statistics\n   hour_metrics = Metrics(enabled=True, include_apis=True,\
-    \ retention_policy=RetentionPolicy(enabled=True, days=5))\n   minute_metrics =\
-    \ Metrics(enabled=True, include_apis=True,\n                            retention_policy=RetentionPolicy(enabled=True,\
-    \ days=5))\n\n   # Create CORS rules\n   cors_rule = CorsRule(['www.xyz.com'],\
-    \ ['GET'])\n   cors = [cors_rule]\n\n   # Set the service properties\n   blob_service_client.set_service_properties(logging,\
-    \ hour_metrics, minute_metrics, cors)\n\n   ````\n"
 - uid: azure.storage.blob.BlobServiceClient.undelete_container
   name: undelete_container
   summary: 'Restores soft-deleted container.
@@ -721,7 +676,7 @@ methods:
 
     New in version 12.4.0: This operation was introduced in API version ''2019-12-12''.'
   signature: 'undelete_container(deleted_container_name: str, deleted_container_version:
-    str, **kwargs: Any) -> azure.storage.blob._container_client.ContainerClient'
+    str, **kwargs: Any) -> ContainerClient'
   parameters:
   - name: deleted_container_name
     description: Specifies the name of the deleted container to restore.
@@ -734,9 +689,18 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
+    description: The undeleted ContainerClient.
     types:
     - <xref:azure.storage.blob.ContainerClient>

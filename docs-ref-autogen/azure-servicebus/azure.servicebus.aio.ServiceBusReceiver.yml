@@ -24,9 +24,8 @@ summary: 'The ServiceBusReceiver class defines a high level interface for
 
   ServiceBusReceiver instance.**'
 constructor:
-  syntax: 'ServiceBusReceiver(fully_qualified_namespace: str, credential: Union[AsyncTokenCredential,
-    azure.core.credentials.AzureSasCredential, azure.core.credentials.AzureNamedKeyCredential],
-    **kwargs: Any)'
+  syntax: 'ServiceBusReceiver(fully_qualified_namespace: str, credential: AsyncTokenCredential
+    | AzureSasCredential | AzureNamedKeyCredential, **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -83,14 +82,14 @@ constructor:
 
       The default mode is PEEK_LOCK.'
     types:
-    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
+    - <xref:typing.Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
   - name: max_wait_time
     description: 'The timeout in seconds between received messages after which the
       receiver
 
       will automatically stop receiving. The default value is None, meaning no timeout.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
     types:
@@ -123,7 +122,7 @@ constructor:
 
       it will apply to the session instead.'
     types:
-    - <xref:Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
+    - <xref:typing.Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
   - name: prefetch_count
     description: 'The maximum number of messages to cache with each request to the
       service.
@@ -163,7 +162,7 @@ methods:
 
 
     This message will be returned to the queue and made available to be received again.'
-  signature: abandon_message(message)
+  signature: async abandon_message(message)
   parameters:
   - name: message
     description: The received message to be abandoned.
@@ -174,16 +173,16 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - type: ~azure.servicebus.exceptions.MessageAlreadySettled if the message has been
+  - type: azure.servicebus.exceptions.MessageAlreadySettled if the message has been
       settled.
-  - type: ~azure.servicebus.exceptions.SessionLockLostError if session lock has already
+  - type: azure.servicebus.exceptions.SessionLockLostError if session lock has already
       expired.
-  - type: ~azure.servicebus.exceptions.ServiceBusError when errors happen.
+  - type: azure.servicebus.exceptions.ServiceBusError when errors happen.
   examples:
   - "Abandon a received message.<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -191,24 +190,14 @@ methods:
     \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusReceiver.close
   name: close
-  summary: 'Close down the handler connection.
-
-
-    If the handler has already closed, this operation will do nothing. An optional
-    exception can be passed in to
-
-    indicate that the handler was shutdown due to error.'
-  signature: close() -> None
-  return:
-    types:
-    - <xref:None>
+  signature: async close() -> None
 - uid: azure.servicebus.aio.ServiceBusReceiver.complete_message
   name: complete_message
   summary: 'Complete the message.
 
 
     This removes the message from the queue.'
-  signature: complete_message(message)
+  signature: async complete_message(message)
   parameters:
   - name: message
     description: The received message to be completed.
@@ -219,16 +208,16 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - type: ~azure.servicebus.exceptions.MessageAlreadySettled if the message has been
+  - type: azure.servicebus.exceptions.MessageAlreadySettled if the message has been
       settled.
-  - type: ~azure.servicebus.exceptions.SessionLockLostError if session lock has already
+  - type: azure.servicebus.exceptions.SessionLockLostError if session lock has already
       expired.
-  - type: ~azure.servicebus.exceptions.ServiceBusError when errors happen.
+  - type: azure.servicebus.exceptions.ServiceBusError when errors happen.
   examples:
   - "Complete a received message.<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -246,7 +235,7 @@ methods:
 
     or processing. The queue can also be configured to send expired messages to the
     Dead Letter queue.'
-  signature: dead_letter_message(message, reason=None, error_description=None)
+  signature: async dead_letter_message(message, reason=None, error_description=None)
   parameters:
   - name: message
     description: The received message to be dead-lettered.
@@ -257,26 +246,26 @@ methods:
     description: The reason for dead-lettering the message.
     defaultValue: None
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
   - name: error_description
     description: The detailed error description for dead-lettering the message.
     defaultValue: None
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
   return:
     types:
     - <xref:None>
   exceptions:
-  - type: ~azure.servicebus.exceptions.MessageAlreadySettled if the message has been
+  - type: azure.servicebus.exceptions.MessageAlreadySettled if the message has been
       settled.
-  - type: ~azure.servicebus.exceptions.SessionLockLostError if session lock has already
+  - type: azure.servicebus.exceptions.SessionLockLostError if session lock has already
       expired.
-  - type: ~azure.servicebus.exceptions.ServiceBusError when errors happen.
+  - type: azure.servicebus.exceptions.ServiceBusError when errors happen.
   examples:
   - "Dead letter a received message.<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -290,7 +279,7 @@ methods:
     This message will remain in the queue but must be requested
 
     specifically by its sequence number in order to be received.'
-  signature: defer_message(message)
+  signature: async defer_message(message)
   parameters:
   - name: message
     description: The received message to be deferred.
@@ -301,16 +290,16 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - type: ~azure.servicebus.exceptions.MessageAlreadySettled if the message has been
+  - type: azure.servicebus.exceptions.MessageAlreadySettled if the message has been
       settled.
-  - type: ~azure.servicebus.exceptions.SessionLockLostError if session lock has already
+  - type: azure.servicebus.exceptions.SessionLockLostError if session lock has already
       expired.
-  - type: ~azure.servicebus.exceptions.ServiceBusError when errors happen.
+  - type: azure.servicebus.exceptions.ServiceBusError when errors happen.
   examples:
   - "Defer a received message.<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -325,7 +314,7 @@ methods:
     completed,
 
     deferred or dead-lettered.'
-  signature: 'peek_messages(max_message_count: int = 1, **kwargs: Any) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
+  signature: 'async peek_messages(max_message_count: int = 1, **kwargs: Any) -> List[ServiceBusReceivedMessage]'
   parameters:
   - name: max_message_count
     description: 'The maximum number of messages to try and peek. The default
@@ -344,15 +333,15 @@ methods:
       The value must be greater than 0 if specified. The default value is None, meaning
       no timeout.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   return:
     types:
     - <xref:list>[<xref:azure.servicebus.ServiceBusReceivedMessage>]
   examples:
   - "Peek messages in the queue.<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   async with servicebus_receiver:\n       messages = await servicebus_receiver.peek_messages()\n\
@@ -365,23 +354,23 @@ methods:
     When receiving deferred messages from a partitioned entity, all of the supplied
 
     sequence numbers must be messages from the same partition.'
-  signature: 'receive_deferred_messages(sequence_numbers: Union[int, List[int]], **kwargs:
-    Any) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
+  signature: 'async receive_deferred_messages(sequence_numbers: int | List[int], **kwargs:
+    Any) -> List[ServiceBusReceivedMessage]'
   parameters:
-  - name: list[int]] sequence_numbers
+  - name: sequence_numbers
     description: 'A list of the sequence numbers of messages that have been
 
       deferred.'
     isRequired: true
     types:
-    - <xref:Union>[<xref:int,>
+    - <xref:typing.Union>[<xref:int>, <xref:list>[<xref:int>]]
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
 
       The value must be greater than 0 if specified. The default value is None, meaning
       no timeout.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   return:
     types:
     - <xref:list>[<xref:azure.servicebus.aio.ServiceBusReceivedMessage>]
@@ -389,11 +378,11 @@ methods:
   - "Receive deferred messages from ServiceBus.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\
-    \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   async with servicebus_receiver:\n       deferred_sequenced_numbers\
-    \ = []\n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\
+    \\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   async with servicebus_receiver:\n\
+    \       deferred_sequenced_numbers = []\n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
     \       for message in messages:\n           deferred_sequenced_numbers.append(message.sequence_number)\n\
     \           print(str(message))\n           await servicebus_receiver.defer_message(message)\n\
     \n       received_deferred_msg = await servicebus_receiver.receive_deferred_messages(\n\
@@ -428,8 +417,8 @@ methods:
     messages regardless
 
     of the specified batch size.'
-  signature: 'receive_messages(max_message_count: Optional[int] = 1, max_wait_time:
-    Optional[float] = None) -> List[azure.servicebus._common.message.ServiceBusReceivedMessage]'
+  signature: 'async receive_messages(max_message_count: int | None = 1, max_wait_time:
+    float | None = None) -> List[ServiceBusReceivedMessage]'
   parameters:
   - name: max_message_count
     description: 'Maximum number of messages in the batch. Actual number
@@ -440,7 +429,7 @@ methods:
       is 1.'
     defaultValue: '1'
     types:
-    - <xref:Optional>[<xref:int>]
+    - <xref:typing.Optional>[<xref:int>]
   - name: max_wait_time
     description: 'Maximum time to wait in seconds for the first message to arrive.
 
@@ -452,7 +441,7 @@ methods:
       timeout period, an empty list will be returned.'
     defaultValue: None
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   return:
     types:
     - <xref:list>[<xref:azure.servicebus.aio.ServiceBusReceivedMessage>]
@@ -460,13 +449,13 @@ methods:
   - "Receive messages from ServiceBus.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\
-    \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   async with servicebus_receiver:\n       messages\
-    \ = await servicebus_receiver.receive_messages(max_wait_time=5)\n       for message\
-    \ in messages:\n           print(str(message))\n           await servicebus_receiver.complete_message(message)\n\
-    \n   ````\n"
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\
+    \\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   async with servicebus_receiver:\n\
+    \       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    \       for message in messages:\n           print(str(message))\n           await\
+    \ servicebus_receiver.complete_message(message)\n\n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusReceiver.renew_message_lock
   name: renew_message_lock
   summary: 'Renew the message lock.
@@ -487,8 +476,8 @@ methods:
     be renewed.
 
     This operation is only available for non-sessionful messages as well.'
-  signature: 'renew_message_lock(message: azure.servicebus._common.message.ServiceBusReceivedMessage,
-    **kwargs: Any) -> datetime.datetime'
+  signature: 'async renew_message_lock(message: ServiceBusReceivedMessage, **kwargs:
+    Any) -> datetime'
   parameters:
   - name: message
     description: The message to renew the lock for.
@@ -501,25 +490,25 @@ methods:
       The value must be greater than 0 if specified. The default value is None, meaning
       no timeout.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   return:
     description: The utc datetime the lock is set to expire at.
     types:
     - <xref:datetime.datetime>
   exceptions:
   - type: TypeError if the message is sessionful.
-  - type: ~azure.servicebus.exceptions.MessageAlreadySettled if the message has been
+  - type: azure.servicebus.exceptions.MessageAlreadySettled if the message has been
       settled.
-  - type: ~azure.servicebus.exceptions.MessageLockLostError if message lock has already
+  - type: azure.servicebus.exceptions.MessageLockLostError if message lock has already
       expired.
   examples:
   - "Renew the lock on a received message.<!--[!code-python[Main](les\\async_samples\\\
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\
-    \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\
+    \\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n       messages = await servicebus_receiver.receive_messages(max_wait_time=5)\n\
     \       for message in messages:\n           await servicebus_receiver.renew_message_lock(message)\n\
     \n   ````\n"
 attributes:
@@ -535,8 +524,8 @@ attributes:
   examples:
   - "Get session from a receiver<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\63\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       async with servicebus_client.get_queue_receiver(queue_name=queue_name,\

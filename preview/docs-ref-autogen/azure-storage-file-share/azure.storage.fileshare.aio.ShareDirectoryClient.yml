@@ -17,8 +17,9 @@ summary: 'A client to interact with a specific directory, although it may not ye
   and <xref:azure.storage.fileshare.aio.ShareDirectoryClient.get_file_client> functions.'
 constructor:
   syntax: 'ShareDirectoryClient(account_url: str, share_name: str, directory_path:
-    str, snapshot: Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any]
-    = None, **kwargs: Optional[Any])'
+    str, snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str,
+    str] | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None
+    = None, *, token_intent: Literal[''backup''] | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -46,18 +47,48 @@ constructor:
       snapshot ID string
 
       or the response returned from <xref:azure.storage.fileshare.aio.ShareClient.create_snapshot>.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
-    description: 'The credential with which to authenticate. This is optional if the
+    description: 'The credentials with which to authenticate. This is optional if
+      the
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials or an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key.'
-    isRequired: true
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: token_intent
+    description: "Required when using *TokenCredential* for authentication and ignored\
+      \ for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
+      \ - Specifies requests are intended for backup/admin type operations, meaning\
+      \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
+      \ User must also have required RBAC permission."
+    types:
+    - <xref:typing.Literal>['backup']
+  - name: allow_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the target URI.
+    types:
+    - <xref:bool>
+  - name: allow_source_trailing_dot
+    description: If true, the trailing dot will not be trimmed from the source URI.
+    types:
+    - <xref:bool>
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -73,8 +104,6 @@ constructor:
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
-  - name: loop
-    description: The event loop to run the asynchronous tasks.
   - name: max_range_size
     description: The maximum range size used for a file upload. Defaults to 4*1024*1024.
     types:
@@ -86,7 +115,7 @@ methods:
 
 
     This operation will block until the service has closed all open handles.'
-  signature: 'close_all_handles(recursive: bool = False, **kwargs: Any) -> Dict[str,
+  signature: 'async close_all_handles(recursive: bool = False, **kwargs: Any) -> Dict[str,
     int]'
   parameters:
   - name: recursive
@@ -98,7 +127,15 @@ methods:
     types:
     - <xref:bool>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -111,7 +148,7 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.close_handle
   name: close_handle
   summary: Close an open file handle.
-  signature: 'close_handle(handle: Union[str, HandleItem], **kwargs: Any) -> Dict[str,
+  signature: 'async close_handle(handle: str | Handle, **kwargs: Any) -> Dict[str,
     int]'
   parameters:
   - name: handle
@@ -121,7 +158,15 @@ methods:
     - <xref:str>
     - <xref:azure.storage.fileshare.Handle>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -134,34 +179,83 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.create_directory
   name: create_directory
   summary: Creates a new directory under the directory referenced by the client.
-  signature: 'create_directory(**kwargs: Any) -> Dict[str, Any]'
+  signature: 'async create_directory(**kwargs: Any) -> Dict[str, Any]'
   parameters:
+  - name: file_attributes
+    description: 'The file system attributes for files and directories.
+
+      If not set, the default value would be "none" and the attributes will be set
+      to "Archive".
+
+      Here is an example for when the var type is str: ''Temporary|Archive''.
+
+      file_attributes value is not case sensitive.'
+    types:
+    - <xref:azure.storage.fileshare.NTFSAttributes>
+  - name: file_creation_time
+    description: 'Creation time for the directory. Default value: "now".'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_last_write_time
+    description: 'Last write time for the directory. Default value: "now".'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: file_permission
+    description: 'If specified the permission (security descriptor) shall be set
+
+      for the directory/file. This header can be used if Permission size is
+
+      <= 8KB, else file-permission-key header shall be used.
+
+      Default value: Inherit. If SDDL is specified as input, it must have owner, group
+      and dacl.
+
+      Note: Only one of the file-permission or file-permission-key should be specified.'
+    types:
+    - <xref:str>
+  - name: file_permission_key
+    description: 'Key of the permission to be set for the directory/file.
+
+      Note: Only one of the file-permission or file-permission-key should be specified.'
+    types:
+    - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the directory. If not specified, change time will
+      be set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: Directory-updated property dict (Etag and last modified).
     types:
     - <xref:dict>(<xref:str>, <xref:Any>)
-  examples:
-  - "Creates a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await directory.create_directory()\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.create_subdirectory
   name: create_subdirectory
   summary: 'Creates a new subdirectory and returns a client to interact
 
     with the subdirectory.'
-  signature: 'create_subdirectory(directory_name: str, **kwargs) -> azure.storage.fileshare.aio._directory_client_async.ShareDirectoryClient'
+  signature: 'async create_subdirectory(directory_name: str, **kwargs) -> ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -171,53 +265,51 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the subdirectory as metadata.
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: ShareDirectoryClient
     types:
     - <xref:azure.storage.fileshare.aio.ShareDirectoryClient>
-  examples:
-  - "Create a subdirectory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Create the directory\n   await parent_dir.create_directory()\n\n   # Create\
-    \ a subdirectory\n   subdir = await parent_dir.create_subdirectory(\"subdir\"\
-    )\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.delete_directory
   name: delete_directory
   summary: 'Marks the directory for deletion. The directory is
 
     later deleted during garbage collection.'
-  signature: 'delete_directory(**kwargs: Any) -> None'
+  signature: 'async delete_directory(**kwargs: Any) -> None'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Deletes a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await directory.delete_directory()\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.delete_file
   name: delete_file
   summary: 'Marks the specified file for deletion. The file is later
 
     deleted during garbage collection.'
-  signature: 'delete_file(file_name: str, **kwargs: Optional[Any]) -> None'
+  signature: 'async delete_file(file_name: str, **kwargs: Any | None) -> None'
   parameters:
   - name: file_name
     description: The name of the file to delete.
@@ -225,25 +317,24 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Delete a file in a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Delete the file in the directory\n   await directory.delete_file(file_name=\"\
-    sample\")\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.delete_subdirectory
   name: delete_subdirectory
   summary: Deletes a subdirectory.
-  signature: 'delete_subdirectory(directory_name: str, **kwargs) -> None'
+  signature: 'async delete_subdirectory(directory_name: str, **kwargs) -> None'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -251,31 +342,41 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Delete a subdirectory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await parent_dir.delete_subdirectory(\"subdir\")\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.exists
   name: exists
   summary: Returns True if a directory exists and returns False otherwise.
-  signature: 'exists(**kwargs: Any) -> bool'
+  signature: 'async exists(**kwargs: Any) -> bool'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
-    description: boolean
+    description: True if the directory exists, False otherwise.
+    types:
+    - <xref:bool>
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.get_directory_properties
   name: get_directory_properties
   summary: 'Returns all user-defined metadata and system properties for the
@@ -283,10 +384,18 @@ methods:
     specified directory. The data returned does not include the directory''s
 
     list of files.'
-  signature: 'get_directory_properties(**kwargs: Any) -> DirectoryProperties'
+  signature: 'async get_directory_properties(**kwargs: Any) -> DirectoryProperties'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -299,7 +408,7 @@ methods:
 
 
     The file need not already exist.'
-  signature: 'get_file_client(file_name: str, **kwargs: Any) -> azure.storage.fileshare.aio._file_client_async.ShareFileClient'
+  signature: 'get_file_client(file_name: str, **kwargs: Any) -> ShareFileClient'
   parameters:
   - name: file_name
     description: The name of the file.
@@ -316,7 +425,7 @@ methods:
 
 
     The subdirectory need not already exist.'
-  signature: 'get_subdirectory_client(directory_name: str, **kwargs: Any) -> azure.storage.fileshare.aio._directory_client_async.ShareDirectoryClient'
+  signature: 'get_subdirectory_client(directory_name: str, **kwargs: Any) -> ShareDirectoryClient'
   parameters:
   - name: directory_name
     description: The name of the subdirectory.
@@ -327,22 +436,11 @@ methods:
     description: A Directory Client.
     types:
     - <xref:azure.storage.fileshare.aio.ShareDirectoryClient>
-  examples:
-  - "Gets the subdirectory client.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Get a directory client and create the directory\n   parent = share.get_directory_client(\"\
-    dir1\")\n   await parent.create_directory()\n\n   # Get a subdirectory client\
-    \ and create the subdirectory \"dir1/dir2\"\n   subdirectory = parent.get_subdirectory_client(\"\
-    dir2\")\n   await subdirectory.create_directory()\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.list_directories_and_files
   name: list_directories_and_files
   summary: Lists all the directories and files under the directory.
-  signature: 'list_directories_and_files(name_starts_with: Optional[str] = None, **kwargs:
-    Any) -> azure.core.async_paging.AsyncItemPaged'
+  signature: 'list_directories_and_files(name_starts_with: str | None = None, **kwargs:
+    Any) -> AsyncItemPaged'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only entities whose names
@@ -375,7 +473,15 @@ methods:
     types:
     - <xref:bool>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -383,20 +489,10 @@ methods:
     types:
     - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:DirectoryProperties and
       FileProperties>]
-  examples:
-  - "List directories and files.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # List the directories and files under the parent directory\n   my_list =\
-    \ []\n   async for item in parent_dir.list_directories_and_files():\n       my_list.append(item)\n\
-    \   print(my_list)\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.list_handles
   name: list_handles
   summary: Lists opened handles on a directory or a file under the directory.
-  signature: 'list_handles(recursive: bool = False, **kwargs: Any) -> azure.core.async_paging.AsyncItemPaged'
+  signature: 'list_handles(recursive: bool = False, **kwargs: Any) -> AsyncItemPaged[Handle]'
   parameters:
   - name: recursive
     description: 'Boolean that specifies if operation should apply to the directory
@@ -407,24 +503,37 @@ methods:
     types:
     - <xref:bool>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
-    description: An auto-paging iterable of HandleItem
+    description: An auto-paging iterable of Handle
     types:
-    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.HandleItem>]
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.fileshare.Handle>]
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.rename_directory
   name: rename_directory
   summary: "Rename the source directory.\n\n:paramtype file_attributes:~azure.storage.fileshare.NTFSAttributes\
     \ or str\n:keyword file_creation_time:\n\n   Creation time for the directory.\n\
     \n:paramtype file_creation_time:~datetime.datetime or str\n:keyword file_last_write_time:\n\
     \n   Last write time for the file.\n\n:paramtype file_last_write_time:~datetime.datetime\
-    \ or str\n:keyword dict(str,str) metadata:\n\n   A name-value pair to associate\
-    \ with a file storage object."
-  signature: 'rename_directory(new_name: str, **kwargs: Any) -> azure.storage.fileshare.aio._directory_client_async.ShareDirectoryClient'
+    \ or str\n:keyword file_change_time:\n\n   Change time for the directory. If not\
+    \ specified, change time will be set to the current date/time.\n\n   New in version\
+    \ 12.8.0: This parameter was introduced in API version '2021-06-08'."
+  signature: 'async rename_directory(new_name: str, **kwargs: Any) -> ShareDirectoryClient'
   parameters:
-  - name: lease
+  - name: metadata
+    description: A name-value pair to associate with a file storage object.
+    types:
+    - <xref:typing.Dict>[<xref:str>,<xref:str>]
+  - name: destination_lease
     description: 'Required if the destination file has an active lease. Value can
       be a ShareLeaseClient object
 
@@ -446,8 +555,8 @@ methods:
     attached to the directory. To remove all metadata from the directory,
 
     call this operation with an empty metadata dict.'
-  signature: 'set_directory_metadata(metadata: Dict[str, Any], **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'async set_directory_metadata(metadata: Dict[str, Any], **kwargs: Any)
+    -> Dict[str, Any]'
   parameters:
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
@@ -455,7 +564,15 @@ methods:
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -465,10 +582,10 @@ methods:
 - uid: azure.storage.fileshare.aio.ShareDirectoryClient.set_http_headers
   name: set_http_headers
   summary: Sets HTTP headers on the directory.
-  signature: 'set_http_headers(file_attributes: Union[str, NTFSAttributes] = ''none'',
-    file_creation_time: Union[str, datetime] = ''preserve'', file_last_write_time:
-    Union[str, datetime] = ''preserve'', file_permission: Optional[str] = None, permission_key:
-    Optional[str] = None, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async set_http_headers(file_attributes: str | NTFSAttributes = ''none'',
+    file_creation_time: str | datetime | None = ''preserve'', file_last_write_time:
+    str | datetime | None = ''preserve'', file_permission: str | None = None, permission_key:
+    str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: file_attributes
     description: 'The file system attributes for files and directories.
@@ -478,7 +595,6 @@ methods:
       Here is an example for when the var type is str: ''Temporary|Archive'''
     isRequired: true
     types:
-    - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'Creation time for the file
@@ -520,8 +636,25 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: file_change_time
+    description: 'Change time for the directory. If not specified, change time will
+      be set to the current date/time.
+
+
+      New in version 12.8.0: This parameter was introduced in API version ''2021-06-08''.'
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -533,8 +666,8 @@ methods:
   summary: 'Creates a new file in the directory and returns a ShareFileClient
 
     to interact with the file.'
-  signature: 'upload_file(file_name: str, data: Any, length: Optional[int] = None,
-    **kwargs: Any) -> azure.storage.fileshare.aio._file_client_async.ShareFileClient'
+  signature: 'async upload_file(file_name: str, data: bytes | str | Iterable | AsyncIterable
+    | IO, length: int | None = None, **kwargs) -> ShareFileClient'
   parameters:
   - name: file_name
     description: The name of the file.
@@ -544,8 +677,6 @@ methods:
   - name: data
     description: Content of the file.
     isRequired: true
-    types:
-    - <xref:Any>
   - name: length
     description: Length of the file in bytes. Specify its maximum size, up to 1 TiB.
     isRequired: true
@@ -554,7 +685,7 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the file as metadata.
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: content_settings
     description: 'ContentSettings object used to set file properties. Used to set
       content type, encoding,
@@ -581,8 +712,26 @@ methods:
     description: Maximum number of parallel connections to use.
     types:
     - <xref:int>
+  - name: progress_hook
+    description: 'An async callback to track the progress of a long running upload.
+      The signature is
+
+      function(current: int, total: Optional[int]) where current is the number of
+      bytes transferred
+
+      so far, and total is the size of the blob or None if the size is unknown.'
+    types:
+    - <xref:typing.Callable>[[<xref:int>, <xref:typing.Optional>[<xref:int>]], <xref:typing.Awaitable>[<xref:None>]]
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: encoding
@@ -593,12 +742,3 @@ methods:
     description: ShareFileClient
     types:
     - <xref:azure.storage.fileshare.aio.ShareFileClient>
-  examples:
-  - "Upload a file to a directory.<!--[!code-python[Main](les\\file_samples_directory_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\81\\\\azure-storage-file-share-12.7.0b2\\\\samples\\\\file_samples_directory_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Upload a file to the directory\n   with open(SOURCE_FILE, \"rb\") as source:\n\
-    \       await directory.upload_file(file_name=\"sample\", data=source)\n\n   ````\n"

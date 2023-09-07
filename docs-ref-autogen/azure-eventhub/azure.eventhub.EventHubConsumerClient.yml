@@ -42,8 +42,7 @@ summary: 'The EventHubConsumerClient class defines a high level interface for
   is set.'
 constructor:
   syntax: 'EventHubConsumerClient(fully_qualified_namespace: str, eventhub_name: str,
-    consumer_group: str, credential: Union[AzureSasCredential, TokenCredential, AzureNamedKeyCredential],
-    **kwargs: Any)'
+    consumer_group: str, credential: CredentialTypes, **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Event Hubs namespace.
@@ -173,7 +172,7 @@ constructor:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:typing.Dict>
   - name: checkpoint_store
     description: 'A manager that stores the partition load-balancing and checkpoint
       data
@@ -188,11 +187,11 @@ constructor:
       in memory, and the *EventHubConsumerClient* instance will receive events without
       load-balancing.'
     types:
-    - <xref:azure.eventhub.CheckpointStore>
+    - <xref:typing.Optional>[<xref:azure.eventhub.CheckpointStore>]
   - name: load_balancing_interval
     description: 'When load-balancing kicks in. This is the interval, in seconds,
 
-      between two load-balancing evaluations. Default is 10 seconds.'
+      between two load-balancing evaluations. Default is 30 seconds.'
     types:
     - <xref:float>
   - name: partition_ownership_expiration_interval
@@ -201,10 +200,10 @@ constructor:
       of seconds. Every load-balancing evaluation will automatically extend the ownership
       expiration time.
 
-      Default is 6 * load_balancing_interval, i.e. 60 seconds when using the default
+      Default is 6 * load_balancing_interval, i.e. 180 seconds when using the default
       load_balancing_interval
 
-      of 10 seconds.'
+      of 30 seconds.'
     types:
     - <xref:float>
   - name: load_balancing_strategy
@@ -249,7 +248,7 @@ constructor:
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: connection_verify
     description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
       used to
@@ -258,13 +257,36 @@ constructor:
 
       Default is None in which case *certifi.where()* will be used.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
+  - name: uamqp_transport
+    description: 'Whether to use the *uamqp* library as the underlying transport.
+      The default value is
+
+      False and the Pure Python AMQP library will be used as the underlying transport.'
+    types:
+    - <xref:bool>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If EventHubsConnectionError errors
+      are occurring due to write
+
+      timing out, a larger than default value may need to be passed in. This is for
+      advanced usage scenarios
+
+      and ordinarily the default value should be sufficient.'
+    types:
+    - <xref:float>
 examples:
 - "Create a new instance of the EventHubConsumerClient.<!--[!code-python[Main](les\\\
   sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.7.0\\\\samples\\\\\
-  sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
+  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.4\\\\samples\\\
+  \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
   linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub import\
   \ EventHubConsumerClient, EventHubSharedKeyCredential\n\n   fully_qualified_namespace\
@@ -286,8 +308,8 @@ methods:
   examples:
   - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\106\\\\azure-eventhub-5.7.0\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\43\\\\azure-eventhub-5.11.4\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import os\n   import threading\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
@@ -331,14 +353,6 @@ methods:
     description: Whether to output network trace logs to the logger. Default is *False*.
     types:
     - <xref:bool>
-  - name: http_proxy
-    description: 'HTTP proxy settings. This must be a dictionary with the following
-
-      keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
-
-      Additionally the following keys may also be present: *''username'', ''password''*.'
-    types:
-    - <xref:dict>
   - name: auth_timeout
     description: 'The time in seconds to wait for a token to be authorized by the
       service.
@@ -425,6 +439,14 @@ methods:
       be used instead which uses port 443 for communication.'
     types:
     - <xref:azure.eventhub.TransportType>
+  - name: http_proxy
+    description: 'HTTP proxy settings. This must be a dictionary with the following
+
+      keys: *''proxy_hostname''* (str value) and *''proxy_port''* (int value).
+
+      Additionally the following keys may also be present: *''username'', ''password''*.'
+    types:
+    - <xref:typing.Dict>
   - name: checkpoint_store
     description: 'A manager that stores the partition load-balancing and checkpoint
       data
@@ -439,7 +461,7 @@ methods:
       in memory, and the *EventHubConsumerClient* instance will receive events without
       load-balancing.'
     types:
-    - <xref:azure.eventhub.CheckpointStore>
+    - <xref:typing.Optional>[<xref:azure.eventhub.CheckpointStore>]
   - name: load_balancing_interval
     description: 'When load-balancing kicks in. This is the interval, in seconds,
 
@@ -455,7 +477,7 @@ methods:
       Default is 6 * load_balancing_interval, i.e. 60 seconds when using the default
       load_balancing_interval
 
-      of 10 seconds.'
+      of 30 seconds.'
     types:
     - <xref:float>
   - name: load_balancing_strategy
@@ -500,7 +522,7 @@ methods:
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: connection_verify
     description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
       used to
@@ -509,7 +531,14 @@ methods:
 
       Default is None in which case *certifi.where()* will be used.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
+  - name: uamqp_transport
+    description: 'Whether to use the *uamqp* library as the underlying transport.
+      The default value is
+
+      False and the Pure Python AMQP library will be used as the underlying transport.'
+    types:
+    - <xref:bool>
   return:
     types:
     - <xref:azure.eventhub.EventHubConsumerClient>
@@ -517,11 +546,11 @@ methods:
   - "Create a new instance of the EventHubConsumerClient from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.7.0\\\\samples\\\
-    \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub import\
-    \ EventHubConsumerClient\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.4\\\\\
+    samples\\\\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub\
+    \ import EventHubConsumerClient\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
     \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   consumer = EventHubConsumerClient.from_connection_string(\n\
     \       conn_str=event_hub_connection_str,\n       consumer_group='$Default',\n\
     \       eventhub_name=eventhub_name  # EventHub name should be specified if it\
@@ -534,7 +563,7 @@ methods:
   signature: get_eventhub_properties() -> Dict[str, Any]
   return:
     types:
-    - <xref:dict>
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.EventHubConsumerClient.get_partition_ids
@@ -562,13 +591,13 @@ methods:
     - <xref:str>
   return:
     types:
-    - <xref:dict>
+    - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
   - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.EventHubConsumerClient.receive
   name: receive
   summary: Receive events from partition(s), with optional load-balancing and checkpointing.
-  signature: 'receive(on_event: Callable[[''PartitionContext'', Optional[''EventData'']],
+  signature: 'receive(on_event: Callable[[''PartitionContext'', ''EventData'' | None],
     None], **kwargs: Any) -> None'
   parameters:
   - name: on_event
@@ -585,7 +614,7 @@ methods:
       <xref:azure.eventhub.PartitionContext>.'
     isRequired: true
     types:
-    - <xref:Callable>[<xref:azure.eventhub.PartitionContext>, <xref:Optional>[<xref:azure.eventhub.EventData>]]
+    - <xref:typing.Callable>[<xref:azure.eventhub.PartitionContext>, <xref:typing.Optional>[<xref:azure.eventhub.EventData>]]
   - name: max_wait_time
     description: 'The maximum interval in seconds that the event processor will wait
       before calling
@@ -658,7 +687,7 @@ methods:
       Default value is "@latest".'
     types:
     - <xref:str>, <xref:int>, <xref:datetime.datetime>
-    - <xref:dict>[<xref:str,Any>]
+    - <xref:typing.Dict>[<xref:str>,<xref:typing.Any>]
   - name: starting_position_inclusive
     description: 'Determine whether the given starting_position is inclusive(>=) or
 
@@ -672,7 +701,7 @@ methods:
       value is False.'
     types:
     - <xref:bool>
-    - <xref:dict>[<xref:str,bool>]
+    - <xref:typing.Dict>[<xref:str>,<xref:bool>]
   - name: on_error
     description: 'The callback function that will be called when an error is raised
       during receiving
@@ -693,7 +722,7 @@ methods:
 
       the *on_event* callback.'
     types:
-    - <xref:Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:Exception>]]
+    - <xref:typing.Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:Exception>]]
   - name: on_partition_initialize
     description: 'The callback function that will be called after a consumer for a
       certain
@@ -710,7 +739,7 @@ methods:
 
       like: *on_partition_initialize(partition_context)*.'
     types:
-    - <xref:Callable>[[<xref:azure.eventhub.PartitionContext>]]
+    - <xref:typing.Callable>[[<xref:azure.eventhub.PartitionContext>]]
   - name: on_partition_close
     description: 'The callback function that will be called after a consumer for a
       certain
@@ -727,7 +756,7 @@ methods:
 
       Please refer to <xref:azure.eventhub.CloseReason> for the various closing reasons.'
     types:
-    - <xref:Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:azure.eventhub.CloseReason>]]
+    - <xref:typing.Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:azure.eventhub.CloseReason>]]
   return:
     types:
     - <xref:None>
@@ -735,10 +764,10 @@ methods:
   - "Receive events from the EventHub.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.7.0\\\\samples\\\\sync_samples\\\
-    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       logger = logging.getLogger(\"azure.eventhub\"\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.4\\\\samples\\\\\
+    sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n       logger = logging.getLogger(\"azure.eventhub\"\
     )\n\n       def on_event(partition_context, event):\n           # Put your code\
     \ here.\n           # If the operation is i/o intensive, multi-thread will have\
     \ better performance.\n           logger.info(\"Received event from partition:\
@@ -770,7 +799,7 @@ methods:
       <xref:azure.eventhub.PartitionContext>.'
     isRequired: true
     types:
-    - <xref:Callable>[<xref:azure.eventhub.PartitionContext>, <xref:List>[<xref:azure.eventhub.EventData>]]
+    - <xref:typing.Callable>[<xref:azure.eventhub.PartitionContext>, <xref:typing.List>[<xref:azure.eventhub.EventData>]]
   - name: max_batch_size
     description: 'The maximum number of events in a batch passed to callback *on_event_batch*.
 
@@ -851,7 +880,7 @@ methods:
       Default value is "@latest".'
     types:
     - <xref:str>, <xref:int>, <xref:datetime.datetime>
-    - <xref:dict>[<xref:str,Any>]
+    - <xref:typing.Dict>[<xref:str>,<xref:typing.Any>]
   - name: starting_position_inclusive
     description: 'Determine whether the given starting_position is inclusive(>=) or
 
@@ -865,7 +894,7 @@ methods:
       value is False.'
     types:
     - <xref:bool>
-    - <xref:dict>[<xref:str,bool>]
+    - <xref:typing.Dict>[<xref:str>,<xref:bool>]
   - name: on_error
     description: 'The callback function that will be called when an error is raised
       during receiving
@@ -886,7 +915,7 @@ methods:
 
       the *on_event* callback.'
     types:
-    - <xref:Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:Exception>]]
+    - <xref:typing.Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:Exception>]]
   - name: on_partition_initialize
     description: 'The callback function that will be called after a consumer for a
       certain
@@ -903,7 +932,7 @@ methods:
 
       like: *on_partition_initialize(partition_context)*.'
     types:
-    - <xref:Callable>[[<xref:azure.eventhub.PartitionContext>]]
+    - <xref:typing.Callable>[[<xref:azure.eventhub.PartitionContext>]]
   - name: on_partition_close
     description: 'The callback function that will be called after a consumer for a
       certain
@@ -920,7 +949,7 @@ methods:
 
       Please refer to <xref:azure.eventhub.CloseReason> for the various closing reasons.'
     types:
-    - <xref:Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:azure.eventhub.CloseReason>]]
+    - <xref:typing.Callable>[[<xref:azure.eventhub.PartitionContext>, <xref:azure.eventhub.CloseReason>]]
   return:
     types:
     - <xref:None>
@@ -928,10 +957,10 @@ methods:
   - "Receive events in batches from the EventHub.<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\106\\\\azure-eventhub-5.7.0\\\\samples\\\\sync_samples\\\
-    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       logger = logging.getLogger(\"azure.eventhub\"\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.4\\\\samples\\\\\
+    sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n       logger = logging.getLogger(\"azure.eventhub\"\
     )\n\n       def on_event_batch(partition_context, event_batch):\n           #\
     \ Put your code here.\n           # If the operation is i/o intensive, multi-thread\
     \ will have better performance.\n           logger.info(\"Received events from\

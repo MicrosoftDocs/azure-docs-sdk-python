@@ -9,7 +9,7 @@ inheritances:
 summary: A buffered sender for document indexing actions.
 constructor:
   syntax: 'SearchIndexingBufferedSender(endpoint: str, index_name: str, credential:
-    AzureKeyCredential, **kwargs: Any)'
+    AzureKeyCredential | AsyncTokenCredential, **kwargs)'
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
@@ -26,6 +26,7 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
   - name: auto_flush_interval
     description: 'how many max seconds if between 2 flushes. This only takes effect
 
@@ -46,36 +47,50 @@ constructor:
   - name: on_new
     description: 'If it is set, the client will call corresponding methods when there
 
-      is a new IndexAction added.'
+      is a new IndexAction added. This may be called from main thread or a worker
+      thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: on_progress
     description: 'If it is set, the client will call corresponding methods when there
 
-      is a IndexAction succeeds.'
+      is a IndexAction succeeds. This may be called from main thread or a worker thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: on_error
     description: 'If it is set, the client will call corresponding methods when there
 
-      is a IndexAction fails.'
+      is a IndexAction fails. This may be called from main thread or a worker thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: on_remove
     description: 'If it is set, the client will call corresponding methods when there
 
-      is a IndexAction removed from the queue (succeeds or fails).'
+      is a IndexAction removed from the queue (succeeds or fails). This may be called
+      from main
+
+      thread or a worker thread.'
     types:
-    - <xref:callable>
+    - <xref:typing.Callable>[[<xref:azure.search.documents.models.IndexAction>], <xref:None>]
   - name: api_version
     description: The Search API version to use for requests.
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'sets the Audience to use for authentication with Azure Active Directory
+      (AAD). The
+
+      audience is not considered when using a shared key. If audience is not provided,
+      the public cloud audience
+
+      will be assumed.'
     types:
     - <xref:str>
 methods:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.close
   name: close
   summary: Close the <xref:azure.search.documents.aio.SearchClient> session.
-  signature: close(**kwargs) -> None
+  signature: async close(**kwargs) -> None
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.delete_documents
   name: delete_documents
   summary: 'Queue delete documents actions
@@ -83,6 +98,7 @@ methods:
     :param documents: A list of documents to delete.
 
     :type documents: List[dict]'
+  signature: async delete_documents()
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.flush
   name: flush
   summary: 'Flush the batch.
@@ -94,13 +110,15 @@ methods:
     :rtype: bool
 
     :raises ~azure.core.exceptions.ServiceResponseTimeoutError:'
+  signature: async flush()
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.index_documents
   name: index_documents
   summary: 'Specify a document operations to perform as a batch.
 
 
     :raises <xref:azure.search.documents.RequestEntityTooLargeError>'
-  signature: 'index_documents(batch: IndexDocumentsBatch, **kwargs: Any) -> List[IndexingResult]'
+  signature: 'async index_documents(batch: IndexDocumentsBatch, **kwargs: Any) ->
+    List[IndexingResult]'
   parameters:
   - name: batch
     description: A batch of document operations to perform.
@@ -117,6 +135,7 @@ methods:
     :param documents: A list of documents to merge.
 
     :type documents: List[dict]'
+  signature: async merge_documents()
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.merge_or_upload_documents
   name: merge_or_upload_documents
   summary: 'Queue merge documents or upload documents actions
@@ -124,6 +143,7 @@ methods:
     :param documents: A list of documents to merge or upload.
 
     :type documents: List[dict]'
+  signature: async merge_or_upload_documents()
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.upload_documents
   name: upload_documents
   summary: 'Queue upload documents actions.
@@ -131,6 +151,7 @@ methods:
     :param documents: A list of documents to upload.
 
     :type documents: List[dict]'
+  signature: async upload_documents()
 attributes:
 - uid: azure.search.documents.aio.SearchIndexingBufferedSender.actions
   name: actions

@@ -6,12 +6,13 @@ module: azure.storage.blob.aio
 inheritances:
 - azure.storage.blob._shared.base_client_async.AsyncStorageAccountHostsMixin
 - azure.storage.blob._blob_client.BlobClient
+- azure.storage.blob._encryption.StorageEncryptionMixin
 summary: A client to interact with a specific blob, although that blob may not yet
   exist.
 constructor:
   syntax: 'BlobClient(account_url: str, container_name: str, blob_name: str, snapshot:
-    Optional[Union[str, Dict[str, Any]]] = None, credential: Optional[Any] = None,
-    **kwargs: Any)'
+    str | Dict[str, Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | AsyncTokenCredential | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URI to the storage account. In order to create a client given
@@ -39,7 +40,7 @@ constructor:
       snapshot ID string
 
       or the response returned from <xref:azure.storage.blob.aio.BlobClient.create_snapshot>.'
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:str>
   - name: credential
@@ -48,16 +49,22 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
-    isRequired: true
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -117,24 +124,13 @@ constructor:
       or 4MB.'
     types:
     - <xref:int>
-examples:
-- "Creating the BlobClient from a URL to a public blob (no auth needed).<!--[!code-python[Main](les\\\
-  blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
-  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
-  D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\
-  \\blob_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   from azure.storage.blob.aio import BlobClient\n\
-  \   blob_client = BlobClient.from_blob_url(blob_url=\"https://account.blob.core.windows.net/container/blob-name\"\
-  )\n\n   ````\n\nCreating the BlobClient from a SAS URL to a blob.<!--[!code-python[Main](les\\\
-  blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
-  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
-  D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\
-  \\blob_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   from azure.storage.blob.aio import BlobClient\n\
-  \n   sas_url = \"https://account.blob.core.windows.net/container/blob-name?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D\"\
-  \n   blob_client = BlobClient.from_blob_url(sas_url)\n\n   ````\n"
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime value that, when
+      present,
+
+      specifies the version of the blob to operate on.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.storage.blob.aio.BlobClient.abort_copy
   name: abort_copy
@@ -144,8 +140,8 @@ methods:
     This will leave a destination blob with zero length and full metadata.
 
     This will raise an error if the copy operation has already ended.'
-  signature: 'abort_copy(copy_id: Union[str, Dict[str, Any], azure.storage.blob._models.BlobProperties],
-    **kwargs: Any) -> None'
+  signature: 'async abort_copy(copy_id: str | Dict[str, Any] | BlobProperties, **kwargs:
+    Any) -> None'
   parameters:
   - name: copy_id
     description: 'The copy operation to abort. This can be either an ID, or an
@@ -158,16 +154,6 @@ methods:
   return:
     types:
     - <xref:None>
-  examples:
-  - "Abort copying a blob from URL.<!--[!code-python[Main](les\\blob_samples_common_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_common_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Passing in copy id to abort copy operation\n   await copied_blob.abort_copy(copy_id)\n\
-    \n   # check copy status\n   props = await copied_blob.get_blob_properties()\n\
-    \   print(props.copy.status)\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.acquire_lease
   name: acquire_lease
   summary: 'Requests a new lease.
@@ -176,8 +162,8 @@ methods:
     If the blob does not have an active lease, the Blob
 
     Service creates a lease on the blob and returns a new lease.'
-  signature: 'acquire_lease(lease_duration: int = -1, lease_id: Optional[str] = None,
-    **kwargs: Any) -> azure.storage.blob.aio._lease_async.BlobLeaseClient'
+  signature: 'async acquire_lease(lease_duration: int = -1, lease_id: str | None =
+    None, **kwargs: Any) -> BlobLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -245,29 +231,26 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: A BlobLeaseClient object.
     types:
     - <xref:azure.storage.blob.aio.BlobLeaseClient>
-  examples:
-  - "Acquiring a lease on a blob.<!--[!code-python[Main](les\\blob_samples_common_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_common_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Get the blob client\n   blob_client = blob_service_client.get_blob_client(\"\
-    leasemyblobscontainerasync\", \"my_blob\")\n\n   # Acquire a lease on the blob\n\
-    \   lease = await blob_client.acquire_lease()\n\n   # Delete blob by passing in\
-    \ the lease\n   await blob_client.delete_blob(lease=lease)\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.append_block
   name: append_block
   summary: Commits a new block of data to the end of the existing append blob.
-  signature: 'append_block(data: Union[AnyStr, Iterable[AnyStr], IO[AnyStr]], length:
-    Optional[int] = None, **kwargs) -> Dict[str, Union[str, datetime, int]]'
+  signature: 'async append_block(data: bytes | str | Iterable[AnyStr] | IO[AnyStr],
+    length: int | None = None, **kwargs) -> Dict[str, str | datetime | int]'
   parameters:
   - name: data
     description: Content of the block.
@@ -400,7 +383,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -412,9 +403,9 @@ methods:
   name: append_block_from_url
   summary: Creates a new block to be committed as part of a blob, where the contents
     are read from a source url.
-  signature: 'append_block_from_url(copy_source_url: str, source_offset: Optional[int]
-    = None, source_length: Optional[int] = None, **kwargs) -> Dict[str, Union[str,
-    datetime, int]]'
+  signature: 'async append_block_from_url(copy_source_url: str, source_offset: int
+    | None = None, source_length: int | None = None, **kwargs) -> Dict[str, str |
+    datetime | int]'
   parameters:
   - name: copy_source_url
     description: 'The URL of the source data. It can point to any Azure Blob or File,
@@ -583,7 +574,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: source_authorization
@@ -596,8 +595,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.clear_page
   name: clear_page
   summary: Clears a range of pages.
-  signature: 'clear_page(offset: int, length: int, **kwargs: Any) -> Dict[str, Union[str,
-    datetime]]'
+  signature: 'async clear_page(offset: int, length: int, **kwargs: Any) -> Dict[str,
+    str | datetime]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for writing to a section of the blob.
@@ -703,7 +702,15 @@ methods:
     types:
     - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -715,9 +722,9 @@ methods:
   summary: 'The Commit Block List operation writes a blob by specifying the list of
 
     block IDs that make up the blob.'
-  signature: 'commit_block_list(block_list: List[BlobBlock], content_settings: Optional[ContentSettings]
-    = None, metadata: Optional[Dict[str, str]] = None, **kwargs) -> Dict[str, Union[str,
-    datetime]]'
+  signature: 'async commit_block_list(block_list: List[BlobBlock], content_settings:
+    ContentSettings | None = None, metadata: Dict[str, str] | None = None, **kwargs)
+    -> Dict[str, str | datetime]'
   parameters:
   - name: block_list
     description: List of Blockblobs.
@@ -872,7 +879,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -882,9 +897,9 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.create_append_blob
   name: create_append_blob
   summary: Creates a new Append Blob.
-  signature: 'create_append_blob(content_settings: Optional[ContentSettings] = None,
-    metadata: Optional[Dict[str, str]] = None, **kwargs: Any) -> Dict[str, Union[str,
-    datetime]]'
+  signature: 'async create_append_blob(content_settings: ContentSettings | None =
+    None, metadata: Dict[str, str] | None = None, **kwargs: Any) -> Dict[str, str
+    | datetime]'
   parameters:
   - name: content_settings
     description: 'ContentSettings object used to set blob properties. Used to set
@@ -1003,7 +1018,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -1013,9 +1036,9 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.create_page_blob
   name: create_page_blob
   summary: Creates a new Page Blob of the specified size.
-  signature: 'create_page_blob(size: int, content_settings: Optional[ContentSettings]
-    = None, metadata: Optional[Dict[str, str]] = None, premium_page_blob_tier: Optional[Union[str,
-    PremiumPageBlobTier]] = None, **kwargs) -> Dict[str, Union[str, datetime]]'
+  signature: 'async create_page_blob(size: int, content_settings: ContentSettings
+    | None = None, metadata: Dict[str, str] | None = None, premium_page_blob_tier:
+    str | PremiumPageBlobTier | None = None, **kwargs) -> Dict[str, str | datetime]'
   parameters:
   - name: size
     description: 'This specifies the maximum size for the page blob, up to 1 TB.
@@ -1160,7 +1183,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -1184,8 +1215,8 @@ methods:
     is taken, with a DateTime value appended to indicate the time at which the
 
     snapshot was taken.'
-  signature: 'create_snapshot(metadata: Optional[Dict[str, str]] = None, **kwargs:
-    Any) -> Dict[str, Union[str, datetime]]'
+  signature: 'async create_snapshot(metadata: Dict[str, str] | None = None, **kwargs:
+    Any) -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
@@ -1273,24 +1304,21 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: Blob-updated property dict (Snapshot ID, Etag, and last modified).
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
-  examples:
-  - "Create a snapshot of the blob.<!--[!code-python[Main](les\\blob_samples_common_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_common_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Create a read-only snapshot of the blob at this point in time\n   snapshot_blob\
-    \ = await blob_client.create_snapshot()\n\n   # Get the snapshot ID\n   print(snapshot_blob.get('snapshot'))\n\
-    \n   # Delete only the snapshot (blob itself is retained)\n   await blob_client.delete_blob(delete_snapshots=\"\
-    only\")\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.delete_blob
   name: delete_blob
   summary: 'Marks the specified blob for deletion.
@@ -1318,7 +1346,7 @@ methods:
 
     option. Soft-deleted blob can be restored using <xref:azure.storage.blob.aio.undelete>
     operation.'
-  signature: 'delete_blob(delete_snapshots: str = None, **kwargs: Any) -> None'
+  signature: 'async delete_blob(delete_snapshots: str = None, **kwargs: Any) -> None'
   parameters:
   - name: delete_snapshots
     description: "Required if the blob has associated snapshots. Values include:\n\
@@ -1395,20 +1423,20 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Delete a blob.<!--[!code-python[Main](les\\blob_samples_hello_world_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_hello_world_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await blob_client.delete_blob()\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.delete_immutability_policy
   name: delete_immutability_policy
   summary: 'The Delete Immutability Policy operation deletes the immutability policy
@@ -1416,10 +1444,18 @@ methods:
 
 
     New in version 12.10.0: This operation was introduced in API version ''2020-10-02''.'
-  signature: 'delete_immutability_policy(**kwargs: Any) -> None'
+  signature: 'async delete_immutability_policy(**kwargs: Any) -> None'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -1436,8 +1472,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'download_blob(offset: Optional[int] = None, length: Optional[int] =
-    None, **kwargs: Any) -> azure.storage.blob.aio._download_async.StorageStreamDownloader'
+  signature: 'async download_blob(offset: int = None, length: int = None, *, encoding:
+    str, **kwargs) -> StorageStreamDownloader[str]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the blob.
@@ -1558,8 +1594,28 @@ methods:
       decoding.
     types:
     - <xref:str>
+  - name: progress_hook
+    description: 'An async callback to track the progress of a long running download.
+      The signature is
+
+      function(current: int, total: int) where current is the number of bytes transfered
+
+      so far, and total is the total size of the download.'
+    types:
+    - <xref:typing.Callable>[[<xref:int>, <xref:int>], <xref:typing.Awaitable>[<xref:None>]]
   - name: timeout
-    description: 'The timeout parameter is expressed in seconds. This method may make
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).
+      This method may make multiple calls to the service and
+
+      the timeout will apply to each call individually.
 
       multiple calls to the Azure service and the timeout will apply to
 
@@ -1570,21 +1626,12 @@ methods:
     description: A streaming object (StorageStreamDownloader)
     types:
     - <xref:azure.storage.blob.aio.StorageStreamDownloader>
-  examples:
-  - "Download a blob.<!--[!code-python[Main](les\\blob_samples_hello_world_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_hello_world_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   with open(DEST_FILE, \"wb\") as my_blob:\n       stream = await blob_client.download_blob()\n\
-    \       data = await stream.readall()\n       my_blob.write(data)\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.exists
   name: exists
   summary: 'Returns True if a blob exists with the defined parameters, and returns
 
     False otherwise.'
-  signature: 'exists(**kwargs: Any) -> bool'
+  signature: 'async exists(**kwargs: Any) -> bool'
   parameters:
   - name: version_id
     description: 'The version id parameter is an opaque DateTime
@@ -1593,11 +1640,21 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: boolean
+    types:
+    - <xref:bool>
 - uid: azure.storage.blob.aio.BlobClient.get_account_information
   name: get_account_information
   summary: 'Gets information related to the storage account in which the blob resides.
@@ -1607,7 +1664,7 @@ methods:
     blob.
 
     The keys in the returned dictionary include ''sku_name'' and ''account_kind''.'
-  signature: 'get_account_information(**kwargs: Optional[int]) -> Dict[str, str]'
+  signature: 'async get_account_information(**kwargs: int | None) -> Dict[str, str]'
   return:
     description: A dict of account information (SKU and account type).
     types:
@@ -1617,7 +1674,7 @@ methods:
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
 
     system properties for the blob. It does not return the content of the blob.'
-  signature: 'get_blob_properties(**kwargs: Any) -> azure.storage.blob._models.BlobProperties'
+  signature: 'async get_blob_properties(**kwargs: Any) -> BlobProperties'
   parameters:
   - name: lease
     description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
@@ -1695,21 +1752,21 @@ methods:
     types:
     - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     description: BlobProperties
     types:
     - <xref:azure.storage.blob.BlobProperties>
-  examples:
-  - "Getting the properties for a blob.<!--[!code-python[Main](les\\blob_samples_common_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_common_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   properties = await blob_client.get_blob_properties()\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.get_blob_tags
   name: get_blob_tags
   summary: 'The Get Tags operation enables users to get tags on a blob or specific
@@ -1717,7 +1774,7 @@ methods:
 
 
     New in version 12.4.0: This operation was introduced in API version ''2019-12-12''.'
-  signature: 'get_blob_tags(**kwargs: Any) -> Dict[str, str]'
+  signature: 'async get_blob_tags(**kwargs: Any) -> Dict[str, str]'
   parameters:
   - name: version_id
     description: 'The version id parameter is an opaque DateTime
@@ -1741,7 +1798,15 @@ methods:
     - <xref:azure.storage.blob.BlobLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -1753,8 +1818,8 @@ methods:
   summary: 'The Get Block List operation retrieves the list of blocks that have
 
     been uploaded as part of a block blob.'
-  signature: 'get_block_list(block_list_type: Optional[str] = ''committed'', **kwargs:
-    Any) -> Tuple[List[azure.storage.blob._models.BlobBlock], List[azure.storage.blob._models.BlobBlock]]'
+  signature: 'async get_block_list(block_list_type: str | None = ''committed'', **kwargs:
+    Any) -> Tuple[List[BlobBlock], List[BlobBlock]]'
   parameters:
   - name: block_list_type
     description: 'Specifies whether to return the list of committed
@@ -1784,7 +1849,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -1796,7 +1869,6 @@ methods:
   summary: 'Returns the list of valid page ranges for a managed disk or snapshot.
 
 
-
     > [!NOTE]
 
     > This operation is only available for managed disk accounts.
@@ -1805,8 +1877,8 @@ methods:
 
 
     New in version 12.2.0: This operation was introduced in API version ''2019-07-07''.'
-  signature: 'get_page_range_diff_for_managed_disk(previous_snapshot_url: str, offset:
-    Optional[int] = None, length: Optional[int] = None, **kwargs) -> Tuple[List[Dict[str,
+  signature: 'async get_page_range_diff_for_managed_disk(previous_snapshot_url: str,
+    offset: int | None = None, length: int | None = None, **kwargs) -> Tuple[List[Dict[str,
     int]], List[Dict[str, int]]]'
   parameters:
   - name: previous_snapshot_url
@@ -1891,7 +1963,15 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -1904,11 +1984,11 @@ methods:
       <xref:str>))
 - uid: azure.storage.blob.aio.BlobClient.get_page_ranges
   name: get_page_ranges
-  summary: 'Returns the list of valid page ranges for a Page Blob or snapshot
+  summary: 'DEPRECATED: Returns the list of valid page ranges for a Page Blob or snapshot
 
     of a page blob.'
-  signature: 'get_page_ranges(offset: Optional[int] = None, length: Optional[int]
-    = None, previous_snapshot_diff: Optional[Union[str, Dict[str, Any]]] = None, **kwargs)
+  signature: 'async get_page_ranges(offset: int | None = None, length: int | None
+    = None, previous_snapshot_diff: str | Dict[str, Any] | None = None, **kwargs)
     -> Tuple[List[Dict[str, int]], List[Dict[str, int]]]'
   parameters:
   - name: offset
@@ -2005,7 +2085,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2016,6 +2104,132 @@ methods:
     types:
     - <xref:tuple>(<xref:list>(<xref:dict>(<xref:str>, <xref:str>), <xref:list>(<xref:dict>(<xref:str>,
       <xref:str>))
+- uid: azure.storage.blob.aio.BlobClient.list_page_ranges
+  name: list_page_ranges
+  summary: 'Returns the list of valid page ranges for a Page Blob or snapshot
+
+    of a page blob. If *previous_snapshot* is specified, the result will be
+
+    a diff of changes between the target blob and the previous snapshot.'
+  signature: 'list_page_ranges(*, offset: int | None = None, length: int | None =
+    None, previous_snapshot: str | Dict[str, Any] | None = None, **kwargs: Any) ->
+    AsyncItemPaged[PageRange]'
+  parameters:
+  - name: offset
+    description: 'Start of byte range to use for getting valid page ranges.
+
+      If no length is given, all bytes after the offset will be searched.
+
+      Pages must be aligned with 512-byte boundaries, the start offset
+
+      must be a modulus of 512 and the length must be a modulus of
+
+      512.'
+    types:
+    - <xref:int>
+  - name: length
+    description: 'Number of bytes to use for getting valid page ranges.
+
+      If length is given, offset must be provided.
+
+      This range will return valid page ranges from the offset start up to
+
+      the specified length.
+
+      Pages must be aligned with 512-byte boundaries, the start offset
+
+      must be a modulus of 512 and the length must be a modulus of
+
+      512.'
+    types:
+    - <xref:int>
+  - name: previous_snapshot
+    description: 'A snapshot value that specifies that the response will contain only
+      pages that were changed
+
+      between target blob and previous snapshot. Changed pages include both updated
+      and cleared
+
+      pages. The target blob may be a snapshot, as long as the snapshot specified
+      by *previous_snapshot*
+
+      is the older of the two.'
+    types:
+    - <xref:str>
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: lease
+    description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.blob.BlobLeaseClient>
+    - <xref:str>
+  - name: if_modified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only
+
+      if the resource has been modified since the specified time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: if_unmodified_since
+    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
+
+      If timezone is included, any non-UTC datetimes will be converted to UTC.
+
+      If a date is passed in without timezone info, it is assumed to be UTC.
+
+      Specify this header to perform the operation only if
+
+      the resource has not been modified since the specified date/time.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource has changed,
+
+      and act according to the condition specified by the *match_condition* parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: if_tags_match_condition
+    description: 'Specify a SQL where clause on blob tags to operate only on blob
+      with a matching value.
+
+      eg. `"\"tagname\"=''my tag''"`
+
+
+      New in version 12.4.0.'
+    types:
+    - <xref:str>
+  - name: results_per_page
+    description: The maximum number of page ranges to retrieve per API call.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: An iterable (auto-paging) of PageRange.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.blob.PageRange>]
 - uid: azure.storage.blob.aio.BlobClient.resize_blob
   name: resize_blob
   summary: 'Resizes a page blob to the specified size.
@@ -2024,7 +2238,7 @@ methods:
     If the specified value is less than the current size of the blob,
 
     then all pages above the specified value are cleared.'
-  signature: 'resize_blob(size: int, **kwargs: Any) -> Dict[str, Union[str, datetime]]'
+  signature: 'async resize_blob(size: int, **kwargs: Any) -> Dict[str, str | datetime]'
   parameters:
   - name: size
     description: 'Size used to resize blob. Maximum size for a page blob is up to
@@ -2097,7 +2311,15 @@ methods:
     types:
     - <xref:azure.storage.blob.PremiumPageBlobTier>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2108,7 +2330,7 @@ methods:
   name: seal_append_blob
   summary: "The Seal operation seals the Append Blob to make it read-only.\n\n   New\
     \ in version 12.4.0."
-  signature: seal_append_blob(**kwargs) -> Dict[str, Union[str, datetime, int]]
+  signature: async seal_append_blob(**kwargs) -> Dict[str, str | datetime | int]
   parameters:
   - name: appendpos_condition
     description: 'Optional conditional header, used only for the Append Block operation.
@@ -2166,7 +2388,15 @@ methods:
     types:
     - <xref:azure.core.MatchConditions>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2177,8 +2407,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.set_blob_metadata
   name: set_blob_metadata
   summary: Sets user-defined metadata for the blob as one or more name-value pairs.
-  signature: 'set_blob_metadata(metadata: Optional[Dict[str, str]] = None, **kwargs:
-    Any) -> Dict[str, Union[str, datetime]]'
+  signature: 'async set_blob_metadata(metadata: Dict[str, str] | None = None, **kwargs:
+    Any) -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: 'Dict containing name and value pairs. Each call to this operation
@@ -2270,7 +2500,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2282,7 +2520,7 @@ methods:
     \ existing tags attached to the blob. To remove all\n   tags from the blob, call\
     \ this operation with no tags set.\n\nNew in version 12.4.0: This operation was\
     \ introduced in API version '2019-12-12'."
-  signature: 'set_blob_tags(tags: Optional[Dict[str, str]] = None, **kwargs: Any)
+  signature: 'async set_blob_tags(tags: Dict[str, str] | None = None, **kwargs: Any)
     -> Dict[str, Any]'
   parameters:
   - name: tags
@@ -2337,7 +2575,15 @@ methods:
     - <xref:azure.storage.blob.BlobLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2350,7 +2596,7 @@ methods:
 
 
     If one property is set for the content_settings, all properties will be overridden.'
-  signature: 'set_http_headers(content_settings: Optional[ContentSettings] = None,
+  signature: 'async set_http_headers(content_settings: ContentSettings | None = None,
     **kwargs: Any) -> None'
   parameters:
   - name: content_settings
@@ -2415,7 +2661,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2429,6 +2683,8 @@ methods:
 
 
     New in version 12.10.0: This operation was introduced in API version ''2020-10-02''.'
+  signature: 'async set_immutability_policy(immutability_policy: ImmutabilityPolicy,
+    **kwargs: Any) -> Dict[str, str]'
   parameters:
   - name: immutability_policy
     description: 'Specifies the immutability policy of a blob, blob snapshot or blob
@@ -2440,7 +2696,15 @@ methods:
     types:
     - <xref:azure.storage.blob.ImmutabilityPolicy>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2453,8 +2717,8 @@ methods:
 
 
     New in version 12.10.0: This operation was introduced in API version ''2020-10-02''.'
-  signature: 'set_legal_hold(legal_hold: bool, **kwargs: Any) -> Dict[str, Union[str,
-    datetime, bool]]'
+  signature: 'async set_legal_hold(legal_hold: bool, **kwargs: Any) -> Dict[str, str
+    | datetime | bool]'
   parameters:
   - name: legal_hold
     description: Specified if a legal hold should be set on the blob.
@@ -2462,7 +2726,15 @@ methods:
     types:
     - <xref:bool>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2473,7 +2745,7 @@ methods:
   name: set_premium_page_blob_tier
   summary: Sets the page blob tiers on the blob. This API is only supported for page
     blobs on premium accounts.
-  signature: 'set_premium_page_blob_tier(premium_page_blob_tier: Union[str, PremiumPageBlobTier],
+  signature: 'async set_premium_page_blob_tier(premium_page_blob_tier: str | PremiumPageBlobTier,
     **kwargs: Any) -> None'
   parameters:
   - name: premium_page_blob_tier
@@ -2497,11 +2769,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: 'The timeout parameter is expressed in seconds. This method may make
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
 
-      multiple calls to the Azure service and the timeout will apply to
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
 
-      each call individually.'
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: lease
@@ -2518,8 +2794,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.set_sequence_number
   name: set_sequence_number
   summary: Sets the blob sequence number.
-  signature: 'set_sequence_number(sequence_number_action: Union[str, SequenceNumberAction],
-    sequence_number: Optional[str] = None, **kwargs) -> Dict[str, Union[str, datetime]]'
+  signature: 'async set_sequence_number(sequence_number_action: str | SequenceNumberAction,
+    sequence_number: str | None = None, **kwargs) -> Dict[str, str | datetime]'
   parameters:
   - name: sequence_number_action
     description: 'This property indicates how the service should modify the blob''s
@@ -2593,7 +2869,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2608,7 +2892,7 @@ methods:
     A block blob''s tier determines Hot/Cool/Archive storage type.
 
     This operation does not update the blob''s ETag.'
-  signature: 'set_standard_blob_tier(standard_blob_tier: Union[str, StandardBlobTier],
+  signature: 'async set_standard_blob_tier(standard_blob_tier: str | StandardBlobTier,
     **kwargs: Any) -> None'
   parameters:
   - name: standard_blob_tier
@@ -2643,7 +2927,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: lease
@@ -2660,8 +2952,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.stage_block
   name: stage_block
   summary: Creates a new block to be committed as part of a blob.
-  signature: 'stage_block(block_id: str, data: Union[Iterable, IO], length: Optional[int]
-    = None, **kwargs) -> None'
+  signature: 'async stage_block(block_id: str, data: Iterable | IO, length: int |
+    None = None, **kwargs) -> None'
   parameters:
   - name: block_id
     description: 'A string value that identifies the block.
@@ -2739,7 +3031,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -2750,9 +3050,9 @@ methods:
   summary: 'Creates a new block to be committed as part of a blob where
 
     the contents are read from a URL.'
-  signature: 'stage_block_from_url(block_id: Union[str, int], source_url: str, source_offset:
-    Optional[int] = None, source_length: Optional[int] = None, source_content_md5:
-    Optional[Union[bytes, bytearray]] = None, **kwargs) -> None'
+  signature: 'async stage_block_from_url(block_id: str | int, source_url: str, source_offset:
+    int | None = None, source_length: int | None = None, source_content_md5: bytes
+    | bytearray | None = None, **kwargs) -> None'
   parameters:
   - name: block_id
     description: 'A string value that identifies the block.
@@ -2823,7 +3123,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: source_authorization
@@ -2838,14 +3146,22 @@ methods:
     - <xref:None>
 - uid: azure.storage.blob.aio.BlobClient.start_copy_from_url
   name: start_copy_from_url
-  summary: 'Copies a blob asynchronously.
+  summary: 'Copies a blob from the given URL.
 
 
-    This operation returns a copy operation
+    This operation returns a dictionary containing *copy_status* and *copy_id*,
 
-    object that can be used to wait on the completion of the operation,
+    which can be used to check the status of or abort the copy operation.
 
-    as well as check status or abort the copy operation.
+    *copy_status* will be ''success'' if the copy completed synchronously or
+
+    ''pending'' if the copy has been started asynchronously. For asynchronous copies,
+
+    the status can be checked by polling the <xref:azure.storage.blob.aio.BlobClient.get_blob_properties>
+    method and
+
+    checking the copy status. Set *requires_sync* to True to force the copy to be
+    synchronous.
 
     The Blob service copies blobs on a best-effort basis.
 
@@ -2883,16 +3199,10 @@ methods:
 
     end of the copy operation, the destination blob will have the same committed
 
-    block count as the source.
-
-
-    For all blob types, you can call status() on the returned polling object
-
-    to check the status of the copy operation, or wait() to block until the
-
-    operation is complete. The final blob will be committed when the copy completes.'
-  signature: 'start_copy_from_url(source_url: str, metadata: Optional[Dict[str, str]]
-    = None, incremental_copy: bool = False, **kwargs: Any) -> Any'
+    block count as the source.'
+  signature: 'async start_copy_from_url(source_url: str, metadata: Dict[str, str]
+    | None = None, incremental_copy: bool = False, **kwargs: Any) -> Dict[str, str
+    | datetime]'
   parameters:
   - name: source_url
     description: 'A URL of up to 2 KB in length that specifies a file or blob.
@@ -2956,12 +3266,19 @@ methods:
       digits (0-9),
 
       space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
-      (=), underscore (_)
+      (=), underscore (_).
+
+
+      The (case-sensitive) literal "COPY" can instead be passed to copy tags from
+      the source blob.
+
+      This option is only available when *incremental_copy=False* and *requires_sync=True*.
 
 
       New in version 12.4.0.'
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Literal>["COPY"]
   - name: immutability_policy
     description: 'Specifies the immutability policy of a blob, blob snapshot or blob
       version.
@@ -3083,7 +3400,15 @@ methods:
     - <xref:azure.storage.blob.aio.BlobLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: premium_page_blob_tier
@@ -3153,18 +3478,6 @@ methods:
     description: A dictionary of copy properties (etag, last_modified, copy_id, copy_status).
     types:
     - <xref:dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:datetime.datetime>]]
-  examples:
-  - "Copy a blob from a URL.<!--[!code-python[Main](les\\blob_samples_common_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_common_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Get the blob client with the source blob\n   source_blob = \"https://www.gutenberg.org/files/59466/59466-0.txt\"\
-    \n   copied_blob = blob_service_client.get_blob_client(\"copyblobcontainerasync\"\
-    , '59466-0.txt')\n\n   # start copy and check copy status\n   copy = await copied_blob.start_copy_from_url(source_blob)\n\
-    \   props = await copied_blob.get_blob_properties()\n   print(props.copy.status)\n\
-    \n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.undelete_blob
   name: undelete_blob
   summary: 'Restores soft-deleted blobs or snapshots.
@@ -3172,31 +3485,38 @@ methods:
 
     Operation will only be successful if used within the specified number of days
 
-    set in the delete retention policy.'
-  signature: 'undelete_blob(**kwargs: Any) -> None'
+    set in the delete retention policy.
+
+
+    If blob versioning is enabled, the base blob cannot be restored using this
+
+    method. Instead use <xref:azure.storage.blob.aio.BlobClient.start_copy_from_url>
+    with the URL of the blob version
+
+    you wish to promote to the current version.'
+  signature: 'async undelete_blob(**kwargs: Any) -> None'
   parameters:
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
     types:
     - <xref:None>
-  examples:
-  - "Undeleting a blob.<!--[!code-python[Main](les\\blob_samples_common_async.py )]-->\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\69\\\\\
-    azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_common_async.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Undelete\
-    \ the blob before the retention policy expires\n   await blob_client.undelete_blob()\n\
-    \n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'upload_blob(data: Union[Iterable, IO], blob_type: Union[str, azure.storage.blob._models.BlobType]
-    = <BlobType.BlockBlob: ''BlockBlob''>, length: Optional[int] = None, metadata:
-    Optional[Dict[str, str]] = None, **kwargs) -> Any'
+  signature: 'async upload_blob(data: bytes | str | Iterable | AsyncIterable | IO,
+    blob_type: str | BlobType = BlobType.BLOCKBLOB, length: int | None = None, metadata:
+    Dict[str, str] | None = None, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: data
     description: The blob data to upload.
@@ -3417,8 +3737,29 @@ methods:
     description: Defaults to UTF-8.
     types:
     - <xref:str>
+  - name: progress_hook
+    description: 'An async callback to track the progress of a long running upload.
+      The signature is
+
+      function(current: int, total: Optional[int]) where current is the number of
+      bytes transfered
+
+      so far, and total is the size of the blob or None if the size is unknown.'
+    types:
+    - <xref:typing.Callable>[[<xref:int>, <xref:typing.Optional>[<xref:int>]], <xref:typing.Awaitable>[<xref:None>]]
   - name: timeout
-    description: 'The timeout parameter is expressed in seconds. This method may make
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).
+      This method may make multiple calls to the service and
+
+      the timeout will apply to each call individually.
 
       multiple calls to the Azure service and the timeout will apply to
 
@@ -3429,22 +3770,14 @@ methods:
     description: Blob-updated property dict (Etag and last modified)
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
-  examples:
-  - "Upload a blob to the container.<!--[!code-python[Main](les\\blob_samples_hello_world_async.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\69\\\\azure-storage-blob-12.10.0b3\\\\samples\\\\blob_samples_hello_world_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Upload content to block blob\n   with open(SOURCE_FILE, \"rb\") as data:\n\
-    \       await blob_client.upload_blob(data, blob_type=\"BlockBlob\")\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.upload_blob_from_url
   name: upload_blob_from_url
   summary: 'Creates a new Block Blob where the content of the blob is read from a
     given URL.
 
     The content of an existing blob is overwritten with the new blob.'
-  signature: 'upload_blob_from_url(source_url: str, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async upload_blob_from_url(source_url: str, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: source_url
     description: 'A URL of up to 2 KB in length that specifies a file or blob.
@@ -3583,7 +3916,15 @@ methods:
     - <xref:azure.storage.blob.BlobLeaseClient>
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: content_settings
@@ -3634,8 +3975,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.upload_page
   name: upload_page
   summary: The Upload Pages operation writes a range of pages to a page blob.
-  signature: 'upload_page(page: bytes, offset: int, length: int, **kwargs) -> Dict[str,
-    Union[str, datetime]]'
+  signature: 'async upload_page(page: bytes, offset: int, length: int, **kwargs) ->
+    Dict[str, str | datetime]'
   parameters:
   - name: page
     description: Content of the page.
@@ -3781,7 +4122,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   return:
@@ -3793,8 +4142,8 @@ methods:
   summary: 'The Upload Pages operation writes a range of pages to a page blob where
 
     the contents are read from a URL.'
-  signature: 'upload_pages_from_url(source_url: str, offset: int, length: int, source_offset:
-    int, **kwargs) -> Dict[str, Any]'
+  signature: 'async upload_pages_from_url(source_url: str, offset: int, length: int,
+    source_offset: int, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: source_url
     description: 'The URL of the source data. It can point to any Azure Blob or File,
@@ -3973,7 +4322,15 @@ methods:
     types:
     - <xref:str>
   - name: timeout
-    description: The timeout parameter is expressed in seconds.
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
     types:
     - <xref:int>
   - name: source_authorization

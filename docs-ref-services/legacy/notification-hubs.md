@@ -8,10 +8,9 @@ manager: routlaw
 
 ms.date: 02/22/2018
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: notification-hubs
 ---
 
 # Azure Notification Hubs libraries for python

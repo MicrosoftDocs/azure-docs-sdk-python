@@ -20,17 +20,24 @@ constructor:
     isRequired: true
     types:
     - <xref:AsyncTokenCredential>
+  - name: api_version
+    description: 'Azure Communication Identity API version.
+
+      Default value is "2022-06-01". Note that overriding this default value may result
+      in unsupported behavior.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.close
   name: close
   summary: 'Close the :class:
 
     *~azure.communication.identity.aio.CommunicationIdentityClient* session.'
-  signature: close() -> None
+  signature: async close() -> None
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.create_user
   name: create_user
   summary: create a single Communication user
-  signature: create_user(**kwargs) -> azure.communication.identity._shared.models.CommunicationUserIdentifier
+  signature: async create_user(**kwargs) -> CommunicationUserIdentifier
   return:
     description: CommunicationUserIdentifier
     types:
@@ -39,8 +46,16 @@ methods:
   name: create_user_and_token
   summary: "create a single Communication user with an identity token.\n:param scopes:\n\
     \n   List of scopes to be added to the token."
-  signature: 'create_user_and_token(scopes: List[Union[str, CommunicationTokenScope]],
-    **kwargs) -> Tuple[CommunicationUserIdentifier, azure.core.credentials.AccessToken]'
+  signature: 'async create_user_and_token(scopes: List[str | CommunicationTokenScope],
+    **kwargs) -> Tuple[CommunicationUserIdentifier, AccessToken]'
+  parameters:
+  - name: token_expires_in
+    description: 'Custom validity period of the Communication Identity access token
+
+      within [1, 24] hours range. If not provided, the default value of 24 hours will
+      be used.'
+    types:
+    - <xref:datetime.timedelta>
   return:
     description: A tuple of a CommunicationUserIdentifier and a AccessToken.
     types:
@@ -49,8 +64,7 @@ methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.delete_user
   name: delete_user
   summary: Triggers revocation event for user and deletes all its data.
-  signature: 'delete_user(user: azure.communication.identity._shared.models.CommunicationUserIdentifier,
-    **kwargs) -> None'
+  signature: 'async delete_user(user: CommunicationUserIdentifier, **kwargs) -> None'
   parameters:
   - name: user
     description: Azure Communication User to delete
@@ -64,15 +78,13 @@ methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.from_connection_string
   name: from_connection_string
   summary: Create CommunicationIdentityClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, **kwargs) -> azure.communication.identity.aio._communication_identity_client_async.CommunicationIdentityClient'
+  signature: 'from_connection_string(conn_str: str, **kwargs) -> CommunicationIdentityClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Communication Service resource.
     isRequired: true
     types:
     - <xref:str>
-  - name: conn_str
-    isRequired: true
   return:
     description: Instance of CommunicationIdentityClient.
     types:
@@ -80,8 +92,8 @@ methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.get_token
   name: get_token
   summary: Generates a new token for an identity.
-  signature: 'get_token(user: azure.communication.identity._shared.models.CommunicationUserIdentifier,
-    scopes: List[Union[str, CommunicationTokenScope]], **kwargs) -> azure.core.credentials.AccessToken'
+  signature: 'async get_token(user: CommunicationUserIdentifier, scopes: List[str
+    | CommunicationTokenScope], **kwargs) -> AccessToken'
   parameters:
   - name: user
     description: Azure Communication User
@@ -94,6 +106,43 @@ methods:
     types:
     - <xref:list>[<xref:str>
     - <xref:azure.communication.identity.CommunicationTokenScope>]
+  - name: token_expires_in
+    description: 'Custom validity period of the Communication Identity access token
+
+      within [1, 24] hours range. If not provided, the default value of 24 hours will
+      be used.'
+    types:
+    - <xref:datetime.timedelta>
+  return:
+    description: AccessToken
+    types:
+    - <xref:azure.core.credentials.AccessToken>
+- uid: azure.communication.identity.aio.CommunicationIdentityClient.get_token_for_teams_user
+  name: get_token_for_teams_user
+  summary: Exchanges an Azure AD access token of a Teams User for a new Communication
+    Identity access token.
+  signature: 'async get_token_for_teams_user(aad_token: str, client_id: str, user_object_id:
+    str, **kwargs) -> AccessToken'
+  parameters:
+  - name: aad_token
+    description: an Azure AD access token of a Teams User
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: client_id
+    description: 'a Client ID of an Azure AD application to be verified against
+
+      the appId claim in the Azure AD access token.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: user_object_id
+    description: 'an Object ID of an Azure AD user (Teams User) to be verified against
+
+      the OID claim in the Azure AD access token.'
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: AccessToken
     types:
@@ -101,8 +150,8 @@ methods:
 - uid: azure.communication.identity.aio.CommunicationIdentityClient.revoke_tokens
   name: revoke_tokens
   summary: Schedule revocation of all tokens of an identity.
-  signature: 'revoke_tokens(user: azure.communication.identity._shared.models.CommunicationUserIdentifier,
-    **kwargs) -> None'
+  signature: 'async revoke_tokens(user: CommunicationUserIdentifier, **kwargs) ->
+    None'
   parameters:
   - name: user
     description: Azure Communication User.

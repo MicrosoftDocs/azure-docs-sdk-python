@@ -5,11 +5,44 @@ fullName: azure.data.tables.aio.TableClient
 module: azure.data.tables.aio
 inheritances:
 - azure.data.tables.aio._base_client_async.AsyncTablesBaseClient
-summary: A client to interact with a specific Table in an Azure Tables account.
+summary: 'A client to interact with a specific Table in an Azure Tables account.
+
+
+  Create TableClient from a Credential.'
 constructor:
-  syntax: 'TableClient(endpoint: str, table_name: str, *, credential: Optional[Union[azure.core.credentials.AzureSasCredential,
-    azure.core.credentials.AzureNamedKeyCredential, AsyncTokenCredential]] = None,
-    **kwargs)'
+  syntax: 'TableClient(endpoint: str, table_name: str, *, credential: AzureSasCredential
+    | AzureNamedKeyCredential | AsyncTokenCredential | None = None, **kwargs)'
+  parameters:
+  - name: endpoint
+    description: A URL to an Azure Tables account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: table_name
+    description: The table name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be one of AzureNamedKeyCredential
+      (azure-core),
+
+      AzureSasCredential (azure-core), or AsyncTokenCredential from azure-identity.'
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.AsyncTokenCredential>
+  - name: api_version
+    description: 'Specifies the version of the operation to use for this request.
+      Default value
+
+      is "2019-02-02". Note that overriding this default value may result in unsupported
+      behavior.'
+    types:
+    - <xref:str>
 variables:
 - description: The name of the Tables account.
   name: account_name
@@ -24,29 +57,36 @@ variables:
   types:
   - <xref:str>
 methods:
+- uid: azure.data.tables.aio.TableClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close() -> None
 - uid: azure.data.tables.aio.TableClient.create_entity
   name: create_entity
   summary: Insert entity in a table.
-  signature: 'create_entity(entity: Union[azure.data.tables._entity.TableEntity, Mapping[str,
-    Any]], **kwargs) -> Mapping[str, Any]'
+  signature: 'async create_entity(entity: TableEntity | Mapping[str, Any], **kwargs)
+    -> Mapping[str, Any]'
   parameters:
   - name: entity
     description: The properties for the table entity.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.data.tables.TableEntity>, <xref:Mapping>[<xref:str>,
-      <xref:Any>]]
+    - <xref:typing.Union>[<xref:azure.data.tables.TableEntity>, <xref:typing.Mapping>[<xref:str>,
+      <xref:typing.Any>]]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
     - <xref:Dict>[<xref:str,str>]
   exceptions:
-  - type: azure.core.exceptions.ResourceExistsError If the entity already exists
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the entity already exists
   examples:
   - "Adding an entity to a Table<!--[!code-python[Main](les\\async_samples\\sample_insert_delete_entities_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\167\\\\azure-data-tables-12.2.0\\\\samples\\\\async_samples\\\\sample_insert_delete_entities_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\async_samples\\\\sample_insert_delete_entities_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   async with table_client:\n       try:\n           await table_client.create_table()\n\
@@ -57,30 +97,20 @@ methods:
 - uid: azure.data.tables.aio.TableClient.create_table
   name: create_table
   summary: Creates a new table under the given account.
-  signature: create_table(**kwargs) -> azure.data.tables._models.TableItem
+  signature: async create_table(**kwargs) -> TableItem
   return:
     description: A TableItem representing the created table.
     types:
     - <xref:azure.data.tables.TableItem>
   exceptions:
-  - type: azure.core.exceptions.ResourceExistsError If the entity already exists
-  examples:
-  - "Creating a table from the TableClient object.<!--[!code-python[Main](les\\async_samples\\\
-    sample_create_delete_table_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   async with TableServiceClient.from_connection_string(self.connection_string)\
-    \ as table_service_client:\n       try:\n           table_item = await table_service_client.create_table(table_name=self.table_name)\n\
-    \           print(\"Created table {}!\".format(table_item.table_name))\n     \
-    \  except ResourceExistsError:\n           print(\"Table already exists\")\n\n\
-    \   ````\n"
+  - type: azure.core.exceptions.ResourceExistsError
+    description: If the entity already exists
 - uid: azure.data.tables.aio.TableClient.delete_entity
   name: delete_entity
   summary: 'Deletes the specified entity in a table. No error will be raised if
 
     the entity or PartitionKey-RowKey pairing is not found.'
+  signature: 'async delete_entity(partition_key: str, row_key: str, **kwargs) -> None'
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -96,7 +126,7 @@ methods:
     description: The entity to delete
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.data.tables.TableEntity>, <xref:Mapping>[<xref:str>,
+    - <xref:typing.Union>[<xref:azure.data.tables.TableEntity>, <xref:typing.Mapping>[<xref:str>,
       <xref:str>]]
   - name: etag
     description: Etag of the entity
@@ -119,21 +149,21 @@ methods:
   examples:
   - "Adding an entity to a Table<!--[!code-python[Main](les\\async_samples\\sample_insert_delete_entities_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\167\\\\azure-data-tables-12.2.0\\\\samples\\\\async_samples\\\\sample_insert_delete_entities_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\\async_samples\\\\sample_insert_delete_entities_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   async with table_client:\n       try:\n           resp = await table_client.create_entity(entity=self.entity)\n\
     \       except ResourceExistsError:\n           print(\"Entity already exists!\"\
     )\n\n       await table_client.delete_entity(row_key=self.entity[\"RowKey\"],\
-    \ partition_key=self.entity[\"PartitionKey\"])\n       print(\"Successfully deleted!\"\
-    )\n\n   ````\n"
+    \ partition_key=self.entity[\"PartitionKey\"]) # type: ignore[call-overload]\n\
+    \       print(\"Successfully deleted!\")\n\n   ````\n"
 - uid: azure.data.tables.aio.TableClient.delete_table
   name: delete_table
   summary: 'Deletes the table under the current account. No error will be raised if
 
     the given table name is not found.'
-  signature: delete_table(**kwargs) -> None
+  signature: async delete_table(**kwargs) -> None
   return:
     description: None
     types:
@@ -144,18 +174,18 @@ methods:
   - "Deleting a table from the TableClient object.<!--[!code-python[Main](les\\async_samples\\\
     sample_create_delete_table_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   async with TableClient.from_connection_string(\n\
-    \       conn_str=self.connection_string, table_name=self.table_name\n   ) as table_client:\n\
-    \       await table_client.delete_table()\n       print(\"Deleted table {}!\"\
-    .format(self.table_name))\n\n   ````\n"
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_create_delete_table_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
+    \ TableClient.from_connection_string(\n       conn_str=self.connection_string,\
+    \ table_name=self.table_name\n   ) as table_client:\n       await table_client.delete_table()\n\
+    \       print(\"Deleted table {}!\".format(table_client.table_name))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableClient.from_connection_string
   name: from_connection_string
   summary: Create TableClient from a Connection string.
   signature: 'from_connection_string(conn_str: str, table_name: str, **kwargs) ->
-    azure.data.tables.aio._table_client_async.TableClient'
+    TableClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Tables account.
@@ -167,8 +197,6 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  - name: table_name
-    isRequired: true
   return:
     description: A table client.
     types:
@@ -177,17 +205,18 @@ methods:
   - "Creating the TableClient from a connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_create_client_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_create_client_async.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.data.tables.aio import\
-    \ TableClient\n\n   async with TableClient.from_connection_string(\n       conn_str=self.connection_string,\
-    \ table_name=\"tableName\"\n   ) as table_client:\n       print(\"Table name:\
-    \ {}\".format(table_client.table_name))\n\n   ````\n"
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_create_client_async.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.data.tables.aio\
+    \ import TableClient\n\n   async with TableClient.from_connection_string(\n  \
+    \     conn_str=self.connection_string, table_name=\"tableName\"\n   ) as table_client:\n\
+    \       print(\"Table name: {}\".format(table_client.table_name))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableClient.from_table_url
   name: from_table_url
   summary: A client to interact with a specific Table.
-  signature: 'from_table_url(table_url: str, **kwargs) -> azure.data.tables.aio._table_client_async.TableClient'
+  signature: 'from_table_url(table_url: str, *, credential: AzureNamedKeyCredential
+    | AzureSasCredential | None = None, **kwargs) -> TableClient'
   parameters:
   - name: table_url
     description: The full URI to the table, including SAS token if used.
@@ -211,7 +240,7 @@ methods:
 - uid: azure.data.tables.aio.TableClient.get_entity
   name: get_entity
   summary: Get a single entity in a table.
-  signature: 'get_entity(partition_key: str, row_key: str, **kwargs) -> azure.data.tables._entity.TableEntity'
+  signature: 'async get_entity(partition_key: str, row_key: str, **kwargs) -> TableEntity'
   parameters:
   - name: partition_key
     description: The partition key of the entity.
@@ -227,7 +256,7 @@ methods:
     description: Specify desired properties of an entity to return.
     types:
     - <xref:str>
-    - <xref:List>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   return:
     description: Dictionary mapping operation metadata returned from the service
     types:
@@ -238,20 +267,22 @@ methods:
   - "Getting an entity from PartitionKey and RowKey<!--[!code-python[Main](les\\async_samples\\\
     sample_update_upsert_merge_entities_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_update_upsert_merge_entities_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Get Entity\
-    \ by partition and row key\n   got_entity = await table.get_entity(\n       partition_key=my_entity[\"\
-    PartitionKey\"], row_key=my_entity[\"RowKey\"]\n   )\n   print(\"Received entity:\
-    \ {}\".format(got_entity))\n\n   ````\n"
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_update_upsert_merge_entities_async.py\",\
+    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Get Entity by partition and row key\n   got_entity = await table.get_entity(\n\
+    \       partition_key=my_entity[\"PartitionKey\"], row_key=my_entity[\"RowKey\"\
+    ] # type: ignore[arg-type]\n   )\n   print(\"Received entity: {}\".format(got_entity))\n\
+    \n   ````\n"
 - uid: azure.data.tables.aio.TableClient.get_table_access_policy
   name: get_table_access_policy
   summary: 'Retrieves details about any stored access policies specified on the table
     that may be
 
     used with Shared Access Signatures.'
-  signature: get_table_access_policy(**kwargs) -> Mapping[str, Optional[azure.data.tables._models.TableAccessPolicy]]
+  signature: async get_table_access_policy(**kwargs) -> Mapping[str, TableAccessPolicy
+    | None]
   return:
     description: Dictionary of SignedIdentifiers
     types:
@@ -261,7 +292,7 @@ methods:
 - uid: azure.data.tables.aio.TableClient.list_entities
   name: list_entities
   summary: Lists entities in a table.
-  signature: list_entities(**kwargs) -> azure.core.async_paging.AsyncItemPaged[azure.data.tables._entity.TableEntity]
+  signature: list_entities(**kwargs) -> AsyncItemPaged[TableEntity]
   parameters:
   - name: results_per_page
     description: Number of entities returned per service request.
@@ -271,7 +302,7 @@ methods:
     description: Specify desired properties of an entity to return.
     types:
     - <xref:str>
-    - <xref:List>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   return:
     description: AsyncItemPaged[<xref:azure.data.tables.TableEntity>]
     types:
@@ -282,19 +313,21 @@ methods:
   - "Querying entities from a TableClient<!--[!code-python[Main](les\\async_samples\\\
     sample_update_upsert_merge_entities_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_update_upsert_merge_entities_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Query the\
-    \ entities in the table\n   i = 0\n   async for entity in table.list_entities():\n\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_update_upsert_merge_entities_async.py\",\
+    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Query the entities in the table\n   i = 0\n   async for entity in table.list_entities():\n\
     \       print(\"Entity #{}: {}\".format(i, entity))\n       i += 1\n\n   ````\n"
 - uid: azure.data.tables.aio.TableClient.query_entities
   name: query_entities
   summary: Lists entities in a table.
-  signature: 'query_entities(query_filter: str, **kwargs) -> azure.core.async_paging.AsyncItemPaged[azure.data.tables._entity.TableEntity]'
+  signature: 'query_entities(query_filter: str, **kwargs) -> AsyncItemPaged[TableEntity]'
   parameters:
   - name: query_filter
-    description: Specify a filter to return certain entities
+    description: 'Specify a filter to return certain entities.  For more information
+
+      on filter formatting, see the [samples documentation](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples#writing-filters).'
     isRequired: true
     types:
     - <xref:str>
@@ -306,11 +339,11 @@ methods:
     description: Specify desired properties of an entity to return.
     types:
     - <xref:str>
-    - <xref:List>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   - name: parameters
     description: Dictionary for formatting query with additional, user defined parameters
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: AsyncItemPaged[<xref:azure.data.tables.TableEntity>]
     types:
@@ -321,28 +354,50 @@ methods:
   - "Querying entities from a TableClient<!--[!code-python[Main](les\\async_samples\\\
     sample_query_table_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\\async_samples\\\
-    \\sample_query_table_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   async with table_client:\n       try:\n     \
-    \      parameters = {u\"name\": u\"marker\"}\n           name_filter = u\"Name\
-    \ eq @name\"\n           queried_entities = table_client.query_entities(\n   \
-    \            query_filter=name_filter, select=[u\"Brand\", u\"Color\"], parameters=parameters\n\
+    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\\samples\\\
+    \\async_samples\\\\sample_query_table_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   async with TableClient.from_connection_string(self.connection_string,\
+    \ self.table_name) as table_client:\n       try:\n           print(\"Basic sample:\"\
+    )\n           print(\"Entities with name: marker\")\n           parameters = {u\"\
+    name\": u\"marker\"}\n           name_filter = u\"Name eq @name\"\n          \
+    \ queried_entities = table_client.query_entities(\n               query_filter=name_filter,\
+    \ select=[u\"Brand\", u\"Color\"], parameters=parameters\n           )\n     \
+    \      async for entity_chosen in queried_entities:\n               print(entity_chosen)\n\
+    \n           print(\"Sample for querying entities withtout metadata:\")\n    \
+    \       print(\"Entities with name: marker\")\n           parameters = {u\"name\"\
+    : u\"marker\"}\n           name_filter = u\"Name eq @name\"\n           headers\
+    \ = {\"Accept\" : \"application/json;odata=nometadata\"}\n           queried_entities\
+    \ = table_client.query_entities(\n               query_filter=name_filter, select=[u\"\
+    Brand\", u\"Color\"], parameters=parameters, headers=headers\n           )\n \
+    \          async for entity_chosen in queried_entities:\n               print(entity_chosen)\n\
+    \n           print(\"Sample for querying entities with multiple params:\")\n \
+    \          print(\"Entities with name: marker and brand: Crayola\")\n        \
+    \   parameters = {u\"name\": u\"marker\", u\"brand\": u\"Crayola\"}\n        \
+    \   name_filter = u\"Name eq @name and Brand eq @brand\"\n           queried_entities\
+    \ = table_client.query_entities(\n               query_filter=name_filter, select=[u\"\
+    Brand\", u\"Color\"], parameters=parameters\n           )\n           async for\
+    \ entity_chosen in queried_entities:\n               print(entity_chosen)\n\n\
+    \           print(\"Sample for querying entities' values:\")\n           print(\"\
+    Entities with 25 < Value < 50\")\n           parameters = {u\"lower\": 25, u\"\
+    upper\": 50} # type: ignore\n           name_filter = u\"Value gt @lower and Value\
+    \ lt @upper\"\n           queried_entities = table_client.query_entities(\n  \
+    \             query_filter=name_filter, select=[u\"Value\"], parameters=parameters\n\
     \           )\n           async for entity_chosen in queried_entities:\n     \
-    \          print(entity_chosen)\n\n       except HttpResponseError as e:\n   \
-    \        pass\n\n   ````\n"
+    \          print(entity_chosen)\n       except HttpResponseError as e:\n     \
+    \      raise\n\n   ````\n"
 - uid: azure.data.tables.aio.TableClient.set_table_access_policy
   name: set_table_access_policy
   summary: Sets stored access policies for the table that may be used with Shared
     Access Signatures.
-  signature: 'set_table_access_policy(signed_identifiers: Mapping[str, Optional[azure.data.tables._models.TableAccessPolicy]],
-    **kwargs) -> None'
+  signature: 'async set_table_access_policy(signed_identifiers: Mapping[str, TableAccessPolicy
+    | None], **kwargs) -> None'
   parameters:
   - name: signed_identifiers
     description: Access policies to set for the table
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:azure.data.tables.TableAccessPolicy>]
+    - Dict[str, <xref:azure.data.tables.TableAccessPolicy>]
   return:
     description: None
     types:
@@ -355,13 +410,11 @@ methods:
 
 
     If any one of these operations fails, the entire transaction will be rejected.'
-  signature: 'submit_transaction(operations: Union[Iterable[Union[Tuple[Union[azure.data.tables._models.TransactionOperation,
-    str], Union[azure.data.tables._entity.TableEntity, Mapping[str, Any]]], Tuple[Union[azure.data.tables._models.TransactionOperation,
-    str], Union[azure.data.tables._entity.TableEntity, Mapping[str, Any]], Mapping[str,
-    Any]]]], AsyncIterable[Union[Tuple[Union[azure.data.tables._models.TransactionOperation,
-    str], Union[azure.data.tables._entity.TableEntity, Mapping[str, Any]]], Tuple[Union[azure.data.tables._models.TransactionOperation,
-    str], Union[azure.data.tables._entity.TableEntity, Mapping[str, Any]], Mapping[str,
-    Any]]]]], **kwargs) -> List[Mapping[str, Any]]'
+  signature: 'async submit_transaction(operations: Iterable[Tuple[TransactionOperation
+    | str, TableEntity | Mapping[str, Any]] | Tuple[TransactionOperation | str, TableEntity
+    | Mapping[str, Any], Mapping[str, Any]]] | AsyncIterable[Tuple[TransactionOperation
+    | str, TableEntity | Mapping[str, Any]] | Tuple[TransactionOperation | str, TableEntity
+    | Mapping[str, Any], Mapping[str, Any]]], **kwargs) -> List[Mapping[str, Any]]'
   parameters:
   - name: operations
     description: "The list of operations to commit in a transaction. This should be\
@@ -374,24 +427,23 @@ methods:
       \ 'A', 'RowKey': 'B'}, {'mode': UpdateMode.REPLACE})\n   ````"
     isRequired: true
     types:
-    - <xref:Union>[<xref:Iterable>[<xref:Tuple>[<xref:str>, <xref:Entity>, <xref:Mapping>[<xref:str>,
-      <xref:Any>]]]<xref:,AsyncIterable>[<xref:Tuple>[<xref:str>, <xref:Entity>, <xref:Mapping>[<xref:str>,
-      <xref:Any>]]]]
+    - <xref:typing.Union>[<xref:typing.Iterable>[<xref:typing.Tuple>[<xref:str>, <xref:Entity>,
+      <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]]],<xref:typing.AsyncIterable>[<xref:typing.Tuple>[<xref:str>,
+      <xref:Entity>, <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]]]]
   return:
     description: A list of mappings with response metadata for each operation in the
       transaction.
     types:
     - <xref:List>[<xref:Mapping>[<xref:str>, <xref:Any>]]
   exceptions:
-  - description: ''
-    type: azure.data.tables.TableTransactionError
+  - type: azure.data.tables.TableTransactionError
   examples:
   - "Using transactions to send multiple requests at once<!--[!code-python[Main](les\\\
     async_samples\\sample_batching_async.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_batching_async.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_batching_async.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.data.tables.aio import\
     \ TableClient\n   from azure.data.tables import TableTransactionError\n   from\
     \ azure.core.exceptions import ResourceExistsError\n\n   self.table_client = TableClient.from_connection_string(\n\
@@ -401,22 +453,20 @@ methods:
     )\n\n   await self._create_entities()\n\n   operations = [\n       (\"create\"\
     , self.entity1),\n       (\"delete\", self.entity2),\n       (\"upsert\", self.entity3),\n\
     \       (\"update\", self.entity4, {\"mode\": \"replace\"}),\n   ]\n   try:\n\
-    \       await self.table_client.submit_transaction(operations)\n   except TableTransactionError\
-    \ as e:\n       print(\"There was an error with the transaction operation\")\n\
-    \       print(\"Error: {}\".format(e))\n\n   ````\n"
+    \       await self.table_client.submit_transaction(operations) # type: ignore[arg-type]\n\
+    \   except TableTransactionError as e:\n       print(\"There was an error with\
+    \ the transaction operation\")\n       print(\"Error: {}\".format(e))\n\n   ````\n"
 - uid: azure.data.tables.aio.TableClient.update_entity
   name: update_entity
   summary: Update entity in a table.
-  signature: 'update_entity(entity: Union[azure.data.tables._entity.TableEntity, Mapping[str,
-    Any]], mode: Union[str, azure.data.tables._models.UpdateMode] = <UpdateMode.MERGE:
-    ''merge''>, **kwargs) -> Mapping[str, Any]'
+  signature: 'async update_entity(entity: TableEntity | Mapping[str, Any], mode: str
+    | UpdateMode = UpdateMode.MERGE, **kwargs) -> Mapping[str, Any]'
   parameters:
   - name: entity
     description: The properties for the table entity.
     isRequired: true
     types:
     - <xref:azure.data.tables.TableEntity>
-    - <xref:Dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
@@ -444,11 +494,11 @@ methods:
   - "Querying entities from a TableClient<!--[!code-python[Main](les\\async_samples\\\
     sample_update_upsert_merge_entities_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_update_upsert_merge_entities_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Update the\
-    \ entity\n   created[\"text\"] = \"NewMarker\"\n   await table.update_entity(mode=UpdateMode.REPLACE,\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_update_upsert_merge_entities_async.py\",\
+    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Update the entity\n   created[\"text\"] = \"NewMarker\"\n   await table.update_entity(mode=UpdateMode.REPLACE,\
     \ entity=created)\n\n   # Get the replaced entity\n   replaced = await table.get_entity(partition_key=created[\"\
     PartitionKey\"], row_key=created[\"RowKey\"])\n   print(\"Replaced entity: {}\"\
     .format(replaced))\n\n   # Merge the entity\n   replaced[\"color\"] = \"Blue\"\
@@ -459,16 +509,14 @@ methods:
 - uid: azure.data.tables.aio.TableClient.upsert_entity
   name: upsert_entity
   summary: Update/Merge or Insert entity into table.
-  signature: 'upsert_entity(entity: Union[azure.data.tables._entity.TableEntity, Mapping[str,
-    Any]], mode: Union[str, azure.data.tables._models.UpdateMode] = <UpdateMode.MERGE:
-    ''merge''>, **kwargs) -> Mapping[str, Any]'
+  signature: 'async upsert_entity(entity: TableEntity | Mapping[str, Any], mode: str
+    | UpdateMode = UpdateMode.MERGE, **kwargs) -> Mapping[str, Any]'
   parameters:
   - name: entity
     description: The properties for the table entity.
     isRequired: true
     types:
     - <xref:azure.data.tables.TableEntity>
-    - <xref:Dict>[<xref:str,str>]
   - name: mode
     description: Merge or Replace entity
     isRequired: true
@@ -484,12 +532,24 @@ methods:
   - "Update/Merge or Insert an entity into a table<!--[!code-python[Main](les\\async_samples\\\
     sample_update_upsert_merge_entities_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\167\\\\azure-data-tables-12.2.0\\\\samples\\\
-    \\async_samples\\\\sample_update_upsert_merge_entities_async.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   # Try Replace\
-    \ and insert on fail\n   insert_entity = await table.upsert_entity(mode=UpdateMode.REPLACE,\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\39\\\\azure-data-tables-12.4.3\\\
+    \\samples\\\\async_samples\\\\sample_update_upsert_merge_entities_async.py\",\
+    \ \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Try Replace and insert on fail\n   insert_entity = await table.upsert_entity(mode=UpdateMode.REPLACE,\
     \ entity=entity1)\n   print(\"Inserted entity: {}\".format(insert_entity))\n\n\
     \   created[\"text\"] = \"NewMarker\"\n   merged_entity = await table.upsert_entity(mode=UpdateMode.MERGE,\
     \ entity=entity)\n   print(\"Merged entity: {}\".format(merged_entity))\n\n  \
     \ ````\n"
+attributes:
+- uid: azure.data.tables.aio.TableClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.data.tables.aio.TableClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.data.tables.aio.location_mode>.'

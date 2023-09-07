@@ -7,7 +7,7 @@ inheritances:
 - builtins.object
 summary: A client to interact with a specific account change feed.
 constructor:
-  syntax: 'ChangeFeedClient(account_url: str, credential: Optional[Any] = None, **kwargs:
+  syntax: 'ChangeFeedClient(account_url: str, credential: Any | None = None, **kwargs:
     Any)'
   parameters:
   - name: account_url
@@ -30,26 +30,36 @@ constructor:
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
       will raise a ValueError.'
-    isRequired: true
+    defaultValue: None
   - name: secondary_hostname
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
-examples:
-- "Creating the ChangeFeedClient from a URL to a public blob (no auth needed).<!--[!code-python[Main](les\\\
-  change_feed_samples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
-  \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\
-  \\s\\\\dist_temp\\\\2\\\\azure-storage-blob-changefeed-12.0.0b3\\\\samples\\\\change_feed_samples.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   cf_client =\
-  \ ChangeFeedClient(\"https://{}.blob.core.windows.net\".format(self.ACCOUNT_NAME),\n\
-  \                                credential=self.ACCOUNT_KEY)\n\n   ````\n"
+  - name: max_single_get_size
+    description: 'The maximum size for a changefeed blob to be downloaded in a single
+      call,
+
+      the exceeded part will be downloaded in chunks.'
+    types:
+    - <xref:int>
+  - name: max_chunk_get_size
+    description: The maximum chunk size used for downloading a changefeed blob.
+    types:
+    - <xref:int>
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.storage.blob.changefeed.ChangeFeedClient.from_connection_string
   name: from_connection_string
   summary: Create ChangeFeedClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Optional[Any] = None,
-    **kwargs: Any) -> azure.storage.blob.changefeed._change_feed_client.ChangeFeedClient'
+  signature: 'from_connection_string(conn_str: str, credential: Any | None = None,
+    **kwargs: Any) -> ChangeFeedClient'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -71,8 +81,6 @@ methods:
 
       Credentials provided here will take precedence over those in the connection
       string.'
-    isRequired: true
-  - name: credential
     defaultValue: None
   return:
     description: A change feed client.
@@ -85,7 +93,7 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: 'list_changes(**kwargs: Optional[datetime]) -> ItemPaged[Dict]'
+  signature: 'list_changes(**kwargs: Any) -> ItemPaged[Dict]'
   parameters:
   - name: start_time
     description: Filters the results to return only events which happened after this
@@ -106,27 +114,3 @@ methods:
     description: An iterable (auto-paging) response of events whose type is dictionary.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:dict>]
-  examples:
-  - "List all change feed events.<!--[!code-python[Main](les\\change_feed_samples.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\2\\\\azure-storage-blob-changefeed-12.0.0b3\\\\samples\\\\change_feed_samples.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   cf_client = ChangeFeedClient(\"https://{}.blob.core.windows.net\".format(self.ACCOUNT_NAME),\n\
-    \                                credential=self.ACCOUNT_KEY)\n   change_feed\
-    \ = cf_client.list_changes()\n\n   # print all events\n   for event in change_feed:\n\
-    \       print(event)\n\n   ````\n\nList change feed events by page.<!--[!code-python[Main](les\\\
-    change_feed_samples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
-    \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\1\\\\s\\\\dist_temp\\\\2\\\\azure-storage-blob-changefeed-12.0.0b3\\\\samples\\\
-    \\change_feed_samples.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   # [START create_change_feed_client]\n   cf_client\
-    \ = ChangeFeedClient(\"https://{}.blob.core.windows.net\".format(self.ACCOUNT_NAME),\n\
-    \                                credential=self.ACCOUNT_KEY)\n   # [END create_change_feed_client]\n\
-    \n   change_feed = cf_client.list_changes(results_per_page=10).by_page()\n\n \
-    \  # print first page of events\n   change_feed_page1 = next(change_feed)\n  \
-    \ for event in change_feed_page1:\n       print(event)\n\n   # print second page\
-    \ of events\n   change_feed_page2 = next(change_feed)\n   for event in change_feed_page2:\n\
-    \       print(event)\n\n   ````\n"

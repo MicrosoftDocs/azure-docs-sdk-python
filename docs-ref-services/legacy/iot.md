@@ -8,10 +8,9 @@ manager: douge
 
 ms.date: 07/10/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: iot-hub
 ---
 
 # Azure IoT Hub libraries for python
@@ -81,4 +80,4 @@ iothub = async_iot_hub.result() # Blocking wait for creation
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/iot/management)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-iothub-readme)

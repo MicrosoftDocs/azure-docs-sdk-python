@@ -1,19 +1,16 @@
 ---
 title: Azure Remote Rendering client library for Python
 keywords: Azure, python, SDK, API, azure-mixedreality-remoterendering, remoterendering
-author: maggiepint
-ms.author: magpint
-ms.date: 11/15/2021
+author: FlorianBorn71
+ms.author: flborn
+ms.date: 07/07/2023
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: remoterendering
 ---
-
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Remote Rendering client library for Python - Version 1.0.0b1 
+# Azure Remote Rendering client library for Python - version 1.0.0b2 
 
 
 Azure Remote Rendering (ARR) is a service that enables you to render high-quality, interactive 3D content in the cloud and stream it in real time to devices, such as the HoloLens 2.
@@ -21,26 +18,26 @@ Azure Remote Rendering (ARR) is a service that enables you to render high-qualit
 This SDK offers functionality to convert assets to the format expected by the runtime, and also to manage
 the lifetime of remote rendering sessions.
 
-This SDK supports version "2021-01-01" of the [Remote Rendering REST API](https://docs.microsoft.com/rest/api/mixedreality/2021-01-01/remote-rendering).
+This SDK supports version "2021-01-01" of the [Remote Rendering REST API](/rest/api/mixedreality/2021-01-01/remote-rendering).
 
 > NOTE: Once a session is running, a client application will connect to it using one of the "runtime SDKs".
 > These SDKs are designed to best support the needs of an interactive application doing 3d rendering.
-> They are available in ([.net](https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering)
-> or ([C++](https://docs.microsoft.com/cpp/api/remote-rendering/)).
+> They are available in ([.net](/dotnet/api/microsoft.azure.remoterendering)
+> or ([C++](/cpp/api/remote-rendering/)).
 
-[Product documentation](https://docs.microsoft.com/azure/remote-rendering/)
+[Product documentation](/azure/remote-rendering/)
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Getting started
 
 ## Prerequisites
 
-You will need an [Azure subscription](https://azure.microsoft.com/free/dotnet/) and an [Azure Remote Rendering account](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account) to use this package.
+You will need an [Azure subscription](https://azure.microsoft.com/free/dotnet/) and an [Azure Remote Rendering account](/azure/remote-rendering/how-tos/create-an-account) to use this package.
 
-In order to follow this tutorial it is highly recommended that you [link your storage account with your ARR account](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
+In order to follow this tutorial it is highly recommended that you [link your storage account with your ARR account](/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
 
 ## Install the package
 
@@ -62,13 +59,13 @@ There are several different forms of authentication:
   - If you're building an enterprise application and your company is using Azure AD as its identity system, you can use user-based Azure AD authentication in your app. You then grant access to your Azure Remote Rendering accounts by using your existing Azure AD security groups. You can also grant access directly to users in your organization.
   - Otherwise, we recommend that you obtain Azure AD tokens from a web service that supports your app. We recommend this method for production applications because it allows you to avoid embedding the credentials for access in your client application.
 
-See [here](https://docs.microsoft.com/azure/remote-rendering/how-tos/authentication) for detailed instructions and information.
+See [here](/azure/remote-rendering/how-tos/authentication) for detailed instructions and information.
 
 In all the following examples, the client is constructed with a `endpoint` parameter.
 The available endpoints correspond to regions, and the choice of endpoint determines the region in which the service performs its work.
 An example is `https://remoterendering.eastus2.mixedreality.azure.com`.
 
-A full list of endpoints in supported regions can be found in the [Azure Remote Rendering region list](https://docs.microsoft.com/azure/remote-rendering/reference/regions).
+A full list of endpoints in supported regions can be found in the [Azure Remote Rendering region list](/azure/remote-rendering/reference/regions).
 
 > NOTE: For converting assets, it is preferable to pick a region close to the storage containing the assets.
 
@@ -83,7 +80,7 @@ Use the `AzureKeyCredential` object to use an account identifier and account key
 from azure.core.credentials import AzureKeyCredential
 from azure.mixedreality.remoterendering import RemoteRenderingClient
 
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 account_key = "<ACCOUNT_KEY>"
 arr_endpoint = "<ARR_ENDPOINT>"
@@ -100,13 +97,13 @@ client = RemoteRenderingClient(
 ### Authenticating with a static access token
 
 You can pass a Mixed Reality access token as an `AccessToken` previously retrieved from the
-[Mixed Reality STS service](https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b1/sdk/mixedreality/azure-mixedreality-authentication)
+[Mixed Reality STS service](https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b2/sdk/mixedreality/azure-mixedreality-authentication)
 to be used with a Mixed Reality client library:
 
 ```python
 from azure.mixedreality.authentication import MixedRealityStsClient
 from azure.mixedreality.remoterendering import RemoteRenderingClient
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 account_key = "<ACCOUNT_KEY>"
 
@@ -138,7 +135,7 @@ by assigning the appropriate role for your Mixed Reality service to your service
 from azure.identity import DefaultAzureCredential
 from azure.mixedreality.remoterendering import RemoteRenderingClient
 
-account_id = "<ACCOUNTD ID>"
+account_id = "<ACCOUNT_ID>"
 account_domain = "<ACCOUNT_DOMAIN>"
 default_credential = DefaultAzureCredential()
 
@@ -268,7 +265,7 @@ The following snippet describes how to request that a new rendering session be s
 
 ### Extend the lease time of a session
 
-If a session is approaching its maximum lease time, but you want to keep it alive, you will need to make a call to 
+If a session is approaching its maximum lease time, but you want to keep it alive, you will need to make a call to
 increase its maximum lease time.
 This example shows how to query the current properties and then extend the lease if it will expire soon.
 
@@ -314,7 +311,7 @@ recommended to stop sessions which are not needed anymore.
 
 ## Troubleshooting
 
-For general troubleshooting advice concerning Azure Remote Rendering, see [the Troubleshoot page](https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot) for remote rendering at docs.microsoft.com.
+For general troubleshooting advice concerning Azure Remote Rendering, see [the Troubleshoot page](/azure/remote-rendering/resources/troubleshoot) for remote rendering at docs.microsoft.com.
 
 The client methods and waiting for poller results will throw exceptions if the request failed.
 
@@ -350,7 +347,7 @@ The Remote Rendering client library will raise exceptions defined in [Azure Core
 
 ### Async APIs
 
-This library also includes a complete async API supported on Python 3.5+. To use it, you must
+This library also includes a complete async API supported on Python 3.7+. To use it, you must
 first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/). Async clients
 are found under the `azure.mixedreality.remoterendering.aio` namespace.
 
@@ -358,10 +355,10 @@ are found under the `azure.mixedreality.remoterendering.aio` namespace.
 
 ## Next steps
 
-- Read the [Product documentation](https://docs.microsoft.com/azure/remote-rendering/)
+- Read the [Product documentation](/azure/remote-rendering/)
 - Learn about the runtime SDKs:
-  - .NET: https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering
-  - C++: https://docs.microsoft.com/cpp/api/remote-rendering/
+  - .NET: /dotnet/api/microsoft.azure.remoterendering
+  - C++: /cpp/api/remote-rendering/
 
 ## Contributing
 
@@ -378,7 +375,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 If you'd like to contribute to this library, please read the
-[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-mixedreality-remoterendering_1.0.0b1/CONTRIBUTING.md) to learn more about how
+[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-mixedreality-remoterendering_1.0.0b2/CONTRIBUTING.md) to learn more about how
 to build and test the code.
 
 <!-- LINKS -->
@@ -388,7 +385,8 @@ to build and test the code.
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_portal]: https://portal.azure.com
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b2/sdk/identity/azure-identity
 
 [pip]: https://pypi.org/project/pip/
-[sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
+[sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
+

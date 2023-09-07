@@ -8,10 +8,9 @@ manager: mbaldwin
 
 ms.date: 02/21/2018
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: scheduler
 ---
 
 # Azure Scheduler libraries for python

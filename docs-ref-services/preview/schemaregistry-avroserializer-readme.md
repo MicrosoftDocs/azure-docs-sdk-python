@@ -5,13 +5,12 @@ author: maggiepint
 ms.author: magpint
 ms.date: 11/11/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: schemaregistry
+ms.service: event-hubs
 ---
 
-# Azure Schema Registry Avro Serializer client library for Python - Version 1.0.0b4 
+# Azure Schema Registry Avro Serializer client library for Python - version 1.0.0b4 
 
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,

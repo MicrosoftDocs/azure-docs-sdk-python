@@ -5,7 +5,7 @@ fullName: azure.schemaregistry.encoder.avroencoder.AvroEncoder
 module: azure.schemaregistry.encoder.avroencoder
 inheritances:
 - builtins.object
-summary: 'AvroEncoder provides the ability to encode and decode data according
+summary: 'AvroEncoder provides the ability to encode and decode content according
 
   to the given avro schema. It would automatically register, get and cache the schema.'
 constructor:
@@ -21,7 +21,7 @@ constructor:
     description: Required. Schema group under which schema should be registered.
     types:
     - <xref:str>
-  - name: auto_register_schemas
+  - name: auto_register
     description: 'When true, register new schemas passed to encode.
 
       Otherwise, and by default, encode will fail if the schema has not been pre-registered
@@ -37,84 +37,81 @@ methods:
   signature: close() -> None
 - uid: azure.schemaregistry.encoder.avroencoder.AvroEncoder.decode
   name: decode
-  summary: "Decode bytes data using schema ID in the content type field. *message*\
-    \ must be one of the following:\n   1. A Subtype of the MessageType protocol.\
-    \ \n\n   2. A dict {\"data\": ..., \"content_type\": ...}, where \"data\" is bytes\
-    \ and \"content_type\" is string. \n\n   3. If using to decode data that was serialized\
-    \ with the AvroSerializer, a dict\n\n         {\"data\": ..., \"content_type\"\
-    : None}, where \"data\" is bytes and \"content_type\" is None.\n\nData must follow\
+  summary: "Decode bytes content using schema ID in the content type field. *message*\
+    \ must be one of the following:\n   1. An object of subtype of the MessageType\
+    \ protocol. \n\n   2. A dict {\"content\": ..., \"content_type\": ...}, where\
+    \ \"content\" is bytes and \"content_type\" is string. \n\nContent must follow\
     \ format of associated Avro RecordSchema:\n[https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)"
-  signature: 'decode(message: Union[azure.schemaregistry.encoder.avroencoder._message_protocol.MessageType,
-    azure.schemaregistry.encoder.avroencoder._message_protocol.MessageMetadataDict],
-    *, readers_schema: Optional[str] = None, **kwargs) -> Dict[str, Any]'
+  signature: 'decode(message: MessageContent | MessageType, *, readers_schema: str
+    | None = None, request_options: Dict[str, Any] = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: message
-    description: 'The message object which holds the data to be decoded and content
+    description: 'The message object which holds the content to be decoded and content
       type
 
       containing the schema ID.'
     isRequired: true
     types:
     - <xref:azure.schemaregistry.encoder.avroencoder.MessageType>
-    - <xref:azure.schemaregistry.encoder.avroencoder.MessageMetadataDict>
+    - <xref:azure.schemaregistry.encoder.avroencoder.MessageContent>
   - name: readers_schema
     description: An optional reader's schema as defined by the Apache Avro specification.
     types:
     - <xref:str>
     - <xref:None>
+  - name: request_options
+    description: The keyword arguments for http requests to be passed to the client.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   return:
     types:
     - <xref:Dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: Indicates an issue with parsing schema.
-    type: azure.schemaregistry.encoder.avroencoder.exceptions.SchemaParseError
-  - description: Indicates an issue with decoding value.
-    type: azure.schemaregistry.encoder.avroencoder.exceptions.SchemaDecodeError
+  - type: azure.schemaregistry.encoder.avroencoder.InvalidSchemaError
+    description: Indicates an issue with validating schemas.
+  - type: azure.schemaregistry.encoder.avroencoder.InvalidContentError
+    description: Indicates an issue with decoding content.
 - uid: azure.schemaregistry.encoder.avroencoder.AvroEncoder.encode
   name: encode
-  summary: "Encode data with the given schema. Create content type value, which consists\
-    \ of the Avro Mime Type string\n   and the schema ID corresponding to given schema.\
-    \ If provided with a message constructor callback,\n   pass encoded data and content\
-    \ type to create message object. If not provided, return the following dict:\n\
-    \   {\"data\": Avro encoded value, \"content_type\": Avro mime type string + schema\
-    \ ID}.\n\nIf *message_type* is set, then additional keyword arguments will be\
-    \ passed to the message callback\n   function provided.\n\nSchema must be an Avro\
-    \ RecordSchema:\n[https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)"
-  signature: 'encode(data: Mapping[str, Any], *, schema: str, message_type: Optional[Callable]
-    = None, **kwargs: Any) -> Union[azure.schemaregistry.encoder.avroencoder._message_protocol.MessageType,
-    azure.schemaregistry.encoder.avroencoder._message_protocol.MessageMetadataDict]'
+  summary: "Encode content with the given schema. Create content type value, which\
+    \ consists of the Avro Mime Type string\n   and the schema ID corresponding to\
+    \ given schema. If provided with a MessageType subtype, encoded content\n   and\
+    \ content type will be passed to create message object. If not provided, the following\
+    \ dict will be returned:\n   {\"content\": Avro encoded value, \"content_type\"\
+    : Avro mime type string + schema ID}.\n\nIf *message_type* is set, then additional\
+    \ keyword arguments will be passed to the message callback\n   function provided.\n\
+    \nSchema must be an Avro RecordSchema:\n[https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema](https://avro.apache.org/docs/1.10.0/gettingstartedpython.html#Defining+a+schema)"
+  signature: 'encode(content: Mapping[str, Any], *, schema: str, message_type: Type[MessageTypeT],
+    request_options: Dict[str, Any] | None = None, **kwargs: Any) -> MessageTypeT'
   parameters:
-  - name: data
-    description: The data to be encoded.
+  - name: content
+    description: The content to be encoded.
     isRequired: true
     types:
-    - <xref:Mapping>[<xref:str>, <xref:Any>]
+    - <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]
   - name: schema
-    description: Required. The schema used to encode the data.
+    description: Required. The schema used to encode the content.
     types:
     - <xref:str>
   - name: message_type
-    description: 'The callback function or message class to construct the message.
-      If message class,
+    description: 'The message class to construct the message. Must be a subtype of
+      the
 
-      it must be a subtype of the azure.schemaregistry.encoder.avroencoder.MessageType
-      protocol.
-
-      If callback function, it must have the following method signature:
-
-      *(data: bytes, content_type: str, **kwargs) -> MessageType*, where *data* and
-      *content_type*
-
-      are positional parameters.'
+      azure.schemaregistry.encoder.avroencoder.MessageType protocol.'
     types:
-    - <xref:Callable>
+    - <xref:typing.Type>[<xref:azure.schemaregistry.encoder.avroencoder.MessageType>]
     - <xref:None>
+  - name: request_options
+    description: The keyword arguments for http requests to be passed to the client.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   return:
     types:
     - <xref:azure.schemaregistry.encoder.avroencoder.MessageType>
-    - <xref:azure.schemaregistry.encoder.avroencoder.MessageMetadataDict>
+    - <xref:azure.schemaregistry.encoder.avroencoder.MessageContent>
   exceptions:
-  - description: Indicates an issue with parsing schema.
-    type: azure.schemaregistry.encoder.avroencoder.exceptions.SchemaParseError
-  - description: Indicates an issue with encoding data for provided schema.
-    type: azure.schemaregistry.encoder.avroencoder.exceptions.SchemaEncodeError
+  - type: azure.schemaregistry.encoder.avroencoder.InvalidSchemaError
+    description: Indicates an issue with validating schema.
+  - type: azure.schemaregistry.encoder.avroencoder.InvalidContentError
+    description: Indicates an issue with encoding content with schema.

@@ -5,15 +5,15 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 03/10/2021
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: communication
+ms.service: azure-communication-services
+ms.subservice: sms
 ---
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Communication SMS Package client library for Python - Version 1.0.0b6 
+# Azure Communication SMS Package client library for Python - version 1.0.0b6 
 
 
 This package contains a Python SDK for Azure Communication Services for SMS.

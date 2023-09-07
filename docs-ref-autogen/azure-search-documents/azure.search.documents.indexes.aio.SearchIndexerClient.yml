@@ -7,8 +7,8 @@ inheritances:
 - azure.search.documents._headers_mixin.HeadersMixin
 summary: A client to interact with Azure search service Indexers.
 constructor:
-  syntax: 'SearchIndexerClient(endpoint: str, credential: AzureKeyCredential, **kwargs:
-    Any)'
+  syntax: 'SearchIndexerClient(endpoint: str, credential: AzureKeyCredential | AsyncTokenCredential,
+    **kwargs)'
   parameters:
   - name: endpoint
     description: The URL endpoint of an Azure search service
@@ -20,8 +20,19 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
   - name: api_version
     description: The Search API version to use for requests.
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'sets the Audience to use for authentication with Azure Active Directory
+      (AAD). The
+
+      audience is not considered when using a shared key. If audience is not provided,
+      the public cloud audience
+
+      will be assumed.'
     types:
     - <xref:str>
 methods:
@@ -29,7 +40,7 @@ methods:
   name: close
   summary: Close the <xref:azure.search.documents.indexes.aio.SearchIndexerClient>
     session.
-  signature: close() -> None
+  signature: async close() -> None
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.create_data_source_connection
   name: create_data_source_connection
   summary: 'Creates a new data source connection.
@@ -42,14 +53,14 @@ methods:
     :return: The created SearchIndexerDataSourceConnection
 
     :rtype: ~azure.search.documents.indexes.models.SearchIndexerDataSourceConnection'
-  signature: 'create_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection,
+  signature: 'async create_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection,
     **kwargs: Any) -> SearchIndexerDataSourceConnection'
   examples:
   - "Create a SearchIndexerDataSourceConnection<!--[!code-python[Main](les\\async_samples\\\
     sample_data_source_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\118\\\\azure-search-documents-11.2.1\\\\\
-    samples\\\\async_samples\\\\sample_data_source_operations_async.py\", \"xml:space\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\205\\\\azure-search-documents-11.3.0\\\
+    \\samples\\\\async_samples\\\\sample_data_source_operations_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   container\
     \ = SearchIndexerDataContainer(name='searchcontainer')\n   data_source = SearchIndexerDataSourceConnection(\n\
@@ -61,7 +72,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.create_indexer
   name: create_indexer
   summary: Creates a new SearchIndexer.
-  signature: 'create_indexer(indexer: SearchIndexer, **kwargs: Any) -> SearchIndexer'
+  signature: 'async create_indexer(indexer: SearchIndexer, **kwargs: Any) -> SearchIndexer'
   parameters:
   - name: indexer
     description: The definition of the indexer to create.
@@ -84,17 +95,18 @@ methods:
 
     :keyword match_condition: The match condition to use upon the etag
 
-    :type match_condition: ~azure.core.MatchConditions
+    :paramtype match_condition: ~azure.core.MatchConditions
 
     :return: The created SearchIndexerDataSourceConnection
 
     :rtype: ~azure.search.documents.indexes.models.SearchIndexerDataSourceConnection'
-  signature: 'create_or_update_data_source_connection(data_source_connection: SearchIndexerDataSourceConnection,
-    **kwargs: Any) -> SearchIndexerDataSourceConnection'
+  signature: 'async create_or_update_data_source_connection(data_source_connection:
+    SearchIndexerDataSourceConnection, **kwargs: Any) -> SearchIndexerDataSourceConnection'
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.create_or_update_indexer
   name: create_or_update_indexer
   summary: Creates a new indexer or updates a indexer if it already exists.
-  signature: 'create_or_update_indexer(indexer: SearchIndexer, **kwargs: Any) -> SearchIndexer'
+  signature: 'async create_or_update_indexer(indexer: SearchIndexer, **kwargs: Any)
+    -> SearchIndexer'
   parameters:
   - name: indexer
     description: The definition of the indexer to create or update.
@@ -111,7 +123,7 @@ methods:
     an
 
     existing one.'
-  signature: 'create_or_update_skillset(skillset: SearchIndexerSkillset, **kwargs:
+  signature: 'async create_or_update_skillset(skillset: SearchIndexerSkillset, **kwargs:
     Any) -> SearchIndexerSkillset'
   parameters:
   - name: skillset
@@ -121,6 +133,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: The created or updated SearchIndexerSkillset
     types:
@@ -128,7 +142,8 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.create_skillset
   name: create_skillset
   summary: Create a new SearchIndexerSkillset in an Azure Search service
-  signature: 'create_skillset(skillset: SearchIndexerSkillset, **kwargs: Any) -> SearchIndexerSkillset'
+  signature: 'async create_skillset(skillset: SearchIndexerSkillset, **kwargs: Any)
+    -> SearchIndexerSkillset'
   parameters:
   - name: skillset
     description: The SearchIndexerSkillset object to create
@@ -146,7 +161,7 @@ methods:
     SearchIndexerDataSourceConnection model must be provided instead of the name.
 
     It is enough to provide the name of the data source connection to delete unconditionally'
-  signature: 'delete_data_source_connection(data_source_connection: Union[str, SearchIndexerDataSourceConnection],
+  signature: 'async delete_data_source_connection(data_source_connection: str | SearchIndexerDataSourceConnection,
     **kwargs: Any) -> None'
   parameters:
   - name: data_source_connection
@@ -157,6 +172,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnection>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: None
     types:
@@ -168,7 +185,7 @@ methods:
     must be provided instead of the name. It is enough to provide
 
     the name of the indexer to delete unconditionally.'
-  signature: 'delete_indexer(indexer: Union[str, SearchIndexer], **kwargs: Any) ->
+  signature: 'async delete_indexer(indexer: str | SearchIndexer, **kwargs: Any) ->
     None'
   parameters:
   - name: name
@@ -179,6 +196,8 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexer>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: None
     types:
@@ -192,10 +211,10 @@ methods:
     to provide
 
     the name of the skillset to delete unconditionally'
-  signature: 'delete_skillset(skillset: Union[str, SearchIndexerSkillset], **kwargs:
+  signature: 'async delete_skillset(skillset: str | SearchIndexerSkillset, **kwargs:
     Any) -> None'
   parameters:
-  - name: name
+  - name: skillset
     description: The SearchIndexerSkillset to delete
     isRequired: true
     types:
@@ -203,11 +222,22 @@ methods:
     - <xref:azure.search.documents.indexes.models.SearchIndexerSkillset>
   - name: match_condition
     description: The match condition to use upon the etag
+    types:
+    - <xref:azure.core.MatchConditions>
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_data_source_connection
   name: get_data_source_connection
   summary: Retrieves a data source connection definition.
-  signature: 'get_data_source_connection(name: str, **kwargs: Any) -> SearchIndexerDataSourceConnection'
+  signature: 'async get_data_source_connection(name: str, **kwargs: Any) -> SearchIndexerDataSourceConnection'
   parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   - name: name
     description: The name of the data source connection to retrieve.
     isRequired: true
@@ -219,7 +249,7 @@ methods:
     - '<xref:azure.search.documents.indexes.models.SearchIndexerDataSourceConnectionRetrieve
       a SearchIndexerDataSourceConnection<!-->[<xref:!code-python>[<xref:Main>](<xref:les\async_samples\sample_data_source_operations_async.py
       >)]<xref:--<!-- literal_block {"ids": >[], <xref:"classes": >[], <xref:"names":
-      >[], <xref:"dupnames": >[], <xref:"backrefs": >[], <xref:"source": "D:\\a\\1\\s\\dist_temp\\118\\azure-search-documents-11.2.1\\samples\\async_samples\\sample_data_source_operations_async.py">,
+      >[], <xref:"dupnames": >[], <xref:"backrefs": >[], <xref:"source": "D:\\a\\_work\\1\\s\\dist_temp\\205\\azure-search-documents-11.3.0\\samples\\async_samples\\sample_data_source_operations_async.py">,
       <xref:"xml:space": "preserve">, <xref:"force": false>, <xref:"language": "python">,
       <xref:"highlight_args": {"linenostart": 1}>, <xref:"linenos": false} --````python   result
       = await client.get_data_source_connection>(<xref:"async-sample-data-source-connection">)<xref:   print>(<xref:"Retrived
@@ -228,7 +258,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_data_source_connection_names
   name: get_data_source_connection_names
   summary: Lists all data source connection names available for a search service.
-  signature: 'get_data_source_connection_names(**kwargs: Any) -> Sequence[str]'
+  signature: 'async get_data_source_connection_names(**kwargs: Any) -> Sequence[str]'
   return:
     description: List of all the data source connection names.
     types:
@@ -236,7 +266,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_data_source_connections
   name: get_data_source_connections
   summary: Lists all data source connections available for a search service.
-  signature: 'get_data_source_connections(**kwargs: Any) -> Sequence[SearchIndexerDataSourceConnection]'
+  signature: 'async get_data_source_connections(**kwargs: Any) -> Sequence[SearchIndexerDataSourceConnection]'
   return:
     description: List of all the data source connections.
     types:
@@ -245,8 +275,8 @@ methods:
   - "List all SearchIndexerDataSourceConnections<!--[!code-python[Main](les\\async_samples\\\
     sample_data_source_operations_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\118\\\\azure-search-documents-11.2.1\\\\\
-    samples\\\\async_samples\\\\sample_data_source_operations_async.py\", \"xml:space\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\205\\\\azure-search-documents-11.3.0\\\
+    \\samples\\\\async_samples\\\\sample_data_source_operations_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   result = await\
     \ client.get_data_source_connections()\n   names = [x.name for x in result]\n\
@@ -255,7 +285,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexer
   name: get_indexer
   summary: Retrieves a indexer definition.
-  signature: 'get_indexer(name: str, **kwargs: Any) -> SearchIndexer'
+  signature: 'async get_indexer(name: str, **kwargs: Any) -> SearchIndexer'
   parameters:
   - name: name
     description: The name of the indexer to retrieve.
@@ -269,7 +299,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexer_names
   name: get_indexer_names
   summary: Lists all indexer names available for a search service.
-  signature: 'get_indexer_names(**kwargs: Any) -> Sequence[str]'
+  signature: 'async get_indexer_names(**kwargs: Any) -> Sequence[str]'
   return:
     description: List of all the SearchIndexer names.
     types:
@@ -277,7 +307,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexer_status
   name: get_indexer_status
   summary: Get the status of the indexer.
-  signature: 'get_indexer_status(name: str, **kwargs: Any) -> SearchIndexerStatus'
+  signature: 'async get_indexer_status(name: str, **kwargs: Any) -> SearchIndexerStatus'
   parameters:
   - name: name
     description: The name of the indexer to fetch the status.
@@ -291,7 +321,17 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_indexers
   name: get_indexers
   summary: Lists all indexers available for a search service.
-  signature: 'get_indexers(**kwargs: Any) -> Sequence[SearchIndexer]'
+  signature: 'async get_indexers(**kwargs: Any) -> Sequence[SearchIndexer]'
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of all the SearchIndexers.
     types:
@@ -299,7 +339,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_skillset
   name: get_skillset
   summary: Retrieve a named SearchIndexerSkillset in an Azure Search service
-  signature: 'get_skillset(name: str, **kwargs: Any) -> SearchIndexerSkillset'
+  signature: 'async get_skillset(name: str, **kwargs: Any) -> SearchIndexerSkillset'
   parameters:
   - name: name
     description: The name of the SearchIndexerSkillset to get
@@ -315,27 +355,37 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_skillset_names
   name: get_skillset_names
   summary: List the SearchIndexerSkillset names in an Azure Search service.
-  signature: 'get_skillset_names(**kwargs: Any) -> List[str]'
+  signature: 'async get_skillset_names(**kwargs: Any) -> List[str]'
   return:
     description: List of SearchIndexerSkillset names
     types:
     - <xref:list>[<xref:str>]
   exceptions:
-  - type: ~azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.get_skillsets
   name: get_skillsets
   summary: List the SearchIndexerSkillsets in an Azure Search service.
-  signature: 'get_skillsets(**kwargs: Any) -> List[SearchIndexerSkillset]'
+  signature: 'async get_skillsets(**kwargs: Any) -> List[SearchIndexerSkillset]'
+  parameters:
+  - name: select
+    description: 'Selects which top-level properties of the skillsets to retrieve.
+      Specified as a
+
+      list of JSON property names, or ''*'' for all properties. The default is all
+
+      properties.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: List of SearchIndexerSkillsets
     types:
     - <xref:list>[<xref:azure.search.documents.indexes.models.SearchIndexerSkillset>]
   exceptions:
-  - type: ~azure.core.exceptions.HttpResponseError
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.reset_indexer
   name: reset_indexer
   summary: Resets the change tracking state associated with an indexer.
-  signature: 'reset_indexer(name: str, **kwargs: Any) -> None'
+  signature: 'async reset_indexer(name: str, **kwargs: Any) -> None'
   parameters:
   - name: name
     description: The name of the indexer to reset.
@@ -349,7 +399,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexerClient.run_indexer
   name: run_indexer
   summary: Run an indexer.
-  signature: 'run_indexer(name: str, **kwargs: Any) -> None'
+  signature: 'async run_indexer(name: str, **kwargs: Any) -> None'
   parameters:
   - name: name
     description: The name of the indexer to run.

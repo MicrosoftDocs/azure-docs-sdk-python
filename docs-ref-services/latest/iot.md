@@ -1,19 +1,13 @@
 ---
-title: Azure IoT Hub libraries for python
-description: Reference for Azure IoT Hub libraries for python
-keywords: Azure, python, SDK, API, IoT Hub
-author: sptramer
-ms.author: sttramer
-manager: douge
-
-ms.date: 07/10/2017
+title: Azure IoT SDK for Python
+description: Reference for Azure IoT SDK for Python
+author: lmazuel
+ms.author: lmazuel
+ms.data: 09/06/2023
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: iot
 ---
-
 # Azure IoT Hub libraries for python
 
 ## [Management API](/python/api/overview/azure/iot/management)
@@ -52,7 +46,7 @@ iothub_client = IotHubClient(
 
 ## Create an IoTHub
 ```python
-async_iot_hub = iothub_client.iot_hub_resource.create_or_update(
+async_iot_hub = iothub_client.iot_hub_resource.begin_create_or_update(
     'MyResourceGroup',
     'MyIoTHubAccount',
     {
@@ -81,4 +75,4 @@ iothub = async_iot_hub.result() # Blocking wait for creation
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/iot/management)
+> [Explore the Management APIs](/python/api/overview/azure/mgmt-iothub-readme)

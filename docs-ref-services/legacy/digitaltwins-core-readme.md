@@ -5,13 +5,12 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 12/01/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: digitaltwins
+ms.service: digital-twins
 ---
 
-# Azure Azure Digital Twins Core client library for Python - Version 1.1.0 
+# Azure Azure Digital Twins Core client library for Python - version 1.1.0 
 
 
 This package contains an SDK for Azure Digital Twins API to provide access to the Azure Digital Twins service for managing twins, models, relationships, etc.

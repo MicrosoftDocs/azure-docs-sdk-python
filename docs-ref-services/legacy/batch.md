@@ -7,7 +7,6 @@ ms.author: ramyar
 manager: douge
 ms.date: 07/31/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
 ms.service: batch

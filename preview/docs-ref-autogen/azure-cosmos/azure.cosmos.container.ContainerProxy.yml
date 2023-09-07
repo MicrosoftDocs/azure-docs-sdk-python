@@ -10,9 +10,11 @@ summary: 'An interface to interact with a specific DB Container.
 
   This class should not be instantiated directly. Instead, use the
 
-  <xref:DatabaseProxy.get_container_client> method to get an existing
+  <xref:azure.cosmos.database.DatabaseProxy.get_container_client> method to get an
+  existing
 
-  container, or the <xref:Database.create_container> method to create a
+  container, or the <xref:azure.cosmos.database.DatabaseProxy.create_container> method
+  to create a
 
   new container.
 
@@ -21,8 +23,14 @@ summary: 'An interface to interact with a specific DB Container.
 
   documents, each of which is represented as an Item.'
 constructor:
-  syntax: 'ContainerProxy(client_connection: azure.cosmos._cosmos_client_connection.CosmosClientConnection,
-    database_link: str, id: str, properties: Optional[Dict[str, Any]] = None)'
+  syntax: 'ContainerProxy(client_connection: CosmosClientConnection, database_link:
+    str, id: str, properties: Dict[str, Any] = None)'
+  parameters:
+  - name: client_connection
+  - name: database_link
+  - name: id
+  - name: properties
+    defaultValue: None
 variables:
 - description: ID (name) of the container
   name: id
@@ -41,16 +49,12 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.container.ContainerProxy.upsert_item> method.'
-  signature: 'create_item(body: Dict[str, Any], populate_query_metrics: Optional[bool]
-    = None, pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
-    = None, indexing_directive: Optional[Any] = None, **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'create_item(body: Dict[str, Any], populate_query_metrics: bool | None
+    = None, pre_trigger_include: str | None = None, post_trigger_include: str | None
+    = None, indexing_directive: Any | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
     isRequired: true
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -72,7 +76,7 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -88,22 +92,75 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: A dict representing the new item.
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: Item with the given ID already exists.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: Item with the given ID already exists.
+- uid: azure.cosmos.container.ContainerProxy.delete_all_items_by_partition_key
+  name: delete_all_items_by_partition_key
+  summary: 'The delete by partition key feature is an asynchronous, background operation
+    that allows you to delete all
+
+    documents with the same logical partition key value, using the Cosmos SDK. The
+    delete by partition key
+
+    operation is constrained to consume at most 10% of the total
+
+    available RU/s on the container each second. This helps in limiting the resources
+    used by
+
+    this background task.'
+  signature: 'delete_all_items_by_partition_key(partition_key: str | int | float |
+    bool, **kwargs: Any) -> None'
+  parameters:
+  - name: partition_key
+    description: Partition key for the items to be deleted.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    types:
+    - <xref:None>
 - uid: azure.cosmos.container.ContainerProxy.delete_conflict
   name: delete_conflict
   summary: 'Delete a specified conflict from the container.
 
 
     If the conflict does not already exist in the container, an exception is raised.'
-  signature: 'delete_conflict(conflict: Union[str, Dict[str, Any]], partition_key:
-    Any, **kwargs: Any) -> None'
+  signature: 'delete_conflict(conflict: str | Dict[str, Any], partition_key: Any,
+    **kwargs: Any) -> None'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to be deleted.
@@ -114,33 +171,30 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     types:
     - <xref:None>
   exceptions:
-  - description: The conflict wasn't deleted successfully.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
-  - description: The conflict does not exist in the container.
-    type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The conflict wasn't deleted successfully.
+  - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+    description: The conflict does not exist in the container.
 - uid: azure.cosmos.container.ContainerProxy.delete_item
   name: delete_item
   summary: 'Delete the specified item from the container.
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'delete_item(item: Union[Dict[str, Any], str], partition_key: Any, populate_query_metrics:
-    Optional[bool] = None, pre_trigger_include: Optional[str] = None, post_trigger_include:
-    Optional[str] = None, **kwargs: Any) -> None'
+  signature: 'delete_item(item: Dict[str, Any] | str, partition_key: Any, populate_query_metrics:
+    bool | None = None, pre_trigger_include: str | None = None, post_trigger_include:
+    str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
     isRequired: true
   - name: partition_key
     description: Specifies the partition key value for the item.
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
     isRequired: true
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -155,7 +209,7 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -171,20 +225,20 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     types:
     - <xref:None>
   exceptions:
-  - description: The item wasn't deleted successfully.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
-  - description: The item does not exist in the container.
-    type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The item wasn't deleted successfully.
+  - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+    description: The item does not exist in the container.
 - uid: azure.cosmos.container.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
-  signature: 'get_conflict(conflict: Union[str, Dict[str, Any]], partition_key: Any,
-    **kwargs: Any) -> Dict[str, Any]'
+  signature: 'get_conflict(conflict: str | Dict[str, Any], partition_key: Any, **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
@@ -195,19 +249,31 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: A dict representing the retrieved conflict.
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: The given conflict couldn't be retrieved.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The given conflict couldn't be retrieved.
+- uid: azure.cosmos.container.ContainerProxy.get_throughput
+  name: get_throughput
+  summary: "Get the ThroughputProperties object for this container.\n\nIf no ThroughputProperties\
+    \ already exist for the container, an exception is raised.\n:keyword Callable\
+    \ response_hook: A callable invoked with the response metadata.\n:returns: Throughput\
+    \ for the container.\n:raises ~azure.cosmos.exceptions.CosmosHttpResponseError:\
+    \ No throughput properties exists for the container or\n\n   the throughput properties\
+    \ could not be retrieved."
+  signature: 'get_throughput(**kwargs: Any) -> ThroughputProperties'
+  return:
+    types:
+    - <xref:azure.cosmos.ThroughputProperties>
 - uid: azure.cosmos.container.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: 'list_conflicts(max_item_count: Optional[int] = None, **kwargs: Any)
-    -> Iterable[Dict[str, Any]]'
+  signature: 'list_conflicts(max_item_count: int | None = None, **kwargs: Any) ->
+    Iterable[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -215,18 +281,81 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: An Iterable of conflicts (dicts).
     types:
     - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+- uid: azure.cosmos.container.ContainerProxy.patch_item
+  name: patch_item
+  summary: "**Provisional method** Patches the specified item with the provided operations\
+    \ if it\n   exists in the container.\n\nIf the item does not already exist in\
+    \ the container, an exception is raised."
+  signature: 'patch_item(item: str | Dict[str, Any], partition_key: str | int | float
+    | bool, patch_operations: List[Dict[str, Any]], **kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: item
+    description: The ID (name) or dict representing item to be patched.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+  - name: partition_key
+    description: The partition key of the object to patch.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  - name: patch_operations
+    description: The list of patch operations to apply to the item.
+    isRequired: true
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+  - name: filter_predicate
+    description: conditional filter to apply to Patch operations.
+    types:
+    - <xref:str>
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: A dict representing the item after the patch operations went through.
+    types:
+    - <xref:dict>[<xref:str>, <xref:Any>]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'The patch operations failed or the item with
+
+      given id does not exist.'
 - uid: azure.cosmos.container.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: 'query_conflicts(query: str, parameters: Optional[List[str]] = None,
-    enable_cross_partition_query: Optional[bool] = None, partition_key: Optional[Any]
-    = None, max_item_count: Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str,
-    Any]]'
+  signature: 'query_conflicts(query: str, parameters: List[str] | None = None, enable_cross_partition_query:
+    bool | None = None, partition_key: Any | None = None, max_item_count: int | None
+    = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -252,92 +381,46 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: An Iterable of conflicts (dicts).
     types:
     - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
 - uid: azure.cosmos.container.ContainerProxy.query_items
   name: query_items
-  summary: 'Return all results matching the given *query*.
-
-
-    You can use any value for the container name in the FROM clause, but
-
-    often the container name is used. In the examples below, the container
-
-    name is "products," and is aliased as "p" for easier referencing in
-
-    the WHERE clause.'
-  signature: 'query_items(query: str, parameters: Optional[List[Dict[str, object]]]
-    = None, partition_key: Optional[Any] = None, enable_cross_partition_query: Optional[bool]
-    = None, max_item_count: Optional[int] = None, enable_scan_in_query: Optional[bool]
-    = None, populate_query_metrics: Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str,
+  summary: "Return all results matching the given *query*.\n\nYou can use any value\
+    \ for the container name in the FROM clause, but\noften the container name is\
+    \ used. In the examples below, the container\nname is \"products,\" and is aliased\
+    \ as \"p\" for easier referencing in\nthe WHERE clause.\n\nresponse continuation\
+    \ token in the query response. Valid values are positive integers.\nA value of\
+    \ 0 is the same as not passing a value (default no limit).\n:keyword int max_integrated_cache_staleness_in_ms:\
+    \ The max cache staleness for the integrated cache in\n\n   milliseconds. For\
+    \ accounts configured to use the integrated cache, using Session or Eventual consistency,\n\
+    \   responses are guaranteed to be no staler than this value."
+  signature: 'query_items(query: str, parameters: List[Dict[str, object]] | None =
+    None, partition_key: Any | None = None, enable_cross_partition_query: bool | None
+    = None, max_item_count: int | None = None, enable_scan_in_query: bool | None =
+    None, populate_query_metrics: bool | None = None, **kwargs: Any) -> Iterable[Dict[str,
     Any]]'
-  parameters:
-  - name: query
-    description: The Azure Cosmos DB SQL query to execute.
-    isRequired: true
-  - name: parameters
-    description: 'Optional array of parameters to the query.
-
-      Each parameter is a dict() with ''name'' and ''value'' keys.
-
-      Ignored if no query is provided.'
-    isRequired: true
-  - name: partition_key
-    description: Specifies the partition key value for the item.
-    isRequired: true
-  - name: enable_cross_partition_query
-    description: 'Allows sending of more than one request to
-
-      execute the query in the Azure Cosmos DB service.
-
-      More than one request is necessary if the query is not scoped to single partition
-      key value.'
-    isRequired: true
-  - name: max_item_count
-    description: Max number of items to be returned in the enumeration operation.
-    isRequired: true
-  - name: enable_scan_in_query
-    description: 'Allow scan on the queries which couldn''t be served as
-
-      indexing was opted out on the requested paths.'
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
-    isRequired: true
-  - name: session_token
-    description: Token for use with Session consistency.
-    types:
-    - <xref:str>
-  - name: initial_headers
-    description: Initial headers to be sent as part of the request.
-    types:
-    - <xref:dict>[<xref:str,str>]
-  - name: response_hook
-    description: A callable invoked with the response metadata.
-    types:
-    - <xref:Callable>
   return:
     description: An Iterable of items (dicts).
     types:
-    - <xref:Iterable>[<xref:dict>[<xref:str>, <xref:Any>]]
+    - <xref:ItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
   examples:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
-    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\\
-    dist_temp\\\\83\\\\azure-cosmos-4.3.0b2\\\\samples\\\\examples.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
+    \\s\\\\dist_temp\\\\39\\\\azure-cosmos-4.4.1b1\\\\samples\\\\examples.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import json\n\
     \n   for item in container.query_items(\n       query='SELECT * FROM products\
     \ p WHERE p.productModel <> \"DISCONTINUED\"',\n       enable_cross_partition_query=True,\n\
     \   ):\n       print(json.dumps(item, indent=True))\n\n   ````\n\nParameterized\
     \ query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
-    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\\
-    dist_temp\\\\83\\\\azure-cosmos-4.3.0b2\\\\samples\\\\examples.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
+    \\s\\\\dist_temp\\\\39\\\\azure-cosmos-4.4.1b1\\\\samples\\\\examples.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   discontinued_items\
     \ = container.query_items(\n       query='SELECT * FROM products p WHERE p.productModel\
     \ = @model AND p.productName=\"Widget\"',\n       parameters=[dict(name=\"@model\"\
@@ -347,9 +430,9 @@ methods:
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: 'query_items_change_feed(partition_key_range_id: Optional[str] = None,
-    is_start_from_beginning: bool = False, continuation: Optional[str] = None, max_item_count:
-    Optional[int] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'query_items_change_feed(partition_key_range_id: str | None = None, is_start_from_beginning:
+    bool = False, continuation: str | None = None, max_item_count: int | None = None,
+    **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: partition_key_range_id
     description: 'ChangeFeed requests can be executed against specific partition key
@@ -363,7 +446,7 @@ methods:
   - name: is_start_from_beginning
     description: 'Get whether change feed should start from
 
-      beginning (true) or from current (false). By default it''s start from current
+      beginning (true) or from current (false). By default, it''s start from current
       (false).'
     isRequired: true
   - name: continuation
@@ -375,7 +458,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: An Iterable of items (dicts).
     types:
@@ -383,22 +466,20 @@ methods:
 - uid: azure.cosmos.container.ContainerProxy.read
   name: read
   summary: Read the container properties.
-  signature: 'read(populate_query_metrics: Optional[bool] = None, populate_partition_key_range_statistics:
-    Optional[bool] = None, populate_quota_info: Optional[bool] = None, **kwargs: Any)
-    -> Dict[str, Any]'
+  signature: 'read(*, populate_partition_key_range_statistics: bool | None = None,
+    populate_quota_info: bool | None = None, **kwargs)'
   parameters:
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
-    isRequired: true
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
 
       range statistics in response headers.'
-    isRequired: true
+    types:
+    - <xref:bool>
   - name: populate_quota_info
     description: Enable returning collection storage quota information in response
       headers.
-    isRequired: true
+    types:
+    - <xref:bool>
   - name: session_token
     description: Token for use with Session consistency.
     types:
@@ -406,31 +487,28 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: Dict representing the retrieved container.
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: 'Raised if the container couldn''t be retrieved.
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'Raised if the container couldn''t be retrieved.
 
       This includes if the container does not exist.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
 - uid: azure.cosmos.container.ContainerProxy.read_all_items
   name: read_all_items
   summary: List all the items in the container.
-  signature: 'read_all_items(max_item_count: Optional[int] = None, populate_query_metrics:
-    Optional[bool] = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'read_all_items(max_item_count: int | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
     isRequired: true
   - name: session_token
     description: Token for use with Session consistency.
@@ -439,11 +517,20 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: An Iterable of items (dicts).
     types:
@@ -451,18 +538,15 @@ methods:
 - uid: azure.cosmos.container.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
-  signature: 'read_item(item: Union[str, Dict[str, Any]], partition_key: Any, populate_query_metrics:
-    Optional[bool] = None, post_trigger_include: Optional[str] = None, **kwargs: Any)
-    -> Dict[str, Any]'
+  signature: 'read_item(item: str | Dict[str, Any], partition_key: Any, populate_query_metrics:
+    bool | None = None, post_trigger_include: str | None = None, **kwargs: Any) ->
+    Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
     isRequired: true
   - name: partition_key
     description: Partition key for the item to retrieve.
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
     isRequired: true
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
@@ -474,67 +558,63 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
+  - name: max_integrated_cache_staleness_in_ms
+    description: 'The max cache staleness for the integrated cache in
+
+      milliseconds. For accounts configured to use the integrated cache, using Session
+      or Eventual consistency,
+
+      responses are guaranteed to be no staler than this value.'
+    types:
+    - <xref:int>
   return:
     description: Dict representing the item to be retrieved.
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: The given item couldn't be retrieved.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The given item couldn't be retrieved.
   examples:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
-    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\\
-    dist_temp\\\\83\\\\azure-cosmos-4.3.0b2\\\\samples\\\\examples.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\
+    \\s\\\\dist_temp\\\\39\\\\azure-cosmos-4.4.1b1\\\\samples\\\\examples.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   item = container.read_item(\"\
     item2\", partition_key=\"Widget\")\n   item[\"productModel\"] = \"DISCONTINUED\"\
     \n   updated_item = container.upsert_item(item)\n\n   ````\n"
 - uid: azure.cosmos.container.ContainerProxy.read_offer
   name: read_offer
-  summary: 'Read the Offer object for this container.
-
-
-    If no Offer already exists for the container, an exception is raised.'
-  signature: 'read_offer(**kwargs: Any) -> azure.cosmos.offer.Offer'
-  parameters:
-  - name: response_hook
-    description: A callable invoked with the response metadata.
-    types:
-    - <xref:Callable>
+  summary: "Get the ThroughputProperties object for this container.\nIf no ThroughputProperties\
+    \ already exist for the container, an exception is raised.\n:keyword Callable\
+    \ response_hook: A callable invoked with the response metadata.\n:returns: Throughput\
+    \ for the container.\n:raises ~azure.cosmos.exceptions.CosmosHttpResponseError:\
+    \ No throughput properties exists for the container or\n\n   the throughput properties\
+    \ could not be retrieved."
+  signature: 'read_offer(**kwargs: Any) -> Offer'
   return:
-    description: Offer for the container.
     types:
-    - <xref:azure.cosmos.Offer>
-  exceptions:
-  - description: 'No offer exists for the container or
-
-      the offer could not be retrieved.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+    - <xref:azure.cosmos.ThroughputProperties>
 - uid: azure.cosmos.container.ContainerProxy.replace_item
   name: replace_item
   summary: 'Replaces the specified item if it exists in the container.
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'replace_item(item: Union[str, Dict[str, Any]], body: Dict[str, Any],
-    populate_query_metrics: Optional[bool] = None, pre_trigger_include: Optional[str]
-    = None, post_trigger_include: Optional[str] = None, **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'replace_item(item: str | Dict[str, Any], body: Dict[str, Any], populate_query_metrics:
+    bool | None = None, pre_trigger_include: str | None = None, post_trigger_include:
+    str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
     isRequired: true
   - name: body
     description: A dict-like object representing the item to replace.
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
     isRequired: true
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -549,7 +629,7 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -565,23 +645,24 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: A dict representing the item after replace went through.
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: 'The replace failed or the item with
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'The replace failed or the item with
 
       given id does not exist.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
 - uid: azure.cosmos.container.ContainerProxy.replace_throughput
   name: replace_throughput
   summary: 'Replace the container''s throughput.
 
 
-    If no Offer already exists for the container, an exception is raised.'
-  signature: 'replace_throughput(throughput: int, **kwargs: Any) -> azure.cosmos.offer.Offer'
+    If no ThroughputProperties already exist for the container, an exception is raised.'
+  signature: 'replace_throughput(throughput: int | ThroughputProperties | None, **kwargs:
+    Any) -> ThroughputProperties'
   parameters:
   - name: throughput
     description: The throughput to be set (an integer).
@@ -589,16 +670,16 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
-    description: Offer for the container, updated with new throughput.
+    description: ThroughputProperties for the container, updated with new throughput.
     types:
-    - <xref:azure.cosmos.Offer>
+    - <xref:azure.cosmos.ThroughputProperties>
   exceptions:
-  - description: 'No offer exists for the container
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'No throughput properties exist for the container
 
-      or the offer could not be updated.'
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+      or the throughput properties could not be updated.'
 - uid: azure.cosmos.container.ContainerProxy.upsert_item
   name: upsert_item
   summary: 'Insert or update the specified item.
@@ -607,15 +688,12 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: 'upsert_item(body: Dict[str, Any], populate_query_metrics: Optional[bool]
-    = None, pre_trigger_include: Optional[str] = None, post_trigger_include: Optional[str]
+  signature: 'upsert_item(body: Dict[str, Any], populate_query_metrics: bool | None
+    = None, pre_trigger_include: str | None = None, post_trigger_include: str | None
     = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
-    isRequired: true
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
     isRequired: true
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -630,7 +708,7 @@ methods:
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
-    - <xref:dict>[<xref:str,str>]
+    - <xref:dict>[<xref:str>,<xref:str>]
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -646,14 +724,14 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
   return:
     description: A dict representing the upserted item.
     types:
     - <xref:dict>[<xref:str>, <xref:Any>]
   exceptions:
-  - description: The given item could not be upserted.
-    type: azure.cosmos.exceptions.CosmosHttpResponseError
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The given item could not be upserted.
 attributes:
 - uid: azure.cosmos.container.ContainerProxy.is_system_key
   name: is_system_key

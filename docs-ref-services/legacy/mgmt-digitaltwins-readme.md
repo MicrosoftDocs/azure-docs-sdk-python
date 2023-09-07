@@ -5,10 +5,9 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 10/22/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: digitaltwins
+ms.service: digital-twins
 ---
 
 # Microsoft Azure SDK for Python

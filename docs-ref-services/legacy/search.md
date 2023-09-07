@@ -8,10 +8,9 @@ manager: douge
 
 ms.date: 07/10/2017
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: multiple
+ms.service: search
 ---
 
 # Azure Search libraries for python

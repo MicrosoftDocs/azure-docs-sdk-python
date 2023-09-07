@@ -7,11 +7,16 @@ inheritances:
 - azure.keyvault.certificates._shared.async_client_base.AsyncKeyVaultClientBase
 summary: A high-level asynchronous interface for managing a vault's certificates.
 constructor:
-  syntax: 'CertificateClient(vault_url: str, credential: AsyncTokenCredential, **kwargs:
-    Any)'
+  syntax: 'CertificateClient(vault_url: str, credential: AsyncTokenCredential, **kwargs)'
   parameters:
   - name: vault_url
-    description: URL of the vault the client will access
+    description: 'URL of the vault the client will access. This is also called the
+      vault''s "DNS Name".
+
+      You should validate that this URL references a valid Key Vault resource. See
+      [https://aka.ms/azsdk/blog/vault-uri](https://aka.ms/azsdk/blog/vault-uri)
+
+      for details.'
     isRequired: true
     types:
     - <xref:str>
@@ -21,26 +26,29 @@ constructor:
 
       <xref:azure.identity.aio>'
     isRequired: true
+    types:
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
   - name: api_version
-    description: version of the Key Vault API to use. Defaults to the most recent.
+    description: Version of the service API to use. Defaults to the most recent.
     types:
     - <xref:azure.keyvault.certificates.ApiVersion>
-  - name: transport
-    description: 'transport to use. Defaults to
+  - name: verify_challenge_resource
+    description: 'Whether to verify the authentication challenge resource matches
+      the Key
 
-      <xref:azure.core.pipeline.transport.AioHttpTransport>.'
+      Vault domain. Defaults to True.'
     types:
-    - <xref:azure.core.pipeline.transport.AsyncHttpTransport>
+    - <xref:bool>
 examples:
 - "Creates a new instance of the Certificate client<!--[!code-python[Main](s\\test_examples_certificates_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\59\\\\azure-keyvault-certificates-4.4.0b3\\\
-  \\tests\\\\test_examples_certificates_async.py\", \"xml:space\": \"preserve\", \"\
-  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
-  \ 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity.aio import\
-  \ DefaultAzureCredential\n   from azure.keyvault.certificates.aio import CertificateClient\n\
-  \n   # Create a KeyVaultCertificate using default Azure credentials\n   credential\
-  \ = DefaultAzureCredential()\n   certificate_client = CertificateClient(vault_url=vault_url,\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
+  56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity.aio\
+  \ import DefaultAzureCredential\n   from azure.keyvault.certificates.aio import\
+  \ CertificateClient\n\n   # Create a KeyVaultCertificate using default Azure credentials\n\
+  \   credential = DefaultAzureCredential()\n   certificate_client = CertificateClient(vault_url=vault_url,\
   \ credential=credential)\n\n   # the client and credential should be closed when\
   \ no longer needed\n   # (both are also async context managers)\n   await certificate_client.close()\n\
   \   await credential.close()\n\n   ````\n"
@@ -51,14 +59,16 @@ methods:
 
 
     Requires certificates/backup permission. This is intended to allow copying a certificate
+    from one vault to
 
-    from one vault to another. Both vaults must be owned by the same Azure subscription.
+    another. Both vaults must be owned by the same Azure subscription. Also, backup
+    / restore cannot be performed
 
-    Also, backup / restore cannot be performed across geopolitical boundaries. For
-    example, a backup
+    across geopolitical boundaries. For example, a backup from a vault in a USA region
+    cannot be restored to a vault
 
-    from a vault in a USA region cannot be restored to a vault in an EU region.'
-  signature: 'backup_certificate(certificate_name: str, **kwargs: Any) -> bytes'
+    in an EU region.'
+  signature: 'async backup_certificate(certificate_name: str, **kwargs) -> bytes'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -70,15 +80,15 @@ methods:
     types:
     - <xref:bytes>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the certificate doesn''t
-      exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the certificate doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
   examples:
   - "Get a certificate backup<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # backup certificate\n   certificate_backup = await certificate_client.backup_certificate(cert_name)\n\
@@ -88,8 +98,8 @@ methods:
   name: cancel_certificate_operation
   summary: Cancels an in-progress certificate operation. Requires the certificates/update
     permission.
-  signature: 'cancel_certificate_operation(certificate_name: str, **kwargs: Any) ->
-    azure.keyvault.certificates._models.CertificateOperation'
+  signature: 'async cancel_certificate_operation(certificate_name: str, **kwargs)
+    -> CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -107,16 +117,15 @@ methods:
   summary: 'Creates a new certificate.
 
 
-    If this is the first version, the certificate resource is created. This
+    If this is the first version, the certificate resource is created. This operation
+    requires the
 
-    operation requires the certificates/create permission. The poller requires the
+    certificates/create permission. The poller requires the certificates/get permission,
+    otherwise raises an
 
-    certificates/get permission, otherwise raises
-
-    an <xref:azure.core.exceptions.HttpResponseError>'
-  signature: 'create_certificate(certificate_name: str, policy: azure.keyvault.certificates._models.CertificatePolicy,
-    **kwargs: Any) -> Union[azure.keyvault.certificates._models.KeyVaultCertificate,
-    azure.keyvault.certificates._models.CertificateOperation]'
+    <xref:azure.core.exceptions.HttpResponseError>'
+  signature: 'async create_certificate(certificate_name: str, policy: CertificatePolicy,
+    **kwargs) -> KeyVaultCertificate | CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -141,22 +150,23 @@ methods:
     - <xref:dict>[<xref:str>, <xref:str>]
   return:
     description: 'A coroutine for the creation of the certificate. Awaiting the coroutine
+      returns the created
 
-      returns the created KeyVaultCertificate if creation is successful, the CertificateOperation
-      if not.'
+      KeyVaultCertificate if creation is successful, or the CertificateOperation if
+      not.'
     types:
     - <xref:azure.keyvault.certificates.KeyVaultCertificate>
     - <xref:azure.keyvault.certificates.CertificateOperation>
   exceptions:
-  - type: 'azure.keyvault.certificates.aio.ValueError if the certificate policy is
-      invalid,
-
-      azure.core.exceptions.HttpResponseError for other errors.'
+  - type: ValueError
+    description: if the certificate policy is invalid,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors.
   examples:
   - "Create a certificate<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.keyvault.certificates import CertificatePolicy, CertificateContentType,\
@@ -172,7 +182,7 @@ methods:
   name: create_issuer
   summary: Sets the specified certificate issuer. Requires certificates/setissuers
     permission.
-  signature: 'create_issuer(issuer_name: str, provider: str, **kwargs: Any) -> azure.keyvault.certificates._models.CertificateIssuer'
+  signature: 'async create_issuer(issuer_name: str, provider: str, **kwargs) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -215,8 +225,8 @@ methods:
   examples:
   - "Create an issuer<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.keyvault.certificates import AdministratorContact\n\n   # First\
@@ -235,7 +245,7 @@ methods:
 
 
     If the vault has soft-delete enabled, deletion may take several seconds to complete.'
-  signature: 'delete_certificate(certificate_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.DeletedCertificate'
+  signature: 'async delete_certificate(certificate_name: str, **kwargs) -> DeletedCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -247,15 +257,15 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.DeletedCertificate>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the certificate doesn''t
-      exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the certificate doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
   examples:
   - "Delete a certificate<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # delete a certificate\n   deleted_certificate = await certificate_client.delete_certificate(cert_name)\n\
@@ -269,8 +279,8 @@ methods:
 
 
     Requires the certificates/update permission.'
-  signature: 'delete_certificate_operation(certificate_name: str, **kwargs: Any) ->
-    azure.keyvault.certificates._models.CertificateOperation'
+  signature: 'async delete_certificate_operation(certificate_name: str, **kwargs)
+    -> CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -282,14 +292,15 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.CertificateOperation>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the operation doesn''t exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the operation doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
 - uid: azure.keyvault.certificates.aio.CertificateClient.delete_contacts
   name: delete_contacts
   summary: Deletes the certificate contacts for the key vault. Requires the certificates/managecontacts
     permission.
-  signature: 'delete_contacts(**kwargs: Any) -> List[azure.keyvault.certificates._models.CertificateContact]'
+  signature: async delete_contacts(**kwargs) -> List[CertificateContact]
   return:
     description: The deleted contacts for the key vault.
     types:
@@ -299,8 +310,8 @@ methods:
   examples:
   - "Delete contacts<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   deleted_contacts = await certificate_client.delete_contacts()\n\n   for deleted_contact\
@@ -312,7 +323,7 @@ methods:
 
 
     Requires certificates/manageissuers/deleteissuers permission.'
-  signature: 'delete_issuer(issuer_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.CertificateIssuer'
+  signature: 'async delete_issuer(issuer_name: str, **kwargs) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -328,8 +339,8 @@ methods:
   examples:
   - "Delete an issuer<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   deleted_issuer = await certificate_client.delete_issuer(\"issuer1\")\n\n\
@@ -347,7 +358,7 @@ methods:
     version of the
 
     certificate, call <xref:azure.keyvault.certificates.aio.CertificateClient.get_certificate_version>.'
-  signature: 'get_certificate(certificate_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.KeyVaultCertificate'
+  signature: 'async get_certificate(certificate_name: str, **kwargs) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given vault.
@@ -359,15 +370,15 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.KeyVaultCertificate>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the certificate doesn''t
-      exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the certificate doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
   examples:
   - "Get a certificate<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # get the latest version of a certificate\n   certificate = await certificate_client.get_certificate(cert_name)\n\
@@ -377,7 +388,8 @@ methods:
   name: get_certificate_operation
   summary: Gets the creation operation of a certificate. Requires the certificates/get
     permission.
-  signature: 'get_certificate_operation(certificate_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.CertificateOperation'
+  signature: 'async get_certificate_operation(certificate_name: str, **kwargs) ->
+    CertificateOperation'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -389,17 +401,17 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.CertificateOperation>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the certificate doesn''t
-      exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the certificate doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
 - uid: azure.keyvault.certificates.aio.CertificateClient.get_certificate_policy
   name: get_certificate_policy
   summary: 'Gets the policy for a certificate. Requires certificates/get permission.
 
 
     Returns the specified certificate policy resources in the key vault.'
-  signature: 'get_certificate_policy(certificate_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.CertificatePolicy'
+  signature: 'async get_certificate_policy(certificate_name: str, **kwargs) -> CertificatePolicy'
   parameters:
   - name: certificate_name
     description: The name of the certificate in a given key vault.
@@ -419,10 +431,11 @@ methods:
 
 
     Requires certificates/get permission. To get the latest version of the certificate,
+    or to get the certificate''s
 
-    or to get the certificate''s policy as well, call <xref:azure.keyvault.certificates.aio.CertificateClient.get_certificate>.'
-  signature: 'get_certificate_version(certificate_name: str, version: str, **kwargs:
-    Any) -> azure.keyvault.certificates._models.KeyVaultCertificate'
+    policy as well, call <xref:azure.keyvault.certificates.aio.CertificateClient.get_certificate>.'
+  signature: 'async get_certificate_version(certificate_name: str, version: str, **kwargs)
+    -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given vault.
@@ -439,15 +452,15 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.KeyVaultCertificate>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the certificate doesn''t
-      exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the certificate doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
   examples:
   - "Get a certificate with a specific version<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   certificate = await certificate_client.get_certificate_version(cert_name,\
@@ -457,7 +470,7 @@ methods:
   name: get_contacts
   summary: Gets the certificate contacts for the key vault. Requires the certificates/managecontacts
     permission.
-  signature: 'get_contacts(**kwargs: Any) -> List[azure.keyvault.certificates._models.CertificateContact]'
+  signature: async get_contacts(**kwargs) -> List[CertificateContact]
   return:
     description: The certificate contacts for the key vault.
     types:
@@ -467,8 +480,8 @@ methods:
   examples:
   - "Get contacts<!--[!code-python[Main](s\\test_examples_certificates_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\59\\\\\
-    azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   contacts = await certificate_client.get_contacts()\n\n   # Loop through the\
@@ -481,12 +494,11 @@ methods:
 
 
     Requires certificates/get permission. Retrieves the deleted certificate information
+    plus its attributes, such as
 
-    plus its attributes, such as retention interval, scheduled permanent deletion,
-    and the
-
-    current deletion recovery level.'
-  signature: 'get_deleted_certificate(certificate_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.DeletedCertificate'
+    retention interval, scheduled permanent deletion, and the current deletion recovery
+    level.'
+  signature: 'async get_deleted_certificate(certificate_name: str, **kwargs) -> DeletedCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -498,15 +510,15 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.DeletedCertificate>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the certificate doesn''t
-      exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the certificate doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
   examples:
   - "Get a deleted certificate<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # get a deleted certificate (requires soft-delete enabled for the vault)\n\
@@ -516,7 +528,7 @@ methods:
   name: get_issuer
   summary: Gets the specified certificate issuer. Requires certificates/manageissuers/getissuers
     permission.
-  signature: 'get_issuer(issuer_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.CertificateIssuer'
+  signature: 'async get_issuer(issuer_name: str, **kwargs) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.
@@ -528,14 +540,15 @@ methods:
     types:
     - <xref:azure.keyvault.certificates.CertificateIssuer>
   exceptions:
-  - type: 'azure.core.exceptions.ResourceNotFoundError if the issuer doesn''t exist,
-
-      azure.core.exceptions.HttpResponseError for other errors'
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: if the issuer doesn't exist,
+  - type: azure.core.exceptions.HttpResponseError
+    description: for other errors
   examples:
   - "Get an issuer<!--[!code-python[Main](s\\test_examples_certificates_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\\59\\\\\
-    azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
+    \\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   issuer = await certificate_client.get_issuer(\"issuer1\")\n\n   print(issuer.name)\n\
@@ -554,13 +567,13 @@ methods:
     imported can be in either PFX or PEM format. If the certificate is in PEM format
     the PEM file must contain the
 
-    key as well as x509 certificates, and you must provide a `policy`
+    key as well as x509 certificates, and you must provide a `policy` with
 
-    with <xref:azure.keyvault.certificates.CertificatePolicy.content_type> of
+    <xref:azure.keyvault.certificates.CertificatePolicy.content_type> of
 
     <xref:azure.keyvault.certificates.CertificateContentType.pem>.'
-  signature: 'import_certificate(certificate_name: str, certificate_bytes: bytes,
-    **kwargs: Any) -> azure.keyvault.certificates._models.KeyVaultCertificate'
+  signature: 'async import_certificate(certificate_name: str, certificate_bytes: bytes,
+    **kwargs) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -610,21 +623,21 @@ methods:
 
 
     Requires certificates/get/list permission. Retrieves the certificates in the current
-    vault which
+    vault which are in a
 
-    are in a deleted state and ready for recovery or purging. This operation includes
-
-    deletion-specific information.'
-  signature: 'list_deleted_certificates(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.keyvault.certificates._models.DeletedCertificate]'
+    deleted state and ready for recovery or purging. This operation includes deletion-specific
+    information.'
+  signature: list_deleted_certificates(**kwargs) -> AsyncItemPaged[DeletedCertificate]
   parameters:
   - name: include_pending
-    description: 'Specifies whether to include certificates which are
+    description: 'Specifies whether to include certificates which are not completely
+      deleted.
 
-      not completely deleted. Only available for API versions v7.0 and up'
+      Only available for API versions v7.0 and up.'
     types:
     - <xref:bool>
   return:
-    description: An iterator like instance of DeletedCertificate
+    description: An iterator-like instance of DeletedCertificate
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.keyvault.certificates.DeletedCertificate>]
   exceptions:
@@ -632,8 +645,8 @@ methods:
   examples:
   - "List all the deleted certificates<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # get an iterator of deleted certificates (requires soft-delete enabled for\
@@ -648,8 +661,8 @@ methods:
 
 
     Requires certificates/list permission.'
-  signature: 'list_properties_of_certificate_versions(certificate_name: str, **kwargs:
-    Any) -> azure.core.async_paging.AsyncItemPaged[azure.keyvault.certificates._models.CertificateProperties]'
+  signature: 'list_properties_of_certificate_versions(certificate_name: str, **kwargs)
+    -> AsyncItemPaged[CertificateProperties]'
   parameters:
   - name: certificate_name
     description: The name of the certificate.
@@ -657,7 +670,7 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An iterator like instance of CertificateProperties
+    description: An iterator-like instance of CertificateProperties
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.keyvault.certificates.CertificateProperties>]
   exceptions:
@@ -665,8 +678,8 @@ methods:
   examples:
   - "List all versions of a certificate<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # get an iterator of all versions of a certificate\n   certificate_versions\
@@ -680,16 +693,17 @@ methods:
 
 
     Requires certificates/list permission.'
-  signature: 'list_properties_of_certificates(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.keyvault.certificates._models.CertificateProperties]'
+  signature: list_properties_of_certificates(**kwargs) -> AsyncItemPaged[CertificateProperties]
   parameters:
   - name: include_pending
-    description: 'Specifies whether to include certificates which are not
+    description: 'Specifies whether to include certificates which are not completely
+      provisioned.
 
-      completely provisioned. Only available for API versions v7.0 and up'
+      Only available for API versions v7.0 and up.'
     types:
     - <xref:bool>
   return:
-    description: An iterator like instance of CertificateProperties
+    description: An iterator-like instance of CertificateProperties
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.keyvault.certificates.CertificateProperties>]
   exceptions:
@@ -697,8 +711,8 @@ methods:
   examples:
   - "List all certificates<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # list certificates\n   certificates = certificate_client.list_properties_of_certificates()\n\
@@ -711,9 +725,9 @@ methods:
 
 
     Requires the certificates/manageissuers/getissuers permission.'
-  signature: 'list_properties_of_issuers(**kwargs: Any) -> azure.core.async_paging.AsyncItemPaged[azure.keyvault.certificates._models.IssuerProperties]'
+  signature: list_properties_of_issuers(**kwargs) -> AsyncItemPaged[IssuerProperties]
   return:
-    description: An iterator like instance of Issuers
+    description: An iterator-like instance of Issuers
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.keyvault.certificates.CertificateIssuer>]
   exceptions:
@@ -721,8 +735,8 @@ methods:
   examples:
   - "List issuers of a vault<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   issuers = certificate_client.list_properties_of_issuers()\n\n   async for\
@@ -735,19 +749,17 @@ methods:
 
 
     Requires the certificates/create permission. Performs the merging of a certificate
-    or
+    or certificate chain with a
 
-    certificate chain with a key pair currently available in the service.
+    key pair currently available in the service. Make sure when creating the certificate
+    to merge using
 
-    Make sure when creating the certificate to merge using <xref:azure.keyvault.certificates.aio.CertificateClient.create_certificate>
-    that you set
+    <xref:azure.keyvault.certificates.aio.begin_create_certificate> that you set its
+    issuer to ''Unknown''. This way Key Vault knows that the
 
-    its issuer to ''Unknown''. This way Key Vault knows that the certificate will
-    not be signed
-
-    by an issuer known to it.'
-  signature: 'merge_certificate(certificate_name: str, x509_certificates: Iterable[bytes],
-    **kwargs: Any) -> azure.keyvault.certificates._models.KeyVaultCertificate'
+    certificate will not be signed by an issuer known to it.'
+  signature: 'async merge_certificate(certificate_name: str, x509_certificates: List[bytes],
+    **kwargs) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate
@@ -779,10 +791,8 @@ methods:
     soft-delete enabled.
 
 
-    Requires certificates/purge permission.
-
-
-    Performs an irreversible deletion of the specified certificate, without
+    Requires certificates/purge permission. Performs an irreversible deletion of the
+    specified certificate, without
 
     possibility for recovery. The operation is not available if the
 
@@ -792,7 +802,8 @@ methods:
     This method is only necessary for purging a certificate before its
 
     <xref:azure.keyvault.certificates.DeletedCertificate.scheduled_purge_date>.'
-  signature: 'purge_deleted_certificate(certificate_name: str, **kwargs: Any) -> None'
+  signature: 'async purge_deleted_certificate(certificate_name: str, **kwargs) ->
+    None'
   parameters:
   - name: certificate_name
     description: The name of the certificate
@@ -818,8 +829,8 @@ methods:
     permanent, and this method will raise an error. Attempting to recover a
 
     non-deleted certificate will also raise an error.'
-  signature: 'recover_deleted_certificate(certificate_name: str, **kwargs: Any) ->
-    azure.keyvault.certificates._models.KeyVaultCertificate'
+  signature: 'async recover_deleted_certificate(certificate_name: str, **kwargs) ->
+    KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the deleted certificate
@@ -835,8 +846,8 @@ methods:
   examples:
   - "Recover a deleted certificate<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # recover deleted certificate to its latest version (requires soft-delete\
@@ -850,13 +861,13 @@ methods:
 
 
     This restores all versions of the certificate, with its name, attributes, and
-    access control policies.
+    access control policies. If the
 
-    If the certificate''s name is already in use, restoring it will fail. Also, the
-    target vault must
+    certificate''s name is already in use, restoring it will fail. Also, the target
+    vault must be owned by the same
 
-    be owned by the same Microsoft Azure subscription as the source vault.'
-  signature: 'restore_certificate_backup(backup: bytes, **kwargs: Any) -> azure.keyvault.certificates._models.KeyVaultCertificate'
+    Microsoft Azure subscription as the source vault.'
+  signature: 'async restore_certificate_backup(backup: bytes, **kwargs) -> KeyVaultCertificate'
   parameters:
   - name: backup
     description: The backup blob associated with a certificate bundle.
@@ -872,8 +883,8 @@ methods:
   examples:
   - "Restore a certificate backup<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # restores a certificate backup\n   restored_certificate = await certificate_client.restore_certificate_backup(certificate_backup)\n\
@@ -883,8 +894,8 @@ methods:
   name: set_contacts
   summary: Sets the certificate contacts for the key vault. Requires certificates/managecontacts
     permission.
-  signature: 'set_contacts(contacts: Iterable[azure.keyvault.certificates._models.CertificateContact],
-    **kwargs: Any) -> List[azure.keyvault.certificates._models.CertificateContact]'
+  signature: 'async set_contacts(contacts: List[CertificateContact], **kwargs) ->
+    List[CertificateContact]'
   parameters:
   - name: contacts
     description: The contact list for the vault certificates.
@@ -900,8 +911,8 @@ methods:
   examples:
   - "Create contacts<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.keyvault.certificates import CertificateContact\n\n   # Create\
@@ -913,12 +924,12 @@ methods:
     \       print(contact.phone)\n\n   ````\n"
 - uid: azure.keyvault.certificates.aio.CertificateClient.update_certificate_policy
   name: update_certificate_policy
-  summary: 'Updates the policy for a certificate. Requires certificiates/update permission.
+  summary: 'Updates the policy for a certificate. Requires certificates/update permission.
 
 
     Set specified members in the certificate policy. Leaves others as null.'
-  signature: 'update_certificate_policy(certificate_name: str, policy: azure.keyvault.certificates._models.CertificatePolicy,
-    **kwargs: Any) -> azure.keyvault.certificates._models.CertificatePolicy'
+  signature: 'async update_certificate_policy(certificate_name: str, policy: CertificatePolicy,
+    **kwargs) -> CertificatePolicy'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given vault.
@@ -939,8 +950,8 @@ methods:
 - uid: azure.keyvault.certificates.aio.CertificateClient.update_certificate_properties
   name: update_certificate_properties
   summary: Change a certificate's properties. Requires certificates/update permission.
-  signature: 'update_certificate_properties(certificate_name: str, version: Optional[str]
-    = None, **kwargs: Any) -> azure.keyvault.certificates._models.KeyVaultCertificate'
+  signature: 'async update_certificate_properties(certificate_name: str, version:
+    str | None = None, **kwargs) -> KeyVaultCertificate'
   parameters:
   - name: certificate_name
     description: The name of the certificate in the given key vault.
@@ -969,8 +980,8 @@ methods:
   examples:
   - "Update a certificate's attributes<!--[!code-python[Main](s\\test_examples_certificates_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\1\\\\s\\\\dist_temp\\\
-    \\59\\\\azure-keyvault-certificates-4.4.0b3\\\\tests\\\\test_examples_certificates_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    dist_temp\\\\56\\\\azure-keyvault-certificates-4.8.0b2\\\\tests\\\\test_examples_certificates_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # update attributes of an existing certificate\n   tags = {\"foo\": \"updated\
@@ -982,7 +993,7 @@ methods:
   name: update_issuer
   summary: Updates the specified certificate issuer. Requires certificates/setissuers
     permission.
-  signature: 'update_issuer(issuer_name: str, **kwargs: Any) -> azure.keyvault.certificates._models.CertificateIssuer'
+  signature: 'async update_issuer(issuer_name: str, **kwargs) -> CertificateIssuer'
   parameters:
   - name: issuer_name
     description: The name of the issuer.

@@ -1,0 +1,682 @@
+### YamlMime:PythonClass
+uid: azure.storage.queue.aio.QueueClient
+name: QueueClient
+fullName: azure.storage.queue.aio.QueueClient
+module: azure.storage.queue.aio
+inheritances:
+- azure.storage.queue._shared.base_client_async.AsyncStorageAccountHostsMixin
+- azure.storage.queue._queue_client.QueueClient
+- azure.storage.queue._encryption.StorageEncryptionMixin
+summary: A client to interact with a specific Queue.
+constructor:
+  syntax: 'QueueClient(account_url: str, queue_name: str, credential: str | Dict[str,
+    str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
+    None, **kwargs: Any)'
+  parameters:
+  - name: account_url
+    description: 'The URL to the storage account. In order to create a client given
+      the full URI to the queue,
+
+      use the <xref:azure.storage.queue.aio.from_queue_url> classmethod.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: queue_name
+    description: The name of the queue.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  - name: api_version
+    description: 'The Storage API version to use for requests. Default value is the
+      most recent service version that is
+
+      compatible with the current SDK. Setting to an older version may result in reduced
+      feature compatibility.'
+    types:
+    - <xref:str>
+  - name: secondary_hostname
+    description: The hostname of the secondary endpoint.
+    types:
+    - <xref:str>
+  - name: message_encode_policy
+    description: 'The encoding policy to use on outgoing messages.
+
+      Default is not to encode messages. Other options include <xref:azure.storage.queue.aio.TextBase64EncodePolicy>,
+
+      <xref:azure.storage.queue.aio.BinaryBase64EncodePolicy> or *None*.'
+  - name: message_decode_policy
+    description: 'The decoding policy to use on incoming messages.
+
+      Default value is not to decode messages. Other options include <xref:azure.storage.queue.aio.TextBase64DecodePolicy>,
+
+      <xref:azure.storage.queue.aio.BinaryBase64DecodePolicy> or *None*.'
+methods:
+- uid: azure.storage.queue.aio.QueueClient.clear_messages
+  name: clear_messages
+  summary: Deletes all messages from the specified queue.
+  signature: 'async clear_messages(**kwargs: Any | None) -> None'
+  parameters:
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+- uid: azure.storage.queue.aio.QueueClient.create_queue
+  name: create_queue
+  summary: 'Creates a new queue in the storage account.
+
+
+    If a queue with the same name already exists, the operation fails with
+
+    a *ResourceExistsError*.'
+  signature: 'async create_queue(**kwargs: Any | None) -> None'
+  parameters:
+  - name: metadata
+    description: 'A dict containing name-value pairs to associate with the queue as
+
+      metadata. Note that metadata names preserve the case with which they
+
+      were created, but are case-insensitive when set or read.'
+    types:
+    - <xref:dict>(<xref:str>,<xref:str>)
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: None or the result of cls(response)
+    types:
+    - <xref:None>
+  exceptions:
+  - type: StorageErrorException
+- uid: azure.storage.queue.aio.QueueClient.delete_message
+  name: delete_message
+  summary: 'Deletes the specified message.
+
+
+    Normally after a client retrieves a message with the receive messages operation,
+
+    the client is expected to process and delete the message. To delete the
+
+    message, you must have the message object itself, or two items of data: id and
+    pop_receipt.
+
+    The id is returned from the previous receive_messages operation. The
+
+    pop_receipt is returned from the most recent <xref:azure.storage.queue.aio.QueueClient.receive_messages>
+    or
+
+    <xref:azure.storage.queue.aio.QueueClient.update_message> operation. In order
+    for the delete_message operation
+
+    to succeed, the pop_receipt specified on the request must match the
+
+    pop_receipt returned from the <xref:azure.storage.queue.aio.QueueClient.receive_messages>
+    or <xref:azure.storage.queue.aio.QueueClient.update_message>
+
+    operation.'
+  signature: 'async delete_message(message: Any, pop_receipt: str | None = None, **kwargs:
+    Any) -> None'
+  parameters:
+  - name: message
+    description: The message object or id identifying the message to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.queue.QueueMessage>
+  - name: pop_receipt
+    description: 'A valid pop receipt value returned from an earlier call
+
+      to the <xref:azure.storage.queue.aio.QueueClient.receive_messages> or <xref:azure.storage.queue.aio.QueueClient.update_message>.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+- uid: azure.storage.queue.aio.QueueClient.delete_queue
+  name: delete_queue
+  summary: 'Deletes the specified queue and any messages it contains.
+
+
+    When a queue is successfully deleted, it is immediately marked for deletion
+
+    and is no longer accessible to clients. The queue is later removed from
+
+    the Queue service during garbage collection.
+
+
+    Note that deleting a queue is likely to take at least 40 seconds to complete.
+
+    If an operation is attempted against the queue while it was being deleted,
+
+    an <xref:azure.storage.queue.aio.HttpResponseError> will be thrown.'
+  signature: 'async delete_queue(**kwargs: Any | None) -> None'
+  parameters:
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:None>
+- uid: azure.storage.queue.aio.QueueClient.get_queue_access_policy
+  name: get_queue_access_policy
+  summary: 'Returns details about any stored access policies specified on the
+
+    queue that may be used with Shared Access Signatures.'
+  signature: 'async get_queue_access_policy(**kwargs: Any | None) -> Dict[str, Any]'
+  parameters:
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: A dictionary of access policies associated with the queue.
+    types:
+    - <xref:dict>(<xref:str>, <xref:azure.storage.queue.AccessPolicy>)
+- uid: azure.storage.queue.aio.QueueClient.get_queue_properties
+  name: get_queue_properties
+  summary: 'Returns all user-defined metadata for the specified queue.
+
+
+    The data returned does not include the queue''s list of messages.'
+  signature: 'async get_queue_properties(**kwargs: Any | None) -> QueueProperties'
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    types:
+    - <xref:int>
+  return:
+    description: User-defined metadata for the queue.
+    types:
+    - <xref:azure.storage.queue.QueueProperties>
+- uid: azure.storage.queue.aio.QueueClient.peek_messages
+  name: peek_messages
+  summary: 'Retrieves one or more messages from the front of the queue, but does
+
+    not alter the visibility of the message.
+
+
+    Only messages that are visible may be retrieved. When a message is retrieved
+
+    for the first time with a call to <xref:azure.storage.queue.aio.QueueClient.receive_messages>,
+    its dequeue_count property
+
+    is set to 1. If it is not deleted and is subsequently retrieved again, the
+
+    dequeue_count property is incremented. The client may use this value to
+
+    determine how many times a message has been retrieved. Note that a call
+
+    to peek_messages does not increment the value of dequeue_count, but returns
+
+    this value for the client to read.
+
+
+    If the key-encryption-key or resolver field is set on the local service object,
+
+    the messages will be decrypted before being returned.'
+  signature: 'async peek_messages(max_messages: int | None = None, **kwargs: Any |
+    None) -> List[QueueMessage]'
+  parameters:
+  - name: max_messages
+    description: 'A nonzero integer value that specifies the number of
+
+      messages to peek from the queue, up to a maximum of 32. By default,
+
+      a single message is peeked from the queue with this operation.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'A list of <xref:azure.storage.queue.QueueMessage> objects. Note
+      that
+
+      next_visible_on and pop_receipt will not be populated as peek does
+
+      not pop the message and can only retrieve already visible messages.'
+    types:
+    - <xref:list>(<xref:azure.storage.queue.QueueMessage>)
+- uid: azure.storage.queue.aio.QueueClient.receive_message
+  name: receive_message
+  summary: 'Removes one message from the front of the queue.
+
+
+    When the message is retrieved from the queue, the response includes the message
+
+    content and a pop_receipt value, which is required to delete the message.
+
+    The message is not automatically deleted from the queue, but after it has
+
+    been retrieved, it is not visible to other clients for the time interval
+
+    specified by the visibility_timeout parameter.
+
+
+    If the key-encryption-key or resolver field is set on the local service object,
+    the message will be
+
+    decrypted before being returned.'
+  signature: 'async receive_message(**kwargs: Any) -> QueueMessage | None'
+  parameters:
+  - name: visibility_timeout
+    description: 'If not specified, the default value is 30. Specifies the
+
+      new visibility timeout value, in seconds, relative to server time.
+
+      The value must be larger than or equal to 1, and cannot be
+
+      larger than 7 days. The visibility timeout of a message cannot be
+
+      set to a value later than the expiry time. visibility_timeout
+
+      should be set to a value smaller than the time-to-live value.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: Returns a message from the Queue or None if the Queue is empty.
+    types:
+    - <xref:azure.storage.queue.QueueMessage>
+    - <xref:None>
+- uid: azure.storage.queue.aio.QueueClient.receive_messages
+  name: receive_messages
+  summary: 'Removes one or more messages from the front of the queue.
+
+
+    When a message is retrieved from the queue, the response includes the message
+
+    content and a pop_receipt value, which is required to delete the message.
+
+    The message is not automatically deleted from the queue, but after it has
+
+    been retrieved, it is not visible to other clients for the time interval
+
+    specified by the visibility_timeout parameter. The iterator will continuously
+
+    fetch messages until the queue is empty or max_messages is reached (if max_messages
+
+    is set).
+
+
+    If the key-encryption-key or resolver field is set on the local service object,
+    the messages will be
+
+    decrypted before being returned.'
+  signature: 'receive_messages(**kwargs: Any | None) -> AsyncItemPaged[QueueMessage]'
+  parameters:
+  - name: messages_per_page
+    description: 'A nonzero integer value that specifies the number of
+
+      messages to retrieve from the queue, up to a maximum of 32. If
+
+      fewer are visible, the visible messages are returned. By default,
+
+      a single message is retrieved from the queue with this operation.
+
+      *by_page()* can be used to provide a page iterator on the AsyncItemPaged if
+      messages_per_page is set.
+
+      *next()* can be used to get the next page.'
+    types:
+    - <xref:int>
+  - name: visibility_timeout
+    description: 'If not specified, the default value is 30. Specifies the
+
+      new visibility timeout value, in seconds, relative to server time.
+
+      The value must be larger than or equal to 1, and cannot be
+
+      larger than 7 days. The visibility timeout of a message cannot be
+
+      set to a value later than the expiry time. visibility_timeout
+
+      should be set to a value smaller than the time-to-live value.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  - name: max_messages
+    description: An integer that specifies the maximum number of messages to retrieve
+      from the queue.
+    types:
+    - <xref:int>
+  return:
+    description: Returns a message iterator of dict-like Message objects.
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.storage.queue.QueueMessage>]
+- uid: azure.storage.queue.aio.QueueClient.send_message
+  name: send_message
+  summary: 'Adds a new message to the back of the message queue.
+
+
+    The visibility timeout specifies the time that the message will be
+
+    invisible. After the timeout expires, the message will become visible.
+
+    If a visibility timeout is not specified, the default value of 0 is used.
+
+
+    The message time-to-live specifies how long a message will remain in the
+
+    queue. The message will be deleted from the queue when the time-to-live
+
+    period expires.
+
+
+    If the key-encryption-key field is set on the local service object, this method
+    will
+
+    encrypt the content before uploading.'
+  signature: 'async send_message(content: Any, **kwargs: Any | None) -> QueueMessage'
+  parameters:
+  - name: content
+    description: 'Message content. Allowed type is determined by the encode_function
+
+      set on the service. Default is str. The encoded message can be up to
+
+      64KB in size.'
+    isRequired: true
+    types:
+    - <xref:obj>
+  - name: visibility_timeout
+    description: 'If not specified, the default value is 0. Specifies the
+
+      new visibility timeout value, in seconds, relative to server time.
+
+      The value must be larger than or equal to 0, and cannot be
+
+      larger than 7 days. The visibility timeout of a message cannot be
+
+      set to a value later than the expiry time. visibility_timeout
+
+      should be set to a value smaller than the time-to-live value.'
+    types:
+    - <xref:int>
+  - name: time_to_live
+    description: 'Specifies the time-to-live interval for the message, in
+
+      seconds. The time-to-live may be any positive number or -1 for infinity. If
+      this
+
+      parameter is omitted, the default time-to-live is 7 days.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'A <xref:azure.storage.queue.QueueMessage> object.
+
+      This object is also populated with the content although it is not
+
+      returned from the service.'
+    types:
+    - <xref:azure.storage.queue.QueueMessage>
+- uid: azure.storage.queue.aio.QueueClient.set_queue_access_policy
+  name: set_queue_access_policy
+  summary: 'Sets stored access policies for the queue that may be used with Shared
+
+    Access Signatures.
+
+
+    When you set permissions for a queue, the existing permissions are replaced.
+
+    To update the queue''s permissions, call <xref:azure.storage.queue.aio.QueueClient.get_queue_access_policy>
+    to fetch
+
+    all access policies associated with the queue, modify the access policy
+
+    that you wish to change, and then call this function with the complete
+
+    set of data to perform the update.
+
+
+    When you establish a stored access policy on a queue, it may take up to
+
+    30 seconds to take effect. During this interval, a shared access signature
+
+    that is associated with the stored access policy will throw an
+
+    <xref:azure.storage.queue.aio.HttpResponseError> until the access policy becomes
+    active.'
+  signature: 'async set_queue_access_policy(signed_identifiers: Dict[str, AccessPolicy],
+    **kwargs: Any | None) -> None'
+  parameters:
+  - name: signed_identifiers
+    description: 'SignedIdentifier access policies to associate with the queue.
+
+      This may contain up to 5 elements. An empty dict
+
+      will clear the access policies set on the service.'
+    isRequired: true
+    types:
+    - <xref:dict>(<xref:str>, <xref:azure.storage.queue.AccessPolicy>)
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+- uid: azure.storage.queue.aio.QueueClient.set_queue_metadata
+  name: set_queue_metadata
+  summary: 'Sets user-defined metadata on the specified queue.
+
+
+    Metadata is associated with the queue as name-value pairs.'
+  signature: 'async set_queue_metadata(metadata: Dict[str, Any] | None = None, **kwargs:
+    Any | None) -> None'
+  parameters:
+  - name: metadata
+    description: 'A dict containing name-value pairs to associate with the
+
+      queue as metadata.'
+    isRequired: true
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+- uid: azure.storage.queue.aio.QueueClient.update_message
+  name: update_message
+  summary: 'Updates the visibility timeout of a message. You can also use this
+
+    operation to update the contents of a message.
+
+
+    This operation can be used to continually extend the invisibility of a
+
+    queue message. This functionality can be useful if you want a worker role
+
+    to "lease" a queue message. For example, if a worker role calls <xref:azure.storage.queue.aio.QueueClient.receive_messages>
+
+    and recognizes that it needs more time to process a message, it can
+
+    continually extend the message''s invisibility until it is processed. If
+
+    the worker role were to fail during processing, eventually the message
+
+    would become visible again and another worker role could process it.
+
+
+    If the key-encryption-key field is set on the local service object, this method
+    will
+
+    encrypt the content before uploading.'
+  signature: 'async update_message(message: Any, pop_receipt: int = None, content:
+    str | None = None, **kwargs: Any | None) -> QueueMessage'
+  parameters:
+  - name: message
+    description: The message object or id identifying the message to update.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:azure.storage.queue.QueueMessage>
+  - name: pop_receipt
+    description: 'A valid pop receipt value returned from an earlier call
+
+      to the <xref:azure.storage.queue.aio.QueueClient.receive_messages> or <xref:azure.storage.queue.aio.QueueClient.update_message>
+      operation.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content
+    description: 'Message content. Allowed type is determined by the encode_function
+
+      set on the service. Default is str.'
+    isRequired: true
+    types:
+    - <xref:obj>
+  - name: visibility_timeout
+    description: 'Specifies the new visibility timeout value, in seconds,
+
+      relative to server time. The new value must be larger than or equal
+
+      to 0, and cannot be larger than 7 days. The visibility timeout of a
+
+      message cannot be set to a value later than the expiry time. A
+
+      message can be updated until it has been deleted or has expired.
+
+      The message object or message id identifying the message to update.'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations](https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: 'A <xref:azure.storage.queue.QueueMessage> object. For convenience,
+
+      this object is also populated with the content, although it is not returned
+      by the service.'
+    types:
+    - <xref:azure.storage.queue.QueueMessage>

@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/11/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: customvision
+ms.service: cognitive-services
+ms.subservice: custom-vision
 ---
 
 # Microsoft Azure SDK for Python

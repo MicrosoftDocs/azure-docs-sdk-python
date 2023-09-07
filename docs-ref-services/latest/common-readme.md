@@ -5,10 +5,9 @@ author: lmazuel
 ms.author: lmazuel
 ms.date: 02/03/2022
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: core
+ms.service: azure-python
 ---
 # Microsoft Azure SDK for Python
 

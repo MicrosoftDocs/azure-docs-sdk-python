@@ -8,26 +8,52 @@ inheritances:
 summary: Manages role-based access to Azure Key Vault.
 constructor:
   syntax: 'KeyVaultAccessControlClient(vault_url: str, credential: TokenCredential,
-    **kwargs: Any)'
+    **kwargs)'
   parameters:
   - name: vault_url
-    description: URL of the vault the client will manage. This is also called the
-      vault's "DNS Name".
+    description: 'URL of the vault the client will manage. This is also called the
+      vault''s "DNS Name".
+
+      You should validate that this URL references a valid Key Vault or Managed HSM
+      resource.
+
+      See [https://aka.ms/azsdk/blog/vault-uri](https://aka.ms/azsdk/blog/vault-uri)
+      for details.'
     isRequired: true
     types:
     - <xref:str>
   - name: credential
-    description: 'an object which can provide an access token for the vault, such
+    description: 'An object which can provide an access token for the vault, such
       as a credential from
 
       <xref:azure.identity>'
     isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: api_version
+    description: Version of the service API to use. Defaults to the most recent.
+    types:
+    - <xref:azure.keyvault.administration.ApiVersion>
+  - name: verify_challenge_resource
+    description: 'Whether to verify the authentication challenge resource matches
+      the Key
+
+      Vault or Managed HSM domain. Defaults to True.'
+    types:
+    - <xref:bool>
 methods:
+- uid: azure.keyvault.administration.KeyVaultAccessControlClient.close
+  name: close
+  summary: 'Close sockets opened by the client.
+
+
+    Calling this method is unnecessary when using the client as a context manager.'
+  signature: close() -> None
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.create_role_assignment
   name: create_role_assignment
   summary: Create a role assignment.
-  signature: 'create_role_assignment(scope: Union[str, KeyVaultRoleScope], definition_id:
-    str, principal_id: str, **kwargs: Any) -> KeyVaultRoleAssignment'
+  signature: 'create_role_assignment(scope: str | KeyVaultRoleScope, definition_id:
+    str, principal_id: str, **kwargs) -> KeyVaultRoleAssignment'
   parameters:
   - name: scope
     description: 'scope the role assignment will apply over. <xref:azure.keyvault.administration.KeyVaultRoleScope>
@@ -56,14 +82,15 @@ methods:
     types:
     - <xref:str>
     - <xref:uuid.UUID>
+    - <xref:None>
   return:
     types:
     - <xref:azure.keyvault.administration.KeyVaultRoleAssignment>
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.delete_role_assignment
   name: delete_role_assignment
   summary: Delete a role assignment.
-  signature: 'delete_role_assignment(scope: Union[str, KeyVaultRoleScope], name: Union[str,
-    UUID], **kwargs: Any) -> None'
+  signature: 'delete_role_assignment(scope: str | KeyVaultRoleScope, name: str | UUID,
+    **kwargs) -> None'
   parameters:
   - name: scope
     description: 'the assignment''s scope, for example "/", "/keys", or "/keys/<specific
@@ -86,8 +113,8 @@ methods:
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.delete_role_definition
   name: delete_role_definition
   summary: Deletes a custom role definition.
-  signature: 'delete_role_definition(scope: Union[str, KeyVaultRoleScope], name: Union[str,
-    UUID], **kwargs: Any) -> None'
+  signature: 'delete_role_definition(scope: str | KeyVaultRoleScope, name: str | UUID,
+    **kwargs) -> None'
   parameters:
   - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.KeyVaultRoleScope>
@@ -109,8 +136,8 @@ methods:
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.get_role_assignment
   name: get_role_assignment
   summary: Get a role assignment.
-  signature: 'get_role_assignment(scope: Union[str, KeyVaultRoleScope], name: Union[str,
-    UUID], **kwargs: Any) -> KeyVaultRoleAssignment'
+  signature: 'get_role_assignment(scope: str | KeyVaultRoleScope, name: str | UUID,
+    **kwargs) -> KeyVaultRoleAssignment'
   parameters:
   - name: scope
     description: 'the assignment''s scope, for example "/", "/keys", or "/keys/<specific
@@ -134,8 +161,8 @@ methods:
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.get_role_definition
   name: get_role_definition
   summary: Get the specified role definition.
-  signature: 'get_role_definition(scope: Union[str, KeyVaultRoleScope], name: Union[str,
-    UUID], **kwargs: Any) -> KeyVaultRoleDefinition'
+  signature: 'get_role_definition(scope: str | KeyVaultRoleScope, name: str | UUID,
+    **kwargs) -> KeyVaultRoleDefinition'
   parameters:
   - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.KeyVaultRoleScope>
@@ -158,8 +185,7 @@ methods:
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.list_role_assignments
   name: list_role_assignments
   summary: List all role assignments for a scope.
-  signature: 'list_role_assignments(scope: Union[str, KeyVaultRoleScope], **kwargs:
-    Any) -> ItemPaged[KeyVaultRoleAssignment]'
+  signature: 'list_role_assignments(scope: str | KeyVaultRoleScope, **kwargs) -> ItemPaged[KeyVaultRoleAssignment]'
   parameters:
   - name: scope
     description: 'scope of the role assignments. <xref:azure.keyvault.administration.KeyVaultRoleScope>
@@ -176,8 +202,7 @@ methods:
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.list_role_definitions
   name: list_role_definitions
   summary: List all role definitions applicable at and above a scope.
-  signature: 'list_role_definitions(scope: Union[str, KeyVaultRoleScope], **kwargs:
-    Any) -> ItemPaged[KeyVaultRoleDefinition]'
+  signature: 'list_role_definitions(scope: str | KeyVaultRoleScope, **kwargs) -> ItemPaged[KeyVaultRoleDefinition]'
   parameters:
   - name: scope
     description: 'scope of the role definitions. <xref:azure.keyvault.administration.KeyVaultRoleScope>
@@ -191,14 +216,45 @@ methods:
   return:
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.keyvault.administration.KeyVaultRoleDefinition>]
+- uid: azure.keyvault.administration.KeyVaultAccessControlClient.send_request
+  name: send_request
+  summary: 'Runs a network request using the client''s existing pipeline.
+
+
+    The request URL can be relative to the vault URL. The service API version used
+    for the request is the same as
+
+    the client''s unless otherwise specified. This method does not raise if the response
+    is an error; to raise an
+
+    exception, call *raise_for_status()* on the returned response object. For more
+    information about how to send
+
+    custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
+    -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
 - uid: azure.keyvault.administration.KeyVaultAccessControlClient.set_role_definition
   name: set_role_definition
   summary: 'Creates or updates a custom role definition.
 
 
     To update a role definition, specify the definition''s `name`.'
-  signature: 'set_role_definition(scope: Union[str, KeyVaultRoleScope], **kwargs:
-    Any) -> KeyVaultRoleDefinition'
+  signature: 'set_role_definition(scope: str | KeyVaultRoleScope, **kwargs) -> KeyVaultRoleDefinition'
   parameters:
   - name: scope
     description: 'scope of the role definition. <xref:azure.keyvault.administration.KeyVaultRoleScope>
@@ -221,6 +277,7 @@ methods:
     types:
     - <xref:str>
     - <xref:uuid.UUID>
+    - <xref:None>
   - name: role_name
     description: 'the role''s display name. If unspecified when creating or updating
       a role definition, the
@@ -228,6 +285,7 @@ methods:
       role name will be set to an empty string.'
     types:
     - <xref:str>
+    - <xref:None>
   - name: description
     description: 'a description of the role definition. If unspecified when creating
       or updating a role
@@ -235,19 +293,25 @@ methods:
       definition, the description will be set to an empty string.'
     types:
     - <xref:str>
+    - <xref:None>
   - name: permissions
     description: 'the role definition''s permissions. If unspecified when creating
       or updating a role
 
       definition, the role definition will have no action permissions.'
     types:
-    - <xref:Iterable>[<xref:azure.keyvault.administration.KeyVaultPermission>]
+    - <xref:list>[<xref:azure.keyvault.administration.KeyVaultPermission>]
+    - <xref:None>
   - name: assignable_scopes
     description: the scopes for which the role definition can be assigned.
     types:
-    - <xref:Iterable>[<xref:str>]
-    - <xref:Iterable>[<xref:azure.keyvault.administration.KeyVaultRoleScope>]
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.keyvault.administration.KeyVaultRoleScope>]
+    - <xref:None>
   return:
     description: The created or updated role definition
     types:
     - <xref:azure.keyvault.administration.KeyVaultRoleDefinition>
+attributes:
+- uid: azure.keyvault.administration.KeyVaultAccessControlClient.vault_url
+  name: vault_url

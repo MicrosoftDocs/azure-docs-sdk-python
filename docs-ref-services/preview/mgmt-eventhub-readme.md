@@ -1,22 +1,73 @@
-
+---
+title: 
+keywords: Azure, python, SDK, API, azure-mgmt-eventhub, eventhub
+author: annatisch
+ms.author: antisch
+ms.date: 02/14/2023
+ms.topic: reference
+ms.devlang: python
+ms.service: eventhub
+---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure EventHub Management Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
-For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
+This is the Microsoft Azure Event Hub Management Client Library.
+This package has been tested with Python 3.7+.
+For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+
+## Getting started
+
+### Prerequisites
+
+- Python 3.7+ is required to use this package.
+- [Azure subscription](https://azure.microsoft.com/free/)
+
+### Install the package
+
+```bash
+pip install azure-mgmt-eventhub
+pip install azure-identity
+```
+
+### Authentication
+
+By default, [Azure Active Directory](https://aka.ms/awps/aad) token authentication depends on correct configure of following environment variables.
+
+- `AZURE_CLIENT_ID` for Azure client ID.
+- `AZURE_TENANT_ID` for Azure tenant ID.
+- `AZURE_CLIENT_SECRET` for Azure client secret.
+
+In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
+
+With above configuration, client can be authenticated by following code:
+
+```python
+from azure.identity import DefaultAzureCredential
+from azure.mgmt.eventhub import EventHubManagementClient
+import os
+
+sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
+client = EventHubManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+```
+
+## Examples
 
 
-# Usage
-
-For code examples, see [EventHub Management](https://docs.microsoft.com/python/api/overview/azure/event-hub?view=azure-python-preview)
-on docs.microsoft.com.
+Code samples for this package can be found at [Event Hub Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
-# Provide Feedback
+## Troubleshooting
+
+## Next steps
+
+## Provide Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
-section of the project.
+section of the project. 
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-eventhub%2FREADME.png)

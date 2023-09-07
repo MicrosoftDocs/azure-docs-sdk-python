@@ -9,14 +9,23 @@ summary: "A client to interact with the AzureCommunicationService Phone Numbers 
   \nThis client provides operations to interact with the phone numbers service\n:param\
   \ str endpoint:\n\n   The endpoint url for Azure Communication Service resource."
 constructor:
-  syntax: 'PhoneNumbersClient(endpoint: str, credential: TokenCredential, **kwargs:
-    Any)'
+  syntax: 'PhoneNumbersClient(endpoint: str, credential: TokenCredential | AzureKeyCredential,
+    **kwargs: Any)'
   parameters:
   - name: credential
-    description: The credentials with which to authenticate.
+    description: The credential we use to authenticate against the service.
     isRequired: true
     types:
-    - <xref:TokenCredential>
+    - <xref:typing.Union>[<xref:TokenCredential>, <xref:AzureKeyCredential>]
+  - name: api_version
+    description: 'Azure Communication Phone Number API version.
+
+      The default value is "2022-01-11-preview2".
+
+      Note that overriding this default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+  - name: endpoint
 methods:
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.begin_purchase_phone_numbers
   name: begin_purchase_phone_numbers
@@ -41,7 +50,7 @@ methods:
     - <xref:bool>
     - <xref:azure.core.polling.PollingMethod>
   - name: polling_interval
-    description: 'Default waiting time between two polls
+    description: 'Default waiting time (seconds) between two polls
 
       for LRO operations if no Retry-After header is present.'
     types:
@@ -72,7 +81,7 @@ methods:
     - <xref:bool>
     - <xref:azure.core.polling.PollingMethod>
   - name: polling_interval
-    description: 'Default waiting time between two polls
+    description: 'Default waiting time (seconds) between two polls
 
       for LRO operations if no Retry-After header is present.'
     types:
@@ -140,7 +149,7 @@ methods:
     - <xref:bool>
     - <xref:azure.core.polling.PollingMethod>
   - name: polling_interval
-    description: 'Default waiting time between two polls
+    description: 'Default waiting time (seconds) between two polls
 
       for LRO operations if no Retry-After header is present.'
     types:
@@ -188,7 +197,7 @@ methods:
     - <xref:bool>
     - <xref:azure.core.polling.PollingMethod>
   - name: polling_interval
-    description: 'Default waiting time between two polls
+    description: 'Default waiting time (seconds) between two polls
 
       for LRO operations if no Retry-After header is present.'
     types:
@@ -202,8 +211,6 @@ methods:
     \n   A connection string to an Azure Communication Service resource."
   signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> PhoneNumbersClient'
   parameters:
-  - name: cls
-    isRequired: true
   - name: conn_str
     isRequired: true
   return:
@@ -224,8 +231,157 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The details of the given purchased phone number.
     types:
     - <xref:azure.communication.phonenumbers.models.PurchasedPhoneNumber>
+- uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_area_codes
+  name: list_available_area_codes
+  summary: 'Gets the list of available area codes.
+
+
+    "geographic" and "tollFree". Required.
+
+    :type phone_number_type: ~azure.communication.phonenumbers.models.PhoneNumberType
+
+    :param assignment_type: Filter by assignmentType, e.g. User, Application. Known
+    values are:
+
+    "person" and "application". Default value is None.
+
+    :type assignment_type: ~azure.communication.phonenumbers.models.PhoneNumberAssignmentType
+
+    :param locality: The name of locality in which to search for the area code. e.g.
+    Seattle.
+
+    This is required if the phone number type is Geographic. Default value is None.
+
+    :type locality: str
+
+    :keyword administrative_division: The name of the state or province in which to
+    search for the
+
+    area code. e.g. California. Default value is None.
+
+    :type administrative_division: str
+
+    :keyword skip: An optional parameter for how many entries to skip, for pagination
+    purposes. The
+
+    default value is 0. Default value is 0.
+
+    :paramtype skip: int
+
+    :return: An iterator like instance of PhoneNumberAreaCode
+
+    :rtype: ~azure.core.paging.ItemPaged[~azure.communication.phonenumbers.models.PhoneNumberAreaCode]
+
+    :raises ~azure.core.exceptions.HttpResponseError:'
+  signature: 'list_available_area_codes(country_code: str, phone_number_type: PhoneNumberType,
+    **kwargs: Any) -> ItemPaged[PhoneNumberAreaCode]'
+  parameters:
+  - name: country_code
+    description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: phone_number_type
+    description: 'Filter by phone number type, e.g. Geographic, TollFree. Known values
+      are:'
+    isRequired: true
+- uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_countries
+  name: list_available_countries
+  summary: 'Gets the list of supported countries.
+
+
+    Gets the list of supported countries.'
+  signature: 'list_available_countries(**kwargs: Any) -> ItemPaged[PhoneNumberCountry]'
+  parameters:
+  - name: skip
+    description: 'An optional parameter for how many entries to skip, for pagination
+      purposes. The
+
+      default value is 0. Default value is 0.'
+    types:
+    - <xref:int>
+  return:
+    description: An iterator like instance of PhoneNumberCountry
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PhoneNumberCountry>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_localities
+  name: list_available_localities
+  summary: 'Gets the list of cities or towns with available phone numbers.
+
+
+    Gets the list of cities or towns with available phone numbers.'
+  signature: 'list_available_localities(country_code: str, **kwargs: Any) -> ItemPaged[PhoneNumberLocality]'
+  parameters:
+  - name: country_code
+    description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: administrative_division
+    description: 'An optional parameter for the name of the state or province
+
+      in which to search for the area code. e.g. California. Default value is None.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: skip
+    description: 'An optional parameter for how many entries to skip, for pagination
+      purposes. The
+
+      default value is 0. Default value is 0.'
+    types:
+    - <xref:int>
+  return:
+    description: An iterator like instance of PhoneNumberLocality
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PhoneNumberLocality>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_offerings
+  name: list_available_offerings
+  summary: 'List available offerings of capabilities with rates for the given country/region.
+
+
+    List available offerings of capabilities with rates for the given country/region.'
+  signature: 'list_available_offerings(country_code: str, **kwargs) -> ItemPaged[PhoneNumberOffering]'
+  parameters:
+  - name: country_code
+    description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: phone_number_type
+    description: 'Filter by phoneNumberType, e.g. Geographic, TollFree. Known values
+
+      are: "geographic" and "tollFree". Default value is None.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.phonenumbers.models.PhoneNumberType>
+  - name: assignment_type
+    description: 'Filter by assignmentType, e.g. User, Application. Known values are:
+
+      "person" and "application". Default value is None.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.phonenumbers.models.PhoneNumberAssignmentType>
+  - name: skip
+    description: 'An optional parameter for how many entries to skip, for pagination
+      purposes. The
+
+      default value is 0. Default value is 0.'
+    types:
+    - <xref:int>
+  return:
+    description: An iterator like instance of PhoneNumberOffering
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PhoneNumberOffering>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_purchased_phone_numbers
   name: list_purchased_phone_numbers
   summary: Gets the list of all purchased phone numbers.
@@ -235,10 +391,33 @@ methods:
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
 
-      default value is 0.'
-    isRequired: true
+      default value is 0. Default value is 0.'
+    types:
+    - <xref:int>
+  - name: top
+    description: 'An optional parameter for how many entries to return, for pagination
+      purposes.
+
+      The default value is 100. Default value is 100.'
     types:
     - <xref:int>
   return:
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PurchasedPhoneNumber>]
+- uid: azure.communication.phonenumbers.PhoneNumbersClient.search_operator_information
+  name: search_operator_information
+  summary: Searches for operator information for a given list of phone numbers.
+  signature: 'search_operator_information(phone_numbers: PhoneNumberSearchType, **kwargs:
+    Any) -> OperatorInformationResult'
+  parameters:
+  - name: phone_numbers
+    description: The phone number(s) whose operator information should be searched
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:list>(<xref:str>)
+  return:
+    description: A search result containing operator information associated with the
+      requested phone numbers
+    types:
+    - <xref:azure.communication.phonenumbers.models.OperatorInformationResult>

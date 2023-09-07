@@ -5,10 +5,10 @@ author: ramya-rao-a
 ms.author: ramyar
 ms.date: 11/02/2020
 ms.topic: reference
-ms.prod: azure
 ms.technology: azure
 ms.devlang: python
-ms.service: databoxedge
+ms.service: databox
+ms.subservice: edge
 ---
 
 # Microsoft Azure SDK for Python

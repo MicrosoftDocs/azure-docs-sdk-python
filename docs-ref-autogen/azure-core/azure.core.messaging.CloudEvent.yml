@@ -4,19 +4,23 @@ name: CloudEvent
 fullName: azure.core.messaging.CloudEvent
 module: azure.core.messaging
 inheritances:
-- builtins.object
+- typing.Generic
 summary: 'Properties of the CloudEvent 1.0 Schema.
 
   All required parameters must be populated in order to send to Azure.'
 constructor:
-  syntax: 'CloudEvent(source: str, type: str, **kwargs: Any)'
+  syntax: 'CloudEvent(source: str, type: str, *, specversion: str | None = None, id:
+    str | None = None, time: ~datetime.datetime | None = <object object>, datacontenttype:
+    str | None = None, dataschema: str | None = None, subject: str | None = None,
+    data: ~azure.core.messaging.DataType | None = None, extensions: ~typing.Dict[str,
+    ~typing.Any] | None = None, **kwargs: ~typing.Any)'
   parameters:
   - name: source
     description: 'Required. Identifies the context in which an event happened. The
       combination of id and source must
 
       be unique for each distinct event. If publishing to a domain topic, source must
-      be the domain name.'
+      be the domain topic name.'
     isRequired: true
     types:
     - <xref:str>
@@ -25,27 +29,41 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  - name: specversion
+    description: Optional. The version of the CloudEvent spec. Defaults to "1.0"
+    types:
+    - <xref:str>
   - name: data
     description: Optional. Event data specific to the event type.
+    types:
+    - <xref:object>
   - name: time
     description: Optional. The time (in UTC) the event was generated.
+    types:
+    - <xref:datetime.datetime>
   - name: dataschema
     description: Optional. Identifies the schema that data adheres to.
+    types:
+    - <xref:str>
   - name: datacontenttype
     description: Optional. Content type of data value.
+    types:
+    - <xref:str>
   - name: subject
     description: 'Optional. This describes the subject of the event in the context
       of the event producer
 
       (identified by source).'
-  - name: specversion
-    description: Optional. The version of the CloudEvent spec. Defaults to "1.0"
+    types:
+    - <xref:str>
   - name: id
     description: 'Optional. An identifier for the event. The combination of id and
       source must be
 
       unique for each distinct event. If not provided, a random UUID will be generated
       and used.'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   - name: extensions
     description: 'Optional. A CloudEvent MAY include any number of additional context
       attributes
@@ -54,93 +72,91 @@ constructor:
       alphanumeric, lower cased
 
       and must not exceed the length of 20 characters.'
-variables:
-- description: 'Identifies the context in which an event happened. The combination
-    of id and source must
-
-    be unique for each distinct event. If publishing to a domain topic, source must
-    be the domain name.'
-  name: source
-  types:
-  - <xref:str>
-- description: Event data specific to the event type.
-  name: data
-  types:
-  - <xref:object>
-- description: Type of event related to the originating occurrence.
-  name: type
-  types:
-  - <xref:str>
-- description: The time (in UTC) the event was generated.
-  name: time
-  types:
-  - <xref:datetime.datetime>
-- description: Identifies the schema that data adheres to.
-  name: dataschema
-  types:
-  - <xref:str>
-- description: Content type of data value.
-  name: datacontenttype
-  types:
-  - <xref:str>
-- description: 'This describes the subject of the event in the context of the event
-    producer
-
-    (identified by source).'
-  name: subject
-  types:
-  - <xref:str>
-- description: Optional. The version of the CloudEvent spec. Defaults to "1.0"
-  name: specversion
-  types:
-  - <xref:str>
-- description: 'An identifier for the event. The combination of id and source must
-    be
-
-    unique for each distinct event. If not provided, a random UUID will be generated
-    and used.'
-  name: id
-  types:
-  - <xref:str>
-- description: 'A CloudEvent MAY include any number of additional context attributes
-
-    with distinct names represented as key - value pairs. Each extension must be alphanumeric,
-    lower cased
-
-    and must not exceed the length of 20 characters.'
-  name: extensions
-  types:
-  - <xref:Dict>
+    types:
+    - <xref:typing.Optional>[<xref:dict>]
 methods:
 - uid: azure.core.messaging.CloudEvent.from_dict
   name: from_dict
-  summary: 'Returns the deserialized CloudEvent object when a dict is provided.
-
-    :param event: The dict representation of the event which needs to be deserialized.
-
-    :type event: dict
-
-    :rtype: CloudEvent'
-  signature: 'from_dict(event: Dict) -> CloudEvent'
+  summary: Returns the deserialized CloudEvent object when a dict is provided.
+  signature: 'from_dict(event: Dict[str, Any]) -> CloudEvent[DataType]'
   parameters:
-  - name: cls
-    isRequired: true
   - name: event
+    description: The dict representation of the event which needs to be deserialized.
     isRequired: true
+    types:
+    - <xref:dict>
+  return:
+    description: The deserialized CloudEvent object.
+    types:
+    - <xref:azure.core.messaging.CloudEvent>
 - uid: azure.core.messaging.CloudEvent.from_json
   name: from_json
   summary: "Returns the deserialized CloudEvent object when a json payload is provided.\n\
     :param event: The json string that should be converted into a CloudEvent. This\
     \ can also be\n\n   a storage QueueMessage, eventhub's EventData or ServiceBusMessage"
-  signature: 'from_json(event: Any) -> CloudEvent'
+  signature: 'from_json(event: Any) -> CloudEvent[DataType]'
   parameters:
-  - name: cls
-    isRequired: true
   - name: event
     isRequired: true
   return:
+    description: The deserialized CloudEvent object.
     types:
     - <xref:azure.core.messaging.CloudEvent>
   exceptions:
-  - description: If the provided JSON is invalid.
-    type: ValueError
+  - type: ValueError
+    description: If the provided JSON is invalid.
+attributes:
+- uid: azure.core.messaging.CloudEvent.data
+  name: data
+  summary: Event data specific to the event type.
+  signature: 'data: DataType | None'
+- uid: azure.core.messaging.CloudEvent.datacontenttype
+  name: datacontenttype
+  summary: Content type of data value.
+  signature: 'datacontenttype: str | None'
+- uid: azure.core.messaging.CloudEvent.dataschema
+  name: dataschema
+  summary: Identifies the schema that data adheres to.
+  signature: 'dataschema: str | None'
+- uid: azure.core.messaging.CloudEvent.extensions
+  name: extensions
+  summary: 'A CloudEvent MAY include any number of additional context attributes
+
+    with distinct names represented as key - value pairs. Each extension must be alphanumeric,
+    lower cased
+
+    and must not exceed the length of 20 characters.'
+  signature: 'extensions: Dict[str, Any] | None'
+- uid: azure.core.messaging.CloudEvent.id
+  name: id
+  summary: 'An identifier for the event. The combination of id and source must be
+
+    unique for each distinct event. If not provided, a random UUID will be generated
+    and used.'
+  signature: 'id: str'
+- uid: azure.core.messaging.CloudEvent.source
+  name: source
+  summary: 'Identifies the context in which an event happened. The combination of
+    id and source must
+
+    be unique for each distinct event. If publishing to a domain topic, source must
+    be the domain topic name.'
+  signature: 'source: str'
+- uid: azure.core.messaging.CloudEvent.specversion
+  name: specversion
+  summary: The version of the CloudEvent spec. Defaults to "1.0"
+  signature: 'specversion: str = ''1.0'''
+- uid: azure.core.messaging.CloudEvent.subject
+  name: subject
+  summary: 'This describes the subject of the event in the context of the event producer
+
+    (identified by source)'
+  signature: 'subject: str | None'
+- uid: azure.core.messaging.CloudEvent.time
+  name: time
+  summary: The time (in UTC) the event was generated.
+  signature: 'time: datetime | None'
+- uid: azure.core.messaging.CloudEvent.type
+  name: type
+  summary: Type of event related to the originating occurrence.
+  signature: 'type: str'

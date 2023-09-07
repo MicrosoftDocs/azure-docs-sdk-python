@@ -1,29 +1,29 @@
 ---
 title: Azure Communication Identity Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-identity, communication
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 06/08/2021
+author: petrsvihlik
+ms.author: petrsvihlik
+ms.date: 10/31/2022
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: communication
 ---
-
-# Azure Communication Identity Package client library for Python - Version 1.0.1 
+# Azure Communication Identity Package client library for Python - version 1.3.1 
 
 
 Azure Communication Identity client package is intended to be used to setup the basics for opening a way to use Azure Communication Service offerings. This package helps to create identity user tokens to be used by other client packages such as chat, calling, sms.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.1/sdk/communication/azure-communication-identity) | [Package (Pypi)](https://pypi.org/project/azure-communication-identity/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.1/sdk/communication/azure-communication-identity) | [Product documentation](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.3.1/sdk/communication/azure-communication-identity) | [Package (Pypi)](https://pypi.org/project/azure-communication-identity/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.3.1/sdk/communication/azure-communication-identity) | [Product documentation](/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
 
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 # Getting started
 ### Prerequisites
-- Python 2.7, or 3.6 or later is required to use this package.
+- Python 3.7 or later is required to use this package.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/)
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 ### Install the package
 Install the Azure Communication Identity client library for Python with [pip](https://pypi.org/project/pip/):
 
@@ -66,6 +66,7 @@ The following section provides several code snippets covering some of the most c
 - [Creating a user and a token in a single request](#creating-a-user-and-a-token-in-a-single-request)
 - [Revoking a user's access tokens](#revoking-a-users-access-tokens)
 - [Deleting a user](#deleting-a-user)
+- [Exchanging Azure AD access token of a Teams User for a Communication Identity access token](#exchanging-azure-ad-access-token-of-a-teams-user-for-a-communication-identity-access-token)
 
 ### Creating a new user
 
@@ -86,11 +87,32 @@ Pass in the user object as a parameter, and a list of `CommunicationTokenScope`.
 tokenresponse = identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])
 print("Token issued with value: " + tokenresponse.token)
 ```
+
+### Issuing or Refreshing an access token with custom expiration for a user
+
+You can specify expiration time for the token. The token can be configured to expire in as little as one hour or as long as 24 hours. The default expiration time is 24 hours.
+
+```python
+token_expires_in = timedelta(hours=1)
+tokenresponse = identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT], token_expires_in=token_expires_in)
+print("Token issued with value: " + tokenresponse.token)
+```
+
 ### Creating a user and a token in a single request
 For convenience, use `create_user_and_token` to create a new user and issue a token with one function call. This translates into a single web request as opposed to creating a user first and then issuing a token.
 
 ```python
 user, tokenresponse = identity_client.create_user_and_token(scopes=[CommunicationTokenScope.CHAT])
+print("User id:" + user.properties['id'])
+print("Token issued with value: " + tokenresponse.token)
+```
+
+### Creating a user and a token with custom expiration in a single request
+
+You can specify expiration time for the token. The token can be configured to expire in as little as one hour or as long as 24 hours. The default expiration time is 24 hours.
+```python
+token_expires_in = timedelta(hours=1)
+user, tokenresponse = identity_client.create_user_and_token(scopes=[CommunicationTokenScope.CHAT], token_expires_in=token_expires_in)
 print("User id:" + user.properties['id'])
 print("Token issued with value: " + tokenresponse.token)
 ```
@@ -109,13 +131,20 @@ Use the `delete_user` method to delete a user. Pass in the user object as a para
 identity_client.delete_user(user)
 ```
 
+### Exchanging Azure AD access token of a Teams User for a Communication Identity access token
+
+Use the `get_token_for_teams_user` method to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
+```python
+identity_client.get_token_for_teams_user(aad_token, client_id, user_object_id)
+```
+
 # Troubleshooting
 The Azure Communication Service Identity client will raise exceptions defined in [Azure Core][azure_core].
 
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.0.1/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.3.1/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
 
 ## Provide Feedback
 
@@ -132,5 +161,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.0.1/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.3.1/sdk/core/azure-core/README.md
 

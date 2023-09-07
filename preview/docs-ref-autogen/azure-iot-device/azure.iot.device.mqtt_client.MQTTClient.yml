@@ -1,0 +1,222 @@
+### YamlMime:PythonClass
+uid: azure.iot.device.mqtt_client.MQTTClient
+name: MQTTClient
+fullName: azure.iot.device.mqtt_client.MQTTClient
+module: azure.iot.device.mqtt_client
+inheritances:
+- builtins.object
+summary: 'Provides an async MQTT message broker interface
+
+
+  This client currently only supports operations at a QoS (Quality of Service) of
+  1
+
+
+  Constructor to instantiate client.'
+constructor:
+  syntax: 'MQTTClient(client_id: str, hostname: str, port: int, transport: str = ''tcp'',
+    keep_alive: int = 60, auto_reconnect: bool = False, reconnect_interval: int =
+    10, ssl_context: SSLContext | None = None, websockets_path: str | None = None,
+    proxy_options: ProxyOptions | None = None)'
+  parameters:
+  - name: client_id
+    description: The id of the client connecting to the broker.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: hostname
+    description: Hostname or IP address of the remote broker.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: port
+    description: Network port to connect to
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: transport
+    description: '"tcp" for TCP or "websockets" for WebSockets.'
+    defaultValue: tcp
+    types:
+    - <xref:str>
+  - name: keep_alive
+    description: Number of seconds before connection timeout.
+    defaultValue: '60'
+    types:
+    - <xref:int>
+  - name: auto_reconnect
+    description: 'Indicates whether or not client should reconnect when a
+
+      connection is unexpectedly dropped.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: reconnect_interval
+    description: Number of seconds between reconnect attempts
+    defaultValue: '10'
+    types:
+    - <xref:int>
+  - name: ssl_context
+    description: The SSL Context to use with MQTT. If not provided will use default.
+    defaultValue: None
+    types:
+    - <xref:ssl.SSLContext>
+  - name: websockets_path
+    description: 'Path for websocket connection.
+
+      Starts with ''/'' and should be the endpoint of the mqtt connection on the remote
+      server.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: proxy_options
+    description: Options for sending traffic through proxy servers.
+    defaultValue: None
+    types:
+    - <xref:azure.iot.device.common.ProxyOptions>
+methods:
+- uid: azure.iot.device.mqtt_client.MQTTClient.add_incoming_message_filter
+  name: add_incoming_message_filter
+  summary: Filter incoming messages on a specific topic.
+  signature: 'add_incoming_message_filter(topic: str) -> None'
+  parameters:
+  - name: topic
+    description: The topic you wish to filter on
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError if a filter is already applied for the topic
+- uid: azure.iot.device.mqtt_client.MQTTClient.connect
+  name: connect
+  summary: Connect to the MQTT broker using details set at instantiation.
+  signature: async connect() -> None
+  exceptions:
+  - type: MQTTConnectionFailedError if there is a failure connecting
+- uid: azure.iot.device.mqtt_client.MQTTClient.disconnect
+  name: disconnect
+  summary: 'Disconnect from the MQTT broker.
+
+
+    Ensure this is called for graceful exit.'
+  signature: async disconnect() -> None
+- uid: azure.iot.device.mqtt_client.MQTTClient.get_incoming_message_generator
+  name: get_incoming_message_generator
+  summary: Return a generator that yields incoming messages
+  signature: 'get_incoming_message_generator(filter_topic: str | None = None) -> AsyncGenerator[MQTTMessage,
+    None]'
+  parameters:
+  - name: filter_topic
+    description: 'The topic you wish to receive a generator for.
+
+      If not provided, will return a generator for non-filtered messages'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A generator that yields incoming messages
+  exceptions:
+  - type: ValueError if a filter is not already applied for the given topic
+- uid: azure.iot.device.mqtt_client.MQTTClient.is_connected
+  name: is_connected
+  summary: 'Returns a boolean indicating whether the MQTT client is currently connected.
+
+
+    Note that this value is only accurate as of the time it returns. It could change
+    at
+
+    any point.'
+  signature: is_connected() -> bool
+- uid: azure.iot.device.mqtt_client.MQTTClient.previous_disconnection_cause
+  name: previous_disconnection_cause
+  summary: "Returns an MQTTError from the previous disconnection if it was unexpected\
+    \ as a result of\n   a connection drop.\n\nReturns None if the previous disconnection\
+    \ attempt was intentional"
+  signature: previous_disconnection_cause() -> MQTTError | None
+- uid: azure.iot.device.mqtt_client.MQTTClient.publish
+  name: publish
+  summary: Send a message via the MQTT broker.
+  signature: 'async publish(topic: str, payload: str | bytes | int | float | None)
+    -> None'
+  parameters:
+  - name: topic
+    description: 'topic: The topic that the message should be published on.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: payload
+    description: The actual message to send.
+    isRequired: true
+    types:
+    - <xref:str>, <xref:bytes>, <xref:int>, <xref:float>
+    - <xref:None>
+  - name: qos
+    description: the desired quality of service level for the subscription. Defaults
+      to 1.
+    isRequired: true
+    types:
+    - <xref:int>
+  exceptions:
+  - type: ValueError if topic is None or has zero string length
+  - type: <xref:ValueError if topic contains a wildcard >(<xref:"+">)
+  - type: ValueError if the length of the payload is greater than 268435455 bytes
+  - type: TypeError if payload is not a valid type
+  - type: MQTTError if there is an error publishing
+- uid: azure.iot.device.mqtt_client.MQTTClient.remove_incoming_message_filter
+  name: remove_incoming_message_filter
+  summary: Stop filtering incoming messages on a specific topic
+  signature: 'remove_incoming_message_filter(topic: str) -> None'
+  parameters:
+  - name: topic
+    description: The topic you wish to stop filtering on
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError if a filter is not already applied for the topic
+- uid: azure.iot.device.mqtt_client.MQTTClient.set_credentials
+  name: set_credentials
+  summary: 'Set a username and optionally a password for broker authentication.
+
+
+    Must be called before .connect() to have any effect.'
+  signature: 'set_credentials(username: str, password: str | None = None) -> None'
+  parameters:
+  - name: username
+    description: The username for broker authentication
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: password
+    description: The password for broker authentication (Optional)
+    defaultValue: None
+    types:
+    - <xref:str>
+- uid: azure.iot.device.mqtt_client.MQTTClient.subscribe
+  name: subscribe
+  summary: Subscribe to a topic from the MQTT broker.
+  signature: 'async subscribe(topic: str) -> None'
+  parameters:
+  - name: topic
+    description: a single string specifying the subscription topic to subscribe to
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError if topic is None or has zero string length.
+  - type: MQTTError if there is an error subscribing
+  - type: CancelledError if network failure occurs while in-flight
+- uid: azure.iot.device.mqtt_client.MQTTClient.unsubscribe
+  name: unsubscribe
+  summary: Unsubscribe from a topic on the MQTT broker.
+  signature: 'async unsubscribe(topic: str) -> None'
+  parameters:
+  - name: topic
+    description: a single string which is the subscription topic to unsubscribe from.
+    isRequired: true
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError if topic is None or has zero string length.
+  - type: MQTTError if there is an error subscribing
+  - type: CancelledError if network failure occurs while in-flight
