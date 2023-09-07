@@ -1,5 +1,5 @@
 ---
-title: Microsoft Azure SDK for Python (No longer supported)
+title: Azure Stream Analytics Management Client Library (No longer supported)
 keywords: Azure, python, SDK, API, azure-mgmt-streamanalytics, streamanalytics
 description: This is the Microsoft Azure Stream Analytics Management Client Library.
 author: mayurid
@@ -9,7 +9,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: stream-analytics
 ---
-# Microsoft Azure SDK for Python
+# Azure Stream Analytics Management Client Library
 
 This is the Microsoft Azure Stream Analytics Management Client Library.
 This package has been tested with Python 2.7, 3.6+.
