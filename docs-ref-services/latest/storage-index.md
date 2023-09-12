@@ -8,4 +8,4 @@
 |[Resource Management - Storage Cache](mgmt-storagecache-readme.md)|[azure-mgmt-storagecache](https://pypi.org/project/azure-mgmt-storagecache)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storage/azure-mgmt-storagecache)|
 |[Resource Management - Storage Mover](mgmt-storagemover-readme.md)|[azure-mgmt-storagemover](https://pypi.org/project/azure-mgmt-storagemover)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storagemover/azure-mgmt-storagemover)|
 |[Resource Management - Storage Pool](mgmt-storagepool-readme.md)|[azure-mgmt-storagepool](https://pypi.org/project/azure-mgmt-storagepool)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/storagepool/azure-mgmt-storagepool)|
-|[Resource Management - Storage Sync](mgmt-storagesync-readme.md)|[azure-mgmt-storagesync](https://pypi.org/project/azure-mgmt-storagesync)|[GitHub](https://github.com/Azure/azure-sdk-for-python)|
+|[Resource Management - Storage Sync](mgmt-storagesync-readme.md)|[azure-mgmt-storagesync](https://pypi.org/project/azure-mgmt-storagesync)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/)|
