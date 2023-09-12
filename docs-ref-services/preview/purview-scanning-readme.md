@@ -1,16 +1,14 @@
 ---
 title: Azure Purview Scanning client library for Python
 keywords: Azure, python, SDK, API, azure-purview-scanning, purview
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 10/15/2021
+author: iscai-msft
+ms.author: iscai
+ms.date: 09/12/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: purview
 ---
-
-# Azure Purview Scanning client library for Python - version 1.0.0b2 
+# Azure Purview Scanning client library for Python - version 1.0.0a20230912001 
 
 
 Azure Purview Scanning is a fully managed cloud service whose users can scan your data into your data estate (also known as your **catalog**). Scanning is a process by which the catalog connects directly to a data source on a user-specified schedule.
@@ -25,13 +23,13 @@ Azure Purview Scanning is a fully managed cloud service whose users can scan you
 
 ## _Disclaimer_
 
-_Azure SDK Python packages support for Python 2.7 is ending 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
 ### Prerequisites
 
-- Python 2.7, or 3.6 or later is required to use this package.
+- Python 3.6 or later is required to use this package.
 - You must have an [Azure subscription][azure_subscription] and a [Purview][purview_resource] to use this package.
 
 #### Create a Purview Resource
@@ -160,19 +158,20 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-scanning_1.0.0b2/sdk/purview/azure-purview-scanning/azure/purview/scanning
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/purview/azure-purview-scanning/azure/purview/scanning
 [scanning_pypi]: https://aka.ms/azsdk/python/purviewscanning/pypi
 [scanning_ref_docs]: https://aka.ms/azsdk/python/purviewscanning/ref-docs
 [scanning_product_documentation]: https://azure.microsoft.com/services/purview/
 [azure_subscription]: https://azure.microsoft.com/free/
-[purview_resource]: https://docs.microsoft.com/azure/purview/create-catalog-portal
+[purview_resource]: /azure/purview/create-catalog-portal
 [pip]: https://pypi.org/project/pip/
-[authenticate_with_token]: https://docs.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-scanning_1.0.0b2/sdk/identity/azure-identity#credentials
+[authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-scanning_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [request_builders_and_client]: https://aka.ms/azsdk/python/protocol/quickstart
-[enable_aad]: https://docs.microsoft.com/azure/purview/create-catalog-portal#add-a-security-principal-to-a-data-plane-role
+[enable_aad]: /azure/purview/create-catalog-portal#add-a-security-principal-to-a-data-plane-role
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
 [python_logging]: https://docs.python.org/3.5/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
