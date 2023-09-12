@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-servicelinker, servicelinker
 author: lmazuel
 ms.author: lmazuel
-ms.date: 12/05/2022
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: servicelinker
