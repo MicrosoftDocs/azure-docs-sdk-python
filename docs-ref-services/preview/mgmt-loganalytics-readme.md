@@ -1,12 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, loganalytics
+keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, azure-monitor
 author: pvaneck
 ms.author: paulvaneck
-ms.date: 12/12/2022
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: loganalytics
+ms.service: azure-monitor
 ---
 # Microsoft Azure SDK for Python
 
