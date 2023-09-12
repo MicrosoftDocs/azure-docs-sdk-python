@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-servicefabric, servicefabric
 author: QingChenmsft
 ms.author: QingChenmsft
-ms.date: 11/09/2022
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: servicefabric
