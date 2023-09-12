@@ -2,19 +2,19 @@
 title: Azure Maps Search Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-search, maps
 author: alextts627
-ms.author: ttsao
-ms.date: 10/13/2022
+ms.author: alextts627
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Search Package client library for Python - version 1.0.0b2 
+# Azure Maps Search Package client library for Python - version 1.0.0a20230912001 
 
 
 This package contains a Python SDK for Azure Maps Services for Search.
 Read more about Azure Maps Services [here](/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-search_1.0.0b2/sdk/maps/azure-maps-search) | [API reference documentation](/rest/api/maps/search) | [Product documentation](/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-search) | [API reference documentation](/rest/api/maps/search) | [Product documentation](/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -101,7 +101,7 @@ Once you initialized a `MapsSearchClient` class, you can explore the methods on 
 ### Async Clients
 
 This library includes a complete async API supported on Python 3.5+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-search_1.0.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
 objects are async context managers and define async `close` methods.
@@ -298,7 +298,7 @@ print(result2)
 
 ### General
 
-Maps Search clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-search_1.0.0b2/sdk/core/azure-core/README.md).
+Maps Search clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -339,7 +339,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Search samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-search_1.0.0b2/sdk/maps/azure-maps-search/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-search_1.0.0b2/sdk/maps/azure-maps-search/samples/async_samples)).
+Get started with our [Maps Search samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-search/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-search/samples/async_samples)).
 
 Several Azure Maps Search Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Search
 
@@ -361,7 +361,7 @@ python samples/sample_search_structured_address.py
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-search_1.0.0b2/sdk/maps/azure-maps-search/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-search/samples/README.md)
 
 ### Additional documentation
 
@@ -377,11 +377,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-search_1.0.0b2/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
 [azure_cli]: /cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-search_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: /powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
 [maps_authentication_aad]: /azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
