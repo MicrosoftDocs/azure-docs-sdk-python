@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-datadog, datadog
 author: lmazuel
 ms.author: lmazuel
-ms.date: 11/04/2022
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: datadog
