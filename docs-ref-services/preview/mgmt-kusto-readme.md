@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-kusto, kusto
 author: lmazuel
 ms.author: lmazuel
-ms.date: 12/28/2022
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: kusto
@@ -38,7 +38,7 @@ By default, [Azure Active Directory](https://aka.ms/awps/aad) token authenticati
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+- `AZURE_CLIENT_SECRET` for Azure client secret.
 
 In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
 
@@ -55,8 +55,9 @@ client = KustoManagementClient(credential=DefaultAzureCredential(), subscription
 
 ## Examples
 
-
-Code samples for this package can be found at [Kusto Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Kusto Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
