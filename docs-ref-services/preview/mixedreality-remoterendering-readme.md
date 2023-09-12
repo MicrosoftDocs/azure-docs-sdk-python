@@ -3,14 +3,14 @@ title: Azure Remote Rendering client library for Python
 keywords: Azure, python, SDK, API, azure-mixedreality-remoterendering, remoterendering
 author: FlorianBorn71
 ms.author: flborn
-ms.date: 07/07/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: remoterendering
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
-# Azure Remote Rendering client library for Python - version 1.0.0b2 
+# Azure Remote Rendering client library for Python - version 1.0.0a20230912001 
 
 
 Azure Remote Rendering (ARR) is a service that enables you to render high-quality, interactive 3D content in the cloud and stream it in real time to devices, such as the HoloLens 2.
@@ -97,7 +97,7 @@ client = RemoteRenderingClient(
 ### Authenticating with a static access token
 
 You can pass a Mixed Reality access token as an `AccessToken` previously retrieved from the
-[Mixed Reality STS service](https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b2/sdk/mixedreality/azure-mixedreality-authentication)
+[Mixed Reality STS service](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/mixedreality/azure-mixedreality-authentication)
 to be used with a Mixed Reality client library:
 
 ```python
@@ -375,7 +375,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 If you'd like to contribute to this library, please read the
-[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-mixedreality-remoterendering_1.0.0b2/CONTRIBUTING.md) to learn more about how
+[contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/master/CONTRIBUTING.md) to learn more about how
 to build and test the code.
 
 <!-- LINKS -->
@@ -385,7 +385,7 @@ to build and test the code.
 [azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_portal]: https://portal.azure.com
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-mixedreality-remoterendering_1.0.0b2/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity
 
 [pip]: https://pypi.org/project/pip/
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
