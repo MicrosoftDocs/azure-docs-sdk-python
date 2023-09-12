@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-hdinsightcontainers, hdinsight
 author: idear1203
 ms.author: idear1203
-ms.date: 08/22/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: hdinsight
