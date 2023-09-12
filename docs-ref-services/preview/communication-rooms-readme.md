@@ -3,12 +3,12 @@ title: Azure Communication Rooms client library for Python
 keywords: Azure, python, SDK, API, azure-communication-rooms, communication
 author: acsdevx-msft
 ms.author: acsdevx-msft
-ms.date: 05/17/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Rooms client library for Python - version 1.0.0b3 
+# Azure Communication Rooms client library for Python - version 1.0.0a20230912001 
 
 This package contains a Python SDK for Azure Communication Services for Rooms.
 Read more about Azure Communication Services [here](/azure/communication-services/overview)
@@ -176,11 +176,11 @@ except HttpResponseError as ex:
 ```
 ## Troubleshooting
 
-Rooms operations will throw an exception if the request to the server fails. The Rooms client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-rooms_1.0.0b3/sdk/core/azure-core/README.md).
+Rooms operations will throw an exception if the request to the server fails. The Rooms client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 ## Next steps
 ### More sample code
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.0.0b3/sdk/communication/azure-communication-rooms/samples) directory for detailed examples of how to use this library to create and manage rooms.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/communication/azure-communication-rooms/samples) directory for detailed examples of how to use this library to create and manage rooms.
 
 ## Provide Feedback
 
@@ -206,9 +206,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.0.0b3/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.0.0b3/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 

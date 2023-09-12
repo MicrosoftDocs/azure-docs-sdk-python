@@ -3,12 +3,12 @@ title: Azure Communication Email client library for Python
 keywords: Azure, python, SDK, API, azure-communication-email, communication
 author: acsdevx-msft
 ms.author: acsdevx-msft
-ms.date: 03/06/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Email client library for Python - version 1.0.0b2 
+# Azure Communication Email client library for Python - version 1.0.1a20230912001 
 
 
 This package contains a Python SDK for Azure Communication Services for Email.
@@ -170,7 +170,7 @@ result = poller.result()
 
 ## Troubleshooting
 
-Email operations will throw an exception if the request to the server fails. The Email client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-email_1.0.0b2/sdk/core/azure-core/README.md).
+Email operations will throw an exception if the request to the server fails. The Email client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 ```python
 from azure.core.exceptions import HttpResponseError

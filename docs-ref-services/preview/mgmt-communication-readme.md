@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-communication, communication
 author: acsdevx-msft
 ms.author: acsdevx-msft
-ms.date: 03/25/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
