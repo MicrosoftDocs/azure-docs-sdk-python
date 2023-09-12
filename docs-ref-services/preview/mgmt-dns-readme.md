@@ -3,10 +3,10 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-dns, network
 author: lmazuel
 ms.author: lmazuel
-ms.date: 02/13/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: dns
+ms.service: network
 ---
 # Microsoft Azure SDK for Python
 
@@ -55,8 +55,9 @@ client = DnsManagementClient(credential=DefaultAzureCredential(), subscription_i
 
 ## Examples
 
-
-Code samples for this package can be found at [DNS Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search DNS Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
