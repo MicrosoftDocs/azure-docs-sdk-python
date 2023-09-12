@@ -3,10 +3,10 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-keyvault, keyvault
 author: schaabs
 ms.author: sschaab
-ms.date: 02/15/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: key-vault
+ms.service: keyvault
 ---
 # Microsoft Azure SDK for Python
 
@@ -55,8 +55,9 @@ client = KeyVaultManagementClient(credential=DefaultAzureCredential(), subscript
 
 ## Examples
 
-
-Code samples for this package can be found at [Key Vault Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Key Vault Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
