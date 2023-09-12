@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-labservices, labservices
 author: lmazuel
 ms.author: lmazuel
-ms.date: 12/27/2022
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: labservices
