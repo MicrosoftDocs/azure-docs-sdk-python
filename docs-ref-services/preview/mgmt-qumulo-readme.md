@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-qumulo, qumulo
 author: lmazuel
 ms.author: lmazuel
-ms.date: 04/14/2023
+ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: qumulo
