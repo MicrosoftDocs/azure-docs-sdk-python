@@ -3,12 +3,12 @@ title: Azure ML Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
 author: paulshealy1
 ms.author: paulsh
-ms.date: 09/12/2023
+ms.date: 09/13/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: ml
 ---
-# Azure ML Package client library for Python - version 1.11.0a20230912004 
+# Azure ML Package client library for Python - version 1.11.0a20230912007 
 
 
 We are excited to introduce the GA of Azure Machine Learning Python SDK v2. The Python SDK v2 introduces new SDK capabilities like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2 which is also GA.
