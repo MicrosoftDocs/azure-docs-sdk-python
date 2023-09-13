@@ -7,9 +7,9 @@ ms.data: 09/13/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: servicebus
+keywords: Azure, Python, SDK, API, messaging, pubsub, pub-sub, message broker
 manager: mayurid
 ms.date: 01/15/2019
-keywords: Azure, Python, SDK, API, messaging, pubsub, pub-sub, message broker
 ---
 # Service Bus libraries for Python
 
