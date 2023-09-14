@@ -17,7 +17,8 @@ summary: 'The ServiceBusSender class defines a high level interface for
   ServiceBusSender instance.**'
 constructor:
   syntax: 'ServiceBusSender(fully_qualified_namespace: str, credential: AsyncTokenCredential
-    | AzureSasCredential | AzureNamedKeyCredential, **kwargs: Any)'
+    | AzureSasCredential | AzureNamedKeyCredential, *, queue_name: str | None = None,
+    topic_name: str | None = None, **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -71,12 +72,34 @@ constructor:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:typing.Dict>
   - name: user_agent
     description: If specified, this will be added in front of the built-in user agent
       string.
     types:
     - <xref:str>
+  - name: client_identifier
+    description: 'A string-based identifier to uniquely identify the client instance.
+
+      Service Bus will associate it with some error messages for easier correlation
+      of errors.
+
+      If not specified, a unique id will be generated.'
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If connection errors are occurring
+      due to write timing out,
+
+      a larger than default value may need to be passed in.'
+    types:
+    - <xref:float>
 variables:
 - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -93,8 +116,8 @@ methods:
   name: cancel_scheduled_messages
   summary: Cancel one or more messages that have previously been scheduled and are
     still pending.
-  signature: 'async cancel_scheduled_messages(sequence_numbers: int | List[int], **kwargs:
-    Any) -> None'
+  signature: 'async cancel_scheduled_messages(sequence_numbers: int | List[int], *,
+    timeout: float | None = None, **kwargs: Any) -> None'
   parameters:
   - name: sequence_numbers
     description: The sequence numbers of the scheduled messages.
@@ -119,7 +142,7 @@ methods:
   - "Cancelling messages scheduled to be sent in future<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\204\\\\azure-servicebus-7.11.2\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
@@ -155,15 +178,17 @@ methods:
       hold. By default, the value is determined by your Service Bus tier.'
     defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:int>]
+    - <xref:int>
+    - <xref:None>
   return:
+    description: ServiceBusMessageBatch object
     types:
     - <xref:azure.servicebus.ServiceBusMessageBatch>
   examples:
   - "Create ServiceBusMessageBatch object within limited size<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\204\\\\azure-servicebus-7.11.2\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   async with\
@@ -178,7 +203,8 @@ methods:
     Returns a list of the sequence numbers of the enqueued messages.'
   signature: 'async schedule_messages(messages: Mapping[str, Any] | ServiceBusMessage
     | AmqpAnnotatedMessage | List[Mapping[str, Any] | ServiceBusMessage | AmqpAnnotatedMessage],
-    schedule_time_utc: datetime, **kwargs: Any) -> List[int]'
+    schedule_time_utc: datetime, *, timeout: float | None = None, **kwargs: Any) ->
+    List[int]'
   parameters:
   - name: messages
     description: The message or list of messages to schedule.
@@ -200,13 +226,14 @@ methods:
     types:
     - <xref:float>
   return:
+    description: The sequence numbers of the enqueued messages.
     types:
     - <xref:list>[<xref:int>]
   examples:
   - "Schedule a message to be sent in future<!--[!code-python[Main](les\\async_samples\\\
     sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\source_code\\\\204\\\\azure-servicebus-7.11.2\\\\samples\\\
     \\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   async with servicebus_sender:\n\
@@ -226,7 +253,7 @@ methods:
     *ValueError* if they cannot fit in a single batch.'
   signature: 'async send_messages(message: Mapping[str, Any] | ServiceBusMessage |
     AmqpAnnotatedMessage | List[Mapping[str, Any] | ServiceBusMessage | AmqpAnnotatedMessage]
-    | ServiceBusMessageBatch, **kwargs: Any) -> None'
+    | ServiceBusMessageBatch, *, timeout: float | None = None, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The ServiceBus message to be sent.
@@ -251,8 +278,16 @@ methods:
   - "Send message.<!--[!code-python[Main](les\\async_samples\\sample_code_servicebus_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   async with servicebus_sender:\n       message = ServiceBusMessage(\"Hello\
-    \ World\")\n       await servicebus_sender.send_messages(message)\n\n   ````\n"
+    source_code\\\\204\\\\azure-servicebus-7.11.2\\\\samples\\\\async_samples\\\\\
+    sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   async with servicebus_sender:\n       message\
+    \ = ServiceBusMessage(\"Hello World\")\n       await servicebus_sender.send_messages(message)\n\
+    \n   ````\n"
+attributes:
+- uid: azure.servicebus.aio.ServiceBusSender.client_identifier
+  name: client_identifier
+  summary: Get the ServiceBusSender client identifier associated with the sender instance.
+  return:
+    types:
+    - <xref:str>
