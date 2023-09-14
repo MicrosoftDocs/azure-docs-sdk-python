@@ -67,7 +67,7 @@ This section details known issues for the Azure Storage client libraries for Pyt
 
 ### InvalidHeaderValue error message when using beta version of SDK
 
-In rare scenarios, applications that have upgraded the latest beta or generally available version of the SDK can receive an `InvalidHeaderValue` error message. This issue can occur when using any of the Storage libraries. The error message looks similar to the following sample:
+In rare scenarios, applications that have upgraded to the latest beta or generally available version of the SDK can receive an `InvalidHeaderValue` error message. This issue can occur when using any of the Storage libraries. The error message looks similar to the following sample:
 
 ```console
 HTTP/1.1 400 The value for one of the HTTP headers is not in the correct format.
