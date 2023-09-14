@@ -17,7 +17,8 @@ summary: 'The ServiceBusSender class defines a high level interface for
   ServiceBusSender instance.**'
 constructor:
   syntax: 'ServiceBusSender(fully_qualified_namespace: str, credential: TokenCredential
-    | AzureSasCredential | AzureNamedKeyCredential, **kwargs: Any)'
+    | AzureSasCredential | AzureNamedKeyCredential, *, queue_name: str | None = None,
+    topic_name: str | None = None, **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -67,12 +68,34 @@ constructor:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:typing.Dict>
   - name: user_agent
     description: If specified, this will be added in front of the built-in user agent
       string.
     types:
     - <xref:str>
+  - name: client_identifier
+    description: 'A string-based identifier to uniquely identify the client instance.
+
+      Service Bus will associate it with some error messages for easier correlation
+      of errors.
+
+      If not specified, a unique id will be generated.'
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If connection errors are occurring
+      due to write timing out,
+
+      a larger than default value may need to be passed in.'
+    types:
+    - <xref:float>
 variables:
 - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -89,8 +112,8 @@ methods:
   name: cancel_scheduled_messages
   summary: Cancel one or more messages that have previously been scheduled and are
     still pending.
-  signature: 'cancel_scheduled_messages(sequence_numbers: int | List[int], **kwargs:
-    Any) -> None'
+  signature: 'cancel_scheduled_messages(sequence_numbers: int | List[int], *, timeout:
+    float | None = None, **kwargs: Any) -> None'
   parameters:
   - name: sequence_numbers
     description: The sequence numbers of the scheduled messages.
@@ -115,7 +138,7 @@ methods:
   - "Cancelling messages scheduled to be sent in future<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\205\\\\azure-servicebus-7.11.2\\\
     \\samples\\\\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   with servicebus_sender:\n  \
@@ -149,13 +172,14 @@ methods:
     types:
     - <xref:typing.Optional>[<xref:int>]
   return:
+    description: A ServiceBusMessageBatch object
     types:
     - <xref:azure.servicebus.ServiceBusMessageBatch>
   examples:
   - "Create ServiceBusMessageBatch object within limited size<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\":\
     \ [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\205\\\\azure-servicebus-7.11.2\\\
     \\samples\\\\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   with servicebus_sender:\n  \
@@ -166,8 +190,8 @@ methods:
   summary: 'Send Message or multiple Messages to be enqueued at a specific time.
 
     Returns a list of the sequence numbers of the enqueued messages.'
-  signature: 'schedule_messages(messages: MessageTypes, schedule_time_utc: datetime.datetime,
-    **kwargs: Any) -> List[int]'
+  signature: 'schedule_messages(messages: MessageTypes, schedule_time_utc: datetime,
+    *, timeout: float | None = None, **kwargs: Any) -> List[int]'
   parameters:
   - name: messages
     description: The message or list of messages to schedule.
@@ -189,13 +213,14 @@ methods:
     types:
     - <xref:float>
   return:
+    description: A list of the sequence numbers of the enqueued messages.
     types:
-    - <xref:List>[<xref:int>]
+    - <xref:list>[<xref:int>]
   examples:
   - "Schedule a message to be sent in future<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\
+    a\\\\_work\\\\1\\\\s\\\\source_code\\\\205\\\\azure-servicebus-7.11.2\\\\samples\\\
     \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   with servicebus_sender:\n  \
@@ -213,8 +238,8 @@ methods:
     a
 
     *ValueError* if they cannot fit in a single batch.'
-  signature: 'send_messages(message: MessageTypes | ServiceBusMessageBatch, **kwargs:
-    Any) -> None'
+  signature: 'send_messages(message: MessageTypes | ServiceBusMessageBatch, *, timeout:
+    float | None = None, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The ServiceBus message to be sent.
@@ -239,8 +264,15 @@ methods:
   - "Send message.<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    source_code\\\\205\\\\azure-servicebus-7.11.2\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with servicebus_sender:\n       message = ServiceBusMessage(\"Hello World\"\
     )\n       servicebus_sender.send_messages(message)\n\n   ````\n"
+attributes:
+- uid: azure.servicebus.ServiceBusSender.client_identifier
+  name: client_identifier
+  summary: Get the ServiceBusSender client_identifier associated with the sender instance.
+  return:
+    types:
+    - <xref:str>

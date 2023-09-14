@@ -7,12 +7,15 @@ inheritances:
 - azure.servicebus._common.message.ServiceBusMessage
 summary: A Service Bus Message received from service side.
 constructor:
-  syntax: 'ServiceBusReceivedMessage(message: Message, receive_mode: ServiceBusReceiveMode
-    | str = ServiceBusReceiveMode.PEEK_LOCK, **kwargs: Any)'
+  syntax: 'ServiceBusReceivedMessage(message: ''Message'' | ''pyamqp_Message'', receive_mode:
+    ServiceBusReceiveMode | str = ServiceBusReceiveMode.PEEK_LOCK, frame: ''TransferFrame''
+    | None = None, **kwargs)'
   parameters:
   - name: message
   - name: receive_mode
     defaultValue: ServiceBusReceiveMode.PEEK_LOCK
+  - name: frame
+    defaultValue: None
 variables:
 - description: Error when AutoLockRenewer is used and it fails to renew the message
     lock.
@@ -24,14 +27,14 @@ examples:
 - "Checking the properties on a received message.<!--[!code-python[Main](les\\sync_samples\\\
   sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
   : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\207\\\\azure-servicebus-7.4.0\\\\samples\\\\sync_samples\\\
-  \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-  language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false}\
-  \ -->\n\n````python\n\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
+  \\_work\\\\1\\\\s\\\\source_code\\\\205\\\\azure-servicebus-7.11.2\\\\samples\\\\\
+  sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n       messages = servicebus_receiver.receive_messages(max_wait_time=5)\n\
   \       for message in messages:\n           print(\"Receiving: {}\".format(message))\n\
   \           print(\"Time to live: {}\".format(message.time_to_live))\n         \
   \  print(\"Sequence number: {}\".format(message.sequence_number))\n           print(\"\
-  Enqueued Sequence numger: {}\".format(message.enqueued_sequence_number))\n     \
+  Enqueued Sequence number: {}\".format(message.enqueued_sequence_number))\n     \
   \      print(\"Partition Key: {}\".format(message.partition_key))\n           print(\"\
   Application Properties: {}\".format(message.application_properties))\n         \
   \  print(\"Delivery count: {}\".format(message.delivery_count))\n           print(\"\
@@ -45,7 +48,9 @@ attributes:
   summary: The user defined properties on the message.
   return:
     types:
-    - <xref:dict>
+    - <xref:dict>[<xref:str>
+    - <xref:bytes>, <xref:PrimitiveTypes>]
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.body
   name: body
   summary: 'The body of the Message. The format may vary depending on the body type:
@@ -84,6 +89,7 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.correlation_id
   name: correlation_id
   summary: 'The correlation identifier.
@@ -101,6 +107,7 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.dead_letter_error_description
   name: dead_letter_error_description
   summary: Dead letter error description, when the message is received from a deadletter
@@ -179,12 +186,19 @@ attributes:
   name: locked_until_utc
   summary: 'The UTC datetime until which the message will be locked in the queue/subscription.
 
-    When the lock expires, delivery count of hte message is incremented and the message
+    When the lock expires, delivery count of the message is incremented and the message
 
     is again available for retrieval.'
   return:
     types:
     - <xref:datetime.datetime>
+- uid: azure.servicebus.ServiceBusReceivedMessage.message
+  name: message
+  summary: "Get the underlying LegacyMessage.\n   This is deprecated and will be removed\
+    \ in a later release."
+  return:
+    types:
+    - <xref:LegacyMessage>
 - uid: azure.servicebus.ServiceBusReceivedMessage.message_id
   name: message_id
   summary: 'The id to identify the message.
@@ -205,6 +219,7 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.partition_key
   name: partition_key
   summary: 'The partition key for sending a message to a partitioned entity.
@@ -225,10 +240,13 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.raw_amqp_message
   name: raw_amqp_message
-  summary: Advanced usage only. The internal AMQP message payload that is sent or
+  summary: 'Advanced usage only. The internal AMQP message payload that is sent or
     received.
+
+    :rtype: ~azure.servicebus.amqp.AmqpAnnotatedMessage'
 - uid: azure.servicebus.ServiceBusReceivedMessage.reply_to
   name: reply_to
   summary: 'The address of an entity to send replies to.
@@ -249,6 +267,7 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.reply_to_session_id
   name: reply_to_session_id
   summary: 'The session identifier augmenting the *reply_to* address.
@@ -266,6 +285,7 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.servicebus.ServiceBusReceivedMessage.scheduled_enqueue_time_utc
   name: scheduled_enqueue_time_utc
   summary: 'The utc scheduled enqueue time to the message.
@@ -316,6 +336,16 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
+- uid: azure.servicebus.ServiceBusReceivedMessage.state
+  name: state
+  summary: 'Defaults to Active. Represents the message state of the message. Can be
+    Active, Deferred.
+
+    or Scheduled.'
+  return:
+    types:
+    - <xref:azure.servicebus.ServiceBusMessageState>
 - uid: azure.servicebus.ServiceBusReceivedMessage.subject
   name: subject
   summary: 'The application specific subject, sometimes referred to as a label.
@@ -370,3 +400,4 @@ attributes:
   return:
     types:
     - <xref:str>
+    - <xref:None>
