@@ -408,7 +408,7 @@ methods:
       \ BlobProperties.\n\n\n> [!NOTE]\n> When the blob type is dict, here's a list\
       \ of keys, value rules.\n>\n> \n>\n> blob name:\n>\n> \n>\n> key: 'name', value\
       \ type: str\n>\n> \n>\n> snapshot you want to delete:\n>\n> \n>\n> key: 'snapshot',\
-      \ value type: str\n>\n> \n>\n> whether to delete snapthots when deleting blob:\n\
+      \ value type: str\n>\n> \n>\n> whether to delete snapshots when deleting blob:\n\
       >\n> \n>\n> key: 'delete_snapshots', value: 'include' or 'only'\n>\n> \n>\n\
       > if the blob modified or not:\n>\n> \n>\n> key: 'if_modified_since', 'if_unmodified_since',\
       \ value type: datetime\n>\n> \n>\n> etag:\n>\n> \n>\n> key: 'etag', value type:\
@@ -697,7 +697,7 @@ methods:
     description: 'An async callback to track the progress of a long running download.
       The signature is
 
-      function(current: int, total: int) where current is the number of bytes transfered
+      function(current: int, total: int) where current is the number of bytes transferred
 
       so far, and total is the total size of the download.'
     types:
@@ -744,6 +744,8 @@ methods:
     - <xref:int>
   return:
     description: boolean
+    types:
+    - <xref:bool>
 - uid: azure.storage.blob.aio.ContainerClient.find_blobs_by_tags
   name: find_blobs_by_tags
   summary: 'Returns a generator to list the blobs under the specified container whose
@@ -890,8 +892,8 @@ methods:
 
 
     The blob need not already exist.'
-  signature: 'get_blob_client(blob: BlobProperties | str, snapshot: str = None) ->
-    BlobClient'
+  signature: 'get_blob_client(blob: BlobProperties | str, snapshot: str = None, *,
+    version_id: str | None = None) -> BlobClient'
   parameters:
   - name: blob
     description: The blob with which to interact.
@@ -905,6 +907,13 @@ methods:
 
       or the response returned from <xref:azure.storage.blob.aio.BlobClient.create_snapshot>.'
     defaultValue: None
+    types:
+    - <xref:str>
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime value that, when
+      present,
+
+      specifies the version of the blob to operate on.'
     types:
     - <xref:str>
   return:
@@ -1579,7 +1588,7 @@ methods:
       The signature is
 
       function(current: int, total: Optional[int]) where current is the number of
-      bytes transfered
+      bytes transferred
 
       so far, and total is the size of the blob or None if the size is unknown.'
     types:
@@ -1689,4 +1698,8 @@ attributes:
 
     This could be either the primary endpoint,
 
-    or the secondary endpoint depending on the current <xref:azure.storage.blob.aio.ContainerClient.location_mode>.'
+    or the secondary endpoint depending on the current <xref:azure.storage.blob.aio.ContainerClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

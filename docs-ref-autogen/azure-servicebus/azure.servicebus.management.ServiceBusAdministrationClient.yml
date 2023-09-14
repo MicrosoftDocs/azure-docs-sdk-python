@@ -9,7 +9,8 @@ summary: Use this client to create, update, list, and delete resources of a Serv
   namespace.
 constructor:
   syntax: 'ServiceBusAdministrationClient(fully_qualified_namespace: str, credential:
-    TokenCredential, **kwargs: Dict[str, Any])'
+    TokenCredential, *, api_version: str | ApiVersion = ApiVersion.V2021_05, **kwargs:
+    Any)'
   parameters:
   - name: fully_qualified_namespace
     description: The fully qualified host name for the Service Bus namespace.
@@ -31,6 +32,7 @@ constructor:
       in reduced feature compatibility.'
     types:
     - <xref:str>
+    - <xref:azure.servicebus.management.ApiVersion>
 methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.close
   name: close
@@ -38,7 +40,17 @@ methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.create_queue
   name: create_queue
   summary: Create a queue.
-  signature: 'create_queue(queue_name: str, **kwargs: Any) -> QueueProperties'
+  signature: 'create_queue(queue_name: str, *, authorization_rules: List[AuthorizationRule]
+    | None = None, auto_delete_on_idle: timedelta | str | None = None, dead_lettering_on_message_expiration:
+    bool | None = None, default_message_time_to_live: timedelta | str | None = None,
+    duplicate_detection_history_time_window: timedelta | str | None = None, enable_batched_operations:
+    bool | None = None, enable_express: bool | None = None, enable_partitioning: bool
+    | None = None, lock_duration: timedelta | str | None = None, max_delivery_count:
+    int | None = None, max_size_in_megabytes: int | None = None, requires_duplicate_detection:
+    bool | None = None, requires_session: bool | None = None, forward_to: str | None
+    = None, user_metadata: str | None = None, forward_dead_lettered_messages_to: str
+    | None = None, max_message_size_in_kilobytes: int | None = None, **kwargs: Any)
+    -> QueueProperties'
   parameters:
   - name: queue_name
     description: Name of the queue.
@@ -182,7 +194,9 @@ methods:
   name: create_rule
   summary: Create a rule for a topic subscription.
   signature: 'create_rule(topic_name: str, subscription_name: str, rule_name: str,
-    **kwargs: Any) -> RuleProperties'
+    *, filter: ~azure.servicebus.management._models.CorrelationRuleFilter | ~azure.servicebus.management._models.SqlRuleFilter
+    = <azure.servicebus.management._models.TrueRuleFilter object>, action: ~azure.servicebus.management._models.SqlRuleAction
+    | None = None, **kwargs: ~typing.Any) -> RuleProperties'
   parameters:
   - name: topic_name
     description: 'The topic that will own the
@@ -218,7 +232,13 @@ methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.create_subscription
   name: create_subscription
   summary: Create a topic subscription.
-  signature: 'create_subscription(topic_name: str, subscription_name: str, **kwargs:
+  signature: 'create_subscription(topic_name: str, subscription_name: str, *, lock_duration:
+    timedelta | str | None = None, requires_session: bool | None = None, default_message_time_to_live:
+    timedelta | str | None = None, dead_lettering_on_message_expiration: bool | None
+    = None, dead_lettering_on_filter_evaluation_exceptions: bool | None = None, max_delivery_count:
+    int | None = None, enable_batched_operations: bool | None = None, forward_to:
+    str | None = None, user_metadata: str | None = None, forward_dead_lettered_messages_to:
+    str | None = None, auto_delete_on_idle: timedelta | str | None = None, **kwargs:
     Any) -> SubscriptionProperties'
   parameters:
   - name: topic_name
@@ -323,7 +343,15 @@ methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.create_topic
   name: create_topic
   summary: Create a topic.
-  signature: 'create_topic(topic_name: str, **kwargs: Any) -> TopicProperties'
+  signature: 'create_topic(topic_name: str, *, default_message_time_to_live: timedelta
+    | str | None = None, max_size_in_megabytes: int | None = None, requires_duplicate_detection:
+    bool | None = None, duplicate_detection_history_time_window: timedelta | str |
+    None = None, enable_batched_operations: bool | None = None, size_in_bytes: int
+    | None = None, filtering_messages_before_publishing: bool | None = None, authorization_rules:
+    List[AuthorizationRule] | None = None, support_ordering: bool | None = None, auto_delete_on_idle:
+    timedelta | str | None = None, enable_partitioning: bool | None = None, enable_express:
+    bool | None = None, user_metadata: str | None = None, max_message_size_in_kilobytes:
+    int | None = None, **kwargs: Any) -> TopicProperties'
   parameters:
   - name: topic_name
     description: Name of the topic.
@@ -348,7 +376,7 @@ methods:
 
       memory allocated for the topic.'
     types:
-    - <xref:long>
+    - <xref:int>
   - name: requires_duplicate_detection
     description: 'A value indicating if this topic requires duplicate
 
@@ -506,7 +534,8 @@ methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.from_connection_string
   name: from_connection_string
   summary: Create a client from connection string.
-  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> ServiceBusAdministrationClient'
+  signature: 'from_connection_string(conn_str: str, *, api_version: str | ApiVersion
+    = ApiVersion.V2021_05, **kwargs: Any) -> ServiceBusAdministrationClient'
   parameters:
   - name: conn_str
     description: The connection string of the Service Bus Namespace.
@@ -523,6 +552,7 @@ methods:
       in reduced feature compatibility.'
     types:
     - <xref:str>
+    - <xref:azure.servicebus.management.ApiVersion>
   return:
     types:
     - <xref:azure.servicebus.management.ServiceBusAdministrationClient>
@@ -531,6 +561,7 @@ methods:
   summary: Get the namespace properties
   signature: 'get_namespace_properties(**kwargs: Any) -> NamespaceProperties'
   return:
+    description: The namespace properties.
     types:
     - <xref:azure.servicebus.management.NamespaceProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_queue
@@ -544,6 +575,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of the queue.
     types:
     - <xref:azure.servicebus.management.QueueProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_queue_runtime_properties
@@ -557,6 +589,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The runtime information of the queue.
     types:
     - <xref:azure.servicebus.management.QueueRuntimeProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_rule
@@ -583,6 +616,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of the specified rule.
     types:
     - <xref:azure.servicebus.management.RuleProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_subscription
@@ -602,6 +636,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: An instance of SubscriptionProperties
     types:
     - <xref:azure.servicebus.management.SubscriptionProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_subscription_runtime_properties
@@ -621,6 +656,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: An instance of SubscriptionRuntimeProperties
     types:
     - <xref:azure.servicebus.management.SubscriptionRuntimeProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_topic
@@ -634,6 +670,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of the topic.
     types:
     - <xref:azure.servicebus.management.TopicProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_topic_runtime_properties
@@ -647,6 +684,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The runtime info of the topic.
     types:
     - <xref:azure.servicebus.management.TopicRuntimeProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.list_queues
@@ -752,7 +790,8 @@ methods:
 
     the *QueueProperties* instance. Refer to ~azure.servicebus.management.QueueProperties
     for names of properties.'
-  signature: 'update_queue(queue: QueueProperties | Mapping, **kwargs: Any) -> None'
+  signature: 'update_queue(queue: QueueProperties | Mapping[str, Any], **kwargs: Any)
+    -> None'
   parameters:
   - name: queue
     description: 'The queue that is returned from *get_queue*, *create_queue* or *list_queues*
