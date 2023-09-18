@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicesbackup, recoveryservices
 author: DheerendraRathor
 ms.author: DheerendraRathor
-ms.date: 05/08/2023
+ms.date: 09/18/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservices
