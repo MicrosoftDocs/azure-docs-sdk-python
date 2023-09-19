@@ -16,17 +16,46 @@ summary: 'ComponentOperations.
 constructor:
   syntax: 'ComponentOperations(operation_scope: OperationScope, operation_config:
     OperationConfig, service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
-    all_operations: OperationsContainer, **kwargs: Dict)'
+    all_operations: OperationsContainer, preflight_operation: DeploymentsOperations
+    | None = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    description: The operation scope.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationScope>
   - name: operation_config
+    description: The operation configuration.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationConfig>
   - name: service_client
+    description: The service client for API operations.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[ <xref:azure.ai.ml._restclient.v2022_10_01.AzureMachineLearningWorkspaces>,
+      <xref:azure.ai.ml._restclient.v2021_10_01_dataplanepreview.AzureMachineLearningWorkspaces>]
   - name: all_operations
+    description: The container for all available operations.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationsContainer>
+  - name: preflight_operation
+    description: The preflight operation for deployments.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml._vendor.azure_resources.operations.DeploymentsOperations>]
+  - name: kwargs
+    description: Additional keyword arguments.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>
 methods:
 - uid: azure.ai.ml.operations.ComponentOperations.archive
   name: archive
   summary: Archive a component.
-  signature: 'archive(name: str, version: str = None, label: str = None) -> None'
+  signature: 'archive(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of the component.
@@ -39,7 +68,7 @@ methods:
     types:
     - <xref:str>
   - name: label
-    description: Label of the component. (mutually exclusive with version)
+    description: Label of the component. (mutually exclusive with version).
     isRequired: true
     types:
     - <xref:str>
@@ -65,8 +94,8 @@ methods:
     types:
     - <xref:str>
   - name: skip_validation
-    description: whether to skip validation before creating/updating the component
-    isRequired: true
+    description: whether to skip validation before creating/updating the component,
+      defaults to False
     types:
     - <xref:bool>
   return:
@@ -94,6 +123,50 @@ methods:
       Details will be provided in the error message.'
   - type: azure.ai.ml.exceptions.EmptyDirectoryError
     description: Raised if local path provided points to an empty directory.
+- uid: azure.ai.ml.operations.ComponentOperations.download
+  name: download
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Download the specified component and its dependencies to local. Local component
+    can be used to create
+
+    the component in another workspace or for offline development.'
+  signature: 'download(name: str, download_path: PathLike | str = ''.'', *, version:
+    str = None) -> None'
+  parameters:
+  - name: name
+    description: Name of the code component.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: download_path
+    description: 'Local path as download destination,
+
+      defaults to current working directory of the current user. Will be created if
+      not exists.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of the component.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  return:
+    description: The specified component object.
+    types:
+    - <xref:azure.ai.ml.entities.Component>
+  exceptions:
+  - type: OSError
+    description: 'Raised if download_path is pointing to an existing directory that
+      is not empty.
+
+      identified and retrieved. Details will be provided in the error message.'
 - uid: azure.ai.ml.operations.ComponentOperations.get
   name: get
   summary: Returns information about the specified component.
@@ -111,7 +184,7 @@ methods:
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: label
-    description: Label of the component. (mutually exclusive with version)
+    description: Label of the component, mutually exclusive with version.
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:str>]
@@ -139,9 +212,6 @@ methods:
     description: 'View type for including/excluding (for example) archived components.
 
       Default: ACTIVE_ONLY.'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:ListViewType>]
   return:
     description: An iterator like instance of component objects
     types:
@@ -149,7 +219,8 @@ methods:
 - uid: azure.ai.ml.operations.ComponentOperations.restore
   name: restore
   summary: Restore an archived component.
-  signature: 'restore(name: str, version: str = None, label: str = None) -> None'
+  signature: 'restore(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of the component.
@@ -162,7 +233,7 @@ methods:
     types:
     - <xref:str>
   - name: label
-    description: Label of the component. (mutually exclusive with version)
+    description: Label of the component. (mutually exclusive with version).
     isRequired: true
     types:
     - <xref:str>
@@ -179,8 +250,8 @@ methods:
     validate a specified component. if there are inline defined
 
     entities, e.g. Environment, Code, they won''t be created.'
-  signature: 'validate(component: Component | function, raise_on_failure: bool = False)
-    -> ValidationResult'
+  signature: 'validate(component: Component | function, raise_on_failure: bool = False,
+    **kwargs) -> ValidationResult'
   parameters:
   - name: component
     description: The component object or a mldesigner component function that generates
@@ -189,9 +260,11 @@ methods:
     types:
     - <xref:typing.Union>[<xref:azure.ai.ml.entities.Component>, <xref:types.FunctionType>]
   - name: raise_on_failure
-    description: whether to raise exception on validation error
+    description: Whether to raise exception on validation error. Defaults to False
     isRequired: true
     types:
     - <xref:bool>
   return:
     description: All validation errors
+    types:
+    - <xref:azure.ai.ml.entities.ValidationResult>

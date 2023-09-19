@@ -5,20 +5,50 @@ fullName: azure.ai.ml.operations.DataOperations
 module: azure.ai.ml.operations
 inheritances:
 - azure.ai.ml._scope_dependent_operations._ScopeDependentOperations
+summary: 'DataOperations.
+
+
+  You should not instantiate this class directly. Instead, you should
+
+  create an MLClient instance that instantiates it for you and
+
+  attaches it as an attribute.'
 constructor:
   syntax: 'DataOperations(operation_scope: OperationScope, operation_config: OperationConfig,
-    service_client: AzureMachineLearningWorkspaces, datastore_operations: DatastoreOperations,
-    **kwargs: Dict)'
+    service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
+    datastore_operations: DatastoreOperations, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    description: Scope variables for the operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationScope>
   - name: operation_config
+    description: Common configuration for operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationConfig>
   - name: service_client
+    description: 'Service client to allow end users to operate on Azure Machine Learning
+      Workspace
+
+      resources (ServiceClient042023Preview or ServiceClient102021Dataplane).'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[ <xref:azure.ai.ml._restclient.v2023_04_01_preview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces>,
+      <xref:azure.ai.ml._restclient.v2021_10_01_dataplanepreview._azure_machine_learning_workspaces.
+      AzureMachineLearningWorkspaces>]
   - name: datastore_operations
+    description: Represents a client for performing operations on Datastores.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.operations.DatastoreOperations>
 methods:
 - uid: azure.ai.ml.operations.DataOperations.archive
   name: archive
   summary: Archive a data asset.
-  signature: 'archive(name: str, version: str = None, label: str = None) -> None'
+  signature: 'archive(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of data asset.
@@ -95,6 +125,28 @@ methods:
     description: 'Raised if Data cannot be successfully
 
       identified and retrieved. Details will be provided in the error message.'
+- uid: azure.ai.ml.operations.DataOperations.import_data
+  name: import_data
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Returns the data import job that is creating the data asset.'
+  signature: 'import_data(data_import: DataImport, **kwargs) -> PipelineJob'
+  parameters:
+  - name: data_import
+    description: DataImport object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.DataImport>
+  return:
+    description: data import job object.
+    types:
+    - <xref:azure.ai.ml.entities.PipelineJob>
 - uid: azure.ai.ml.operations.DataOperations.list
   name: list
   summary: List the data assets of the workspace.
@@ -110,17 +162,43 @@ methods:
     description: 'View type for including/excluding (for example) archived data assets.
 
       Default: ACTIVE_ONLY.'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:ListViewType>]
   return:
     description: An iterator like instance of Data objects
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.Data>]
+- uid: azure.ai.ml.operations.DataOperations.list_materialization_status
+  name: list_materialization_status
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    List materialization jobs of the asset.'
+  signature: 'list_materialization_status(name: str, *, list_view_type: ListViewType
+    = ListViewType.ACTIVE_ONLY, **kwargs) -> Iterable[PipelineJob]'
+  parameters:
+  - name: name
+    description: name of asset being created by the materialization jobs.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: list_view_type
+    description: 'View type for including/excluding (for example) archived jobs. Default:
+      ACTIVE_ONLY.'
+    types:
+    - <xref:typing.Optional>[<xref:ListViewType>]
+  return:
+    description: An iterator like instance of Job objects.
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.PipelineJob>]
 - uid: azure.ai.ml.operations.DataOperations.restore
   name: restore
   summary: Restore an archived data asset.
-  signature: 'restore(name: str, version: str = None, label: str = None) -> None'
+  signature: 'restore(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of data asset.
@@ -139,3 +217,43 @@ methods:
     - <xref:str>
   return:
     description: None
+- uid: azure.ai.ml.operations.DataOperations.share
+  name: share
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Share a data asset from workspace to registry.'
+  signature: share(name, version, *, share_with_name, share_with_version, registry_name,
+    **kwargs) -> Data
+  parameters:
+  - name: name
+    description: Name of data asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of data asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: share_with_name
+    description: Name of data asset to share with.
+    types:
+    - <xref:str>
+  - name: share_with_version
+    description: Version of data asset to share with.
+    types:
+    - <xref:str>
+  - name: registry_name
+    description: Name of the destination registry.
+    types:
+    - <xref:str>
+  return:
+    description: Data asset object.
+    types:
+    - <xref:azure.ai.ml.entities.Data>

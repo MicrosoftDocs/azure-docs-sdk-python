@@ -5,12 +5,13 @@ fullName: azure.ai.ml.entities.Environment
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._assets.asset.Asset
+- azure.ai.ml.entities._mixins.LocalizableMixin
 summary: Environment for training.
 constructor:
-  syntax: 'Environment(*, name: str = None, version: str = None, description: str
-    = None, image: str = None, build: BuildContext = None, conda_file: str | PathLike
-    = None, tags: Dict = None, properties: Dict = None, datastore: str | None = None,
-    **kwargs)'
+  syntax: 'Environment(*, name: str | None = None, version: str | None = None, description:
+    str | None = None, image: str | None = None, build: BuildContext | None = None,
+    conda_file: str | PathLike | None = None, tags: Dict | None = None, properties:
+    Dict | None = None, datastore: str | None = None, **kwargs)'
   parameters:
   - name: name
     description: Name of the resource.
@@ -42,7 +43,7 @@ constructor:
     description: Path to configuration file listing conda packages to install.
     isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:str>, <xref:os.Pathlike>]
+    - <xref:typing.Union>[<xref:str>, <xref:os.PathLike>]
   - name: tags
     description: Tag dictionary. Tags can be added, removed, and updated.
     isRequired: true
@@ -64,10 +65,41 @@ constructor:
     types:
     - <xref:dict>
 methods:
+- uid: azure.ai.ml.entities.Environment.dump
+  name: dump
+  summary: Dump the asset content into a file in YAML format.
+  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  parameters:
+  - name: dest
+    description: 'The local path or file stream to write the YAML content to.
+
+      If dest is a file path, a new file will be created.
+
+      If dest is an open file, the file will be written to directly.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
 - uid: azure.ai.ml.entities.Environment.validate
   name: validate
+  summary: Validate the environment by checking its name, image and build
   signature: validate()
 attributes:
+- uid: azure.ai.ml.entities.Environment.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.entities.Environment.conda_file
   name: conda_file
   summary: Conda environment specification.
@@ -75,3 +107,24 @@ attributes:
     description: Conda dependencies loaded from *conda_file* param.
     types:
     - <xref:Dict>
+- uid: azure.ai.ml.entities.Environment.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+- uid: azure.ai.ml.entities.Environment.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.Environment.version
+  name: version
+  summary: The asset version.
+  return:
+    description: The asset version.
+    types:
+    - <xref:str>

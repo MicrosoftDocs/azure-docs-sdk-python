@@ -8,25 +8,52 @@ inheritances:
 summary: 'ModelOperations.
 
 
-  You should not instantiate this class directly. Instead, you should
+  You should not instantiate this class directly. Instead, you should create an MLClient
+  instance that instantiates it
 
-  create an MLClient instance that instantiates it for you and
-
-  attaches it as an attribute.'
+  for you and attaches it as an attribute.'
 constructor:
   syntax: 'ModelOperations(operation_scope: OperationScope, operation_config: OperationConfig,
     service_client: AzureMachineLearningWorkspaces | AzureMachineLearningWorkspaces,
-    datastore_operations: DatastoreOperations, **kwargs: Dict)'
+    datastore_operations: DatastoreOperations, all_operations: OperationsContainer
+    = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    description: Scope variables for the operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationScope>
   - name: operation_config
+    description: Common configuration for operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationConfig>
   - name: service_client
+    description: 'Service client to allow end users to operate on Azure Machine Learning
+      Workspace
+
+      resources (ServiceClient042023Preview or ServiceClient102021Dataplane).'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[ <xref:azure.ai.ml._restclient.v2023_04_01_preview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces>,
+      <xref:azure.ai.ml._restclient.v2021_10_01_dataplanepreview._azure_machine_learning_workspaces.
+      AzureMachineLearningWorkspaces>]
   - name: datastore_operations
+    description: Represents a client for performing operations on Datastores.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.operations.DatastoreOperations>
+  - name: all_operations
+    description: All operations classes of an MLClient object.
+    defaultValue: None
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationsContainer>
 methods:
 - uid: azure.ai.ml.operations.ModelOperations.archive
   name: archive
   summary: Archive a model asset.
-  signature: 'archive(name: str, version: str = None, label: str = None) -> None'
+  signature: 'archive(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of model asset.
@@ -46,7 +73,7 @@ methods:
 - uid: azure.ai.ml.operations.ModelOperations.create_or_update
   name: create_or_update
   summary: Returns created or updated model asset.
-  signature: 'create_or_update(model: Model | WorkspaceModelReference) -> Model'
+  signature: 'create_or_update(model: Model | WorkspaceAssetReference) -> Model'
   parameters:
   - name: model
     description: Model asset object.
@@ -71,7 +98,7 @@ methods:
 - uid: azure.ai.ml.operations.ModelOperations.download
   name: download
   summary: Download files related to a model.
-  signature: 'download(name: str, version: str, download_path: PathLike | str = ''D:\\a\\_work\\1\\s\\dist_temp\\8\\azure-ai-ml-0.1.0b8\\doc'')
+  signature: 'download(name: str, version: str, download_path: PathLike | str = ''.'')
     -> None'
   parameters:
   - name: name
@@ -85,17 +112,21 @@ methods:
     types:
     - <xref:str>
   - name: download_path
-    description: 'Local path as download destination,
+    description: 'Local path as download destination, defaults to current working
+      directory of the current
 
-      defaults to current working directory of the current user. Contents will be
-      overwritten.'
+      user. Contents will be overwritten.'
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>]
+  exceptions:
+  - type: ResourceNotFoundError
+    description: if can't find a model matching provided name.
 - uid: azure.ai.ml.operations.ModelOperations.get
   name: get
   summary: Returns information about the specified model asset.
-  signature: 'get(name: str, version: str = None, label: str = None) -> Model'
+  signature: 'get(name: str, version: str | None = None, label: str | None = None)
+    -> Model'
   parameters:
   - name: name
     description: Name of the model.
@@ -124,28 +155,66 @@ methods:
 - uid: azure.ai.ml.operations.ModelOperations.list
   name: list
   summary: List all model assets in workspace.
-  signature: 'list(name: str = None, *, list_view_type: ListViewType = ListViewType.ACTIVE_ONLY)
-    -> Iterable[Model]'
+  signature: 'list(name: str | None = None, stage: str | None = None, *, list_view_type:
+    ListViewType = ListViewType.ACTIVE_ONLY) -> Iterable[Model]'
   parameters:
   - name: name
     description: Name of the model.
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:str>]
-  - name: list_view_type
-    description: 'View type for including/excluding (for example) archived models.
-      Default: ACTIVE_ONLY.'
+  - name: stage
+    description: The Model stage
     isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:ListViewType>]
+    - <xref:typing.Optional>[<xref:str>]
+  - name: list_view_type
+    description: 'View type for including/excluding (for example) archived models.
+      Defaults to
+
+      <xref:ListViewType.ACTIVE_ONLY>.'
   return:
     description: An iterator like instance of Model objects
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.Model>]
+- uid: azure.ai.ml.operations.ModelOperations.package
+  name: package
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Package a model asset'
+  signature: 'package(name: str, version: str, package_request: ModelPackage, **kwargs)
+    -> Environment'
+  parameters:
+  - name: name
+    description: Name of model asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of model asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: package_request
+    description: Model package request.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.ModelPackage>
+  return:
+    description: Environment object
+    types:
+    - <xref:azure.ai.ml.entities.Environment>
 - uid: azure.ai.ml.operations.ModelOperations.restore
   name: restore
   summary: Restore an archived model asset.
-  signature: 'restore(name: str, version: str = None, label: str = None) -> None'
+  signature: 'restore(name: str, version: str | None = None, label: str | None = None,
+    **kwargs) -> None'
   parameters:
   - name: name
     description: Name of model asset.
@@ -162,3 +231,43 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+- uid: azure.ai.ml.operations.ModelOperations.share
+  name: share
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Share a model asset from workspace to registry.'
+  signature: share(name, version, *, share_with_name, share_with_version, registry_name)
+    -> Model
+  parameters:
+  - name: name
+    description: Name of model asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of model asset.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: share_with_name
+    description: Name of model asset to share with.
+    types:
+    - <xref:str>
+  - name: share_with_version
+    description: Version of model asset to share with.
+    types:
+    - <xref:str>
+  - name: registry_name
+    description: Name of the destination registry.
+    types:
+    - <xref:str>
+  return:
+    description: Model asset object.
+    types:
+    - <xref:azure.ai.ml.entities.Model>

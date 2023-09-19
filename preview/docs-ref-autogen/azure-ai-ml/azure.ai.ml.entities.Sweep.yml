@@ -6,61 +6,71 @@ module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._job.sweep.parameterized_sweep.ParameterizedSweep
 - azure.ai.ml.entities._builders.base_node.BaseNode
-summary: 'Base class for sweep node, used for command component version
-
-  consumption.
+summary: 'Base class for sweep node.
 
 
-  You should not instantiate this class directly. Instead, you should
-
-  create from builder function: sweep.'
+  This class should not be instantiated directly. Instead, it should be created via
+  the builder function: sweep.'
 constructor:
-  syntax: 'Sweep(*, trial: CommandComponent | str = None, compute: str = None, limits:
-    SweepJobLimits = None, sampling_algorithm: str | SamplingAlgorithm = None, objective:
-    Objective = None, early_termination: EarlyTerminationPolicy = None, search_space:
-    Dict[str, SweepDistribution] = None, inputs: Dict[str, int | str | float | bool
-    | Input] = None, outputs: Dict[str, str | Output] = None, identity: ManagedIdentity
-    | AmlToken | UserIdentity = None, **kwargs)'
+  syntax: 'Sweep(*, trial: CommandComponent | str | None = None, compute: str | None
+    = None, limits: SweepJobLimits | None = None, sampling_algorithm: str | SamplingAlgorithm
+    | None = None, objective: Objective | None = None, early_termination: BanditPolicy
+    | MedianStoppingPolicy | TruncationSelectionPolicy | None = None, search_space:
+    Dict[str, Choice | LogNormal | LogUniform | Normal | QLogNormal | QLogUniform
+    | QNormal | QUniform | Randint | Uniform] | None = None, inputs: Dict[str, int
+    | str | float | bool | Input] | None = None, outputs: Dict[str, str | Output]
+    | None = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration
+    | UserIdentityConfiguration | None = None, queue_settings: QueueSettings | None
+    = None, **kwargs)'
   parameters:
   - name: trial
-    description: Id or instance of the command component/job to be run for the step
+    description: The ID or instance of the command component or job to be run for
+      the step.
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:azure.ai.ml.entities.CommandComponent>, <xref:str>]
   - name: compute
-    description: Compute definition containing the compute information for the step
+    description: The compute definition containing the compute information for the
+      step.
     isRequired: true
     types:
     - <xref:str>
   - name: limits
-    description: limits in running the sweep node.
+    description: The limits for the sweep node.
     isRequired: true
     types:
     - <xref:azure.ai.ml.sweep.SweepJobLimits>
   - name: sampling_algorithm
-    description: sampling algorithm to sample inside search space
+    description: 'The sampling algorithm to use to sample inside the search space.
+
+      Accepted values are: "random", "grid", or "bayesian".'
     isRequired: true
     types:
-    - '<xref:str>, <xref:valid values: random>, <xref:grid>'
-    - <xref:bayesian>
+    - <xref:str>
   - name: objective
-    description: the objective used to pick target run with the local optimal hyperparameter
-      in search space.
+    description: 'The objective used to determine the target run with the local optimal
+
+      hyperparameter in search space.'
     isRequired: true
     types:
     - <xref:azure.ai.ml.sweep.Objective>
   - name: early_termination_policy
-    description: early termination policy of the sweep node.
+    description: The early termination policy of the sweep node.
     isRequired: true
     types:
-    - <xref:EarlyTerminationPolicy>
+    - <xref:typing.Union>[<xref:azure.mgmt.machinelearningservices.models.BanditPolicy>,
+      <xref:azure.mgmt.machinelearningservices.models.MedianStoppingPolicy>, <xref:azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy>]
   - name: search_space
-    description: hyperparameter search space to run trials.
+    description: The hyperparameter search space to run trials in.
     isRequired: true
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:SweepDistribution>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.Choice>,
+      <xref:azure.ai.ml.entities.LogNormal>, <xref:azure.ai.ml.entities.LogUniform>,
+      <xref:azure.ai.ml.entities.Normal>, <xref:azure.ai.ml.entities.QLogNormal>,
+      <xref:azure.ai.ml.entities.QLogUniform>, <xref:azure.ai.ml.entities.QNormal>,
+      <xref:azure.ai.ml.entities.QUniform>, <xref:azure.ai.ml.entities.Randint>, <xref:azure.ai.ml.entities.Uniform>]]
   - name: inputs
-    description: Inputs to the command.
+    description: Mapping of input data bindings used in the job.
     isRequired: true
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.Input>,
@@ -71,12 +81,280 @@ constructor:
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.Output>]]
   - name: identity
-    description: Identity that training job will use while running on compute.
+    description: The identity that the training job will use while running on compute.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.ManagedIdentity>, <xref:azure.ai.ml.AmlToken>,
-      <xref:azure.ai.ml.UserIdentity>]
+    - <xref:typing.Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration>, <xref:azure.ai.ml.AmlTokenConfiguration>,
+      <xref:azure.ai.ml.UserIdentityConfiguration>]
+  - name: queue_settings
+    description: The queue settings for the job.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.QueueSettings>
+methods:
+- uid: azure.ai.ml.entities.Sweep.clear
+  name: clear
+  signature: clear() -> None.  Remove all items from D.
+- uid: azure.ai.ml.entities.Sweep.copy
+  name: copy
+  signature: copy() -> a shallow copy of D
+- uid: azure.ai.ml.entities.Sweep.dump
+  name: dump
+  summary: Dumps the job content into a file in YAML format.
+  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  parameters:
+  - name: dest
+    description: 'The local path or file stream to write the YAML content to.
+
+      If dest is a file path, a new file will be created.
+
+      If dest is an open file, the file will be written to directly.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
+- uid: azure.ai.ml.entities.Sweep.fromkeys
+  name: fromkeys
+  summary: Create a new dictionary with keys from iterable and values set to value.
+  signature: fromkeys(value=None, /)
+  parameters:
+  - name: type
+    isRequired: true
+  - name: iterable
+    isRequired: true
+  - name: value
+    defaultValue: None
+- uid: azure.ai.ml.entities.Sweep.get
+  name: get
+  summary: Return the value for key if key is in the dictionary, else default.
+  signature: get(key, default=None, /)
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+    defaultValue: None
+- uid: azure.ai.ml.entities.Sweep.items
+  name: items
+  signature: items() -> a set-like object providing a view on D's items
+- uid: azure.ai.ml.entities.Sweep.keys
+  name: keys
+  signature: keys() -> a set-like object providing a view on D's keys
+- uid: azure.ai.ml.entities.Sweep.pop
+  name: pop
+  summary: 'If the key is not found, return the default if given; otherwise,
+
+    raise a KeyError.'
+  signature: pop(k, [d]) -> v, remove specified key and return the corresponding value.
+- uid: azure.ai.ml.entities.Sweep.popitem
+  name: popitem
+  summary: 'Remove and return a (key, value) pair as a 2-tuple.
+
+
+    Pairs are returned in LIFO (last-in, first-out) order.
+
+    Raises KeyError if the dict is empty.'
+  signature: popitem()
+- uid: azure.ai.ml.entities.Sweep.set_limits
+  name: set_limits
+  summary: Set limits for Sweep node. Leave parameters as None if you don't want to
+    update corresponding values.
+  signature: 'set_limits(*, max_concurrent_trials: int | None = None, max_total_trials:
+    int | None = None, timeout: int | None = None, trial_timeout: int | None = None)
+    -> None'
+  parameters:
+  - name: max_concurrent_trials
+    description: maximum concurrent trial number.
+    types:
+    - <xref:int>
+  - name: max_total_trials
+    description: maximum total trial number.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: total timeout in seconds for sweep node
+    types:
+    - <xref:int>
+  - name: trial_timeout
+    description: timeout in seconds for each trial
+    types:
+    - <xref:int>
+- uid: azure.ai.ml.entities.Sweep.set_objective
+  name: set_objective
+  summary: 'Set the sweep object.. Leave parameters as None if you don''t want to
+    update corresponding values.
+
+
+    "minimize", "maximize".
+
+    :type goal: str
+
+    :keyword primary_metric: Name of the metric to optimize.
+
+    :paramtype primary_metric: str'
+  signature: 'set_objective(*, goal: str | None = None, primary_metric: str | None
+    = None) -> None'
+  parameters:
+  - name: goal
+    description: 'Defines supported metric goals for hyperparameter tuning. Acceptable
+      values are:'
+- uid: azure.ai.ml.entities.Sweep.setdefault
+  name: setdefault
+  summary: 'Insert key with a value of default if key is not in the dictionary.
+
+
+    Return the value for key if key is in the dictionary, else default.'
+  signature: setdefault(key, default=None, /)
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+    defaultValue: None
+- uid: azure.ai.ml.entities.Sweep.update
+  name: update
+  summary: 'If E is present and has a .keys() method, then does:  for k in E: D[k]
+    = E[k]
+
+    If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] =
+    v
+
+    In either case, this is followed by: for k in F:  D[k] = F[k]'
+  signature: update([E], **F) -> None.  Update D from dict/iterable E and F.
+- uid: azure.ai.ml.entities.Sweep.values
+  name: values
+  signature: values() -> an object providing a view on D's values
 attributes:
+- uid: azure.ai.ml.entities.Sweep.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.Sweep.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+- uid: azure.ai.ml.entities.Sweep.early_termination
+  name: early_termination
+  summary: The early termination policy for the sweep job.
+  return:
+    types:
+    - <xref:Union>[<xref:str>, <xref:azure.ai.ml.sweep.BanditPolicy>, <xref:azure.ai.ml.sweep.MedianStoppingPolicy,azure.ai.ml.sweep.TruncationSelectionPolicy>]
+- uid: azure.ai.ml.entities.Sweep.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.Sweep.inputs
+  name: inputs
+  summary: Get the inputs for the object.
+  return:
+    description: A dictionary containing the inputs for the object.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>,
+      <xref:int>, <xref:float>]]
+- uid: azure.ai.ml.entities.Sweep.limits
+  name: limits
+  summary: Limits for sweep job.
+  return:
+    description: Limits for sweep job.
+    types:
+    - <xref:azure.ai.ml.sweep.SweepJobLimits>
+- uid: azure.ai.ml.entities.Sweep.log_files
+  name: log_files
+  summary: Job output files.
+  return:
+    description: The dictionary of log names and URLs.
+    types:
+    - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
+- uid: azure.ai.ml.entities.Sweep.name
+  name: name
+  summary: Get the name of the node.
+  return:
+    description: The name of the node.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.Sweep.outputs
+  name: outputs
+  summary: Get the outputs of the object.
+  return:
+    description: A dictionary containing the outputs for the object.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.ai.ml.Output>]]
+- uid: azure.ai.ml.entities.Sweep.sampling_algorithm
+  name: sampling_algorithm
+  summary: Sampling algorithm for sweep job.
+  return:
+    description: Sampling algorithm for sweep job.
+    types:
+    - <xref:azure.ai.ml.sweep.SamplingAlgorithm>
+- uid: azure.ai.ml.entities.Sweep.search_space
+  name: search_space
+  summary: 'Dictionary of the hyperparameter search space.
+
+
+    Each key is the name of a hyperparameter and its value is the parameter expression.'
+  return:
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Choice>, <xref:azure.ai.ml.entities.LogNormal,azure.ai.ml.entities.LogUniform>,
+      <xref:azure.ai.ml.entities.Normal>, <xref:azure.ai.ml.entities.QLogNormal,azure.ai.ml.entities.QLogUniform>,
+      <xref:azure.ai.ml.entities.QNormal>, <xref:azure.ai.ml.entities.QUniform,azure.ai.ml.entities.Randint>,
+      <xref:azure.ai.ml.entities.Uniform>]]
+- uid: azure.ai.ml.entities.Sweep.status
+  name: status
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
+  return:
+    description: Status of the job.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.Sweep.studio_url
+  name: studio_url
+  summary: Azure ML studio endpoint.
+  return:
+    description: The URL to the job details page.
+    types:
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Sweep.trial
   name: trial
-  summary: Id or instance of the command component/job to be run for the step.
+  summary: The ID or instance of the command component or job to be run for the step.
+  return:
+    types:
+    - <xref:azure.ai.ml.entities.CommandComponent>
+- uid: azure.ai.ml.entities.Sweep.type
+  name: type
+  summary: The type of the job.
+  return:
+    description: The type of the job.
+    types:
+    - <xref:Optional>[<xref:str>]

@@ -5,19 +5,20 @@ fullName: azure.ai.ml.entities.Component
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._assets.asset.Asset
-- azure.ai.ml.entities._mixins.RestTranslatableMixin
+- azure.ai.ml.entities._validation.remote.RemoteValidatableMixin
 - azure.ai.ml.entities._mixins.TelemetryMixin
 - azure.ai.ml.entities._mixins.YamlTranslatableMixin
-- azure.ai.ml.entities._validation.SchemaValidatableMixin
-summary: 'Base class for component version, used to define a component. Can''t be
-
-  instantiated directly.'
+- azure.ai.ml.entities._validation.path_aware_schema.PathAwareSchemaValidatableMixin
+- azure.ai.ml.entities._mixins.LocalizableMixin
+summary: Base class for component version, used to define a component. Can't be instantiated
+  directly.
 constructor:
-  syntax: 'Component(*, name: str = None, version: str = None, id: str = None, type:
-    str = None, description: str = None, tags: Dict = None, properties: Dict = None,
-    display_name: str = None, is_deterministic: bool = True, inputs: Dict = None,
-    outputs: Dict = None, yaml_str: str = None, _schema: str = None, creation_context:
-    SystemData = None, **kwargs)'
+  syntax: 'Component(*, name: str | None = None, version: str | None = None, id: str
+    | None = None, type: str | None = None, description: str | None = None, tags:
+    Dict | None = None, properties: Dict | None = None, display_name: str | None =
+    None, is_deterministic: bool = True, inputs: Dict | None = None, outputs: Dict
+    | None = None, yaml_str: str | None = None, _schema: str | None = None, creation_context:
+    SystemData | None = None, **kwargs)'
   parameters:
   - name: name
     description: Name of the resource.
@@ -30,7 +31,7 @@ constructor:
     types:
     - <xref:str>
   - name: id
-    description: Global id of the resource, Azure Resource Manager ID.
+    description: Global ID of the resource, Azure Resource Manager ID.
     isRequired: true
     types:
     - <xref:str>
@@ -39,9 +40,6 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
-  - name: type
-    description: Type of the command, supported is 'command'.
-    isRequired: true
   - name: description
     description: Description of the resource.
     isRequired: true
@@ -63,7 +61,7 @@ constructor:
     types:
     - <xref:str>
   - name: is_deterministic
-    description: Whether the component is deterministic.
+    description: Whether the component is deterministic. Defaults to True.
     isRequired: true
     types:
     - <xref:bool>
@@ -78,7 +76,7 @@ constructor:
     types:
     - <xref:dict>
   - name: yaml_str
-    description: The yaml string of the component.
+    description: The YAML string of the component.
     isRequired: true
     types:
     - <xref:str>
@@ -92,6 +90,9 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.SystemData>
+  - name: kwargs
+    description: Additional parameters for the component.
+    isRequired: true
 methods:
 - uid: azure.ai.ml.entities.Component.dump
   name: dump
@@ -114,6 +115,20 @@ methods:
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
 attributes:
+- uid: azure.ai.ml.entities.Component.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.Component.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.Component.display_name
   name: display_name
   summary: Display name of the component.
@@ -121,6 +136,13 @@ attributes:
     description: Display name of the component.
     types:
     - <xref:str>
+- uid: azure.ai.ml.entities.Component.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Component.inputs
   name: inputs
   summary: Inputs of the component.
@@ -151,3 +173,8 @@ attributes:
     - <xref:str>
 - uid: azure.ai.ml.entities.Component.version
   name: version
+  summary: Version of the component.
+  return:
+    description: Version of the component.
+    types:
+    - <xref:str>

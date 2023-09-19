@@ -13,15 +13,15 @@ summary: '> [!NOTE]
   >
 
 
-  Azure ML workspace connection provides a secure way to store
+  Azure ML workspace connection provides a secure way to store authentication and
+  configuration information needed
 
-  authentication and configuration information needed to connect and interact
-
-  with the external resources.'
+  to connect and interact with the external resources.'
 constructor:
   syntax: 'WorkspaceConnection(*, target: str, type: str, credentials: PatTokenConfiguration
     | SasTokenConfiguration | UsernamePasswordConfiguration | ManagedIdentityConfiguration
-    | ServicePrincipalConfiguration, metadata: Dict[str, Any] = None, **kwargs)'
+    | ServicePrincipalConfiguration | AccessKeyConfiguration, metadata: Dict[str,
+    Any] | None = None, **kwargs)'
   parameters:
   - name: name
     description: Name of the workspace connection.
@@ -39,13 +39,11 @@ constructor:
     types:
     - <xref:typing.Union>[ <xref:azure.ai.ml.entities.PatTokenConfiguration>, <xref:azure.ai.ml.entities.SasTokenConfiguration>,
       <xref:azure.ai.ml.entities.UsernamePasswordConfiguration>, <xref:azure.ai.ml.entities.ManagedIdentityConfiguration
-      ~azure.ai.ml.entities.ServicePrincipalConfiguration> ]
+      ~azure.ai.ml.entities.ServicePrincipalConfiguration>, <xref:azure.ai.ml.entities.AccessKeyConfiguration>,
+      <xref:azure.ai.ml.entities.ApiKeyConfiguration> ]
   - name: type
     description: The category of external resource for this connection.
     isRequired: true
-    types:
-    - <xref:<xref:The type> of <xref:workspace connection>, <xref:possible values
-      are:> [<xref:"git">, <xref:"python_feed">, <xref:"container_registry">, <xref:"feature_store">]>
 methods:
 - uid: azure.ai.ml.entities.WorkspaceConnection.dump
   name: dump
@@ -68,6 +66,20 @@ methods:
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
 attributes:
+- uid: azure.ai.ml.entities.WorkspaceConnection.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.WorkspaceConnection.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.WorkspaceConnection.credentials
   name: credentials
   summary: 'Credentials for workspace connection.
@@ -77,7 +89,14 @@ attributes:
   return:
     description: Credentials for workspace connection.
     types:
-    - <xref:Union>[<xref:PatTokenCredentialsConfiguration,SasTokenCredentialsConfiguration,UsernamePasswordCredentialsConfiguration,azure.ai.ml.entities.ManagedIdentityConfiguration,ServicePrincipalCredentialsConfiguration,>
+    - <xref:Union>[<xref:PatTokenCredentialsConfiguration,SasTokenCredentialsConfiguration,UsernamePasswordCredentialsConfiguration,azure.ai.ml.entities.ManagedIdentityConfiguration,ServicePrincipalCredentialsConfiguration,AccessKeyCredentialsConfiguration,>
+- uid: azure.ai.ml.entities.WorkspaceConnection.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.WorkspaceConnection.metadata
   name: metadata
   summary: Metadata for workspace connection.
@@ -94,9 +113,8 @@ attributes:
     - <xref:str>
 - uid: azure.ai.ml.entities.WorkspaceConnection.type
   name: type
-  summary: 'Type of the workspace connection, supported are ''git'', ''python_feed''
-
-    and ''container_registry''.'
+  summary: Type of the workspace connection, supported are 'git', 'python_feed' and
+    'container_registry'.
   return:
     description: Type of the job.
     types:
