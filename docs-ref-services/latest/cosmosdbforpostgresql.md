@@ -8,6 +8,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cosmosdbforpostgresql
 ---
-# Azure Cosmosdbforpostgresql SDK for Python - preview
-## Packages - preview
+# Azure Cosmosdbforpostgresql SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](cosmosdbforpostgresql-index.md)]
