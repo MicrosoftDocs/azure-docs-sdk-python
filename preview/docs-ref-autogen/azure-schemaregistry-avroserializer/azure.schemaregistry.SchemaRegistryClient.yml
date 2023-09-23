@@ -1,0 +1,153 @@
+### YamlMime:PythonClass
+uid: azure.schemaregistry.SchemaRegistryClient
+name: SchemaRegistryClient
+fullName: azure.schemaregistry.SchemaRegistryClient
+module: azure.schemaregistry
+inheritances:
+- builtins.object
+summary: SchemaRegistryClient is a client for registering and retrieving schemas from
+  the Azure Schema Registry service.
+constructor:
+  syntax: 'SchemaRegistryClient(fully_qualified_namespace: str, credential: TokenCredential,
+    **kwargs: Any)'
+  parameters:
+  - name: fully_qualified_namespace
+    description: 'The Schema Registry service fully qualified host name.
+
+      For example: my-namespace.servicebus.windows.net.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: To authenticate managing the entities of the SchemaRegistry namespace.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+  - name: api_version
+    description: 'The Schema Registry service API version to use for requests.
+
+      Default value and only accepted value currently is "2021-10".'
+    types:
+    - <xref:str>
+methods:
+- uid: azure.schemaregistry.SchemaRegistryClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: close() -> None
+- uid: azure.schemaregistry.SchemaRegistryClient.get_schema
+  name: get_schema
+  summary: 'Gets a registered schema. There are two ways to call this method:
+
+
+    1) To get a registered schema by its unique ID, pass the *schema_id* parameter
+    and any optional
+
+    keyword arguments. Azure Schema Registry guarantees that ID is unique within a
+    namespace.
+
+
+    2) To get a specific version of a schema within the specified schema group, pass
+    in the required
+
+    keyword arguments *group_name*, *name*, and *version* and any optional keyword
+    arguments.'
+  signature: 'get_schema(schema_id: str, **kwargs: Any) -> Schema'
+  parameters:
+  - name: schema_id
+    description: References specific schema in registry namespace.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: group_name
+    description: Name of schema group that contains the registered schema.
+    types:
+    - <xref:str>
+  - name: name
+    description: Name of schema which should be retrieved.
+    types:
+    - <xref:str>
+  - name: version
+    description: Version of schema which should be retrieved.
+    types:
+    - <xref:int>
+  return:
+    types:
+    - <xref:azure.schemaregistry.Schema>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.schemaregistry.SchemaRegistryClient.get_schema_properties
+  name: get_schema_properties
+  summary: 'Gets the schema properties corresponding to an existing schema within
+    the specified schema group,
+
+    as matched by schema definition comparison.'
+  signature: 'get_schema_properties(group_name: str, name: str, definition: str, format:
+    str | SchemaFormat, **kwargs: Any) -> SchemaProperties'
+  parameters:
+  - name: group_name
+    description: Schema group under which schema should be registered.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: name
+    description: Name of schema for which properties should be retrieved.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: definition
+    description: String representation of the schema for which properties should be
+      retrieved.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: format
+    description: Format for the schema for which properties should be retrieved.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.schemaregistry.SchemaFormat>]
+  return:
+    types:
+    - <xref:azure.schemaregistry.SchemaProperties>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.schemaregistry.SchemaRegistryClient.register_schema
+  name: register_schema
+  summary: 'Register new schema. If schema of specified name does not exist in specified
+    group,
+
+    schema is created at version 1. If schema of specified name exists already in
+    specified group,
+
+    schema is created at latest version + 1.'
+  signature: 'register_schema(group_name: str, name: str, definition: str, format:
+    str | SchemaFormat, **kwargs: Any) -> SchemaProperties'
+  parameters:
+  - name: group_name
+    description: Schema group under which schema should be registered.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: name
+    description: Name of schema being registered.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: definition
+    description: String representation of the schema being registered.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: format
+    description: 'Format for the schema being registered.
+
+      For now Avro is the only supported schema format by the service.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.schemaregistry.SchemaFormat>]
+  return:
+    types:
+    - <xref:azure.schemaregistry.SchemaProperties>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
