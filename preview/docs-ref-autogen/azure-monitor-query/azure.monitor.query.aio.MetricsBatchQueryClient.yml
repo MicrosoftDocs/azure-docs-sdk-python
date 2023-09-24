@@ -1,0 +1,165 @@
+### YamlMime:PythonClass
+uid: azure.monitor.query.aio.MetricsBatchQueryClient
+name: MetricsBatchQueryClient
+fullName: azure.monitor.query.aio.MetricsBatchQueryClient
+module: azure.monitor.query.aio
+inheritances:
+- builtins.object
+summary: 'MetricsBatchQueryClient should be used for performing metrics queries on
+  multiple monitored resources in the
+
+  same region. A credential with authorization at the subscription level is required
+  when using this client.'
+constructor:
+  syntax: 'MetricsBatchQueryClient(credential: AsyncTokenCredential, endpoint: str,
+    **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: 'The regional endpoint to use, for example
+
+      [https://eastus.metrics.monitor.azure.com](https://eastus.metrics.monitor.azure.com).
+      The region should match the region of the requested
+
+      resources. For global resources, the region should be ''global''. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: The credential to authenticate the client.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
+  - name: audience
+    description: 'The audience to use when requesting a token. If not provided, the
+      public cloud audience
+
+      will be assumed. Defaults to ''[https://metrics.monitor.azure.com](https://metrics.monitor.azure.com)''.'
+    types:
+    - <xref:str>
+methods:
+- uid: azure.monitor.query.aio.MetricsBatchQueryClient.close
+  name: close
+  summary: Close the client session.
+  signature: async close() -> None
+- uid: azure.monitor.query.aio.MetricsBatchQueryClient.query_batch
+  name: query_batch
+  summary: Lists the metric values for multiple resources.
+  signature: 'async query_batch(resource_uris: Sequence[str], metric_namespace: str,
+    metric_names: Sequence[str], **kwargs: Any) -> List[MetricsQueryResult]'
+  parameters:
+  - name: resource_uris
+    description: A list of resource URIs to query metrics for. Required.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  - name: metric_namespace
+    description: Metric namespace that contains the requested metric names. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metric_names
+    description: The names of the metrics (comma separated) to retrieve. Required.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>]
+  - name: timespan
+    description: 'The timespan for which to query the data. This can be a timedelta,
+
+      a timedelta and a start datetime, or a start datetime/end datetime.'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:datetime.timedelta>, <xref:tuple>[<xref:datetime.datetime>,
+      <xref:datetime.timedelta>], <xref:tuple>[<xref:datetime.datetime>, <xref:datetime.datetime>]]]
+  - name: granularity
+    description: The granularity (i.e. timegrain) of the query.
+    types:
+    - <xref:typing.Optional>[<xref:datetime.timedelta>]
+  - name: aggregations
+    description: 'The list of aggregation types to retrieve. Use
+
+      *azure.monitor.query.MetricAggregationType* enum to get each aggregation type.'
+    types:
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
+  - name: max_results
+    description: 'The maximum number of records to retrieve.
+
+      Valid only if $filter is specified.Defaults to 10.'
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  - name: order_by
+    description: 'The aggregation to use for sorting results and the direction of
+      the sort.
+
+      Only one order can be specified. Examples: sum asc.'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: filter
+    description: 'The **$filter** is used to reduce the set of metric data returned.
+      Example:
+
+      Metric contains metadata A, B and C. - Return all time series of C where A =
+      a1 and B = b1 or
+
+      b2 **$filter=A eq ''a1'' and B eq ''b1'' or B eq ''b2'' and C eq ''*''** - Invalid
+      variant: **$filter=A
+
+      eq ''a1'' and B eq ''b1'' and C eq ''*'' or B = ''b2''** This is invalid because
+      the logical or
+
+      operator cannot separate two different metadata names. - Return all time series
+      where A = a1,
+
+      B = b1 and C = c1: **$filter=A eq ''a1'' and B eq ''b1'' and C eq ''c1''** -
+      Return all time series
+
+      where A = a1 **$filter=A eq ''a1'' and B eq ''*'' and C eq ''*''**. Special
+      case: When dimension
+
+      name or dimension value uses round brackets. Eg: When dimension name is **dim
+      (test) 1**
+
+      Instead of using **$filter= "dim (test) 1 eq ''*''"** use **$filter= "dim %2528test%2529
+      1 eq ''*''"**.
+
+      When dimension name is **dim (test) 3** and dimension value is **dim3 (test)
+      val**, instead of using
+
+      **$filter= "dim (test) 3 eq ''dim3 (test) val''"** use **$filter= "dim
+
+      %2528test%2529 3 eq ''dim3 %2528test%2529 val''"**. Default value is None.'
+    types:
+    - <xref:str>
+  return:
+    description: A list of MetricsQueryResult objects.
+    types:
+    - <xref:list>[<xref:azure.monitor.query.MetricsQueryResult>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "Get a response for a batch metrics query.<!--[!code-python[Main](les\\async_samples\\\
+    sample_metrics_batch_query_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\161\\\\azure-monitor-query-1.3.0b1\\\
+    \\samples\\\\async_samples\\\\sample_metrics_batch_query_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from datetime\
+    \ import timedelta\n   import os\n\n   from azure.core.exceptions import HttpResponseError\n\
+    \   from azure.identity.aio import DefaultAzureCredential\n   from azure.monitor.query\
+    \ import MetricAggregationType\n   from azure.monitor.query.aio import MetricsBatchQueryClient\n\
+    \n\n   async def query_metrics_batch():\n       endpoint = os.environ[\"AZURE_METRICS_ENDPOINT\"\
+    ]\n\n       credential = DefaultAzureCredential()\n       client = MetricsBatchQueryClient(endpoint,\
+    \ credential)\n\n       resource_uris = [\n           '/subscriptions/<id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<account-1>',\n\
+    \           '/subscriptions/<id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<account-2>'\n\
+    \       ]\n       async with client:\n           try:\n               response\
+    \ = await client.query_batch(\n                   resource_uris=resource_uris,\n\
+    \                   metric_namespace=\"Microsoft.Storage/storageAccounts\",\n\
+    \                   metric_names=[\"Ingress\"],\n                   timespan=timedelta(hours=2),\n\
+    \                   granularity=timedelta(minutes=5),\n                   aggregations=[MetricAggregationType.AVERAGE],\n\
+    \               )\n\n               for metrics_query_result in response:\n  \
+    \                 for metric in metrics_query_result.metrics:\n              \
+    \         print(metric.name + \" -- \" + metric.display_description)\n       \
+    \                for time_series_element in metric.timeseries:\n             \
+    \              for metric_value in time_series_element.data:\n               \
+    \                print(\"The ingress at {} is {}\".format(metric_value.timestamp,\
+    \ metric_value.average))\n           except HttpResponseError as err:\n      \
+    \         print(\"something fatal happened\")\n               print(err)\n   \
+    \    await credential.close()\n\n   ````\n"

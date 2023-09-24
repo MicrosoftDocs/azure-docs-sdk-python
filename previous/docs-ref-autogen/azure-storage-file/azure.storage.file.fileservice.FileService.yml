@@ -1,0 +1,3031 @@
+### YamlMime:PythonClass
+uid: azure.storage.file.fileservice.FileService
+name: FileService
+fullName: azure.storage.file.fileservice.FileService
+module: azure.storage.file.fileservice
+inheritances:
+- azure.storage.common.storageclient.StorageClient
+summary: 'The Server Message Block (SMB) protocol is the preferred file share protocol
+
+  used on premise today. The Microsoft Azure File service enables customers to
+
+  leverage the availability and scalability of Azure''s Cloud Infrastructure as
+
+  a Service (IaaS) SMB without having to rewrite SMB client applications.
+
+
+  The Azure File service also offers a compelling alternative to traditional
+
+  Direct Attached Storage (DAS) and Storage Area Network (SAN) solutions, which
+
+  are often complex and expensive to install, configure, and operate.'
+constructor:
+  syntax: FileService(account_name=None, account_key=None, sas_token=None, protocol='https',
+    endpoint_suffix='core.windows.net', request_session=None, connection_string=None,
+    socket_timeout=None)
+  parameters:
+  - name: account_name
+    description: 'The storage account name. This is used to authenticate requests
+
+      signed with an account key and to construct the storage endpoint. It
+
+      is required unless a connection string is given.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: account_key
+    description: The storage account key. This is used for shared key authentication.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: 'A shared access signature token to use to authenticate requests
+
+      instead of the account key. If account key and sas token are both
+
+      specified, account key will be used to sign.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: protocol
+    description: The protocol to use for requests. Defaults to https.
+    defaultValue: https
+    types:
+    - <xref:str>
+  - name: endpoint_suffix
+    description: 'The host base component of the url, minus the account name. Defaults
+
+      to Azure (core.windows.net). Override this to use the China cloud
+
+      (core.chinacloudapi.cn).'
+    defaultValue: core.windows.net
+    types:
+    - <xref:str>
+  - name: request_session
+    description: The session object to use for http requests.
+    defaultValue: None
+    types:
+    - <xref:requests.Session>
+  - name: connection_string
+    description: 'If specified, this will override all other parameters besides
+
+      request session. See
+
+      [http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/](http://azure.microsoft.com/en-us/documentation/articles/storage-configure-connection-string/)
+
+      for the connection string format.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'If specified, this will override the default socket timeout. The
+      timeout specified is in seconds.
+
+      See DEFAULT_SOCKET_TIMEOUT in _constants.py for the default value.'
+    defaultValue: None
+    types:
+    - <xref:int>
+variables:
+- description: 'The size of the first range get performed by get_file_to_* methods
+    if
+
+    max_connections is greater than 1. Less data will be returned if the
+
+    file is smaller than this.'
+  name: MAX_SINGLE_GET_SIZE
+  types:
+  - <xref:int>
+- description: 'The size of subsequent range gets performed by get_file_to_* methods
+    if
+
+    max_connections is greater than 1 and the file is larger than MAX_SINGLE_GET_SIZE.
+
+    Less data will be returned if the remainder of the file is smaller than
+
+    this. If this is set to larger than 4MB, content_validation will throw an
+
+    error if enabled. However, if content_validation is not desired a size
+
+    greater than 4MB may be optimal. Setting this below 4MB is not recommended.'
+  name: MAX_CHUNK_GET_SIZE
+  types:
+  - <xref:int>
+- description: 'The size of the ranges put by create_file_from_* methods. Smaller
+    ranges
+
+    may be put if there is less data provided. The maximum range size the service
+
+    supports is 4MB.'
+  name: MAX_RANGE_SIZE
+  types:
+  - <xref:int>
+methods:
+- uid: azure.storage.file.fileservice.FileService.abort_copy_file
+  name: abort_copy_file
+  summary: "Aborts a pending copy_file operation, and leaves a destination file\n\
+    \   with zero length and full metadata."
+  signature: abort_copy_file(share_name, directory_name, file_name, copy_id, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of destination share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of destination file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: copy_id
+    description: 'Copy identifier provided in the copy.id of the original
+
+      copy_file operation.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.clear_range
+  name: clear_range
+  summary: 'Clears the specified range and releases the space used in storage for
+
+    that range.'
+  signature: clear_range(share_name, directory_name, file_name, start_range, end_range,
+    timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for clearing a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for clearing a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.close_handles
+  name: close_handles
+  summary: 'Returns a generator to close opened handles on a directory or a file under
+    the specified share.
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service and stop when all handles have been closed.
+
+    The yielded values represent the number of handles that were closed in each transaction.'
+  signature: close_handles(share_name, directory_name=None, file_name=None, recursive=None,
+    handle_id=None, marker=None, snapshot=None, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: recursive
+    description: 'Boolean that specifies if operation should apply to the directory
+      specified in the URI,
+
+      its files, its subdirectories and their files.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: handle_id
+    description: 'Required. Specifies handle ID opened on the file or directory to
+      be closed.
+
+      Astrix (''*'') is a wildcard that specifies all handles.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: marker
+    description: 'An opaque continuation token. This value can be retrieved from the
+
+      next_marker field of a previous generator object if it has not finished closing
+      handles. If
+
+      specified, this generator will begin closing handles from the point
+
+      where the previous generator stopped.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.copy_file
+  name: copy_file
+  summary: 'Copies a file asynchronously. This operation returns a copy operation
+
+    properties object, including a copy ID you can use to check or abort the
+
+    copy operation. The File service copies files on a best-effort basis.
+
+
+    If the destination file exists, it will be overwritten. The destination
+
+    file cannot be modified while the copy operation is in progress.'
+  signature: copy_file(share_name, directory_name, file_name, copy_source, metadata=None,
+    timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of the destination share. The share must exist.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: Name of the destination directory. The directory must exist.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: 'Name of the destination file. If the destination file exists, it
+      will
+
+      be overwritten. Otherwise, it will be created.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: copy_source
+    description: 'A URL of up to 2 KB in length that specifies an Azure file or blob.
+
+      The value should be URL-encoded as it would appear in a request URI.
+
+      If the source is in another account, the source must either be public
+
+      or must be authenticated via a shared access signature. If the source
+
+      is public, no authentication is required.
+
+      Examples:
+
+      [https://myaccount.file.core.windows.net/myshare/mydir/myfile](https://myaccount.file.core.windows.net/myshare/mydir/myfile)
+
+      [https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken](https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken)'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'Name-value pairs associated with the file as metadata. If no name-value
+
+      pairs are specified, the operation will copy the metadata from the
+
+      source blob or file to the destination file. If one or more name-value
+
+      pairs are specified, the destination file is created with the specified
+
+      metadata, and the metadata is not copied from the source blob or file.'
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)<xref:./>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: Copy operation properties such as status, source, and ID.
+    types:
+    - <xref:azure.storage.file.models.CopyProperties>
+- uid: azure.storage.file.fileservice.FileService.create_directory
+  name: create_directory
+  summary: 'Creates a new directory under the specified share or parent directory.
+
+    If the directory with the same name already exists, the operation fails
+
+    on the service. By default, the exception is swallowed by the client.
+
+    To expose the exception, specify True for fail_on_exists.'
+  signature: create_directory(share_name, directory_name, metadata=None, fail_on_exist=False,
+    timeout=None, file_permission=None, smb_properties=<azure.storage.file.models.SMBProperties
+    object>)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: 'Name of directory to create, including the path to the parent
+
+      directory.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'A dict with name_value pairs to associate with the
+
+      share as metadata. Example:{''Category'':''test''}'
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)<xref::>
+  - name: fail_on_exist
+    description: 'specify whether to throw an exception when the directory exists.
+
+      False by default.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: True if directory is created, False if directory already exists.
+    types:
+    - <xref:bool>
+- uid: azure.storage.file.fileservice.FileService.create_file
+  name: create_file
+  summary: 'Creates a new file.
+
+
+    See create_file_from_* for high level functions that handle the
+
+    creation and upload of large files with automatic chunking and
+
+    progress notifications.'
+  signature: create_file(share_name, directory_name, file_name, content_length, content_settings=None,
+    metadata=None, timeout=None, file_permission=None, smb_properties=<azure.storage.file.models.SMBProperties
+    object>)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file to create or update.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content_length
+    description: Length of the file in bytes.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: content_settings
+    description: ContentSettings object used to set file properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.create_file_from_bytes
+  name: create_file_from_bytes
+  summary: 'Creates a new file from an array of bytes, or updates the content
+
+    of an existing file, with automatic chunking and progress
+
+    notifications.'
+  signature: create_file_from_bytes(share_name, directory_name, file_name, file, index=0,
+    count=None, content_settings=None, metadata=None, validate_content=False, progress_callback=None,
+    max_connections=2, timeout=None, file_permission=None, smb_properties=<azure.storage.file.models.SMBProperties
+    object>)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file to create or update.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file
+    description: Content of file as an array of bytes.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: index
+    description: Start index in the array of bytes.
+    defaultValue: '0'
+    types:
+    - <xref:int>
+  - name: count
+    description: 'Number of bytes to upload. Set to None or negative value to upload
+
+      all bytes starting from index.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: content_settings
+    description: ContentSettings object used to set file properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total) where
+
+      current is the number of bytes transfered so far and total is the
+
+      size of the file, or None if the total size is unknown.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: Maximum number of parallel connections to use.
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.create_file_from_path
+  name: create_file_from_path
+  summary: 'Creates a new azure file from a local file path, or updates the content
+    of an
+
+    existing file, with automatic chunking and progress notifications.'
+  signature: create_file_from_path(share_name, directory_name, file_name, local_file_path,
+    content_settings=None, metadata=None, validate_content=False, progress_callback=None,
+    max_connections=2, file_permission=None, smb_properties=<azure.storage.file.models.SMBProperties
+    object>, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file to create or update.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: local_file_path
+    description: Path of the local file to upload as the file content.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content_settings
+    description: ContentSettings object used for setting file properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total) where
+
+      current is the number of bytes transfered so far and total is the
+
+      size of the file, or None if the total size is unknown.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: Maximum number of parallel connections to use.
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.create_file_from_stream
+  name: create_file_from_stream
+  summary: 'Creates a new file from a file/stream, or updates the content of an
+
+    existing file, with automatic chunking and progress notifications.'
+  signature: create_file_from_stream(share_name, directory_name, file_name, stream,
+    count, content_settings=None, metadata=None, validate_content=False, progress_callback=None,
+    max_connections=2, timeout=None, file_permission=None, smb_properties=<azure.storage.file.models.SMBProperties
+    object>)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file to create or update.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: stream
+    description: Opened file/stream to upload as the file content.
+    isRequired: true
+    types:
+    - <xref:io.IOBase>
+  - name: count
+    description: 'Number of bytes to read from the stream. This is required, a
+
+      file cannot be created if the count is unknown.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: content_settings
+    description: ContentSettings object used to set file properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total) where
+
+      current is the number of bytes transfered so far and total is the
+
+      size of the file, or None if the total size is unknown.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: 'Maximum number of parallel connections to use. Note that parallel
+      upload
+
+      requires the stream to be seekable.'
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.create_file_from_text
+  name: create_file_from_text
+  summary: 'Creates a new file from str/unicode, or updates the content of an
+
+    existing file, with automatic chunking and progress notifications.'
+  signature: create_file_from_text(share_name, directory_name, file_name, text, encoding='utf-8',
+    content_settings=None, metadata=None, validate_content=False, timeout=None, file_permission=None,
+    smb_properties=<azure.storage.file.models.SMBProperties object>)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file to create or update.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: text
+    description: Text to upload to the file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: encoding
+    description: Python encoding to use to convert the text to bytes.
+    defaultValue: utf-8
+    types:
+    - <xref:str>
+  - name: content_settings
+    description: ContentSettings object used to set file properties.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.ContentSettings>
+  - name: metadata
+    description: Name-value pairs associated with the file as metadata.
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash for each range of the file. The
+      storage
+
+      service checks the hash of the content that has arrived with the hash
+
+      that was sent. This is primarily valuable for detecting bitflips on
+
+      the wire if using http instead of https as https (the default) will
+
+      already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.create_permission_for_share
+  name: create_permission_for_share
+  summary: 'Create a permission(a security descriptor) at the share level.
+
+    This ''permission'' can be used for the files/directories in the share.
+
+    If a ''permission'' already exists, it shall return the key of it, else
+
+    creates a new permission at the share level and return its key.
+
+
+    :returns a file permission key
+
+    :rtype str'
+  signature: create_permission_for_share(share_name, file_permission, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of share.
+    isRequired: true
+  - name: file_permission
+    description: File permission, a Portable SDDL
+    isRequired: true
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+- uid: azure.storage.file.fileservice.FileService.create_share
+  name: create_share
+  summary: 'Creates a new share under the specified account. If the share
+
+    with the same name already exists, the operation fails on the
+
+    service. By default, the exception is swallowed by the client.
+
+    To expose the exception, specify True for fail_on_exists.'
+  signature: create_share(share_name, metadata=None, quota=None, fail_on_exist=False,
+    timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of share to create.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'A dict with name_value pairs to associate with the
+
+      share as metadata. Example:{''Category'':''test''}'
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: quota
+    description: 'Specifies the maximum size of the share, in gigabytes. Must be
+
+      greater than 0, and less than or equal to 5TB (5120).'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: fail_on_exist
+    description: 'Specify whether to throw an exception when the share exists.
+
+      False by default.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: True if share is created, False if share already exists.
+    types:
+    - <xref:bool>
+- uid: azure.storage.file.fileservice.FileService.delete_directory
+  name: delete_directory
+  summary: 'Deletes the specified empty directory. Note that the directory must
+
+    be empty before it can be deleted. Attempting to delete directories
+
+    that are not empty will fail.
+
+
+    If the directory does not exist, the operation fails on the
+
+    service. By default, the exception is swallowed by the client.
+
+    To expose the exception, specify True for fail_not_exist.'
+  signature: delete_directory(share_name, directory_name, fail_not_exist=False, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: 'Name of directory to delete, including the path to the parent
+
+      directory.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: fail_not_exist
+    description: 'Specify whether to throw an exception when the directory doesn''t
+
+      exist.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: True if directory is deleted, False otherwise.
+    types:
+    - <xref:bool>
+- uid: azure.storage.file.fileservice.FileService.delete_file
+  name: delete_file
+  summary: 'Marks the specified file for deletion. The file is later
+
+    deleted during garbage collection.'
+  signature: delete_file(share_name, directory_name, file_name, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.delete_share
+  name: delete_share
+  summary: 'Marks the specified share for deletion. If the share
+
+    does not exist, the operation fails on the service. By
+
+    default, the exception is swallowed by the client.
+
+    To expose the exception, specify True for fail_not_exist.'
+  signature: delete_share(share_name, fail_not_exist=False, timeout=None, snapshot=None,
+    delete_snapshots=None)
+  parameters:
+  - name: share_name
+    description: Name of share to delete.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: fail_not_exist
+    description: 'Specify whether to throw an exception when the share doesn''t
+
+      exist. False by default.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: 'A string that represents the snapshot version, if applicable.
+
+      Specify this argument to delete a specific snapshot only.
+
+      delete_snapshots must be None if this is specified.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: delete_snapshots
+    description: To delete a share that has snapshots, this must be specified as DeleteSnapshot.Include.
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.DeleteSnapshot>
+  return:
+    description: True if share is deleted, False share doesn't exist.
+    types:
+    - <xref:bool>
+- uid: azure.storage.file.fileservice.FileService.exists
+  name: exists
+  summary: 'Returns a boolean indicating whether the share exists if only share name
+    is
+
+    given. If directory_name is specificed a boolean will be returned indicating
+
+    if the directory exists. If file_name is specified as well, a boolean will be
+
+    returned indicating if the file exists.'
+  signature: exists(share_name, directory_name=None, file_name=None, timeout=None,
+    snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of a share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to a directory.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of a file.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A boolean indicating whether the resource exists.
+    types:
+    - <xref:bool>
+- uid: azure.storage.file.fileservice.FileService.generate_account_shared_access_signature
+  name: generate_account_shared_access_signature
+  summary: 'Generates a shared access signature for the file service.
+
+    Use the returned signature with the sas_token parameter of the FileService.'
+  signature: generate_account_shared_access_signature(resource_types, permission,
+    expiry, start=None, ip=None, protocol=None)
+  parameters:
+  - name: resource_types
+    description: Specifies the resource types that are accessible with the account
+      SAS.
+    isRequired: true
+    types:
+    - <xref:ResourceTypes>
+  - name: permission
+    description: 'The permissions associated with the shared access signature. The
+
+      user is restricted to operations allowed by the permissions.
+
+      Required unless an id is given referencing a stored access policy
+
+      which contains this field. This field must be omitted if it has been
+
+      specified in an associated stored access policy.'
+    isRequired: true
+    types:
+    - <xref:AccountPermissions>
+  - name: expiry
+    description: 'The time at which the shared access signature becomes invalid.
+
+      Required unless an id is given referencing a stored access policy
+
+      which contains this field. This field must be omitted if it has
+
+      been specified in an associated stored access policy. Azure will always
+
+      convert values to UTC. If a date is passed in without timezone info, it
+
+      is assumed to be UTC.'
+    isRequired: true
+    types:
+    - <xref:datetime>
+    - <xref:str>
+  - name: start
+    description: 'The time at which the shared access signature becomes valid. If
+
+      omitted, start time for this call is assumed to be the time when the
+
+      storage service receives the request. Azure will always convert values
+
+      to UTC. If a date is passed in without timezone info, it is assumed to
+
+      be UTC.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+    - <xref:str>
+  - name: ip
+    description: 'Specifies an IP address or a range of IP addresses from which to
+      accept requests.
+
+      If the IP address from which the request originates does not match the IP address
+
+      or address range specified on the SAS token, the request is not authenticated.
+
+      For example, specifying sip=168.1.5.65 or sip=168.1.5.60-168.1.5.70 on the SAS
+
+      restricts the request to those IP addresses.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: protocol
+    description: 'Specifies the protocol permitted for a request made. Possible values
+      are
+
+      both HTTPS and HTTP (https,http) or HTTPS only (https). The default value
+
+      is https,http. Note that HTTP only is not a permitted value.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A Shared Access Signature (sas) token.
+    types:
+    - <xref:str>
+- uid: azure.storage.file.fileservice.FileService.generate_file_shared_access_signature
+  name: generate_file_shared_access_signature
+  summary: 'Generates a shared access signature for the file.
+
+    Use the returned signature with the sas_token parameter of FileService.'
+  signature: generate_file_shared_access_signature(share_name, directory_name=None,
+    file_name=None, permission=None, expiry=None, start=None, id=None, ip=None, protocol=None,
+    cache_control=None, content_disposition=None, content_encoding=None, content_language=None,
+    content_type=None)
+  parameters:
+  - name: share_name
+    description: Name of share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: 'Name of directory. SAS tokens cannot be created for directories,
+      so
+
+      this parameter should only be present if file_name is provided.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: permission
+    description: 'The permissions associated with the shared access signature. The
+
+      user is restricted to operations allowed by the permissions.
+
+      Permissions must be ordered read, create, write, delete, list.
+
+      Required unless an id is given referencing a stored access policy
+
+      which contains this field. This field must be omitted if it has been
+
+      specified in an associated stored access policy.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.FilePermissions>
+  - name: expiry
+    description: 'The time at which the shared access signature becomes invalid.
+
+      Required unless an id is given referencing a stored access policy
+
+      which contains this field. This field must be omitted if it has
+
+      been specified in an associated stored access policy. Azure will always
+
+      convert values to UTC. If a date is passed in without timezone info, it
+
+      is assumed to be UTC.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+    - <xref:str>
+  - name: start
+    description: 'The time at which the shared access signature becomes valid. If
+
+      omitted, start time for this call is assumed to be the time when the
+
+      storage service receives the request. Azure will always convert values
+
+      to UTC. If a date is passed in without timezone info, it is assumed to
+
+      be UTC.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+    - <xref:str>
+  - name: id
+    description: 'A unique value up to 64 characters in length that correlates to
+      a
+
+      stored access policy. To create a stored access policy, use
+
+      set_file_service_properties.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: ip
+    description: 'Specifies an IP address or a range of IP addresses from which to
+      accept requests.
+
+      If the IP address from which the request originates does not match the IP address
+
+      or address range specified on the SAS token, the request is not authenticated.
+
+      For example, specifying sip=168.1.5.65 or sip=168.1.5.60-168.1.5.70 on the SAS
+
+      restricts the request to those IP addresses.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: protocol
+    description: 'Specifies the protocol permitted for a request made. Possible values
+      are
+
+      both HTTPS and HTTP (https,http) or HTTPS only (https). The default value
+
+      is https,http. Note that HTTP only is not a permitted value.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: cache_control
+    description: 'Response header value for Cache-Control when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_disposition
+    description: 'Response header value for Content-Disposition when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_encoding
+    description: 'Response header value for Content-Encoding when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_language
+    description: 'Response header value for Content-Language when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_type
+    description: 'Response header value for Content-Type when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A Shared Access Signature (sas) token.
+    types:
+    - <xref:str>
+- uid: azure.storage.file.fileservice.FileService.generate_share_shared_access_signature
+  name: generate_share_shared_access_signature
+  summary: 'Generates a shared access signature for the share.
+
+    Use the returned signature with the sas_token parameter of FileService.'
+  signature: generate_share_shared_access_signature(share_name, permission=None, expiry=None,
+    start=None, id=None, ip=None, protocol=None, cache_control=None, content_disposition=None,
+    content_encoding=None, content_language=None, content_type=None)
+  parameters:
+  - name: share_name
+    description: Name of share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: permission
+    description: 'The permissions associated with the shared access signature. The
+
+      user is restricted to operations allowed by the permissions.
+
+      Permissions must be ordered read, create, write, delete, list.
+
+      Required unless an id is given referencing a stored access policy
+
+      which contains this field. This field must be omitted if it has been
+
+      specified in an associated stored access policy.'
+    defaultValue: None
+    types:
+    - <xref:azure.storage.file.models.SharePermissions>
+  - name: expiry
+    description: 'The time at which the shared access signature becomes invalid.
+
+      Required unless an id is given referencing a stored access policy
+
+      which contains this field. This field must be omitted if it has
+
+      been specified in an associated stored access policy. Azure will always
+
+      convert values to UTC. If a date is passed in without timezone info, it
+
+      is assumed to be UTC.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+    - <xref:str>
+  - name: start
+    description: 'The time at which the shared access signature becomes valid. If
+
+      omitted, start time for this call is assumed to be the time when the
+
+      storage service receives the request. Azure will always convert values
+
+      to UTC. If a date is passed in without timezone info, it is assumed to
+
+      be UTC.'
+    defaultValue: None
+    types:
+    - <xref:datetime>
+    - <xref:str>
+  - name: id
+    description: 'A unique value up to 64 characters in length that correlates to
+      a
+
+      stored access policy. To create a stored access policy, use <xref:azure.storage.file.fileservice.FileService.set_share_acl>.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: ip
+    description: 'Specifies an IP address or a range of IP addresses from which to
+      accept requests.
+
+      If the IP address from which the request originates does not match the IP address
+
+      or address range specified on the SAS token, the request is not authenticated.
+
+      For example, specifying sip=168.1.5.65 or sip=168.1.5.60-168.1.5.70 on the SAS
+
+      restricts the request to those IP addresses.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: protocol
+    description: 'Specifies the protocol permitted for a request made. Possible values
+      are
+
+      both HTTPS and HTTP (https,http) or HTTPS only (https). The default value
+
+      is https,http. Note that HTTP only is not a permitted value.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: cache_control
+    description: 'Response header value for Cache-Control when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_disposition
+    description: 'Response header value for Content-Disposition when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_encoding
+    description: 'Response header value for Content-Encoding when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_language
+    description: 'Response header value for Content-Language when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: content_type
+    description: 'Response header value for Content-Type when resource is accessed
+
+      using this shared access signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A Shared Access Signature (sas) token.
+    types:
+    - <xref:str>
+- uid: azure.storage.file.fileservice.FileService.get_directory_metadata
+  name: get_directory_metadata
+  summary: Returns all user-defined metadata for the specified directory.
+  signature: get_directory_metadata(share_name, directory_name, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A dictionary representing the directory metadata name, value pairs.
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+- uid: azure.storage.file.fileservice.FileService.get_directory_properties
+  name: get_directory_properties
+  summary: 'Returns all user-defined metadata and system properties for the
+
+    specified directory. The data returned does not include the directory''s
+
+    list of files.'
+  signature: get_directory_properties(share_name, directory_name, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to an existing directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: properties for the specified directory within a directory object.
+    types:
+    - <xref:azure.storage.file.models.Directory>
+- uid: azure.storage.file.fileservice.FileService.get_file_metadata
+  name: get_file_metadata
+  summary: Returns all user-defined metadata for the specified file.
+  signature: get_file_metadata(share_name, directory_name, file_name, timeout=None,
+    snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A dictionary representing the file metadata name, value pairs.
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+- uid: azure.storage.file.fileservice.FileService.get_file_properties
+  name: get_file_properties
+  summary: 'Returns all user-defined metadata, standard HTTP properties, and
+
+    system properties for the file. Returns an instance of <xref:azure.storage.file.models.File>
+    with
+
+    <xref:azure.storage.file.models.FileProperties> and a metadata dict.'
+  signature: get_file_properties(share_name, directory_name, file_name, timeout=None,
+    snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: a file object including properties and metadata.
+    types:
+    - <xref:azure.storage.file.models.File>
+- uid: azure.storage.file.fileservice.FileService.get_file_service_properties
+  name: get_file_service_properties
+  summary: 'Gets the properties of a storage account''s File service, including
+
+    Azure Storage Analytics.'
+  signature: get_file_service_properties(timeout=None)
+  parameters:
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: The file service properties.
+    types:
+    - <xref:azure.storage.common.models.ServiceProperties>
+- uid: azure.storage.file.fileservice.FileService.get_file_to_bytes
+  name: get_file_to_bytes
+  summary: 'Downloads a file as an array of bytes, with automatic chunking and
+
+    progress notifications. Returns an instance of <xref:azure.storage.file.models.File>
+    with
+
+    properties, metadata, and content.'
+  signature: get_file_to_bytes(share_name, directory_name, file_name, start_range=None,
+    end_range=None, validate_content=False, progress_callback=None, max_connections=2,
+    timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for downloading a section of the file.
+
+      If no end_range is given, all bytes after the start_range will be downloaded.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for downloading a section of the file.
+
+      If end_range is given, start_range must be provided.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If set to true, validates an MD5 hash for each retrieved portion
+      of
+
+      the file. This is primarily valuable for detecting bitflips on the wire
+
+      if using http instead of https as https (the default) will already
+
+      validate. Note that the service will only return transactional MD5s
+
+      for chunks 4MB or less so the first get request will be of size
+
+      self.MAX_CHUNK_GET_SIZE instead of self.MAX_SINGLE_GET_SIZE. If
+
+      self.MAX_CHUNK_GET_SIZE was set to greater than 4MB an error will be
+
+      thrown. As computing the MD5 takes processing time and more requests
+
+      will need to be done due to the reduced chunk size there may be some
+
+      increase in latency.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total)
+
+      where current is the number of bytes transfered so far, and total is
+
+      the size of the file if known.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: 'If set to 2 or greater, an initial get will be done for the first
+
+      self.MAX_SINGLE_GET_SIZE bytes of the file. If this is the entire file,
+
+      the method returns at this point. If it is not, it will download the
+
+      remaining data parallel using the number of threads equal to
+
+      max_connections. Each chunk will be of size self.MAX_CHUNK_GET_SIZE.
+
+      If set to 1, a single large get request will be done. This is not
+
+      generally recommended but available if very few threads should be
+
+      used, network requests are very expensive, or a non-seekable stream
+
+      prevents parallel download. This may also be valuable if the file is
+
+      being concurrently modified to enforce atomicity or if many files are
+
+      expected to be empty as an extra request is required for empty files
+
+      if max_connections is greater than 1.'
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A File with properties, content, and metadata.
+    types:
+    - <xref:azure.storage.file.models.File>
+- uid: azure.storage.file.fileservice.FileService.get_file_to_path
+  name: get_file_to_path
+  summary: 'Downloads a file to a file path, with automatic chunking and progress
+
+    notifications. Returns an instance of File with properties and metadata.'
+  signature: get_file_to_path(share_name, directory_name, file_name, file_path, open_mode='wb',
+    start_range=None, end_range=None, validate_content=False, progress_callback=None,
+    max_connections=2, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_path
+    description: Path of file to write to.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: open_mode
+    description: 'Mode to use when opening the file. Note that specifying append only
+
+      open_mode prevents parallel download. So, max_connections must be set
+
+      to 1 if this open_mode is used.'
+    defaultValue: wb
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for downloading a section of the file.
+
+      If no end_range is given, all bytes after the start_range will be downloaded.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for downloading a section of the file.
+
+      If end_range is given, start_range must be provided.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If set to true, validates an MD5 hash for each retrieved portion
+      of
+
+      the file. This is primarily valuable for detecting bitflips on the wire
+
+      if using http instead of https as https (the default) will already
+
+      validate. Note that the service will only return transactional MD5s
+
+      for chunks 4MB or less so the first get request will be of size
+
+      self.MAX_CHUNK_GET_SIZE instead of self.MAX_SINGLE_GET_SIZE. If
+
+      self.MAX_CHUNK_GET_SIZE was set to greater than 4MB an error will be
+
+      thrown. As computing the MD5 takes processing time and more requests
+
+      will need to be done due to the reduced chunk size there may be some
+
+      increase in latency.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total)
+
+      where current is the number of bytes transfered so far, and total is
+
+      the size of the file if known.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: 'If set to 2 or greater, an initial get will be done for the first
+
+      self.MAX_SINGLE_GET_SIZE bytes of the file. If this is the entire file,
+
+      the method returns at this point. If it is not, it will download the
+
+      remaining data parallel using the number of threads equal to
+
+      max_connections. Each chunk will be of size self.MAX_CHUNK_GET_SIZE.
+
+      If set to 1, a single large get request will be done. This is not
+
+      generally recommended but available if very few threads should be
+
+      used, network requests are very expensive, or a non-seekable stream
+
+      prevents parallel download. This may also be valuable if the file is
+
+      being concurrently modified to enforce atomicity or if many files are
+
+      expected to be empty as an extra request is required for empty files
+
+      if max_connections is greater than 1.'
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A File with properties and metadata.
+    types:
+    - <xref:azure.storage.file.models.File>
+- uid: azure.storage.file.fileservice.FileService.get_file_to_stream
+  name: get_file_to_stream
+  summary: 'Downloads a file to a stream, with automatic chunking and progress
+
+    notifications. Returns an instance of <xref:azure.storage.file.models.File> with
+    properties
+
+    and metadata.'
+  signature: get_file_to_stream(share_name, directory_name, file_name, stream, start_range=None,
+    end_range=None, validate_content=False, progress_callback=None, max_connections=2,
+    timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: stream
+    description: Opened file/stream to write to.
+    isRequired: true
+    types:
+    - <xref:io.IOBase>
+  - name: start_range
+    description: 'Start of byte range to use for downloading a section of the file.
+
+      If no end_range is given, all bytes after the start_range will be downloaded.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for downloading a section of the file.
+
+      If end_range is given, start_range must be provided.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If set to true, validates an MD5 hash for each retrieved portion
+      of
+
+      the file. This is primarily valuable for detecting bitflips on the wire
+
+      if using http instead of https as https (the default) will already
+
+      validate. Note that the service will only return transactional MD5s
+
+      for chunks 4MB or less so the first get request will be of size
+
+      self.MAX_CHUNK_GET_SIZE instead of self.MAX_SINGLE_GET_SIZE. If
+
+      self.MAX_CHUNK_GET_SIZE was set to greater than 4MB an error will be
+
+      thrown. As computing the MD5 takes processing time and more requests
+
+      will need to be done due to the reduced chunk size there may be some
+
+      increase in latency.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total)
+
+      where current is the number of bytes transfered so far, and total is
+
+      the size of the file if known.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: 'If set to 2 or greater, an initial get will be done for the first
+
+      self.MAX_SINGLE_GET_SIZE bytes of the file. If this is the entire file,
+
+      the method returns at this point. If it is not, it will download the
+
+      remaining data parallel using the number of threads equal to
+
+      max_connections. Each chunk will be of size self.MAX_CHUNK_GET_SIZE.
+
+      If set to 1, a single large get request will be done. This is not
+
+      generally recommended but available if very few threads should be
+
+      used, network requests are very expensive, or a non-seekable stream
+
+      prevents parallel download. This may also be valuable if the file is
+
+      being concurrently modified to enforce atomicity or if many files are
+
+      expected to be empty as an extra request is required for empty files
+
+      if max_connections is greater than 1.'
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A File with properties and metadata.
+    types:
+    - <xref:azure.storage.file.models.File>
+- uid: azure.storage.file.fileservice.FileService.get_file_to_text
+  name: get_file_to_text
+  summary: 'Downloads a file as unicode text, with automatic chunking and progress
+
+    notifications. Returns an instance of <xref:azure.storage.file.models.File> with
+    properties,
+
+    metadata, and content.'
+  signature: get_file_to_text(share_name, directory_name, file_name, encoding='utf-8',
+    start_range=None, end_range=None, validate_content=False, progress_callback=None,
+    max_connections=2, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: encoding
+    description: Python encoding to use when decoding the file data.
+    defaultValue: utf-8
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for downloading a section of the file.
+
+      If no end_range is given, all bytes after the start_range will be downloaded.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for downloading a section of the file.
+
+      If end_range is given, start_range must be provided.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If set to true, validates an MD5 hash for each retrieved portion
+      of
+
+      the file. This is primarily valuable for detecting bitflips on the wire
+
+      if using http instead of https as https (the default) will already
+
+      validate. Note that the service will only return transactional MD5s
+
+      for chunks 4MB or less so the first get request will be of size
+
+      self.MAX_CHUNK_GET_SIZE instead of self.MAX_SINGLE_GET_SIZE. If
+
+      self.MAX_CHUNK_GET_SIZE was set to greater than 4MB an error will be
+
+      thrown. As computing the MD5 takes processing time and more requests
+
+      will need to be done due to the reduced chunk size there may be some
+
+      increase in latency.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: progress_callback
+    description: 'Callback for progress with signature function(current, total)
+
+      where current is the number of bytes transfered so far, and total is
+
+      the size of the file if known.'
+    defaultValue: None
+    types:
+    - <xref:func>(<xref:current>, <xref:total>)
+  - name: max_connections
+    description: 'If set to 2 or greater, an initial get will be done for the first
+
+      self.MAX_SINGLE_GET_SIZE bytes of the file. If this is the entire file,
+
+      the method returns at this point. If it is not, it will download the
+
+      remaining data parallel using the number of threads equal to
+
+      max_connections. Each chunk will be of size self.MAX_CHUNK_GET_SIZE.
+
+      If set to 1, a single large get request will be done. This is not
+
+      generally recommended but available if very few threads should be
+
+      used, network requests are very expensive, or a non-seekable stream
+
+      prevents parallel download. This may also be valuable if the file is
+
+      being concurrently modified to enforce atomicity or if many files are
+
+      expected to be empty as an extra request is required for empty files
+
+      if max_connections is greater than 1.'
+    defaultValue: '2'
+    types:
+    - <xref:int>
+  - name: timeout
+    description: 'The timeout parameter is expressed in seconds. This method may make
+
+      multiple calls to the Azure service and the timeout will apply to
+
+      each call individually.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A File with properties, content, and metadata.
+    types:
+    - <xref:azure.storage.file.models.File>
+- uid: azure.storage.file.fileservice.FileService.get_permission_for_share
+  name: get_permission_for_share
+  summary: 'Create a permission(a security descriptor) at the share level.
+
+    This ''permission'' can be used for the files/directories in the share.
+
+    If a ''permission'' already exists, it shall return the key of it, else
+
+    creates a new permission at the share level and return its key.
+
+
+    :returns a file permission(a portable SDDL)
+
+    :rtype str'
+  signature: get_permission_for_share(share_name, file_permission_key, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of share.
+    isRequired: true
+  - name: file_permission_key
+    description: Key of the file permission to retrieve
+    isRequired: true
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+- uid: azure.storage.file.fileservice.FileService.get_share_acl
+  name: get_share_acl
+  summary: Gets the permissions for the specified share.
+  signature: get_share_acl(share_name, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: A dictionary of access policies associated with the share.
+    types:
+    - <xref:dict>(<xref:str>, <xref:azure.storage.common.models.AccessPolicy>)
+- uid: azure.storage.file.fileservice.FileService.get_share_metadata
+  name: get_share_metadata
+  summary: Returns all user-defined metadata for the specified share.
+  signature: get_share_metadata(share_name, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A dictionary representing the share metadata name, value pairs.
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+- uid: azure.storage.file.fileservice.FileService.get_share_properties
+  name: get_share_properties
+  summary: 'Returns all user-defined metadata and system properties for the
+
+    specified share. The data returned does not include the shares''s
+
+    list of files or directories.'
+  signature: get_share_properties(share_name, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: A Share that exposes properties and metadata.
+    types:
+    - <xref:azure.storage.file.models.Share>
+- uid: azure.storage.file.fileservice.FileService.get_share_stats
+  name: get_share_stats
+  summary: 'Gets the approximate size of the data stored on the share,
+
+    rounded up to the nearest gigabyte.
+
+
+    Note that this value may not include all recently created
+
+    or recently re-sized files.'
+  signature: get_share_stats(share_name, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: the approximate size of the data stored on the share.
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.get_share_stats_in_bytes
+  name: get_share_stats_in_bytes
+  summary: 'Gets the approximate size of the data stored on the share in bytes.
+
+
+    Note that this value may not include all recently created
+
+    or recently re-sized files.'
+  signature: get_share_stats_in_bytes(share_name, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: the approximate size of the data stored on the share.
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.list_directories_and_files
+  name: list_directories_and_files
+  summary: 'Returns a generator to list the directories and files under the specified
+    share.
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service and stop when all directories and files have been returned or
+
+    num_results is reached.
+
+
+    If num_results is specified and the share has more than that number of
+
+    files and directories, the generator will have a populated next_marker
+
+    field once it finishes. This marker can be used to create a new generator
+
+    if more results are desired.'
+  signature: list_directories_and_files(share_name, directory_name=None, num_results=None,
+    marker=None, timeout=None, prefix=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: num_results
+    description: 'Specifies the maximum number of files to return,
+
+      including all directory elements. If the request does not specify
+
+      num_results or specifies a value greater than 5,000, the server will
+
+      return up to 5,000 items. Setting num_results to a value less than
+
+      or equal to zero results in error response code 400 (Bad Request).'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: marker
+    description: 'An opaque continuation token. This value can be retrieved from the
+
+      next_marker field of a previous generator object if num_results was
+
+      specified and that generator has finished enumerating results. If
+
+      specified, this generator will begin returning results from the point
+
+      where the previous generator stopped.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: prefix
+    description: List only the files and/or directories with the given prefix.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+- uid: azure.storage.file.fileservice.FileService.list_handles
+  name: list_handles
+  summary: 'Returns a generator to list opened handles on a directory or a file under
+    the specified share.
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service and stop when all handles have been returned or
+
+    num_results is reached.
+
+
+    If num_results is specified and the share has more than that number of
+
+    files and directories, the generator will have a populated next_marker
+
+    field once it finishes. This marker can be used to create a new generator
+
+    if more results are desired.'
+  signature: list_handles(share_name, directory_name=None, file_name=None, recursive=None,
+    max_results=None, marker=None, snapshot=None, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: recursive
+    description: 'Boolean that specifies if operation should apply to the directory
+      specified in the URI,
+
+      its files, its subdirectories and their files.'
+    defaultValue: None
+    types:
+    - <xref:bool>
+  - name: max_results
+    description: 'Specifies the maximum number of handles taken on files and/or directories
+      to return.
+
+      If the request does not specify max_results or specifies a value greater than
+      5,000,
+
+      the server will return up to 5,000 items.
+
+      Setting max_results to a value less than or equal to zero results in error response
+      code 400 (Bad Request).'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: marker
+    description: 'An opaque continuation token. This value can be retrieved from the
+
+      next_marker field of a previous generator object if max_results was
+
+      specified and that generator has finished enumerating results. If
+
+      specified, this generator will begin returning results from the point
+
+      where the previous generator stopped.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.list_ranges
+  name: list_ranges
+  summary: Retrieves the valid ranges for a file.
+  signature: list_ranges(share_name, directory_name, file_name, start_range=None,
+    end_range=None, timeout=None, snapshot=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Specifies the start offset of bytes over which to list ranges.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'Specifies the end offset of bytes over which to list ranges.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: snapshot
+    description: A string that represents the snapshot version, if applicable.
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: a list of valid ranges
+    types:
+    - a list of <xref:azure.storage.file.models.FileRange>
+- uid: azure.storage.file.fileservice.FileService.list_shares
+  name: list_shares
+  summary: 'Returns a generator to list the shares under the specified account.
+
+    The generator will lazily follow the continuation tokens returned by
+
+    the service and stop when all shares have been returned or num_results
+
+    is reached.
+
+
+    If num_results is specified and the account has more than that number of
+
+    shares, the generator will have a populated next_marker field once it
+
+    finishes. This marker can be used to create a new generator if more
+
+    results are desired.'
+  signature: list_shares(prefix=None, marker=None, num_results=None, include_metadata=False,
+    timeout=None, include_snapshots=False)
+  parameters:
+  - name: prefix
+    description: 'Filters the results to return only shares whose names
+
+      begin with the specified prefix.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: num_results
+    description: Specifies the maximum number of shares to return.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: include_metadata
+    description: Specifies that share metadata be returned in the response.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: marker
+    description: 'An opaque continuation token. This value can be retrieved from the
+
+      next_marker field of a previous generator object if num_results was
+
+      specified and that generator has finished enumerating results. If
+
+      specified, this generator will begin returning results from the point
+
+      where the previous generator stopped.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: include_snapshots
+    description: Specifies that share snapshots be returned in the response.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+- uid: azure.storage.file.fileservice.FileService.make_file_url
+  name: make_file_url
+  summary: Creates the url to access a file.
+  signature: make_file_url(share_name, directory_name, file_name, protocol=None, sas_token=None)
+  parameters:
+  - name: share_name
+    description: Name of share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: protocol
+    description: 'Protocol to use: ''http'' or ''https''. If not specified, uses the
+
+      protocol specified when FileService was initialized.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: sas_token
+    description: 'Shared access signature token created with
+
+      generate_shared_access_signature.'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: file access URL.
+    types:
+    - <xref:str>
+- uid: azure.storage.file.fileservice.FileService.resize_file
+  name: resize_file
+  summary: 'Resizes a file to the specified size. If the specified byte
+
+    value is less than the current size of the file, then all
+
+    ranges above the specified byte value are cleared.'
+  signature: resize_file(share_name, directory_name, file_name, content_length, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content_length
+    description: The length to resize the file to.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_directory_metadata
+  name: set_directory_metadata
+  summary: 'Sets one or more user-defined name-value pairs for the specified
+
+    directory. Each call to this operation replaces all existing metadata
+
+    attached to the directory. To remove all metadata from the directory,
+
+    call this operation with no metadata dict.'
+  signature: set_directory_metadata(share_name, directory_name, metadata=None, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'A dict containing name-value pairs to associate with the directory
+
+      as metadata. Example: {''category'':''test''}'
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)<xref:./>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_directory_properties
+  name: set_directory_properties
+  signature: set_directory_properties(share_name, directory_name, file_permission=None,
+    smb_properties=<azure.storage.file.models.SMBProperties object>, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of the share
+    isRequired: true
+  - name: directory_name
+    description: Name of the directory
+    isRequired: true
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_file_metadata
+  name: set_file_metadata
+  summary: 'Sets user-defined metadata for the specified file as one or more
+
+    name-value pairs.'
+  signature: set_file_metadata(share_name, directory_name, file_name, metadata=None,
+    timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'Dict containing name and value pairs. Each call to this operation
+
+      replaces all existing metadata attached to the file. To remove all
+
+      metadata from the file, call this operation with no metadata headers.'
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_file_properties
+  name: set_file_properties
+  summary: 'Sets system properties on the file. If one property is set for the
+
+    content_settings, all properties will be overriden.'
+  signature: set_file_properties(share_name, directory_name, file_name, content_settings,
+    timeout=None, file_permission=None, smb_properties=<azure.storage.file.models.SMBProperties
+    object>)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: content_settings
+    description: ContentSettings object used to set the file properties.
+    isRequired: true
+    types:
+    - <xref:azure.storage.file.models.ContentSettings>
+  - name: file_permission
+    description: File permission, a portable SDDL
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: smb_properties
+    description: Sets the SMB related file properties
+    types:
+    - <xref:azure.storage.file.models.SMBProperties>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_file_service_properties
+  name: set_file_service_properties
+  summary: 'Sets the properties of a storage account''s File service, including
+
+    Azure Storage Analytics. If an element (ex HourMetrics) is left as None, the
+
+    existing settings on the service for that functionality are preserved.'
+  signature: set_file_service_properties(hour_metrics=None, minute_metrics=None, cors=None,
+    timeout=None)
+  parameters:
+  - name: hour_metrics
+    description: 'The hour metrics settings provide a summary of request
+
+      statistics grouped by API in hourly aggregates for files.'
+    defaultValue: None
+    types:
+    - <xref:Metrics>
+  - name: minute_metrics
+    description: 'The minute metrics settings provide request statistics
+
+      for each minute for files.'
+    defaultValue: None
+    types:
+    - <xref:Metrics>
+  - name: cors
+    description: 'You can include up to five CorsRule elements in the
+
+      list. If an empty list is specified, all CORS rules will be deleted,
+
+      and CORS will be disabled for the service.'
+    defaultValue: None
+    types:
+    - list(<xref:azure.storage.common.models.CorsRule>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_share_acl
+  name: set_share_acl
+  summary: 'Sets the permissions for the specified share or stored access
+
+    policies that may be used with Shared Access Signatures.'
+  signature: set_share_acl(share_name, signed_identifiers=None, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: signed_identifiers
+    description: 'A dictionary of access policies to associate with the share. The
+
+      dictionary may contain up to 5 elements. An empty dictionary
+
+      will clear the access policies set on the service.'
+    defaultValue: None
+    types:
+    - dict(str, <xref:azure.storage.common.models.AccessPolicy>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_share_metadata
+  name: set_share_metadata
+  summary: 'Sets one or more user-defined name-value pairs for the specified
+
+    share. Each call to this operation replaces all existing metadata
+
+    attached to the share. To remove all metadata from the share,
+
+    call this operation with no metadata dict.'
+  signature: set_share_metadata(share_name, metadata=None, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'A dict containing name-value pairs to associate with the share as
+
+      metadata. Example: {''category'':''test''}'
+    defaultValue: None
+    types:
+    - <xref:dict>(<xref:str>, <xref:str>)
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.set_share_properties
+  name: set_share_properties
+  summary: Sets service-defined properties for the specified share.
+  signature: set_share_properties(share_name, quota, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: quota
+    description: 'Specifies the maximum size of the share, in gigabytes. Must be
+
+      greater than 0, and less than or equal to 5 TB (5120 GB).'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.snapshot_share
+  name: snapshot_share
+  summary: Creates a snapshot of an existing share under the specified account.
+  signature: snapshot_share(share_name, metadata=None, quota=None, timeout=None)
+  parameters:
+  - name: share_name
+    description: The name of the share to create a snapshot of.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: metadata
+    description: 'A dict with name_value pairs to associate with the
+
+      share as metadata. Example:{''Category'':''test''}'
+    defaultValue: None
+    types:
+    - <xref:<xref:a dict> of <xref:str to str:>>
+  - name: quota
+    description: 'Specifies the maximum size of the share, in gigabytes. Must be
+
+      greater than 0, and less than or equal to 5TB (5120).'
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+  return:
+    description: snapshot properties
+    types:
+    - <xref:azure.storage.file.models.Share>
+- uid: azure.storage.file.fileservice.FileService.update_range
+  name: update_range
+  summary: Writes the bytes specified by the request body into the specified range.
+  signature: update_range(share_name, directory_name, file_name, data, start_range,
+    end_range, validate_content=False, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: data
+    description: Content of the range.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: start_range
+    description: 'Start of byte range to use for updating a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for updating a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: validate_content
+    description: 'If true, calculates an MD5 hash of the page content. The storage
+
+      service checks the hash of the content that has arrived
+
+      with the hash that was sent. This is primarily valuable for detecting
+
+      bitflips on the wire if using http instead of https as https (the default)
+
+      will already validate. Note that this MD5 hash is not stored with the
+
+      file.'
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+- uid: azure.storage.file.fileservice.FileService.update_range_from_file_url
+  name: update_range_from_file_url
+  summary: Writes the bytes from one Azure File endpoint into the specified range
+    of another Azure File endpoint.
+  signature: update_range_from_file_url(share_name, directory_name, file_name, start_range,
+    end_range, source, source_start_range, timeout=None)
+  parameters:
+  - name: share_name
+    description: Name of existing share.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: directory_name
+    description: The path to the directory.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: file_name
+    description: Name of existing file.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: start_range
+    description: 'Start of byte range to use for updating a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: end_range
+    description: 'End of byte range to use for updating a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: source
+    description: 'A URL of up to 2 KB in length that specifies an Azure file or blob.
+
+      The value should be URL-encoded as it would appear in a request URI.
+
+      If the source is in another account, the source must either be public
+
+      or must be authenticated via a shared access signature. If the source
+
+      is public, no authentication is required.
+
+      Examples:
+
+      [https://myaccount.file.core.windows.net/myshare/mydir/myfile](https://myaccount.file.core.windows.net/myshare/mydir/myfile)
+
+      [https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken](https://otheraccount.file.core.windows.net/myshare/mydir/myfile?sastoken)'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: source_start_range
+    description: 'Start of byte range to use for updating a section of the file.
+
+      The range can be up to 4 MB in size.
+
+      The start_range and end_range params are inclusive.
+
+      Ex: start_range=0, end_range=511 will download first 512 bytes of file.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: timeout
+    description: The timeout parameter is expressed in seconds.
+    defaultValue: None
+    types:
+    - <xref:int>
+attributes:
+- uid: azure.storage.file.fileservice.FileService.MAX_CHUNK_GET_SIZE
+  name: MAX_CHUNK_GET_SIZE
+  signature: MAX_CHUNK_GET_SIZE = 8388608
+- uid: azure.storage.file.fileservice.FileService.MAX_RANGE_SIZE
+  name: MAX_RANGE_SIZE
+  signature: MAX_RANGE_SIZE = 4194304
+- uid: azure.storage.file.fileservice.FileService.MAX_SINGLE_GET_SIZE
+  name: MAX_SINGLE_GET_SIZE
+  signature: MAX_SINGLE_GET_SIZE = 33554432
