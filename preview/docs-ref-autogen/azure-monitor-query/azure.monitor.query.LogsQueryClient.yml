@@ -35,14 +35,13 @@ constructor:
 examples:
 - "Creating the LogsQueryClient with a TokenCredential.<!--[!code-python[Main](les\\\
   sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
-  \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
-  \\windows\\\\Python\\\\3.11.5\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-  \\161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\\sample_authentication.py\", \"\
-  xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity\
-  \ import DefaultAzureCredential\n   from azure.monitor.query import LogsQueryClient\n\
-  \n   credential = DefaultAzureCredential()\n   client = LogsQueryClient(credential)\n\
-  \n   ````\n"
+  \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
+  \\_work\\\\1\\\\s\\\\source_code\\\\161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\
+  \\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
+  language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false}\
+  \ -->\n\n````python\n\n   from azure.identity import DefaultAzureCredential\n  \
+  \ from azure.monitor.query import LogsQueryClient\n\n   credential = DefaultAzureCredential()\n\
+  \   client = LogsQueryClient(credential)\n\n   ````\n"
 methods:
 - uid: azure.monitor.query.LogsQueryClient.close
   name: close
@@ -82,36 +81,35 @@ methods:
   examples:
   - "Execute multiple queries in a batch.<!--[!code-python[Main](les\\sample_batch_query.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.5\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\\sample_batch_query.py\", \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from datetime\
-    \ import datetime, timedelta, timezone\n   import os\n\n   from azure.core.exceptions\
-    \ import HttpResponseError\n   from azure.identity import DefaultAzureCredential\n\
-    \   from azure.monitor.query import LogsQueryClient, LogsBatchQuery, LogsQueryStatus\n\
-    \   import pandas as pd\n\n\n   credential = DefaultAzureCredential()\n   client\
-    \ = LogsQueryClient(credential)\n\n   requests = [\n       LogsBatchQuery(\n \
-    \          query=\"AzureActivity | summarize count()\",\n           timespan=timedelta(hours=1),\n\
-    \           workspace_id=os.environ[\"LOGS_WORKSPACE_ID\"],\n       ),\n     \
-    \  LogsBatchQuery(query=\"bad query\", timespan=timedelta(days=1), workspace_id=os.environ[\"\
-    LOGS_WORKSPACE_ID\"]),\n       LogsBatchQuery(\n           query=\"\"\"let Weight\
-    \ = 92233720368547758;\n           range x from 1 to 3 step 1\n           | summarize\
-    \ percentilesw(x, Weight * 100, 50)\"\"\",\n           workspace_id=os.environ[\"\
-    LOGS_WORKSPACE_ID\"],\n           timespan=(datetime(2021, 6, 2, tzinfo=timezone.utc),\
-    \ datetime(2021, 6, 5, tzinfo=timezone.utc)),  # (start, end)\n           include_statistics=True,\n\
-    \       ),\n   ]\n\n   try:\n       results = client.query_batch(requests)\n\n\
-    \       for res in results:\n           if res.status == LogsQueryStatus.FAILURE:\n\
-    \               # This will be a LogsQueryError\n               print(res)\n \
-    \          elif res.status == LogsQueryStatus.PARTIAL:\n               # This\
-    \ will be a LogsQueryPartialResult\n               print(res.partial_error)\n\
-    \               for table in res.partial_data:\n                   df = pd.DataFrame(table.rows,\
-    \ columns=table.columns)\n                   print(df)\n           elif res.status\
-    \ == LogsQueryStatus.SUCCESS:\n               # This will be a LogsQueryResult\n\
-    \               table = res.tables[0]\n               df = pd.DataFrame(table.rows,\
-    \ columns=table.columns)\n               print(df)\n   except HttpResponseError\
-    \ as err:\n       print(\"something fatal happened\")\n       print(err)\n\n \
-    \  ````\n"
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    source_code\\\\161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\\sample_batch_query.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from datetime import datetime, timedelta, timezone\n   import os\n\n   from\
+    \ azure.core.exceptions import HttpResponseError\n   from azure.identity import\
+    \ DefaultAzureCredential\n   from azure.monitor.query import LogsQueryClient,\
+    \ LogsBatchQuery, LogsQueryStatus\n   import pandas as pd\n\n\n   credential =\
+    \ DefaultAzureCredential()\n   client = LogsQueryClient(credential)\n\n   requests\
+    \ = [\n       LogsBatchQuery(\n           query=\"AzureActivity | summarize count()\"\
+    ,\n           timespan=timedelta(hours=1),\n           workspace_id=os.environ[\"\
+    LOGS_WORKSPACE_ID\"],\n       ),\n       LogsBatchQuery(query=\"bad query\", timespan=timedelta(days=1),\
+    \ workspace_id=os.environ[\"LOGS_WORKSPACE_ID\"]),\n       LogsBatchQuery(\n \
+    \          query=\"\"\"let Weight = 92233720368547758;\n           range x from\
+    \ 1 to 3 step 1\n           | summarize percentilesw(x, Weight * 100, 50)\"\"\"\
+    ,\n           workspace_id=os.environ[\"LOGS_WORKSPACE_ID\"],\n           timespan=(datetime(2021,\
+    \ 6, 2, tzinfo=timezone.utc), datetime(2021, 6, 5, tzinfo=timezone.utc)),  # (start,\
+    \ end)\n           include_statistics=True,\n       ),\n   ]\n\n   try:\n    \
+    \   results = client.query_batch(requests)\n\n       for res in results:\n   \
+    \        if res.status == LogsQueryStatus.FAILURE:\n               # This will\
+    \ be a LogsQueryError\n               print(res)\n           elif res.status ==\
+    \ LogsQueryStatus.PARTIAL:\n               # This will be a LogsQueryPartialResult\n\
+    \               print(res.partial_error)\n               for table in res.partial_data:\n\
+    \                   df = pd.DataFrame(table.rows, columns=table.columns)\n   \
+    \                print(df)\n           elif res.status == LogsQueryStatus.SUCCESS:\n\
+    \               # This will be a LogsQueryResult\n               table = res.tables[0]\n\
+    \               df = pd.DataFrame(table.rows, columns=table.columns)\n       \
+    \        print(df)\n   except HttpResponseError as err:\n       print(\"something\
+    \ fatal happened\")\n       print(err)\n\n   ````\n"
 - uid: azure.monitor.query.LogsQueryClient.query_resource
   name: query_resource
   summary: 'Execute a Kusto query on a resource.
@@ -184,23 +182,23 @@ methods:
   examples:
   - "Get a response for a single query on a resource's logs.<!--[!code-python[Main](les\\\
     sample_resource_logs_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.5\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\\sample_resource_logs_query.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from datetime import timedelta\n   import os\n\n   from azure.core.exceptions\
-    \ import HttpResponseError\n   from azure.identity import DefaultAzureCredential\n\
-    \   from azure.monitor.query import LogsQueryClient, LogsQueryStatus\n   import\
-    \ pandas as pd\n\n\n   credential = DefaultAzureCredential()\n   client = LogsQueryClient(credential)\n\
-    \n   query = \"AzureActivity | take 5\"\n\n   try:\n       response = client.query_resource(os.environ[\"\
-    LOGS_RESOURCE_ID\"], query, timespan=timedelta(days=1))\n       if response.status\
-    \ == LogsQueryStatus.PARTIAL:\n           error = response.partial_error\n   \
-    \        data = response.partial_data\n           print(error)\n       elif response.status\
-    \ == LogsQueryStatus.SUCCESS:\n           data = response.tables\n       for table\
-    \ in data:\n           df = pd.DataFrame(data=table.rows, columns=table.columns)\n\
-    \           print(df)\n   except HttpResponseError as err:\n       print(\"something\
-    \ fatal happened\")\n       print(err)\n\n\n   ````\n"
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
+    a\\\\_work\\\\1\\\\s\\\\source_code\\\\161\\\\azure-monitor-query-1.3.0b1\\\\\
+    samples\\\\sample_resource_logs_query.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from datetime import timedelta\n   import\
+    \ os\n\n   from azure.core.exceptions import HttpResponseError\n   from azure.identity\
+    \ import DefaultAzureCredential\n   from azure.monitor.query import LogsQueryClient,\
+    \ LogsQueryStatus\n   import pandas as pd\n\n\n   credential = DefaultAzureCredential()\n\
+    \   client = LogsQueryClient(credential)\n\n   query = \"AzureActivity | take\
+    \ 5\"\n\n   try:\n       response = client.query_resource(os.environ[\"LOGS_RESOURCE_ID\"\
+    ], query, timespan=timedelta(days=1))\n       if response.status == LogsQueryStatus.PARTIAL:\n\
+    \           error = response.partial_error\n           data = response.partial_data\n\
+    \           print(error)\n       elif response.status == LogsQueryStatus.SUCCESS:\n\
+    \           data = response.tables\n       for table in data:\n           df =\
+    \ pd.DataFrame(data=table.rows, columns=table.columns)\n           print(df)\n\
+    \   except HttpResponseError as err:\n       print(\"something fatal happened\"\
+    )\n       print(err)\n\n\n   ````\n"
 - uid: azure.monitor.query.LogsQueryClient.query_workspace
   name: query_workspace
   summary: 'Execute a Kusto query.
@@ -273,9 +271,8 @@ methods:
   examples:
   - "Get a response for a single log query.<!--[!code-python[Main](les\\sample_logs_single_query.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.5\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\\sample_logs_single_query.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    source_code\\\\161\\\\azure-monitor-query-1.3.0b1\\\\samples\\\\sample_logs_single_query.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from datetime import timedelta\n   import os\n\n   from azure.core.exceptions\
