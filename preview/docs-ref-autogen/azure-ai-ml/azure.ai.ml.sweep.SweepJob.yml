@@ -9,38 +9,36 @@ inheritances:
 - azure.ai.ml.entities._job.job_io_mixin.JobIOMixin
 summary: Sweep job for hyperparameter tuning.
 constructor:
-  syntax: 'SweepJob(*, name: str = None, description: str = None, tags: Dict = None,
-    display_name: str = None, experiment_name: str = None, identity: ManagedIdentity
-    | AmlToken | UserIdentity = None, inputs: Dict[str, int | str | float | bool |
-    Input] = None, outputs: Dict[str, Output] = None, compute: str = None, limits:
-    SweepJobLimits = None, sampling_algorithm: str | SamplingAlgorithm = None, search_space:
-    Dict[str, SweepDistribution] = None, objective: Objective = None, trial: CommandJob
-    | CommandComponent = None, early_termination: EarlyTerminationPolicy = None, **kwargs:
-    Any)'
+  syntax: 'SweepJob(*, name: str | None = None, description: str | None = None, tags:
+    Dict | None = None, display_name: str | None = None, experiment_name: str | None
+    = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration | UserIdentityConfiguration
+    | None = None, inputs: Dict[str, int | str | float | bool | Input] | None = None,
+    outputs: Dict[str, Output] | None = None, compute: str | None = None, limits:
+    SweepJobLimits | None = None, sampling_algorithm: str | SamplingAlgorithm | None
+    = None, search_space: Dict[str, Choice | LogNormal | LogUniform | Normal | QLogNormal
+    | QLogUniform | QNormal | QUniform | Randint | Uniform] | None = None, objective:
+    Objective | None = None, trial: CommandJob | CommandComponent | None = None, early_termination:
+    BanditPolicy | MedianStoppingPolicy | TruncationSelectionPolicy | None = None,
+    queue_settings: QueueSettings | None = None, **kwargs: Any)'
   parameters:
   - name: name
     description: Name of the job.
-    isRequired: true
     types:
     - <xref:str>
   - name: display_name
     description: Display name of the job.
-    isRequired: true
     types:
     - <xref:str>
   - name: description
     description: Description of the job.
-    isRequired: true
     types:
     - <xref:str>
   - name: tags
     description: Tag dictionary. Tags can be added, removed, and updated.
-    isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: properties
     description: The asset property dictionary.
-    isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: experiment_name
@@ -48,30 +46,25 @@ constructor:
       provided,
 
       job will be created under experiment ''Default''.'
-    isRequired: true
     types:
     - <xref:str>
   - name: identity
-    description: Identity that training job will use while running on compute.
-    isRequired: true
+    description: Identity that the training job will use while running on compute.
     types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.ManagedIdentity>, <xref:azure.ai.ml.AmlToken>,
-      <xref:azure.ai.ml.UserIdentity>]
+    - <xref:typing.Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration>, <xref:azure.ai.ml.AmlTokenConfiguration>,
+      <xref:azure.ai.ml.UserIdentityConfiguration>]
   - name: inputs
     description: Inputs to the command.
-    isRequired: true
     types:
     - <xref:dict>
   - name: outputs
     description: Mapping of output data bindings used in the job.
-    isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:azure.ai.ml.Output>]
   - name: sampling_algorithm
     description: 'The hyperparameter sampling algorithm to use over the *search_space*.
 
       Defaults to "random".'
-    isRequired: true
     types:
     - <xref:str>
   - name: search_space
@@ -79,17 +72,14 @@ constructor:
       of the
 
       hyperparameter and the value is the parameter expression.'
-    isRequired: true
     types:
     - <xref:typing.Dict>
   - name: objective
     description: Metric to optimize for.
-    isRequired: true
     types:
     - <xref:azure.ai.ml.sweep.Objective>
   - name: compute
     description: The compute target the job runs on.
-    isRequired: true
     types:
     - <xref:str>
   - name: trial
@@ -97,24 +87,185 @@ constructor:
       with a different combination
 
       of hyperparameter values that the system samples from the search_space.'
-    isRequired: true
     types:
     - <xref:typing.Union>[<xref:azure.ai.ml.entities.CommandJob>, <xref:azure.ai.ml.entities.CommandComponent>]
   - name: early_termination
-    description: 'The early termination policy to use.A trial job is canceled
+    description: 'The early termination policy to use. A trial job is canceled
 
       when the criteria of the specified policy are met. If omitted, no early termination
       policy will be applied.'
-    isRequired: true
     types:
-    - <xref:EarlyTerminationPolicy>
+    - <xref:typing.Union>[<xref:azure.mgmt.machinelearningservices.models.BanditPolicy>,
+      <xref:azure.mgmt.machinelearningservices.models.MedianStoppingPolicy>, <xref:azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy>]
   - name: limits
     description: Limits for the sweep job.
-    isRequired: true
     types:
     - <xref:azure.ai.ml.entities.SweepJobLimits>
+  - name: queue_settings
+    description: Queue settings for the job.
+    types:
+    - <xref:azure.ai.ml.entities.QueueSettings>
   - name: kwargs
     description: A dictionary of additional configuration parameters.
-    isRequired: true
     types:
     - <xref:dict>
+methods:
+- uid: azure.ai.ml.sweep.SweepJob.dump
+  name: dump
+  summary: Dumps the job content into a file in YAML format.
+  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  parameters:
+  - name: dest
+    description: 'The local path or file stream to write the YAML content to.
+
+      If dest is a file path, a new file will be created.
+
+      If dest is an open file, the file will be written to directly.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
+- uid: azure.ai.ml.sweep.SweepJob.set_limits
+  name: set_limits
+  summary: Set limits for Sweep node. Leave parameters as None if you don't want to
+    update corresponding values.
+  signature: 'set_limits(*, max_concurrent_trials: int | None = None, max_total_trials:
+    int | None = None, timeout: int | None = None, trial_timeout: int | None = None)
+    -> None'
+  parameters:
+  - name: max_concurrent_trials
+    description: maximum concurrent trial number.
+    types:
+    - <xref:int>
+  - name: max_total_trials
+    description: maximum total trial number.
+    types:
+    - <xref:int>
+  - name: timeout
+    description: total timeout in seconds for sweep node
+    types:
+    - <xref:int>
+  - name: trial_timeout
+    description: timeout in seconds for each trial
+    types:
+    - <xref:int>
+- uid: azure.ai.ml.sweep.SweepJob.set_objective
+  name: set_objective
+  summary: 'Set the sweep object.. Leave parameters as None if you don''t want to
+    update corresponding values.
+
+
+    "minimize", "maximize".
+
+    :type goal: str
+
+    :keyword primary_metric: Name of the metric to optimize.
+
+    :paramtype primary_metric: str'
+  signature: 'set_objective(*, goal: str | None = None, primary_metric: str | None
+    = None) -> None'
+  parameters:
+  - name: goal
+    description: 'Defines supported metric goals for hyperparameter tuning. Acceptable
+      values are:'
+attributes:
+- uid: azure.ai.ml.sweep.SweepJob.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.sweep.SweepJob.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+- uid: azure.ai.ml.sweep.SweepJob.early_termination
+  name: early_termination
+  summary: Early termination policy for sweep job.
+  return:
+    description: Early termination policy for sweep job.
+    types:
+    - <xref:azure.ai.ml.entities._job.sweep.early_termination_policy.EarlyTerminationPolicy>
+- uid: azure.ai.ml.sweep.SweepJob.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.sweep.SweepJob.inputs
+  name: inputs
+- uid: azure.ai.ml.sweep.SweepJob.limits
+  name: limits
+  summary: Limits for sweep job.
+  return:
+    description: Limits for sweep job.
+    types:
+    - <xref:azure.ai.ml.sweep.SweepJobLimits>
+- uid: azure.ai.ml.sweep.SweepJob.log_files
+  name: log_files
+  summary: Job output files.
+  return:
+    description: The dictionary of log names and URLs.
+    types:
+    - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
+- uid: azure.ai.ml.sweep.SweepJob.outputs
+  name: outputs
+- uid: azure.ai.ml.sweep.SweepJob.sampling_algorithm
+  name: sampling_algorithm
+  summary: Sampling algorithm for sweep job.
+  return:
+    description: Sampling algorithm for sweep job.
+    types:
+    - <xref:azure.ai.ml.sweep.SamplingAlgorithm>
+- uid: azure.ai.ml.sweep.SweepJob.status
+  name: status
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
+  return:
+    description: Status of the job.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.sweep.SweepJob.studio_url
+  name: studio_url
+  summary: Azure ML studio endpoint.
+  return:
+    description: The URL to the job details page.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.sweep.SweepJob.type
+  name: type
+  summary: The type of the job.
+  return:
+    description: The type of the job.
+    types:
+    - <xref:Optional>[<xref:str>]

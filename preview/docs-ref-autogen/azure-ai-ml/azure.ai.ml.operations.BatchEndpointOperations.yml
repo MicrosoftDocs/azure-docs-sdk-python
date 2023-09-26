@@ -8,15 +8,14 @@ inheritances:
 summary: 'BatchEndpointOperations.
 
 
-  You should not instantiate this class directly. Instead, you should
+  You should not instantiate this class directly. Instead, you should create an MLClient
+  instance that instantiates it
 
-  create an MLClient instance that instantiates it for you and
-
-  attaches it as an attribute.'
+  for you and attaches it as an attribute.'
 constructor:
   syntax: 'BatchEndpointOperations(operation_scope: OperationScope, operation_config:
     OperationConfig, service_client_05_2022: AzureMachineLearningWorkspaces, all_operations:
-    OperationsContainer, credentials: TokenCredential = None, **kwargs: Dict)'
+    OperationsContainer, credentials: TokenCredential | None = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
   - name: operation_config
@@ -70,8 +69,8 @@ methods:
 - uid: azure.ai.ml.operations.BatchEndpointOperations.invoke
   name: invoke
   summary: Invokes the batch endpoint with the provided payload.
-  signature: 'invoke(endpoint_name: str, *, deployment_name: str = None, input: Input
-    = None, params_override=None, **kwargs) -> BatchJobResource'
+  signature: 'invoke(endpoint_name: str, *, deployment_name: str | None = None, inputs:
+    Dict[str, Input] | None = None, **kwargs) -> BatchJob'
   parameters:
   - name: endpoint_name
     description: The endpoint name.
@@ -79,29 +78,24 @@ methods:
     types:
     - <xref:str>
   - name: deployment_name
-    description: 'The name of a specific deployment to invoke. This is optional.
+    description: '(Optional) The name of a specific deployment to invoke. This is
+      optional.
 
       By default requests are routed to any of the deployments according to the traffic
       rules.'
-    isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: input
-    description: An existing data asset, public uri file or folder to use with the
-      deployment
-    isRequired: true
+    - <xref:str>
+  - name: inputs
+    description: '(Optional) A dictionary of existing data asset, public uri file
+      or folder
+
+      to use with the deployment'
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.Input>]
-  - name: params_override
-    description: Parameters to overwrite deployment configurations, for batch endpoints
-      only.
-    isRequired: true
-    types:
-    - <xref:typing.Dict>
+    - <xref:typing.Dict>[<xref:str>, <xref:azure.ai.ml.Input>]
   return:
     description: The invoked batch deployment job.
     types:
-    - <xref:BatchJobResource>
+    - <xref:azure.ai.ml.entities.BatchJob>
   exceptions:
   - type: azure.ai.ml.exceptions.ValidationException
     description: 'Raised if deployment cannot be successfully validated.
@@ -129,10 +123,9 @@ methods:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.BatchEndpoint>]
 - uid: azure.ai.ml.operations.BatchEndpointOperations.list_jobs
   name: list_jobs
-  summary: 'List jobs under the provided batch endpoint deployment. This is only
-
-    valid for batch endpoint.'
-  signature: 'list_jobs(endpoint_name: str) -> List[BatchJobResource]'
+  summary: List jobs under the provided batch endpoint deployment. This is only valid
+    for batch endpoint.
+  signature: 'list_jobs(endpoint_name: str) -> ItemPaged[BatchJob]'
   parameters:
   - name: endpoint_name
     description: The endpoint name
@@ -142,4 +135,4 @@ methods:
   return:
     description: List of jobs
     types:
-    - <xref:list>[<xref:BatchJobResource>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.BatchJob>]

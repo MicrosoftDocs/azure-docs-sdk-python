@@ -7,119 +7,220 @@ inheritances:
 - azure.ai.ml.entities._component.component.Component
 - azure.ai.ml.entities._job.parameterized_spark.ParameterizedSpark
 - azure.ai.ml.entities._job.spark_job_entry_mixin.SparkJobEntryMixin
-summary: Spark component version, used to define a spark component.
+- azure.ai.ml.entities._component.code.ComponentCodeMixin
+summary: Spark component version, used to define a Spark Component or Job.
 constructor:
   syntax: 'SparkComponent(*, code: str | PathLike = ''.'', entry: Dict[str, str] |
     SparkJobEntry | None = None, py_files: List[str] | None = None, jars: List[str]
     | None = None, files: List[str] | None = None, archives: List[str] | None = None,
-    driver_cores: int = None, driver_memory: str = None, executor_cores: int = None,
-    executor_memory: str = None, executor_instances: int = None, dynamic_allocation_enabled:
-    bool = None, dynamic_allocation_min_executors: int = None, dynamic_allocation_max_executors:
-    int = None, conf: Dict[str, str] | None = None, environment: str | Environment
-    = None, inputs: Dict = None, outputs: Dict = None, args: str = None, **kwargs)'
+    driver_cores: int | None = None, driver_memory: str | None = None, executor_cores:
+    int | None = None, executor_memory: str | None = None, executor_instances: int
+    | None = None, dynamic_allocation_enabled: bool | None = None, dynamic_allocation_min_executors:
+    int | None = None, dynamic_allocation_max_executors: int | None = None, conf:
+    Dict[str, str] | None = None, environment: Environment | str | None = None, inputs:
+    Dict | None = None, outputs: Dict | None = None, args: str | None = None, **kwargs)'
   parameters:
   - name: code
-    description: The source code to run the job.
-    isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:str>, <xref:os.PathLike>]
+    description: 'The source code to run the job. Can be a local path or "http:",
+      "https:", or "azureml:" url pointing
+
+      to a remote location. Defaults to ".", indicating the current directory.'
   - name: entry
-    description: File or class entry point.
-    isRequired: true
+    description: The file or class entry point.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>[<xref:str>, <xref:str>],
+      <xref:azure.ai.ml.entities.SparkJobEntry>]]
   - name: py_files
-    description: List of .zip, .egg or .py files to place on the PYTHONPATH for Python
-      apps.
-    isRequired: true
+    description: The list of .zip, .egg or .py files to place on the PYTHONPATH for
+      Python apps. Defaults to None.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: jars
-    description: List of jars to include on the driver and executor classpaths.
-    isRequired: true
+    description: The list of .JAR files to include on the driver and executor classpaths.
+      Defaults to None.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: files
-    description: List of files to be placed in the working directory of each executor.
-    isRequired: true
+    description: The list of files to be placed in the working directory of each executor.
+      Defaults to None.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: archives
-    description: List of archives to be extracted into the working directory of each
-      executor.
-    isRequired: true
+    description: 'The list of archives to be extracted into the working directory
+      of each executor.
+
+      Defaults to None.'
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: driver_cores
-    description: Number of cores to use for the driver process, only in cluster mode.
-    isRequired: true
+    description: The number of cores to use for the driver process, only in cluster
+      mode.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: driver_memory
-    description: Amount of memory to use for the driver process.
-    isRequired: true
+    description: 'The amount of memory to use for the driver process, formatted as
+      strings with a size unit
+
+      suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: executor_cores
     description: The number of cores to use on each executor.
-    isRequired: true
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: executor_memory
-    description: 'Amount of memory to use per executor process, in the same format
-      as JVM memory strings with
+    description: 'The amount of memory to use per executor process, formatted as strings
+      with a size unit
 
-      a size unit suffix ("k", "m", "g" or "t") (e.g. 512m, 2g).'
-    isRequired: true
+      suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: executor_instances
-    description: Initial number of executors.
-    isRequired: true
+    description: The initial number of executors.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_enabled
     description: 'Whether to use dynamic resource allocation, which scales the number
-      of executors
+      of
 
-      registered with this application up and down based on the workload.'
-    isRequired: true
+      executors registered with this application up and down based on the workload.
+      Defaults to False.'
     types:
-    - <xref:bool>
+    - <xref:typing.Optional>[<xref:bool>]
   - name: dynamic_allocation_min_executors
-    description: Lower bound for the number of executors if dynamic allocation is
-      enabled.
-    isRequired: true
+    description: 'The lower bound for the number of executors if dynamic allocation
+      is
+
+      enabled.'
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_max_executors
-    description: Upper bound for the number of executors if dynamic allocation is
-      enabled.
-    isRequired: true
+    description: 'The upper bound for the number of executors if dynamic allocation
+      is
+
+      enabled.'
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: conf
-    description: A dict with pre-defined spark configurations key and values.
-    isRequired: true
+    description: A dictionary with pre-defined Spark configurations key and values.
+      Defaults to None.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: environment
-    description: Azure ML environment to run the job in.
-    isRequired: true
+    description: The Azure ML environment to run the job in.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
   - name: inputs
-    description: Mapping of inputs data bindings used in the job.
-    isRequired: true
+    description: A mapping of input names to input data sources used in the job. Defaults
+      to None.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[ <xref:azure.ai.ml.entities._job.pipeline._io.NodeOutput>,
+      <xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>, <xref:int>, <xref:float>,
+      <xref:Enum>, ]]]
   - name: outputs
-    description: Mapping of outputs data bindings used in the job.
+    description: A mapping of output names to output data sources used in the job.
+      Defaults to None.
+    types:
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:str>,
+      <xref:azure.ai.ml.Output>]]]
+  - name: args
+    description: The arguments for the job. Defaults to None.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+methods:
+- uid: azure.ai.ml.entities.SparkComponent.dump
+  name: dump
+  summary: Dump the component content into a file in yaml format.
+  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  parameters:
+  - name: dest
+    description: 'The destination to receive this component''s content.
+
+      Must be either a path to a local file, or an already-open file stream.
+
+      If dest is a file path, a new file will be created,
+
+      and an exception is raised if the file exists.
+
+      If dest is an open file, the file will be written to directly,
+
+      and an exception will be raised if the file is not writable.'
     isRequired: true
     types:
-    - <xref:dict>
-  - name: args
-    description: Arguments for the job.
-    isRequired: true
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+attributes:
+- uid: azure.ai.ml.entities.SparkComponent.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
     types:
     - <xref:str>
+- uid: azure.ai.ml.entities.SparkComponent.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
+- uid: azure.ai.ml.entities.SparkComponent.display_name
+  name: display_name
+  summary: Display name of the component.
+  return:
+    description: Display name of the component.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.SparkComponent.entry
+  name: entry
+- uid: azure.ai.ml.entities.SparkComponent.environment
+  name: environment
+  summary: The Azure ML environment to run the Spark component or job in.
+  return:
+    description: The Azure ML environment to run the Spark component or job in.
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
+- uid: azure.ai.ml.entities.SparkComponent.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.SparkComponent.inputs
+  name: inputs
+  summary: Inputs of the component.
+  return:
+    description: Inputs of the component.
+    types:
+    - <xref:dict>
+- uid: azure.ai.ml.entities.SparkComponent.is_deterministic
+  name: is_deterministic
+  summary: Whether the component is deterministic.
+  return:
+    description: Whether the component is deterministic
+    types:
+    - <xref:bool>
+- uid: azure.ai.ml.entities.SparkComponent.outputs
+  name: outputs
+  summary: Outputs of the component.
+  return:
+    description: Outputs of the component.
+    types:
+    - <xref:dict>
+- uid: azure.ai.ml.entities.SparkComponent.type
+  name: type
+  summary: Type of the component, default is 'command'.
+  return:
+    description: Type of the component.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.SparkComponent.version
+  name: version
+  summary: Version of the component.
+  return:
+    description: Version of the component.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.SparkComponent.CODE_ID_RE_PATTERN
+  name: CODE_ID_RE_PATTERN
+  signature: CODE_ID_RE_PATTERN = re.compile('\\/subscriptions\\/(?P<subscription>[\\w,-]+)\\/resourceGroups\\/(?P<resource_group>[\\w,-]+)\\/providers\\/Microsoft\\.MachineLearningServices\\/workspaces\\/(?P<workspace>[\\w,-]+)\\/codes\\/(?P<co)

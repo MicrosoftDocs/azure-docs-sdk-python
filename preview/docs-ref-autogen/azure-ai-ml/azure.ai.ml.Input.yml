@@ -5,65 +5,101 @@ fullName: azure.ai.ml.Input
 module: azure.ai.ml
 inheritances:
 - azure.ai.ml.entities._inputs_outputs.base._InputOutputBase
-summary: 'Define an input of a Component or Job.
-
-
-  Default to be a uri_folder Input.'
+summary: Initialize an Input object.
 constructor:
-  syntax: 'Input(*, type: Literal[''uri_folder''] = ''uri_folder'', path: str = None,
-    mode: str = None, optional: bool = None, description: str = None, **kwargs)'
+  syntax: 'Input(*, type: Literal[''uri_folder''] = ''uri_folder'', path: str | None
+    = None, mode: str | None = None, optional: bool | None = None, description: str
+    | None = None, **kwargs)'
   parameters:
   - name: type
-    description: 'The type of the data input. Possible values include:
+    description: 'The type of the data input. Accepted values are
 
       ''uri_folder'', ''uri_file'', ''mltable'', ''mlflow_model'', ''custom_model'',
-      ''integer'', ''number'', ''string'', ''boolean'''
-    isRequired: true
+      ''integer'', ''number'', ''string'', and
+
+      ''boolean''. Defaults to ''uri_folder''.'
     types:
     - <xref:str>
   - name: path
-    description: 'The path to which the input is pointing.
+    description: 'The path to the input data. Paths can be local paths, remote data
+      uris, or a registered AzureML asset
 
-      Could be pointing to local data, cloud data, a registered name, etc.'
-    isRequired: true
+      ID.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: mode
-    description: 'The mode of the data input. Possible values are:
+    description: 'The access mode of the data input. Accepted values are:
 
-      ''ro_mount'': Read-only mount the data,
+      * ''ro_mount'': Mount the data to the compute target as read-only,
 
-      ''download'': Download the data to the compute target,
+      * ''download'': Download the data to the compute target,
 
-      ''direct'': Pass in the URI as a string'
-    isRequired: true
+      * ''direct'': Pass in the URI as a string to be accessed at runtime'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: default
-    description: The default value of this input. When a *default* is set, the input
-      will be optional
-    isRequired: true
+    description: The default value of the input. If a default is set, the input data
+      will be optional.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:integer>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: min
-    description: "The min value \u2013 if a smaller value is passed to a job, the\
-      \ job execution will fail"
-    isRequired: true
+    description: 'The minimum value for the input. If a value smaller than the minimum
+      is passed to the job, the job
+
+      execution will fail.'
     types:
-    - <xref:typing.Union>[<xref:integer>, <xref:float>]
+    - <xref:typing.Union>[<xref:int>, <xref:float>]
   - name: max
-    description: "The max value \u2013 if a larger value is passed to a job, the job\
-      \ execution will fail"
-    isRequired: true
+    description: 'The maximum value for the input. If a value larger than the maximum
+      is passed to a job, the job
+
+      execution will fail.'
     types:
-    - <xref:typing.Union>[<xref:integer>, <xref:float>]
+    - <xref:typing.Union>[<xref:int>, <xref:float>]
   - name: optional
-    description: Determine if this input is optional
-    isRequired: true
+    description: Specifies if the input is optional.
     types:
-    - <xref:bool>
+    - <xref:typing.Optional>[<xref:bool>]
   - name: description
     description: Description of the input
-    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: datastore
+    description: The datastore to upload local files to.
     types:
     - <xref:str>
+  - name: intellectual_property
+    description: Intellectual property for the input.
+    types:
+    - <xref:azure.ai.ml.entities.IntellectualProperty>
+methods:
+- uid: azure.ai.ml.Input.get
+  name: get
+  signature: 'get(key: Any, default: Any | None = None) -> Any'
+  parameters:
+  - name: key
+    isRequired: true
+  - name: default
+    defaultValue: None
+- uid: azure.ai.ml.Input.has_key
+  name: has_key
+  signature: 'has_key(k: Any) -> bool'
+  parameters:
+  - name: k
+    isRequired: true
+- uid: azure.ai.ml.Input.items
+  name: items
+  signature: items() -> list
+- uid: azure.ai.ml.Input.keys
+  name: keys
+  signature: keys() -> list
+- uid: azure.ai.ml.Input.update
+  name: update
+  signature: 'update(*args: Any, **kwargs: Any) -> None'
+- uid: azure.ai.ml.Input.values
+  name: values
+  signature: values() -> list
+attributes:
+- uid: azure.ai.ml.Input.T
+  name: T
+  signature: T = ~T
