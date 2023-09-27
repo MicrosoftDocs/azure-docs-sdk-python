@@ -3,7 +3,7 @@ title:
 keywords: Azure, python, SDK, API, azure-mgmt-rdbms, rdbms
 author: lmazuel
 ms.author: lmazuel
-ms.date: 06/08/2023
+ms.date: 09/27/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: rdbms
@@ -69,7 +69,4 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-rdbms%2FREADME.png)
 
