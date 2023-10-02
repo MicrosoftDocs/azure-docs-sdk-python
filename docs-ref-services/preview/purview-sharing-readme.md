@@ -1,8 +1,6 @@
 ---
 title: Azure Purview Sharing client library for Python
 keywords: Azure, python, SDK, API, azure-purview-sharing, purview
-author: iscai-msft
-ms.author: iscai
 ms.date: 07/18/2023
 ms.topic: reference
 ms.devlang: python
@@ -599,3 +597,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-purview-sharing_1.0.0b3/sdk/purview/azure-purview-sharing/samples
+

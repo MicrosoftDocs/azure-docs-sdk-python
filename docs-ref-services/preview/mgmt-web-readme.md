@@ -1,13 +1,11 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-web, appservice
-author: lmazuel
-ms.author: lmazuel
 ms.date: 03/31/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: app-service
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

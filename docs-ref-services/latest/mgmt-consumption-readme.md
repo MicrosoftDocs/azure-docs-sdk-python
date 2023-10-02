@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-consumption, consumption
-author: sandeepnl
-ms.author: sandeepnl
 ms.date: 06/21/2022
 ms.topic: reference
 ms.devlang: python

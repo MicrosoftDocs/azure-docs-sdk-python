@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 09/18/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: big-compute
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Compute Management Client Library.

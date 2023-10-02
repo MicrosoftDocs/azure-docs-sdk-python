@@ -1,8 +1,6 @@
 ---
 title: Azure App Configuration Python Provider client library for Python
 keywords: Azure, python, SDK, API, azure-appconfiguration-provider, appconfiguration
-author: xiangyan99
-ms.author: xiangyan
 ms.date: 09/30/2023
 ms.topic: reference
 ms.devlang: python

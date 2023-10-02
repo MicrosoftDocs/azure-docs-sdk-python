@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-confluent, confluent
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 01/18/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: partner-services
 ms.subservice: confluent
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Confluent Management Client Library.
@@ -48,5 +45,4 @@ To learn how to use this package, see the [quickstart guide](https://aka.ms/azsd
 For docs and references, see [Python SDK References](https://docs.microsoft.com/python/api/overview/azure/)
 Code samples for this package can be found at [Confluent Management](https://docs.microsoft.com/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com.
 Additional code samples for different Azure services are available at [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
-
 

@@ -1,13 +1,10 @@
 ---
 title: Azure Consumption SDK for Python
 description: Reference for Azure Consumption SDK for Python
-author: sandeepnl
-ms.author: sandeepnl
-ms.data: 09/29/2023
+ms.date: 08/25/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: consumption
-ms.date: 08/25/2022
 ---
 # Azure Consumption libraries for python
 
@@ -21,3 +18,4 @@ pip install azure-mgmt-consumption
 ```
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-consumption-readme)
+

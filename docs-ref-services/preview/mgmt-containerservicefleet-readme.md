@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-containerservicefleet, containerservice
-author: zqingqing1
-ms.author: qizhe
 ms.date: 09/13/2023
 ms.topic: reference
 ms.devlang: python

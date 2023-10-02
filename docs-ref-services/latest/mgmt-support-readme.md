@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-support, help+support
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 03/30/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Support Management Client Library.

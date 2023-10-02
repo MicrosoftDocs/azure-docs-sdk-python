@@ -1,15 +1,12 @@
 ---
 title: Azure Service Bus client library for Python
 keywords: Azure, , SDK, API, azure-servicebus, servicebus
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 11/24/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: 
 ms.service: service-bus
+ms.technology: azure
 ---
-
 # Azure Service Bus client library for Python - version 7.0.0 
 
 

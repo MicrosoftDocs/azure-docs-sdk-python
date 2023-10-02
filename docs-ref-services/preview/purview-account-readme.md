@@ -1,15 +1,12 @@
 ---
 title: Azure Purview Account client library for Python
-keywords: Azure, python, SDK, API, azure-purview-account, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-purview-account,
 ms.date: 08/25/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: purview
+ms.technology: azure
 ---
-
 # Azure Purview Account client library for Python - version 1.0.0b1 
 
 

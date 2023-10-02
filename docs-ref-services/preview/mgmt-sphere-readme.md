@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-sphere, sphere
-author: lmazuel
-ms.author: lmazuel
 ms.date: 07/26/2023
 ms.topic: reference
 ms.devlang: python

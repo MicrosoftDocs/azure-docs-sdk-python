@@ -2,14 +2,12 @@
 title: Azure Resources libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, Resources
-author: lisawong19
-ms.author: ramyar
-manager: douge
 ms.date: 06/19/2017
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
+manager: douge
 ---
 # Azure Resources libraries for Python 
 
@@ -48,4 +46,5 @@ client = ResourceManagementClient(credentials, subscription_id)
 client.resource_groups.create(RESOURCE_GROUP_NAME, {'location':'eastus'})
 ```
 
-Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps. 
+Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
+

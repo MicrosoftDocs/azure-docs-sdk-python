@@ -1,13 +1,11 @@
 ---
 title: Azure Communication Network Traversal Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-networktraversal, communication
-author: acsdevx-msft
-ms.author: acsdevx-msft
 ms.date: 03/23/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-communication-services
+ms.technology: azure
 ---
 # Azure Communication Network Traversal Package client library for Python - version 1.1.0b1 
 

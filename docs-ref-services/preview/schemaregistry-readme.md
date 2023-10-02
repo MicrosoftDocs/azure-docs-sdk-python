@@ -1,8 +1,6 @@
 ---
 title: Azure Schema Registry client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry, schemaregistry
-author: kashifkhan
-ms.author: kashifkhan
 ms.date: 08/10/2023
 ms.topic: reference
 ms.devlang: python
@@ -502,3 +500,4 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [eventhubs_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry_1.3.0b2/sdk/eventhub/azure-eventhub
 [pypi_azure_identity]: https://pypi.org/project/azure-identity/
 [quickstart_guide]: /azure/event-hubs/create-schema-registry
+

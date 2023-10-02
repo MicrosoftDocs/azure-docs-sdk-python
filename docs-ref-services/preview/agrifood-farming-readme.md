@@ -1,8 +1,6 @@
 ---
 title: Azure FarmBeats client library for Python
 keywords: Azure, python, SDK, API, azure-agrifood-farming, agrifood
-author: lmazuel
-ms.author: lmazuel
 ms.date: 02/22/2023
 ms.topic: reference
 ms.devlang: python

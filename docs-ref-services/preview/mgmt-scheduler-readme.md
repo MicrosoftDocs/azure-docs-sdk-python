@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-scheduler, scheduler
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 11/18/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: scheduler
+ms.technology: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Scheduler Management Client Library.

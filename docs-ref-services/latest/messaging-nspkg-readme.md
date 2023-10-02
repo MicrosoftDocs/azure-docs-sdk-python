@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-messaging-nspkg, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-messaging-nspkg,
 ms.date: 04/24/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Messaging namespace package.

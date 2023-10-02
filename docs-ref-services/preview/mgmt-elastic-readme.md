@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-elastic, elastic
-author: lmazuel
-ms.author: lmazuel
 ms.date: 05/22/2023
 ms.topic: reference
 ms.devlang: python

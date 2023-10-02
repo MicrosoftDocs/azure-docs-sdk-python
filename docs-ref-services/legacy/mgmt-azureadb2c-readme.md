@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azureadb2c, azureadb2c
-author: lmazuel
-ms.author: lmazuel
 ms.date: 06/06/2023
 ms.topic: reference
 ms.devlang: python

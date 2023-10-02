@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-artifacts, synapse
-author: wonner
-ms.author: wanyang
 ms.date: 07/28/2023
 ms.topic: reference
 ms.devlang: python

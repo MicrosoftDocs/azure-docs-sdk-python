@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-playwrighttesting, playwrighttesting
-author: lmazuel
-ms.author: lmazuel
 ms.date: 09/27/2023
 ms.topic: reference
 ms.devlang: python

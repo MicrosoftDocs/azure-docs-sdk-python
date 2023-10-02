@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-commerce, commerce
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Commerce Client Library.

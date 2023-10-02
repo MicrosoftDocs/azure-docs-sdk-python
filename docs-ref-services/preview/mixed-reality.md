@@ -1,9 +1,6 @@
 ---
 title: Azure Mixed Reality SDK for Python
 description: Reference for Azure Mixed Reality SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/29/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: mixedreality
@@ -21,3 +18,4 @@ Microsoft provides a series of Azure services to empower Mixed Reality devices a
 ```bash
 pip install azure-mgmt-mixedreality
 ```
+

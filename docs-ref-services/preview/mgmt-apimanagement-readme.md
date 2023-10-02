@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-apimanagement, apimanagement
-author: lmazuel
-ms.author: lmazuel
 ms.date: 11/14/2022
 ms.topic: reference
 ms.devlang: python

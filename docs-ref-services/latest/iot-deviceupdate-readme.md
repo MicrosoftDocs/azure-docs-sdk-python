@@ -1,8 +1,6 @@
 ---
 title: Azure Device Update for IoT Hub client library for Python
 keywords: Azure, python, SDK, API, azure-iot-deviceupdate, deviceupdate
-author: dpokluda
-ms.author: dpokluda
 ms.date: 09/09/2022
 ms.topic: reference
 ms.devlang: python

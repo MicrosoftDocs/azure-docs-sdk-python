@@ -1,14 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-search-customimagesearch, cognitiveservices
-author: lmazuel
-ms.author: lmazuel
 ms.date: 03/31/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: cognitive-services
 ms.subservice: bing-image-search
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

@@ -1,15 +1,12 @@
 ---
-title: Face API 
-author: PatrickFarley
-ms.author: pafarley
+title: Face API
 ms.date: 06/21/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: cognitive-services
 ms.subservice: face-api
+ms.technology: azure
 ---
-
 # Azure Face API
 
 The Azure Face service provides AI algorithms that detect, recognize, and analyze human faces in images.
@@ -25,3 +22,4 @@ pip install --upgrade azure-cognitiveservices-vision-face
 ## Next Steps
 
 Go to the Face service [Overview](https://docs.microsoft.com/azure/cognitive-services/face/overview) or follow a [quickstart](https://docs.microsoft.com/azure/cognitive-services/face/quickstarts/client-libraries) to get started.
+

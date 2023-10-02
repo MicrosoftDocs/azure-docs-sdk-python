@@ -1,16 +1,13 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-logz, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-mgmt-logz,
 ms.date: 09/06/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: partner-services
 ms.subservice: logzio
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Logz Management Client Library.

@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-logic, logic
-author: lmazuel
-ms.author: lmazuel
 ms.date: 06/13/2022
 ms.topic: reference
 ms.devlang: python

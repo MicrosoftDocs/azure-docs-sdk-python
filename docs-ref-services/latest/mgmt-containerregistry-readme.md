@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-containerregistry, containerregistry
-author: YalinLi0312
-ms.author: yall
 ms.date: 09/22/2023
 ms.topic: reference
 ms.devlang: python

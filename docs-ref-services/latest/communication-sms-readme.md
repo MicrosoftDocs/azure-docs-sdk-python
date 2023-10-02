@@ -1,15 +1,12 @@
 ---
 title: Azure Communication SMS Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-sms, communication
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 06/08/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-communication-services
+ms.technology: azure
 ---
-
 # Azure Communication SMS Package client library for Python - version 1.0.1 
 
 
@@ -160,3 +157,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-sms_1.0.1/sdk/core/azure-core/README.md
 [handle_sms_events]: https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/handle-sms-events
 [next_steps]:https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-python
+

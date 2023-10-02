@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datashare, datashare
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/12/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: data-share
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Datashare Management Client Library.

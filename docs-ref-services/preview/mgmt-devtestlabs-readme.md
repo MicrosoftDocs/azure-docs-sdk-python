@@ -2,8 +2,6 @@
 title: DevTest Labs Azure SDK for Python
 description: Learn how to manage Azure DevTest Labs resources with the Azure SDK for Python.
 keywords: Azure, python, SDK, API, azure-mgmt-devtestlabs, devtestlabs
-author: lmazuel
-ms.author: lmazuel
 ms.date: 10/31/2022
 ms.topic: reference
 ms.devlang: python

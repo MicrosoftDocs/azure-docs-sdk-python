@@ -1,16 +1,13 @@
 ---
 title: Azure Storage Queues client library for Python
 keywords: Azure, python, SDK, API, azure-storage-queue, storage
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 11/11/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: storage
 ms.subservice: queues
+ms.technology: azure
 ---
-
 # Azure Storage Queues client library for Python - version 12.1.4 
 
 

@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-monitor-nspkg, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-monitor-nspkg,
 ms.date: 06/05/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-monitor
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure monitor Services namespace package.
@@ -26,3 +23,4 @@ If you are looking to install the Azure client libraries, see the
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftextanalytics%2Fazure-ai-nspkg%2FREADME.png)
+

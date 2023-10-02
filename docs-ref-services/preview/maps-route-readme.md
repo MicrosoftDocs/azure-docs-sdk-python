@@ -1,8 +1,6 @@
 ---
 title: Azure Maps Route Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-route, maps
-author: alextts627
-ms.author: ttsao
 ms.date: 10/14/2022
 ms.topic: reference
 ms.devlang: python

@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-workloadmonitor, workloadmonitor
-author: lmazuel
-ms.author: lmazuel
 ms.date: 11/29/2022
 ms.topic: reference
 ms.devlang: python

@@ -1,8 +1,6 @@
 ---
 title: Azure Template Package client library for Python
 keywords: Azure, python, SDK, API, azure-template, template
-author: scbedd
-ms.author: scbedd
 ms.date: 09/22/2023
 ms.topic: reference
 ms.devlang: python

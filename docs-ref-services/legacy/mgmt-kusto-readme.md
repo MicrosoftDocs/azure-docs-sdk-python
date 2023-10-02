@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-kusto, kusto
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 10/26/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: kusto
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Kusto Management Client Library.

@@ -1,8 +1,6 @@
 ---
 title: Azure Remote Rendering client library for Python
 keywords: Azure, python, SDK, API, azure-mixedreality-remoterendering, remoterendering
-author: FlorianBorn71
-ms.author: flborn
 ms.date: 07/07/2023
 ms.topic: reference
 ms.devlang: python

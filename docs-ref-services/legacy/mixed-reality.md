@@ -1,16 +1,13 @@
 ---
 title: Azure Mixed Reality Resource Management libraries for Python
 description: Reference documentation for the Python client libraries for Azure Mixed Reality Resource Management
-keywords: Azure, Python, SDK, API, Mixed Reality, Spatial Anchors 
-author: xiangyul
-ms.author: xiangyul
-manager: dgriff
+keywords: Azure, Python, SDK, API, Mixed Reality, Spatial Anchors
 ms.date: 04/16/2019
 ms.topic: reference
 ms.devlang: python
 ms.service: mixed-reality
+manager: dgriff
 ---
-
 # Azure Mixed Reality Resource Management libraries for Python
 
 ## Overview
@@ -24,3 +21,4 @@ Microsoft provides a series of Azure services to empower Mixed Reality devices a
 ```bash
 pip install azure-mgmt-mixedreality
 ```
+

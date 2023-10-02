@@ -1,9 +1,6 @@
 ---
 title: Azure Compute SDK for Python
 description: Reference for Azure Compute SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/29/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
@@ -83,3 +80,4 @@ View the [complete list](https://azure.microsoft.com/resources/samples/?platform
 [5]: /azure/python/python-sdk-azure-samples-managed-disks
 [6]: /azure/python/python-sdk-azure-samples-list-images
 [7]: /azure/python/python-sdk-azure-samples-monitor-vms
+

@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-deploymentmanager, deploymentmanager
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 05/20/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: deployment-manager
+ms.technology: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Deployment Manager Client Library.

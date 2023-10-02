@@ -1,16 +1,13 @@
 ---
 title: Azure Communication Administration Package client library for Python
-keywords: Azure, python, SDK, API, azure-communication-administration, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-communication-administration,
 ms.date: 04/16/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: 
+ms.technology: azure
+ms.prod: azure
 ---
-
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-python.client?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=46?branchName=master)
 
 # Azure Communication Administration Package client library for Python - version 1.0.0b4 
@@ -205,3 +202,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 <!-- LINKS -->
 [identitysamples]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-administration_1.0.0b3/sdk/communication/azure-communication-administration/samples/identity_samples.py
 [azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-administration_1.0.0b4/sdk/core/azure-core/README.md
+

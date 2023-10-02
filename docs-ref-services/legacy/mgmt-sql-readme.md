@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-sql, sql
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 11/25/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: sql
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure SQL Management Client Library.

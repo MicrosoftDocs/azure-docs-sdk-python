@@ -1,8 +1,6 @@
 ---
 title: Azure ML Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
-author: paulshealy1
-ms.author: paulsh
 ms.date: 09/19/2023
 ms.topic: reference
 ms.devlang: python

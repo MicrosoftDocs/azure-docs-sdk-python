@@ -1,8 +1,6 @@
 ---
 title: Azure Purview Workflow Service client library for Python
 keywords: Azure, python, SDK, API, azure-purview-workflow, purview
-author: iscai-msft
-ms.author: iscai
 ms.date: 02/28/2023
 ms.topic: reference
 ms.devlang: python
@@ -108,3 +106,4 @@ additional questions or comments.
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
 [pip]: https://pypi.org/project/pip/
+

@@ -2,16 +2,13 @@
 title: Azure Virtual Machine libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, Compute , Virtual Machines
-author: lisawong19
-ms.author: ramyar
-manager: douge
 ms.date: 06/09/2017
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: big-compute
+ms.technology: azure
+manager: douge
 ---
-
 # Azure virtual machine libraries
 
 ## Overview
@@ -87,3 +84,4 @@ View the [complete list](https://azure.microsoft.com/resources/samples/?platform
 [5]: /azure/python/python-sdk-azure-samples-managed-disks
 [6]: /azure/python/python-sdk-azure-samples-list-images
 [7]: /azure/python/python-sdk-azure-samples-monitor-vms
+

@@ -1,17 +1,13 @@
 ---
 title: Azure Text Analytics client library for Python
 keywords: Azure, python, SDK, API, textanalytics, azure-ai-textanalytics
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 06/09/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: Python
 ms.service: cognitive-services
 ms.subservice: text-analytics
-
+ms.technology: azure
 ---
-
 # Azure Text Analytics client library for Python - version 5.0.0 
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, and includes six main functions:
 
@@ -515,3 +511,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+

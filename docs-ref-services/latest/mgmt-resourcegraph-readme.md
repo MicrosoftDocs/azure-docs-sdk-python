@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-resourcegraph, resourcegraph
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/12/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: resource-graph
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Resource Graph Client Library.

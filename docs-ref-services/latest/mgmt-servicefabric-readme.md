@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-servicefabric, servicefabric
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 09/06/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: service-fabric
+ms.technology: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Service Fabric Management Client Library.

@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-costmanagement, costmanagement
-author: lmazuel
-ms.author: lmazuel
 ms.date: 07/19/2023
 ms.topic: reference
 ms.devlang: python

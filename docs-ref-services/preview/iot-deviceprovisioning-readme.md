@@ -1,8 +1,6 @@
 ---
 title: Azure IoT Device Provisioning client library for Python
 keywords: Azure, python, SDK, API, azure-iot-deviceprovisioning, iothub
-author: c-ryan-k
-ms.author: rykelly
 ms.date: 06/14/2023
 ms.topic: reference
 ms.devlang: python

@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-attestation, attestation
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 03/17/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: attestation
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure MyService Management Client Library.
@@ -37,5 +34,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-attestation%2FREADME.png)
-
 

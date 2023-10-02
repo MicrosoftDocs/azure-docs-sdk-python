@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-iotcentral, iothub
-author: maggiepint
-ms.author: magpint
 ms.date: 11/11/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: iot-hub
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Iotcentral Management Client Library.

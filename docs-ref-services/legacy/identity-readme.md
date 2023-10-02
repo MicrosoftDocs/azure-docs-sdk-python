@@ -1,16 +1,13 @@
 ---
 title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, identity
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 11/11/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: active-directory
 ms.subservice: identity-protection
+ms.technology: azure
 ---
-
 # Azure Identity client library for Python - version 1.5.0 
 
 

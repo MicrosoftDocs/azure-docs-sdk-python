@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-paloaltonetworksngfw, paloaltonetworks
-author: lmazuel
-ms.author: lmazuel
 ms.date: 07/14/2023
 ms.topic: reference
 ms.devlang: python

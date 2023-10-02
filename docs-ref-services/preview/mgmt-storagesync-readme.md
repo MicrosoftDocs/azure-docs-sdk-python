@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-storagesync, storage
-author: annatisch
-ms.author: antisch
 ms.date: 11/01/2022
 ms.topic: reference
 ms.devlang: python

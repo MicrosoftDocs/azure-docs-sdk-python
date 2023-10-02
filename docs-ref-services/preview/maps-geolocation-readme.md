@@ -1,8 +1,6 @@
 ---
 title: Azure Maps Geolocation Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-geolocation, maps
-author: alextts627
-ms.author: ttsao
 ms.date: 10/13/2022
 ms.topic: reference
 ms.devlang: python

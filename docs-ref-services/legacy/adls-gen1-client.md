@@ -2,16 +2,13 @@
 title: Azure DataLake Store Gen1 library for Python
 description: A python interface to the Azure Data-lake Storage system gen 1
 keywords: Azure, Python, SDK, API, DataLake, ADLS
-author: akharit
-ms.author: akharit
-manager: pkasturi
 ms.date: 08/26/2019
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-data-lake-storage
+ms.technology: azure
+manager: pkasturi
 ---
-
 # azure-datalake-store
 
 A pure-python interface to the Azure Data-lake Storage gen 1 system, providing
@@ -136,3 +133,4 @@ be transferred, files matching a specific glob-pattern or any particular file.
 # download the whole directory structure using 5 threads, 16MB chunks
 ADLDownloader(adl, '', 'my_temp_dir', 5, 2**24)
 ```
+

@@ -2,16 +2,12 @@
 title: Azure Container Instances libraries for Python
 description: Reference for Azure Container Instances libraries for Python
 keywords: Azure, python, SDK, API, ACI, container, instances
-author: dlepow
-manager: jeconnoc
-
 ms.date: 04/15/2019
-ms.author: danlep
 ms.topic: reference
 ms.devlang: python
 ms.service: container-instances
+manager: jeconnoc
 ---
-
 # Azure Container Instances libraries for Python
 
 Use the Microsoft Azure Container Instances libraries for Python to create and manage Azure container instances. Learn more by reading the [Azure Container Instances overview](/azure/container-instances/container-instances-overview).
@@ -145,3 +141,4 @@ This example deletes several container groups from a resource group, as well as 
 [ContainerInstanceManagementClient]: /python/api/azure.mgmt.containerinstance.containerinstancemanagementclient
 [instance_view]: /python/api/azure.mgmt.containerinstance.models.containergroup#variables
 [ResourceManagementClient]: /python/api/azure.mgmt.resource.resources.resourcemanagementclient
+

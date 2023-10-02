@@ -1,8 +1,6 @@
 ---
 title: Azure Key Vault Keys client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-keys, keyvault
-author: schaabs
-ms.author: sschaab
 ms.date: 05/17/2023
 ms.topic: reference
 ms.devlang: python

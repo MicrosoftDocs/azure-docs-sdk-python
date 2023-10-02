@@ -1,13 +1,10 @@
 ---
 title: Azure Key Vault SDK for Python
 description: Reference for Azure Key Vault SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/29/2023
+ms.date: 11/25/2019
 ms.topic: reference
 ms.devlang: python
 ms.service: keyvault
-ms.date: 11/25/2019
 manager: carmonm
 ---
 # Azure Key Vault libraries for Python
@@ -49,3 +46,4 @@ Use the following library to work with the Azure Key Vault resource provider:
 |    Library    |    Reference    |    Package    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 |    azure-mgmt-keyvault    |    [Reference](/python/api/overview/azure/mgmt-keyvault-readme)    |    [PyPI](https://pypi.org/project/azure-mgmt-keyvault/)    |    [GitHub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-mgmt-keyvault)    |
+

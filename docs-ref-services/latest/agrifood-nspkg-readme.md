@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-agrifood-nspkg, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-agrifood-nspkg,
 ms.date: 05/10/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
-
 # Microsoft Azure AgriFood SDK for Python
 
 This is the Microsoft Azure AgriFood namespace package.

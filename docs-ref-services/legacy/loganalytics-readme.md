@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-loganalytics, loganalytics
-author: maggiepint
-ms.author: magpint
 ms.date: 11/12/2021
 ms.topic: reference
-ms.prod: azure
-ms.technology: azure
 ms.devlang: python
 ms.service: loganalytics
+ms.technology: azure
+ms.prod: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This package is no longer being maintained. Please use our latest package [azure-monitor-query](https://pypi.org/project/azure-monitor-query/).

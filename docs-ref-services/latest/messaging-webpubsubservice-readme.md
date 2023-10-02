@@ -1,13 +1,11 @@
 ---
 title: Azure Web PubSub service client library for Python
 keywords: Azure, python, SDK, API, azure-messaging-webpubsubservice, webpubsub
-author: msyyc
-ms.author: yuchaoyan
 ms.date: 02/15/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-web-pubsub
+ms.technology: azure
 ---
 # Azure Web PubSub service client library for Python - version 1.0.1 
 

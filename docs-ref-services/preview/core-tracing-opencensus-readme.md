@@ -1,17 +1,12 @@
 ---
 title: Azure Core Tracing OpenCensus client library for Python
 keywords: Azure, python, SDK, API, azure-core-tracing-opencensus, core
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 07/01/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
-
-
-
 # Azure Core Tracing OpenCensus client library for Python - version 1.0.0b8 
 
 

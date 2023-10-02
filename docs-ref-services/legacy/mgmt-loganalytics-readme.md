@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-loganalytics, loganalytics
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 09/17/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: log-analytics
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Log Analytics Management Client Library.

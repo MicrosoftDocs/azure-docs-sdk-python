@@ -1,8 +1,6 @@
 ---
 title: Azure Cognitive Search client library for Python
 keywords: Azure, python, SDK, API, azure-search-documents, search
-author: rakshith91
-ms.author: sabhyrav
 ms.date: 09/06/2022
 ms.topic: reference
 ms.devlang: python

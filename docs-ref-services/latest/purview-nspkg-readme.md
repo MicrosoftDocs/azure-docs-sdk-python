@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-purview-nspkg, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-purview-nspkg,
 ms.date: 05/06/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: purview
+ms.technology: azure
 ---
-
 # Microsoft Azure Purview SDK for Python
 
 This is the Microsoft Azure Purview namespace package.
