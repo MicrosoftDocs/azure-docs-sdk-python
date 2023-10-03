@@ -1,13 +1,11 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-edgeorder, edgeorder
-author: mayurid
-ms.author: mayurid
 ms.date: 12/23/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

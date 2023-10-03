@@ -2,14 +2,11 @@
 title: Face SDK for Python
 description: This is the Microsoft Azure Cognitive Services Face Client Library.
 keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-face, face
-author: PatrickFarley
-ms.author: pafarley
 ms.date: 09/14/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-services
 ---
-
 # Microsoft Azure SDK for Python
 
 > [!IMPORTANT]
@@ -43,3 +40,4 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-cognitiveservices-vision-face%2FREADME.png)
+

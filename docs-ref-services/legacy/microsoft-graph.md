@@ -2,17 +2,13 @@
 title: Graph RBAC libraries for python
 description: Reference for Graph RBAC libraries for python
 keywords: Azure, python, SDK, API, Graph RBAC
-author: ramya-rao-a
-ms.author: ramyar
-manager: jfriend
-
 ms.date: 05/10/2019
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: active-directory
+ms.technology: azure
+manager: jfriend
 ---
-
 # Azure Active Directory Graph libraries for Python
 
 > [!IMPORTANT]
@@ -73,3 +69,4 @@ self.assertEqual(user.display_name, 'Test Buddy')
     self.assertEqual(user.display_name, 'Test Buddy')	
  graphrbac_client.users.delete(user.object_id)	
 ```
+

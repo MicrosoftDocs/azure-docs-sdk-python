@@ -1,15 +1,12 @@
 ---
 title: Azure Attestation client library for Python
 keywords: Azure, python, SDK, API, azure-security-attestation, attestation
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 07/06/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: attestation
+ms.technology: azure
 ---
-
 # Azure Attestation client library for Python - version 1.0.0 
 
 

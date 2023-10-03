@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datalake-analytics, datalake
-author: ro-joowan
-ms.author: ro-joowan
 ms.date: 12/16/2022
 ms.topic: reference
 ms.devlang: python

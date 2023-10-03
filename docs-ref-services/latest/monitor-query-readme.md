@@ -1,8 +1,6 @@
 ---
 title: Azure Monitor Query client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-query, monitor
-author: lmazuel
-ms.author: lmazuel
 ms.date: 05/09/2023
 ms.topic: reference
 ms.devlang: python

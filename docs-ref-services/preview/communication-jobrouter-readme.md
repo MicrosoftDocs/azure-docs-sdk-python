@@ -1,8 +1,6 @@
 ---
 title: Azure Communication JobRouter Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-jobrouter, communication
-author: acsdevx-msft
-ms.author: acsdevx-msft
 ms.date: 07/27/2023
 ms.topic: reference
 ms.devlang: python
@@ -356,3 +354,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [pip]: https://pypi.org/project/pip/
 
 [//]: # ([job_router_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-jobrouter_1.0.0b1/sdk/communication/azure-communication-jobrouter/samples)
+

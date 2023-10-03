@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-desktopvirtualization, desktopvirtualization
-author: lmazuel
-ms.author: lmazuel
 ms.date: 03/20/2023
 ms.topic: reference
 ms.devlang: python

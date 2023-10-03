@@ -1,9 +1,6 @@
 ---
 title: Azure Event Grid SDK for Python
 description: Reference for Azure Event Grid SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/29/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: event-grid
@@ -48,3 +45,4 @@ To manage your Azure Event Grid resources like topics and domains via the Azure 
 * [Event Grid documentation](https://docs.microsoft.com/azure/event-grid/)
 * [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventgrid/)
 * [SDK reference documentation](https://docs.microsoft.com/python/api/overview/azure/event-grid?view=azure-python)
+

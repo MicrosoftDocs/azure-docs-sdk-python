@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-healthcareapis, healthcareapis
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 10/30/2020
 ms.topic: article
-ms.technology: azure
 ms.devlang: python
 ms.service: healthcare-apis
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure MyService Management Client Library.

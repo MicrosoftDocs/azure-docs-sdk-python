@@ -1,8 +1,6 @@
 ---
 title: Azure Text Translation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-translation-text, translation
-author: kristapratico
-ms.author: krpratic
 ms.date: 04/19/2023
 ms.topic: reference
 ms.devlang: python

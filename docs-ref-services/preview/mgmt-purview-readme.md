@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-purview, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-mgmt-purview,
 ms.date: 02/01/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: purview
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Purview Management Client Library.
@@ -37,5 +34,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-purview%2FREADME.png)
-
 

@@ -1,9 +1,6 @@
 ---
 title: Azure Relay SDK for Python
 description: Reference for Azure Relay SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/29/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: service-bus-relay
@@ -12,3 +9,4 @@ ms.service: service-bus-relay
 
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](relay-mgmt-index.md)]
+

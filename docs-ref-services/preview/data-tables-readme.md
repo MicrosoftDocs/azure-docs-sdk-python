@@ -1,15 +1,12 @@
 ---
 title: Azure Data Tables client library for Python
 keywords: Azure, python, SDK, API, azure-data-tables, tables
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 05/13/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: storage
+ms.technology: azure
 ---
-
 # Azure Data Tables client library for Python - version 12.0.0b7 
 
 

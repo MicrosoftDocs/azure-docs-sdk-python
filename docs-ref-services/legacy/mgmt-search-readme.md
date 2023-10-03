@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-search, search
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 09/30/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: search
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Search Management Client Library.

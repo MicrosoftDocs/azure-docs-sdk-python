@@ -1,15 +1,12 @@
 ---
 title: Azure Schema Registry Avro Serializer client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry-avroserializer, schemaregistry
-author: maggiepint
-ms.author: magpint
 ms.date: 11/11/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: event-hubs
+ms.technology: azure
 ---
-
 # Azure Schema Registry Avro Serializer client library for Python - version 1.0.0b4 
 
 
@@ -327,3 +324,4 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [eventhubs_repo]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/eventhub/azure-eventhub
 [token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroserializer_1.0.0b4/sdk/core/azure-core/azure/core/credentials.py
 [pypi_azure_identity]: https://pypi.org/project/azure-identity/
+

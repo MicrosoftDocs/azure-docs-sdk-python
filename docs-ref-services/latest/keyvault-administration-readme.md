@@ -1,8 +1,6 @@
 ---
 title: Azure Key Vault Administration client library for Python
 keywords: Azure, python, SDK, API, azure-keyvault-administration, keyvault
-author: schaabs
-ms.author: sschaab
 ms.date: 03/16/2023
 ms.topic: reference
 ms.devlang: python

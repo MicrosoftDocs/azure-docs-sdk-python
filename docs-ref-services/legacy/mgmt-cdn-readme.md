@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-cdn, contentdeliverynetwork
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 12/01/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-cdn
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure CDN Management Client Library.

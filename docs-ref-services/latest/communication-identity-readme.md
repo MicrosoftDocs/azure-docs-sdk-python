@@ -1,8 +1,6 @@
 ---
 title: Azure Communication Identity Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-identity, communication
-author: petrsvihlik
-ms.author: petrsvihlik
 ms.date: 10/31/2022
 ms.topic: reference
 ms.devlang: python

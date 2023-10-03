@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicessiterecovery, recoveryservices
-author: DheerendraRathor
-ms.author: DheerendraRathor
 ms.date: 09/19/2023
 ms.topic: reference
 ms.devlang: python

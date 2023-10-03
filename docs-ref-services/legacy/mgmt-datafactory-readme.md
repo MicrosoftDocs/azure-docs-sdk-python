@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 09/04/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: data-factory
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Data Factory Management Client Library.

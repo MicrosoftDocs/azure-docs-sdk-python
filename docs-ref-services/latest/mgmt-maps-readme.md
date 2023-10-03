@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-maps, maps
-author: alextts627
-ms.author: alextts627
 ms.date: 09/12/2023
 ms.topic: reference
 ms.devlang: python

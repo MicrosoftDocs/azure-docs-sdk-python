@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datadog, datadog
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 05/26/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: partner-services
 ms.subservice: datadog
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Datadog Management Client Library.

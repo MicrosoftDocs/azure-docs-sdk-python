@@ -1,8 +1,6 @@
 ---
 title: Azure Monitor Ingestion client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-ingestion, monitor
-author: lmazuel
-ms.author: lmazuel
 ms.date: 06/15/2023
 ms.topic: reference
 ms.devlang: python

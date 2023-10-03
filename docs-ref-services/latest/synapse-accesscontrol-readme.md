@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-accesscontrol, synapseanalytics
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 08/10/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: synapse-analytics
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse AccessControl Client Library.

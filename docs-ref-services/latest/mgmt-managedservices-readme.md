@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-managedservices, managedservices
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/23/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: active-directory
 ms.subservice: msi
+ms.technology: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Managed Services Client Library.

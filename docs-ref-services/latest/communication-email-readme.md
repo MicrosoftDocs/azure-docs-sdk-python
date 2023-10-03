@@ -1,8 +1,6 @@
 ---
 title: Azure Communication Email client library for Python
 keywords: Azure, python, SDK, API, azure-communication-email, communication
-author: acsdevx-msft
-ms.author: acsdevx-msft
 ms.date: 03/31/2023
 ms.topic: reference
 ms.devlang: python

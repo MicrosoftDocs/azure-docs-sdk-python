@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-operationsmanagement, operationsmanagement
-author: lmazuel
-ms.author: lmazuel
 ms.date: 10/28/2022
 ms.topic: reference
 ms.devlang: python

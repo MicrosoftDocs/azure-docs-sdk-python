@@ -1,16 +1,13 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-azurestackhci, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-mgmt-azurestackhci,
 ms.date: 10/15/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-stack
 ms.subservice: azure-stack-hci
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure AzureStackHCI Management Client Library.

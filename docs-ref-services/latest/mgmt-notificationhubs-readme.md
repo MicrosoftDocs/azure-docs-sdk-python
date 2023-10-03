@@ -1,13 +1,11 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-notificationhubs, notificationhubs
-author: mayurid
-ms.author: mayurid
 ms.date: 01/06/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: notification-hubs
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

@@ -1,9 +1,6 @@
 ---
 title: Azure Event Hubs SDK for Python
 description: Reference for Azure Event Hubs SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/20/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: eventhubs
@@ -29,3 +26,4 @@ pip install azure-mgmt-eventhub
 ```
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/eventhubs/management)
+

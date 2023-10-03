@@ -1,9 +1,6 @@
 ---
 title: Azure Active Directory SDK for Python
 description: Reference for Azure Active Directory SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 01/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: activedirectory
@@ -97,3 +94,4 @@ See the [ADAL to MSAL migration](/azure/active-directory/develop/migrate-python-
 
 <!--Reference-style links -->
 [azure_sub]: https://azure.microsoft.com/free/
+

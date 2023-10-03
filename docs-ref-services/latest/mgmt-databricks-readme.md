@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-databricks, databricks
-author: lmazuel
-ms.author: lmazuel
 ms.date: 06/29/2023
 ms.topic: reference
 ms.devlang: python

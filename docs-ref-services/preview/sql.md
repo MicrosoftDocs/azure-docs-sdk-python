@@ -1,9 +1,6 @@
 ---
 title: Azure SQL SDK for Python
 description: Reference for Azure SQL SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 09/29/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: sql
@@ -124,3 +121,4 @@ firewall_rule = sql_client.firewall_rules.create_or_update(
 ```
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/sql/management)
+

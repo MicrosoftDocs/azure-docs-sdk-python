@@ -1,9 +1,6 @@
 ---
 title: Azure Securitydevops SDK for Python
 description: Reference for Azure Securitydevops SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 01/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: securitydevops
@@ -12,3 +9,4 @@ ms.service: securitydevops
 
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](securitydevops-mgmt-index.md)]
+

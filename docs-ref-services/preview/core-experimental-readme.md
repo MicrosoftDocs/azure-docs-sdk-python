@@ -1,14 +1,11 @@
 ---
 title: Azure Core Experimental client library for Python
 keywords: Azure, python, SDK, API, azure-core-experimental, core
-author: lmazuel
-ms.author: lmazuel
 ms.date: 08/08/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
-
 # Azure Core Experimental client library for Python - version 1.0.0b4 
 
 

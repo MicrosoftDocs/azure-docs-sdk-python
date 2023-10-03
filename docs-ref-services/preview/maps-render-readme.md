@@ -1,8 +1,6 @@
 ---
 title: Azure Maps Render Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-render, maps
-author: alextts627
-ms.author: alextts627
 ms.date: 07/12/2023
 ms.topic: reference
 ms.devlang: python

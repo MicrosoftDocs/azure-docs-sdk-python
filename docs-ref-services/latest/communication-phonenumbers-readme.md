@@ -1,13 +1,11 @@
 ---
 title: Azure Communication Phone Numbers Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-phonenumbers, communication
-author: acsdevx-msft
-ms.author: acsdevx-msft
 ms.date: 03/29/2023
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-communication-services
+ms.technology: azure
 ---
 # Azure Communication Phone Numbers Package client library for Python - version 1.1.0 
 

@@ -1,14 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-iothubprovisioningservices, iothub
-author: mayurid
-ms.author: mayurid
 ms.date: 02/07/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: iot-hub
 ms.subservice: azure-iot-hub-device-provisioning-service
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

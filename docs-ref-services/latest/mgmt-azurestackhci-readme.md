@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azurestackhci, azurestackhci
-author: lmazuel
-ms.author: lmazuel
 ms.date: 05/26/2022
 ms.topic: reference
 ms.devlang: python

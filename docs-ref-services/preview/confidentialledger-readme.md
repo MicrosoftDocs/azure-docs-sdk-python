@@ -1,13 +1,11 @@
 ---
 title: Azure Confidential Ledger client library for Python
 keywords: Azure, python, SDK, API, azure-confidentialledger, confidentialledger
-author: lmazuel
-ms.author: lmazuel
 ms.date: 03/31/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: confidential-ledger
+ms.technology: azure
 ---
 # Azure Confidential Ledger client library for Python - version 1.0.0a20220330001 
 

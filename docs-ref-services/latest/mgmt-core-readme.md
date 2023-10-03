@@ -1,14 +1,11 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-core, core
-author: lmazuel
-ms.author: lmazuel
 ms.date: 04/06/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
-
 # Azure Management Core Library
 
 Azure management core library defines extensions to Azure Core that are specific to ARM (Azure Resource Management) needed when you use client libraries.
@@ -38,3 +35,4 @@ additional questions or comments.
 
 <!-- LINKS -->
 [package]: https://pypi.org/project/azure-mgmt-core/
+

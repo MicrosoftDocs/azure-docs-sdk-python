@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-communication-nspkg, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-communication-nspkg,
 ms.date: 10/05/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-communication-services
+ms.technology: azure
 ---
-
 # Microsoft Azure Communication SDK for Python
 
 This is the Microsoft Azure Communication namespace package.

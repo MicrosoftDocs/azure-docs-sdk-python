@@ -1,8 +1,6 @@
 ---
 title: Azure Schema Registry Avro Encoder client library for Python
 keywords: Azure, python, SDK, API, azure-schemaregistry-avroencoder, schemaregistry
-author: yunhaoling
-ms.author: yunhaoling
 ms.date: 05/10/2022
 ms.topic: reference
 ms.devlang: python
@@ -349,3 +347,4 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [token_credential_interface]: https://github.com/Azure/azure-sdk-for-python/tree/azure-schemaregistry-avroencoder_1.0.0/sdk/core/azure-core/azure/core/credentials.py
 [pypi_azure_identity]: https://pypi.org/project/azure-identity/
 [quickstart_guide]: /azure/event-hubs/create-schema-registry
+

@@ -1,16 +1,12 @@
 ---
 title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 11/09/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
 ---
-
-
 # Azure Core shared client library for Python - version 1.9.0 
 
 
@@ -159,3 +155,4 @@ additional questions or comments.
 
 <!-- LINKS -->
 [package]: https://pypi.org/project/azure-core/
+

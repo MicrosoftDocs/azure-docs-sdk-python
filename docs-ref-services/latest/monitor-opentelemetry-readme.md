@@ -1,8 +1,6 @@
 ---
 title: Azure Monitor Opentelemetry Distro client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry, monitor
-author: lmazuel
-ms.author: lmazuel
 ms.date: 09/14/2023
 ms.topic: reference
 ms.devlang: python

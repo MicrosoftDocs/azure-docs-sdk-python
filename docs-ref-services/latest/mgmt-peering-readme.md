@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-peering, peeringservice
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/25/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: peering-service
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Peering Management Client Library.

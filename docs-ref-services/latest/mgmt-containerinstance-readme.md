@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-containerinstance, containerinstance
-author: samkreter
-ms.author: samkreter
 ms.date: 04/21/2023
 ms.topic: reference
 ms.devlang: python

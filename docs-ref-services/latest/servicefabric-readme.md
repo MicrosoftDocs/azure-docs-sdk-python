@@ -1,13 +1,11 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-servicefabric, servicefabric
-author: QingChenmsft
-ms.author: QingChenmsft
 ms.date: 12/14/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: service-fabric
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

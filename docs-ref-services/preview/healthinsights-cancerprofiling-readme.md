@@ -1,8 +1,6 @@
 ---
 title: Azure Cognitive Services Health Insights Cancer Profiling client library for Python
 keywords: Azure, python, SDK, API, azure-healthinsights-cancerprofiling, healthinsights
-author: lmazuel
-ms.author: lmazuel
 ms.date: 04/04/2023
 ms.topic: reference
 ms.devlang: python

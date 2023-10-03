@@ -1,14 +1,11 @@
 ---
 title: Azure Data Lake Analytics SDK for Python
 description: Reference for Azure Data Lake Analytics SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 02/09/2023
+keywords: Azure, python, SDK, API, Data Lake Analytics
+ms.date: 08/04/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: data-lake-analytics
-ms.date: 08/04/2017
-keywords: Azure, python, SDK, API, Data Lake Analytics
 manager: douge
 ms.technology: azure
 ---
@@ -116,3 +113,4 @@ jobResult = adlaJobClient.job.create(
 
 ## Samples
 [Manage Azure Data Lake Anyalytics](https://docs.microsoft.com/azure/data-lake-analytics/data-lake-analytics-manage-use-python-sdk)
+
