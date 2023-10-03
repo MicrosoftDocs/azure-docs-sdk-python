@@ -1,13 +1,13 @@
 ---
 title: Azure Notification Hubs SDK for Python
 description: Reference for Azure Notification Hubs SDK for Python
-keywords: Azure, python, SDK, API, Notification Hubs
-ms.date: 02/22/2018
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: notificationhubs
 manager: routlaw
 ms.technology: azure
+keywords: Azure, python, SDK, API, Notification Hubs
 ---
 # Azure Notification Hubs libraries for python
 
@@ -63,4 +63,3 @@ print(output.is_availiable) # Yes, it's 'availiable', it's a typo in the REST AP
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/notificationhubs/management)
-

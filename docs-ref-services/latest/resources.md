@@ -1,6 +1,7 @@
 ---
 title: Azure Resources SDK for Python
 description: Reference for Azure Resources SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: resources
@@ -40,4 +41,3 @@ client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATION})
 [Manage Azure resources and resource groups](https://github.com/Azure-Samples/azure-samples-python-management)
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=resource) of Azure Resource Manager samples.
-

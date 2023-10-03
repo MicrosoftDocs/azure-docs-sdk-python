@@ -1,7 +1,7 @@
 ---
 title: Azure DevTest Labs SDK for Python
 description: Reference for Azure DevTest Labs SDK for Python
-ms.date: 06/07/2023
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
@@ -54,4 +54,3 @@ lab = async_lab.result() # Blocking wait
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-devtestlabs-readme)
-

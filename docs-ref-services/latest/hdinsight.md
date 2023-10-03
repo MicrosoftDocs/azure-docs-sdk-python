@@ -1,6 +1,7 @@
 ---
 title: Azure HDInsight SDK for Python
 description: Reference for Azure HDInsight SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: hdinsight
@@ -410,4 +411,3 @@ while True:
     except StopIteration:       
       break
 ```
-

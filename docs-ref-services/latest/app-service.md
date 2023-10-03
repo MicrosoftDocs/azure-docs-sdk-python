@@ -1,6 +1,7 @@
 ---
 title: Azure App Service SDK for Python
 description: Reference for Azure App Service SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: appservice
@@ -67,4 +68,3 @@ View the [complete list](https://azure.microsoft.com/resources/samples/?platform
 
 [1]: https://github.com/Azure-Samples/app-service-web-python-manage
 [2]: /azure/python/python-sdk-azure-samples-logic-app-workflow
-

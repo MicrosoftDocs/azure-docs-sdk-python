@@ -1,6 +1,7 @@
 ---
 title: Azure Data Factory SDK for Python
 description: Reference for Azure Data Factory SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: datafactory
@@ -52,4 +53,3 @@ while df.provisioning_state != 'Succeeded':
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/azure-mgmt-datafactory)
-

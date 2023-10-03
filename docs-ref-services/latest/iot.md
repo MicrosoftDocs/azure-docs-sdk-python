@@ -1,6 +1,7 @@
 ---
 title: Azure IoT SDK for Python
 description: Reference for Azure IoT SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: iot
@@ -73,4 +74,3 @@ iothub = async_iot_hub.result() # Blocking wait for creation
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-iothub-readme)
-

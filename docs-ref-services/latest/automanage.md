@@ -1,6 +1,7 @@
 ---
 title: Azure Automanage SDK for Python
 description: Reference for Azure Automanage SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: automanage
@@ -9,4 +10,3 @@ ms.service: automanage
 
 ## Management packages - latest
 [!INCLUDE [mgmt-packages](automanage-mgmt-index.md)]
-

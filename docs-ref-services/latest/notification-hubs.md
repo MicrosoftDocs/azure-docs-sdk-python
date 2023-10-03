@@ -1,6 +1,7 @@
 ---
 title: Azure Notification Hubs SDK for Python
 description: Reference for Azure Notification Hubs SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: notificationhubs
@@ -59,4 +60,3 @@ print(output.is_availiable) # Yes, it's 'availiable', it's a typo in the REST AP
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-notificationhubs-readme)
-

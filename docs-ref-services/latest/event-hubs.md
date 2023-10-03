@@ -1,6 +1,7 @@
 ---
 title: Azure Event Hubs SDK for Python
 description: Reference for Azure Event Hubs SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: event-hubs
@@ -40,4 +41,3 @@ Use the following library to work with the Azure Event Huns resource provider:
 |    Library    |    Reference    |    Source    |
 |------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 |    [azure-mgmt-eventhub](https://pypi.org/project/azure-mgmt-eventhub/)    |    [API Reference](https://docs.microsoft.com/python/api/overview/azure/eventhubs/management?view=azure-python)    |   [Source code for azure-mgmt-eventhub](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/eventhub/azure-mgmt-eventhub)    |
-

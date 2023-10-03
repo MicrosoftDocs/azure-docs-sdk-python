@@ -1,7 +1,7 @@
 ---
 title: Azure Monitor SDK for Python
 description: Reference for Azure Monitor SDK for Python
-ms.date: 07/19/2023
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
@@ -19,4 +19,3 @@ To learn more about Azure Monitor, see [Azure Monitor overview](/azure/azure-mon
 The following packages can be used to interact with the Azure Monitor service. The `azure-monitor-ingestion` package can be used to send custom logs to Azure Monitor, while the `azure-monitor-query` package can be used to execute read-only queries against the Azure Monitor logs and metrics. The `azure-mgmt-monitor` package can be used to manage the Azure Monitor service itself. Check out the links in the following table to learn more about each package.
 
 [!INCLUDE [packages](monitor-index.md)]
-

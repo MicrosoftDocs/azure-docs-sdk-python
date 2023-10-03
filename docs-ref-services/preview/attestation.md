@@ -1,6 +1,7 @@
 ---
 title: Azure Attestation SDK for Python
 description: Reference for Azure Attestation SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: attestation
@@ -9,4 +10,3 @@ ms.service: attestation
 
 ## Management packages - preview
 [!INCLUDE [mgmt-packages](attestation-mgmt-index.md)]
-

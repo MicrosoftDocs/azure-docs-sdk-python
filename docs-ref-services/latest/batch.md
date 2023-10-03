@@ -1,7 +1,7 @@
 ---
 title: Azure Batch SDK for Python
 description: Reference for Azure Batch SDK for Python
-ms.date: 06/28/2023
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: batch
@@ -106,4 +106,3 @@ creating.wait()
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-batch-readme)
-

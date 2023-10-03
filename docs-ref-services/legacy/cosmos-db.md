@@ -1,12 +1,12 @@
 ---
 title: Azure Cosmos DB SDK for Python
 description: Reference for Azure Cosmos DB SDK for Python
-keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL
-ms.date: 08/08/2020
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmosdb
 manager: douge
+keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL
 ---
 # Azure Cosmos DB libraries for Python
 
@@ -57,4 +57,3 @@ pip install azure-mgmt-cosmosdb
 * [Develop a Python app to access and manage data stored in Azure Cosmos DB Cassandra API account](https://github.com/Azure-Samples/azure-cosmos-db-cassandra-python-getting-started.git)
 
 * [Develop a Python app to access and manage data stored in Azure Cosmos DB Table API account](https://github.com/Azure-Samples/storage-python-getting-started.git)
-

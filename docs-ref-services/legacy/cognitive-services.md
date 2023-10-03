@@ -1,13 +1,13 @@
 ---
 title: Azure Cognitive Services SDK for Python
 description: Reference for Azure Cognitive Services SDK for Python
-keywords: Azure, python, SDK, API, Cognitive Services
-ms.date: 04/04/2018
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitiveservices
 manager: angerobe
 ms.technology: azure
+keywords: Azure, python, SDK, API, Cognitive Services
 ---
 # Azure Cognitive Services modules for Python
 
@@ -192,4 +192,3 @@ pip install azure-cognitiveservices-language-spellcheck
 ```
 
 [Learn more](/azure/cognitive-services/bing-spell-check/proof-text) about the Spell Check API and get started with the [Spell Check API Python quickstart](/azure/cognitive-services/bing-spell-check/quickstarts/python).
-

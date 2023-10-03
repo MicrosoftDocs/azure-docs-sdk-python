@@ -1,6 +1,7 @@
 ---
 title: Azure Service Bus SDK for Python
 description: Reference for Azure Service Bus SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: service-bus-messaging
@@ -45,4 +46,3 @@ To manage your Azure Service Bus resources like namespaces, queues, topics, subs
 * [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/servicebus)
 * [SDK reference documentation](/python/api/overview/azure/servicebus-readme)
 * [Additional samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/servicebus/azure-servicebus/samples)
-

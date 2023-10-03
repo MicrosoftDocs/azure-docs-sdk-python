@@ -1,6 +1,7 @@
 ---
 title: Azure Guest Configuration SDK for Python
 description: Reference for Azure Guest Configuration SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: guestconfiguration
@@ -8,4 +9,3 @@ ms.service: guestconfiguration
 # Azure Guest Configuration SDK for Python - preview
 ## Packages - preview
 [!INCLUDE [packages](guest-configuration-index.md)]
-

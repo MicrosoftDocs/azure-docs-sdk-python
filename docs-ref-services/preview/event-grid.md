@@ -1,6 +1,7 @@
 ---
 title: Azure Event Grid SDK for Python
 description: Reference for Azure Event Grid SDK for Python
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: event-grid
@@ -139,4 +140,3 @@ az group delete --name gridResourceGroup
 ## Learn more
 
 [Receive events using the Event Grid SDK](/azure/event-grid/receive-events)
-

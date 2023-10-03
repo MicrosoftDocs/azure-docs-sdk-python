@@ -1,13 +1,13 @@
 ---
 title: Azure Storage SDK for Python
 description: Reference for Azure Storage SDK for Python
-keywords: Azure, Python, SDK, API, Storage
-ms.date: 06/12/2017
+ms.date: 10/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
 manager: douge
 ms.technology: azure
+keywords: Azure, Python, SDK, API, Storage
 ---
 # Azure Storage client libraries for Python
 
@@ -60,4 +60,3 @@ pip install azure-mgmt-storage
 | [Manage Azure Storage accounts](https://azure.microsoft.com/resources/samples/storage-python-manage) | Create, update , and delete storage accounts. Retrieve and regenerate storage account access keys.
 
 Explore more [sample Python code](https://azure.microsoft.com/resources/samples/?platform=python) you can use in your apps.
-
