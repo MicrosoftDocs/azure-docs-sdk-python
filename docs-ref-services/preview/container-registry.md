@@ -16,5 +16,5 @@ ms.service: containerregistry
 pip install azure-mgmt-containerregistry
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/containerregistry/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-containerregistry-readme)
 

@@ -20,5 +20,5 @@ pip install azure-datalake-store
 pip install azure-mgmt-datalake-store
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/datalakestore/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-datalakestore-readme)
 

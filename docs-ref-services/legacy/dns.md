@@ -88,5 +88,5 @@ record_set = dns_client.record_sets.create_or_update(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/dns/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-dns-readme)
 

@@ -104,7 +104,7 @@ cursor.execute(selectsql)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/postgresql/mysql/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-postgresql/mysql-readme)
 
 ## PostgreSQL
 
@@ -201,5 +201,5 @@ cursor.execute(selectsql)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/postgresql/mysql/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-postgresql/mysql-readme)
 

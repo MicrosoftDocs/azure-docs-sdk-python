@@ -20,5 +20,5 @@ manager: douge
 pip install azure-mgmt-recoveryservicesbackup
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/recoveryservicesbackup/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-recoveryservicesbackup-readme)
 

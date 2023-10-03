@@ -98,5 +98,5 @@ creating.wait()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/batch/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-batch-readme)
 

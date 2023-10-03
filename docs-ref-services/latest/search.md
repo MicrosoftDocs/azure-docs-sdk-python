@@ -16,5 +16,5 @@ ms.service: cognitive-search
 pip install azure-mgmt-search
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/search/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-search-readme)
 

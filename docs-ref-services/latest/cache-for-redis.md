@@ -50,5 +50,5 @@ redis_cache = redis_client.redis.create_or_update(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/redis/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-redis-readme)
 

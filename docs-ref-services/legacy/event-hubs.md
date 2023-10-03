@@ -29,5 +29,5 @@ pip install azure-eventhub
 pip install azure-mgmt-eventhub
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/eventhubs/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-eventhubs-readme)
 

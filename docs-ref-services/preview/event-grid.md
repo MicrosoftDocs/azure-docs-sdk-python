@@ -134,7 +134,7 @@ az group delete --name gridResourceGroup
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/eventgrid/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-eventgrid-readme)
 
 ## Learn more
 

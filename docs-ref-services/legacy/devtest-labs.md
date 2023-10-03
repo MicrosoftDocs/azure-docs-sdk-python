@@ -56,5 +56,5 @@ lab = async_lab.result() # Blocking wait
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/devtestlabs/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-devtestlabs-readme)
 

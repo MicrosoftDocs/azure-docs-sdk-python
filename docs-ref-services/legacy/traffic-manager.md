@@ -20,5 +20,5 @@ pip install azure-mgmt-trafficmanager
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/trafficmanager/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-trafficmanager-readme)
 

@@ -21,5 +21,5 @@ ms.technology: azure
 pip install azure-mgmt-media
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mediaservices/management)
+>  [Explore the Management APIs](/python/api/overview/azure/mgmt-mediaservices-readme)
 
