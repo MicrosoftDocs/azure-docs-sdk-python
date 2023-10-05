@@ -1,7 +1,7 @@
 ---
 title: Azure Chaos SDK for Python
 description: Reference for Azure Chaos SDK for Python
-ms.date: 10/04/2023
+ms.date: 10/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: chaos
