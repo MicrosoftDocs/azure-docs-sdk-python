@@ -7,7 +7,8 @@ inheritances:
 - azure.ai.ml.entities._component.component.Component
 - azure.ai.ml.entities._job.parameterized_spark.ParameterizedSpark
 - azure.ai.ml.entities._job.spark_job_entry_mixin.SparkJobEntryMixin
-summary: Spark component version, used to define a spark component.
+- azure.ai.ml.entities._component.code.ComponentCodeMixin
+summary: Spark component version, used to define a Spark Component or Job.
 constructor:
   syntax: 'SparkComponent(*, code: str | PathLike = ''.'', entry: Dict[str, str] |
     SparkJobEntry | None = None, py_files: List[str] | None = None, jars: List[str]
@@ -20,110 +21,129 @@ constructor:
     Dict | None = None, outputs: Dict | None = None, args: str | None = None, **kwargs)'
   parameters:
   - name: code
-    description: The source code to run the job.
-    isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:str>, <xref:os.PathLike>]
+    description: 'The source code to run the job. Can be a local path or "http:",
+      "https:", or "azureml:" url pointing
+
+      to a remote location. Defaults to ".", indicating the current directory.'
   - name: entry
-    description: File or class entry point.
-    isRequired: true
+    description: The file or class entry point.
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>[<xref:str>, <xref:str>],
+      <xref:azure.ai.ml.entities.SparkJobEntry>]]
   - name: py_files
-    description: List of .zip, .egg or .py files to place on the PYTHONPATH for Python
-      apps.
-    isRequired: true
+    description: The list of .zip, .egg or .py files to place on the PYTHONPATH for
+      Python apps. Defaults to None.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: jars
-    description: List of jars to include on the driver and executor classpaths.
-    isRequired: true
+    description: The list of .JAR files to include on the driver and executor classpaths.
+      Defaults to None.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: files
-    description: List of files to be placed in the working directory of each executor.
-    isRequired: true
+    description: The list of files to be placed in the working directory of each executor.
+      Defaults to None.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: archives
-    description: List of archives to be extracted into the working directory of each
-      executor.
-    isRequired: true
+    description: 'The list of archives to be extracted into the working directory
+      of each executor.
+
+      Defaults to None.'
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
   - name: driver_cores
-    description: Number of cores to use for the driver process, only in cluster mode.
-    isRequired: true
+    description: The number of cores to use for the driver process, only in cluster
+      mode.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: driver_memory
-    description: Amount of memory to use for the driver process.
-    isRequired: true
+    description: 'The amount of memory to use for the driver process, formatted as
+      strings with a size unit
+
+      suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: executor_cores
     description: The number of cores to use on each executor.
-    isRequired: true
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: executor_memory
-    description: 'Amount of memory to use per executor process, in the same format
-      as JVM memory strings with
+    description: 'The amount of memory to use per executor process, formatted as strings
+      with a size unit
 
-      a size unit suffix ("k", "m", "g" or "t") (e.g. 512m, 2g).'
-    isRequired: true
+      suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: executor_instances
-    description: Initial number of executors.
-    isRequired: true
+    description: The initial number of executors.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_enabled
     description: 'Whether to use dynamic resource allocation, which scales the number
-      of executors
+      of
 
-      registered with this application up and down based on the workload.'
-    isRequired: true
+      executors registered with this application up and down based on the workload.
+      Defaults to False.'
     types:
-    - <xref:bool>
+    - <xref:typing.Optional>[<xref:bool>]
   - name: dynamic_allocation_min_executors
-    description: Lower bound for the number of executors if dynamic allocation is
-      enabled.
-    isRequired: true
+    description: 'The lower bound for the number of executors if dynamic allocation
+      is
+
+      enabled.'
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_max_executors
-    description: Upper bound for the number of executors if dynamic allocation is
-      enabled.
-    isRequired: true
+    description: 'The upper bound for the number of executors if dynamic allocation
+      is
+
+      enabled.'
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: conf
-    description: A dict with pre-defined spark configurations key and values.
-    isRequired: true
+    description: A dictionary with pre-defined Spark configurations key and values.
+      Defaults to None.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: environment
-    description: Azure ML environment to run the job in.
-    isRequired: true
+    description: The Azure ML environment to run the job in.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
   - name: inputs
-    description: Mapping of inputs data bindings used in the job.
-    isRequired: true
+    description: A mapping of input names to input data sources used in the job. Defaults
+      to None.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[ <xref:azure.ai.ml.entities._job.pipeline._io.NodeOutput>,
+      <xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>, <xref:int>, <xref:float>,
+      <xref:Enum>, ]]]
   - name: outputs
-    description: Mapping of outputs data bindings used in the job.
-    isRequired: true
+    description: A mapping of output names to output data sources used in the job.
+      Defaults to None.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:str>,
+      <xref:azure.ai.ml.Output>]]]
   - name: args
-    description: Arguments for the job.
-    isRequired: true
+    description: The arguments for the job. Defaults to None.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
+examples:
+- "Creating SparkComponent.<!--[!code-python[Main](les\\ml_samples_spark_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_spark_configurations.py\", \"\
+  xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+  \ import SparkComponent\n\n   component = SparkComponent(\n       name=\"add_greeting_column_spark_component\"\
+  ,\n       display_name=\"Aml Spark add greeting column test module\",\n       description=\"\
+  Aml Spark add greeting column test module\",\n       version=\"1\",\n       inputs={\n\
+  \           \"file_input\": {\"type\": \"uri_file\", \"mode\": \"direct\"},\n  \
+  \     },\n       driver_cores=2,\n       driver_memory=\"1g\",\n       executor_cores=1,\n\
+  \       executor_memory=\"1g\",\n       executor_instances=1,\n       code=\"./src\"\
+  ,\n       entry={\"file\": \"add_greeting_column.py\"},\n       py_files=[\"utils.zip\"\
+  ],\n       files=[\"my_files.txt\"],\n       args=\"--file_input ${{inputs.file_input}}\"\
+  ,\n       base_path=\"./sdk/ml/azure-ai-ml/tests/test_configs/dsl_pipeline/spark_job_in_pipeline\"\
+  ,\n   )\n\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.entities.SparkComponent.dump
   name: dump
@@ -148,18 +168,18 @@ methods:
 attributes:
 - uid: azure.ai.ml.entities.SparkComponent.base_path
   name: base_path
-  summary: Base path of the resource.
+  summary: The base path of the resource.
   return:
-    description: Base path of the resource
+    description: The base path of the resource.
     types:
     - <xref:str>
 - uid: azure.ai.ml.entities.SparkComponent.creation_context
   name: creation_context
-  summary: Creation context.
+  summary: The creation context of the resource.
   return:
-    description: Creation metadata of the resource.
+    description: The creation metadata for the resource.
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.SparkComponent.display_name
   name: display_name
   summary: Display name of the component.
@@ -171,13 +191,18 @@ attributes:
   name: entry
 - uid: azure.ai.ml.entities.SparkComponent.environment
   name: environment
+  summary: The Azure ML environment to run the Spark component or job in.
+  return:
+    description: The Azure ML environment to run the Spark component or job in.
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
 - uid: azure.ai.ml.entities.SparkComponent.id
   name: id
-  summary: Resource ID.
+  summary: The resource ID.
   return:
-    description: Global id of the resource, Azure Resource Manager ID
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.SparkComponent.inputs
   name: inputs
   summary: Inputs of the component.
@@ -208,6 +233,11 @@ attributes:
     - <xref:str>
 - uid: azure.ai.ml.entities.SparkComponent.version
   name: version
+  summary: Version of the component.
+  return:
+    description: Version of the component.
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.entities.SparkComponent.CODE_ID_RE_PATTERN
   name: CODE_ID_RE_PATTERN
   signature: CODE_ID_RE_PATTERN = re.compile('\\/subscriptions\\/(?P<subscription>[\\w,-]+)\\/resourceGroups\\/(?P<resource_group>[\\w,-]+)\\/providers\\/Microsoft\\.MachineLearningServices\\/workspaces\\/(?P<workspace>[\\w,-]+)\\/codes\\/(?P<co)

@@ -15,30 +15,50 @@ summary: '> [!NOTE]
 
   Monitor definition'
 constructor:
-  syntax: 'MonitorDefinition(*, compute: SparkResourceConfiguration, monitoring_target:
-    MonitoringTarget = None, monitoring_signals: Dict[str, DataDriftSignal | DataQualitySignal
-    | PredictionDriftSignal | FeatureAttributionDriftSignal | CustomMonitoringSignal]
-    = None, alert_notification: Literal[''azmonitoring''] | AlertNotification = None)'
+  syntax: 'MonitorDefinition(*, compute: ServerlessSparkCompute, monitoring_target:
+    MonitoringTarget | None = None, monitoring_signals: Dict[str, DataDriftSignal
+    | DataQualitySignal | PredictionDriftSignal | FeatureAttributionDriftSignal |
+    CustomMonitoringSignal | GenerationSafetyQualitySignal] = None, alert_notification:
+    Literal[''azmonitoring''] | AlertNotification | None = None)'
   parameters:
   - name: compute
-    description: Information on spark configuration associated with the monitor
-    isRequired: true
+    description: The Spark resource configuration to be associated with the monitor
     types:
     - <xref:azure.ai.ml.entities.SparkResourceConfiguration>
   - name: monitoring_target
-    description: Metadata describing the model or deployment that is being monitored
-    isRequired: true
+    description: The ARM ID object associated with the model or deployment that is
+      being monitored.
     types:
-    - <xref:azure.ai.ml.entities.MonitoringTarget>
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.MonitoringTarget>]
   - name: monitoring_signals
-    description: Dictionary of signals to monitor
-    isRequired: true
+    description: 'The dictionary of signals to monitor. The key is the name of the
+      signal and the value
+
+      is the DataSignal object. Accepted values for the DataSignal objects are DataDriftSignal,
+      DataQualitySignal,
+
+      PredictionDriftSignal, FeatureAttributionDriftSignal, and CustomMonitoringSignal.'
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.DataDriftSignal>
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.DataDriftSignal>
       , <xref:azure.ai.ml.entities.DataQualitySignal>, <xref:azure.ai.ml.entities.PredictionDriftSignal>
-      , <xref:azure.ai.ml.entities.FeatureAttributionDriftSignal> , <xref:azure.ai.ml.entities.CustomMonitoringSignal>]]
+      , <xref:azure.ai.ml.entities.FeatureAttributionDriftSignal> , <xref:azure.ai.ml.entities.CustomMonitoringSignal>
+      , <xref:azure.ai.ml.entities.GenerationSafetyQualitySignal>]]]
   - name: alert_notification
-    description: Alert configuration for the monitor
-    isRequired: true
+    description: The alert configuration for the monitor.
     types:
-    - <xref:typing.Union>[<xref:typing.Literal>['azmonitoring'], azure.ai.ml.entities.AlertNotification]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:typing.Literal>['azmonitoring'],
+      azure.ai.ml.entities.AlertNotification]]
+examples:
+- "Creating Monitor definition.<!--[!code-python[Main](les\\ml_samples_spark_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_spark_configurations.py\", \"\
+  xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+  \ import (\n       AlertNotification,\n       MonitorDefinition,\n       MonitoringTarget,\n\
+  \       SparkResourceConfiguration,\n   )\n\n   monitor_definition = MonitorDefinition(\n\
+  \       compute=SparkResourceConfiguration(instance_type=\"standard_e4s_v3\", runtime_version=\"\
+  3.2\"),\n       monitoring_target=MonitoringTarget(\n           ml_task=\"Classification\"\
+  ,\n           endpoint_deployment_id=\"azureml:fraud_detection_endpoint:fraud_detection_deployment\"\
+  ,\n       ),\n       alert_notification=AlertNotification(emails=[\"abc@example.com\"\
+  , \"def@example.com\"]),\n   )\n\n\n   ````\n"

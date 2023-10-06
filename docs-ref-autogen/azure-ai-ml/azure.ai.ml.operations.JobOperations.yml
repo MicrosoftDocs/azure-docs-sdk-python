@@ -5,93 +5,124 @@ fullName: azure.ai.ml.operations.JobOperations
 module: azure.ai.ml.operations
 inheritances:
 - azure.ai.ml._scope_dependent_operations._ScopeDependentOperations
-summary: 'JobOperations.
+summary: 'Initiates an instance of JobOperations
 
 
-  You should not instantiate this class directly. Instead, you should
-
-  create an MLClient instance that instantiates it for you and
-
-  attaches it as an attribute.'
+  This class should not be instantiated directly. Instead, use the *jobs* attribute
+  of an MLClient object.'
 constructor:
   syntax: 'JobOperations(operation_scope: OperationScope, operation_config: OperationConfig,
     service_client_02_2023_preview: AzureMachineLearningWorkspaces, all_operations:
     OperationsContainer, credential: TokenCredential, **kwargs: Any)'
   parameters:
   - name: operation_scope
+    description: Scope variables for the operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationScope>
   - name: operation_config
+    description: Common configuration for operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationConfig>
   - name: service_client_02_2023_preview
+    description: 'Service client to allow end users to operate on Azure Machine Learning
+
+      Workspace resources.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._restclient.v2023_02_01_preview.AzureMachineLearningWorkspaces>
   - name: all_operations
+    description: All operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationsContainer>
   - name: credential
+    description: Credential to use for authentication.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
 methods:
 - uid: azure.ai.ml.operations.JobOperations.archive
   name: archive
-  summary: Archive a job or restore an archived job.
+  summary: Archives a job.
   signature: 'archive(name: str) -> None'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: Raised if no job with the given name can be found.
+  examples:
+  - "Archiving a job.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\\
+    10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   ml_client.jobs.archive(name=job_name)\n\
+    \n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.begin_cancel
   name: begin_cancel
-  summary: Cancel job resource.
+  summary: Cancels a job.
   signature: 'begin_cancel(name: str, **kwargs) -> LROPoller[None]'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
   return:
     description: A poller to track the operation status.
     types:
-    - <xref:None>
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: Raised if no job with the given name can be found.
 - uid: azure.ai.ml.operations.JobOperations.create_or_update
   name: create_or_update
-  summary: 'Create or update a job, if there''re inline defined entities, e.g.
+  summary: 'Creates or updates a job. If entities such as Environment or Code are
+    defined inline, they''ll be created
 
-    Environment, Code, they''ll be created together with the job.'
+    together with the job.'
   signature: 'create_or_update(job: Job, *, description: str | None = None, compute:
     str | None = None, tags: dict | None = None, experiment_name: str | None = None,
     skip_validation: bool = False, **kwargs) -> Job'
   parameters:
   - name: job
-    description: Job definition or object which can be translate to a job.
+    description: The job object.
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.Job>
   - name: description
-    description: Description to overwrite when submitting the pipeline.
-    isRequired: true
+    description: The job description.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: compute
-    description: Compute target to overwrite when submitting the pipeline.
-    isRequired: true
+    description: The compute target for the job.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: tags
-    description: Tags to overwrite when submitting the pipeline.
-    isRequired: true
+    description: The tags for the job.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>]
   - name: experiment_name
-    description: 'Name of the experiment the job will be created under, if None is
-      provided,
+    description: 'The name of the experiment the job will be created under. If None
+      is provided,
 
       job will be created under experiment ''Default''.'
-    isRequired: true
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: skip_validation
-    description: 'whether to skip validation before creating/updating the job. Note
-      that dependent
+    description: 'Specifies whether or not to skip validation before creating or updating
+      the job. Note
 
-      resources like anonymous component won''t skip their validation in creating.'
-    isRequired: true
+      that validation for dependent resources such as an anonymous component will
+      not be skipped. Defaults to
+
+      False.'
     types:
     - <xref:bool>
   return:
@@ -99,11 +130,12 @@ methods:
     types:
     - <xref:azure.ai.ml.entities.Job>
   exceptions:
+  - type: Union
   - type: azure.ai.ml.exceptions.UserErrorException
   - type: azure.ai.ml.exceptions.ValidationException
-    description: 'Raised if
+    description: 'Raised
 
-      Job cannot be successfully validated. Details will be provided in the error
+      if Job cannot be successfully validated. Details will be provided in the error
       message.'
   - type: azure.ai.ml.exceptions.AssetException
     description: 'Raised if Job assets
@@ -120,49 +152,49 @@ methods:
 
       Details will be provided in the error message.'
   - type: azure.ai.ml.exceptions.EmptyDirectoryError
-    description: Raised if local path provided points to an empty directory.
-  - type: azure.ai.ml.exceptions.DockerEngineNotAvailableError
-    description: 'Raised if Docker Engine
+    description: 'Raised if local path provided points to an empty
 
-      is not available for local job.'
+      directory.'
+  - type: azure.ai.ml.exceptions.DockerEngineNotAvailableError
+    description: 'Raised if Docker Engine is not available for
+
+      local job.'
+  examples:
+  - "Creating a new job and then updating its compute.<!--[!code-python[Main](les\\\
+    ml_samples_misc.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    _work\\\\1\\\\s\\\\source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import load_job\n\n   created_job = ml_client.jobs.create_or_update(\n\
+    \       name=job_name,\n       job=load_job(\n           \"./sdk/ml/azure-ai-ml/tests/test_configs/command_job/command_job_test_local_env.yml\"\
+    ,\n           params_override=[{\"name\": job_name}, {\"compute\": \"cpucluster\"\
+    }],\n       ),\n   )\n\n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.download
   name: download
-  summary: Download logs and output of a job.
+  summary: Downloads the logs and output of a job.
   signature: 'download(name: str, *, download_path: PathLike | str = ''.'', output_name:
     str | None = None, all: bool = False) -> None'
   parameters:
   - name: name
-    description: Name of a job.
+    description: The name of a job.
     isRequired: true
     types:
     - <xref:str>
   - name: download_path
-    description: Local path as download destination, defaults to '.'.
-    isRequired: true
+    description: The local path to be used as the download destination. Defaults to
+      ".".
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>]
   - name: output_name
-    description: Named output to download, defaults to None.
-    isRequired: true
+    description: The name of the output to download. Defaults to None.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: all
-    description: Whether to download logs and all named outputs, defaults to False.
-    isRequired: true
+    description: Specifies if all logs and named outputs should be downloaded. Defaults
+      to False.
     types:
     - <xref:bool>
-  - name: name
-    description: Name of a job.
-    isRequired: true
-  - name: download_path
-    description: Local path as download destination, defaults to '.'.
-    isRequired: true
-  - name: output_name
-    description: Named output to download, defaults to None.
-    isRequired: true
-  - name: all
-    description: Whether to download logs and all named outputs, defaults to False.
-    isRequired: true
   exceptions:
   - type: azure.ai.ml.exceptions.JobException
     description: 'Raised if Job is not yet in a terminal state.
@@ -172,13 +204,22 @@ methods:
     description: 'Raised if logs and outputs cannot be successfully downloaded.
 
       Details will be provided in the error message.'
+  examples:
+  - "Downloading all logs and named outputs of the job \"job-1\" into local directory\
+    \ \"job-1-logs\".<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\\
+    10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\": \"\
+    preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+    linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   ml_client.jobs.download(name=job_name,\
+    \ download_path=\"./job-1-logs\", all=True)\n\n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.get
   name: get
-  summary: Get a job resource.
+  summary: Gets a job resource.
   signature: 'get(name: str) -> Job'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
@@ -186,67 +227,124 @@ methods:
     description: Job object retrieved from the service.
     types:
     - <xref:azure.ai.ml.entities.Job>
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: Raised if no job with the given name can be found.
+  - type: azure.ai.ml.exceptions.UserErrorException
+    description: Raised if the name parameter is not a string.
+  examples:
+  - "Retrieving a job named \"iris-dataset-job-1\".<!--[!code-python[Main](les\\ml_samples_misc.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"\
+    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   retrieved_job\
+    \ = ml_client.jobs.get(job_name)\n\n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.list
   name: list
-  summary: List jobs of the workspace.
+  summary: Lists jobs in the workspace.
   signature: 'list(*, parent_job_name: str | None = None, list_view_type: ListViewType
     = ListViewType.ACTIVE_ONLY, **kwargs) -> Iterable[Job]'
   parameters:
   - name: parent_job_name
-    description: When provided, returns children of named job.
-    isRequired: true
+    description: 'When provided, only returns jobs that are children of the named
+      job. Defaults to None,
+
+      listing all jobs in the workspace.'
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: list_view_type
-    description: 'View type for including/excluding (for example) archived jobs. Default:
-      ACTIVE_ONLY.'
-    isRequired: true
+    description: 'The view type for including/excluding archived jobs. Defaults to
+
+      ~azure.mgt.machinelearningservices.models.ListViewType.ACTIVE_ONLY, excluding
+      archived jobs.'
     types:
-    - <xref:typing.Optional>[<xref:ListViewType>]
+    - <xref:azure.mgmt.machinelearningservices.models.ListViewType>
   return:
-    description: An iterator like instance of Job objects.
+    description: An iterator-like instance of Job objects.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.Job>]
+  examples:
+  - "Retrieving a list of the archived jobs in a workspace with parent job named\n\
+    \"iris-dataset-jobs\".<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\n\
+    <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+    \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml._restclient.v2023_04_01_preview.models\
+    \ import ListViewType\n\n   list_of_jobs = ml_client.jobs.list(parent_job_name=job_name,\
+    \ list_view_type=ListViewType.ARCHIVED_ONLY)\n\n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.restore
   name: restore
-  summary: Archive a job or restore an archived job.
+  summary: Restores an archived job.
   signature: 'restore(name: str) -> None'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: Raised if no job with the given name can be found.
+  examples:
+  - "Restoring an archived job.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+    \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   ml_client.jobs.restore(name=job_name)\n\
+    \n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.show_services
   name: show_services
-  summary: Get services associated with a job's node.
+  summary: Gets services associated with a job's node.
   signature: 'show_services(name: str, node_index: int = 0) -> Dict[str, ServiceInstance]'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
   - name: node_index
-    description: Index of the node.
+    description: The node's index (zero-based). Defaults to 0.
     isRequired: true
     types:
     - <xref:int>
   return:
-    description: The Services associated with the job for the given node.
+    description: The services associated with the job for the given node.
     types:
-    - '<xref:Dict>[<xref:str>, <xref:azure.ai.ml.entities.ServiceInstance>]<xref:
-      Map of service names to ServiceInstance.>'
+    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.entities.ServiceInstance>]
+  examples:
+  - "Retrieving the services associated with a job's 1st node.<!--[!code-python[Main](les\\\
+    ml_samples_misc.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    _work\\\\1\\\\s\\\\source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   job_services = ml_client.jobs.show_services(job_name)\n\n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.stream
   name: stream
-  summary: Stream logs of a job.
+  summary: Streams the logs of a running job.
   signature: 'stream(name: str) -> None'
   parameters:
   - name: name
-    description: Name of the job.
+    description: The name of the job.
     isRequired: true
     types:
     - <xref:str>
+  exceptions:
+  - type: azure.core.exceptions.ResourceNotFoundError
+    description: Raised if no job with the given name can be found.
+  examples:
+  - "Streaming a running job.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+    \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
+    \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   running_job\
+    \ = ml_client.jobs.create_or_update(\n       load_job(\n           \"./sdk/ml/azure-ai-ml/tests/test_configs/command_job/command_job_test_local_env.yml\"\
+    ,\n           params_override=[{\"name\": job_name}, {\"compute\": \"cpucluster\"\
+    }],\n       )\n   )\n   ml_client.jobs.stream(running_job.name)\n\n   ````\n"
 - uid: azure.ai.ml.operations.JobOperations.validate
   name: validate
   summary: '> [!NOTE]
@@ -257,24 +355,38 @@ methods:
     >
 
 
-    Validate a job. Anonymous assets may be created if there are inline
+    Validates a Job object before submitting to the service. Anonymous assets may
+    be created if there are inline
 
-    defined entities, e.g. Component, Environment & Code. Only pipeline job
+    defined entities such as Component, Environment, and Code. Only pipeline jobs
+    are supported for validation
 
-    is supported for now.'
+    currently.'
   signature: 'validate(job: Job, *, raise_on_failure: bool = False, **kwargs) -> ValidationResult'
   parameters:
   - name: job
-    description: Job object to be validated.
+    description: The job object to be validated.
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.Job>
   - name: raise_on_failure
-    description: Whether raise error when there are validation errors.
-    isRequired: true
+    description: Specifies if an error should be raised if validation fails. Defaults
+      to False.
     types:
     - <xref:bool>
   return:
-    description: a ValidationResult object containing all found errors.
+    description: A ValidationResult object containing all found errors.
     types:
     - <xref:azure.ai.ml.entities.ValidationResult>
+  examples:
+  - "Validating a PipelineJob object and printing out the found errors.<!--[!code-python[Main](les\\\
+    ml_samples_misc.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\\
+    _work\\\\1\\\\s\\\\source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import load_job\n   from azure.ai.ml.entities import PipelineJob\n\
+    \n   pipeline_job: PipelineJob = load_job(\n       \"./sdk/ml/azure-ai-ml/tests/test_configs/pipeline_jobs/invalid/combo.yml\"\
+    ,\n       params_override=[{\"name\": job_name}, {\"compute\": \"cpucluster\"\
+    }],\n   )\n   print(ml_client.jobs.validate(pipeline_job).error_messages)\n\n\
+    \   ````\n"

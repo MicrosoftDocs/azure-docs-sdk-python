@@ -6,14 +6,31 @@ module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._job.job.Job
 - azure.ai.ml.entities._mixins.YamlTranslatableMixin
-- azure.ai.ml.entities._job.pipeline._io.mixin.PipelineIOMixin
-- azure.ai.ml.entities._validation.SchemaValidatableMixin
+- azure.ai.ml.entities._job.pipeline._io.mixin.PipelineJobIOMixin
+- azure.ai.ml.entities._validation.path_aware_schema.PathAwareSchemaValidatableMixin
 summary: 'Pipeline job.
 
 
   You should not instantiate this class directly. Instead, you should
 
-  use @pipeline decorator to create a PipelineJob'
+  use the *@pipeline* decorator to create a *PipelineJob*.
+
+
+  ]
+
+  :param compute: Compute target name of the built pipeline. Defaults to None
+
+  :type compute: str
+
+  :param tags: Tag dictionary. Tags can be added, removed, and updated. Defaults to
+  None
+
+  :type tags: dict[str, str]
+
+  :param kwargs: A dictionary of additional configuration parameters. Defaults to
+  None
+
+  :type kwargs: dict'
 constructor:
   syntax: 'PipelineJob(*, component: str | PipelineComponent | None = None, inputs:
     Dict[str, int | str | float | bool | Input] | None = None, outputs: Dict[str,
@@ -25,7 +42,8 @@ constructor:
     **kwargs)'
   parameters:
   - name: component
-    description: Pipeline component version. The field is mutual exclusive with 'jobs'.
+    description: Pipeline component version. The field is mutually exclusive with
+      'jobs'.
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.PipelineComponent>]
@@ -33,115 +51,120 @@ constructor:
     description: Inputs to the pipeline job.
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.Input>, <xref:str>,
-      <xref:bool>, <xref:int>, <xref:float>]]
+    - <xref:dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.Input>,
+      <xref:str>, <xref:bool>, <xref:int>, <xref:float>]]
   - name: outputs
-    description: Outputs the pipeline job.
+    description: Outputs of the pipeline job.
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.Output>]
+    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.entities.Output>]
   - name: name
-    description: Name of the PipelineJob.
+    description: Name of the PipelineJob. Defaults to None
     isRequired: true
     types:
     - <xref:str>
   - name: description
-    description: Description of the pipeline job.
+    description: Description of the pipeline job. Defaults to None
     isRequired: true
     types:
     - <xref:str>
   - name: display_name
-    description: Display name of the pipeline job.
+    description: Display name of the pipeline job. Defaults to None
     isRequired: true
     types:
     - <xref:str>
   - name: experiment_name
-    description: Name of the experiment the job will be created under,         if
-      None is provided, experiment will be set to current directory.
+    description: 'Name of the experiment the job will be created under.
+
+      If None is provided, the experiment will be set to the current directory. Defaults
+      to None'
     isRequired: true
     types:
     - <xref:str>
   - name: jobs
-    description: Pipeline component node name to component object.
+    description: Pipeline component node name to component object. Defaults to None
     isRequired: true
     types:
-    - <xref:dict>[<xref:str>, <xref:BaseNode>]
+    - <xref:dict>[<xref:str>, <xref:azure.ai.ml.entities._builders.BaseNode>]
   - name: settings
-    description: Setting of pipeline job.
+    description: Setting of the pipeline job. Defaults to None
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.PipelineJobSettings>
   - name: identity
-    description: Identity that training job will use while running on compute.
+    description: Identity that the training job will use while running on compute.
+      Defaults to None
     isRequired: true
     types:
     - <xref:typing.Union>[ <xref:azure.ai.ml.entities.ManagedIdentityConfiguration>,
-      <xref:azure.ai.ml.entities.AmlTokenConfiguration>, <xref:azure.ai.ml.entities.UserIdentityConfiguration>]
-  - name: compute
-    description: Compute target name of the built pipeline.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: tags
-    description: Tag dictionary. Tags can be added, removed, and updated.
-    isRequired: true
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: kwargs
-    description: A dictionary of additional configuration parameters.
-    isRequired: true
-    types:
-    - <xref:dict>
+      <xref:azure.ai.ml.entities.AmlTokenConfiguration>, <xref:azure.ai.ml.entities.UserIdentityConfiguration>
+examples:
+- "Shows how to create a pipeline using this class.<!--[!code-python[Main](les\\ml_samples_pipeline_job_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_pipeline_job_configurations.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+  \ import PipelineJob, PipelineJobSettings\n\n   pipeline_job = PipelineJob(\n  \
+  \     description=\"test pipeline job\",\n       tags={},\n       display_name=\"\
+  test display name\",\n       experiment_name=\"pipeline_job_samples\",\n       properties={},\n\
+  \       settings=PipelineJobSettings(force_rerun=True, default_compute=\"cpu-cluster\"\
+  ),\n       jobs={\"component1\": component_func(component_in_number=1.0, component_in_path=uri_file_input)},\n\
+  \   )\n   ml_client.jobs.create_or_update(pipeline_job)\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.entities.PipelineJob.dump
   name: dump
-  summary: Dump the job content into a file in yaml format.
+  summary: Dumps the job content into a file in YAML format.
   signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
   parameters:
   - name: dest
-    description: 'The destination to receive this job''s content.
+    description: 'The local path or file stream to write the YAML content to.
 
-      Must be either a path to a local file, or an already-open file stream.
+      If dest is a file path, a new file will be created.
 
-      If dest is a file path, a new file will be created,
-
-      and an exception is raised if the file exists.
-
-      If dest is an open file, the file will be written to directly,
-
-      and an exception will be raised if the file is not writable.'
+      If dest is an open file, the file will be written to directly.'
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
 attributes:
 - uid: azure.ai.ml.entities.PipelineJob.base_path
   name: base_path
-  summary: Base path of the resource.
+  summary: The base path of the resource.
   return:
-    description: Base path of the resource
+    description: The base path of the resource.
     types:
     - <xref:str>
 - uid: azure.ai.ml.entities.PipelineJob.creation_context
   name: creation_context
-  summary: Creation context.
+  summary: The creation context of the resource.
   return:
-    description: Creation metadata of the resource.
+    description: The creation metadata for the resource.
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.PipelineJob.id
   name: id
-  summary: Resource ID.
+  summary: The resource ID.
   return:
-    description: Global id of the resource, Azure Resource Manager ID
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.PipelineJob.inputs
   name: inputs
   summary: Inputs of the pipeline job.
   return:
     description: Inputs of the pipeline job.
     types:
-    - <xref:dict>
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.Input>, <xref:str>,
+      <xref:bool>, <xref:int>, <xref:float>]]
 - uid: azure.ai.ml.entities.PipelineJob.jobs
   name: jobs
   summary: Return jobs of pipeline job.
@@ -153,7 +176,7 @@ attributes:
   name: log_files
   summary: Job output files.
   return:
-    description: Dictionary of log names to url.
+    description: The dictionary of log names and URLs.
     types:
     - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
 - uid: azure.ai.ml.entities.PipelineJob.outputs
@@ -162,7 +185,7 @@ attributes:
   return:
     description: Outputs of the pipeline job.
     types:
-    - <xref:dict>
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.Output>]]
 - uid: azure.ai.ml.entities.PipelineJob.settings
   name: settings
   summary: Settings of the pipeline job.
@@ -172,40 +195,40 @@ attributes:
     - <xref:azure.ai.ml.entities.PipelineJobSettings>
 - uid: azure.ai.ml.entities.PipelineJob.status
   name: status
-  summary: "Status of the job.\n\nCommon values returned include \"Running\", \"Completed\"\
-    , and \"Failed\".\n\n> [!NOTE]\n> NotStarted - This is a temporary state client-side\
-    \ Run objects are in before cloud submission.\n>\n> \n>\n> Starting - The Run\
-    \ has started being processed in the cloud. The caller has a run ID at this point.\n\
-    >\n> \n>\n> Provisioning - Returned when on-demand compute is being created for\
-    \ a given job submission.\n>\n> \n>\n> Preparing - The run environment is being\
-    \ prepared:\n>\n> \n>\n> docker image build\n>\n> \n>\n> conda environment setup\n\
-    >\n> \n>\n> Queued - The job is queued in the compute target. For example, in\
-    \ BatchAI the job is in queued state\n>\n> \n>\n> while waiting for all the requested\
-    \ nodes to be ready.\n>\n> \n>\n> Running - The job started to run in the compute\
-    \ target.\n>\n> \n>\n> Finalizing - User code has completed and the run is in\
-    \ post-processing stages.\n>\n> \n>\n> CancelRequested - Cancellation has been\
-    \ requested for the job.\n>\n> \n>\n> Completed - The run completed successfully.\
-    \ This includes both the user code and run\n>\n> \n>\n> post-processing stages.\n\
-    >\n> \n>\n> Failed - The run failed. Usually the Error property on a run will\
-    \ provide details as to why.\n>\n> \n>\n> Canceled - Follows a cancellation request\
-    \ and indicates that the run is now successfully cancelled.\n>\n> \n>\n> NotResponding\
-    \ - For runs that have Heartbeats enabled, no heartbeat has been recently sent.\n\
-    >"
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
   return:
     description: Status of the job.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.PipelineJob.studio_url
   name: studio_url
   summary: Azure ML studio endpoint.
   return:
-    description: URL to the job detail page.
+    description: The URL to the job details page.
     types:
     - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.PipelineJob.type
   name: type
-  summary: Type of the job, supported are 'command' and 'sweep'.
+  summary: The type of the job.
   return:
-    description: Type of the job.
+    description: The type of the job.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]

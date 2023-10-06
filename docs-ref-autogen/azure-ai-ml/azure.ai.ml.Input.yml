@@ -5,69 +5,89 @@ fullName: azure.ai.ml.Input
 module: azure.ai.ml
 inheritances:
 - azure.ai.ml.entities._inputs_outputs.base._InputOutputBase
-summary: 'Define an input of a Component or Job.
-
-
-  Default to be a uri_folder Input.'
+summary: Initialize an Input object.
 constructor:
   syntax: 'Input(*, type: Literal[''uri_folder''] = ''uri_folder'', path: str | None
     = None, mode: str | None = None, optional: bool | None = None, description: str
     | None = None, **kwargs)'
   parameters:
   - name: type
-    description: 'The type of the data input. Possible values include:
+    description: 'The type of the data input. Accepted values are
 
       ''uri_folder'', ''uri_file'', ''mltable'', ''mlflow_model'', ''custom_model'',
-      ''integer'', ''number'', ''string'', ''boolean'''
-    isRequired: true
+      ''integer'', ''number'', ''string'', and
+
+      ''boolean''. Defaults to ''uri_folder''.'
     types:
     - <xref:str>
   - name: path
-    description: 'The path to which the input is pointing.
+    description: 'The path to the input data. Paths can be local paths, remote data
+      uris, or a registered AzureML asset
 
-      Could be pointing to local data, cloud data, a registered name, etc.'
-    isRequired: true
+      ID.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: mode
-    description: 'The mode of the data input. Possible values are:
+    description: 'The access mode of the data input. Accepted values are:
 
-      ''ro_mount'': Read-only mount the data,
+      * ''ro_mount'': Mount the data to the compute target as read-only,
 
-      ''download'': Download the data to the compute target,
+      * ''download'': Download the data to the compute target,
 
-      ''direct'': Pass in the URI as a string'
-    isRequired: true
+      * ''direct'': Pass in the URI as a string to be accessed at runtime'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: default
-    description: The default value of this input. When a *default* is set, the input
-      will be optional
-    isRequired: true
+    description: The default value of the input. If a default is set, the input data
+      will be optional.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:integer>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: min
-    description: "The min value \u2013 if a smaller value is passed to a job, the\
-      \ job execution will fail"
-    isRequired: true
+    description: 'The minimum value for the input. If a value smaller than the minimum
+      is passed to the job, the job
+
+      execution will fail.'
     types:
-    - <xref:typing.Union>[<xref:integer>, <xref:float>]
+    - <xref:typing.Union>[<xref:int>, <xref:float>]
   - name: max
-    description: "The max value \u2013 if a larger value is passed to a job, the job\
-      \ execution will fail"
-    isRequired: true
+    description: 'The maximum value for the input. If a value larger than the maximum
+      is passed to a job, the job
+
+      execution will fail.'
     types:
-    - <xref:typing.Union>[<xref:integer>, <xref:float>]
+    - <xref:typing.Union>[<xref:int>, <xref:float>]
   - name: optional
-    description: Determine if this input is optional
-    isRequired: true
+    description: Specifies if the input is optional.
     types:
-    - <xref:bool>
+    - <xref:typing.Optional>[<xref:bool>]
   - name: description
     description: Description of the input
-    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: datastore
+    description: The datastore to upload local files to.
     types:
     - <xref:str>
+  - name: intellectual_property
+    description: Intellectual property for the input.
+    types:
+    - <xref:azure.ai.ml.entities.IntellectualProperty>
+examples:
+- "Creating a CommandJob with two inputs.<!--[!code-python[Main](les\\ml_samples_misc.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
+  \ import Input, Output\n   from azure.ai.ml.entities import CommandJob, CommandJobLimits\n\
+  \n   command_job = CommandJob(\n       code=\"./src\",\n       command=\"python\
+  \ train.py --ss {search_space.ss}\",\n       inputs={\n           \"input1\": Input(path=\"\
+  trial.csv\", mode=\"ro_mount\", description=\"trial input data\"),\n           \"\
+  input_2\": Input(\n               path=\"azureml:list_data_v2_test:2\", type=\"\
+  uri_folder\", description=\"registered data asset\"\n           ),\n       },\n\
+  \       outputs={\"default\": Output(path=\"./foo\")},\n       compute=\"trial\"\
+  ,\n       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\",\n       limits=CommandJobLimits(timeout=120),\n\
+  \   )\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.Input.get
   name: get
@@ -95,3 +115,7 @@ methods:
 - uid: azure.ai.ml.Input.values
   name: values
   signature: values() -> list
+attributes:
+- uid: azure.ai.ml.Input.T
+  name: T
+  signature: T = ~T

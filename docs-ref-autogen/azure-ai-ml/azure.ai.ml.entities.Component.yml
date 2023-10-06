@@ -5,10 +5,11 @@ fullName: azure.ai.ml.entities.Component
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._assets.asset.Asset
-- azure.ai.ml.entities._validation.RemoteValidatableMixin
+- azure.ai.ml.entities._validation.remote.RemoteValidatableMixin
 - azure.ai.ml.entities._mixins.TelemetryMixin
 - azure.ai.ml.entities._mixins.YamlTranslatableMixin
-- azure.ai.ml.entities._validation.SchemaValidatableMixin
+- azure.ai.ml.entities._validation.path_aware_schema.PathAwareSchemaValidatableMixin
+- azure.ai.ml.entities._mixins.LocalizableMixin
 summary: Base class for component version, used to define a component. Can't be instantiated
   directly.
 constructor:
@@ -30,7 +31,7 @@ constructor:
     types:
     - <xref:str>
   - name: id
-    description: Global id of the resource, Azure Resource Manager ID.
+    description: Global ID of the resource, Azure Resource Manager ID.
     isRequired: true
     types:
     - <xref:str>
@@ -39,9 +40,6 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
-  - name: type
-    description: Type of the command, supported is 'command'.
-    isRequired: true
   - name: description
     description: Description of the resource.
     isRequired: true
@@ -63,7 +61,7 @@ constructor:
     types:
     - <xref:str>
   - name: is_deterministic
-    description: Whether the component is deterministic.
+    description: Whether the component is deterministic. Defaults to True.
     isRequired: true
     types:
     - <xref:bool>
@@ -78,7 +76,7 @@ constructor:
     types:
     - <xref:dict>
   - name: yaml_str
-    description: The yaml string of the component.
+    description: The YAML string of the component.
     isRequired: true
     types:
     - <xref:str>
@@ -92,6 +90,9 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.SystemData>
+  - name: kwargs
+    description: Additional parameters for the component.
+    isRequired: true
 methods:
 - uid: azure.ai.ml.entities.Component.dump
   name: dump
@@ -116,18 +117,18 @@ methods:
 attributes:
 - uid: azure.ai.ml.entities.Component.base_path
   name: base_path
-  summary: Base path of the resource.
+  summary: The base path of the resource.
   return:
-    description: Base path of the resource
+    description: The base path of the resource.
     types:
     - <xref:str>
 - uid: azure.ai.ml.entities.Component.creation_context
   name: creation_context
-  summary: Creation context.
+  summary: The creation context of the resource.
   return:
-    description: Creation metadata of the resource.
+    description: The creation metadata for the resource.
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.Component.display_name
   name: display_name
   summary: Display name of the component.
@@ -137,11 +138,11 @@ attributes:
     - <xref:str>
 - uid: azure.ai.ml.entities.Component.id
   name: id
-  summary: Resource ID.
+  summary: The resource ID.
   return:
-    description: Global id of the resource, Azure Resource Manager ID
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Component.inputs
   name: inputs
   summary: Inputs of the component.
@@ -172,3 +173,8 @@ attributes:
     - <xref:str>
 - uid: azure.ai.ml.entities.Component.version
   name: version
+  summary: Version of the component.
+  return:
+    description: Version of the component.
+    types:
+    - <xref:str>

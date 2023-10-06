@@ -5,56 +5,56 @@ fullName: azure.ai.ml.entities.CronTrigger
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._schedule.trigger.TriggerBase
-summary: Cron Trigger.
+summary: Cron Trigger for a job schedule.
 constructor:
   syntax: 'CronTrigger(*, expression: str, start_time: str | datetime | None = None,
     end_time: str | datetime | None = None, time_zone: str | TimeZone = TimeZone.UTC)'
   parameters:
   - name: expression
-    description: 'Specifies cron expression of schedule.
-
-      The expression should follow NCronTab format.'
-    isRequired: true
+    description: The cron expression of schedule, following NCronTab format.
     types:
     - <xref:str>
   - name: start_time
-    description: 'Accepts str or datetime object. The tzinfo should be none if a datetime
-      object, use
+    description: 'The start time for the trigger. If using a datetime object, leave
+      the tzinfo as None and use
 
-      `time_zone` property to specify a time zone if needed. You can also specify
-      this
+      the `time_zone` parameter to specify a time zone if needed. If using a string,
+      use the format
 
-      parameter as a string in this format: YYYY-MM-DDThh:mm:ss. If None is provided,
-      the
+      YYYY-MM-DDThh:mm:ss. Defaults to running the first workload instantly and continuing
+      future workloads
 
-      first workload is run instantly and the future workloads are run based on the
-      schedule.
+      based on the schedule. If the start time is in the past, the first workload
+      is run at the next calculated run
 
-      If the start time is in the past, the first workload is run at the next calculated
-      run time.'
-    isRequired: true
+      time.'
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:datetime>]]
   - name: end_time
-    description: 'Accepts str or datetime object. The tzinfo should be none if a datetime
-      object, use
+    description: 'The start time for the trigger. If using a datetime object, leave
+      the tzinfo as None and use
 
-      `time_zone` property to specify a time zone if needed. You can also specify
-      this
+      the `time_zone` parameter to specify a time zone if needed. If using a string,
+      use the format
 
-      parameter as a string in this format: YYYY-MM-DDThh:mm:ss. End time in the past
-      is invalid
-
-      and will raise exception when creating schedule.
-
-      Note that end_time is not supported for compute schedules.'
-    isRequired: true
+      YYYY-MM-DDThh:mm:ss. Note that end_time is not supported for compute schedules.'
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:datetime>]]
   - name: time_zone
-    description: 'Time zone in which the schedule runs. Default to UTC(+00:00).
+    description: 'The time zone where the schedule will run. Defaults to UTC(+00:00).
 
-      This does apply to the start_time and end_time.'
-    isRequired: true
+      Note that this applies to the start_time and end_time.'
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.constants.TimeZone>]
+    - <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.constants.TimeZone>]
+examples:
+- "Configuring a CronTrigger.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\
+  \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from datetime import\
+  \ datetime\n\n   from azure.ai.ml.constants import TimeZone\n   from azure.ai.ml.entities\
+  \ import CronTrigger\n\n   trigger = CronTrigger(\n       expression=\"15 10 * *\
+  \ 1\",\n       start_time=datetime(year=2022, month=3, day=10, hour=10, minute=15),\n\
+  \       end_time=datetime(year=2022, month=6, day=10, hour=10, minute=15),\n   \
+  \    time_zone=TimeZone.PACIFIC_STANDARD_TIME,\n   )\n\n   ````\n"

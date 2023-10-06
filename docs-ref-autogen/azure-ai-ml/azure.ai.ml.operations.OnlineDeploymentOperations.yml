@@ -30,8 +30,8 @@ methods:
   name: begin_create_or_update
   summary: Create or update a deployment.
   signature: 'begin_create_or_update(deployment: OnlineDeployment, *, local: bool
-    = False, vscode_debug: bool = False, skip_script_validation: bool = False, **kwargs)
-    -> LROPoller[OnlineDeployment]'
+    = False, vscode_debug: bool = False, skip_script_validation: bool = False, local_enable_gpu:
+    bool = False, **kwargs) -> LROPoller[OnlineDeployment]'
   parameters:
   - name: deployment
     description: the deployment entity
@@ -40,15 +40,17 @@ methods:
     - <xref:azure.ai.ml.entities.OnlineDeployment>
   - name: local
     description: Whether deployment should be created locally, defaults to False
-    isRequired: true
     types:
-    - <xref:bool>, <xref:optional>
+    - <xref:bool>
   - name: vscode_debug
     description: Whether to open VSCode instance to debug local deployment, defaults
       to False
-    isRequired: true
     types:
-    - <xref:bool>, <xref:optional>
+    - <xref:bool>
+  - name: local_enable_gpu
+    description: enable local container to access gpu
+    types:
+    - <xref:bool>
   return:
     description: A poller to track the operation status
     types:
@@ -92,6 +94,10 @@ methods:
     description: 'Raised if VS Debug is invoked with a remote endpoint.
 
       VSCode debug is only supported for local endpoints.'
+  - type: azure.ai.ml.exceptions.LocalDeploymentGPUNotAvailable
+    description: 'Raised if Nvidia GPU is not available in the
+
+      system and local_enable_gpu is set while local deployment'
   - type: azure.ai.ml.exceptions.VSCodeCommandNotFound
     description: Raised if VSCode instance cannot be instantiated.
 - uid: azure.ai.ml.operations.OnlineDeploymentOperations.begin_delete
@@ -113,7 +119,6 @@ methods:
   - name: local
     description: Whether deployment should be retrieved from local docker environment,
       defaults to False
-    isRequired: true
     types:
     - <xref:typing.Optional>[<xref:bool>]
   return:
@@ -142,7 +147,6 @@ methods:
   - name: local
     description: Whether deployment should be retrieved from local docker environment,
       defaults to False
-    isRequired: true
     types:
     - <xref:typing.Optional>[<xref:bool>]
   return:
@@ -177,14 +181,10 @@ methods:
     description: 'The type of container to retrieve logs from. Possible values include:
 
       "StorageInitializer", "InferenceServer", defaults to None'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:str>], <xref:optional>
   - name: local
     description: '[description], defaults to False'
-    isRequired: true
     types:
-    - <xref:bool>, <xref:optional>
+    - <xref:bool>
   return:
     description: the logs
     types:
@@ -202,9 +202,8 @@ methods:
   - name: local
     description: Whether deployment should be retrieved from local docker environment,
       defaults to False
-    isRequired: true
     types:
-    - <xref:bool>, <xref:optional>
+    - <xref:bool>
   return:
     description: an iterator of deployment entities
     types:

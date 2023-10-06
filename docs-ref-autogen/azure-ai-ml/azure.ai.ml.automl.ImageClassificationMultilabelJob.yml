@@ -22,39 +22,42 @@ constructor:
 methods:
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.dump
   name: dump
-  summary: Dump the job content into a file in yaml format.
+  summary: Dumps the job content into a file in YAML format.
   signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
   parameters:
   - name: dest
-    description: 'The destination to receive this job''s content.
+    description: 'The local path or file stream to write the YAML content to.
 
-      Must be either a path to a local file, or an already-open file stream.
+      If dest is a file path, a new file will be created.
 
-      If dest is a file path, a new file will be created,
-
-      and an exception is raised if the file exists.
-
-      If dest is an open file, the file will be written to directly,
-
-      and an exception will be raised if the file is not writable.'
+      If dest is an open file, the file will be written to directly.'
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.extend_search_space
   name: extend_search_space
-  summary: 'Add Search space for AutoML Image Classification and Image Classification
+  summary: Add Search space for AutoML Image Classification and Image Classification
     Multilabel tasks.
-
-
-    ImageClassificationSearchSpace for searching through the parameter space
-
-    :type Union[ImageClassificationSearchSpace, List[ImageClassificationSearchSpace]]'
   signature: 'extend_search_space(value: SearchSpace | List[SearchSpace]) -> None'
   parameters:
   - name: value
-    description: specify either an instance of ImageClassificationSearchSpace or list
-      of
+    description: 'specify either an instance of ImageClassificationSearchSpace or
+      list of
+
+      ImageClassificationSearchSpace for searching through the parameter space'
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:azure.ai.ml.automl.ImageClassificationSearchSpace>,
+      <xref:typing.List>[<xref:azure.ai.ml.automl.ImageClassificationSearchSpace>]]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.set_data
   name: set_data
   signature: 'set_data(*, training_data: Input, target_column_name: str, validation_data:
@@ -67,27 +70,11 @@ methods:
   parameters:
   - name: timeout_minutes
     description: AutoML job timeout.
-    isRequired: true
     types:
     - <xref:datetime.timedelta>
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.set_sweep
   name: set_sweep
-  summary: 'Sweep settings for all AutoML Image Verticals.
-
-
-    ~azure.mgmt.machinelearningservices.models.SamplingAlgorithmType.GRID,
-
-    ~azure.mgmt.machinelearningservices.models.SamplingAlgorithmType.BAYESIAN]
-
-    :param early_termination: Type of early termination policy.
-
-    :type early_termination: Union[
-
-    ~azure.mgmt.machinelearningservices.models.BanditPolicy,
-
-    ~azure.mgmt.machinelearningservices.models.MedianStoppingPolicy,
-
-    ~azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy]'
+  summary: Sweep settings for all AutoML Image Verticals.
   signature: 'set_sweep(*, sampling_algorithm: str | Random | Grid | Bayesian, early_termination:
     BanditPolicy | MedianStoppingPolicy | TruncationSelectionPolicy | None = None)
     -> None'
@@ -96,9 +83,11 @@ methods:
     description: 'Required. [Required] Type of the hyperparameter sampling
 
       algorithms. Possible values include: "Grid", "Random", "Bayesian".'
-    isRequired: true
+  - name: early_termination
+    description: Type of early termination policy.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:azure.mgmt.machinelearningservices.models.SamplingAlgorithmType.RANDOM>
+    - <xref:typing.Union>[ <xref:azure.mgmt.machinelearningservices.models.BanditPolicy>,
+      <xref:azure.mgmt.machinelearningservices.models.MedianStoppingPolicy>, <xref:azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy>]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.set_training_parameters
   name: set_training_parameters
   summary: Setting Image training parameters for AutoML Image Classification and Image
@@ -123,12 +112,10 @@ methods:
   parameters:
   - name: advanced_settings
     description: Settings for advanced scenarios.
-    isRequired: true
     types:
     - <xref:str>
   - name: ams_gradient
     description: Enable AMSGrad when optimizer is 'adam' or 'adamw'.
-    isRequired: true
     types:
     - <xref:bool>
   - name: beta1
@@ -136,7 +123,6 @@ methods:
       be a float in the
 
       range [0, 1].'
-    isRequired: true
     types:
     - <xref:float>
   - name: beta2
@@ -144,31 +130,26 @@ methods:
       be a float in the
 
       range [0, 1].'
-    isRequired: true
     types:
     - <xref:float>
   - name: checkpoint_frequency
     description: 'Frequency to store model checkpoints. Must be a positive
 
       integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: checkpoint_run_id
     description: 'The id of a previous run that has a pretrained checkpoint for
 
       incremental training.'
-    isRequired: true
     types:
     - <xref:str>
   - name: distributed
     description: Whether to use distributed training.
-    isRequired: true
     types:
     - <xref:bool>
   - name: early_stopping
     description: Enable early stopping logic during training.
-    isRequired: true
     types:
     - <xref:bool>
   - name: early_stopping_delay
@@ -177,7 +158,6 @@ methods:
       before primary metric improvement
 
       is tracked for early stopping. Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: early_stopping_patience
@@ -186,19 +166,16 @@ methods:
       primary metric improvement before
 
       the run is stopped. Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: enable_onnx_normalization
     description: Enable normalization when exporting ONNX model.
-    isRequired: true
     types:
     - <xref:bool>
   - name: evaluation_frequency
     description: 'Frequency to evaluate validation dataset to get metric scores.
 
       Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: gradient_accumulation_step
@@ -211,7 +188,6 @@ methods:
 
       the accumulated gradients to compute the weight updates. Must be a positive
       integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: layers_to_freeze
@@ -228,64 +204,44 @@ methods:
 
       see: [https://docs.microsoft.com/en-us/azure/machine-learning/reference-automl-images-hyperparameters#model-agnostic-hyperparameters](https://docs.microsoft.com/en-us/azure/machine-learning/reference-automl-images-hyperparameters#model-agnostic-hyperparameters).   #
       pylint: disable=line-too-long'
-    isRequired: true
-    types:
-    - <xref:int>
   - name: learning_rate
     description: Initial learning rate. Must be a float in the range [0, 1].
-    isRequired: true
     types:
     - <xref:float>
   - name: learning_rate_scheduler
     description: 'Type of learning rate scheduler. Must be ''warmup_cosine'' or
 
       ''step''. Possible values include: "None", "WarmupCosine", "Step".'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.machinelearningservices.models.LearningRateScheduler>
   - name: model_name
     description: 'Name of the model to use for training.
 
       For more information on the available models please visit the official documentation:
 
       [https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models).'
-    isRequired: true
-    types:
-    - <xref:str>
   - name: momentum
     description: 'Value of momentum when optimizer is ''sgd''. Must be a float in
       the range [0,
 
       1].'
-    isRequired: true
     types:
     - <xref:float>
   - name: nesterov
     description: Enable nesterov when optimizer is 'sgd'.
-    isRequired: true
     types:
     - <xref:bool>
   - name: number_of_epochs
     description: Number of training epochs. Must be a positive integer.
-    isRequired: true
     types:
     - <xref:int>
   - name: number_of_workers
     description: Number of data loader workers. Must be a non-negative integer.
-    isRequired: true
     types:
     - <xref:int>
   - name: optimizer
     description: 'Type of optimizer. Possible values include: "None", "Sgd", "Adam",
       "Adamw".'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.machinelearningservices.models.StochasticOptimizer>
   - name: random_seed
     description: Random seed to be used when using deterministic training.
-    isRequired: true
     types:
     - <xref:int>
   - name: step_lr_gamma
@@ -293,7 +249,6 @@ methods:
       a float
 
       in the range [0, 1].'
-    isRequired: true
     types:
     - <xref:float>
   - name: step_lr_step_size
@@ -301,31 +256,26 @@ methods:
       be
 
       a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: training_batch_size
     description: Training batch size. Must be a positive integer.
-    isRequired: true
     types:
     - <xref:int>
   - name: validation_batch_size
     description: Validation batch size. Must be a positive integer.
-    isRequired: true
     types:
     - <xref:int>
   - name: warmup_cosine_lr_cycles
     description: 'Value of cosine cycle when learning rate scheduler is
 
       ''warmup_cosine''. Must be a float in the range [0, 1].'
-    isRequired: true
     types:
     - <xref:float>
   - name: warmup_cosine_lr_warmup_epochs
     description: 'Value of warmup epochs when learning rate scheduler is
 
       ''warmup_cosine''. Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: weight_decay
@@ -333,28 +283,24 @@ methods:
       Must
 
       be a float in the range[0, 1].'
-    isRequired: true
     types:
     - <xref:float>
   - name: training_crop_size
     description: 'Image crop size that is input to the neural network for the
 
       training dataset. Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: validation_crop_size
     description: 'Image crop size that is input to the neural network for the
 
       validation dataset. Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: validation_resize_size
     description: 'Image size to which to resize before cropping for validation
 
       dataset. Must be a positive integer.'
-    isRequired: true
     types:
     - <xref:int>
   - name: weighted_loss
@@ -364,31 +310,30 @@ methods:
       Must be
 
       0 or 1 or 2.'
-    isRequired: true
     types:
     - <xref:int>
 attributes:
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.base_path
   name: base_path
-  summary: Base path of the resource.
+  summary: The base path of the resource.
   return:
-    description: Base path of the resource
+    description: The base path of the resource.
     types:
     - <xref:str>
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.creation_context
   name: creation_context
-  summary: Creation context.
+  summary: The creation context of the resource.
   return:
-    description: Creation metadata of the resource.
+    description: The creation metadata for the resource.
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.id
   name: id
-  summary: Resource ID.
+  summary: The resource ID.
   return:
-    description: Global id of the resource, Azure Resource Manager ID
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.inputs
   name: inputs
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.limits
@@ -397,7 +342,7 @@ attributes:
   name: log_files
   summary: Job output files.
   return:
-    description: Dictionary of log names to url.
+    description: The dictionary of log names and URLs.
     types:
     - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.log_verbosity
@@ -410,34 +355,34 @@ attributes:
   name: search_space
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.status
   name: status
-  summary: "Status of the job.\n\nCommon values returned include \"Running\", \"Completed\"\
-    , and \"Failed\".\n\n> [!NOTE]\n> NotStarted - This is a temporary state client-side\
-    \ Run objects are in before cloud submission.\n>\n> \n>\n> Starting - The Run\
-    \ has started being processed in the cloud. The caller has a run ID at this point.\n\
-    >\n> \n>\n> Provisioning - Returned when on-demand compute is being created for\
-    \ a given job submission.\n>\n> \n>\n> Preparing - The run environment is being\
-    \ prepared:\n>\n> \n>\n> docker image build\n>\n> \n>\n> conda environment setup\n\
-    >\n> \n>\n> Queued - The job is queued in the compute target. For example, in\
-    \ BatchAI the job is in queued state\n>\n> \n>\n> while waiting for all the requested\
-    \ nodes to be ready.\n>\n> \n>\n> Running - The job started to run in the compute\
-    \ target.\n>\n> \n>\n> Finalizing - User code has completed and the run is in\
-    \ post-processing stages.\n>\n> \n>\n> CancelRequested - Cancellation has been\
-    \ requested for the job.\n>\n> \n>\n> Completed - The run completed successfully.\
-    \ This includes both the user code and run\n>\n> \n>\n> post-processing stages.\n\
-    >\n> \n>\n> Failed - The run failed. Usually the Error property on a run will\
-    \ provide details as to why.\n>\n> \n>\n> Canceled - Follows a cancellation request\
-    \ and indicates that the run is now successfully cancelled.\n>\n> \n>\n> NotResponding\
-    \ - For runs that have Heartbeats enabled, no heartbeat has been recently sent.\n\
-    >"
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
   return:
     description: Status of the job.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.studio_url
   name: studio_url
   summary: Azure ML studio endpoint.
   return:
-    description: URL to the job detail page.
+    description: The URL to the job details page.
     types:
     - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.sweep
@@ -468,11 +413,11 @@ attributes:
   name: training_parameters
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.type
   name: type
-  summary: Type of the job, supported are 'command' and 'sweep'.
+  summary: The type of the job.
   return:
-    description: Type of the job.
+    description: The type of the job.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.automl.ImageClassificationMultilabelJob.validation_data
   name: validation_data
   summary: Get validation data.

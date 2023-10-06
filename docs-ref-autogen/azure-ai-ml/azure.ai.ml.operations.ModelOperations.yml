@@ -19,11 +19,35 @@ constructor:
     = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    description: Scope variables for the operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationScope>
   - name: operation_config
+    description: Common configuration for operations classes of an MLClient object.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationConfig>
   - name: service_client
+    description: 'Service client to allow end users to operate on Azure Machine Learning
+      Workspace
+
+      resources (ServiceClient042023Preview or ServiceClient102021Dataplane).'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[ <xref:azure.ai.ml._restclient.v2023_04_01_preview._azure_machine_learning_workspaces.AzureMachineLearningWorkspaces>,
+      <xref:azure.ai.ml._restclient.v2021_10_01_dataplanepreview._azure_machine_learning_workspaces.
+      AzureMachineLearningWorkspaces>]
   - name: datastore_operations
+    description: Represents a client for performing operations on Datastores.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.operations.DatastoreOperations>
   - name: all_operations
+    description: All operations classes of an MLClient object.
     defaultValue: None
+    types:
+    - <xref:azure.ai.ml._scope_dependent_operations.OperationsContainer>
 methods:
 - uid: azure.ai.ml.operations.ModelOperations.archive
   name: archive
@@ -88,13 +112,16 @@ methods:
     types:
     - <xref:str>
   - name: download_path
-    description: 'Local path as download destination,
+    description: 'Local path as download destination, defaults to current working
+      directory of the current
 
-      defaults to current working directory of the current user. Contents will be
-      overwritten.'
+      user. Contents will be overwritten.'
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>]
+  exceptions:
+  - type: ResourceNotFoundError
+    description: if can't find a model matching provided name.
 - uid: azure.ai.ml.operations.ModelOperations.get
   name: get
   summary: Returns information about the specified model asset.
@@ -128,20 +155,24 @@ methods:
 - uid: azure.ai.ml.operations.ModelOperations.list
   name: list
   summary: List all model assets in workspace.
-  signature: 'list(name: str | None = None, *, list_view_type: ListViewType = ListViewType.ACTIVE_ONLY)
-    -> Iterable[Model]'
+  signature: 'list(name: str | None = None, stage: str | None = None, *, list_view_type:
+    ListViewType = ListViewType.ACTIVE_ONLY) -> Iterable[Model]'
   parameters:
   - name: name
     description: Name of the model.
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:str>]
-  - name: list_view_type
-    description: 'View type for including/excluding (for example) archived models.
-      Default: ACTIVE_ONLY.'
+  - name: stage
+    description: The Model stage
     isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:ListViewType>]
+    - <xref:typing.Optional>[<xref:str>]
+  - name: list_view_type
+    description: 'View type for including/excluding (for example) archived models.
+      Defaults to
+
+      <xref:ListViewType.ACTIVE_ONLY>.'
   return:
     description: An iterator like instance of Model objects
     types:
@@ -226,17 +257,14 @@ methods:
     - <xref:str>
   - name: share_with_name
     description: Name of model asset to share with.
-    isRequired: true
     types:
     - <xref:str>
   - name: share_with_version
     description: Version of model asset to share with.
-    isRequired: true
     types:
     - <xref:str>
   - name: registry_name
     description: Name of the destination registry.
-    isRequired: true
     types:
     - <xref:str>
   return:

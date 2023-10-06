@@ -6,44 +6,49 @@ module: azure.ai.ml.data_transfer
 inheritances:
 - azure.ai.ml.entities._mixins.DictMixin
 - azure.ai.ml.entities._mixins.RestTranslatableMixin
-summary: "Define a database class for a DataTransfer Component or Job.\n\ne.g.\nsource_snowflake\
-  \ = Database(query='SELECT * FROM my_table', connection='azureml:my_azuresql_connection')\n\
-  or\nstored_procedure_params = [{'name': 'job', 'value': 'Engineer', 'type': 'String'},\n\
-  {'name': 'department', 'value': 'Engineering', 'type': 'String'}]\nsource_snowflake\
-  \ = Database(stored_procedure='SelectEmployeeByJobAndDepartment',\n\n   stored_procedure_params=stored_procedure_params,\n\
-  \   connection='azureml:my_azuresql_connection')\n\nconnection to store these credential\
-  \ info.\n:type connection: str\n:raises ~azure.ai.ml.exceptions.ValidationException:\
-  \ Raised if Source cannot be successfully validated.\n\n   Details will be provided\
-  \ in the error message."
+summary: Define a database class for a DataTransfer Component or Job.
 constructor:
   syntax: 'Database(*, query: str | None = None, table_name: str | None = None, stored_procedure:
     str | None = None, stored_procedure_params: List[dict] | None = None, connection:
     str | None = None)'
   parameters:
   - name: query
-    description: The sql query to get data from database
-    isRequired: true
+    description: The SQL query to retrieve data from the database.
     types:
     - <xref:str>
   - name: table_name
-    description: The database table name
-    isRequired: true
+    description: The name of the database table.
     types:
     - <xref:str>
   - name: stored_procedure
-    description: stored_procedure
-    isRequired: true
+    description: The name of the stored procedure.
     types:
     - <xref:str>
   - name: stored_procedure_params
-    description: stored_procedure_params
-    isRequired: true
+    description: The parameters for the stored procedure.
     types:
     - <xref:typing.List>[<xref:dict>, <xref:StoredProcedureParameter>]
   - name: connection
-    description: Connection is workspace, we didn't support storage connection here,
-      need leverage workspace
-    isRequired: true
+    description: 'The connection string for the database.
+
+      The credential information should be stored in the workspace connection.'
+    types:
+    - <xref:str>
+examples:
+- "Create a database and querying a database table.<!--[!code-python[Main](les\\ml_samples_input_output_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\
+  \\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_input_output_configurations.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities._inputs_outputs\
+  \ import Database\n\n   # For querying a database table\n   source_database = Database(query=\"\
+  SELECT * FROM my_table\", connection=\"azureml:my_azuresql_connection\")\n\n   #\
+  \ For invoking a stored procedure with parameters\n   stored_procedure_params =\
+  \ [\n       {\"name\": \"job\", \"value\": \"Engineer\", \"type\": \"String\"},\n\
+  \       {\"name\": \"department\", \"value\": \"Engineering\", \"type\": \"String\"\
+  },\n   ]\n   source_database = Database(\n       stored_procedure=\"SelectEmployeeByJobAndDepartment\"\
+  ,\n       stored_procedure_params=stored_procedure_params,\n       connection=\"\
+  azureml:my_azuresql_connection\",\n   )\n\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.data_transfer.Database.get
   name: get
@@ -74,4 +79,8 @@ methods:
 attributes:
 - uid: azure.ai.ml.data_transfer.Database.stored_procedure_params
   name: stored_procedure_params
-  summary: Compute Resource configuration for the job.
+  summary: Get or set the parameters for the stored procedure.
+  return:
+    description: The parameters for the stored procedure.
+    types:
+    - <xref:List>[<xref:StoredProcedureParameter>]

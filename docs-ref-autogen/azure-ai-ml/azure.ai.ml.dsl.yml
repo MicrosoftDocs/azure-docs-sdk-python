@@ -6,69 +6,77 @@ type: import
 functions:
 - uid: azure.ai.ml.dsl.pipeline
   name: pipeline
-  summary: "Build a pipeline which contains all component nodes defined in this function.\n\
-    \n> [!NOTE]\n> The following pseudo-code shows how to create a pipeline using\
-    \ this decorator.\n>\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
-    : [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\"\
-    : false, \"language\": \"python\", \"highlight_args\": {}, \"linenos\": false}\
-    \ -->\n\n````python\n\n   # Define a pipeline with decorator\n   @pipeline(name=\"\
-    sample_pipeline\", description=\"pipeline description\")\n   def sample_pipeline_func(pipeline_input,\
-    \ pipeline_str_param):\n       # component1 and component2 will be added into\
-    \ the current pipeline\n       component1 = component1_func(input1=pipeline_input,\
-    \ param1=\"literal\")\n       component2 = component2_func(input1=dataset, param1=pipeline_str_param)\n\
-    \       # A decorated pipeline function needs to return outputs.\n       # In\
-    \ this case, the pipeline has two outputs: component1's output1 and component2's\
-    \ output1,\n       # and let's rename them to 'pipeline_output1' and 'pipeline_output2'\n\
-    \       return {\n           \"pipeline_output1\": component1.outputs.output1,\n\
-    \           \"pipeline_output2\": component2.outputs.output1,\n       }\n\n\n\
-    \   # E.g.: This call returns a pipeline job with nodes=[component1, component2],\n\
-    \   pipeline_job = sample_pipeline_func(\n       pipeline_input=Input(type=\"\
-    uri_folder\", path=\"./local-data\"),\n       pipeline_str_param=\"literal\",\n\
-    \   )\n   ml_client.jobs.create_or_update(pipeline_job, experiment_name=\"pipeline_samples\"\
-    )\n   ````"
-  signature: 'pipeline(func=None, *, name: str | None = None, version: str | None
-    = None, display_name: str | None = None, description: str | None = None, experiment_name:
-    str | None = None, tags: Dict[str, str] | None = None, **kwargs)'
+  summary: Build a pipeline which contains all component nodes defined in this function.
+  signature: 'pipeline(func: Callable[[P], T] | None = None, *, name: str | None =
+    None, version: str | None = None, display_name: str | None = None, description:
+    str | None = None, experiment_name: str | None = None, tags: Dict[str, str] |
+    None = None, **kwargs) -> Callable[[Callable[[P], T]], Callable[[P], PipelineJob]]
+    | Callable[[P], PipelineJob]'
   parameters:
   - name: func
     description: The user pipeline function to be decorated.
     defaultValue: None
-  - name: func
-    description: types.FunctionType
-    isRequired: true
+    types:
+    - <xref:types.FunctionType>
   - name: name
     description: The name of pipeline component, defaults to function name.
-    isRequired: true
     types:
     - <xref:str>
   - name: version
     description: The version of pipeline component, defaults to "1".
-    isRequired: true
     types:
     - <xref:str>
   - name: display_name
     description: The display name of pipeline component, defaults to function name.
-    isRequired: true
     types:
     - <xref:str>
   - name: description
     description: The description of the built pipeline.
-    isRequired: true
     types:
     - <xref:str>
   - name: experiment_name
     description: Name of the experiment the job will be created under,                 if
       None is provided, experiment will be set to current directory.
-    isRequired: true
     types:
     - <xref:str>
   - name: tags
     description: The tags of pipeline component.
-    isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: kwargs
     description: A dictionary of additional configuration parameters.
-    isRequired: true
     types:
     - <xref:dict>
+  return:
+    description: 'Either
+
+      * A decorator, if *func* is None
+
+      * The decorated *func*'
+    types:
+    - '<xref:Union>[<xref:   Callable>[[<xref:Callable>], <xref:Callable>[<xref:...>,
+      <xref:azure.ai.ml.entities.PipelineJob>]], <xref:  Callable>[<xref:P>, <xref:azure.ai.ml.entities.PipelineJob>]]'
+  examples:
+  - "Shows how to create a pipeline using this decorator.<!--[!code-python[Main](les\\\
+    ml_samples_pipeline_job_configurations.py )]-->\n\n<!-- literal_block {\"ids\"\
+    : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\\
+    samples\\\\ml_samples_pipeline_job_configurations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import load_component\n\
+    \   from azure.ai.ml.dsl import pipeline\n\n   component_func = load_component(\n\
+    \       source=\"./sdk/ml/azure-ai-ml/tests/test_configs/components/helloworld_component.yml\"\
+    \n   )\n\n   # Define a pipeline with decorator\n   @pipeline(name=\"sample_pipeline\"\
+    , description=\"pipeline description\")\n   def sample_pipeline_func(pipeline_input1,\
+    \ pipeline_input2):\n       # component1 and component2 will be added into the\
+    \ current pipeline\n       component1 = component_func(component_in_number=pipeline_input1,\
+    \ component_in_path=uri_file_input)\n       component2 = component_func(component_in_number=pipeline_input2,\
+    \ component_in_path=uri_file_input)\n       # A decorated pipeline function needs\
+    \ to return outputs.\n       # In this case, the pipeline has two outputs: component1's\
+    \ output1 and component2's output1,\n       # and let's rename them to 'pipeline_output1'\
+    \ and 'pipeline_output2'\n       return {\n           \"pipeline_output1\": component1.outputs.component_out_path,\n\
+    \           \"pipeline_output2\": component2.outputs.component_out_path,\n   \
+    \    }\n\n   # E.g.: This call returns a pipeline job with nodes=[component1,\
+    \ component2],\n   pipeline_job = sample_pipeline_func(\n       pipeline_input1=1.0,\n\
+    \       pipeline_input2=2.0,\n   )\n   ml_client.jobs.create_or_update(pipeline_job,\
+    \ experiment_name=\"pipeline_samples\", compute=\"cpu-cluster\")\n\n   ````\n"

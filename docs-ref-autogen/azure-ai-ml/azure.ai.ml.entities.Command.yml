@@ -5,12 +5,12 @@ fullName: azure.ai.ml.entities.Command
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._builders.base_node.BaseNode
+- azure.ai.ml.entities._job.pipeline._io.mixin.NodeWithGroupInputMixin
 summary: 'Base class for command node, used for command component version consumption.
 
 
-  You should not instantiate this class directly. Instead, you should
-
-  create from builder function: command.'
+  You should not instantiate this class directly. Instead, you should create it using
+  the builder function: command().'
 constructor:
   syntax: 'Command(*, component: str | CommandComponent, compute: str | None = None,
     inputs: Dict[str, Input | str | bool | int | float | Enum] | None = None, outputs:
@@ -24,114 +24,69 @@ constructor:
     | None = None, **kwargs)'
   parameters:
   - name: component
-    description: Id or instance of the command component/job to be run for the step
-    isRequired: true
+    description: The ID or instance of the command component or job to be run for
+      the step.
     types:
-    - <xref:azure.ai.ml.entities.CommandComponent>
-  - name: inputs
-    description: Inputs to the command.
-    isRequired: true
-    types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.Input>,
-      <xref:SweepDistribution>, <xref:str>, <xref:bool>, <xref:int>, <xref:float>,
-      <xref:Enum>, <xref:dict>]]
-  - name: outputs
-    description: Mapping of output data bindings used in the job.
-    isRequired: true
-    types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.Output>,
-      <xref:dict>]]
-  - name: name
-    description: Name of the command.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: description
-    description: Description of the command.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: tags
-    description: Tag dictionary. Tags can be added, removed, and updated.
-    isRequired: true
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: properties
-    description: The job property dictionary.
-    isRequired: true
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: display_name
-    description: Display name of the job.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: experiment_name
-    description: 'Name of the experiment the job will be created under,
-
-      if None is provided, default will be set to current directory name.'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: command
-    description: Command to be executed in training.
-    isRequired: true
-    types:
-    - <xref:str>
+    - <xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.CommandComponent>]
   - name: compute
-    description: The compute target the job runs on.
-    isRequired: true
+    description: The compute target the job will run on.
     types:
-    - <xref:str>
-  - name: resources
-    description: Compute Resource configuration for the command.
-    isRequired: true
+    - <xref:typing.Optional>[<xref:str>]
+  - name: inputs
+    description: A mapping of input names to input data sources used in the job.
     types:
-    - <xref:typing.Union>[<xref:typing.Dict>, <xref:azure.ai.ml.entities.JobResourceConfiguration>]
-  - name: code
-    description: 'A local path or http:, https:, azureml: url pointing to a remote
-      location.'
-    isRequired: true
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[ <xref:azure.ai.ml.Input>,
+      <xref:str>, <xref:bool>, <xref:int>, <xref:float>, <xref:Enum>]]]
+  - name: outputs
+    description: A mapping of output names to output data sources used in the job.
     types:
-    - <xref:str>
-  - name: distribution
-    description: Distribution configuration for distributed training.
-    isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:typing.Dict>, <xref:azure.ai.ml.PyTorchDistribution>,
-      <xref:azure.ai.ml.MpiDistribution>, <xref:azure.ai.ml.TensorFlowDistribution>,
-      <xref:azure.ai.ml.RayDistribution>]
-  - name: environment
-    description: Environment that training job will run in.
-    isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Environment>, <xref:str>]
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:str>,
+      <xref:azure.ai.ml.Output>]]]
   - name: limits
-    description: Command Job limit.
-    isRequired: true
+    description: The limits for the command component or job.
     types:
     - <xref:azure.ai.ml.entities.CommandJobLimits>
   - name: identity
-    description: Identity that training job will use while running on compute.
-    isRequired: true
+    description: The identity that the command job will use while running on compute.
     types:
-    - <xref:typing.Union>[<xref:ManagedIdentity>, <xref:AmlToken>, <xref:UserIdentity>]
-  - name: services
-    description: 'Interactive services for the node. This is an experimental parameter,
-      and may change at any time.
+    - <xref:typing.Optional>[<xref:typing.Union>[ <xref:dict>[<xref:str>, <xref:str>],
+      <xref:azure.ai.ml.entities.ManagedIdentityConfiguration>, <xref:azure.ai.ml.entities.AmlTokenConfiguration>,
+      <xref:azure.ai.ml.entities.UserIdentityConfiguration>]]
+  - name: distribution
+    description: The configuration for distributed jobs.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>, <xref:azure.ai.ml.PyTorchDistribution>,
+      <xref:azure.ai.ml.MpiDistribution>, <xref:azure.ai.ml.TensorFlowDistribution>,
+      <xref:azure.ai.ml.RayDistribution>]]
+  - name: environment
+    description: The environment that the job will run in.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
+  - name: environment_variables
+    description: 'A dictionary of environment variable names and values.
 
-      Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
-      for more information.'
-    isRequired: true
+      These environment variables are set on the process where the user script is
+      being executed.'
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.JobService>,
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
+  - name: resources
+    description: The compute resource configuration for the command.
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.JobResourceConfiguration>]
+  - name: services
+    description: 'The interactive services for the node. This is an experimental parameter,
+      and may change at any
+
+      time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+      for more information.'
+    types:
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.JobService>,
       <xref:azure.ai.ml.entities.JupyterLabJobService>, <xref:azure.ai.ml.entities.SshJobService>,
-      <xref:azure.ai.ml.entities.TensorBoardJobService>, <xref:azure.ai.ml.entities.VsCodeJobService>]]
+      <xref:azure.ai.ml.entities.TensorBoardJobService>, <xref:azure.ai.ml.entities.VsCodeJobService>]]]
   - name: queue_settings
     description: Queue settings for the job.
-    isRequired: true
     types:
-    - <xref:azure.ai.ml.entities.QueueSettings>
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.QueueSettings>]
 methods:
 - uid: azure.ai.ml.entities.Command.clear
   name: clear
@@ -141,24 +96,27 @@ methods:
   signature: copy() -> a shallow copy of D
 - uid: azure.ai.ml.entities.Command.dump
   name: dump
-  summary: Dump the job content into a file in yaml format.
+  summary: Dumps the job content into a file in YAML format.
   signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
   parameters:
   - name: dest
-    description: 'The destination to receive this job''s content.
+    description: 'The local path or file stream to write the YAML content to.
 
-      Must be either a path to a local file, or an already-open file stream.
+      If dest is a file path, a new file will be created.
 
-      If dest is a file path, a new file will be created,
-
-      and an exception is raised if the file exists.
-
-      If dest is an open file, the file will be written to directly,
-
-      and an exception will be raised if the file is not writable.'
+      If dest is an open file, the file will be written to directly.'
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
 - uid: azure.ai.ml.entities.Command.fromkeys
   name: fromkeys
   summary: Create a new dictionary with keys from iterable and values set to value.
@@ -203,26 +161,120 @@ methods:
 - uid: azure.ai.ml.entities.Command.set_limits
   name: set_limits
   summary: Set limits for Command.
-  signature: 'set_limits(*, timeout: int, **kwargs)'
+  signature: 'set_limits(*, timeout: int, **kwargs) -> None'
+  parameters:
+  - name: timeout
+    description: The timeout for the job in seconds.
+    types:
+    - <xref:int>
+  examples:
+  - "Setting a timeout limit of 10 seconds on a Command.<!--[!code-python[Main](les\\\
+    ml_samples_command_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\\
+    samples\\\\ml_samples_command_configurations.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import Input,\
+    \ Output, command\n\n   command_node = command(\n       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\"\
+    ,\n       command='echo \"hello world\"',\n       distribution={\"type\": \"Pytorch\"\
+    , \"process_count_per_instance\": 2},\n       inputs={\n           \"training_data\"\
+    : Input(type=\"uri_folder\"),\n           \"max_epochs\": 20,\n           \"learning_rate\"\
+    : 1.8,\n           \"learning_rate_schedule\": \"time-based\",\n       },\n  \
+    \     outputs={\"model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_limits(timeout=10)\n\
+    \n   ````\n"
 - uid: azure.ai.ml.entities.Command.set_queue_settings
   name: set_queue_settings
-  summary: 'Set QueueSettings for the job.
-
-    :param job_tier: determines the job tier.
-
-    :type job_tier: str
-
-    :param priority: controls the priority on the compute.
-
-    :type priority: str'
+  summary: Set QueueSettings for the job.
   signature: 'set_queue_settings(*, job_tier: str | None = None, priority: str | None
-    = None)'
+    = None) -> None'
+  parameters:
+  - name: job_tier
+    description: The job tier. Accepted values are "Spot", "Basic", "Standard", or
+      "Premium".
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: priority
+    description: The priority of the job on the compute. Defaults to "Medium".
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  examples:
+  - "Configuring queue settings on a Command.<!--[!code-python[Main](les\\ml_samples_command_configurations.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
+    \       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\",\n       command='echo\
+    \ \"hello world\"',\n       distribution={\"type\": \"Pytorch\", \"process_count_per_instance\"\
+    : 2},\n       inputs={\n           \"training_data\": Input(type=\"uri_folder\"\
+    ),\n           \"max_epochs\": 20,\n           \"learning_rate\": 1.8,\n     \
+    \      \"learning_rate_schedule\": \"time-based\",\n       },\n       outputs={\"\
+    model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_queue_settings(job_tier=\"\
+    standard\", priority=\"medium\")\n\n   ````\n"
 - uid: azure.ai.ml.entities.Command.set_resources
   name: set_resources
   summary: Set resources for Command.
   signature: 'set_resources(*, instance_type: str | List[str] | None = None, instance_count:
     int | None = None, locations: List[str] | None = None, properties: Dict | None
-    = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs)'
+    = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs)
+    -> None'
+  parameters:
+  - name: instance_type
+    description: 'The type of compute instance to run the job on. If not specified,
+      the job will run on
+
+      the default compute target.'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:list>[<xref:str>]]]
+  - name: instance_count
+    description: 'The number of instances to run the job on. If not specified, the
+      job will run on a
+
+      single instance.'
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  - name: locations
+    description: 'The list of locations where the job will run. If not specified,
+      the job will run on the
+
+      default compute target.'
+    types:
+    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
+  - name: properties
+    description: The properties of the job.
+    types:
+    - <xref:typing.Optional>[<xref:dict>]
+  - name: docker_args
+    description: The Docker arguments for the job.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: shm_size
+    description: 'The size of the docker container''s shared memory block. This should
+      be in the
+
+      format of (number)(unit) where the number has to be greater than 0 and the unit
+      can be one of
+
+      b(bytes), k(kilobytes), m(megabytes), or g(gigabytes).'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  examples:
+  - "Setting resources on a Command.<!--[!code-python[Main](les\\ml_samples_command_configurations.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
+    \       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\",\n       command='echo\
+    \ \"hello world\"',\n       distribution={\"type\": \"Pytorch\", \"process_count_per_instance\"\
+    : 2},\n       inputs={\n           \"training_data\": Input(type=\"uri_folder\"\
+    ),\n           \"max_epochs\": 20,\n           \"learning_rate\": 1.8,\n     \
+    \      \"learning_rate_schedule\": \"time-based\",\n       },\n       outputs={\"\
+    model_output\": Output(type=\"uri_folder\")},\n   )\n\n   command_node.set_resources(\n\
+    \       instance_count=1,\n       instance_type=\"STANDARD_D2_v2\",\n       properties={\"\
+    key\": \"new_val\"},\n       shm_size=\"3g\",\n   )\n\n   ````\n"
 - uid: azure.ai.ml.entities.Command.setdefault
   name: setdefault
   summary: 'Insert key with a value of default if key is not in the dictionary.
@@ -237,13 +289,13 @@ methods:
     defaultValue: None
 - uid: azure.ai.ml.entities.Command.sweep
   name: sweep
-  summary: 'Turn the command into a sweep node with extra sweep run setting. The command
-    component in current Command
+  summary: 'Turns the command into a sweep node with extra sweep run setting. The
+    command component
 
-    node will be used as its trial component. A command node can sweep for multiple
-    times, and the generated sweep
+    in the current command node will be used as its trial component. A command node
+    can sweep
 
-    node will share the same trial component.'
+    multiple times, and the generated sweep node will share the same trial component.'
   signature: 'sweep(*, primary_metric: str, goal: str, sampling_algorithm: str = ''random'',
     compute: str | None = None, max_concurrent_trials: int | None = None, max_total_trials:
     int | None = None, timeout: int | None = None, trial_timeout: int | None = None,
@@ -255,87 +307,105 @@ methods:
     = None) -> Sweep'
   parameters:
   - name: primary_metric
-    description: 'primary metric of the sweep objective, AUC e.g. The metric must
-      be logged in running
+    description: 'The primary metric of the sweep objective - e.g. AUC (Area Under
+      the Curve).
 
-      the trial component.'
-    isRequired: true
+      The metric must be logged while running the trial component.'
     types:
     - <xref:str>
   - name: goal
-    description: goal of the sweep objective.
-    isRequired: true
+    description: The goal of the Sweep objective. Accepted values are "minimize" or
+      "maximize".
     types:
-    - '<xref:str>, <xref:valid values: maximize>'
-    - <xref:minimize>
+    - <xref:str>
   - name: sampling_algorithm
-    description: sampling algorithm to sample inside search space. Defaults to "random"
-    isRequired: true
+    description: 'The sampling algorithm to use inside the search space.
+
+      Acceptable values are "random", "grid", or "bayesian". Defaults to "random".'
     types:
-    - '<xref:str>, <xref:valid values: random>, <xref:grid>'
-    - <xref:bayesian>
+    - <xref:str>
   - name: compute
-    description: target compute to run the node. If not specified, compute of current
-      node will be used.
-    isRequired: true
+    description: 'The target compute to run the node on. If not specified, the current
+      node''s compute
+
+      will be used.'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: max_total_trials
-    description: maximum trials to run, will overwrite value in limits
-    isRequired: true
+    description: 'The maximum number of total trials to run. This value will overwrite
+      the value in
+
+      CommandJob.limits if specified.'
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: max_concurrent_trials
-    description: Sweep Job max concurrent trials.
-    isRequired: true
+    description: The maximum number of concurrent trials for the Sweep job.
     types:
-    - <xref:int>
-  - name: max_total_trials
-    description: Sweep Job max total trials.
-    isRequired: true
+    - <xref:typing.Optional>[<xref:int>]
   - name: timeout
-    description: The max run duration in seconds, after which the job will be cancelled.
-    isRequired: true
+    description: The maximum run duration in seconds, after which the job will be
+      cancelled.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: trial_timeout
-    description: Sweep Job Trial timeout value in seconds.
-    isRequired: true
+    description: The Sweep Job trial timeout value, in seconds.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: early_termination_policy
-    description: 'early termination policy of the sweep node:'
-    isRequired: true
+    description: 'The early termination policy of the sweep node. Acceptable
+
+      values are "bandit", "median_stopping", or "truncation_selection". Defaults
+      to None.'
     types:
-    - '<xref:typing.Union>[<xref:EarlyTerminationPolicy>, <xref:str>], <xref:valid
-      values: bandit>, <xref:median_stopping>'
-    - <xref:truncation_selection.>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:azure.ai.ml.sweep.BanditPolicy>,
+      <xref:azure.ai.ml.sweep.TruncationSelectionPolicy>, <xref:azure.ai.ml.sweep.MedianStoppingPolicy>,
+      <xref:str>]]
   - name: identity
-    description: Identity that training job will use while running on compute.
-    isRequired: true
+    description: The identity that the job will use while running on compute.
     types:
-    - <xref:typing.Union>[ <xref:azure.ai.ml.entities.ManagedIdentityConfiguration>,
-      <xref:azure.ai.ml.entities.AmlTokenConfiguration>, <xref:azure.ai.ml.entities.UserIdentityConfiguration>]
+    - <xref:typing.Optional>[<xref:typing.Union>[ <xref:azure.ai.ml.ManagedIdentityConfiguration>,
+      <xref:azure.ai.ml.AmlTokenConfiguration>, <xref:azure.ai.ml.UserIdentityConfiguration>]]
   - name: queue_settings
-    description: Queue settings for the job.
-    isRequired: true
+    description: The queue settings for the job.
     types:
-    - <xref:azure.ai.ml.entities.QueueSettings>
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.QueueSettings>]
   - name: job_tier
-    description: '**Experimental** determines the job tier.'
-    isRequired: true
+    description: '**Experimental** The job tier. Accepted values are "Spot", "Basic",
+
+      "Standard", or "Premium".'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: priority
-    description: '**Experimental** controls the priority on the compute.'
-    isRequired: true
+    description: '**Experimental** The compute priority. Accepted values are "low",
+
+      "medium", and "high".'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   return:
-    description: A sweep node with component from current Command node as its trial
-      component.
+    description: A Sweep node with the component from current Command node as its
+      trial component.
     types:
     - <xref:azure.ai.ml.entities.Sweep>
+  examples:
+  - "Creating a Sweep node from a Command job.<!--[!code-python[Main](les\\ml_samples_sweep_configurations.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
+    source_code\\\\10\\\\azure-ai-ml-1.11.0\\\\samples\\\\ml_samples_sweep_configurations.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import command\n\n   job = command(\n       inputs=dict(kernel=\"\
+    linear\", penalty=1.0),\n       compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
+    ,\n       code=\"./scripts\",\n       command=\"python scripts/train.py --kernel\
+    \ $kernel --penalty $penalty\",\n       experiment_name=\"sklearn-iris-flowers\"\
+    ,\n   )\n\n   # we can reuse an existing Command Job as a function that we can\
+    \ apply inputs to for the sweep configurations\n   from azure.ai.ml.sweep import\
+    \ Uniform\n\n   job_for_sweep = job(\n       kernel=Uniform(min_value=0.0005,\
+    \ max_value=0.005),\n       penalty=Uniform(min_value=0.9, max_value=0.99),\n\
+    \   )\n\n   from azure.ai.ml.sweep import BanditPolicy\n\n   sweep_job = job_for_sweep.sweep(\n\
+    \       sampling_algorithm=\"random\",\n       primary_metric=\"best_val_acc\"\
+    ,\n       goal=\"Maximize\",\n       max_total_trials=8,\n       max_concurrent_trials=4,\n\
+    \       early_termination_policy=BanditPolicy(slack_factor=0.15, evaluation_interval=1,\
+    \ delay_evaluation=10),\n   )\n\n   ````\n"
 - uid: azure.ai.ml.entities.Command.update
   name: update
   summary: 'If E is present and has a .keys() method, then does:  for k in E: D[k]
@@ -352,99 +422,160 @@ methods:
 attributes:
 - uid: azure.ai.ml.entities.Command.base_path
   name: base_path
-  summary: Base path of the resource.
+  summary: The base path of the resource.
   return:
-    description: Base path of the resource
+    description: The base path of the resource.
     types:
     - <xref:str>
 - uid: azure.ai.ml.entities.Command.code
   name: code
+  summary: The source code to run the job.
+  return:
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:str>, <xref:os.PathLike>]]
 - uid: azure.ai.ml.entities.Command.command
   name: command
+  summary: Sets the command to be executed.
+  return:
+    types:
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Command.component
   name: component
+  summary: The ID or instance of the command component or job to be run for the step.
+  return:
+    description: The ID or instance of the command component or job to be run for
+      the step.
+    types:
+    - <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.CommandComponent>]
 - uid: azure.ai.ml.entities.Command.creation_context
   name: creation_context
-  summary: Creation context.
+  summary: The creation context of the resource.
   return:
-    description: Creation metadata of the resource.
+    description: The creation metadata for the resource.
     types:
-    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+    - <xref:Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.entities.Command.distribution
   name: distribution
+  summary: The configuration for the distributed command component or job.
+  return:
+    description: The configuration for distributed jobs.
+    types:
+    - <xref:Union>[<xref:azure.ai.ml.PyTorchDistribution>, <xref:azure.ai.ml.MpiDistribution,azure.ai.ml.TensorFlowDistribution>,
+      <xref:azure.ai.ml.RayDistribution>]
 - uid: azure.ai.ml.entities.Command.id
   name: id
-  summary: Resource ID.
+  summary: The resource ID.
   return:
-    description: Global id of the resource, Azure Resource Manager ID
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Command.identity
   name: identity
-  summary: Configuration of the hyperparameter identity.
+  summary: The identity that the job will use while running on compute.
+  return:
+    description: The identity that the job will use while running on compute.
+    types:
+    - <xref:Optional>[<xref:Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration>,
+      <xref:azure.ai.ml.AmlTokenConfiguration,azure.ai.ml.UserIdentityConfiguration>]]
 - uid: azure.ai.ml.entities.Command.inputs
   name: inputs
+  summary: Get the inputs for the object.
+  return:
+    description: A dictionary containing the inputs for the object.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.Input>, <xref:str>, <xref:bool>,
+      <xref:int>, <xref:float>]]
 - uid: azure.ai.ml.entities.Command.log_files
   name: log_files
   summary: Job output files.
   return:
-    description: Dictionary of log names to url.
+    description: The dictionary of log names and URLs.
     types:
     - <xref:Optional>[<xref:Dict>[<xref:str>, <xref:str>]]
 - uid: azure.ai.ml.entities.Command.name
   name: name
-  summary: Name of the node.
+  summary: Get the name of the node.
+  return:
+    description: The name of the node.
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.entities.Command.outputs
   name: outputs
+  summary: Get the outputs of the object.
+  return:
+    description: A dictionary containing the outputs for the object.
+    types:
+    - <xref:Dict>[<xref:str>, <xref:Union>[<xref:str>, <xref:azure.ai.ml.Output>]]
 - uid: azure.ai.ml.entities.Command.parameters
   name: parameters
-  summary: MLFlow parameters.
+  summary: MLFlow parameters to be logged during the job.
   return:
-    description: MLFlow parameters logged in job.
+    description: The MLFlow parameters to be logged during the job.
     types:
-    - <xref:Dict>[<xref:str>, <xref:str>]
+    - <xref:dict>[<xref:str>, <xref:str>]
 - uid: azure.ai.ml.entities.Command.queue_settings
   name: queue_settings
+  summary: The queue settings for the command component or job.
+  return:
+    description: The queue settings for the command component or job.
+    types:
+    - <xref:azure.ai.ml.entities.QueueSettings>
 - uid: azure.ai.ml.entities.Command.resources
   name: resources
+  summary: The compute resource configuration for the command component or job.
+  return:
+    types:
+    - <xref:azure.ai.ml.entities.JobResourceConfiguration>
 - uid: azure.ai.ml.entities.Command.services
   name: services
+  summary: 'The interactive services for the node.
+
+
+    This is an experimental parameter, and may change at any time.
+
+    Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.'
+  return:
+    types:
+    - <xref:dict>[<xref:str>, <xref:Union>[<xref:azure.ai.ml.entities.JobService>,
+      <xref:azure.ai.ml.entities.JupyterLabJobService,azure.ai.ml.entities.SshJobService>,
+      <xref:azure.ai.ml.entities.TensorBoardJobService,azure.ai.ml.entities.VsCodeJobService>]]
 - uid: azure.ai.ml.entities.Command.status
   name: status
-  summary: "Status of the job.\n\nCommon values returned include \"Running\", \"Completed\"\
-    , and \"Failed\".\n\n> [!NOTE]\n> NotStarted - This is a temporary state client-side\
-    \ Run objects are in before cloud submission.\n>\n> \n>\n> Starting - The Run\
-    \ has started being processed in the cloud. The caller has a run ID at this point.\n\
-    >\n> \n>\n> Provisioning - Returned when on-demand compute is being created for\
-    \ a given job submission.\n>\n> \n>\n> Preparing - The run environment is being\
-    \ prepared:\n>\n> \n>\n> docker image build\n>\n> \n>\n> conda environment setup\n\
-    >\n> \n>\n> Queued - The job is queued in the compute target. For example, in\
-    \ BatchAI the job is in queued state\n>\n> \n>\n> while waiting for all the requested\
-    \ nodes to be ready.\n>\n> \n>\n> Running - The job started to run in the compute\
-    \ target.\n>\n> \n>\n> Finalizing - User code has completed and the run is in\
-    \ post-processing stages.\n>\n> \n>\n> CancelRequested - Cancellation has been\
-    \ requested for the job.\n>\n> \n>\n> Completed - The run completed successfully.\
-    \ This includes both the user code and run\n>\n> \n>\n> post-processing stages.\n\
-    >\n> \n>\n> Failed - The run failed. Usually the Error property on a run will\
-    \ provide details as to why.\n>\n> \n>\n> Canceled - Follows a cancellation request\
-    \ and indicates that the run is now successfully cancelled.\n>\n> \n>\n> NotResponding\
-    \ - For runs that have Heartbeats enabled, no heartbeat has been recently sent.\n\
-    >"
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
   return:
     description: Status of the job.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Command.studio_url
   name: studio_url
   summary: Azure ML studio endpoint.
   return:
-    description: URL to the job detail page.
+    description: The URL to the job details page.
     types:
     - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.Command.type
   name: type
-  summary: Type of the job, supported are 'command' and 'sweep'.
+  summary: The type of the job.
   return:
-    description: Type of the job.
+    description: The type of the job.
     types:
-    - <xref:str>
+    - <xref:Optional>[<xref:str>]
