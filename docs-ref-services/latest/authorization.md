@@ -8,7 +8,7 @@ ms.service: authorization
 ---
 # Azure Authorization libraries for python
 
-## [Management API](/python/api/overview/azure-mgmt-authorization)
+## [Management API](/python/api/overview/azure/authorization/management)
 
 ```bash
 pip install azure-mgmt-authorization
@@ -56,4 +56,4 @@ permissions = self.authorization_client.permissions.list_for_resource_group(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mgmt-authorization-readme)
+> [Explore the Management APIs](/python/api/overview/azure-mgmt-authorization)
