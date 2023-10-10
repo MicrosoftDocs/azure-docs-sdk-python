@@ -71,4 +71,4 @@ scheduler_client.job_collections.create_or_update(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/scheduler/management)
+> [Explore the Management APIs](/python/api/overview/azure/scheduler/management/resourcemanagement-scheduler)

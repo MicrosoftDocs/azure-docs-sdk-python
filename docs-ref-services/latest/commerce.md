@@ -63,4 +63,4 @@ usage_iterator = commerce_client.usage_aggregates.list(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/commerce/management)
+> [Explore the Management APIs](/python/api/azure-containerregistry)
