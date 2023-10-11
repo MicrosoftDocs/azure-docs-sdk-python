@@ -20,5 +20,5 @@ ms.technology: azure
 pip install azure-mgmt-billing
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure-mgmt-billing/)
+> [Explore the Management APIs](/python/api/azure-mgmt-billing)
 

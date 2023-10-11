@@ -1,13 +1,13 @@
 ---
 title: Azure Commerce SDK for Python
 description: Reference for Azure Commerce SDK for Python
-ms.date: 10/09/2023
+ms.date: 10/10/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: commerce
-manager: routlaw
-ms.technology: azure
 keywords: Azure, python, SDK, API, Commerce
+ms.technology: azure
+manager: routlaw
 ---
 # Azure Commerce libraries for python
 
@@ -66,4 +66,4 @@ usage_iterator = commerce_client.usage_aggregates.list(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure-containerregistry)
+> [Explore the Management APIs](/python/api/azure-mgmt-commerce)
