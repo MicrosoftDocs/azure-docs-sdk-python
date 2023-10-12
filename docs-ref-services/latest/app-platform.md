@@ -1,7 +1,7 @@
 ---
 title: Azure App Platform SDK for Python
 description: Reference for Azure App Platform SDK for Python
-ms.date: 10/11/2023
+ms.date: 10/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: appplatform
