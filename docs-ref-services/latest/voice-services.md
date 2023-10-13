@@ -1,7 +1,7 @@
 ---
 title: Azure Voice Services SDK for Python
 description: Reference for Azure Voice Services SDK for Python
-ms.date: 10/12/2023
+ms.date: 10/13/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: voiceservices
