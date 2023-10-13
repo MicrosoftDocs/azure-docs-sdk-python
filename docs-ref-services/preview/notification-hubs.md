@@ -1,28 +1,14 @@
-<<<<<<< HEAD
 ---
 title: Azure Notification Hubs SDK for Python
 description: Reference for Azure Notification Hubs SDK for Python
-ms.date: 10/09/2023
-ms.topic: reference
-ms.devlang: python
-ms.service: notificationhubs
-manager: routlaw
-ms.technology: azure
-keywords: Azure, python, SDK, API, Notification Hubs
----
-=======
----
-title: Azure Notification Hubs SDK for Python
-description: Reference for Azure Notification Hubs SDK for Python
-ms.date: 10/10/2023
+ms.date: 10/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: notificationhubs
 keywords: Azure, python, SDK, API, Notification Hubs
-ms.technology: azure
 manager: routlaw
+ms.technology: azure
 ---
->>>>>>> 928f1d3c7386d0d173fb127efc9170aaddeb4ee7
 # Azure Notification Hubs libraries for python
 
 ## [Management API](/python/api/overview/azure/notificationhubs/management)
