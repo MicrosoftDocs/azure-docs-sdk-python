@@ -24,7 +24,7 @@ pip install azure-mgmt-privatedns
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure-mgmt-privatedns/azure.mgmt.privatedns)
+> [Explore the Management APIs](/python/api/azure-mgmt-privatedns)
 
 ## Samples
 

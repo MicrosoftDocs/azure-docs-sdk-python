@@ -125,7 +125,7 @@ This example deletes several container groups from a resource group, as well as 
 * Explore more [sample Python code][samples-python] you can use in your apps.
 
 > [!div class="nextstepaction"]
-> [Explore the management APIs](/python/api/overview/azure/containerinstance/management)
+> [Explore the management APIs](/python/api/azure-mgmt-containerinstance)
 
 <!-- LINKS - External -->
 [aci-docs-sample-python]: https://github.com/Azure-Samples/aci-docs-sample-python

@@ -57,4 +57,4 @@ endpoint = endpoint_poller.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/cdn/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-cdn)

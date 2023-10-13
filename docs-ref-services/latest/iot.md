@@ -73,4 +73,4 @@ iothub = async_iot_hub.result() # Blocking wait for creation
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mgmt-iothub-readme)
+> [Explore the Management APIs](/python/api/azure-mgmt-iothub)

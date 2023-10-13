@@ -20,4 +20,4 @@ ms.technology: azure
 pip install azure-mgmt-logic
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/logicapps/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-logic)

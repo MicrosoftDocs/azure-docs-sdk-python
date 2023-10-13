@@ -18,5 +18,5 @@ pip install azure-mgmt-powerbiembedded
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/powerbiembedded/management/resourcemanagement-powerbiembedded)
+> [Explore the Management APIs](/python/api/azure-mgmt-powerbiembedded)
 
