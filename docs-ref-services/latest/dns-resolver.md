@@ -1,7 +1,7 @@
 ---
 title: Azure DNS Resolver SDK for Python
 description: Reference for Azure DNS Resolver SDK for Python
-ms.date: 10/13/2023
+ms.date: 10/16/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: dnsresolver
