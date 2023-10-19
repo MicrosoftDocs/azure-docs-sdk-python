@@ -1,7 +1,7 @@
 ---
 title: Azure Data Box Edge SDK for Python
 description: Reference for Azure Data Box Edge SDK for Python
-ms.date: 10/18/2023
+ms.date: 10/19/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: databoxedge
