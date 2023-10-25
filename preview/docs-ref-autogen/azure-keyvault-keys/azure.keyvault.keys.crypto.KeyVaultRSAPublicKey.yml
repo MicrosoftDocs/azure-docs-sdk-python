@@ -1,0 +1,195 @@
+### YamlMime:PythonClass
+uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey
+name: KeyVaultRSAPublicKey
+fullName: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey
+module: azure.keyvault.keys.crypto
+inheritances:
+- cryptography.hazmat.primitives.asymmetric.rsa.RSAPublicKey
+summary: 'An *RSAPublicKey* implementation based on a key managed by Key Vault.
+
+
+  Only synchronous clients and operations are supported at this time.
+
+
+  Creates a *KeyVaultRSAPublicKey* from a *CryptographyClient* and key.'
+constructor:
+  syntax: 'KeyVaultRSAPublicKey(client: CryptographyClient, key_material: JsonWebKey)'
+  parameters:
+  - name: client
+    description: The client that will be used to communicate with Key Vault.
+    isRequired: true
+    types:
+    - <xref:azure.keyvault.keys.crypto.CryptographyClient>
+  - name: key_material
+    description: They Key Vault key's material, as a *JsonWebKey*.
+    isRequired: true
+    types:
+    - <xref:azure.keyvault.keys.JsonWebKey>
+methods:
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.encrypt
+  name: encrypt
+  summary: Encrypts the given plaintext.
+  signature: 'encrypt(plaintext: bytes, padding: AsymmetricPadding) -> bytes'
+  parameters:
+  - name: plaintext
+    description: Plaintext to encrypt.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: padding
+    description: 'The padding to use. Supported paddings are *OAEP* and *PKCS1v15*.
+      For *OAEP* padding, supported
+
+      hash algorithms are *SHA1* and *SHA256*. The only supported mask generation
+      function is *MGF1*. See
+
+      [https://learn.microsoft.com/azure/key-vault/keys/about-keys-details](https://learn.microsoft.com/azure/key-vault/keys/about-keys-details)
+      for details.'
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.asymmetric.padding.AsymmetricPadding>
+  return:
+    description: The encrypted ciphertext, as bytes.
+    types:
+    - <xref:bytes>
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.public_bytes
+  name: public_bytes
+  summary: 'Allows serialization of the key to bytes.
+
+
+    This function uses the *cryptography* library''s implementation.
+
+    Encoding (*PEM* or *DER*) and format (*SubjectPublicKeyInfo* or *PKCS1*) are chosen
+    to define the exact
+
+    serialization.'
+  signature: 'public_bytes(encoding: Encoding, format: PublicFormat) -> bytes'
+  parameters:
+  - name: encoding
+    description: A value from the *Encoding* enum.
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.serialization.Encoding>
+  - name: format
+    description: A value from the *PublicFormat* enum.
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.serialization.PublicFormat>
+  return:
+    description: The serialized key.
+    types:
+    - <xref:bytes>
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.public_numbers
+  name: public_numbers
+  summary: Returns an *RSAPublicNumbers* representing the key's public numbers.
+  signature: public_numbers() -> RSAPublicNumbers
+  return:
+    description: The public numbers of the key.
+    types:
+    - <xref:RSAPublicNumbers>
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.recover_data_from_signature
+  name: recover_data_from_signature
+  summary: "Recovers the signed data from the signature. Only supported with *cryptography*\
+    \ version 3.3 and above.\n\nThis function uses the *cryptography* library's implementation.\n\
+    The data typically contains the digest of the original message string. The *padding*\
+    \ and *algorithm* parameters\nmust match the ones used when the signature was\
+    \ created for the recovery to succeed.\nThe *algorithm* parameter can also be\
+    \ set to None to recover all the data present in the signature, without\nregard\
+    \ to its format or the hash algorithm used for its creation.\n\nFor *PKCS1v15*\
+    \ padding, this method returns the data after removing the padding layer. For\
+    \ standard signatures\nthe data contains the full *DigestInfo* structure. For\
+    \ non-standard signatures, any data can be returned,\nincluding zero-length data.\n\
+    \nNormally you should use the *verify()* function to validate the signature. But\
+    \ for some non-standard signature\nformats you may need to explicitly recover\
+    \ and validate the signed data. The following are some examples:\n\n   * Some\
+    \ old Thawte and Verisign timestamp certificates without *DigestInfo*. \n\n  \
+    \ * Signed MD5/SHA1 hashes in TLS 1.1 or earlier ([RFC 4346](https://datatracker.ietf.org/doc/html/rfc4346.html),\
+    \ section 4.7). \n\n   * IKE version 1 signatures without *DigestInfo* ([RFC 2409](https://datatracker.ietf.org/doc/html/rfc2409.html),\
+    \ section 5.1)."
+  signature: 'recover_data_from_signature(signature: bytes, padding: AsymmetricPadding,
+    algorithm: HashAlgorithm | None) -> bytes'
+  parameters:
+  - name: signature
+    description: The signature.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: padding
+    description: An instance of *AsymmetricPadding*. Recovery is only supported with
+      some of the padding types.
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.asymmetric.padding.AsymmetricPadding>
+  - name: algorithm
+    description: An instance of *HashAlgorithm*. Can be None to return all the data
+      present in the signature.
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.hashes.HashAlgorithm>
+  return:
+    description: The signed data.
+    types:
+    - <xref:bytes>
+  exceptions:
+  - type: cryptography.exceptions.InvalidSignature
+    description: if the signature is invalid.
+  - type: cryptography.exceptions.UnsupportedAlgorithm
+    description: if the signature data recovery is not supported with the provided
+      *padding* type.
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.verifier
+  name: verifier
+  summary: Not implemented. This method was deprecated in *cryptography* 2.0 and removed
+    in 37.0.0.
+  signature: 'verifier(signature: bytes, padding: AsymmetricPadding, algorithm: HashAlgorithm)
+    -> NoReturn'
+  parameters:
+  - name: signature
+    isRequired: true
+  - name: padding
+    isRequired: true
+  - name: algorithm
+    isRequired: true
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.verify
+  name: verify
+  summary: Verifies the signature of the data.
+  signature: 'verify(signature: bytes, data: bytes, padding: AsymmetricPadding, algorithm:
+    Prehashed | HashAlgorithm) -> None'
+  parameters:
+  - name: signature
+    description: The signature to sign, as bytes.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: data
+    description: The message string that was signed., as bytes.
+    isRequired: true
+    types:
+    - <xref:bytes>
+  - name: padding
+    description: 'The padding to use. Supported paddings are *PKCS1v15* and *PSS*.
+      For *PSS*, the only supported
+
+      mask generation function is *MGF1*. See [https://learn.microsoft.com/azure/key-vault/keys/about-keys-details](https://learn.microsoft.com/azure/key-vault/keys/about-keys-details)
+
+      for details.'
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.asymmetric.padding.AsymmetricPadding>
+  - name: algorithm
+    description: "The algorithm to sign with. Only *HashAlgorithm`s are supported\
+      \ \u2013 specifically, `SHA256*,\n*SHA384*, and *SHA512*."
+    isRequired: true
+    types:
+    - <xref:cryptography.hazmat.primitives.asymmetric.utils.Prehashed>
+    - <xref:cryptography.hazmat.primitives.hashes.HashAlgorithm>
+  exceptions:
+  - type: InvalidSignature
+    description: If the signature does not validate.
+attributes:
+- uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.key_size
+  name: key_size
+  summary: The bit length of the public modulus.
+  return:
+    description: The key's size.
+    types:
+    - <xref:int>

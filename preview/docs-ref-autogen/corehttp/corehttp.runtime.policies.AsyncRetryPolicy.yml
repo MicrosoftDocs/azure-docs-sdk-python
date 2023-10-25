@@ -1,0 +1,108 @@
+### YamlMime:PythonClass
+uid: corehttp.runtime.policies.AsyncRetryPolicy
+name: AsyncRetryPolicy
+fullName: corehttp.runtime.policies.AsyncRetryPolicy
+module: corehttp.runtime.policies
+inheritances:
+- corehttp.runtime.policies._retry.RetryPolicyBase
+- corehttp.runtime.policies._base_async.AsyncHTTPPolicy
+summary: 'Async flavor of the retry policy.
+
+
+  The async retry policy in the pipeline can be configured directly, or tweaked on
+  a per-call basis.'
+constructor:
+  syntax: 'AsyncRetryPolicy(**kwargs: Any)'
+  parameters:
+  - name: retry_total
+    description: 'Total number of retries to allow. Takes precedence over other counts.
+
+      Default value is 10.'
+    types:
+    - <xref:int>
+  - name: retry_connect
+    description: 'How many connection-related errors to retry on.
+
+      These are errors raised before the request is sent to the remote server,
+
+      which we assume has not triggered the server to process the request. Default
+      value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_read
+    description: 'How many times to retry on read errors.
+
+      These errors are raised after the request was sent to the server, so the
+
+      request may have side-effects. Default value is 3.'
+    types:
+    - <xref:int>
+  - name: retry_status
+    description: How many times to retry on bad status codes. Default value is 3.
+    types:
+    - <xref:int>
+  - name: retry_backoff_factor
+    description: 'A backoff factor to apply between attempts after the second try
+
+      (most errors are resolved immediately by a second try without a delay).
+
+      Retry policy will sleep for: *{backoff factor} * (2 ** ({number of total retries}
+      - 1))*
+
+      seconds. If the backoff_factor is 0.1, then the retry will sleep
+
+      for [0.0s, 0.2s, 0.4s, ...] between retries. The default value is 0.8.'
+    types:
+    - <xref:float>
+  - name: retry_backoff_max
+    description: The maximum back off time. Default value is 120 seconds (2 minutes).
+    types:
+    - <xref:int>
+methods:
+- uid: corehttp.runtime.policies.AsyncRetryPolicy.send
+  name: send
+  summary: Uses the configured retry policy to send the request to the next policy
+    in the pipeline.
+  signature: 'async send(request: PipelineRequest[HttpRequest]) -> PipelineResponse[HttpRequest,
+    AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The PipelineRequest object
+    isRequired: true
+    types:
+    - <xref:<xref:corehttp.runtime.pipeline#corehttp.runtime.pipeline.PipelineRequest>>
+  return:
+    description: Returns the PipelineResponse or raises error if maximum retries exceeded.
+    types:
+    - '[<xref:PipelineResponse>](<xref:corehttp.runtime.pipeline#corehttp.runtime.pipeline.PipelineResponse>)'
+- uid: corehttp.runtime.policies.AsyncRetryPolicy.sleep
+  name: sleep
+  summary: 'Sleep between retry attempts.
+
+
+    This method will respect a server''s `Retry-After` response header
+
+    and sleep the duration of the time requested. If that is not present, it
+
+    will use an exponential backoff. By default, the backoff factor is 0 and
+
+    this method will return immediately.'
+  signature: 'async sleep(settings: Dict[str, Any], transport: AsyncHttpTransport[HttpRequest,
+    AsyncHttpResponse], response: PipelineResponse[HttpRequest, AsyncHttpResponse]
+    | None = None) -> None'
+  parameters:
+  - name: settings
+    description: The retry settings.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: transport
+    description: The HTTP transport type.
+    isRequired: true
+    types:
+    - <xref:<xref:corehttp.transport#corehttp.transport.AsyncHttpTransport>>
+  - name: response
+    description: The PipelineResponse object.
+    defaultValue: None
+    types:
+    - <xref:<xref:corehttp.runtime.pipeline#corehttp.runtime.pipeline.PipelineResponse>>
