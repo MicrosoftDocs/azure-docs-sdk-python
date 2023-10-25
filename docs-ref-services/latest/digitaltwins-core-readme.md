@@ -305,7 +305,7 @@ for relationship in hospital_relationships:
 `list_relationships` and `list_incoming_relationships` lists all the relationships and all incoming relationships respectively of a digital twin.
 
 ```Python Snippet:dt_relationships_list
-relationships = service_client.list_relationships(digital_twint_id)
+relationships = service_client.list_relationships(digital_twin_id)
 for relationship in relationships:
     print(relationship)
 ```
