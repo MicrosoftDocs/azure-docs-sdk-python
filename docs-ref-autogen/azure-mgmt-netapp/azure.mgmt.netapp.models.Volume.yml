@@ -27,8 +27,9 @@ constructor:
     | None = None, smb_continuously_available: bool = False, throughput_mibps: float
     | None = None, encryption_key_source: str | _models.EncryptionKeySource = ''Microsoft.NetApp'',
     key_vault_private_endpoint_resource_id: str | None = None, ldap_enabled: bool
-    = False, cool_access: bool = False, coolness_period: int | None = None, unix_permissions:
-    str = ''0770'', avs_data_store: str | _models.AvsDataStore = ''Disabled'', is_default_quota_enabled:
+    = False, cool_access: bool = False, coolness_period: int | None = None, cool_access_retrieval_policy:
+    str | _models.CoolAccessRetrievalPolicy | None = None, unix_permissions: str |
+    None = None, avs_data_store: str | _models.AvsDataStore = ''Disabled'', is_default_quota_enabled:
     bool = False, default_user_quota_in_ki_bs: int = 0, default_group_quota_in_ki_bs:
     int = 0, capacity_pool_resource_id: str | None = None, proximity_placement_group:
     str | None = None, volume_spec_name: str | None = None, placement_rules: List[_models.PlacementKeyValuePairs]
@@ -67,7 +68,7 @@ constructor:
       soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB,
       500Tib for
 
-      LargeVolume. Specified in bytes.'
+      LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes.'
     types:
     - <xref:int>
   - name: export_policy
@@ -100,9 +101,9 @@ constructor:
     types:
     - <xref:str>
   - name: network_features
-    description: 'Basic network, or Standard features available to the volume. Known
+    description: 'Network features available to the volume, or current state of
 
-      values are: "Basic" and "Standard".'
+      update. Known values are: "Basic", "Standard", "Basic_Standard", and "Standard_Basic".'
     types:
     - <xref:str>
     - <xref:azure.mgmt.netapp.models.NetworkFeatures>
@@ -151,7 +152,7 @@ constructor:
     types:
     - <xref:bool>
   - name: smb_access_based_enumeration
-    description: 'Enables access based enumeration share property for SMB
+    description: 'Enables access-based enumeration share property for SMB
 
       Shares. Only applicable for SMB/DualProtocol volume. Known values are: "Disabled"
       and
@@ -161,7 +162,7 @@ constructor:
     - <xref:str>
     - <xref:azure.mgmt.netapp.models.SmbAccessBasedEnumeration>
   - name: smb_non_browsable
-    description: 'Enables non browsable property for SMB Shares. Only applicable for
+    description: 'Enables non-browsable property for SMB Shares. Only applicable for
 
       SMB/DualProtocol volume. Known values are: "Disabled" and "Enabled".'
     types:
@@ -216,6 +217,18 @@ constructor:
       clients will be tiered.'
     types:
     - <xref:int>
+  - name: cool_access_retrieval_policy
+    description: "coolAccessRetrievalPolicy determines the data retrieval\nbehavior\
+      \ from the cool tier to standard storage based on the read pattern for cool\
+      \ access\nenabled volumes. The possible values for this field are:\n\n   Default\
+      \ - Data will be pulled from cool tier to standard storage on random reads.\
+      \ This policy\n\nis the default.\n   OnRead - All client-driven data read is\
+      \ pulled from cool tier to standard storage on both\n\nsequential and random\
+      \ reads.\n   Never - No client-driven data is pulled from cool tier to standard\
+      \ storage. Known values are:\n\n\"Default\", \"OnRead\", and \"Never\"."
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.CoolAccessRetrievalPolicy>
   - name: unix_permissions
     description: 'UNIX permissions for NFS volume accepted in octal 4 digit format.
 
@@ -351,7 +364,7 @@ variables:
     quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB,
     500Tib for
 
-    LargeVolume. Specified in bytes.'
+    LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes.'
   name: usage_threshold
   types:
   - <xref:int>
@@ -392,9 +405,9 @@ variables:
   name: subnet_id
   types:
   - <xref:str>
-- description: 'Basic network, or Standard features available to the volume. Known
+- description: 'Network features available to the volume, or current state of update.
 
-    values are: "Basic" and "Standard".'
+    Known values are: "Basic", "Standard", "Basic_Standard", and "Standard_Basic".'
   name: network_features
   types:
   - <xref:str>
@@ -459,7 +472,7 @@ variables:
   name: smb_encryption
   types:
   - <xref:bool>
-- description: 'Enables access based enumeration share property for SMB
+- description: 'Enables access-based enumeration share property for SMB
 
     Shares. Only applicable for SMB/DualProtocol volume. Known values are: "Disabled"
     and
@@ -469,7 +482,7 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.netapp.models.SmbAccessBasedEnumeration>
-- description: 'Enables non browsable property for SMB Shares. Only applicable for
+- description: 'Enables non-browsable property for SMB Shares. Only applicable for
 
     SMB/DualProtocol volume. Known values are: "Disabled" and "Enabled".'
   name: smb_non_browsable
@@ -530,6 +543,18 @@ variables:
   name: coolness_period
   types:
   - <xref:int>
+- description: "coolAccessRetrievalPolicy determines the data retrieval\nbehavior\
+    \ from the cool tier to standard storage based on the read pattern for cool access\n\
+    enabled volumes. The possible values for this field are:\n\n   Default - Data\
+    \ will be pulled from cool tier to standard storage on random reads. This policy\n\
+    \nis the default.\n   OnRead - All client-driven data read is pulled from cool\
+    \ tier to standard storage on both\n\nsequential and random reads.\n   Never -\
+    \ No client-driven data is pulled from cool tier to standard storage. Known values\
+    \ are:\n\n\"Default\", \"OnRead\", and \"Never\"."
+  name: cool_access_retrieval_policy
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.CoolAccessRetrievalPolicy>
 - description: 'UNIX permissions for NFS volume accepted in octal 4 digit format.
     First
 

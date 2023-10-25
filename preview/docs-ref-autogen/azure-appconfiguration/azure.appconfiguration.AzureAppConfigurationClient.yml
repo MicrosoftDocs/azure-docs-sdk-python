@@ -8,7 +8,7 @@ inheritances:
 summary: Represents a client that calls restful API of Azure App Configuration service.
 constructor:
   syntax: 'AzureAppConfigurationClient(base_url: str, credential: TokenCredential,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: base_url
     description: Base url of the service.
@@ -64,7 +64,7 @@ methods:
     The retention period will start to count, the snapshot will expire when the entire
     retention period elapses.'
   signature: 'archive_snapshot(name: str, *, match_condition: MatchConditions = MatchConditions.Unconditionally,
-    etag: str | None = None, **kwargs) -> Snapshot'
+    etag: str | None = None, **kwargs) -> ConfigurationSnapshot'
   parameters:
   - name: name
     description: The name of the configuration setting snapshot to archive.
@@ -74,24 +74,23 @@ methods:
   - name: match_condition
     description: The match condition to use upon the etag.
   - name: etag
-    description: Check if the Snapshot is changed. Set None to skip checking etag.
-    types:
-    - <xref:str>
+    description: Check if the ConfigurationSnapshot is changed. Set None to skip checking
+      etag.
   return:
-    description: The Snapshot returned from the service.
+    description: The ConfigurationSnapshot returned from the service.
     types:
-    - <xref:azure.appconfiguration.Snapshot>
+    - <xref:azure.appconfiguration.ConfigurationSnapshot>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.begin_create_snapshot
   name: begin_create_snapshot
   summary: Create a snapshot of the configuration settings.
-  signature: 'begin_create_snapshot(name: str, filters: List[ConfigurationSettingFilter],
+  signature: 'begin_create_snapshot(name: str, filters: List[ConfigurationSettingsFilter],
     *, composition_type: Literal[''key'', ''key_label''] | None = None, retention_period:
-    int | None = None, tags: Dict[str, str] | None = None, **kwargs) -> LROPoller[Snapshot]'
+    int | None = None, tags: Dict[str, str] | None = None, **kwargs) -> LROPoller[ConfigurationSnapshot]'
   parameters:
   - name: name
-    description: The name of the snapshot to create.
+    description: The name of the configuration snapshot to create.
     isRequired: true
     types:
     - <xref:str>
@@ -99,45 +98,40 @@ methods:
     description: 'A list of filters used to filter the configuration settings by key
       field and label field
 
-      included in the snapshot.'
+      included in the configuration snapshot.'
     isRequired: true
     types:
-    - <xref:list>[<xref:azure.appconfiguration.ConfigurationSettingFilter>]
+    - <xref:list>[<xref:azure.appconfiguration.ConfigurationSettingsFilter>]
   - name: composition_type
-    description: 'The composition type describes how the key-values
+    description: 'The composition type describes how the key-values within the configuration
 
-      within the snapshot are composed. Known values are: "key" and "key_label". The
-      "key" composition type
+      snapshot are composed. Known values are: "key" and "key_label". The "key" composition
+      type
 
       ensures there are no two key-values containing the same key. The ''key_label''
       composition type ensures
 
       there are no two key-values containing the same key and label.'
-    types:
-    - <xref:str>
   - name: retention_period
-    description: 'The amount of time, in seconds, that a snapshot will remain in the
+    description: 'The amount of time, in seconds, that a configuration snapshot will
+      remain in the
 
       archived state before expiring. This property is only writable during the creation
-      of a
+      of a configuration
 
       snapshot. If not specified, will set to 2592000(30 days). If specified, should
       be
 
       in range 3600(1 hour) to 7776000(90 days).'
-    types:
-    - <xref:int>
   - name: tags
-    description: The tags of the snapshot.
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    description: The tags of the configuration snapshot.
   return:
-    description: 'A poller for create snapshot operation. Call *result()* on this
-      object to wait for the
+    description: 'A poller for create configuration snapshot operation. Call *result()*
+      on this object to wait for the
 
       operation to complete and get the created snapshot.'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.appconfiguration.Snapshot>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.appconfiguration.ConfigurationSnapshot>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.close
@@ -196,7 +190,7 @@ methods:
     \   from azure.appconfiguration import AzureAppConfigurationClient\n   connection_str\
     \ = \"<my connection string>\"\n   client = AzureAppConfigurationClient.from_connection_string(connection_str)\n\
     \   ````"
-  signature: 'from_connection_string(connection_string: str, **kwargs) -> AzureAppConfigurationClient'
+  signature: 'from_connection_string(connection_string: str, **kwargs: Any) -> AzureAppConfigurationClient'
   parameters:
   - name: connection_string
     description: 'Connection String
@@ -265,7 +259,7 @@ methods:
   name: get_snapshot
   summary: Get a configuration setting snapshot.
   signature: 'get_snapshot(name: str, *, fields: List[str] | None = None, **kwargs)
-    -> Snapshot'
+    -> ConfigurationSnapshot'
   parameters:
   - name: name
     description: The name of the configuration setting snapshot to retrieve.
@@ -275,59 +269,16 @@ methods:
   - name: fields
     description: Specify which fields to include in the results. Leave None to include
       all fields.
-    types:
-    - <xref:list>[<xref:str>]
   return:
-    description: The Snapshot returned from the service.
+    description: The ConfigurationSnapshot returned from the service.
     types:
-    - <xref:azure.appconfiguration.Snapshot>
+    - <xref:azure.appconfiguration.ConfigurationSnapshot>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.list_configuration_settings
   name: list_configuration_settings
-  summary: "List the configuration settings stored in the configuration service, optionally\
-    \ filtered by\nkey, label and accept_datetime.\n\nExample\n\n<!-- literal_block\
-    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
-    : [], \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\"\
-    , \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n   from datetime\
-    \ import datetime, timedelta\n\n   accept_datetime = datetime.utcnow() + timedelta(days=-1)\n\
-    \n   all_listed = client.list_configuration_settings()\n   for item in all_listed:\n\
-    \       pass  # do something\n\n   filtered_listed = client.list_configuration_settings(\n\
-    \       label_filter=\"Labe*\", key_filter=\"Ke*\", accept_datetime=str(accept_datetime)\n\
-    \   )\n   for item in filtered_listed:\n       pass  # do something\n   ````"
-  signature: 'list_configuration_settings(key_filter: str | None = None, label_filter:
-    str | None = None, **kwargs) -> ItemPaged[ConfigurationSetting]'
-  parameters:
-  - name: key_filter
-    description: 'filter results based on their keys. ''*'' can be
-
-      used as wildcard in the beginning or end of the filter'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: label_filter
-    description: 'filter results based on their label. ''*'' can be
-
-      used as wildcard in the beginning or end of the filter'
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: accept_datetime
-    description: retrieve ConfigurationSetting existed at this datetime
-    types:
-    - <xref:str>
-  - name: fields
-    description: specify which fields to include in the results. Leave None to include
-      all fields
-    types:
-    - <xref:list>[<xref:str>]
-  return:
-    description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
-    types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.appconfiguration.ConfigurationSetting>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-  - type: azure.core.exceptions.ClientAuthenticationError
+  signature: 'list_configuration_settings(*, key_filter: str | None = None, label_filter:
+    str | None = None, **kwargs: Any) -> ItemPaged[ConfigurationSetting]'
 - uid: azure.appconfiguration.AzureAppConfigurationClient.list_revisions
   name: list_revisions
   summary: "Find the ConfigurationSetting revision history, optionally filtered by\
@@ -373,35 +324,6 @@ methods:
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ClientAuthenticationError
-- uid: azure.appconfiguration.AzureAppConfigurationClient.list_snapshot_configuration_settings
-  name: list_snapshot_configuration_settings
-  summary: 'List the configuration settings stored under a snapshot in the configuration
-    service, optionally filtered by
-
-    accept_datetime and fields to present in return.'
-  signature: 'list_snapshot_configuration_settings(name: str, *, accept_datetime:
-    str | None = None, fields: List[str] | None = None, **kwargs) -> ItemPaged[ConfigurationSetting]'
-  parameters:
-  - name: name
-    description: The snapshot name.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: accept_datetime
-    description: Filter out ConfigurationSetting created after this datetime
-    types:
-    - <xref:str>
-  - name: fields
-    description: Specify which fields to include in the results. Leave None to include
-      all fields
-    types:
-    - <xref:list>[<xref:str>]
-  return:
-    description: An iterator of <xref:azure.appconfiguration.ConfigurationSetting>
-    types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.appconfiguration.ConfigurationSetting>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.list_snapshots
   name: list_snapshots
   summary: 'List the configuration setting snapshots stored in the configuration service,
@@ -409,25 +331,19 @@ methods:
 
     snapshot name, snapshot status and fields to present in return.'
   signature: 'list_snapshots(*, name: str | None = None, fields: List[str] | None
-    = None, status: List[str] | None = None, **kwargs) -> ItemPaged[Snapshot]'
+    = None, status: List[str | SnapshotStatus] | None = None, **kwargs) -> ItemPaged[ConfigurationSnapshot]'
   parameters:
   - name: name
     description: Filter results based on snapshot name.
-    types:
-    - <xref:str>
   - name: fields
     description: Specify which fields to include in the results. Leave None to include
       all fields.
-    types:
-    - <xref:list>[<xref:str>]
   - name: status
     description: Filter results based on snapshot keys.
-    types:
-    - <xref:list>[<xref:str>]
   return:
-    description: An iterator of <xref:azure.appconfiguration.Snapshot>
+    description: An iterator of <xref:azure.appconfiguration.ConfigurationSnapshot>
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.appconfiguration.Snapshot>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.appconfiguration.ConfigurationSnapshot>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.recover_snapshot
@@ -435,7 +351,7 @@ methods:
   summary: Recover a configuration setting snapshot. It will update the status of
     a snapshot from "archived" to "ready".
   signature: 'recover_snapshot(name: str, *, match_condition: MatchConditions = MatchConditions.Unconditionally,
-    etag: str | None = None, **kwargs) -> Snapshot'
+    etag: str | None = None, **kwargs) -> ConfigurationSnapshot'
   parameters:
   - name: name
     description: The name of the configuration setting snapshot to recover.
@@ -445,13 +361,12 @@ methods:
   - name: match_condition
     description: The match condition to use upon the etag.
   - name: etag
-    description: Check if the Snapshot is changed. Set None to skip checking etag.
-    types:
-    - <xref:str>
+    description: Check if the ConfigurationSnapshot is changed. Set None to skip checking
+      etag.
   return:
-    description: The Snapshot returned from the service.
+    description: The ConfigurationSnapshot returned from the service.
     types:
-    - <xref:azure.appconfiguration.Snapshot>
+    - <xref:azure.appconfiguration.ConfigurationSnapshot>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.appconfiguration.AzureAppConfigurationClient.set_configuration_setting

@@ -1,0 +1,732 @@
+### YamlMime:PythonClass
+uid: azure.cosmos.database.DatabaseProxy
+name: DatabaseProxy
+fullName: azure.cosmos.database.DatabaseProxy
+module: azure.cosmos.database
+inheritances:
+- builtins.object
+summary: "An interface to interact with a specific database.\n\nThis class should\
+  \ not be instantiated directly. Instead use the\n<xref:CosmosClient.get_database_client>\
+  \ method.\n\nA database contains one or more containers, each of which can contain\
+  \ items,\nstored procedures, triggers, and user-defined functions.\n\nA database\
+  \ can also have associated users, each of which is configured with\na set of permissions\
+  \ for accessing certain containers, stored procedures,\ntriggers, user-defined functions,\
+  \ or items.\n\nAn Azure Cosmos DB SQL API database has the following system-generated\n\
+  properties. These properties are read-only:\n\n* *_rid*:   The resource ID. \n\n\
+  * *_ts*:    When the resource was last updated. The value is a timestamp. \n\n*\
+  \ *_self*:  The unique addressable URI for the resource. \n\n* *_etag*:  The resource\
+  \ etag required for optimistic concurrency control. \n\n* *_colls*: The addressable\
+  \ path of the collections resource. \n\n* *_users*: The addressable path of the\
+  \ users resource."
+constructor:
+  syntax: 'DatabaseProxy(client_connection: CosmosClientConnection, id: str, properties:
+    Dict[str, Any] = None)'
+  parameters:
+  - name: client_connection
+    description: Client from which this database was retrieved.
+    isRequired: true
+    types:
+    - <xref:ClientSession>
+  - name: id
+    description: ID (name) of the database.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: properties
+    defaultValue: None
+variables:
+- description: The ID (name) of the database.
+  name: id
+methods:
+- uid: azure.cosmos.database.DatabaseProxy.create_container
+  name: create_container
+  summary: 'Create a new container with the given ID (name).
+
+
+    If a container with the given ID already exists, a CosmosResourceExistsError is
+    raised.'
+  signature: 'create_container(id: str  # pylint: disable=redefined-builtin, partition_key:
+    ~azure.cosmos.PartitionKey, indexing_policy: Optional[Dict[str, Any]] = None,
+    default_ttl: Optional[int] = None, populate_query_metrics: Optional[bool] # pylint:disable=docstring-missing-param
+    = None, offer_throughput: Optional[Union[int, ThroughputProperties]] = None, unique_key_policy:
+    Optional[Dict[str, Any]] = None, conflict_resolution_policy: Optional[Dict[str,
+    Any]] = None, **kwargs: Any) -> ContainerProxy'
+  parameters:
+  - name: id
+    description: ID (name) of container to create.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: partition_key
+    description: The partition key to use for the container.
+    isRequired: true
+    types:
+    - <xref:azure.cosmos.PartitionKey>
+  - name: indexing_policy
+    description: The indexing policy to apply to the container.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: default_ttl
+    description: Default time to live (TTL) for items in the container. If unused,
+      items do not expire.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: offer_throughput
+    description: The provisioned throughput for this offer.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
+  - name: unique_key_policy
+    description: The unique key policy to apply to the container.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: conflict_resolution_policy
+    description: The conflict resolution policy to apply to the container.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  - name: analytical_storage_ttl
+    description: 'Analytical store time to live (TTL) for items in the container.  A
+      value of
+
+      None leaves analytical storage off and a value of -1 turns analytical storage
+      on with no TTL. Please
+
+      note that analytical storage can only be enabled on Synapse Link enabled accounts.'
+    types:
+    - <xref:int>
+  return:
+    description: A *ContainerProxy* instance representing the new container.
+    types:
+    - <xref:azure.cosmos.ContainerProxy>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The container creation failed.
+- uid: azure.cosmos.database.DatabaseProxy.create_container_if_not_exists
+  name: create_container_if_not_exists
+  summary: 'Create a container if it does not exist already.
+
+
+    If the container already exists, the existing settings are returned.
+
+    Note: it does not check or update the existing container settings or offer throughput
+
+    if they differ from what was passed into the method.'
+  signature: 'create_container_if_not_exists(id: str, partition_key: Any, indexing_policy:
+    Dict[str, Any] | None = None, default_ttl: int | None = None, populate_query_metrics:
+    bool | None = None, offer_throughput: int | ThroughputProperties | None = None,
+    unique_key_policy: Dict[str, Any] | None = None, conflict_resolution_policy: Dict[str,
+    Any] | None = None, **kwargs: Any) -> ContainerProxy'
+  parameters:
+  - name: id
+    description: ID (name) of container to read or create.
+    isRequired: true
+  - name: partition_key
+    description: The partition key to use for the container.
+    isRequired: true
+  - name: indexing_policy
+    description: The indexing policy to apply to the container.
+    isRequired: true
+  - name: default_ttl
+    description: Default time to live (TTL) for items in the container. If unspecified,
+      items do not expire.
+    isRequired: true
+  - name: offer_throughput
+    description: The provisioned throughput for this offer.
+    isRequired: true
+  - name: unique_key_policy
+    description: The unique key policy to apply to the container.
+    isRequired: true
+  - name: conflict_resolution_policy
+    description: The conflict resolution policy to apply to the container.
+    isRequired: true
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  - name: analytical_storage_ttl
+    description: 'Analytical store time to live (TTL) for items in the container.  A
+      value of
+
+      None leaves analytical storage off and a value of -1 turns analytical storage
+      on with no TTL.  Please
+
+      note that analytical storage can only be enabled on Synapse Link enabled accounts.'
+    types:
+    - <xref:int>
+  return:
+    description: A *ContainerProxy* instance representing the container.
+    types:
+    - <xref:azure.cosmos.ContainerProxy>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The container read or creation failed.
+- uid: azure.cosmos.database.DatabaseProxy.create_user
+  name: create_user
+  summary: 'Create a new user in the container.
+
+
+    To update or replace an existing user, use the
+
+    <xref:ContainerProxy.upsert_user> method.'
+  signature: 'create_user(body: Dict[str, Any], **kwargs: Any) -> UserProxy'
+  parameters:
+  - name: body
+    description: 'A dict-like object with an *id* key and value representing the user
+      to be created.
+
+      The user ID must be unique within the database, and consist of no more than
+      255 characters.'
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: A *UserProxy* instance representing the new user.
+    types:
+    - <xref:azure.cosmos.UserProxy>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If the given user couldn't be created.
+  examples:
+  - "Create a database user:<!--[!code-python[Main](les\\examples.py )]-->\n\n<!--\
+    \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+    \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+    \\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\28\\\\azure-cosmos-4.5.2b1\\\
+    \\samples\\\\examples.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
+    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   try:\n       database.create_user(dict(id=\"\
+    Walter Harp\"))\n   except exceptions.CosmosResourceExistsError:\n       print(\"\
+    A user with that ID already exists.\")\n   except exceptions.CosmosHttpResponseError\
+    \ as failure:\n       print(\"Failed to create user. Status code:{}\".format(failure.status_code))\n\
+    \n   ````\n"
+- uid: azure.cosmos.database.DatabaseProxy.delete_container
+  name: delete_container
+  summary: Delete a container.
+  signature: 'delete_container(container: str | ContainerProxy | Dict[str, Any], populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> None'
+  parameters:
+  - name: container
+    description: 'The ID (name) of the container to delete. You can either
+
+      pass in the ID of the container to delete, a <xref:azure.cosmos.database.ContainerProxy>
+      instance or
+
+      a dict representing the properties of the container.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.ContainerProxy>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If the container couldn't be deleted.
+- uid: azure.cosmos.database.DatabaseProxy.delete_user
+  name: delete_user
+  summary: Delete the specified user from the container.
+  signature: 'delete_user(user: str | UserProxy | Dict[str, Any], **kwargs: Any) ->
+    None'
+  parameters:
+  - name: user
+    description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.database.UserProxy>
+
+      instance of the user to be deleted.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.UserProxy>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The user wasn't deleted successfully.
+  - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
+    description: The user does not exist in the container.
+- uid: azure.cosmos.database.DatabaseProxy.get_container_client
+  name: get_container_client
+  summary: Get a *ContainerProxy* for a container with specified ID (name).
+  signature: 'get_container_client(container: str | ContainerProxy | Dict[str, Any])
+    -> ContainerProxy'
+  parameters:
+  - name: container
+    description: 'The ID (name) of the container, a <xref:azure.cosmos.database.ContainerProxy>
+      instance,
+
+      or a dict representing the properties of the container to be retrieved.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.ContainerProxy>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
+  return:
+    description: A *ContainerProxy* instance representing the retrieved database.
+    types:
+    - <xref:azure.cosmos.ContainerProxy>
+  examples:
+  - "Get an existing container, handling a failure if encountered:<!--[!code-python[Main](les\\\
+    examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+    \\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\28\\\\azure-cosmos-4.5.2b1\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   database = client.get_database_client(database_name)\n\
+    \   container = database.get_container_client(container_name)\n\n   ````\n"
+- uid: azure.cosmos.database.DatabaseProxy.get_throughput
+  name: get_throughput
+  summary: 'Get the ThroughputProperties object for this database.
+
+
+    If no ThroughputProperties already exist for the database, an exception is raised.'
+  signature: 'get_throughput(**kwargs: Any) -> ThroughputProperties'
+  parameters:
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: ThroughputProperties for the database.
+    types:
+    - <xref:azure.cosmos.ThroughputProperties>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'No throughput properties exists for the container or
+
+      the throughput properties could not be retrieved.'
+- uid: azure.cosmos.database.DatabaseProxy.get_user_client
+  name: get_user_client
+  summary: Get a *UserProxy* for a user with specified ID.
+  signature: 'get_user_client(user: str | UserProxy | Dict[str, Any]) -> UserProxy'
+  parameters:
+  - name: user
+    description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.database.UserProxy>
+
+      instance of the user to be retrieved.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.UserProxy>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
+  return:
+    description: A *UserProxy* instance representing the retrieved user.
+    types:
+    - <xref:azure.cosmos.UserProxy>
+- uid: azure.cosmos.database.DatabaseProxy.list_containers
+  name: list_containers
+  summary: List the containers in the database.
+  signature: 'list_containers(max_item_count: int | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  parameters:
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: An Iterable of container properties (dicts).
+    types:
+    - <xref:Iterable>[<xref:Dict>[<xref:str>, <xref:Any>]]
+  examples:
+  - "List all containers in the database:<!--[!code-python[Main](les\\examples.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    28\\\\azure-cosmos-4.5.2b1\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   database = client.get_database_client(database_name)\n\
+    \   for container in database.list_containers():\n       print(\"Container ID:\
+    \ {}\".format(container['id']))\n\n   ````\n"
+- uid: azure.cosmos.database.DatabaseProxy.list_users
+  name: list_users
+  summary: List all the users in the container.
+  signature: 'list_users(max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
+    Any]]'
+  parameters:
+  - name: max_item_count
+    description: Max number of users to be returned in the enumeration operation.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: An Iterable of user properties (dicts).
+    types:
+    - <xref:Iterable>[<xref:Dict>[<xref:str>, <xref:Any>]]
+- uid: azure.cosmos.database.DatabaseProxy.query_containers
+  name: query_containers
+  summary: List the properties for containers in the current database.
+  signature: 'query_containers(query: str | None = None, parameters: List[Dict[str,
+    Any]] | None = None, max_item_count: int | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  parameters:
+  - name: query
+    description: The Azure Cosmos DB SQL query to execute.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: Optional array of parameters to the query. Ignored if no query is
+      provided.
+    isRequired: true
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+  - name: max_item_count
+    description: Max number of items to be returned in the enumeration operation.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: An Iterable of container properties (dicts).
+    types:
+    - <xref:Iterable>[<xref:Dict>[<xref:str>, <xref:Any>]]
+- uid: azure.cosmos.database.DatabaseProxy.query_users
+  name: query_users
+  summary: Return all users matching the given *query*.
+  signature: 'query_users(query: str, parameters: List[str] | None = None, max_item_count:
+    int | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  parameters:
+  - name: query
+    description: The Azure Cosmos DB SQL query to execute.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: Optional array of parameters to the query. Ignored if no query is
+      provided.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: max_item_count
+    description: Max number of users to be returned in the enumeration operation.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: An Iterable of user properties (dicts).
+    types:
+    - <xref:Iterable>[<xref:Dict>[<xref:str>, <xref:Any>]]
+- uid: azure.cosmos.database.DatabaseProxy.read
+  name: read
+  summary: Read the database properties.
+  signature: 'read(populate_query_metrics: bool | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
+  parameters:
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:dict>[<xref:str>,<xref:str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    types:
+    - <xref:Dict>[<xref:Str>, <xref:Any>]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If the given database couldn't be retrieved.
+- uid: azure.cosmos.database.DatabaseProxy.read_offer
+  name: read_offer
+  summary: 'Get the ThroughputProperties object for this database.
+
+
+    If no ThroughputProperties already exist for the database, an exception is raised.'
+  signature: 'read_offer(**kwargs: Any) -> ThroughputProperties'
+  parameters:
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: ThroughputProperties for the database.
+    types:
+    - <xref:azure.cosmos.ThroughputProperties>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'No throughput properties exists for the container or
+
+      the throughput properties could not be retrieved.'
+- uid: azure.cosmos.database.DatabaseProxy.replace_container
+  name: replace_container
+  summary: 'Reset the properties of the container.
+
+
+    Property changes are persisted immediately. Any properties not specified
+
+    will be reset to their default values.'
+  signature: 'replace_container(container: str | ContainerProxy | Dict[str, Any],
+    partition_key: Any, indexing_policy: Dict[str, Any] | None = None, default_ttl:
+    int | None = None, conflict_resolution_policy: Dict[str, Any] | None = None, populate_query_metrics:
+    bool | None = None, **kwargs: Any) -> ContainerProxy'
+  parameters:
+  - name: container
+    description: 'The ID (name), dict representing the properties or
+
+      <xref:azure.cosmos.database.ContainerProxy> instance of the container to be
+      replaced.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.ContainerProxy>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
+  - name: partition_key
+    description: The partition key to use for the container.
+    isRequired: true
+    types:
+    - <xref:azure.cosmos.PartitionKey>
+  - name: indexing_policy
+    description: The indexing policy to apply to the container.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: default_ttl
+    description: 'Default time to live (TTL) for items in the container.
+
+      If unspecified, items do not expire.'
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: conflict_resolution_policy
+    description: The conflict resolution policy to apply to the container.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: populate_query_metrics
+    description: Enable returning query metrics in response headers.
+    isRequired: true
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: initial_headers
+    description: Initial headers to be sent as part of the request.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  - name: analytical_storage_ttl
+    description: 'Analytical store time to live (TTL) for items in the container.  A
+      value of
+
+      None leaves analytical storage off and a value of -1 turns analytical storage
+      on with no TTL.  Please
+
+      note that analytical storage can only be enabled on Synapse Link enabled accounts.'
+    types:
+    - <xref:int>
+  return:
+    description: A *ContainerProxy* instance representing the container after replace
+      completed.
+    types:
+    - <xref:azure.cosmos.ContainerProxy>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: 'Raised if the container couldn''t be replaced.
+
+      This includes if the container with given id does not exist.'
+- uid: azure.cosmos.database.DatabaseProxy.replace_throughput
+  name: replace_throughput
+  summary: Replace the database-level throughput.
+  signature: 'replace_throughput(throughput: int | ThroughputProperties | None, **kwargs:
+    Any) -> ThroughputProperties'
+  parameters:
+  - name: throughput
+    description: The throughput to be set (an integer).
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: ThroughputProperties for the database, updated with new throughput.
+    types:
+    - <xref:azure.cosmos.ThroughputProperties>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If no throughput properties exists for the database or if the throughput
+      properties could not be updated.
+- uid: azure.cosmos.database.DatabaseProxy.replace_user
+  name: replace_user
+  summary: Replaces the specified user if it exists in the container.
+  signature: 'replace_user(user: str | UserProxy | Dict[str, Any], body: Dict[str,
+    Any], **kwargs: Any) -> UserProxy'
+  parameters:
+  - name: user
+    description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.database.UserProxy>
+
+      instance of the user to be replaced.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.UserProxy>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
+  - name: body
+    description: A dict-like object representing the user to replace.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: A *UserProxy* instance representing the user after replace went through.
+    types:
+    - <xref:azure.cosmos.UserProxy>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If the replace operation failed or the user with given ID does not
+      exist.
+- uid: azure.cosmos.database.DatabaseProxy.upsert_user
+  name: upsert_user
+  summary: 'Insert or update the specified user.
+
+
+    If the user already exists in the container, it is replaced. If the user
+
+    does not already exist, it is inserted.'
+  signature: 'upsert_user(body: Dict[str, Any], **kwargs: Any) -> UserProxy'
+  parameters:
+  - name: body
+    description: A dict-like object representing the user to update or insert.
+    isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: A *UserProxy* instance representing the upserted user.
+    types:
+    - <xref:azure.cosmos.UserProxy>
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: If the given user could not be upserted.
