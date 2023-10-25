@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-search, search
-ms.date: 02/16/2023
+keywords: Azure, python, SDK, API, azure-mgmt-search, cognitive-search
+ms.date: 10/25/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: search
+ms.service: cognitive-search
 ---
 # Microsoft Azure SDK for Python
 
@@ -53,8 +53,9 @@ client = SearchManagementClient(credential=DefaultAzureCredential(), subscriptio
 
 ## Examples
 
-
-Code samples for this package can be found at [Search Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Search Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
@@ -66,7 +67,4 @@ Code samples for this package can be found at [Search Management](/samples/brows
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-search%2FREADME.png)
 
