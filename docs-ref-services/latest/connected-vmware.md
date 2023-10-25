@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: connectedvmware
 ---
-# Azure Connected VMWare SDK for Python - preview
-## Packages - preview
+# Azure Connected VMware SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](connected-vmware-index.md)]
