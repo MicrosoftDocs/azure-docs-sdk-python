@@ -1,7 +1,7 @@
 ---
 title: Azure Data Protection SDK for Python
 description: Reference for Azure Data Protection SDK for Python
-ms.date: 10/26/2023
+ms.date: 10/27/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: dataprotection

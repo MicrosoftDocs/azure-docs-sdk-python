@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: containerservicefleet
 ---
-# Azure Container Service Fleet SDK for Python - preview
-## Packages - preview
+# Azure Container Service Fleet SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](container-service-fleet-index.md)]
