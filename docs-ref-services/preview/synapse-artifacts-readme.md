@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-artifacts, synapse
-ms.date: 07/28/2023
+ms.date: 11/01/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse
