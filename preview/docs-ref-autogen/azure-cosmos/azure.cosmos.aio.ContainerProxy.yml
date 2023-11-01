@@ -102,6 +102,16 @@ methods:
     types:
     - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the new item.
     types:
@@ -254,6 +264,59 @@ methods:
     description: The item wasn't deleted successfully.
   - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
     description: The item does not exist in the container.
+- uid: azure.cosmos.aio.ContainerProxy.execute_item_batch
+  name: execute_item_batch
+  summary: Executes the transactional batch for the specified partition key.
+  signature: 'async execute_item_batch(batch_operations: List[Tuple[Any]], partition_key:
+    str | int | float | bool, **kwargs) -> List[Dict[str, Any]]'
+  parameters:
+  - name: batch_operations
+    description: The batch of operations to be executed.
+    isRequired: true
+    types:
+    - <xref:typing.List>[<xref:typing.Tuple>[<xref:typing.Any>]]
+  - name: partition_key
+    description: The partition key value of the batch operations.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: A list representing the items after the batch operations went through.
+    types:
+    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The batch failed to execute.
+  - type: azure.cosmos.exceptions.CosmosBatchOperationError
+    description: A transactional batch operation failed in the batch.
 - uid: azure.cosmos.aio.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
@@ -378,6 +441,16 @@ methods:
     description: A callable invoked with the response metadata.
     types:
     - <xref:typing.Callable>
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the item after the patch operations went through.
     types:
@@ -436,6 +509,17 @@ methods:
     \   responses are guaranteed to be no staler than this value."
   signature: 'query_items(query: str | Dict[str, Any], **kwargs: Any) -> AsyncItemPaged[Dict[str,
     Any]]'
+  parameters:
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -444,7 +528,7 @@ methods:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\source_code\\\\28\\\\azure-cosmos-4.5.2b1\\\\samples\\\\examples_async.py\"\
+    \\1\\\\s\\\\source_code\\\\28\\\\azure-cosmos-4.5.2b2\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n           import json\n\n           async for item in container.query_items(\n\
@@ -453,7 +537,7 @@ methods:
     \n   ````\n\nParameterized query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\source_code\\\\28\\\\azure-cosmos-4.5.2b1\\\\samples\\\\examples_async.py\"\
+    \\1\\\\s\\\\source_code\\\\28\\\\azure-cosmos-4.5.2b2\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n           discontinued_items = container.query_items(\n               query='SELECT\
@@ -498,6 +582,16 @@ methods:
     types:
     - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]]], <xref:None>]
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -531,6 +625,16 @@ methods:
     types:
     - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: Dict representing the retrieved container.
     types:
@@ -571,6 +675,16 @@ methods:
       responses are guaranteed to be no staler than this value.'
     types:
     - <xref:int>
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -617,6 +731,16 @@ methods:
       responses are guaranteed to be no staler than this value.'
     types:
     - <xref:int>
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: Dict representing the item to be retrieved.
     types:
@@ -628,7 +752,7 @@ methods:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\source_code\\\\28\\\\azure-cosmos-4.5.2b1\\\\samples\\\\examples_async.py\"\
+    \\1\\\\s\\\\source_code\\\\28\\\\azure-cosmos-4.5.2b2\\\\samples\\\\examples_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n           item = await container.read_item(\"item2\", partition_key=\"Widget\"\
@@ -686,6 +810,16 @@ methods:
     types:
     - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the item after replace went through.
     types:
@@ -772,6 +906,16 @@ methods:
     types:
     - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
+  - name: priority_level
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the upserted item.
     types:
