@@ -1,7 +1,7 @@
 ---
 title: Azure Dev Center SDK for Python
 description: Reference for Azure Dev Center SDK for Python
-ms.date: 11/01/2023
+ms.date: 11/02/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: devcenter
