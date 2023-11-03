@@ -1,7 +1,7 @@
 ---
 title: Azure Portal SDK for Python
 description: Reference for Azure Portal SDK for Python
-ms.date: 11/02/2023
+ms.date: 11/03/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: portal
