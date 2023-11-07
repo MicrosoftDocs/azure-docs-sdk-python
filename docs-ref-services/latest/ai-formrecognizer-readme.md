@@ -1,12 +1,12 @@
 ---
 title: Azure Form Recognizer client library for Python
 keywords: Azure, python, SDK, API, azure-ai-formrecognizer, formrecognizer
-ms.date: 10/10/2023
+ms.date: 11/07/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: formrecognizer
 ---
-# Azure Form Recognizer client library for Python - version 3.3.1 
+# Azure Form Recognizer client library for Python - version 3.3.2 
 
 
 Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine learning to analyze text and structured data from your documents. It includes the following main features:
@@ -17,6 +17,7 @@ Azure Document Intelligence ([previously known as Form Recognizer][service-renam
 - Prebuilt - Extract common field values from select document types (ex. receipts, invoices, business cards, ID documents, U.S. W-2 tax documents, among others) using prebuilt models.
 - Custom - Build custom models from your own data to extract tailored field values in addition to general layout from documents.
 - Classifiers - Build custom classification models that combine layout and language features to accurately detect and identify documents you process within your application.
+- Add-on capabilities - Extract barcodes/QR codes, formulas, font/style, etc. or enable high resolution mode for large documents with optional parameters.
 
 [Source code][python-fr-src]
 | [Package (PyPI)][python-fr-pypi]
@@ -227,6 +228,7 @@ The following section provides several code snippets covering some of the most c
 * [Analyze Documents Using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents Using a Custom Model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 * [Classify Documents][classify_sample]
+* [Add-on capabilities](#add-on-capabilities "Add-on Capabilities")
 
 ### Extract Layout
 
@@ -683,6 +685,18 @@ except ResourceNotFoundError:
     print("Successfully deleted model with id {}".format(custom_model.model_id))
 ```
 
+### Add-on Capabilities
+Document Intelligence supports more sophisticated analysis capabilities. These optional features can be enabled and disabled depending on the scenario of the document extraction.
+
+The following add-on capabilities are available for 2023-07-31 (GA) and later releases:
+- [barcode/QR code][addon_barcodes_sample]
+- [formula][addon_formulas_sample]
+- [font/style][addon_fonts_sample]
+- [high resolution mode][addon_highres_sample]
+- [language][addon_languages_sample]
+
+Note that some add-on capabilities will incur additional charges. See pricing: https://azure.microsoft.com/pricing/details/ai-document-intelligence/.
+
 ## Troubleshooting
 
 ### General
@@ -728,11 +742,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[python-fr-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/formrecognizer/azure-ai-formrecognizer/azure/ai/formrecognizer
+[python-fr-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/azure/ai/formrecognizer
 [python-fr-pypi]: https://pypi.org/project/azure-ai-formrecognizer/
 [python-fr-product-docs]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/overview?view=form-recog-3.0.0
 [python-fr-ref-docs]: https://aka.ms/azsdk/python/formrecognizer/docs
-[python-fr-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/formrecognizer/azure-ai-formrecognizer/samples
+[python-fr-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples
 
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_portal]: https://ms.portal.azure.com/
@@ -758,8 +772,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cognitive_authentication_api_key]: /azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [register_aad_app]: /azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [custom_subdomain]: /azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/identity/azure-identity
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/identity/azure-identity#defaultazurecredential
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/identity/azure-identity
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/identity/azure-identity#defaultazurecredential
 [service_recognize_receipt]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
 [service_recognize_business_cards]: https://aka.ms/azsdk/formrecognizer/businesscardfieldschema
 [service_recognize_invoice]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema
@@ -767,11 +781,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [service_recognize_tax_documents]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
 [service_prebuilt_document]: /azure/applied-ai-services/form-recognizer/concept-general-document#general-document-features
 [sdk_logging_docs]: /azure/developer/python/sdk/azure-sdk-logging
-[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/formrecognizer/azure-ai-formrecognizer/samples
-[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
-[migration-guide]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/formrecognizer/azure-ai-formrecognizer/MIGRATION_GUIDE.md
-[classify_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.1/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_classify_document.py
+[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples
+[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
+[migration-guide]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/MIGRATION_GUIDE.md
+[classify_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_classify_document.py
 [service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
+[addon_barcodes_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_analyze_addon_barcodes.py
+[addon_fonts_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_analyze_addon_fonts.py
+[addon_formulas_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_analyze_addon_formulas.py
+[addon_highres_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_analyze_addon_highres.py
+[addon_languages_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-formrecognizer_3.3.2/sdk/formrecognizer/azure-ai-formrecognizer/samples/v3.2_and_later/sample_analyze_addon_languages.py
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
