@@ -1,7 +1,7 @@
 ---
 title: Azure Load Testing SDK for Python
 description: Reference for Azure Load Testing SDK for Python
-ms.date: 11/10/2023
+ms.date: 11/13/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: load-testing

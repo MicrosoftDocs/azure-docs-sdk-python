@@ -1,12 +1,12 @@
 ---
 title: Azure Cosmos DB SDK for Python
 description: Reference for Azure Cosmos DB SDK for Python
-ms.date: 11/10/2023
+ms.date: 11/13/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmosdb
-manager: douge
 keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL
+manager: douge
 ---
 # Azure Cosmos DB libraries for Python
 
