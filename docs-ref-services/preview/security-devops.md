@@ -1,7 +1,7 @@
 ---
 title: Azure Security DevOps SDK for Python
 description: Reference for Azure Security DevOps SDK for Python
-ms.date: 11/14/2023
+ms.date: 11/15/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: securitydevops
