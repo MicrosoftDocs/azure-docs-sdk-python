@@ -62,7 +62,7 @@ methods:
   - "Analyze text<!--[!code-python[Main](les\\async_samples\\sample_analyze_text_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_analyze_text_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.core.credentials import AzureKeyCredential\n\
@@ -76,6 +76,10 @@ methods:
   name: close
   summary: Close the <xref:azure.search.documents.indexes.aio.SearchIndexClient> session.
   signature: async close() -> None
+  return:
+    description: None
+    types:
+    - <xref:None>
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_index
   name: create_index
   summary: Creates a new search index.
@@ -96,25 +100,28 @@ methods:
   - "Creating a new index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_index_crud_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   name = \"hotels\"\n   fields = [\n \
-    \      SimpleField(name=\"hotelId\", type=SearchFieldDataType.String, key=True),\n\
-    \       SimpleField(name=\"baseRate\", type=SearchFieldDataType.Double),\n   \
-    \    SearchableField(name=\"description\", type=SearchFieldDataType.String, collection=True),\n\
-    \       ComplexField(name=\"address\", fields=[\n           SimpleField(name=\"\
-    streetAddress\", type=SearchFieldDataType.String),\n           SimpleField(name=\"\
-    city\", type=SearchFieldDataType.String),\n       ], collection=True)\n   ]\n\n\
-    \   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
-    \   scoring_profiles = []\n   index = SearchIndex(\n       name=name,\n      \
-    \ fields=fields,\n       scoring_profiles=scoring_profiles,\n       cors_options=cors_options)\n\
-    \n   result = await client.create_index(index)\n\n   ````\n"
+    linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   fields = [\n       SimpleField(name=\"\
+    hotelId\", type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"\
+    baseRate\", type=SearchFieldDataType.Double),\n       SearchableField(name=\"\
+    description\", type=SearchFieldDataType.String, collection=True),\n       ComplexField(\n\
+    \           name=\"address\",\n           fields=[\n               SimpleField(name=\"\
+    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
+    city\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
+    \       ),\n   ]\n\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
+    \   scoring_profiles: List[ScoringProfile] = []\n   index = SearchIndex(name=name,\
+    \ fields=fields, scoring_profiles=scoring_profiles, cors_options=cors_options)\n\
+    \n   result = await client.create_index(index)\n   await client.close()\n\n  \
+    \ ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_index
   name: create_or_update_index
   summary: Creates a new search index or updates an index if it already exists.
   signature: 'async create_or_update_index(index: SearchIndex, allow_index_downtime:
-    bool = None, **kwargs: MatchConditions) -> SearchIndex'
+    bool | None = None, *, match_condition: MatchConditions = MatchConditions.Unconditionally,
+    **kwargs: Any) -> SearchIndex'
   parameters:
   - name: index
     description: The index object.
@@ -155,31 +162,32 @@ methods:
   - "Update an index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_index_crud_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   name = \"hotels\"\n   fields = [\n \
-    \      SimpleField(name=\"hotelId\", type=SearchFieldDataType.String, key=True),\n\
-    \       SimpleField(name=\"baseRate\", type=SearchFieldDataType.Double),\n   \
-    \    SearchableField(name=\"description\", type=SearchFieldDataType.String, collection=True),\n\
-    \       SearchableField(name=\"hotelName\", type=SearchFieldDataType.String),\n\
-    \       ComplexField(name=\"address\", fields=[\n           SimpleField(name=\"\
-    streetAddress\", type=SearchFieldDataType.String),\n           SimpleField(name=\"\
-    city\", type=SearchFieldDataType.String),\n           SimpleField(name=\"state\"\
-    , type=SearchFieldDataType.String),\n       ], collection=True)\n   ]\n\n   cors_options\
-    \ = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n   scoring_profile\
-    \ = ScoringProfile(\n       name=\"MyProfile\"\n   )\n   scoring_profiles = []\n\
-    \   scoring_profiles.append(scoring_profile)\n   index = SearchIndex(\n      \
-    \ name=name,\n       fields=fields,\n       scoring_profiles=scoring_profiles,\n\
-    \       cors_options=cors_options)\n\n   result = await client.create_or_update_index(index=index)\n\
+    linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   fields = [\n       SimpleField(name=\"\
+    hotelId\", type=SearchFieldDataType.String, key=True),\n       SimpleField(name=\"\
+    baseRate\", type=SearchFieldDataType.Double),\n       SearchableField(name=\"\
+    description\", type=SearchFieldDataType.String, collection=True),\n       SearchableField(name=\"\
+    hotelName\", type=SearchFieldDataType.String),\n       ComplexField(\n       \
+    \    name=\"address\",\n           fields=[\n               SimpleField(name=\"\
+    streetAddress\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
+    city\", type=SearchFieldDataType.String),\n               SimpleField(name=\"\
+    state\", type=SearchFieldDataType.String),\n           ],\n           collection=True,\n\
+    \       ),\n   ]\n\n   cors_options = CorsOptions(allowed_origins=[\"*\"], max_age_in_seconds=60)\n\
+    \   scoring_profile = ScoringProfile(name=\"MyProfile\")\n   scoring_profiles\
+    \ = []\n   scoring_profiles.append(scoring_profile)\n   index = SearchIndex(name=name,\
+    \ fields=fields, scoring_profiles=scoring_profiles, cors_options=cors_options)\n\
+    \n   result = await client.create_or_update_index(index=index)\n   await client.close()\n\
     \n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.create_or_update_synonym_map
   name: create_or_update_synonym_map
   summary: 'Create a new Synonym Map in an Azure Search service, or update an
 
     existing one.'
-  signature: 'async create_or_update_synonym_map(synonym_map: SynonymMap, **kwargs:
-    Any) -> SynonymMap'
+  signature: 'async create_or_update_synonym_map(synonym_map: SynonymMap, *, match_condition:
+    MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> SynonymMap'
   parameters:
   - name: synonym_map
     description: The Synonym Map object
@@ -213,7 +221,7 @@ methods:
   - "Create a Synonym Map<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_synonym_map_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   synonyms = [\n       \"USA, United States,\
@@ -243,11 +251,12 @@ methods:
   - "Delete an index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_index_crud_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   name = \"hotels\"\n   await client.delete_index(name)\n\
-    \n   ````\n"
+    linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   await client.delete_index(name)\n\
+    \   await client.close()\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.delete_synonym_map
   name: delete_synonym_map
   summary: 'Delete a named Synonym Map in an Azure Search service. To use access conditions,
@@ -255,10 +264,10 @@ methods:
     the SynonymMap model must be provided instead of the name. It is enough to provide
 
     the name of the synonym map to delete unconditionally.'
-  signature: 'async delete_synonym_map(synonym_map: str | SynonymMap, **kwargs: Any)
-    -> None'
+  signature: 'async delete_synonym_map(synonym_map: str | SynonymMap, *, match_condition:
+    MatchConditions = MatchConditions.Unconditionally, **kwargs: Any) -> None'
   parameters:
-  - name: synonym_map
+  - name: name
     description: The synonym map name or object to delete
     isRequired: true
     types:
@@ -276,7 +285,7 @@ methods:
   - "Delete a Synonym Map<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_synonym_map_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   await client.delete_synonym_map(\"test-syn-map\"\
@@ -300,17 +309,19 @@ methods:
   - "Get an index.<!--[!code-python[Main](les\\async_samples\\sample_index_crud_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_index_crud_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-    linenos\": false} -->\n\n````python\n\n   name = \"hotels\"\n   result = await\
-    \ client.get_index(name)\n\n   ````\n"
+    linenos\": false} -->\n\n````python\n\n   client = SearchIndexClient(service_endpoint,\
+    \ AzureKeyCredential(key))\n   name = \"hotels\"\n   result = await client.get_index(name)\n\
+    \   await client.close()\n\n   ````\n"
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_index_statistics
   name: get_index_statistics
   summary: 'Returns statistics for the given index, including a document count
 
     and storage usage.'
-  signature: 'async get_index_statistics(index_name: str, **kwargs: Any) -> dict'
+  signature: 'async get_index_statistics(index_name: str, **kwargs: Any) -> MutableMapping[str,
+    Any]'
   parameters:
   - name: index_name
     description: The name of the index to retrieve.
@@ -321,13 +332,13 @@ methods:
     description: Statistics for the given index, including a document count and storage
       usage.
     types:
-    - <xref:dict>
+    - <xref:Dict>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_search_client
   name: get_search_client
   summary: Return a client to perform operations on Search.
-  signature: 'get_search_client(index_name: str, **kwargs: dict) -> SearchClient'
+  signature: 'get_search_client(index_name: str, **kwargs: Any) -> SearchClient'
   parameters:
   - name: index_name
     description: The name of the Search Index
@@ -335,12 +346,17 @@ methods:
     types:
     - <xref:str>
   return:
+    description: SearchClient
     types:
     - <xref:azure.search.documents.aio.SearchClient>
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_service_statistics
   name: get_service_statistics
   summary: Get service level statistics for a search service.
-  signature: 'async get_service_statistics(**kwargs: Any) -> dict'
+  signature: async get_service_statistics(**kwargs) -> MutableMapping[str, Any]
+  return:
+    description: Service statistics result
+    types:
+    - <xref:dict>
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_synonym_map
   name: get_synonym_map
   summary: Retrieve a named Synonym Map in an Azure Search service
@@ -361,7 +377,7 @@ methods:
   - "Get a Synonym Map<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_synonym_map_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   result = await client.get_synonym_map(\"\
@@ -375,13 +391,14 @@ methods:
   return:
     description: List of synonym map names
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:List>[<xref:str>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.get_synonym_maps
   name: get_synonym_maps
   summary: List the Synonym Maps in an Azure Search service.
-  signature: 'async get_synonym_maps(**kwargs: Any) -> List[SynonymMap]'
+  signature: 'async get_synonym_maps(*, select: List[str] | None = None, **kwargs)
+    -> List[SynonymMap]'
   parameters:
   - name: select
     description: 'Selects which top-level properties of the skillsets to retrieve.
@@ -391,18 +408,18 @@ methods:
 
       properties.'
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   return:
     description: List of synonym maps
     types:
-    - <xref:list>[<xref:azure.search.documents.indexes.models.SynonymMap>]
+    - <xref:List>[<xref:azure.search.documents.indexes.models.SynonymMap>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "List Synonym Maps<!--[!code-python[Main](les\\async_samples\\sample_synonym_map_operations_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\210\\\\azure-search-documents-11.3.0\\\\samples\\\\async_samples\\\
+    source_code\\\\210\\\\azure-search-documents-11.4.0\\\\samples\\\\async_samples\\\
     \\sample_synonym_map_operations_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   result = await client.get_synonym_maps()\n\
@@ -421,7 +438,7 @@ methods:
 - uid: azure.search.documents.indexes.aio.SearchIndexClient.list_indexes
   name: list_indexes
   summary: List the indexes in an Azure Search service.
-  signature: 'list_indexes(**kwargs: Any) -> AsyncItemPaged[SearchIndex]'
+  signature: 'list_indexes(*, select: List[str] | None = None, **kwargs) -> AsyncItemPaged[SearchIndex]'
   parameters:
   - name: select
     description: 'Selects which top-level properties of the skillsets to retrieve.
