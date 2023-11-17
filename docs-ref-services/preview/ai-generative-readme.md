@@ -1,5 +1,5 @@
 ---
-title: Azure AI Resources package for Python
+title: Azure AI Generative package for Python
 keywords: Azure, python, SDK, API, azure-ai-generative, ai
 ms.date: 11/13/2023
 ms.topic: reference
