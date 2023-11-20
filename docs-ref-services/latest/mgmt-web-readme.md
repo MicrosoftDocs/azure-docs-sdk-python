@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-web, appservice
-ms.date: 04/20/2023
+ms.date: 11/20/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: appservice
@@ -67,7 +67,4 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-web%2FREADME.png)
 
