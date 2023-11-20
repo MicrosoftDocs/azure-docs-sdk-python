@@ -1,7 +1,7 @@
 ---
 title: Azure Monitor SDK for Python
 description: Reference for Azure Monitor SDK for Python
-ms.date: 11/17/2023
+ms.date: 11/20/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
