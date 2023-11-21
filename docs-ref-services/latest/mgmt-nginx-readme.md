@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-nginx, nginx
-ms.date: 03/15/2023
+ms.date: 11/21/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: nginx
@@ -68,7 +68,4 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-nginx%2FREADME.png)
 
