@@ -5,8 +5,8 @@ ms.date: 11/21/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmosdb
-manager: douge
 keywords: Azure, Python, SDK, API, SQL, database, PostGres,Cosmos DB, NoSQL
+manager: douge
 ---
 # Azure Cosmos DB libraries for Python
 
