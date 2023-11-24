@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: chaos
 ---
-# Azure Chaos SDK for Python - preview
-## Packages - preview
+# Azure Chaos SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](chaos-index.md)]
