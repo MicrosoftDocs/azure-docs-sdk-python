@@ -1,7 +1,7 @@
 ---
 title: Azure Content Delivery Network SDK for Python
 description: Reference for Azure Content Delivery Network SDK for Python
-ms.date: 11/24/2023
+ms.date: 11/27/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: contentdeliverynetwork
