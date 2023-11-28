@@ -1,7 +1,7 @@
 ---
 title: Azure Functions SDK for Python
 description: Reference for Azure Functions SDK for Python
-ms.date: 11/27/2023
+ms.date: 11/28/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: functions
