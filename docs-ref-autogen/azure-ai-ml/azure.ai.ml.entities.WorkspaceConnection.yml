@@ -16,12 +16,19 @@ summary: '> [!NOTE]
   Azure ML workspace connection provides a secure way to store authentication and
   configuration information needed
 
-  to connect and interact with the external resources.'
+  to connect and interact with the external resources.
+
+
+  Note: For connections to OpenAI, Cognitive Search, and Cognitive Services, use the
+  respective subclasses
+
+  (ex: ~azure.ai.ml.entities.OpenAIWorkspaceConnection) instead of instantiating this
+  class directly.'
 constructor:
   syntax: 'WorkspaceConnection(*, target: str, type: str, credentials: PatTokenConfiguration
     | SasTokenConfiguration | UsernamePasswordConfiguration | ManagedIdentityConfiguration
-    | ServicePrincipalConfiguration | AccessKeyConfiguration, metadata: Dict[str,
-    Any] | None = None, **kwargs)'
+    | ServicePrincipalConfiguration | AccessKeyConfiguration | ApiKeyConfiguration,
+    **kwargs)'
   parameters:
   - name: name
     description: Name of the workspace connection.
@@ -33,6 +40,19 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
+  - name: tags
+    description: Tag dictionary. Tags can be added, removed, and updated.
+    isRequired: true
+    types:
+    - <xref:dict>
+  - name: type
+    description: The category of external resource for this connection.
+    isRequired: true
+    types:
+    - '<xref:<xref:The type> of <xref:workspace connection>, <xref:possible values
+      are: "git">, <xref:"python_feed">, <xref:"container_registry">, <xref:"feature_store">,
+      <xref:"s3">, <xref:"snowflake">, <xref:"azure_sql_db">, <xref:"azure_synapse_analytics">,
+      <xref:"azure_my_sql_db">, <xref:"azure_postgres_db">>'
   - name: credentials
     description: The credentials for authenticating to the external resource.
     isRequired: true
@@ -41,15 +61,6 @@ constructor:
       <xref:azure.ai.ml.entities.UsernamePasswordConfiguration>, <xref:azure.ai.ml.entities.ManagedIdentityConfiguration
       ~azure.ai.ml.entities.ServicePrincipalConfiguration>, <xref:azure.ai.ml.entities.AccessKeyConfiguration>,
       <xref:azure.ai.ml.entities.ApiKeyConfiguration> ]
-  - name: type
-    description: The category of external resource for this connection.
-    isRequired: true
-    types:
-    - '<xref:<xref:The type> of <xref:workspace connection>, <xref:possible values
-      are: "git">, <xref:"python_feed">, <xref:"container_registry">, <xref:"feature_store">,
-      <xref:"s3">, <xref:"snowflake">, <xref:"azure_sql_db">, <xref:"azure_synapse_analytics">,
-      <xref:"azure_my_sql_db">, <xref:"azure_postgres_db">, <xref:"azure_open_ai">,
-      <xref:"cognitive_search">, <xref:"cognitive_service">>'
 methods:
 - uid: azure.ai.ml.entities.WorkspaceConnection.dump
   name: dump
@@ -95,7 +106,9 @@ attributes:
   return:
     description: Credentials for workspace connection.
     types:
-    - <xref:Union>[<xref:PatTokenCredentialsConfiguration,SasTokenCredentialsConfiguration,UsernamePasswordCredentialsConfiguration,azure.ai.ml.entities.ManagedIdentityConfiguration,ServicePrincipalCredentialsConfiguration,AccessKeyCredentialsConfiguration,>
+    - <xref:Union>[<xref:azure.ai.ml.entities.PatTokenConfiguration>, <xref:azure.ai.ml.entities.SasTokenConfiguration,azure.ai.ml.entities.UsernamePasswordConfiguration>,
+      <xref:azure.ai.ml.entities.ManagedIdentityConfigurationazure.ai.ml.entities.ServicePrincipalConfiguration>,
+      <xref:azure.ai.ml.entities.AccessKeyConfiguration,azure.ai.ml.entities.ApiKeyConfiguration>
 - uid: azure.ai.ml.entities.WorkspaceConnection.id
   name: id
   summary: The resource ID.
@@ -105,11 +118,11 @@ attributes:
     - <xref:Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.WorkspaceConnection.metadata
   name: metadata
-  summary: Metadata for workspace connection.
-  return:
-    description: Metadata for workspace connection.
-    types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+  summary: 'Deprecated. Use tags.
+
+    :return: This connection''s tags.
+
+    :rtype: Dict[str, Any]'
 - uid: azure.ai.ml.entities.WorkspaceConnection.target
   name: target
   summary: Target url for the workspace connection.

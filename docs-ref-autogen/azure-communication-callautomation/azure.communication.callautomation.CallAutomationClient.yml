@@ -44,8 +44,8 @@ methods:
 
     Retrieving IncomingCall event can be set on Azure Communication Service''s Azure
     Portal.'
-  signature: 'answer_call(incoming_call_context: str, callback_url: str, *, operation_context:
-    str | None = None, **kwargs) -> CallConnectionProperties'
+  signature: 'answer_call(incoming_call_context: str, callback_url: str, *, cognitive_services_endpoint:
+    str | None = None, operation_context: str | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: incoming_call_context
     description: 'This can be read from body of IncomingCall event.
@@ -59,6 +59,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: cognitive_services_endpoint
+    description: The endpoint url of the Azure Cognitive Services resource attached.
+    types:
+    - <xref:str>
   - name: operation_context
     description: The operation context.
     types:
@@ -69,17 +73,23 @@ methods:
     - <xref:azure.communication.callautomation.CallConnectionProperties>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.CallAutomationClient.close
+  name: close
+  signature: close() -> None
 - uid: azure.communication.callautomation.CallAutomationClient.create_call
   name: create_call
   summary: Create a call connection request to a target identity.
-  signature: 'create_call(target_participant: CallInvite, callback_url: str, *, operation_context:
-    str | None = None, **kwargs) -> CallConnectionProperties'
+  signature: 'create_call(target_participant: CommunicationIdentifier | List[CommunicationIdentifier],
+    callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
+    None, source_display_name: str | None = None, operation_context: str | None =
+    None, cognitive_services_endpoint: str | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participant
     description: Call invitee's information.
     isRequired: true
     types:
-    - <xref:azure.communication.callautomation.CallInvite>
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
   - name: callback_url
     description: The call back url where callback events are sent.
     isRequired: true
@@ -89,6 +99,27 @@ methods:
     description: Value that can be used to track the call and its associated events.
     types:
     - <xref:str>
+    - <xref:None>
+  - name: source_caller_id_number
+    description: 'The source caller Id, a phone number,
+
+      that''s shown to the PSTN participant being invited.
+
+      Required only when calling a PSTN callee.'
+    types:
+    - <xref:azure.communication.callautomation.PhoneNumberIdentifier>
+    - <xref:None>
+  - name: source_display_name
+    description: Display name of the caller.
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: cognitive_services_endpoint
+    description: The identifier of the Cognitive Service resource assigned to this
+      call.
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: CallConnectionProperties
     types:
@@ -104,7 +135,7 @@ methods:
   signature: 'create_group_call(target_participants: List[CommunicationIdentifier],
     callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
     None, source_display_name: str | None = None, operation_context: str | None =
-    None, **kwargs) -> CallConnectionProperties'
+    None, cognitive_services_endpoint: str | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participants
     description: A list of targets.
@@ -130,6 +161,11 @@ methods:
     - <xref:str>
   - name: operation_context
     description: Value that can be used to track the call and its associated events.
+    types:
+    - <xref:str>
+  - name: cognitive_services_endpoint
+    description: The identifier of the Cognitive Service resource assigned to this
+      call.
     types:
     - <xref:str>
   return:
@@ -170,7 +206,6 @@ methods:
       range.
 
       Offset of starting byte.'
-    isRequired: true
     types:
     - <xref:int>
   - name: length
@@ -178,7 +213,6 @@ methods:
       range.
 
       Length of the bytes to be downloaded.'
-    isRequired: true
     types:
     - <xref:int>
   return:
@@ -252,7 +286,7 @@ methods:
 - uid: azure.communication.callautomation.CallAutomationClient.redirect_call
   name: redirect_call
   summary: Redirect incoming call to a specific target.
-  signature: 'redirect_call(incoming_call_context: str, target_participant: CallInvite,
+  signature: 'redirect_call(incoming_call_context: str, target_participant: CommunicationIdentifier,
     **kwargs) -> None'
   parameters:
   - name: incoming_call_context
@@ -266,7 +300,7 @@ methods:
     description: The target identity to redirect the call to.
     isRequired: true
     types:
-    - <xref:azure.communication.callautomation.CallInvite>
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
   return:
     description: None
     types:
@@ -315,71 +349,12 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.CallAutomationClient.start_recording
   name: start_recording
-  summary: Start recording for a ongoing call. Locate the call with call locator.
-  signature: 'start_recording(call_locator: ServerCallLocator | GroupCallLocator,
-    *, recording_state_callback_url: str | None = None, recording_content_type: str
-    | RecordingContent | None = None, recording_channel_type: str | RecordingChannel
-    | None = None, recording_format_type: str | RecordingFormat | None = None, audio_channel_participant_ordering:
-    List[CommunicationIdentifier] | None = None, channel_affinity: List[ChannelAffinity]
-    | None = None, **kwargs) -> RecordingProperties'
-  parameters:
-  - name: call_locator
-    description: The call locator to locate ongoing call.
-    isRequired: true
-    types:
-    - <xref:azure.communication.callautomation.ServerCallLocator>
-    - <xref:azure.communication.callautomation.GroupCallLocator>
-  - name: recording_state_callback_url
-    description: The url to send notifications to.
-    types:
-    - <xref:str>
-  - name: recording_content_type
-    description: The content type of call recording.
-    types:
-    - <xref:str>
-    - <xref:azure.communication.callautomation.RecordingContent>
-  - name: recording_channel_type
-    description: The channel type of call recording.
-    types:
-    - <xref:str>
-    - <xref:azure.communication.callautomation.RecordingChannel>
-  - name: recording_format_type
-    description: The format type of call recording.
-    types:
-    - <xref:str>
-    - <xref:azure.communication.callautomation.RecordingFormat>
-  - name: audio_channel_participant_ordering
-    description: 'The sequential order in which audio channels are assigned to participants
-      in the unmixed recording.
-
-      When ''recordingChannelType'' is set to ''unmixed'' and >>`<<audioChannelParticipantOrdering
-      is not specified,
-
-      the audio channel to participant mapping will be automatically assigned based
-      on the order in
-
-      which participant first audio was detected.
-
-      Channel to participant mapping details can be found in the metadata of the recording.'
-    types:
-    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
-  - name: channel_affinity
-    description: 'The channel affinity of call recording
-
-      When ''recordingChannelType'' is set to ''unmixed'', if channelAffinity is not
-      specified,
-
-      ''channel'' will be automatically assigned.
-
-      Channel-Participant mapping details can be found in the metadata of the recording.'
-    types:
-    - <xref:list>[<xref:azure.communication.callautomation.ChannelAffinity>]
-  return:
-    description: RecordingProperties
-    types:
-    - <xref:azure.communication.callautomation.RecordingProperties>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
+  signature: 'start_recording(*, server_call_id: str, recording_state_callback_url:
+    str | None = None, recording_content_type: str | ''RecordingContent'' | None =
+    None, recording_channel_type: str | ''RecordingChannel'' | None = None, recording_format_type:
+    str | ''RecordingFormat'' | None = None, audio_channel_participant_ordering: List[''CommunicationIdentifier'']
+    | None = None, channel_affinity: List[''ChannelAffinity''] | None = None, **kwargs)
+    -> RecordingProperties'
 - uid: azure.communication.callautomation.CallAutomationClient.stop_recording
   name: stop_recording
   summary: Stop recording the call.

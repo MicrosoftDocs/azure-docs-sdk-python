@@ -8,12 +8,11 @@ inheritances:
 summary: 'WorkspaceOperations.
 
 
-  You should not instantiate this class directly. Instead, you should create an MLClient
-  instance that instantiates it
+  You should not instantiate this class directly. Instead, you should create
 
-  for you and attaches it as an attribute.'
+  an MLClient instance that instantiates it for you and attaches it as an attribute.'
 constructor:
-  syntax: 'WorkspaceOperations(operation_scope: OperationScope, service_client: AzureMachineLearningWorkspaces,
+  syntax: 'WorkspaceOperations(operation_scope: OperationScope, service_client: AzureMachineLearningServices,
     all_operations: OperationsContainer, credentials: TokenCredential | None = None,
     **kwargs: Dict)'
   parameters:
@@ -38,7 +37,7 @@ methods:
     types:
     - <xref:azure.ai.ml.entities.Workspace>
   - name: update_dependent_resources
-    description: Whether to update dependent resources
+    description: Whether to update dependent resources, defaults to False.
     isRequired: true
     types:
     - <xref:boolean>
@@ -46,6 +45,18 @@ methods:
     description: An instance of LROPoller that returns a Workspace.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.Workspace>]
+  examples:
+  - "Begin create for a workspace.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+    \ import Workspace\n\n   ws = Workspace(\n       name=\"test-ws1\",\n       description=\"\
+    a test workspace\",\n       tags={\"purpose\": \"demo\"},\n       location=\"\
+    eastus\",\n       resource_group=resource_group,\n   )\n   ws = ml_client.workspaces.begin_create(workspace=ws).result()\n\
+    \n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.begin_delete
   name: begin_delete
   summary: Delete a workspace.
@@ -60,7 +71,8 @@ methods:
   - name: delete_dependent_resources
     description: 'Whether to delete resources associated with the workspace,
 
-      i.e., container registry, storage account, key vault, and application insights.
+      i.e., container registry, storage account, key vault, application insights,
+      log analytics.
 
       The default is False. Set to True to delete these resources.'
     types:
@@ -77,6 +89,16 @@ methods:
     description: A poller to track the operation status.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
+  examples:
+  - "Begin permanent (force) deletion for a workspace and delete dependent resources.<!--[!code-python[Main](les\\\
+    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   ml_client.workspaces.begin_delete(name=\"test-ws\", delete_dependent_resources=True,\
+    \ permanently_delete=True)\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.begin_diagnose
   name: begin_diagnose
   summary: 'Diagnose workspace setup problems.
@@ -86,9 +108,9 @@ methods:
 
     check if the workspace has been broken.
 
-    For private endpoint workspace, it will also help check out if the network
+    For private endpoint workspace, it will also help check if the network
 
-    setup to this workspace and its dependent resource as problem or not.'
+    setup to this workspace and its dependent resource has problems or not.'
   signature: 'begin_diagnose(name: str, **kwargs: Dict) -> LROPoller[DiagnoseResponseResultValue]'
   parameters:
   - name: name
@@ -100,6 +122,15 @@ methods:
     description: A poller to track the operation status.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.DiagnoseResponseResultValue>]
+  examples:
+  - "Begin diagnose operation for a workspace.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   diagnose_result\
+    \ = ml_client.workspaces.begin_diagnose(name=\"test-ws1\").result()\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.begin_provision_network
   name: begin_provision_network
   summary: 'Triggers the workspace to provision the managed network. Specifying spark
@@ -119,6 +150,16 @@ methods:
     description: An instance of LROPoller.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.ManagedNetworkProvisionStatus>]
+  examples:
+  - "Begin provision network for a workspace with managed network.<!--[!code-python[Main](les\\\
+    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   ml_client.workspaces.begin_provision_network(workspace_name=\"test-ws1\"\
+    , include_spark=False)\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.begin_sync_keys
   name: begin_sync_keys
   summary: 'Triggers the workspace to immediately synchronize keys. If keys for any
@@ -131,7 +172,7 @@ methods:
     after regenerating storage
 
     keys.'
-  signature: 'begin_sync_keys(name: str | None = None) -> LROPoller'
+  signature: 'begin_sync_keys(name: str | None = None) -> LROPoller[None]'
   parameters:
   - name: name
     description: Name of the workspace.
@@ -143,13 +184,47 @@ methods:
       result.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
+  examples:
+  - "Begin sync keys for the workspace with the given name.<!--[!code-python[Main](les\\\
+    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   ml_client.workspaces.begin_sync_keys(name=\"test-ws1\")\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.begin_update
   name: begin_update
+  summary: Updates a Azure Machine Learning Workspace.
   signature: 'begin_update(workspace: Workspace, *, update_dependent_resources: bool
     = False, **kwargs: Dict) -> LROPoller[Workspace]'
+  parameters:
+  - name: workspace
+    description: Workspace definition.
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.entities.Workspace>
+  - name: update_dependent_resources
+    description: Whether to update dependent resources, defaults to False.
+    types:
+    - <xref:boolean>
+  return:
+    description: An instance of LROPoller that returns a Workspace.
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.Workspace>]
+  examples:
+  - "Begin update for a workspace.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   ws = ml_client.workspaces.get(name=\"\
+    test-ws1\")\n   ws.description = \"a different description\"\n   ws = ml_client.workspaces.begin_update(workspace=ws).result()\n\
+    \n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.get
   name: get
-  summary: Get a workspace by name.
+  summary: Get a Workspace by name.
   signature: 'get(name: str | None = None, **kwargs: Dict) -> Workspace'
   parameters:
   - name: name
@@ -161,9 +236,18 @@ methods:
     description: The workspace with the provided name.
     types:
     - <xref:azure.ai.ml.entities.Workspace>
+  examples:
+  - "Get the workspace with the given name.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   workspace\
+    \ = ml_client.workspaces.get(name=\"test-ws1\")\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.get_keys
   name: get_keys
-  summary: Get keys for the workspace.
+  summary: Get WorkspaceKeys by workspace name.
   signature: 'get_keys(name: str | None = None) -> WorkspaceKeys'
   parameters:
   - name: name
@@ -175,9 +259,18 @@ methods:
     description: Keys of workspace dependent resources.
     types:
     - <xref:azure.ai.ml.entities.WorkspaceKeys>
+  examples:
+  - "Get the workspace keys for the workspace with the given name.<!--[!code-python[Main](les\\\
+    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   ws_keys = ml_client.workspaces.get_keys(name=\"test-ws1\")\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceOperations.list
   name: list
-  summary: List all workspaces that the user has access to in the current resource
+  summary: List all Workspaces that the user has access to in the current resource
     group or subscription.
   signature: 'list(*, scope: str = ''resource_group'') -> Iterable[Workspace]'
   parameters:
@@ -190,3 +283,16 @@ methods:
     description: An iterator like instance of Workspace objects
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.Workspace>]
+  examples:
+  - "List the workspaces by resource group or subscription.<!--[!code-python[Main](les\\\
+    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\9\\\\azure-ai-ml-1.12.1\\\\samples\\\\ml_samples_workspace.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml.constants import Scope\n\n   # list workspaces in the resource\
+    \ group set in ml_client\n   workspaces = ml_client.workspaces.list()\n   workspaces\
+    \ = ml_client.workspaces.list(scope=Scope.RESOURCE_GROUP)\n\n   # list workspaces\
+    \ in the subscription set in ml_client\n   workspaces = ml_client.workspaces.list(scope=Scope.SUBSCRIPTION)\n\
+    \n   ````\n"
