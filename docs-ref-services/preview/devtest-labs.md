@@ -6,8 +6,8 @@ ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
 manager: routlaw
-ms.technology: azure
 keywords: Azure, python, SDK, API, DevTest Labs
+ms.technology: azure
 ---
 # Azure DevTest Labs libraries for python
 
