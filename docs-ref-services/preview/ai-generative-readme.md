@@ -1,14 +1,15 @@
 ---
-title: Azure AI Generative package for Python
+title: Azure AI Generative Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-generative, ai
-ms.date: 11/13/2023
+ms.date: 12/01/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Generative package for Python - version 1.0.0b1 
+# Azure AI Generative Package client library for Python - version 1.0.0b2 
 
-The Azure AI generative package is part of the Azure AI SDK for Python and contains functionality for building, evaluating and deploying Generative AI applications that leverage Azure AI services. The default installation of the package contains capabilities for cloud-connected scenarios, and by installing extras you can also run operations locally (such as building indexes and calculating metrics).
+
+The Azure AI Generative package is part of the Azure AI SDK for Python and contains functionality for building, evaluating and deploying Generative AI applications that leverage Azure AI services. The default installation of the package contains capabilities for cloud-connected scenarios, and by installing extras you can also run operations locally (such as building indexes and calculating metrics).
 
 [Source code][source_code]
 | [Package (PyPI)][ai_pypi]
@@ -36,7 +37,7 @@ pip install azure-ai-generative[index,evaluate,promptflow]
 pip install azure-identity
 ```
 
-## Key Concepts
+## Key concepts
 
 The `[index,evaluate,promptflow]` syntax specifies extra packages that you can optionally remove if you don't need the functionality: 
 * `[index]` adds the ability to build indexes on your local development environment
@@ -125,20 +126,20 @@ If you encounter any bugs or have suggestions, please file an issue in the [Issu
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-generative
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-generative_1.0.0b2/sdk/ai/azure-ai-generative
 [ai_pypi]: https://pypi.org/project/azure-ai-generative/
 [ai_ref_docs]: https://learn.microsoft.com/python/api/overview/azure/ai-generative-readme?view=azure-python
 [generative_samples]: https://github.com/Azure-Samples/azureai-samples
-[product_documentation]: https://docs.microsoft.com/azure/machine-learning/
+[product_documentation]: /azure/machine-learning/
 [azure_subscription]: https://azure.microsoft.com/free/
-[workspace]: https://docs.microsoft.com/azure/machine-learning/concept-workspace
+[workspace]: /azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
+[sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-generative_1.0.0b2/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-generative_1.0.0b2/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-generative_1.0.0b2/sdk/identity/azure-identity
 [python_logging]: https://docs.python.org/3/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
