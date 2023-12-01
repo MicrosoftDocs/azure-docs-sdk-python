@@ -1,14 +1,15 @@
 ---
-title: Azure AI Resources package for Python
+title: Azure AI Resources Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-resources, ai
-ms.date: 11/13/2023
+ms.date: 12/01/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Resources package for Python - version 1.0.0b1 
+# Azure AI Resources Package client library for Python - version 1.0.0b2 
 
-The Azure AI resource package is part of the Azure AI SDK for Python and contains functionality for connecting to and managing your Azure AI resources and projects. Within your Azure AI projects it provides control plane operations for creating and managing data, indexes, models and deployments.
+
+The Azure AI Resources package is part of the Azure AI SDK for Python and contains functionality for connecting to and managing your Azure AI resources and projects. Within your Azure AI projects it provides control plane operations for creating and managing data, indexes, models and deployments.
 
 
 [Source code][source_code]
@@ -46,7 +47,7 @@ ai_client = AIClient(credential=DefaultAzureCredential(), subscription_id='subsc
                      resource_group_name='resource_group', project_name='project_name')
 ```
 
-## Key Concepts
+## Key concepts
 Use this library within your Azure AI projects to provide control plane operations for creating and managing data, indexes, models and deployments.
 
 ## Examples
@@ -78,7 +79,7 @@ The Azure AI Generative Python SDK includes a telemetry feature that collects us
 
 Telemetry data helps the SDK team understand how the SDK is used so it can be improved and the information about failures helps the team resolve problems and fix bugs. The SDK telemetry feature is enabled by default for Jupyter Notebook usage and cannot be enabled for non-Jupyter scenarios. To opt out of the telemetry feature in a Jupyter scenario, set the environment variable `"AZURE_AI_RESOURCES_ENABLE_LOGGING"` to `"False"`.
 
-## Next Steps
+## Next steps
 
 View our [samples repository][generative_samples] on GitHub for examples demonstrating how to use the Azure AI Generative Python SDK.
 
@@ -91,20 +92,20 @@ If you encounter any bugs or have suggestions, please file an issue in the [Issu
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-resources
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b2/sdk/ai/azure-ai-resources
 [ai_pypi]: https://pypi.org/project/azure-ai-resources/
 [ai_ref_docs]: https://learn.microsoft.com/python/api/overview/azure/ai-resources-readme?view=azure-python
 [generative_samples]: https://github.com/Azure-Samples/azureai-samples
-[product_documentation]: https://docs.microsoft.com/azure/machine-learning/
+[product_documentation]: /azure/machine-learning/
 [azure_subscription]: https://azure.microsoft.com/free/
-[workspace]: https://docs.microsoft.com/azure/machine-learning/concept-workspace
+[workspace]: /azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
-[sdk_logging_docs]: https://docs.microsoft.com/azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
+[sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b2/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b2/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b2/sdk/identity/azure-identity
 [python_logging]: https://docs.python.org/3/library/logging.html
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
