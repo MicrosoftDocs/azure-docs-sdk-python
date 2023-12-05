@@ -5,9 +5,9 @@ ms.date: 12/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: logicapps
-keywords: Azure, python, SDK, API, Logic Apps
 ms.technology: azure
 manager: douge
+keywords: Azure, python, SDK, API, Logic Apps
 ---
 # Azure Logic Apps libraries for python
 
