@@ -1,7 +1,7 @@
 ---
 title: Azure Data Box SDK for Python
 description: Reference for Azure Data Box SDK for Python
-ms.date: 12/06/2023
+ms.date: 12/07/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: databox
