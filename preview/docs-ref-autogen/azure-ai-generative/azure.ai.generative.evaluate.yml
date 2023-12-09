@@ -1,0 +1,88 @@
+### YamlMime:PythonPackage
+uid: azure.ai.generative.evaluate
+name: evaluate
+fullName: azure.ai.generative.evaluate
+type: import
+functions:
+- uid: azure.ai.generative.evaluate.evaluate
+  name: evaluate
+  summary: Evaluates target or data with built-in evaluation metrics
+  signature: 'evaluate(*, evaluation_name: str = None, target: Callable | None = None,
+    data: str | None = None, task_type: str = None, metrics_list: List[str] | None
+    = None, model_config: Dict[str, str] = None, data_mapping: Dict[str, str] = None,
+    output_path: str | None = None, **kwargs)'
+  parameters:
+  - name: evaluation_name
+    description: Display name of the evaluation.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: target
+    description: Target to be evaluated. *target* and *data* both cannot be None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Callable>]
+  - name: data
+    description: 'Path to the data to be evaluated or passed to target if target is
+      set.
+
+      Only .jsonl format files are supported.  *target* and *data* both cannot be
+      None'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: task_type
+    description: 'Task type for evaluation. This helps to pick a set of pre-defined
+      metrics.
+
+      Supported values are *qa* and *chat*'
+    types:
+    - <xref:str>
+  - name: metrics_list
+    description: List of metrics to calculate. A default list is picked based on task_type
+      if not set.
+    types:
+    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
+  - name: model_config
+    description: GPT configuration details needed for AI-assisted metrics.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: data_mapping
+    description: GPT configuration details needed for AI-assisted metrics.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: output_path
+    description: The local folder path to save evaluation artifacts to if set
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: tracking_uri
+    description: Tracking uri to log evaluation results to AI Studio
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  return:
+    description: A EvaluationResult object.
+    types:
+    - <xref:azure.ai.generative.evaluate.EvaluationResult>
+  examples:
+  - "Evaluates target or data with built-in evaluation metrics.<!--[!code-python[Main](les\\\
+    ai_samples_evaluate.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
+    \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.6\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\0\\\\azure-ai-generative-1.0.0b2\\\\samples\\\\ai_samples_evaluate.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n   from azure.ai.generative import evaluate\n   from azure.ai.resources.client\
+    \ import AIClient\n   from azure.identity import DefaultAzureCredential\n\n  \
+    \ data_location = \"<path_to_data_in_jsonl_format>\"\n\n   def sample_chat(question):\n\
+    \       # Logic for chat application ....\n       return question\n\n   client\
+    \ = AIClient.from_config(DefaultAzureCredential())\n   result = evaluate(\n  \
+    \     evaluation_name=\"my-evaluation\",\n       target=sample_chat, # Optional\
+    \ if provided evaluate will call target with data provided\n       data=data_location,\n\
+    \       task_type=\"qa\",\n       data_mapping={\n           \"questions\": \"\
+    question\",\n           \"contexts\": \"context\",\n           \"y_pred\": \"\
+    answer\",\n           \"y_test\": \"truth\"\n       },\n       model_config={\n\
+    \           \"api_version\": \"2023-05-15\",\n           \"api_base\": os.getenv(\"\
+    OPENAI_API_BASE\"),\n           \"api_type\": \"azure\",\n           \"api_key\"\
+    : os.getenv(\"OPENAI_API_KEY\"),\n           \"deployment_id\": os.getenv(\"AZURE_OPENAI_EVALUATION_DEPLOYMENT\"\
+    )\n       },\n       tracking_uri=client.tracking_uri,\n   )\n\n\n   ````\n"
+classes:
+- azure.ai.generative.evaluate.EvaluationResult
+modules:
+- azure.ai.generative.evaluate.evaluate_on_cloud
