@@ -1,7 +1,7 @@
 ---
 title: Azure Video Search SDK for Python
 description: Reference for Azure Video Search SDK for Python
-ms.date: 12/11/2023
+ms.date: 12/12/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: videosearch
