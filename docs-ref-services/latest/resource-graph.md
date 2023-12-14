@@ -1,7 +1,7 @@
 ---
 title: Azure Resource Graph SDK for Python
 description: Reference for Azure Resource Graph SDK for Python
-ms.date: 12/13/2023
+ms.date: 12/14/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: resourcegraph
