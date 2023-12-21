@@ -24,7 +24,7 @@ methods:
   name: get
   summary: Returns the value of the specified key. If the key does not exist, returns
     the default value.
-  signature: 'get(key: str, default: str | None = None) -> str'
+  signature: 'get(key: str, default: str | None = None) -> str | Mapping[str, Any]'
   parameters:
   - name: key
     description: The key of the value to get.
@@ -37,18 +37,17 @@ methods:
   return:
     description: The value of the specified key.
     types:
-    - <xref:str>
+    - <xref:typing.Union>[<xref:str>, <xref:JSON>]
 - uid: azure.appconfiguration.provider.aio.AzureAppConfigurationProvider.items
   name: items
-  summary: 'Returns a list of key-value pairs loaded from Azure App Configuration.
-    Any values that are Key Vault references
-
-    will be resolved.'
-  signature: items() -> Iterable[Tuple[str, str]]
+  summary: "Returns a set-like object of key-value pairs loaded from Azure App Configuration.\
+    \ Any values that are Key Vault\n   references will be resolved."
+  signature: items() -> Iterable[Tuple[str, str | Mapping[str, Any]]]
   return:
-    description: A list of key-value pairs loaded from Azure App Configuration.
+    description: A set-like object of key-value pairs loaded from Azure App Configuration.
     types:
-    - <xref:typing.Iterable>[<xref:typing.Tuple>[<xref:str>, <xref:str>]]
+    - <xref:typing.Iterable>[<xref:typing.Tuple>[<xref:str>, <xref:typing.Union>[<xref:str>,
+      <xref:JSON>]]]
 - uid: azure.appconfiguration.provider.aio.AzureAppConfigurationProvider.keys
   name: keys
   summary: Returns a list of keys loaded from Azure App Configuration.
@@ -65,9 +64,13 @@ methods:
   summary: 'Returns a list of values loaded from Azure App Configuration. Any values
     that are Key Vault references will be
 
-    resolved.'
-  signature: values() -> Iterable[str]
+    resolved.
+
+
+    based on there content type.
+
+    :rtype: Iterable[[str], [JSON]]'
+  signature: values() -> Iterable[str | Mapping[str, Any]]
   return:
-    description: A list of values loaded from Azure App Configuration.
-    types:
-    - <xref:typing.Iterable>[<xref:str>]
+    description: A list of values loaded from Azure App Configuration. The values
+      are either Strings or JSON objects,
