@@ -1,7 +1,7 @@
 ---
 title: Azure Agrifood SDK for Python
 description: Reference for Azure Agrifood SDK for Python
-ms.date: 12/29/2023
+ms.date: 01/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: agrifood
