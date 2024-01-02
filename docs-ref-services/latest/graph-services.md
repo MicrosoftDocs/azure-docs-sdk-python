@@ -1,7 +1,7 @@
 ---
 title: Azure Graph Services SDK for Python
 description: Reference for Azure Graph Services SDK for Python
-ms.date: 01/01/2024
+ms.date: 01/02/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: graphservices
