@@ -31,11 +31,15 @@ constructor:
     bool | None = None, enable_over_provisioning: bool | None = None, zones: List[str]
     | None = None, is_spot_vm: bool | None = None, host_group_id: str | None = None,
     use_ephemeral_os_disk: bool | None = None, spot_restore_timeout: str | None =
-    None, eviction_policy: str | _models.EvictionPolicyType = ''Delete'', vm_image_resource_id:
+    None, eviction_policy: str | _models.EvictionPolicyType | None = None, vm_image_resource_id:
     str | None = None, subnet_id: str | None = None, vm_setup_actions: List[str |
     _models.VmSetupAction] | None = None, security_type: str | _models.SecurityType
     | None = None, secure_boot_enabled: bool | None = None, enable_node_public_ip:
-    bool | None = None, vm_shared_gallery_image_id: str | None = None, **kwargs: Any)'
+    bool | None = None, enable_node_public_i_pv6: bool | None = None, vm_shared_gallery_image_id:
+    str | None = None, nat_gateway_id: str | None = None, vm_image_plan: _models.VmImagePlan
+    | None = None, service_artifact_reference_id: str | None = None, dscp_configuration_id:
+    str | None = None, additional_network_interface_configurations: List[_models.AdditionalNetworkInterfaceConfiguration]
+    | None = None, **kwargs: Any)'
   parameters:
   - name: tags
     description: Azure resource tags.
@@ -310,7 +314,13 @@ constructor:
     types:
     - <xref:bool>
   - name: enable_node_public_ip
-    description: 'Specifies whether each node is allocated its own public IP
+    description: 'Specifies whether each node is allocated its own public IPv4
+
+      address. This is only supported on secondary node types with custom Load Balancers.'
+    types:
+    - <xref:bool>
+  - name: enable_node_public_i_pv6
+    description: 'Specifies whether each node is allocated its own public IPv6
 
       address. This is only supported on secondary node types with custom Load Balancers.'
     types:
@@ -321,6 +331,49 @@ constructor:
       image. This parameter is used for custom vm image.'
     types:
     - <xref:str>
+  - name: nat_gateway_id
+    description: 'Specifies the resource id of a NAT Gateway to attach to the subnet
+      of
+
+      this node type. Node type must use custom load balancer.'
+    types:
+    - <xref:str>
+  - name: vm_image_plan
+    description: 'Specifies information about the marketplace image used to create
+      the
+
+      virtual machine. This element is only used for marketplace images. Before you
+      can use a
+
+      marketplace image from an API, you must enable the image for programmatic use.
+      In the Azure
+
+      portal, find the marketplace image that you want to use and then click Want
+      to deploy
+
+      programmatically, Get Started ->. Enter any required information and then click
+      Save.'
+    types:
+    - <xref:azure.mgmt.servicefabricmanagedclusters.models.VmImagePlan>
+  - name: service_artifact_reference_id
+    description: 'Specifies the service artifact reference id used to set
+
+      same image version for all virtual machines in the scale set when using ''latest''
+      image version.'
+    types:
+    - <xref:str>
+  - name: dscp_configuration_id
+    description: 'Specifies the resource id of the DSCP configuration to apply to
+
+      the node type network interface.'
+    types:
+    - <xref:str>
+  - name: additional_network_interface_configurations
+    description: 'Specifies the settings for any additional
+
+      secondary network interfaces to attach to the node type.'
+    types:
+    - <xref:list>[<xref:azure.mgmt.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration>]
 variables:
 - description: Azure resource identifier.
   name: id
@@ -618,10 +671,16 @@ variables:
   name: secure_boot_enabled
   types:
   - <xref:bool>
-- description: 'Specifies whether each node is allocated its own public IP
+- description: 'Specifies whether each node is allocated its own public IPv4
 
     address. This is only supported on secondary node types with custom Load Balancers.'
   name: enable_node_public_ip
+  types:
+  - <xref:bool>
+- description: 'Specifies whether each node is allocated its own public IPv6
+
+    address. This is only supported on secondary node types with custom Load Balancers.'
+  name: enable_node_public_i_pv6
   types:
   - <xref:bool>
 - description: 'Indicates the resource id of the vm shared galleries image.
@@ -630,3 +689,45 @@ variables:
   name: vm_shared_gallery_image_id
   types:
   - <xref:str>
+- description: 'Specifies the resource id of a NAT Gateway to attach to the subnet
+    of
+
+    this node type. Node type must use custom load balancer.'
+  name: nat_gateway_id
+  types:
+  - <xref:str>
+- description: 'Specifies information about the marketplace image used to create the
+
+    virtual machine. This element is only used for marketplace images. Before you
+    can use a
+
+    marketplace image from an API, you must enable the image for programmatic use.
+    In the Azure
+
+    portal, find the marketplace image that you want to use and then click Want to
+    deploy
+
+    programmatically, Get Started ->. Enter any required information and then click
+    Save.'
+  name: vm_image_plan
+  types:
+  - <xref:azure.mgmt.servicefabricmanagedclusters.models.VmImagePlan>
+- description: 'Specifies the service artifact reference id used to set
+
+    same image version for all virtual machines in the scale set when using ''latest''
+    image version.'
+  name: service_artifact_reference_id
+  types:
+  - <xref:str>
+- description: 'Specifies the resource id of the DSCP configuration to apply to
+
+    the node type network interface.'
+  name: dscp_configuration_id
+  types:
+  - <xref:str>
+- description: 'Specifies the settings for any additional
+
+    secondary network interfaces to attach to the node type.'
+  name: additional_network_interface_configurations
+  types:
+  - <xref:list>[<xref:azure.mgmt.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration>]
