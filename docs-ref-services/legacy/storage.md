@@ -1,12 +1,12 @@
 ---
 title: Azure Storage SDK for Python
 description: Reference for Azure Storage SDK for Python
-ms.date: 01/24/2024
+ms.date: 01/25/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
-manager: douge
 keywords: Azure, Python, SDK, API, Storage
+manager: douge
 ms.technology: azure
 ---
 # Azure Storage client libraries for Python
