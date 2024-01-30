@@ -5,7 +5,7 @@ fullName: azure.ai.ml.entities.ModelPackage
 module: azure.ai.ml.entities
 inheritances:
 - azure.ai.ml.entities._resource.Resource
-- azure.ai.ml._restclient.v2023_02_01_preview.models._models_py3.PackageRequest
+- azure.ai.ml._restclient.v2023_08_01_preview.models._models_py3.PackageRequest
 summary: '> [!NOTE]
 
   > This is an experimental class, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
@@ -16,12 +16,11 @@ summary: '> [!NOTE]
 
   Model package.'
 constructor:
-  syntax: 'ModelPackage(*, target_environment_name: str = None, target_environment_id:
-    str = None, inferencing_server: AzureMLOnlineInferencingServer | AzureMLBatchInferencingServer,
-    base_environment_source: BaseEnvironment = None, target_environment_version: str
-    | None = None, environment_variables: Dict[str, str] | None = None, inputs: List[ModelPackageInput]
-    | None = None, model_configuration: ModelConfiguration | None = None, tags: Dict[str,
-    str] | None = None)'
+  syntax: 'ModelPackage(*, target_environment: str | Dict[str, str], inferencing_server:
+    AzureMLOnlineInferencingServer | AzureMLBatchInferencingServer, base_environment_source:
+    BaseEnvironment = None, environment_variables: Dict[str, str] | None = None, inputs:
+    List[ModelPackageInput] | None = None, model_configuration: ModelConfiguration
+    | None = None, tags: Dict[str, str] | None = None, **kwargs)'
   parameters:
   - name: target_environment_name
     description: The target environment name for the model package.
@@ -68,7 +67,7 @@ examples:
 - "Create a Model Package object.<!--[!code-python[Main](les\\ml_samples_misc.py )]-->\n\
   \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
   : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.11.0\\\
+  \\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.13.0\\\
   \\samples\\\\ml_samples_misc.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   from azure.ai.ml.entities import AzureMLOnlineInferencingServer,\
@@ -80,17 +79,18 @@ examples:
 methods:
 - uid: azure.ai.ml.entities.ModelPackage.as_dict
   name: as_dict
-  summary: "Return a dict that can be JSONify using json.dump.\n\nAdvanced usage might\
-    \ optionally use a callback as parameter:\n\nKey is the attribute name used in\
-    \ Python. Attr_desc\nis a dict of metadata. Currently contains 'type' with the\n\
-    msrest type and 'key' with the RestAPI encoded key.\nValue is the current value\
-    \ in this object.\n\nThe string returned will be used to serialize the key.\n\
+  summary: "Return a dict that can be serialized using json.dump.\n\nAdvanced usage\
+    \ might optionally use a callback as parameter:\n\nKey is the attribute name used\
+    \ in Python. Attr_desc\nis a dict of metadata. Currently contains 'type' with\
+    \ the\nmsrest type and 'key' with the RestAPI encoded key.\nValue is the current\
+    \ value in this object.\n\nThe string returned will be used to serialize the key.\n\
     If the return type is a list, this is considered hierarchical\nresult dict.\n\n\
     See the three examples in this file:\n\n* attribute_transformer \n\n* full_restapi_key_transformer\
     \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
     \ pass the kwargs is_xml=True."
-  signature: as_dict(keep_readonly=True, key_transformer=<function attribute_transformer>,
-    **kwargs)
+  signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
+    ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
+    **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
   - name: key_transformer
     description: A key transformer function.
@@ -105,7 +105,7 @@ methods:
 - uid: azure.ai.ml.entities.ModelPackage.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a model.
-  signature: deserialize(data, content_type=None)
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -142,7 +142,7 @@ methods:
     description: Raised if dest is an open file and the file is not writable.
 - uid: azure.ai.ml.entities.ModelPackage.enable_additional_properties_sending
   name: enable_additional_properties_sending
-  signature: enable_additional_properties_sending()
+  signature: enable_additional_properties_sending() -> None
 - uid: azure.ai.ml.entities.ModelPackage.from_dict
   name: from_dict
   summary: 'Parse a dict using given key extractor return a model.
@@ -153,7 +153,8 @@ methods:
     extractors (rest_key_case_insensitive_extractor, attribute_key_case_insensitive_extractor
 
     and last_rest_key_case_insensitive_extractor)'
-  signature: from_dict(data, key_extractors=None, content_type=None)
+  signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
+    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
   parameters:
   - name: data
     description: A dict using RestAPI structure
@@ -173,7 +174,7 @@ methods:
   - type: DeserializationError if something went wrong
 - uid: azure.ai.ml.entities.ModelPackage.is_xml_model
   name: is_xml_model
-  signature: is_xml_model()
+  signature: is_xml_model() -> bool
 - uid: azure.ai.ml.entities.ModelPackage.serialize
   name: serialize
   summary: 'Return the JSON that would be sent to azure from this model.
@@ -183,7 +184,8 @@ methods:
 
 
     If you want XML serialization, you can pass the kwargs is_xml=True.'
-  signature: serialize(keep_readonly=False, **kwargs)
+  signature: 'serialize(keep_readonly: bool = False, **kwargs: Any) -> MutableMapping[str,
+    Any]'
   parameters:
   - name: keep_readonly
     description: If you want to serialize the readonly attributes
@@ -194,14 +196,6 @@ methods:
     description: A dict JSON compatible object
     types:
     - <xref:dict>
-- uid: azure.ai.ml.entities.ModelPackage.validate
-  name: validate
-  summary: Validate this model recursively and return a list of ValidationError.
-  signature: validate()
-  return:
-    description: A list of validation error
-    types:
-    - <xref:list>
 attributes:
 - uid: azure.ai.ml.entities.ModelPackage.base_path
   name: base_path

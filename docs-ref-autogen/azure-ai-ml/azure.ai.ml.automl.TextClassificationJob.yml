@@ -5,33 +5,52 @@ fullName: azure.ai.ml.automl.TextClassificationJob
 module: azure.ai.ml.automl
 inheritances:
 - azure.ai.ml.entities._job.automl.nlp.automl_nlp_job.AutoMLNLPJob
-summary: 'Configuration for AutoML Text Classification Job.
-
-
-  Initializes a new AutoML Text Classification task.'
+summary: Configuration for AutoML Text Classification Job.
 constructor:
   syntax: 'TextClassificationJob(*, target_column_name: str | None = None, training_data:
     Input | None = None, validation_data: Input | None = None, primary_metric: ClassificationPrimaryMetrics
     | None = None, log_verbosity: str | None = None, **kwargs)'
   parameters:
   - name: target_column_name
-    description: The name of the target column
+    description: The name of the target column, defaults to None
     isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   - name: training_data
-    description: Training data to be used for training
+    description: Training data to be used for training, defaults to None
     isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.Input>]
   - name: validation_data
-    description: Validation data to be used for evaluating the trained model
+    description: Validation data to be used for evaluating the trained model, defaults
+      to None
     isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.Input>]
   - name: primary_metric
-    description: The primary metric to be displayed
+    description: The primary metric to be displayed, defaults to None
     isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.automl.ClassificationPrimaryMetrics>]
   - name: log_verbosity
-    description: Log verbosity level
+    description: Log verbosity level, defaults to None
     isRequired: true
-  - name: kwargs
-    description: Job-specific arguments
-    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+examples:
+- "creating an automl text classification job<!--[!code-python[Main](les\\ml_samples_automl_nlp.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.13.0\\\
+  \\samples\\\\ml_samples_automl_nlp.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import automl, Input\n\
+  \   from azure.ai.ml.constants import AssetTypes\n\n   text_classification_job =\
+  \ automl.TextClassificationJob(\n       experiment_name=\"my_experiment\",\n   \
+  \    compute=\"my_compute\",\n       training_data=Input(type=AssetTypes.MLTABLE,\
+  \ path=\"./training-mltable-folder\"),\n       validation_data=Input(type=AssetTypes.MLTABLE,\
+  \ path=\"./validation-mltable-folder\"),\n       target_column_name=\"terms\",\n\
+  \       tags={\"my_custom_tag\": \"My custom value\"},\n   )\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.automl.TextClassificationJob.dump
   name: dump
@@ -58,7 +77,7 @@ methods:
     description: Raised if dest is an open file and the file is not writable.
 - uid: azure.ai.ml.automl.TextClassificationJob.extend_search_space
   name: extend_search_space
-  summary: Add (a) search space(s) for this AutoML NLP job.
+  summary: Add (a) search space(s) for an AutoML NLP job.
   signature: 'extend_search_space(value: SearchSpace | List[SearchSpace]) -> None'
   parameters:
   - name: value
@@ -67,23 +86,45 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:azure.ai.ml.automl.SearchSpace>, <xref:typing.List>[<xref:azure.ai.ml.automl.SearchSpace>]]
-  return:
-    description: None.
 - uid: azure.ai.ml.automl.TextClassificationJob.set_data
   name: set_data
+  summary: Define data configuration for NLP job
   signature: 'set_data(*, training_data: Input, target_column_name: str, validation_data:
     Input) -> None'
+  parameters:
+  - name: training_data
+    description: Training data
+  - name: target_column_name
+    description: Column name of the target column.
+  - name: validation_data
+    description: Validation data
 - uid: azure.ai.ml.automl.TextClassificationJob.set_featurization
   name: set_featurization
+  summary: Define featurization configuration for AutoML NLP job.
   signature: 'set_featurization(*, dataset_language: str | None = None) -> None'
+  parameters:
+  - name: dataset_language
+    description: Language of the dataset, defaults to None
 - uid: azure.ai.ml.automl.TextClassificationJob.set_limits
   name: set_limits
+  summary: Define limit configuration for AutoML NLP job
   signature: 'set_limits(*, max_trials: int = 1, max_concurrent_trials: int = 1, max_nodes:
     int = 1, timeout_minutes: int | None = None, trial_timeout_minutes: int | None
     = None) -> None'
+  parameters:
+  - name: max_trials
+    description: Maximum number of AutoML iterations, defaults to 1
+  - name: max_concurrent_trials
+    description: Maximum number of concurrent AutoML iterations, defaults to 1
+  - name: max_nodes
+    description: Maximum number of nodes used for sweep, defaults to 1
+  - name: timeout_minutes
+    description: Timeout for the AutoML job, defaults to None
+  - name: trial_timeout_minutes
+    description: Timeout for each AutoML trial, defaults to None
 - uid: azure.ai.ml.automl.TextClassificationJob.set_sweep
   name: set_sweep
-  summary: Sweep settings for all AutoML NLP tasks.
+  summary: Define sweep configuration for AutoML NLP job
   signature: 'set_sweep(*, sampling_algorithm: str | SamplingAlgorithmType, early_termination:
     EarlyTerminationPolicy | None = None)'
   parameters:
@@ -92,56 +133,14 @@ methods:
 
       Possible values include: "Grid", "Random", and "Bayesian".'
   - name: early_termination
-    description: Optional early termination policy to end poorly performing training
-      candidates.
-  return:
-    description: None
+    description: 'Optional. early termination policy to end poorly performing training
+      candidates,
+
+      defaults to None.'
 - uid: azure.ai.ml.automl.TextClassificationJob.set_training_parameters
   name: set_training_parameters
-  summary: 'Fix certain training parameters throughout the training procedure for
-    all candidates.
-
-
-    pass. This must be a positive integer.
-
-    :keyword learning_rate: initial learning rate. Must be a float in (0, 1).
-
-    :keyword learning_rate_scheduler: the type of learning rate scheduler. Must choose
-    from ''linear'', ''cosine'',
-
-    ''cosine_with_restarts'', ''polynomial'', ''constant'', and ''constant_with_warmup''.
-
-    :keyword model_name: the model name to use during training. Must choose from ''bert-base-cased'',
-
-    ''bert-base-uncased'', ''bert-base-multilingual-cased'', ''bert-base-german-cased'',
-    ''bert-large-cased'',
-
-    ''bert-large-uncased'', ''distilbert-base-cased'', ''distilbert-base-uncased'',
-    ''roberta-base'', ''roberta-large'',
-
-    ''distilroberta-base'', ''xlm-roberta-base'', ''xlm-roberta-large'', xlnet-base-cased'',
-    and ''xlnet-large-cased''.
-
-    :keyword number_of_epochs: the number of epochs to train with. Must be a positive
-    integer.
-
-    :keyword training_batch_size: the batch size during training. Must be a positive
-    integer.
-
-    :keyword validation_batch_size: the batch size during validation. Must be a positive
-    integer.
-
-    :keyword warmup_ratio: ratio of total training steps used for a linear warmup
-    from 0 to learning_rate.
-
-    Must be a float in [0, 1].
-
-    :keyword weight_decay: value of weight decay when optimizer is sgd, adam, or adamw.
-    This must be a float in
-
-    the range [0, 1].
-
-    :return: None.'
+  summary: Fix certain training parameters throughout the training procedure for all
+    candidates.
   signature: 'set_training_parameters(*, gradient_accumulation_steps: int | None =
     None, learning_rate: float | None = None, learning_rate_scheduler: str | NlpLearningRateScheduler
     | None = None, model_name: str | None = None, number_of_epochs: int | None = None,
@@ -149,7 +148,49 @@ methods:
     warmup_ratio: float | None = None, weight_decay: float | None = None) -> None'
   parameters:
   - name: gradient_accumulation_steps
-    description: number of steps over which to accumulate gradients before a backward
+    description: 'number of steps over which to accumulate gradients before a backward
+
+      pass. This must be a positive integer., defaults to None'
+  - name: learning_rate
+    description: initial learning rate. Must be a float in (0, 1)., defaults to None
+  - name: learning_rate_scheduler
+    description: 'the type of learning rate scheduler. Must choose from ''linear'',
+      ''cosine'',
+
+      ''cosine_with_restarts'', ''polynomial'', ''constant'', and ''constant_with_warmup''.,
+      defaults to None'
+  - name: model_name
+    description: 'the model name to use during training. Must choose from ''bert-base-cased'',
+
+      ''bert-base-uncased'', ''bert-base-multilingual-cased'', ''bert-base-german-cased'',
+      ''bert-large-cased'',
+
+      ''bert-large-uncased'', ''distilbert-base-cased'', ''distilbert-base-uncased'',
+      ''roberta-base'', ''roberta-large'',
+
+      ''distilroberta-base'', ''xlm-roberta-base'', ''xlm-roberta-large'', xlnet-base-cased'',
+      and ''xlnet-large-cased''.,
+
+      defaults to None'
+  - name: number_of_epochs
+    description: the number of epochs to train with. Must be a positive integer.,
+      defaults to None
+  - name: training_batch_size
+    description: the batch size during training. Must be a positive integer., defaults
+      to None
+  - name: validation_batch_size
+    description: the batch size during validation. Must be a positive integer., defaults
+      to None
+  - name: warmup_ratio
+    description: 'ratio of total training steps used for a linear warmup from 0 to
+      learning_rate.
+
+      Must be a float in [0, 1]., defaults to None'
+  - name: weight_decay
+    description: 'value of weight decay when optimizer is sgd, adam, or adamw. This
+      must be a float in
+
+      the range [0, 1]., defaults to None'
 attributes:
 - uid: azure.ai.ml.automl.TextClassificationJob.base_path
   name: base_path
@@ -167,6 +208,11 @@ attributes:
     - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
 - uid: azure.ai.ml.automl.TextClassificationJob.featurization
   name: featurization
+  summary: Featurization settings used for NLP job
+  return:
+    description: featurization settings
+    types:
+    - <xref:azure.ai.ml.automl.NlpFeaturizationSettings>
 - uid: azure.ai.ml.automl.TextClassificationJob.id
   name: id
   summary: The resource ID.
@@ -178,6 +224,11 @@ attributes:
   name: inputs
 - uid: azure.ai.ml.automl.TextClassificationJob.limits
   name: limits
+  summary: Limit settings for NLP jobs
+  return:
+    description: limit configuration for NLP job
+    types:
+    - <xref:azure.ai.ml.automl.NlpLimitSettings>
 - uid: azure.ai.ml.automl.TextClassificationJob.log_files
   name: log_files
   summary: Job output files.
@@ -187,12 +238,27 @@ attributes:
     - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
 - uid: azure.ai.ml.automl.TextClassificationJob.log_verbosity
   name: log_verbosity
+  summary: Log verbosity configuration
+  return:
+    description: the degree of verbosity used in logging
+    types:
+    - <xref:azure.mgmt.machinelearningservices.models.LogVerbosity>
 - uid: azure.ai.ml.automl.TextClassificationJob.outputs
   name: outputs
 - uid: azure.ai.ml.automl.TextClassificationJob.primary_metric
   name: primary_metric
+  summary: Primary metric to display from NLP job
+  return:
+    description: primary metric to display
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.automl.TextClassificationJob.search_space
   name: search_space
+  summary: Search space(s) to sweep over for NLP sweep jobs
+  return:
+    description: list of search spaces to sweep over for NLP jobs
+    types:
+    - <xref:typing.List>[<xref:azure.ai.ml.automl.NlpSearchSpace>]
 - uid: azure.ai.ml.automl.TextClassificationJob.status
   name: status
   summary: "The status of the job.\n\nCommon values returned include \"Running\",\
@@ -227,6 +293,11 @@ attributes:
     - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.automl.TextClassificationJob.sweep
   name: sweep
+  summary: Sweep settings used for NLP job
+  return:
+    description: sweep settings
+    types:
+    - <xref:azure.ai.ml.automl.NlpSweepSettings>
 - uid: azure.ai.ml.automl.TextClassificationJob.task_type
   name: task_type
   summary: Get task type.
@@ -251,6 +322,11 @@ attributes:
     - <xref:azure.ai.ml.Input>
 - uid: azure.ai.ml.automl.TextClassificationJob.training_parameters
   name: training_parameters
+  summary: Parameters that are used for all submitted jobs.
+  return:
+    description: fixed training parameters for NLP jobs
+    types:
+    - <xref:azure.ai.ml.automl.NlpFixedParameters>
 - uid: azure.ai.ml.automl.TextClassificationJob.type
   name: type
   summary: The type of the job.
