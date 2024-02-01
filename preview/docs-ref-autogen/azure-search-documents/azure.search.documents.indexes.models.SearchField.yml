@@ -12,369 +12,338 @@ summary: 'Represents a field in an index definition, which describes the name, d
   All required parameters must be populated in order to send to Azure.'
 constructor:
   syntax: SearchField(**kwargs)
-  parameters:
-  - name: name
-    description: 'Required. The name of the field, which must be unique within the
-      fields collection
-
-      of the index or parent field.'
-    types:
-    - <xref:str>
-  - name: type
-    description: 'Required. The data type of the field. Possible values include: "Edm.String",
-
-      "Edm.Int32", "Edm.Int64", "Edm.Double", "Edm.Boolean", "Edm.DateTimeOffset",
-
-      "Edm.GeographyPoint", "Edm.ComplexType".'
-    types:
-    - <xref:str>
-    - <xref:azure.search.documents.indexes.models.SearchFieldDataType>
-  - name: key
-    description: 'A value indicating whether the field uniquely identifies documents
-      in the index.
+variables:
+- description: 'The name of the field, which must be unique within the fields collection
+    of the
 
-      Exactly one top-level field in each index must be chosen as the key field and
-      it must be of
+    index or parent field. Required.'
+  name: name
+  types:
+  - <xref:str>
+- description: 'The data type of the field. Required. Known values are: "Edm.String",
+    "Edm.Int32",
 
-      type Edm.String. Key fields can be used to look up documents directly and update
-      or delete
+    "Edm.Int64", "Edm.Double", "Edm.Boolean", "Edm.DateTimeOffset", "Edm.GeographyPoint",
 
-      specific documents. Default is false for simple fields and null for complex
-      fields.'
-    types:
-    - <xref:bool>
-  - name: hidden
-    description: 'A value indicating whether the field can be returned in a search
-      result.
-
-      You can enable this option if you want to use a field (for example, margin)
-      as a filter,
-
-      sorting, or scoring mechanism but do not want the field to be visible to the
-      end user. This
+    "Edm.ComplexType", and "Edm.Single".'
+  name: type
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.SearchFieldDataType>
+- description: 'A value indicating whether the field uniquely identifies documents
+    in the index.
 
-      property must be False for key fields, and it must be null for complex fields.
-      This property can
+    Exactly one top-level field in each index must be chosen as the key field and
+    it must be of
 
-      be changed on existing fields. Enabling this property does not cause any increase
-      in index
+    type Edm.String. Key fields can be used to look up documents directly and update
+    or delete
 
-      storage requirements. Default is False for simple fields and null for complex
-      fields.'
-    types:
-    - <xref:bool>
-  - name: searchable
-    description: 'A value indicating whether the field is full-text searchable. This
-      means it
+    specific documents. Default is false for simple fields and null for complex fields.'
+  name: key
+  types:
+  - <xref:bool>
+- description: 'A value indicating whether the field is full-text searchable. This
+    means it
 
-      will undergo analysis such as word-breaking during indexing. If you set a searchable
-      field to a
+    will undergo analysis such as word-breaking during indexing. If you set a searchable
+    field to a
 
-      value like "sunny day", internally it will be split into the individual tokens
-      "sunny" and
+    value like "sunny day", internally it will be split into the individual tokens
+    "sunny" and
 
-      "day". This enables full-text searches for these terms. Fields of type Edm.String
-      or
+    "day". This enables full-text searches for these terms. Fields of type Edm.String
+    or
 
-      Collection(Edm.String) are searchable by default. This property must be false
-      for simple fields
+    Collection(Edm.String) are searchable by default. This property must be false
+    for simple fields
 
-      of other non-string data types, and it must be null for complex fields. Note:
-      searchable fields
+    of other non-string data types, and it must be null for complex fields. Note:
+    searchable fields
 
-      consume extra space in your index since Azure Cognitive Search will store an
-      additional
+    consume extra space in your index since Azure Cognitive Search will store an additional
 
-      tokenized version of the field value for full-text searches. If you want to
-      save space in your
+    tokenized version of the field value for full-text searches. If you want to save
+    space in your
 
-      index and you don''t need a field to be included in searches, set searchable
-      to false.'
-    types:
-    - <xref:bool>
-  - name: filterable
-    description: 'A value indicating whether to enable the field to be referenced
-      in $filter
+    index and you don''t need a field to be included in searches, set searchable to
+    false.'
+  name: searchable
+  types:
+  - <xref:bool>
+- description: 'A value indicating whether to enable the field to be referenced in
+    $filter
 
-      queries. filterable differs from searchable in how strings are handled. Fields
-      of type
+    queries. filterable differs from searchable in how strings are handled. Fields
+    of type
 
-      Edm.String or Collection(Edm.String) that are filterable do not undergo word-breaking,
-      so
+    Edm.String or Collection(Edm.String) that are filterable do not undergo word-breaking,
+    so
 
-      comparisons are for exact matches only. For example, if you set such a field
-      f to "sunny day",
+    comparisons are for exact matches only. For example, if you set such a field f
+    to "sunny day",
 
-      $filter=f eq ''sunny'' will find no matches, but $filter=f eq ''sunny day''
-      will. This property
+    $filter=f eq ''sunny'' will find no matches, but $filter=f eq ''sunny day'' will.
+    This property
 
-      must be null for complex fields. Default is true for simple fields and null
-      for complex fields.'
-    types:
-    - <xref:bool>
-  - name: sortable
-    description: 'A value indicating whether to enable the field to be referenced
-      in $orderby
+    must be null for complex fields. Default is true for simple fields and null for
+    complex fields.'
+  name: filterable
+  types:
+  - <xref:bool>
+- description: 'A value indicating whether to enable the field to be referenced in
+    $orderby
 
-      expressions. By default Azure Cognitive Search sorts results by score, but in
-      many experiences
+    expressions. By default Azure Cognitive Search sorts results by score, but in
+    many experiences
 
-      users will want to sort by fields in the documents. A simple field can be sortable
-      only if it
+    users will want to sort by fields in the documents. A simple field can be sortable
+    only if it
 
-      is single-valued (it has a single value in the scope of the parent document).
-      Simple collection
+    is single-valued (it has a single value in the scope of the parent document).
+    Simple collection
 
-      fields cannot be sortable, since they are multi-valued. Simple sub-fields of
-      complex
+    fields cannot be sortable, since they are multi-valued. Simple sub-fields of complex
 
-      collections are also multi-valued, and therefore cannot be sortable. This is
-      true whether it''s
+    collections are also multi-valued, and therefore cannot be sortable. This is true
+    whether it''s
 
-      an immediate parent field, or an ancestor field, that''s the complex collection.
-      Complex fields
+    an immediate parent field, or an ancestor field, that''s the complex collection.
+    Complex fields
 
-      cannot be sortable and the sortable property must be null for such fields. The
-      default for
+    cannot be sortable and the sortable property must be null for such fields. The
+    default for
 
-      sortable is true for single-valued simple fields, false for multi-valued simple
-      fields, and
+    sortable is true for single-valued simple fields, false for multi-valued simple
+    fields, and
 
-      null for complex fields.'
-    types:
-    - <xref:bool>
-  - name: facetable
-    description: 'A value indicating whether to enable the field to be referenced
-      in facet
+    null for complex fields.'
+  name: sortable
+  types:
+  - <xref:bool>
+- description: 'A value indicating whether to enable the field to be referenced in
+    facet
 
-      queries. Typically used in a presentation of search results that includes hit
-      count by category
+    queries. Typically used in a presentation of search results that includes hit
+    count by category
 
-      (for example, search for digital cameras and see hits by brand, by megapixels,
-      by price, and so
+    (for example, search for digital cameras and see hits by brand, by megapixels,
+    by price, and so
 
-      on). This property must be null for complex fields. Fields of type Edm.GeographyPoint
-      or
+    on). This property must be null for complex fields. Fields of type Edm.GeographyPoint
+    or
 
-      Collection(Edm.GeographyPoint) cannot be facetable. Default is true for all
-      other simple
+    Collection(Edm.GeographyPoint) cannot be facetable. Default is true for all other
+    simple
 
-      fields.'
-    types:
-    - <xref:bool>
-  - name: analyzer_name
-    description: 'The name of the analyzer to use for the field. This option can be
-      used only
+    fields.'
+  name: facetable
+  types:
+  - <xref:bool>
+- description: 'The name of the analyzer to use for the field. This option can be
+    used only
 
-      with searchable fields and it can''t be set together with either searchAnalyzer
-      or
+    with searchable fields and it can''t be set together with either searchAnalyzer
+    or
 
-      indexAnalyzer. Once the analyzer is chosen, it cannot be changed for the field.
-      Must be null
+    indexAnalyzer. Once the analyzer is chosen, it cannot be changed for the field.
+    Must be null
 
-      for complex fields. Possible values include: "ar.microsoft", "ar.lucene", "hy.lucene",
+    for complex fields. Known values are: "ar.microsoft", "ar.lucene", "hy.lucene",
+    "bn.microsoft",
 
-      "bn.microsoft", "eu.lucene", "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene",
-      "zh-
+    "eu.lucene", "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft",
 
-      Hans.microsoft", "zh-Hans.lucene", "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft",
+    "zh-Hans.lucene", "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft",
 
-      "cs.microsoft", "cs.lucene", "da.microsoft", "da.lucene", "nl.microsoft", "nl.lucene",
+    "cs.lucene", "da.microsoft", "da.lucene", "nl.microsoft", "nl.lucene", "en.microsoft",
 
-      "en.microsoft", "en.lucene", "et.microsoft", "fi.microsoft", "fi.lucene", "fr.microsoft",
+    "en.lucene", "et.microsoft", "fi.microsoft", "fi.lucene", "fr.microsoft", "fr.lucene",
 
-      "fr.lucene", "gl.lucene", "de.microsoft", "de.lucene", "el.microsoft", "el.lucene",
+    "gl.lucene", "de.microsoft", "de.lucene", "el.microsoft", "el.lucene", "gu.microsoft",
 
-      "gu.microsoft", "he.microsoft", "hi.microsoft", "hi.lucene", "hu.microsoft",
-      "hu.lucene",
+    "he.microsoft", "hi.microsoft", "hi.lucene", "hu.microsoft", "hu.lucene", "is.microsoft",
 
-      "is.microsoft", "id.microsoft", "id.lucene", "ga.lucene", "it.microsoft", "it.lucene",
+    "id.microsoft", "id.lucene", "ga.lucene", "it.microsoft", "it.lucene", "ja.microsoft",
 
-      "ja.microsoft", "ja.lucene", "kn.microsoft", "ko.microsoft", "ko.lucene", "lv.microsoft",
+    "ja.lucene", "kn.microsoft", "ko.microsoft", "ko.lucene", "lv.microsoft", "lv.lucene",
 
-      "lv.lucene", "lt.microsoft", "ml.microsoft", "ms.microsoft", "mr.microsoft",
-      "nb.microsoft",
+    "lt.microsoft", "ml.microsoft", "ms.microsoft", "mr.microsoft", "nb.microsoft",
+    "no.lucene",
 
-      "no.lucene", "fa.lucene", "pl.microsoft", "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene",
-      "pt-
+    "fa.lucene", "pl.microsoft", "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene", "pt-PT.microsoft",
 
-      PT.microsoft", "pt-PT.lucene", "pa.microsoft", "ro.microsoft", "ro.lucene",
-      "ru.microsoft",
+    "pt-PT.lucene", "pa.microsoft", "ro.microsoft", "ro.lucene", "ru.microsoft", "ru.lucene",
 
-      "ru.lucene", "sr-cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft",
-      "sl.microsoft",
+    "sr-cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft", "sl.microsoft",
+    "es.microsoft",
 
-      "es.microsoft", "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft",
+    "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft",
 
-      "th.microsoft", "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft",
+    "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
 
-      "vi.microsoft", "standard.lucene", "standardasciifolding.lucene", "keyword",
-      "pattern",
+    "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
+    "stop", and
 
-      "simple", "stop", "whitespace".'
-    types:
-    - <xref:str>
-    - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
-  - name: search_analyzer_name
-    description: 'The name of the analyzer used at search time for the field. This
-      option
+    "whitespace".'
+  name: analyzer_name
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
+- description: 'The name of the analyzer used at search time for the field. This option
 
-      can be used only with searchable fields. It must be set together with indexAnalyzer
-      and it
+    can be used only with searchable fields. It must be set together with indexAnalyzer
+    and it
 
-      cannot be set together with the analyzer option. This property cannot be set
-      to the name of a
+    cannot be set together with the analyzer option. This property cannot be set to
+    the name of a
 
-      language analyzer; use the analyzer property instead if you need a language
-      analyzer. This
+    language analyzer; use the analyzer property instead if you need a language analyzer.
+    This
 
-      analyzer can be updated on an existing field. Must be null for complex fields.
-      Possible values
+    analyzer can be updated on an existing field. Must be null for complex fields.
+    Known values
 
-      include: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene",
-      "bg.microsoft",
+    are: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene", "bg.microsoft",
 
-      "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft", "zh-Hans.lucene",
-      "zh-
+    "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft", "zh-Hans.lucene",
 
-      Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft", "cs.lucene",
-      "da.microsoft",
+    "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft", "cs.lucene",
 
-      "da.lucene", "nl.microsoft", "nl.lucene", "en.microsoft", "en.lucene", "et.microsoft",
+    "da.microsoft", "da.lucene", "nl.microsoft", "nl.lucene", "en.microsoft", "en.lucene",
 
-      "fi.microsoft", "fi.lucene", "fr.microsoft", "fr.lucene", "gl.lucene", "de.microsoft",
+    "et.microsoft", "fi.microsoft", "fi.lucene", "fr.microsoft", "fr.lucene", "gl.lucene",
 
-      "de.lucene", "el.microsoft", "el.lucene", "gu.microsoft", "he.microsoft", "hi.microsoft",
+    "de.microsoft", "de.lucene", "el.microsoft", "el.lucene", "gu.microsoft", "he.microsoft",
 
-      "hi.lucene", "hu.microsoft", "hu.lucene", "is.microsoft", "id.microsoft", "id.lucene",
+    "hi.microsoft", "hi.lucene", "hu.microsoft", "hu.lucene", "is.microsoft", "id.microsoft",
 
-      "ga.lucene", "it.microsoft", "it.lucene", "ja.microsoft", "ja.lucene", "kn.microsoft",
+    "id.lucene", "ga.lucene", "it.microsoft", "it.lucene", "ja.microsoft", "ja.lucene",
 
-      "ko.microsoft", "ko.lucene", "lv.microsoft", "lv.lucene", "lt.microsoft", "ml.microsoft",
+    "kn.microsoft", "ko.microsoft", "ko.lucene", "lv.microsoft", "lv.lucene", "lt.microsoft",
 
-      "ms.microsoft", "mr.microsoft", "nb.microsoft", "no.lucene", "fa.lucene", "pl.microsoft",
+    "ml.microsoft", "ms.microsoft", "mr.microsoft", "nb.microsoft", "no.lucene", "fa.lucene",
 
-      "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene", "pt-PT.microsoft", "pt-PT.lucene",
+    "pl.microsoft", "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene", "pt-PT.microsoft",
 
-      "pa.microsoft", "ro.microsoft", "ro.lucene", "ru.microsoft", "ru.lucene", "sr-
+    "pt-PT.lucene", "pa.microsoft", "ro.microsoft", "ro.lucene", "ru.microsoft", "ru.lucene",
 
-      cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft", "sl.microsoft", "es.microsoft",
+    "sr-cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft", "sl.microsoft",
+    "es.microsoft",
 
-      "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft",
+    "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft",
 
-      "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
+    "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
 
-      "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
-      "stop",
+    "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
+    "stop", and
 
-      "whitespace".'
-    types:
-    - <xref:str>
-    - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
-  - name: index_analyzer_name
-    description: 'The name of the analyzer used at indexing time for the field. This
+    "whitespace".'
+  name: search_analyzer_name
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
+- description: 'The name of the analyzer used at indexing time for the field. This
+    option
 
-      option can be used only with searchable fields. It must be set together with
-      searchAnalyzer and
+    can be used only with searchable fields. It must be set together with searchAnalyzer
+    and it
 
-      it cannot be set together with the analyzer option.  This property cannot be
-      set to the name of
+    cannot be set together with the analyzer option.  This property cannot be set
+    to the name of a
 
-      a language analyzer; use the analyzer property instead if you need a language
-      analyzer. Once
+    language analyzer; use the analyzer property instead if you need a language analyzer.
+    Once the
 
-      the analyzer is chosen, it cannot be changed for the field. Must be null for
-      complex fields.
+    analyzer is chosen, it cannot be changed for the field. Must be null for complex
+    fields. Known
 
-      Possible values include: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft",
-      "eu.lucene",
+    values are: "ar.microsoft", "ar.lucene", "hy.lucene", "bn.microsoft", "eu.lucene",
 
-      "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft",
-      "zh-
+    "bg.microsoft", "bg.lucene", "ca.microsoft", "ca.lucene", "zh-Hans.microsoft",
 
-      Hans.lucene", "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft",
+    "zh-Hans.lucene", "zh-Hant.microsoft", "zh-Hant.lucene", "hr.microsoft", "cs.microsoft",
 
-      "cs.lucene", "da.microsoft", "da.lucene", "nl.microsoft", "nl.lucene", "en.microsoft",
+    "cs.lucene", "da.microsoft", "da.lucene", "nl.microsoft", "nl.lucene", "en.microsoft",
 
-      "en.lucene", "et.microsoft", "fi.microsoft", "fi.lucene", "fr.microsoft", "fr.lucene",
+    "en.lucene", "et.microsoft", "fi.microsoft", "fi.lucene", "fr.microsoft", "fr.lucene",
 
-      "gl.lucene", "de.microsoft", "de.lucene", "el.microsoft", "el.lucene", "gu.microsoft",
+    "gl.lucene", "de.microsoft", "de.lucene", "el.microsoft", "el.lucene", "gu.microsoft",
 
-      "he.microsoft", "hi.microsoft", "hi.lucene", "hu.microsoft", "hu.lucene", "is.microsoft",
+    "he.microsoft", "hi.microsoft", "hi.lucene", "hu.microsoft", "hu.lucene", "is.microsoft",
 
-      "id.microsoft", "id.lucene", "ga.lucene", "it.microsoft", "it.lucene", "ja.microsoft",
+    "id.microsoft", "id.lucene", "ga.lucene", "it.microsoft", "it.lucene", "ja.microsoft",
 
-      "ja.lucene", "kn.microsoft", "ko.microsoft", "ko.lucene", "lv.microsoft", "lv.lucene",
+    "ja.lucene", "kn.microsoft", "ko.microsoft", "ko.lucene", "lv.microsoft", "lv.lucene",
 
-      "lt.microsoft", "ml.microsoft", "ms.microsoft", "mr.microsoft", "nb.microsoft",
-      "no.lucene",
+    "lt.microsoft", "ml.microsoft", "ms.microsoft", "mr.microsoft", "nb.microsoft",
+    "no.lucene",
 
-      "fa.lucene", "pl.microsoft", "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene",
-      "pt-PT.microsoft",
+    "fa.lucene", "pl.microsoft", "pl.lucene", "pt-BR.microsoft", "pt-BR.lucene", "pt-PT.microsoft",
 
-      "pt-PT.lucene", "pa.microsoft", "ro.microsoft", "ro.lucene", "ru.microsoft",
-      "ru.lucene", "sr-
+    "pt-PT.lucene", "pa.microsoft", "ro.microsoft", "ro.lucene", "ru.microsoft", "ru.lucene",
 
-      cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft", "sl.microsoft", "es.microsoft",
+    "sr-cyrillic.microsoft", "sr-latin.microsoft", "sk.microsoft", "sl.microsoft",
+    "es.microsoft",
 
-      "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft",
+    "es.lucene", "sv.microsoft", "sv.lucene", "ta.microsoft", "te.microsoft", "th.microsoft",
 
-      "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
+    "th.lucene", "tr.microsoft", "tr.lucene", "uk.microsoft", "ur.microsoft", "vi.microsoft",
 
-      "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
-      "stop",
+    "standard.lucene", "standardasciifolding.lucene", "keyword", "pattern", "simple",
+    "stop", and
 
-      "whitespace".'
-    types:
-    - <xref:str>
-    - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
-  - name: normalizer_name
-    description: 'The name of the normalizer to use for the field. This option can
-      be used
+    "whitespace".'
+  name: index_analyzer_name
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
+- description: 'The name of the normalizer to use for the field. This option can be
+    used only
 
-      only with fields with filterable, sortable, or facetable enabled. Once the normalizer
-      is
+    with fields with filterable, sortable, or facetable enabled. Once the normalizer
+    is chosen, it
 
-      chosen, it cannot be changed for the field. Must be null for complex fields.
-      Possible values
+    cannot be changed for the field. Must be null for complex fields. Known values
+    are:
 
-      include: "asciifolding", "elision", "lowercase", "standard", "uppercase".'
-    types:
-    - <xref:str>
-    - <xref:azure.search.documents.indexes.models.LexicalNormalizerName>
-  - name: synonym_map_names
-    description: 'A list of the names of synonym maps to associate with this field.
-      This
+    "asciifolding", "elision", "lowercase", "standard", and "uppercase".'
+  name: normalizer
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.LexicalNormalizerName>
+- description: The dimensionality of the vector field.
+  name: vector_search_dimensions
+  types:
+  - <xref:int>
+- description: 'The name of the vector search profile that specifies the algorithm
 
-      option can be used only with searchable fields. Currently only one synonym map
-      per field is
+    to use when searching the vector field.'
+  name: vector_search_profile_name
+  types:
+  - <xref:str>
+- description: 'A list of the names of synonym maps to associate with this field.
+    This
 
-      supported. Assigning a synonym map to a field ensures that query terms targeting
-      that field are
+    option can be used only with searchable fields. Currently only one synonym map
+    per field is
 
-      expanded at query-time using the rules in the synonym map. This attribute can
-      be changed on
+    supported. Assigning a synonym map to a field ensures that query terms targeting
+    that field are
 
-      existing fields. Must be null or an empty collection for complex fields.'
-    types:
-    - <xref:list>[<xref:str>]
-  - name: fields
-    description: 'A list of sub-fields if this is a field of type Edm.ComplexType
-      or
+    expanded at query-time using the rules in the synonym map. This attribute can
+    be changed on
 
-      Collection(Edm.ComplexType). Must be null or empty for simple fields.'
-    types:
-    - <xref:list>[<xref:azure.search.documents.models.SearchField>]
-  - name: vector_search_dimensions
-    description: The dimensionality of the vector field.
-    types:
-    - <xref:int>
-  - name: vector_search_profile
-    description: 'The name of the vector search profile that specifies the algorithm
+    existing fields. Must be null or an empty collection for complex fields.'
+  name: synonym_map_names
+  types:
+  - <xref:list>[<xref:str>]
+- description: 'A list of sub-fields if this is a field of type Edm.ComplexType or
 
-      and vectorizer to use when searching the vector field.'
-    types:
-    - <xref:str>
+    Collection(Edm.ComplexType). Must be null or empty for simple fields.'
+  name: fields
+  types:
+  - <xref:list>[<xref:azure.search.documents.indexes.models.SearchField>]
 methods:
 - uid: azure.search.documents.indexes.models.SearchField.as_dict
   name: as_dict
@@ -457,7 +426,7 @@ methods:
   signature: is_xml_model() -> bool
 - uid: azure.search.documents.indexes.models.SearchField.serialize
   name: serialize
-  summary: 'Return the JSON that would be sent to azure from this model.
+  summary: 'Return the JSON that would be sent to server from this model.
 
 
     This is an alias to *as_dict(full_restapi_key_transformer, keep_readonly=False)*.
