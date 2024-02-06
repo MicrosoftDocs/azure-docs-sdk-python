@@ -1,7 +1,7 @@
 ---
 title: Azure Document Intelligence SDK for Python
 description: Reference for Azure Document Intelligence SDK for Python
-ms.date: 02/05/2024
+ms.date: 02/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: documentintelligence
