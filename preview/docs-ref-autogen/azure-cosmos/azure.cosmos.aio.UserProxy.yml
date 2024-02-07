@@ -13,13 +13,20 @@ summary: 'An interface to interact with a specific user.
   <xref:azure.cosmos.aio.DatabaseProxy.get_user_client> method.'
 constructor:
   syntax: 'UserProxy(client_connection: CosmosClientConnection, id: str, database_link:
-    str, properties: Dict[str, Any] = None)'
+    str, properties: Dict[str, Any] | None = None)'
   parameters:
   - name: client_connection
   - name: id
   - name: database_link
   - name: properties
     defaultValue: None
+variables:
+- name: id
+  types:
+  - <xref:str>
+- name: user_link
+  types:
+  - <xref:str>
 methods:
 - uid: azure.cosmos.aio.UserProxy.create_permission
   name: create_permission
@@ -53,7 +60,7 @@ methods:
 
 
     If the permission does not already exist, an exception is raised.'
-  signature: 'async delete_permission(permission: str | Dict[str, Any] | Permission,
+  signature: 'async delete_permission(permission: str | Mapping[str, Any] | Permission,
     **kwargs: Any) -> None'
   parameters:
   - name: permission
@@ -80,7 +87,7 @@ methods:
 - uid: azure.cosmos.aio.UserProxy.get_permission
   name: get_permission
   summary: Get the permission identified by *id*.
-  signature: 'async get_permission(permission: str | Dict[str, Any] | Permission,
+  signature: 'async get_permission(permission: str | Mapping[str, Any] | Permission,
     **kwargs: Any) -> Permission'
   parameters:
   - name: permission
@@ -106,7 +113,8 @@ methods:
 - uid: azure.cosmos.aio.UserProxy.list_permissions
   name: list_permissions
   summary: List all permission for the user.
-  signature: 'list_permissions(**kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+  signature: 'list_permissions(*, max_item_count: int | None = None, **kwargs: Any)
+    -> AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of permissions to be returned in the enumeration operation.
@@ -124,14 +132,15 @@ methods:
 - uid: azure.cosmos.aio.UserProxy.query_permissions
   name: query_permissions
   summary: Return all permissions matching the given *query*.
-  signature: 'query_permissions(query: str | Dict[str, Any], **kwargs: Any) -> AsyncItemPaged[Dict[str,
+  signature: 'query_permissions(query: str, *, parameters: List[Dict[str, Any]] |
+    None = None, max_item_count: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:str>
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
@@ -173,7 +182,7 @@ methods:
 
 
     If the permission does not already exist, an exception is raised.'
-  signature: 'async replace_permission(permission: str | Dict[str, Any] | Permission,
+  signature: 'async replace_permission(permission: str | Mapping[str, Any] | Permission,
     body: Dict[str, Any], **kwargs: Any) -> Permission'
   parameters:
   - name: permission

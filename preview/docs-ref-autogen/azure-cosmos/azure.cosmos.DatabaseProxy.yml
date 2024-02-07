@@ -20,7 +20,7 @@ summary: "An interface to interact with a specific database.\n\nThis class shoul
   \ users resource."
 constructor:
   syntax: 'DatabaseProxy(client_connection: CosmosClientConnection, id: str, properties:
-    Dict[str, Any] = None)'
+    Dict[str, Any] | None = None)'
   parameters:
   - name: client_connection
     description: Client from which this database was retrieved.
@@ -45,12 +45,11 @@ methods:
 
     If a container with the given ID already exists, a CosmosResourceExistsError is
     raised.'
-  signature: 'create_container(id: str  # pylint: disable=redefined-builtin, partition_key:
-    ~azure.cosmos.PartitionKey, indexing_policy: Optional[Dict[str, Any]] = None,
-    default_ttl: Optional[int] = None, populate_query_metrics: Optional[bool] # pylint:disable=docstring-missing-param
-    = None, offer_throughput: Optional[Union[int, ThroughputProperties]] = None, unique_key_policy:
-    Optional[Dict[str, Any]] = None, conflict_resolution_policy: Optional[Dict[str,
-    Any]] = None, **kwargs: Any) -> ContainerProxy'
+  signature: 'create_container(id: str, partition_key: PartitionKey, indexing_policy:
+    Dict[str, Any] | None = None, default_ttl: int | None = None, populate_query_metrics:
+    bool | None = None, offer_throughput: int | ThroughputProperties | None = None,
+    unique_key_policy: Dict[str, Any] | None = None, conflict_resolution_policy: Dict[str,
+    Any] | None = None, **kwargs: Any) -> ContainerProxy'
   parameters:
   - name: id
     description: ID (name) of container to create.
@@ -122,6 +121,14 @@ methods:
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
     types:
     - <xref:int>
+  - name: computed_properties
+    description: 'Sets The computed properties for this container in the Azure
+
+      Cosmos DB Service. For more Information on how to use computed properties visit
+
+      *here: https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/computed-properties?tabs=dotnet*'
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   return:
     description: A *ContainerProxy* instance representing the new container.
     types:
@@ -129,6 +136,29 @@ methods:
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The container creation failed.
+  examples:
+  - "Create a container with default settings:<!--[!code-python[Main](les\\examples.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    31\\\\azure-cosmos-4.5.2b4\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   container_name = \"products\"\
+    \n   try:\n       container = database.create_container(\n           id=container_name,\
+    \ partition_key=PartitionKey(path=\"/productName\")\n       )\n   except exceptions.CosmosResourceExistsError:\n\
+    \       container = database.get_container_client(container_name)\n\n   ````\n\
+    \nCreate a container with specific settings; in this case, a custom partition\
+    \ key:<!--[!code-python[Main](les\\examples.py )]-->\n\n<!-- literal_block {\"\
+    ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
+    \ \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\\
+    Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\31\\\\azure-cosmos-4.5.2b4\\\\\
+    samples\\\\examples.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
+    \n````python\n\n   customer_container_name = \"customers\"\n   try:\n       customer_container\
+    \ = database.create_container(\n           id=customer_container_name,\n     \
+    \      partition_key=PartitionKey(path=\"/city\"),\n           default_ttl=200,\n\
+    \       )\n   except exceptions.CosmosResourceExistsError:\n       customer_container\
+    \ = database.get_container_client(customer_container_name)\n\n   ````\n"
 - uid: azure.cosmos.DatabaseProxy.create_container_if_not_exists
   name: create_container_if_not_exists
   summary: 'Create a container if it does not exist already.
@@ -139,11 +169,11 @@ methods:
     Note: it does not check or update the existing container settings or offer throughput
 
     if they differ from what was passed into the method.'
-  signature: 'create_container_if_not_exists(id: str, partition_key: Any, indexing_policy:
-    Dict[str, Any] | None = None, default_ttl: int | None = None, populate_query_metrics:
-    bool | None = None, offer_throughput: int | ThroughputProperties | None = None,
-    unique_key_policy: Dict[str, Any] | None = None, conflict_resolution_policy: Dict[str,
-    Any] | None = None, **kwargs: Any) -> ContainerProxy'
+  signature: 'create_container_if_not_exists(id: str, partition_key: PartitionKey,
+    indexing_policy: Dict[str, Any] | None = None, default_ttl: int | None = None,
+    populate_query_metrics: bool | None = None, offer_throughput: int | ThroughputProperties
+    | None = None, unique_key_policy: Dict[str, Any] | None = None, conflict_resolution_policy:
+    Dict[str, Any] | None = None, **kwargs: Any) -> ContainerProxy'
   parameters:
   - name: id
     description: ID (name) of container to read or create.
@@ -201,6 +231,14 @@ methods:
       note that analytical storage can only be enabled on Synapse Link enabled accounts.'
     types:
     - <xref:int>
+  - name: computed_properties
+    description: 'Sets The computed properties for this container in the Azure
+
+      Cosmos DB Service. For more Information on how to use computed properties visit
+
+      *here: https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/computed-properties?tabs=dotnet*'
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   return:
     description: A *ContainerProxy* instance representing the container.
     types:
@@ -242,7 +280,7 @@ methods:
   - "Create a database user:<!--[!code-python[Main](les\\examples.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\31\\\\azure-cosmos-4.5.2b3\\\
+    \\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\31\\\\azure-cosmos-4.5.2b4\\\
     \\samples\\\\examples.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   try:\n       database.create_user(dict(id=\"\
@@ -253,8 +291,8 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.delete_container
   name: delete_container
   summary: Delete a container.
-  signature: 'delete_container(container: str | ContainerProxy | Dict[str, Any], populate_query_metrics:
-    bool | None = None, **kwargs: Any) -> None'
+  signature: 'delete_container(container: str | ContainerProxy | Mapping[str, Any],
+    populate_query_metrics: bool | None = None, **kwargs: Any) -> None'
   parameters:
   - name: container
     description: 'The ID (name) of the container to delete. You can either
@@ -300,8 +338,8 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.delete_user
   name: delete_user
   summary: Delete the specified user from the container.
-  signature: 'delete_user(user: str | UserProxy | Dict[str, Any], **kwargs: Any) ->
-    None'
+  signature: 'delete_user(user: str | UserProxy | Mapping[str, Any], **kwargs: Any)
+    -> None'
   parameters:
   - name: user
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.UserProxy>
@@ -326,8 +364,8 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.get_container_client
   name: get_container_client
   summary: Get a *ContainerProxy* for a container with specified ID (name).
-  signature: 'get_container_client(container: str | ContainerProxy | Dict[str, Any])
-    -> ContainerProxy'
+  signature: 'get_container_client(container: str | ContainerProxy | Mapping[str,
+    Any]) -> ContainerProxy'
   parameters:
   - name: container
     description: 'The ID (name) of the container, a <xref:azure.cosmos.ContainerProxy>
@@ -347,7 +385,7 @@ methods:
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\31\\\\azure-cosmos-4.5.2b3\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    \\31\\\\azure-cosmos-4.5.2b4\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   database = client.get_database_client(database_name)\n\
     \   container = database.get_container_client(container_name)\n\n   ````\n"
@@ -375,7 +413,7 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.get_user_client
   name: get_user_client
   summary: Get a *UserProxy* for a user with specified ID.
-  signature: 'get_user_client(user: str | UserProxy | Dict[str, Any]) -> UserProxy'
+  signature: 'get_user_client(user: str | UserProxy | Mapping[str, Any]) -> UserProxy'
   parameters:
   - name: user
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.UserProxy>
@@ -393,7 +431,7 @@ methods:
   name: list_containers
   summary: List the containers in the database.
   signature: 'list_containers(max_item_count: int | None = None, populate_query_metrics:
-    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+    bool | None = None, **kwargs: Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -421,7 +459,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    31\\\\azure-cosmos-4.5.2b3\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    31\\\\azure-cosmos-4.5.2b4\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   database = client.get_database_client(database_name)\n\
     \   for container in database.list_containers():\n       print(\"Container ID:\
@@ -429,7 +467,7 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.list_users
   name: list_users
   summary: List all the users in the container.
-  signature: 'list_users(max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
+  signature: 'list_users(max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: max_item_count
@@ -450,7 +488,7 @@ methods:
   summary: List the properties for containers in the current database.
   signature: 'query_containers(query: str | None = None, parameters: List[Dict[str,
     Any]] | None = None, max_item_count: int | None = None, populate_query_metrics:
-    bool | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+    bool | None = None, **kwargs: Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -487,8 +525,8 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.query_users
   name: query_users
   summary: Return all users matching the given *query*.
-  signature: 'query_users(query: str, parameters: List[str] | None = None, max_item_count:
-    int | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'query_users(query: str, parameters: List[Dict[str, Any]] | None = None,
+    max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -500,7 +538,7 @@ methods:
       provided.
     isRequired: true
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: max_item_count
     description: Max number of users to be returned in the enumeration operation.
     isRequired: true
@@ -533,6 +571,7 @@ methods:
     types:
     - <xref:typing.Callable>
   return:
+    description: A dict representing the database properties.
     types:
     - <xref:typing.Dict>[<xref:Str>, <xref:typing.Any>]
   exceptions:
@@ -567,8 +606,8 @@ methods:
     Property changes are persisted immediately. Any properties not specified
 
     will be reset to their default values.'
-  signature: 'replace_container(container: str | ContainerProxy | Dict[str, Any],
-    partition_key: Any, indexing_policy: Dict[str, Any] | None = None, default_ttl:
+  signature: 'replace_container(container: str | ContainerProxy | Mapping[str, Any],
+    partition_key: PartitionKey, indexing_policy: Dict[str, Any] | None = None, default_ttl:
     int | None = None, conflict_resolution_policy: Dict[str, Any] | None = None, populate_query_metrics:
     bool | None = None, **kwargs: Any) -> ContainerProxy'
   parameters:
@@ -602,9 +641,6 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
-  - name: populate_query_metrics
-    description: Enable returning query metrics in response headers.
-    isRequired: true
   - name: session_token
     description: Token for use with Session consistency.
     types:
@@ -649,10 +685,23 @@ methods:
     description: 'Raised if the container couldn''t be replaced.
 
       This includes if the container with given id does not exist.'
+  examples:
+  - "Reset the TTL property on a container, and display the updated properties:<!--[!code-python[Main](les\\\
+    examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+    \\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\31\\\\azure-cosmos-4.5.2b4\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # Set the TTL on the container\
+    \ to 3600 seconds (one hour)\n   database.replace_container(container, partition_key=PartitionKey(path='/productName'),\
+    \ default_ttl=3600)\n\n   # Display the new TTL setting for the container\n  \
+    \ container_props = database.get_container_client(container_name).read()\n   print(\"\
+    New container TTL: {}\".format(json.dumps(container_props['defaultTtl'])))\n\n\
+    \   ````\n"
 - uid: azure.cosmos.DatabaseProxy.replace_throughput
   name: replace_throughput
   summary: Replace the database-level throughput.
-  signature: 'replace_throughput(throughput: int | ThroughputProperties | None, **kwargs:
+  signature: 'replace_throughput(throughput: int | ThroughputProperties, **kwargs:
     Any) -> ThroughputProperties'
   parameters:
   - name: throughput
@@ -675,7 +724,7 @@ methods:
 - uid: azure.cosmos.DatabaseProxy.replace_user
   name: replace_user
   summary: Replaces the specified user if it exists in the container.
-  signature: 'replace_user(user: str | UserProxy | Dict[str, Any], body: Dict[str,
+  signature: 'replace_user(user: str | UserProxy | Mapping[str, Any], body: Dict[str,
     Any], **kwargs: Any) -> UserProxy'
   parameters:
   - name: user
