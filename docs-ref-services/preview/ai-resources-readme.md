@@ -1,12 +1,12 @@
 ---
 title: Azure AI Resources Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-resources, ai
-ms.date: 02/06/2024
+ms.date: 02/08/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Resources Package client library for Python - version 1.0.0b6 
+# Azure AI Resources Package client library for Python - version 1.0.0b7 
 
 
 The Azure AI Resources package is part of the Azure AI SDK for Python and contains functionality for connecting to and managing your Azure AI resources and projects. Within your Azure AI projects it provides control plane operations for creating and managing data, indexes, models and deployments.
@@ -93,7 +93,7 @@ If you encounter any bugs or have suggestions, please file an issue in the [Issu
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b6/sdk/ai/azure-ai-resources
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b7/sdk/ai/azure-ai-resources
 [ai_project]: https://aka.ms/azureaistudio
 [ai_pypi]: https://pypi.org/project/azure-ai-resources/
 [ai_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-resources/?view=azure-python-preview
@@ -103,11 +103,11 @@ If you encounter any bugs or have suggestions, please file an issue in the [Issu
 [workspace]: /azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b6/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b7/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b6/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b6/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b7/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b7/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
