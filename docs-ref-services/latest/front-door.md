@@ -1,7 +1,7 @@
 ---
 title: Azure Front Door SDK for Python
 description: Reference for Azure Front Door SDK for Python
-ms.date: 02/12/2024
+ms.date: 02/13/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: frontdoor
