@@ -1,7 +1,7 @@
 ---
 title: Azure Cost Management SDK for Python
 description: Reference for Azure Cost Management SDK for Python
-ms.date: 02/16/2024
+ms.date: 02/19/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: costmanagement
