@@ -1,7 +1,7 @@
 ---
 title: Azure Resource Health SDK for Python
 description: Reference for Azure Resource Health SDK for Python
-ms.date: 02/20/2024
+ms.date: 02/21/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: resourcehealth
