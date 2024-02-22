@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: apicenter
 ---
-# Azure API Center SDK for Python - preview
-## Packages - preview
+# Azure API Center SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](api-center-index.md)]
