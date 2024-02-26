@@ -82,7 +82,7 @@ DataLake storage offers four types of resources:
 * The storage account
 * A file system in the storage account
 * A directory under the file system
-* A file in a the file system or under directory
+* A file in the file system or under directory
 
 #### Clients
 

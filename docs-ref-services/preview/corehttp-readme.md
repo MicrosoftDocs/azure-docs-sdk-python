@@ -21,7 +21,7 @@ To use `corehttp`, you will need to choose a transport implementation. `corehttp
 
 Synchronous transports:
 - `RequestsTransport` - A synchronous transport based on the [Requests](https://requests.readthedocs.io/en/master/) library.
-- `HttpXTransport` - An synchronous transport based on the [HTTPX](https://www.python-httpx.org/) library.
+- `HttpXTransport` - A synchronous transport based on the [HTTPX](https://www.python-httpx.org/) library.
 
 Asynchronous transports:
 - `AioHttpTransport` - An asynchronous transport based on the [aiohttp](https://docs.aiohttp.org/en/stable/) library.
