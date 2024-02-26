@@ -8,7 +8,9 @@ ms.service: monitor
 ---
 # Microsoft OpenTelemetry exporter for Azure Monitor
 
-The exporter for Azure Monitor allows you to export data utilizing the OpenTelemetry SDK and send telemetry data to Azure Monitor for applications written in Python.
+The exporter for Azure Monitor allows you to export data utilizing the OpenTelemetry SDK and send telemetry data to Azure Monitor for applications written in Python. This is for the Python user that wants advanced configuration or has more complicated telemetry needs that require all of distrubuted tracing, logging and metrics. For a simpler, less configurable way to send telemetry data to Azure Monitor, we recommend using [Azure Monitor OpenTelemetry Distro](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=python) instead.
+
+Prior to using this SDK, please read and understand [Data Collection Basics](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-overview?tabs=python), especially the section on [telemetry types](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-overview?tabs=python#telemetry-types). OpenTelemetry terminology differs from Application Insights terminology so it is important to understand the way the telemetry types map to each other.
 
 [Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry-exporter_1.0.0b21/sdk/monitor/azure-monitor-opentelemetry-exporter) | [Package (PyPi)][pypi] | [API reference documentation][api_docs] | [Product documentation][product_docs] | [Samples][exporter_samples] | [Changelog](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry-exporter_1.0.0b21/sdk/monitor/azure-monitor-opentelemetry-exporter/CHANGELOG.md)
 
