@@ -32,19 +32,16 @@ for details on handling Azure Active Directory authentication with the Python SD
 
 ```python 
 from azure.mgmt.dns import DnsManagementClient
-from azure.common.credentials import UserPassCredentials
+from azure.identity import DefaultAzureCredential
 
 # Replace this with your subscription id
 subscription_id = '33333333-3333-3333-3333-333333333333'
 
 # See above for details on creating different types of AAD credentials
-credentials = UserPassCredentials(
-	'user@domain.com',  # Your user
-	'my_password',      # Your password
-)
+credential = DefaultAzureCredential()
 
 dns_client = DnsManagementClient(
-	credentials,
+	credential,
 	subscription_id
 )
 ```
