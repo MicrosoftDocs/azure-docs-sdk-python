@@ -91,7 +91,7 @@ methods:
 
     If the stored procedure does not already exist in the container, an exception
     is raised.'
-  signature: 'delete_stored_procedure(sproc: str | Dict[str, Any], **kwargs: Any)
+  signature: 'delete_stored_procedure(sproc: str | Mapping[str, Any], **kwargs: Any)
     -> None'
   parameters:
   - name: sproc
@@ -113,7 +113,7 @@ methods:
 
 
     If the trigger does not already exist in the container, an exception is raised.'
-  signature: 'delete_trigger(trigger: str | Dict[str, Any], **kwargs: Any) -> None'
+  signature: 'delete_trigger(trigger: str | Mapping[str, Any], **kwargs: Any) -> None'
   parameters:
   - name: trigger
     description: The ID (name) or dict representing trigger to be deleted.
@@ -134,8 +134,8 @@ methods:
 
 
     If the UDF does not already exist in the container, an exception is raised.'
-  signature: 'delete_user_defined_function(udf: str | Dict[str, Any], **kwargs: Any)
-    -> None'
+  signature: 'delete_user_defined_function(udf: str | Mapping[str, Any], **kwargs:
+    Any) -> None'
   parameters:
   - name: udf
     description: The ID (name) or dict representing udf to be deleted.
@@ -157,9 +157,10 @@ methods:
 
     If the stored procedure does not already exist in the container, an exception
     is raised.'
-  signature: 'execute_stored_procedure(sproc: str | Dict[str, Any], partition_key:
-    str | None = None, params: List[Dict[str, Any]] | None = None, enable_script_logging:
-    bool | None = None, **kwargs: Any) -> Any'
+  signature: 'execute_stored_procedure(sproc: str | Mapping[str, Any], partition_key:
+    str | bool | int | float | List[str | int | float | bool] | None = None, params:
+    List[Dict[str, Any]] | None = None, enable_script_logging: bool | None = None,
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: sproc
     description: The ID (name) or dict representing stored procedure to be executed.
@@ -169,17 +170,17 @@ methods:
   - name: partition_key
     description: Specifies the partition key to indicate which partition the sproc
       should execute on.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
   - name: params
     description: List of parameters to be passed to the stored procedure to be executed.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: enable_script_logging
     description: Enables or disables script logging for the current request.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:bool>
   return:
@@ -194,8 +195,8 @@ methods:
 - uid: azure.cosmos.scripts.ScriptsProxy.get_stored_procedure
   name: get_stored_procedure
   summary: Get the stored procedure identified by *id*.
-  signature: 'get_stored_procedure(sproc: str | Dict[str, Any], **kwargs: Any) ->
-    Dict[str, Any]'
+  signature: 'get_stored_procedure(sproc: str | Mapping[str, Any], **kwargs: Any)
+    -> Dict[str, Any]'
   parameters:
   - name: sproc
     description: The ID (name) or dict representing stored procedure to retrieve.
@@ -212,7 +213,7 @@ methods:
 - uid: azure.cosmos.scripts.ScriptsProxy.get_trigger
   name: get_trigger
   summary: Get a trigger identified by *id*.
-  signature: 'get_trigger(trigger: str | Dict[str, Any], **kwargs: Any) -> Dict[str,
+  signature: 'get_trigger(trigger: str | Mapping[str, Any], **kwargs: Any) -> Dict[str,
     Any]'
   parameters:
   - name: trigger
@@ -230,7 +231,7 @@ methods:
 - uid: azure.cosmos.scripts.ScriptsProxy.get_user_defined_function
   name: get_user_defined_function
   summary: Get a user-defined functions identified by *id*.
-  signature: 'get_user_defined_function(udf: str | Dict[str, Any], **kwargs: Any)
+  signature: 'get_user_defined_function(udf: str | Mapping[str, Any], **kwargs: Any)
     -> Dict[str, Any]'
   parameters:
   - name: udf
@@ -249,11 +250,11 @@ methods:
   name: list_stored_procedures
   summary: List all stored procedures in the container.
   signature: 'list_stored_procedures(max_item_count: int | None = None, **kwargs:
-    Any) -> Iterable[Dict[str, Any]]'
+    Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   return:
@@ -263,12 +264,12 @@ methods:
 - uid: azure.cosmos.scripts.ScriptsProxy.list_triggers
   name: list_triggers
   summary: List all triggers in the container.
-  signature: 'list_triggers(max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
+  signature: 'list_triggers(max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   return:
@@ -279,11 +280,11 @@ methods:
   name: list_user_defined_functions
   summary: List all the user-defined functions in the container.
   signature: 'list_user_defined_functions(max_item_count: int | None = None, **kwargs:
-    Any) -> Iterable[Dict[str, Any]]'
+    Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   return:
@@ -294,7 +295,7 @@ methods:
   name: query_stored_procedures
   summary: Return all stored procedures matching the given *query*.
   signature: 'query_stored_procedures(query: str, parameters: List[Dict[str, Any]]
-    | None = None, max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
+    | None = None, max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: query
@@ -305,12 +306,12 @@ methods:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   return:
@@ -321,7 +322,7 @@ methods:
   name: query_triggers
   summary: Return all triggers matching the given *query*.
   signature: 'query_triggers(query: str, parameters: List[Dict[str, Any]] | None =
-    None, max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
+    None, max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: query
@@ -332,12 +333,12 @@ methods:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   return:
@@ -348,7 +349,7 @@ methods:
   name: query_user_defined_functions
   summary: Return user-defined functions matching a given *query*.
   signature: 'query_user_defined_functions(query: str, parameters: List[Dict[str,
-    Any]] | None = None, max_item_count: int | None = None, **kwargs: Any) -> Iterable[Dict[str,
+    Any]] | None = None, max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: query
@@ -359,12 +360,12 @@ methods:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:int>
   return:
@@ -378,7 +379,7 @@ methods:
 
     If the stored procedure does not already exist in the container, an exception
     is raised.'
-  signature: 'replace_stored_procedure(sproc: str | Dict[str, Any], body: Dict[str,
+  signature: 'replace_stored_procedure(sproc: str | Mapping[str, Any], body: Dict[str,
     Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: sproc
@@ -406,7 +407,7 @@ methods:
 
 
     If the trigger does not already exist in the container, an exception is raised.'
-  signature: 'replace_trigger(trigger: str | Dict[str, Any], body: Dict[str, Any],
+  signature: 'replace_trigger(trigger: str | Mapping[str, Any], body: Dict[str, Any],
     **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: trigger
@@ -434,7 +435,7 @@ methods:
 
 
     If the UDF does not already exist in the container, an exception is raised.'
-  signature: 'replace_user_defined_function(udf: str | Dict[str, Any], body: Dict[str,
+  signature: 'replace_user_defined_function(udf: str | Mapping[str, Any], body: Dict[str,
     Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: udf

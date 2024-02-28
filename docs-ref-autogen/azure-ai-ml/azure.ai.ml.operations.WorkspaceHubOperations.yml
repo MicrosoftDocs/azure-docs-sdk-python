@@ -5,17 +5,15 @@ fullName: azure.ai.ml.operations.WorkspaceHubOperations
 module: azure.ai.ml.operations
 inheritances:
 - azure.ai.ml.operations._workspace_operations_base.WorkspaceOperationsBase
-summary: '_HubOperations.
+summary: 'WorkspaceHubOperations.
 
 
-  You should not instantiate this class directly. Instead, you should
+  You should not instantiate this class directly. Instead, you should create an
 
-  create an MLClient instance that instantiates it for you and
-
-  attaches it as an attribute.'
+  MLClient instance that instantiates it for you and attaches it as an attribute.'
 constructor:
   syntax: 'WorkspaceHubOperations(operation_scope: OperationScope, service_client:
-    AzureMachineLearningWorkspaces, all_operations: OperationsContainer, credentials:
+    AzureMachineLearningServices, all_operations: OperationsContainer, credentials:
     TokenCredential | None = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
@@ -31,7 +29,8 @@ methods:
 
     Returns the WorkspaceHub if already exists.'
   signature: 'begin_create(*, workspace_hub: WorkspaceHub, update_dependent_resources:
-    bool = False, **kwargs: Dict) -> LROPoller[WorkspaceHub]'
+    bool = False, endpoint_resource_id: str = None, endpoint_kind: str = ''AIServices'',
+    **kwargs: Dict) -> LROPoller[WorkspaceHub]'
   parameters:
   - name: workspace_hub
     description: WorkspaceHub definition.
@@ -41,10 +40,45 @@ methods:
     description: Whether to update dependent resources. Defaults to False.
     types:
     - <xref:boolean>
+  - name: endpoint_resource_id
+    description: 'The UID of an AI service or Open AI resource.
+
+      The created hub will automatically create several
+
+      endpoints connecting to this resource, and creates its own otherwise.
+
+      If an Open AI resource ID is provided, then only a single Open AI
+
+      endpoint will be created. If set, then endpoint_resource_id should also be
+
+      set unless its default value is applicable.'
+    types:
+    - <xref:str>
+  - name: endpoint_kind
+    description: 'What kind of endpoint resource is being provided
+
+      by the endpoint_resource_id field. Defaults to "AIServices". The only other
+      valid
+
+      input is "OpenAI".'
+    types:
+    - <xref:str>
   return:
     description: An instance of LROPoller that returns a WorkspaceHub.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.WorkspaceHub>]
+  examples:
+  - "Create the workspace hub.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+    \ import WorkspaceHub\n\n   hub = WorkspaceHub(\n       name=\"test-hub1\",\n\
+    \       description=\"a test hub\",\n       tags={\"purpose\": \"demo\"},\n  \
+    \     location=\"eastus\",\n       resource_group=resource_group,\n   )\n   hub\
+    \ = ml_client.workspace_hubs.begin_create(workspace_hub=hub).result()\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceHubOperations.begin_delete
   name: begin_delete
   summary: Delete a WorkspaceHub.
@@ -59,7 +93,8 @@ methods:
   - name: delete_dependent_resources
     description: 'Whether to delete resources associated with the WorkspaceHub,
 
-      i.e., container registry, storage account, key vault.
+      i.e., container registry, storage account, key vault, application insights,
+      log analytics.
 
       The default is False. Set to True to delete these resources.'
     types:
@@ -76,10 +111,23 @@ methods:
     description: A poller to track the operation status.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
+  exceptions:
+  - type: azure.ai.ml.ValidationException
+    description: Raised if workspace with name is not a WorkspaceHub.
+  examples:
+  - "Delete the workspace hub.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   ml_client.workspace_hubs.begin_delete(\n\
+    \       name=\"test-hub1\", delete_dependent_resources=True, permanently_delete=True\n\
+    \   )\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceHubOperations.begin_update
   name: begin_update
-  summary: Update friendly name, description, tags, or PNA, manageNetworkSettings,
-    encryption of a WorkspaceHub.
+  summary: Update Friendly Name, Description, Tags, PNA, Managed Network Settings,
+    or Encryption of a WorkspaceHub.
   signature: 'begin_update(workspace_hub: WorkspaceHub, *, update_dependent_resources:
     bool = False, **kwargs: Dict) -> LROPoller[WorkspaceHub]'
   parameters:
@@ -92,6 +140,19 @@ methods:
     description: An instance of LROPoller that returns a WorkspaceHub.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.WorkspaceHub>]
+  exceptions:
+  - type: azure.ai.ml.ValidationException
+    description: Raised if workspace_hub is not a WorkspaceHub.
+  examples:
+  - "Update the workspace hub.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   hub = ml_client.workspace_hubs.get(name=\"\
+    test-hub1\")\n   hub.description = \"a different description\"\n   hub = ml_client.workspace_hubs.begin_update(workspace_hub=hub).result()\n\
+    \n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceHubOperations.get
   name: get
   summary: Get a Workspace WorkspaceHub by name.
@@ -106,11 +167,19 @@ methods:
     description: The WorkspaceHub with the provided name.
     types:
     - <xref:azure.ai.ml.entities.WorkspaceHub>
+  examples:
+  - "Get the workspace hub by name.<!--[!code-python[Main](les\\ml_samples_workspace.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   workspace\
+    \ = ml_client.workspace_hubs.get(name=\"test-hub1\")\n\n   ````\n"
 - uid: azure.ai.ml.operations.WorkspaceHubOperations.list
   name: list
-  summary: 'List all WorkspaceHubs that the user has access to in the current
-
-    resource group or subscription.'
+  summary: List all WorkspaceHubs that the user has access to in the current resource
+    group or subscription.
   signature: 'list(*, scope: str = ''resource_group'') -> Iterable[WorkspaceHub]'
   parameters:
   - name: scope
@@ -122,3 +191,16 @@ methods:
     description: An iterator like instance of WorkspaceHub objects
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.WorkspaceHub>]
+  examples:
+  - "List the workspace hubs by resource group or subscription.<!--[!code-python[Main](les\\\
+    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_workspace.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml.constants import Scope\n\n   # list workspaces in the resource\
+    \ group set in ml_client\n   hubs = ml_client.workspace_hubs.list()\n   hubs =\
+    \ ml_client.workspace_hubs.list(scope=Scope.RESOURCE_GROUP)\n\n   # list workspaces\
+    \ in the subscription set in ml_client\n   hubs = ml_client.workspace_hubs.list(scope=Scope.SUBSCRIPTION)\n\
+    \n   ````\n"

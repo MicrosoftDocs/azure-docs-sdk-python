@@ -16,12 +16,19 @@ summary: '> [!NOTE]
   Azure ML workspace connection provides a secure way to store authentication and
   configuration information needed
 
-  to connect and interact with the external resources.'
+  to connect and interact with the external resources.
+
+
+  Note: For connections to OpenAI, Cognitive Search, and Cognitive Services, use the
+  respective subclasses
+
+  (ex: ~azure.ai.ml.entities.OpenAIWorkspaceConnection) instead of instantiating this
+  class directly.'
 constructor:
   syntax: 'WorkspaceConnection(*, target: str, type: str, credentials: PatTokenConfiguration
     | SasTokenConfiguration | UsernamePasswordConfiguration | ManagedIdentityConfiguration
-    | ServicePrincipalConfiguration | AccessKeyConfiguration, metadata: Dict[str,
-    Any] | None = None, **kwargs)'
+    | ServicePrincipalConfiguration | AccessKeyConfiguration | ApiKeyConfiguration,
+    is_shared: bool = True, **kwargs)'
   parameters:
   - name: name
     description: Name of the workspace connection.
@@ -33,14 +40,11 @@ constructor:
     isRequired: true
     types:
     - <xref:str>
-  - name: credentials
-    description: The credentials for authenticating to the external resource.
+  - name: tags
+    description: Tag dictionary. Tags can be added, removed, and updated.
     isRequired: true
     types:
-    - <xref:typing.Union>[ <xref:azure.ai.ml.entities.PatTokenConfiguration>, <xref:azure.ai.ml.entities.SasTokenConfiguration>,
-      <xref:azure.ai.ml.entities.UsernamePasswordConfiguration>, <xref:azure.ai.ml.entities.ManagedIdentityConfiguration
-      ~azure.ai.ml.entities.ServicePrincipalConfiguration>, <xref:azure.ai.ml.entities.AccessKeyConfiguration>,
-      <xref:azure.ai.ml.entities.ApiKeyConfiguration> ]
+    - <xref:dict>
   - name: type
     description: The category of external resource for this connection.
     isRequired: true
@@ -48,8 +52,27 @@ constructor:
     - '<xref:<xref:The type> of <xref:workspace connection>, <xref:possible values
       are: "git">, <xref:"python_feed">, <xref:"container_registry">, <xref:"feature_store">,
       <xref:"s3">, <xref:"snowflake">, <xref:"azure_sql_db">, <xref:"azure_synapse_analytics">,
-      <xref:"azure_my_sql_db">, <xref:"azure_postgres_db">, <xref:"azure_open_ai">,
-      <xref:"cognitive_search">, <xref:"cognitive_service">>'
+      <xref:"azure_my_sql_db">, <xref:"azure_postgres_db">, <xref:"custom".>>'
+  - name: credentials
+    description: 'The credentials for authenticating to the external resource. Note
+      that certain connection
+
+      types (as defined by the type input) only accept certain types of credentials.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[ <xref:azure.ai.ml.entities.PatTokenConfiguration>, <xref:azure.ai.ml.entities.SasTokenConfiguration>,
+      <xref:azure.ai.ml.entities.UsernamePasswordConfiguration>, <xref:azure.ai.ml.entities.ManagedIdentityConfiguration
+      ~azure.ai.ml.entities.ServicePrincipalConfiguration>, <xref:azure.ai.ml.entities.AccessKeyConfiguration>,
+      <xref:azure.ai.ml.entities.ApiKeyConfiguration> ]
+  - name: is_shared
+    description: 'For connections in lean workspaces, this controls whether or not
+      this connection
+
+      is shared amongst other lean workspaces that are shared by the parent hub. Defaults
+      to true.'
+    isRequired: true
+    types:
+    - <xref:bool>
 methods:
 - uid: azure.ai.ml.entities.WorkspaceConnection.dump
   name: dump
@@ -95,9 +118,9 @@ attributes:
   return:
     description: Credentials for workspace connection.
     types:
-    - <xref:typing.Union>[ <xref:PatTokenCredentialsConfiguration>, <xref:SasTokenCredentialsConfiguration>,
-      <xref:UsernamePasswordCredentialsConfiguration>, <xref:azure.ai.ml.entities.ManagedIdentityConfiguration>,
-      <xref:ServicePrincipalCredentialsConfiguration>, <xref:AccessKeyCredentialsConfiguration>,
+    - <xref:typing.Union>[ <xref:azure.ai.ml.entities.PatTokenConfiguration>, <xref:azure.ai.ml.entities.SasTokenConfiguration>,
+      <xref:azure.ai.ml.entities.UsernamePasswordConfiguration>, <xref:azure.ai.ml.entities.ServicePrincipalConfiguration>,
+      <xref:azure.ai.ml.entities.AccessKeyConfiguration>, <xref:azure.ai.ml.entities.ApiKeyConfiguration>
 - uid: azure.ai.ml.entities.WorkspaceConnection.id
   name: id
   summary: The resource ID.
@@ -105,13 +128,21 @@ attributes:
     description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
     types:
     - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.WorkspaceConnection.is_shared
+  name: is_shared
+  summary: "Get the Boolean describing if this connection is shared\n   amongst its\
+    \ cohort within a workspace hub. Only applicable for connections created\n   within\
+    \ a lean workspace."
+  return:
+    types:
+    - <xref:bool>
 - uid: azure.ai.ml.entities.WorkspaceConnection.metadata
   name: metadata
-  summary: Metadata for workspace connection.
-  return:
-    description: Metadata for workspace connection.
-    types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  summary: 'Deprecated. Use tags.
+
+    :return: This connection''s tags.
+
+    :rtype: Dict[str, Any]'
 - uid: azure.ai.ml.entities.WorkspaceConnection.target
   name: target
   summary: Target url for the workspace connection.

@@ -12,11 +12,13 @@ summary: 'An update request for an Azure SQL Database managed instance.
 constructor:
   syntax: 'ManagedInstanceUpdate(*, sku: _models.Sku | None = None, identity: _models.ResourceIdentity
     | None = None, tags: Dict[str, str] | None = None, managed_instance_create_mode:
-    str | _models.ManagedServerCreateMode | None = None, administrator_login: str
-    | None = None, administrator_login_password: str | None = None, subnet_id: str
-    | None = None, license_type: str | _models.ManagedInstanceLicenseType | None =
-    None, v_cores: int | None = None, storage_size_in_gb: int | None = None, collation:
-    str | None = None, dns_zone_partner: str | None = None, public_data_endpoint_enabled:
+    str | _models.ManagedServerCreateMode | None = None, is_general_purpose_v2: bool
+    | None = None, administrator_login: str | None = None, administrator_login_password:
+    str | None = None, subnet_id: str | None = None, license_type: str | _models.ManagedInstanceLicenseType
+    | None = None, hybrid_secondary_usage: str | _models.HybridSecondaryUsage | None
+    = None, v_cores: int | None = None, storage_size_in_gb: int | None = None, storage_i_ops:
+    int | None = None, storage_throughput_m_bps: int | None = None, collation: str
+    | None = None, dns_zone_partner: str | None = None, public_data_endpoint_enabled:
     bool | None = None, source_managed_instance_id: str | None = None, restore_point_in_time:
     datetime | None = None, proxy_override: str | _models.ManagedInstanceProxyOverride
     | None = None, timezone_id: str | None = None, instance_pool_id: str | None =
@@ -24,8 +26,10 @@ constructor:
     | None = None, requested_backup_storage_redundancy: str | _models.BackupStorageRedundancy
     | None = None, zone_redundant: bool | None = None, primary_user_assigned_identity_id:
     str | None = None, key_id: str | None = None, administrators: _models.ManagedInstanceExternalAdministrator
-    | None = None, service_principal: _models.ServicePrincipal | None = None, **kwargs:
-    Any)'
+    | None = None, service_principal: _models.ServicePrincipal | None = None, pricing_model:
+    str | _models.FreemiumType | None = None, authentication_metadata: str | _models.AuthMetadataLookupModes
+    | None = None, database_format: str | _models.ManagedInstanceDatabaseFormat |
+    None = None, **kwargs: Any)'
   parameters:
   - name: sku
     description: Managed instance sku.
@@ -56,6 +60,12 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.ManagedServerCreateMode>
+  - name: is_general_purpose_v2
+    description: 'Whether or not this is a GPv2 variant of General Purpose
+
+      edition.'
+    types:
+    - <xref:bool>
   - name: administrator_login
     description: 'Administrator username for the managed instance. Can only be
 
@@ -83,6 +93,16 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.sql.models.ManagedInstanceLicenseType>
+  - name: hybrid_secondary_usage
+    description: 'Hybrid secondary usage. Possible values are ''Active'' (default
+
+      value) and ''Passive'' (customer uses the secondary as Passive DR). Known values
+      are: "Active"
+
+      and "Passive".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.HybridSecondaryUsage>
   - name: v_cores
     description: 'The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.'
     types:
@@ -94,6 +114,25 @@ constructor:
       family and
 
       number of vCores.'
+    types:
+    - <xref:int>
+  - name: storage_i_ops
+    description: 'Storage IOps. Minimum value: 120. Maximum value: 120000. Increments
+      of
+
+      1 IOps allowed only. Maximum value depends on the selected hardware family and
+      number of
+
+      vCores.'
+    types:
+    - <xref:int>
+  - name: storage_throughput_m_bps
+    description: 'Storage throughput in MBps. Minimum value: 25. Maximum
+
+      value: 4000. Increments of 1 MBps allowed only. Maximum value depends on the
+      selected hardware
+
+      family and number of vCores.'
     types:
     - <xref:int>
   - name: collation
@@ -207,6 +246,28 @@ constructor:
     description: The managed instance's service principal.
     types:
     - <xref:azure.mgmt.sql.models.ServicePrincipal>
+  - name: pricing_model
+    description: 'Weather or not Managed Instance is freemium. Known values are:
+
+      "Regular" and "Freemium".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.FreemiumType>
+  - name: authentication_metadata
+    description: 'The managed instance''s authentication metadata lookup mode.
+
+      Known values are: "AzureAD", "Paired", and "Windows".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.AuthMetadataLookupModes>
+  - name: database_format
+    description: 'Specifies the internal format of instance databases specific to
+      the
+
+      SQL engine version. Known values are: "AlwaysUpToDate" and "SQLServer2022".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.sql.models.ManagedInstanceDatabaseFormat>
 variables:
 - description: Managed instance sku.
   name: sku
@@ -220,16 +281,13 @@ variables:
   name: tags
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
-- description: 'Known values are: "Creating", "Deleting", "Updating", "Unknown",
+- description: 'Provisioning state of managed instance. Known values are: "Created",
 
-    "Succeeded", "Failed", "Accepted", "Created", "Deleted", "Unrecognized", "Running",
-    "Canceled",
-
-    "NotSpecified", "Registering", and "TimedOut".'
+    "InProgress", "Succeeded", "Failed", and "Canceled".'
   name: provisioning_state
   types:
   - <xref:str>
-  - <xref:azure.mgmt.sql.models.ManagedInstancePropertiesProvisioningState>
+  - <xref:azure.mgmt.sql.models.ProvisioningState>
 - description: 'Specifies the mode of database creation.
 
 
@@ -251,6 +309,10 @@ variables:
   name: fully_qualified_domain_name
   types:
   - <xref:str>
+- description: Whether or not this is a GPv2 variant of General Purpose edition.
+  name: is_general_purpose_v2
+  types:
+  - <xref:bool>
 - description: 'Administrator username for the managed instance. Can only be
 
     specified when the managed instance is being created (and is required for creation).'
@@ -282,6 +344,29 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.sql.models.ManagedInstanceLicenseType>
+- description: 'Hybrid secondary usage. Possible values are ''Active'' (default
+
+    value) and ''Passive'' (customer uses the secondary as Passive DR). Known values
+    are: "Active"
+
+    and "Passive".'
+  name: hybrid_secondary_usage
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.HybridSecondaryUsage>
+- description: 'Hybrid secondary usage detected. Possible values are
+
+    ''Active'' (customer does not meet the requirements to use the secondary as Passive
+    DR) and
+
+    ''Passive'' (customer meets the requirements to use the secondary as Passive DR).
+    Known values
+
+    are: "Active" and "Passive".'
+  name: hybrid_secondary_usage_detected
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.HybridSecondaryUsageDetected>
 - description: 'The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.'
   name: v_cores
   types:
@@ -293,6 +378,23 @@ variables:
 
     number of vCores.'
   name: storage_size_in_gb
+  types:
+  - <xref:int>
+- description: 'Storage IOps. Minimum value: 120. Maximum value: 120000. Increments
+    of 1
+
+    IOps allowed only. Maximum value depends on the selected hardware family and number
+    of vCores.'
+  name: storage_i_ops
+  types:
+  - <xref:int>
+- description: 'Storage throughput in MBps. Minimum value: 25. Maximum value:
+
+    4000. Increments of 1 MBps allowed only. Maximum value depends on the selected
+    hardware family
+
+    and number of vCores.'
+  name: storage_throughput_m_bps
   types:
   - <xref:int>
 - description: Collation of the managed instance.
@@ -424,3 +526,42 @@ variables:
   name: service_principal
   types:
   - <xref:azure.mgmt.sql.models.ServicePrincipal>
+- description: Virtual cluster resource id for the Managed Instance.
+  name: virtual_cluster_id
+  types:
+  - <xref:str>
+- description: 'Status of external governance. Known values are: "Enabled"
+
+    and "Disabled".'
+  name: external_governance_status
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.ExternalGovernanceStatus>
+- description: 'Weather or not Managed Instance is freemium. Known values are: "Regular"
+
+    and "Freemium".'
+  name: pricing_model
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.FreemiumType>
+- description: 'Specifies the point in time (ISO8601 format) of the Managed Instance
+
+    creation.'
+  name: create_time
+  types:
+  - <xref:datetime.datetime>
+- description: 'The managed instance''s authentication metadata lookup mode.
+
+    Known values are: "AzureAD", "Paired", and "Windows".'
+  name: authentication_metadata
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.AuthMetadataLookupModes>
+- description: 'Specifies the internal format of instance databases specific to the
+    SQL
+
+    engine version. Known values are: "AlwaysUpToDate" and "SQLServer2022".'
+  name: database_format
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.sql.models.ManagedInstanceDatabaseFormat>

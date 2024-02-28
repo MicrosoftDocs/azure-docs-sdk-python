@@ -1,12 +1,12 @@
 ---
 title: Azure AI Resources Package client library for Python
 keywords: Azure, python, SDK, API, azure-ai-resources, ai
-ms.date: 12/01/2023
+ms.date: 02/08/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
-# Azure AI Resources Package client library for Python - version 1.0.0b2 
+# Azure AI Resources Package client library for Python - version 1.0.0b7 
 
 
 The Azure AI Resources package is part of the Azure AI SDK for Python and contains functionality for connecting to and managing your Azure AI resources and projects. Within your Azure AI projects it provides control plane operations for creating and managing data, indexes, models and deployments.
@@ -16,9 +16,9 @@ The Azure AI Resources package is part of the Azure AI SDK for Python and contai
 | [Package (PyPI)][ai_pypi]
 | [API reference documentation][ai_ref_docs]
 | [Product documentation][product_documentation]
-| [Samples][ml_samples]
+| [Samples][generative_samples]
 
-This package has been tested with Python 3.7, 3.8, 3.9 and 3.10.
+This package has been tested with Python 3.8, 3.9, 3.10, 3.11 and 3.12.
 
 For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all.
 
@@ -29,11 +29,12 @@ For a more complete set of Azure libraries, see https://aka.ms/azsdk/python/all.
 - Python 3.7 or later is required to use this package.
 - You must have an [Azure subscription][azure_subscription].
 - An [Azure Machine Learning Workspace][workspace].
+- An [Azure AI Studio project][ai_project].
 
 ### Install the package
 Install the Azure AI generative package for Python with pip:
 
-```dotnetcli
+```
 pip install azure-ai-resources
 pip install azure-identity
 ```
@@ -92,21 +93,21 @@ If you encounter any bugs or have suggestions, please file an issue in the [Issu
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b2/sdk/ai/azure-ai-resources
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b7/sdk/ai/azure-ai-resources
+[ai_project]: https://aka.ms/azureaistudio
 [ai_pypi]: https://pypi.org/project/azure-ai-resources/
-[ai_ref_docs]: https://learn.microsoft.com/python/api/overview/azure/ai-resources-readme?view=azure-python
+[ai_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-resources/?view=azure-python-preview
 [generative_samples]: https://github.com/Azure-Samples/azureai-samples
 [product_documentation]: /azure/machine-learning/
 [azure_subscription]: https://azure.microsoft.com/free/
 [workspace]: /azure/machine-learning/concept-workspace
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b2/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b7/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b2/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b2/sdk/identity/azure-identity
-[python_logging]: https://docs.python.org/3/library/logging.html
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-resources_1.0.0b7/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-resources_1.0.0b7/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

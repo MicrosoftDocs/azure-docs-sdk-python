@@ -1,7 +1,7 @@
 ---
 title: Azure Grafana SDK for Python
 description: Reference for Azure Grafana SDK for Python
-ms.date: 12/05/2023
+ms.date: 02/27/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: grafana

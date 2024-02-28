@@ -1,7 +1,7 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, cosmos
-ms.date: 11/10/2023
+ms.date: 02/03/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
@@ -9,7 +9,7 @@ ms.service: cosmos
 ## _Disclaimer_
 _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
-# Azure Cosmos DB SQL API client library for Python - version 4.5.2b3 
+# Azure Cosmos DB SQL API client library for Python - version 4.5.2b4 
 
 
 Azure Cosmos DB is a globally distributed, multi-model database service that supports document, key-value, wide-column, and graph databases.
@@ -34,7 +34,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -186,6 +186,13 @@ Streamable queries like `SELECT * FROM WHERE` *do* support continuation tokens.
 ### Control Plane Limitations Workaround
 
 Typically, you can use [Azure Portal](https://portal.azure.com/), [Azure Cosmos DB Resource Provider REST API](/rest/api/cosmos-db-resource-provider), [Azure CLI](/cli/azure/azure-cli-reference-for-cosmos-db) or [PowerShell](/azure/cosmos-db/manage-with-powershell) for the control plane unsupported limitations.
+
+### Using The Async Client as a Workaround to Bulk
+While the SDK supports transactional batch, support for bulk requests is not yet implemented in the Python SDK. You can use the async client along with this [concurrency sample][concurrency_sample] we have developed as a reference for a possible workaround. 
+>[WARNING]
+> Using the asynchronous client for concurrent operations like shown in this sample will consume a lot of RUs very fast. We **strongly recommend** testing this out against the cosmos emulator first to verify your code works well and avoid incurring charges.
+
+
 
 ## Boolean Data Type
 
@@ -477,7 +484,7 @@ For more information on TTL, see [Time to Live for Azure Cosmos DB data][cosmos_
 ### Using the asynchronous client
 
 The asynchronous cosmos client is a separate client that looks and works in a similar fashion to the existing synchronous client. However, the async client needs to be imported separately and its methods need to be used with the async/await keywords.
-The Async client needs to be initialized and closed after usage, which can be done manually or with the use of a context manager. The example below shows how to do so manually.
+The Async client needs to be initialized and closed after usage, which can be done manually or with the use of a context manager. The example below shows how to do so manually. We don't recommend doing it this way, since it requires that you manually call __aenter__() before using the client.
 
 ```python
 from azure.cosmos.aio import CosmosClient
@@ -490,6 +497,7 @@ CONTAINER_NAME = 'products'
 
 async def create_products():
     client = CosmosClient(URL, credential=KEY)
+    await client.__aenter__() # this piece is important for the SDK to cache account information
     database = client.get_database_client(DATABASE_NAME)
     container = database.get_container_client(CONTAINER_NAME)
     for i in range(10):
@@ -502,7 +510,7 @@ async def create_products():
     await client.close() # the async client must be closed manually if it's not initialized in a with statement
 ```
 
-Instead of manually opening and closing the client, it is highly recommended to use the `async with` keywords. This creates a context manager that will initialize and later close the client once you're out of the statement. The example below shows how to do so.
+Instead of manually opening and closing the client, it is highly recommended to use the `async with` keywords. This creates a context manager that will initialize and later close the client once you're out of the statement, as well as cache important information the SDK needs. The example below shows how to do so.
 
 ```python
 from azure.cosmos.aio import CosmosClient
@@ -717,7 +725,7 @@ to use this functionality are the following:
 pip install azure-core-tracing-opentelemetry
 pip install opentelemetry-sdk
 ```
-For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.5.2b3/sdk/core/azure-core-tracing-opentelemetry/README.md) 
+For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.5.2b4/sdk/core/azure-core-tracing-opentelemetry/README.md) 
 from Azure Core describing how to set it up. We have also added a [sample file][telemetry_sample] to show how it can
 be used with our SDK. This works the same way regardless of the Cosmos client you are using.
 
@@ -735,11 +743,11 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: /azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: /azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: /azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: /rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: /azure/cosmos-db/databases-containers-items#azure-cosmos-items
-[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
+[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
 [cosmos_request_units]: /azure/cosmos-db/request-units
 [cosmos_resources]: /azure/cosmos-db/databases-containers-items
 [cosmos_sql_queries]: /azure/cosmos-db/how-to-sql-query
@@ -756,16 +764,17 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/samples/document_management_async.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples/document_management_async.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
-[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
-[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b3/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
+[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
+[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
 [cosmos_transactional_batch]: https://learn.microsoft.com/azure/cosmos-db/nosql/transactional-batch
+[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.5.2b4/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
 
 ## Contributing
 

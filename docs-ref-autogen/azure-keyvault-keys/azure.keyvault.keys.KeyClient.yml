@@ -7,7 +7,7 @@ inheritances:
 - azure.keyvault.keys._shared.client_base.KeyVaultClientBase
 summary: A high-level interface for managing a vault's keys.
 constructor:
-  syntax: 'KeyClient(vault_url: str, credential: TokenCredential, **kwargs)'
+  syntax: 'KeyClient(vault_url: str, credential: TokenCredential, **kwargs: Any)'
   parameters:
   - name: vault_url
     description: 'URL of the vault the client will access. This is also called the
@@ -33,6 +33,7 @@ constructor:
     description: Version of the service API to use. Defaults to the most recent.
     types:
     - <xref:azure.keyvault.keys.ApiVersion>
+    - <xref:str>
   - name: verify_challenge_resource
     description: 'Whether to verify the authentication challenge resource matches
       the Key
@@ -56,7 +57,7 @@ methods:
     For example, a backup
 
     from a vault in a USA region cannot be restored to a vault in an EU region.'
-  signature: 'backup_key(name: str, **kwargs) -> bytes'
+  signature: 'backup_key(name: str, **kwargs: Any) -> bytes'
   parameters:
   - name: name
     description: The name of the key to back up
@@ -64,13 +65,14 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The key backup result, in a protected bytes format that can only
+      be used by Azure Key Vault.
     types:
     - <xref:bytes>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the key doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the key doesn't exist; the latter for other errors
 - uid: azure.keyvault.keys.KeyClient.begin_delete_key
   name: begin_delete_key
   summary: 'Delete all versions of a key and its cryptographic material.
@@ -83,7 +85,7 @@ methods:
     returns a poller enabling you to
 
     wait for deletion to complete.'
-  signature: 'begin_delete_key(name: str, **kwargs) -> LROPoller[DeletedKey]'
+  signature: 'begin_delete_key(name: str, **kwargs: Any) -> LROPoller[DeletedKey]'
   parameters:
   - name: name
     description: The name of the key to delete.
@@ -108,9 +110,8 @@ methods:
     - <xref:azure.core.polling.LROPoller>[<xref:azure.keyvault.keys.DeletedKey>]
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the key doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the key doesn't exist; the latter for other errors
 - uid: azure.keyvault.keys.KeyClient.begin_recover_deleted_key
   name: begin_recover_deleted_key
   summary: 'Recover a deleted key to its latest version. Possible only in a vault
@@ -127,7 +128,7 @@ methods:
     Waiting is only necessary when
 
     you want to use the recovered key in another operation immediately.'
-  signature: 'begin_recover_deleted_key(name: str, **kwargs) -> LROPoller[KeyVaultKey]'
+  signature: 'begin_recover_deleted_key(name: str, **kwargs: Any) -> LROPoller[KeyVaultKey]'
   parameters:
   - name: name
     description: The name of the deleted key to recover
@@ -163,7 +164,7 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'create_ec_key(name: str, **kwargs) -> KeyVaultKey'
+  signature: 'create_ec_key(name: str, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name for the new key.
@@ -232,7 +233,7 @@ methods:
 
 
     Requires keys/create permission.'
-  signature: 'create_key(name: str, key_type: str | KeyType, **kwargs) -> KeyVaultKey'
+  signature: 'create_key(name: str, key_type: str | KeyType, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name of the new key.
@@ -319,7 +320,7 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'create_oct_key(name: str, **kwargs) -> KeyVaultKey'
+  signature: 'create_oct_key(name: str, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name for the new key.
@@ -387,7 +388,7 @@ methods:
 
 
     Requires the keys/create permission.'
-  signature: 'create_rsa_key(name: str, **kwargs) -> KeyVaultKey'
+  signature: 'create_rsa_key(name: str, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name for the new key.
@@ -458,7 +459,8 @@ methods:
   name: get_cryptography_client
   summary: Gets a <xref:azure.keyvault.keys.crypto.CryptographyClient> for the given
     key.
-  signature: 'get_cryptography_client(key_name: str, **kwargs) -> CryptographyClient'
+  signature: 'get_cryptography_client(key_name: str, *, key_version: str | None =
+    None, **kwargs) -> CryptographyClient'
   parameters:
   - name: key_name
     description: The name of the key used to perform cryptographic operations.
@@ -469,6 +471,7 @@ methods:
     description: Optional version of the key used to perform cryptographic operations.
     types:
     - <xref:str>
+    - <xref:None>
   return:
     description: 'A <xref:azure.keyvault.keys.crypto.CryptographyClient> using the
       same options, credentials, and
@@ -482,7 +485,7 @@ methods:
 
 
     Requires keys/get permission.'
-  signature: 'get_deleted_key(name: str, **kwargs) -> DeletedKey'
+  signature: 'get_deleted_key(name: str, **kwargs: Any) -> DeletedKey'
   parameters:
   - name: name
     description: The name of the key
@@ -495,16 +498,15 @@ methods:
     - <xref:azure.keyvault.keys.DeletedKey>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the key doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the key doesn't exist; the latter for other errors
 - uid: azure.keyvault.keys.KeyClient.get_key
   name: get_key
   summary: 'Get a key''s attributes and, if it''s an asymmetric key, its public material.
 
 
     Requires keys/get permission.'
-  signature: 'get_key(name: str, version: str | None = None, **kwargs) -> KeyVaultKey'
+  signature: 'get_key(name: str, version: str | None = None, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name of the key to get.
@@ -521,17 +523,17 @@ methods:
     - <xref:str>
     - <xref:None>
   return:
+    description: The fetched key.
     types:
     - <xref:azure.keyvault.keys.KeyVaultKey>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the key doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the key doesn't exist; the latter for other errors
 - uid: azure.keyvault.keys.KeyClient.get_key_rotation_policy
   name: get_key_rotation_policy
   summary: Get the rotation policy of a Key Vault key.
-  signature: 'get_key_rotation_policy(key_name: str, **kwargs) -> KeyRotationPolicy'
+  signature: 'get_key_rotation_policy(key_name: str, **kwargs: Any) -> KeyRotationPolicy'
   parameters:
   - name: key_name
     description: The name of the key.
@@ -543,11 +545,11 @@ methods:
     types:
     - <xref:azure.keyvault.keys.KeyRotationPolicy>
   exceptions:
-  - type: '*azure.core.exceptions.HttpResponseError*'
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.keyvault.keys.KeyClient.get_random_bytes
   name: get_random_bytes
   summary: Get the requested number of random bytes from a managed HSM.
-  signature: 'get_random_bytes(count: int, **kwargs) -> bytes'
+  signature: 'get_random_bytes(count: int, **kwargs: Any) -> bytes'
   parameters:
   - name: count
     description: The requested number of random bytes.
@@ -560,9 +562,9 @@ methods:
     - <xref:bytes>
   exceptions:
   - type: ValueError
-    description: if less than one random byte is requested,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if less than one random byte is requested; the latter
+      for other errors
 - uid: azure.keyvault.keys.KeyClient.import_key
   name: import_key
   summary: 'Import a key created externally.
@@ -570,7 +572,7 @@ methods:
 
     Requires keys/import permission. If `name` is already in use, the key will be
     imported as a new version.'
-  signature: 'import_key(name: str, key: JsonWebKey, **kwargs) -> KeyVaultKey'
+  signature: 'import_key(name: str, key: JsonWebKey, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: Name for the imported key
@@ -630,7 +632,7 @@ methods:
 
 
     Requires keys/list permission.'
-  signature: list_deleted_keys(**kwargs) -> ItemPaged[DeletedKey]
+  signature: 'list_deleted_keys(**kwargs: Any) -> ItemPaged[DeletedKey]'
   return:
     description: An iterator of deleted keys
     types:
@@ -641,7 +643,7 @@ methods:
 
 
     Requires keys/list permission.'
-  signature: 'list_properties_of_key_versions(name: str, **kwargs) -> ItemPaged[KeyProperties]'
+  signature: 'list_properties_of_key_versions(name: str, **kwargs: Any) -> ItemPaged[KeyProperties]'
   parameters:
   - name: name
     description: The name of the key
@@ -658,7 +660,7 @@ methods:
 
 
     Requires keys/list permission.'
-  signature: list_properties_of_keys(**kwargs) -> ItemPaged[KeyProperties]
+  signature: 'list_properties_of_keys(**kwargs: Any) -> ItemPaged[KeyProperties]'
   return:
     description: An iterator of keys without their cryptographic material or version
       information
@@ -682,7 +684,7 @@ methods:
 
 
     Requires keys/purge permission.'
-  signature: 'purge_deleted_key(name: str, **kwargs) -> None'
+  signature: 'purge_deleted_key(name: str, **kwargs: Any) -> None'
   parameters:
   - name: name
     description: The name of the deleted key to purge
@@ -709,7 +711,8 @@ methods:
     be marked
 
     exportable. This operation requires the keys/release permission.'
-  signature: 'release_key(name: str, target_attestation_token: str, **kwargs) -> ReleaseKeyResult'
+  signature: 'release_key(name: str, target_attestation_token: str, **kwargs: Any)
+    -> ReleaseKeyResult'
   parameters:
   - name: name
     description: The name of the key to get.
@@ -759,7 +762,7 @@ methods:
     by the same Microsoft Azure
 
     subscription as the source vault.'
-  signature: 'restore_key_backup(backup: bytes, **kwargs) -> KeyVaultKey'
+  signature: 'restore_key_backup(backup: bytes, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: backup
     description: A key backup as returned by <xref:azure.keyvault.keys.KeyClient.backup_key>
@@ -772,9 +775,9 @@ methods:
     - <xref:azure.keyvault.keys.KeyVaultKey>
   exceptions:
   - type: azure.core.exceptions.ResourceExistsError
-    description: if the backed up key's name is already in use,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the backed up key's name is already in use; the latter
+      for other errors
 - uid: azure.keyvault.keys.KeyClient.rotate_key
   name: rotate_key
   summary: 'Rotate the key based on the key policy by generating a new version of
@@ -782,7 +785,7 @@ methods:
 
 
     This operation requires the keys/rotate permission.'
-  signature: 'rotate_key(name: str, **kwargs) -> KeyVaultKey'
+  signature: 'rotate_key(name: str, **kwargs: Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name of the key to rotate.
@@ -810,8 +813,8 @@ methods:
     information about how to send
 
     custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
-  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> HttpResponse'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
     description: The network request you want to make.
@@ -833,8 +836,8 @@ methods:
 
 
     Requires keys/update permission.'
-  signature: 'update_key_properties(name: str, version: str | None = None, **kwargs)
-    -> KeyVaultKey'
+  signature: 'update_key_properties(name: str, version: str | None = None, **kwargs:
+    Any) -> KeyVaultKey'
   parameters:
   - name: name
     description: The name of key to update
@@ -885,9 +888,8 @@ methods:
     - <xref:azure.keyvault.keys.KeyVaultKey>
   exceptions:
   - type: azure.core.exceptions.ResourceNotFoundError
-    description: if the key doesn't exist,
   - type: azure.core.exceptions.HttpResponseError
-    description: for other errors
+    description: the former if the key doesn't exist; the latter for other errors
 - uid: azure.keyvault.keys.KeyClient.update_key_rotation_policy
   name: update_key_rotation_policy
   summary: 'Updates the rotation policy of a Key Vault key.
@@ -895,7 +897,7 @@ methods:
 
     This operation requires the keys/update permission.'
   signature: 'update_key_rotation_policy(key_name: str, policy: KeyRotationPolicy,
-    **kwargs) -> KeyRotationPolicy'
+    **kwargs: Any) -> KeyRotationPolicy'
   parameters:
   - name: key_name
     description: The name of the key in the given vault.

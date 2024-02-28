@@ -1,24 +1,24 @@
 ---
 title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
-ms.date: 10/20/2023
+ms.date: 02/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
 
-# Azure Core shared client library for Python - version 1.29.5 
+# Azure Core shared client library for Python - version 1.30.0 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries.
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python/guidelines/index.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.29.5/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.29.5/sdk/core/azure-core/) 
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.0/sdk/core/azure-core/) 
 | [Package (Pypi)][package]
 | [Package (Conda)](https://anaconda.org/microsoft/azure-core/)
-| [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.29.5/sdk/core/azure-core/)
+| [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.0/sdk/core/azure-core/)
 
 ## _Disclaimer_
 
@@ -172,7 +172,6 @@ When calling the methods, some properties can be configured by passing in as kwa
 | logging_enable| Use to enable per operation. Defaults to `False`. |
 | logger | If specified, it will be used to log information. |
 | response_encoding | The encoding to use if known for this service (will disable auto-detection). |
-| proxies | Maps protocol or protocol and hostname to the URL of the proxy. |
 | raw_request_hook | Callback function. Will be invoked on request. |
 | raw_response_hook | Callback function. Will be invoked on response. |
 | network_span_namer | A callable to customize the span name. |

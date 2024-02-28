@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
-ms.date: 09/28/2023
+ms.date: 01/22/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
@@ -66,5 +66,5 @@ Code samples for this package can be found at:
 
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
-section of the project.
+section of the project. 
 
