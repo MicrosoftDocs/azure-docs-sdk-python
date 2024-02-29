@@ -1,7 +1,7 @@
 ---
 title: Azure Maintenance SDK for Python
 description: Reference for Azure Maintenance SDK for Python
-ms.date: 02/28/2024
+ms.date: 02/29/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: maintenance
