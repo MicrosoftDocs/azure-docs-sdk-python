@@ -22,7 +22,7 @@ constructor:
     | None = None, services: Dict[str, JobService | JupyterLabJobService | SshJobService
     | TensorBoardJobService | VsCodeJobService] | None = None, queue_settings: QueueSettings
     | None = None, **kwargs)'
-  parameters:
+  keywordOnlyParameters:
   - name: component
     description: The ID or instance of the command component or job to be run for
       the step.
@@ -108,6 +108,7 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  keywordOnlyParameters:
   - name: kwargs
     description: Additional arguments to pass to the YAML serializer.
     types:
@@ -121,18 +122,19 @@ methods:
   name: fromkeys
   summary: Create a new dictionary with keys from iterable and values set to value.
   signature: fromkeys(value=None, /)
-  parameters:
-  - name: type
-    isRequired: true
+  positionalOnlyParameters:
   - name: iterable
     isRequired: true
   - name: value
     defaultValue: None
+  parameters:
+  - name: type
+    isRequired: true
 - uid: azure.ai.ml.entities.Command.get
   name: get
   summary: Return the value for key if key is in the dictionary, else default.
   signature: get(key, default=None, /)
-  parameters:
+  positionalOnlyParameters:
   - name: key
     isRequired: true
   - name: default
@@ -162,7 +164,7 @@ methods:
   name: set_limits
   summary: Set limits for Command.
   signature: 'set_limits(*, timeout: int, **kwargs) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout for the job in seconds.
     types:
@@ -188,7 +190,7 @@ methods:
   summary: Set QueueSettings for the job.
   signature: 'set_queue_settings(*, job_tier: str | None = None, priority: str | None
     = None) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: job_tier
     description: The job tier. Accepted values are "Spot", "Basic", "Standard", or
       "Premium".
@@ -221,7 +223,7 @@ methods:
     int | None = None, locations: List[str] | None = None, properties: Dict | None
     = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs)
     -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: instance_type
     description: 'The type of compute instance to run the job on. If not specified,
       the job will run on
@@ -285,7 +287,7 @@ methods:
 
     Return the value for key if key is in the dictionary, else default.'
   signature: setdefault(key, default=None, /)
-  parameters:
+  positionalOnlyParameters:
   - name: key
     isRequired: true
   - name: default
@@ -308,7 +310,7 @@ methods:
     | AmlTokenConfiguration | UserIdentityConfiguration | None = None, queue_settings:
     QueueSettings | None = None, job_tier: str | None = None, priority: str | None
     = None) -> Sweep'
-  parameters:
+  keywordOnlyParameters:
   - name: primary_metric
     description: 'The primary metric of the sweep objective - e.g. AUC (Area Under
       the Curve).
@@ -325,6 +327,7 @@ methods:
     description: 'The sampling algorithm to use inside the search space.
 
       Acceptable values are "random", "grid", or "bayesian". Defaults to "random".'
+    defaultValue: random
     types:
     - <xref:str>
   - name: compute
@@ -384,6 +387,8 @@ methods:
       "medium", and "high".'
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: search_space
+    isRequired: true
   return:
     description: A Sweep node with the component from current Command node as its
       trial component.
