@@ -62,6 +62,16 @@ Explore more [sample Python code](https://azure.microsoft.com/resources/samples/
 
 This section details known issues for the Azure Storage client libraries for Python.
 
+### Downloads of sparse page blobs with BlobClient.download_blob can result in extra data
+
+Under rare circumstances, performing a full download of a sparse Page Blob using `BlobClient.download_blob` could result in the downloaded content containing up to one "chunk" of extra data (all byte value `\x00`) at the end. Specifically, this could occur if the total blob size was not divisible by the chunk size used for the download (defaults to 4 MiB).
+
+#### Issue details
+
+| Client library | Versions impacted	| Minimum safe version	| Recommended action |
+|--|--|--|--|
+| azure-storage-blob |	12.0 to 12.19.0 |	12.19.1 | [Update to latest version or minimum 12.19.1](https://pypi.org/project/azure-storage-blob/) |
+
 ### InvalidHeaderValue error message when using beta version of SDK
 
 In rare scenarios, applications that have upgraded to the latest beta or generally available version of the SDK can receive an `InvalidHeaderValue` error message. This issue can occur when using any of the Storage libraries. The error message looks similar to the following sample:
