@@ -8,7 +8,7 @@ ms.service: template
 ---
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/472?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=472)
 
-# Azure Template Package client library for Python - version 0.1.0b3561066 
+# Azure Template Package client library for Python - version 0.1.0b3564069 
 
 
 This template package matches necessary patterns that the development team has established to create a unified SDK. The packages contained herein can be installed singly or as part of the `azure` namespace. Any other introductory text should go here.
