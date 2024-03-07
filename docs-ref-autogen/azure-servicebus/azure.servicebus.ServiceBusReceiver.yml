@@ -70,10 +70,22 @@ constructor:
     types:
     - <xref:str>
   - name: max_wait_time
-    description: 'The timeout in seconds between received messages after which the
+    description: 'The timeout in seconds to wait for the first and subsequent
 
-      receiver will automatically stop receiving. The default value is None, meaning
-      no timeout.'
+      messages to arrive. If no messages arrive, and no timeout is specified, this
+      call will not return
+
+      until the connection is closed. The default value is None, meaning no timeout.
+      On a sessionful
+
+      queue/topic when NEXT_AVAILABLE_SESSION is specified, this will act as the timeout
+      for connecting
+
+      to a session. If connection errors are occurring due to write timing out,the
+      connection timeout
+
+      value may need to be adjusted. See the *socket_timeout* optional parameter for
+      more details.'
     types:
     - <xref:typing.Optional>[<xref:float>]
   - name: receive_mode
@@ -221,7 +233,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages_abandon = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -257,7 +269,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages_complete = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -307,7 +319,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages_dead_letter = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -342,7 +354,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       messages_defer = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -391,7 +403,7 @@ methods:
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\
+    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   with servicebus_receiver:\n       messages_peek\
@@ -433,7 +445,7 @@ methods:
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\
+    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   with servicebus_receiver:\n       deferred_sequenced_numbers\
@@ -490,9 +502,17 @@ methods:
 
       If no messages arrive, and no timeout is specified, this call will not return
 
-      until the connection is closed. If specified, an no messages arrive within the
+      until the connection is closed. If specified, and no messages arrive within
+      the
 
-      timeout period, an empty list will be returned.'
+      timeout period, an empty list will be returned. NOTE: Setting max_wait_time
+      on receive_messages
+
+      when NEXT_AVAILABLE_SESSION is specified will not impact the timeout for connecting
+      to a session.
+
+      Please use max_wait_time on the constructor to set the timeout for connecting
+      to a session.'
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:float>]
@@ -506,7 +526,7 @@ methods:
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\
+    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   with servicebus_receiver:\n       messages_sync\
@@ -564,7 +584,7 @@ methods:
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\
+    \\py2docfx\\\\dist_temp\\\\219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\
     \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n       messages_lock = servicebus_receiver.receive_messages(max_wait_time=5)\n\
@@ -592,7 +612,7 @@ attributes:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    219\\\\azure-servicebus-7.11.4\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    219\\\\azure-servicebus-7.12.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       with servicebus_client.get_queue_receiver(queue_name=queue_name, session_id=session_id)\
