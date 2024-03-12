@@ -1,7 +1,7 @@
 ---
 title: Azure Security SDK for Python
 description: Reference for Azure Security SDK for Python
-ms.date: 03/11/2024
+ms.date: 03/12/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: security
