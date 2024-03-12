@@ -15,14 +15,14 @@ summary: 'Base class for parallel node, used for parallel component version cons
 constructor:
   syntax: 'Parallel(*, component: ParallelComponent | str, compute: str | None = None,
     inputs: Dict[str, NodeOutput | Input | str | bool | int | float | Enum] | None
-    = None, outputs: Dict[str, str | Output] | None = None, retry_settings: Dict[str,
-    RetrySettings | str] | None = None, logging_level: str | None = None, max_concurrency_per_instance:
+    = None, outputs: Dict[str, str | Output] | None = None, retry_settings: RetrySettings
+    | Dict[str, str] | None = None, logging_level: str | None = None, max_concurrency_per_instance:
     int | None = None, error_threshold: int | None = None, mini_batch_error_threshold:
-    int | None = None, input_data: str | None = None, task: Dict[str, ParallelTask
-    | str] | None = None, partition_keys: List | None = None, mini_batch_size: int
-    | None = None, resources: JobResourceConfiguration | None = None, environment_variables:
-    Dict | None = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration
-    | UserIdentityConfiguration | None = None, **kwargs)'
+    int | None = None, input_data: str | None = None, task: ParallelTask | RunFunction
+    | Dict | None = None, partition_keys: List | None = None, mini_batch_size: int
+    | str | None = None, resources: JobResourceConfiguration | None = None, environment_variables:
+    Dict | None = None, identity: Dict | ManagedIdentityConfiguration | AmlTokenConfiguration
+    | UserIdentityConfiguration | None = None, **kwargs: Any)'
   parameters:
   - name: component
     description: Id or instance of the parallel component/job to be run for the step
@@ -180,7 +180,7 @@ methods:
 - uid: azure.ai.ml.entities.Parallel.dump
   name: dump
   summary: Dumps the job content into a file in YAML format.
-  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  signature: 'dump(dest: str | PathLike | IO, **kwargs: Any) -> None'
   parameters:
   - name: dest
     description: 'The local path or file stream to write the YAML content to.
@@ -248,14 +248,13 @@ methods:
   summary: Set the resources for the parallel job.
   signature: 'set_resources(*, instance_type: str | List[str] | None = None, instance_count:
     int | None = None, properties: Dict | None = None, docker_args: str | None = None,
-    shm_size: str | None = None, **kwargs)'
+    shm_size: str | None = None, **kwargs: Any) -> None'
   keywordOnlyParameters:
   - name: instance_type
     description: The instance type or a list of instance types used as supported by
       the compute target.
     types:
-    - <xref:str>
-    - <xref:list>[<xref:str>]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.List>[<xref:str>]]
   - name: instance_count
     description: The number of instances or nodes used by the compute target.
     types:
