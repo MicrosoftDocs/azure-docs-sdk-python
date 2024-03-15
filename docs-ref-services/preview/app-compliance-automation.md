@@ -1,7 +1,7 @@
 ---
 title: Azure App Compliance Automation SDK for Python
 description: Reference for Azure App Compliance Automation SDK for Python
-ms.date: 03/14/2024
+ms.date: 03/15/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: appcomplianceautomation
