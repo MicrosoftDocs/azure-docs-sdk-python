@@ -13,7 +13,7 @@ summary: 'An interface to interact with a specific user.
   <xref:DatabaseProxy.get_user_client> method.'
 constructor:
   syntax: 'UserProxy(client_connection: CosmosClientConnection, id: str, database_link:
-    str, properties: Dict[str, Any] = None)'
+    str, properties: Dict[str, Any] | None = None)'
   parameters:
   - name: client_connection
     isRequired: true
@@ -23,6 +23,13 @@ constructor:
     isRequired: true
   - name: properties
     defaultValue: None
+variables:
+- name: id
+  types:
+  - <xref:str>
+- name: user_link
+  types:
+  - <xref:str>
 methods:
 - uid: azure.cosmos.user.UserProxy.create_permission
   name: create_permission
@@ -36,6 +43,8 @@ methods:
   - name: body
     description: A dict-like object representing the permission to create.
     isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -44,7 +53,7 @@ methods:
   return:
     description: A dict representing the new permission.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: If the given permission couldn't be created.
@@ -54,13 +63,17 @@ methods:
 
 
     If the permission does not already exist, an exception is raised.'
-  signature: 'delete_permission(permission: str, **kwargs: Any) -> None'
+  signature: 'delete_permission(permission: str | Permission | Mapping[str, Any],
+    **kwargs) -> None'
   parameters:
   - name: permission
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.user.Permission>
 
       instance of the permission to be replaced.'
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.Permission>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -77,13 +90,17 @@ methods:
 - uid: azure.cosmos.user.UserProxy.get_permission
   name: get_permission
   summary: Get the permission identified by *id*.
-  signature: 'get_permission(permission: str, **kwargs: Any) -> Permission'
+  signature: 'get_permission(permission: str | Permission | Mapping[str, Any], **kwargs:
+    Any) -> Permission'
   parameters:
   - name: permission
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.user.Permission>
 
       instance of the permission to be retrieved.'
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.Permission>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -92,7 +109,7 @@ methods:
   return:
     description: A dict representing the retrieved permission.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: If the given permission couldn't be retrieved.
@@ -100,11 +117,13 @@ methods:
   name: list_permissions
   summary: List all permission for the user.
   signature: 'list_permissions(max_item_count: int | None = None, **kwargs: Any) ->
-    Iterable[Dict[str, Any]]'
+    ItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of permissions to be returned in the enumeration operation.
     isRequired: true
+    types:
+    - <xref:int>
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -113,23 +132,30 @@ methods:
   return:
     description: An Iterable of permissions (dicts).
     types:
-    - <xref:typing.Iterable>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.user.UserProxy.query_permissions
   name: query_permissions
   summary: Return all permissions matching the given *query*.
-  signature: 'query_permissions(query: str, parameters: List[str] | None = None, max_item_count:
-    int | None = None, **kwargs: Any) -> Iterable[Dict[str, Any]]'
+  signature: 'query_permissions(query: str, parameters: List[Dict[str, Any]] | None
+    = None, max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
+    types:
+    - <xref:str>
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
     isRequired: true
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: max_item_count
     description: Max number of permissions to be returned in the enumeration operation.
     isRequired: true
+    types:
+    - <xref:int>
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -138,7 +164,7 @@ methods:
   return:
     description: An Iterable of permissions (dicts).
     types:
-    - <xref:typing.Iterable>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.user.UserProxy.read
   name: read
   summary: Read user properties.
@@ -161,17 +187,22 @@ methods:
 
 
     If the permission does not already exist, an exception is raised.'
-  signature: 'replace_permission(permission: str, body: Dict[str, Any], **kwargs:
-    Any) -> Permission'
+  signature: 'replace_permission(permission: str | Permission | Mapping[str, Any],
+    body: Dict[str, Any], **kwargs) -> Permission'
   parameters:
   - name: permission
     description: 'The ID (name), dict representing the properties or <xref:azure.cosmos.user.Permission>
 
       instance of the permission to be replaced.'
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:azure.cosmos.Permission>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]
   - name: body
     description: A dict-like object representing the permission to replace.
     isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -180,10 +211,10 @@ methods:
   return:
     description: A dict representing the permission after replace went through.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: 'If the replace failed or the permission
+    description: 'If the replace operation failed or the permission
 
       with given id does not exist.'
 - uid: azure.cosmos.user.UserProxy.upsert_permission
@@ -199,15 +230,17 @@ methods:
   - name: body
     description: A dict-like object representing the permission to update or insert.
     isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
-    isRequired: true
     types:
     - <xref:typing.Callable>
   return:
     description: A dict representing the upserted permission.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: If the given permission could not be upserted.

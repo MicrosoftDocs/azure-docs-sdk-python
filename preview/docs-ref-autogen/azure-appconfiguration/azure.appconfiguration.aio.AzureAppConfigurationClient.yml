@@ -8,11 +8,10 @@ inheritances:
 summary: "Represents a client that calls restful API of Azure App Configuration service.\n\
   \n   param str base_url:\n      Base url of the service.\n\n   param credential:\n\
   \      An object which can provide secrets for the app configuration service\n\n\
-  \   type credential:\n      ~azure.appconfiguration.AppConfigConnectionStringCredential\n\
-  \      or ~azure.core.credentials_async.AsyncTokenCredential\n\n   keyword api_version:\n\
-  \      Api Version. Default value is \"2022-11-01-preview\". Note that overriding\
-  \ this default\n      value may result in unsupported behavior.\n\n   paramtype\
-  \ api_version:\n      str\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
+  \   type credential:\n      ~azure.core.credentials_async.AsyncTokenCredential\n\
+  \n   keyword api_version:\n      Api Version. Default value is \"2023-10-01\". Note\
+  \ that overriding this default\n      value may result in unsupported behavior.\n\
+  \n   paramtype api_version:\n      str\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
 constructor:
   syntax: 'AzureAppConfigurationClient(base_url: str, credential: AsyncTokenCredential,
     **kwargs: Any)'
@@ -143,6 +142,7 @@ methods:
     \ function\n   deleted_config_setting = await async_client.delete_configuration_setting(\n\
     \       key=\"MyKey\", label=\"MyLabel\"\n   )\n   ````"
   signature: 'async delete_configuration_setting(key: str, label: str | None = None,
+    *, etag: str | None = None, match_condition: MatchConditions = MatchConditions.Unconditionally,
     **kwargs) -> ConfigurationSetting'
   parameters:
   - name: key
@@ -215,7 +215,7 @@ methods:
     \n   )\n   ````"
   signature: 'async get_configuration_setting(key: str, label: str | None = None,
     etag: str | None = ''*'', match_condition: MatchConditions = MatchConditions.Unconditionally,
-    **kwargs) -> None | ConfigurationSetting'
+    *, accept_datetime: datetime | str | None = None, **kwargs) -> None | ConfigurationSetting'
   parameters:
   - name: key
     description: key of the ConfigurationSetting
@@ -227,6 +227,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+    - <xref:None>
   - name: etag
     description: check if the ConfigurationSetting is changed. Set None to skip checking
       etag
@@ -243,7 +244,9 @@ methods:
   - name: accept_datetime
     description: retrieve ConfigurationSetting existed at this datetime
     types:
+    - <xref:datetime.datetime>
     - <xref:str>
+    - <xref:None>
   return:
     description: The matched ConfigurationSetting object
     types:
@@ -279,7 +282,8 @@ methods:
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_configuration_settings
   name: list_configuration_settings
   signature: 'list_configuration_settings(*, key_filter: str | None = None, label_filter:
-    str | None = None, **kwargs: Any) -> AsyncItemPaged[ConfigurationSetting]'
+    str | None = None, accept_datetime: datetime | str | None = None, fields: List[str]
+    | None = None, **kwargs: Any) -> AsyncItemPaged[ConfigurationSetting]'
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_revisions
   name: list_revisions
   summary: "Find the ConfigurationSetting revision history, optionally filtered by\
@@ -294,7 +298,8 @@ methods:
     Ke*\", accept_datetime=str(accept_datetime)\n   )\n   async for item in filtered_revisions:\n\
     \       pass  # do something\n   ````"
   signature: 'list_revisions(key_filter: str | None = None, label_filter: str | None
-    = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
+    = None, *, accept_datetime: datetime | str | None = None, fields: List[str] |
+    None = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
   parameters:
   - name: key_filter
     description: 'filter results based on their keys. ''*'' can be
@@ -303,6 +308,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+    - <xref:None>
   - name: label_filter
     description: 'filter results based on their label. ''*'' can be
 
@@ -310,14 +316,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+    - <xref:None>
   keywordOnlyParameters:
   - name: accept_datetime
     description: retrieve ConfigurationSetting existed at this datetime
     types:
+    - <xref:datetime.datetime>
     - <xref:str>
+    - <xref:None>
   - name: fields
     description: specify which fields to include in the results. Leave None to include
-      all fields
+      all fields.
     types:
     - <xref:list>[<xref:str>]
   return:
@@ -373,6 +382,39 @@ methods:
     - <xref:azure.appconfiguration.ConfigurationSnapshot>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.send_request
+  name: send_request
+  summary: 'Runs a network request using the client''s existing pipeline.
+
+
+    The request URL can be relative to the vault URL. The service API version used
+    for the request is the same as
+
+    the client''s unless otherwise specified. This method does not raise if the response
+    is an error; to raise an
+
+    exception, call *raise_for_status()* on the returned response object. For more
+    information about how to send
+
+    custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
+  signature: 'async send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
+    -> AsyncHttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.set_configuration_setting
   name: set_configuration_setting
   summary: "Add or update a ConfigurationSetting.\nIf the configuration setting identified\
@@ -386,8 +428,8 @@ methods:
     \ \"my set tag value\"}\n   )\n   returned_config_setting = await async_client.set_configuration_setting(config_setting)\n\
     \   ````"
   signature: 'async set_configuration_setting(configuration_setting: ConfigurationSetting,
-    match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs)
-    -> ConfigurationSetting'
+    match_condition: MatchConditions = MatchConditions.Unconditionally, *, etag: str
+    | None = None, **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: 'the ConfigurationSetting to be added (if not exists)
@@ -403,8 +445,8 @@ methods:
     - <xref:azure.core.MatchConditions>
   keywordOnlyParameters:
   - name: etag
-    description: check if the ConfigurationSetting is changed. Set None to skip checking
-      etag
+    description: check if the ConfigurationSetting is changed.             Will use
+      the value from param configuration_setting if not set.
     types:
     - <xref:str>
   return:
@@ -430,7 +472,8 @@ methods:
     \   read_only_config_setting = await client.set_read_only(config_setting, read_only=False)\n\
     \   ````"
   signature: 'async set_read_only(configuration_setting: ConfigurationSetting, read_only:
-    bool = True, **kwargs) -> ConfigurationSetting'
+    bool = True, *, match_condition: MatchConditions = MatchConditions.Unconditionally,
+    **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be set read only
@@ -447,11 +490,6 @@ methods:
     description: The match condition to use upon the etag
     types:
     - <xref:azure.core.MatchConditions>
-  - name: etag
-    description: check if the ConfigurationSetting is changed. Set None to skip checking
-      etag
-    types:
-    - <xref:str>
   return:
     description: The ConfigurationSetting returned from the service
     types:

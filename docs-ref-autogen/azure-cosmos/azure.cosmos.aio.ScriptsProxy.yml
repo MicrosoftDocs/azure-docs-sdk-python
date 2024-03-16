@@ -33,7 +33,7 @@ methods:
     Dict[str, Any]'
   parameters:
   - name: body
-    description: A dict-like object representing the stored procedure to create.
+    description: A dict representing the stored procedure to create.
     isRequired: true
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
@@ -96,7 +96,7 @@ methods:
 
     If the stored procedure does not already exist in the container, an exception
     is raised.'
-  signature: 'async delete_stored_procedure(sproc: str | Dict[str, Any], **kwargs:
+  signature: 'async delete_stored_procedure(sproc: str | Mapping[str, Any], **kwargs:
     Any) -> None'
   parameters:
   - name: sproc
@@ -120,8 +120,8 @@ methods:
 
 
     If the trigger does not already exist in the container, an exception is raised.'
-  signature: 'async delete_trigger(trigger: str | Dict[str, Any], **kwargs: Any) ->
-    None'
+  signature: 'async delete_trigger(trigger: str | Mapping[str, Any], **kwargs: Any)
+    -> None'
   parameters:
   - name: trigger
     description: The ID (name) or dict representing trigger to be deleted.
@@ -143,7 +143,7 @@ methods:
 
     If the user-defined function does not already exist in the container, an exception
     is raised.'
-  signature: 'async delete_user_defined_function(udf: str | Dict[str, Any], **kwargs:
+  signature: 'async delete_user_defined_function(udf: str | Mapping[str, Any], **kwargs:
     Any) -> None'
   parameters:
   - name: udf
@@ -166,8 +166,10 @@ methods:
 
     If the stored procedure does not already exist in the container, an exception
     is raised.'
-  signature: 'async execute_stored_procedure(sproc: str | Dict[str, Any], **kwargs:
-    Any) -> Dict[str, Any]'
+  signature: 'async execute_stored_procedure(sproc: str | Dict[str, Any], *, partition_key:
+    str | int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue]
+    | None = None, parameters: List[Dict[str, Any]] | None = None, enable_script_logging:
+    bool | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: sproc
     description: The ID (name) or dict representing the stored procedure to be executed.
@@ -181,7 +183,8 @@ methods:
 
       execute on.'
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:bool>, <xref:int>, <xref:float>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:bool>, <xref:int>, <xref:float>]]]
   - name: parameters
     description: List of parameters to be passed to the stored procedure to be executed.
     types:
@@ -202,8 +205,8 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.get_stored_procedure
   name: get_stored_procedure
   summary: Get the stored procedure identified by *sproc*.
-  signature: 'async get_stored_procedure(sproc: str | Dict[str, Any], **kwargs: Any)
-    -> Dict[str, Any]'
+  signature: 'async get_stored_procedure(sproc: str | Mapping[str, Any], **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: sproc
     description: The ID (name) or dict representing the stored procedure to retrieve.
@@ -220,8 +223,8 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.get_trigger
   name: get_trigger
   summary: Get a trigger identified by *id*.
-  signature: 'async get_trigger(trigger: str | Dict[str, Any], **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'async get_trigger(trigger: str | Mapping[str, Any], **kwargs: Any) ->
+    Dict[str, Any]'
   parameters:
   - name: trigger
     description: The ID (name) or dict representing trigger to retrieve.
@@ -238,7 +241,7 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.get_user_defined_function
   name: get_user_defined_function
   summary: Get a user-defined function identified by *id*.
-  signature: 'async get_user_defined_function(udf: str | Dict[str, Any], **kwargs:
+  signature: 'async get_user_defined_function(udf: str | Mapping[str, Any], **kwargs:
     Any) -> Dict[str, Any]'
   parameters:
   - name: udf
@@ -256,7 +259,8 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.list_stored_procedures
   name: list_stored_procedures
   summary: List all stored procedures in the container.
-  signature: 'list_stored_procedures(**kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+  signature: 'list_stored_procedures(*, max_item_count: int | None = None, **kwargs:
+    Any) -> AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -269,7 +273,8 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.list_triggers
   name: list_triggers
   summary: List all triggers in the container.
-  signature: 'list_triggers(**kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+  signature: 'list_triggers(*, max_item_count: int | None = None, **kwargs: Any) ->
+    AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -282,8 +287,8 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.list_user_defined_functions
   name: list_user_defined_functions
   summary: List all the user-defined functions in the container.
-  signature: 'list_user_defined_functions(**kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+  signature: 'list_user_defined_functions(*, max_item_count: int | None = None, **kwargs:
+    Any) -> AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -296,14 +301,15 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.query_stored_procedures
   name: query_stored_procedures
   summary: Return all stored procedures matching the given *query*.
-  signature: 'query_stored_procedures(query: str | Dict[str, Any], **kwargs: Any)
-    -> AsyncItemPaged[Dict[str, Any]]'
+  signature: 'query_stored_procedures(query: str, *, parameters: List[Dict[str, Any]]
+    | None = None, max_item_count: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:str>
   keywordOnlyParameters:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
@@ -321,14 +327,15 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.query_triggers
   name: query_triggers
   summary: Return all triggers matching the given *query*.
-  signature: 'query_triggers(query: str | Dict[str, Any], **kwargs: Any) -> AsyncItemPaged[Dict[str,
+  signature: 'query_triggers(query: str, *, parameters: List[Dict[str, Any]] | None
+    = None, max_item_count: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:str>
   keywordOnlyParameters:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
@@ -346,14 +353,15 @@ methods:
 - uid: azure.cosmos.aio.ScriptsProxy.query_user_defined_functions
   name: query_user_defined_functions
   summary: Return user-defined functions matching a given *query*.
-  signature: 'query_user_defined_functions(query: str | Dict[str, Any], **kwargs:
-    Any) -> AsyncItemPaged[Dict[str, Any]]'
+  signature: 'query_user_defined_functions(query: str, *, parameters: List[Dict[str,
+    Any]] | None = None, max_item_count: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:str>
   keywordOnlyParameters:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
@@ -375,8 +383,8 @@ methods:
 
     If the stored procedure does not already exist in the container, an exception
     is raised.'
-  signature: 'async replace_stored_procedure(sproc: str | Dict[str, Any], body: Dict[str,
-    Any], **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async replace_stored_procedure(sproc: str | Mapping[str, Any], body:
+    Dict[str, Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: sproc
     description: The ID (name) or dict representing stored procedure to be replaced.
@@ -384,7 +392,7 @@ methods:
     types:
     - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: body
-    description: A dict-like object representing the stored procedure to replace.
+    description: A dict representing the stored procedure to replace.
     isRequired: true
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
@@ -394,7 +402,7 @@ methods:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: 'If the replace failed or the stored
+    description: 'If the replace operation failed or the stored
 
       procedure with given id does not exist.'
 - uid: azure.cosmos.aio.ScriptsProxy.replace_trigger
@@ -403,7 +411,7 @@ methods:
 
 
     If the trigger does not already exist in the container, an exception is raised.'
-  signature: 'async replace_trigger(trigger: str | Dict[str, Any], body: Dict[str,
+  signature: 'async replace_trigger(trigger: str | Mapping[str, Any], body: Dict[str,
     Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: trigger
@@ -422,9 +430,9 @@ methods:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: 'If the replace failed or the trigger with given
+    description: 'If the replace operation failed or the trigger with
 
-      id does not exist.'
+      given id does not exist.'
 - uid: azure.cosmos.aio.ScriptsProxy.replace_user_defined_function
   name: replace_user_defined_function
   summary: 'Replace a specified user-defined function in the container.
@@ -432,7 +440,7 @@ methods:
 
     If the user-defined function does not already exist in the container, an exception
     is raised.'
-  signature: 'async replace_user_defined_function(udf: str | Dict[str, Any], body:
+  signature: 'async replace_user_defined_function(udf: str | Mapping[str, Any], body:
     Dict[str, Any], **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: udf
@@ -452,6 +460,6 @@ methods:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
-    description: 'If the replace failed or the user-defined function
+    description: 'If the replace operation failed or the user-defined
 
-      with the given id does not exist.'
+      function with the given id does not exist.'
