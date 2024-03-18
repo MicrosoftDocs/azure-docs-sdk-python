@@ -1,7 +1,7 @@
 ---
 title: Azure Management Partner SDK for Python
 description: Reference for Azure Management Partner SDK for Python
-ms.date: 03/15/2024
+ms.date: 03/18/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: managementpartner
