@@ -1,7 +1,7 @@
 ---
 title: Azure Data Share SDK for Python
 description: Reference for Azure Data Share SDK for Python
-ms.date: 03/18/2024
+ms.date: 03/19/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: datashare

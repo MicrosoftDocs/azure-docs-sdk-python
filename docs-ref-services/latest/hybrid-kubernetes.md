@@ -1,7 +1,7 @@
 ---
 title: Azure Hybrid Kubernetes SDK for Python
 description: Reference for Azure Hybrid Kubernetes SDK for Python
-ms.date: 03/18/2024
+ms.date: 03/19/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridkubernetes
