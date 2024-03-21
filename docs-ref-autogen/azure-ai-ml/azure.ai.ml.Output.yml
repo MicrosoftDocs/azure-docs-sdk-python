@@ -5,9 +5,82 @@ fullName: azure.ai.ml.Output
 module: azure.ai.ml
 inheritances:
 - azure.ai.ml.entities._inputs_outputs.base._InputOutputBase
+summary: Define an output.
 constructor:
-  syntax: 'Output(type: Literal[''uri_folder''] = ''uri_folder'', path=None, mode=None,
-    description=None)'
+  syntax: 'Output(*, type: str, path: str | None = None, mode: str | None = None,
+    description: str | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
+  - name: type
+    description: 'The type of the data output. Accepted values are ''uri_folder'',
+      ''uri_file'', ''mltable'',
+
+      ''mlflow_model'', ''custom_model'', and user-defined types. Defaults to ''uri_folder''.'
+    defaultValue: uri_folder
+    types:
+    - <xref:str>
+  - name: path
+    description: The remote path where the output should be stored.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: mode
+    description: 'The access mode of the data output. Accepted values are
+
+      * ''rw_mount'': Read-write mount the data
+
+      * ''upload'': Upload the data from the compute target
+
+      * ''direct'': Pass in the URI as a string'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: description
+    description: The description of the output.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: name
+    description: 'The name to be used to register the output as a Data or Model asset.
+      A name can be set without
+
+      setting a version.'
+    types:
+    - <xref:str>
+  - name: version
+    description: 'The version used to register the output as a Data or Model asset.
+      A version can be set only
+
+      when name is set.'
+    types:
+    - <xref:str>
+  - name: is_control
+    description: Determine if the output is a control output.
+    types:
+    - <xref:bool>
+  - name: early_available
+    description: Mark the output for early node orchestration.
+    types:
+    - <xref:bool>
+  - name: intellectual_property
+    description: 'Intellectual property associated with the output.
+
+      It can be an instance of *IntellectualProperty* or a dictionary that will be
+      used to create an instance.'
+    types:
+    - <xref:typing.Union>[ <xref:azure.ai.ml.entities.IntellectualProperty>, <xref:dict>]
+examples:
+- "Creating a CommandJob with a folder output.<!--[!code-python[Main](les\\ml_samples_misc.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.14.0\\\
+  \\samples\\\\ml_samples_misc.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.ai.ml import Input, Output\n   from\
+  \ azure.ai.ml.entities import CommandJob, CommandJobLimits\n\n   command_job = CommandJob(\n\
+  \       code=\"./src\",\n       command=\"python train.py --ss {search_space.ss}\"\
+  ,\n       inputs={\n           \"input1\": Input(path=\"trial.csv\", mode=\"ro_mount\"\
+  , description=\"trial input data\"),\n           \"input_2\": Input(\n         \
+  \      path=\"azureml:list_data_v2_test:2\", type=\"uri_folder\", description=\"\
+  registered data asset\"\n           ),\n       },\n       outputs={\"default\":\
+  \ Output(path=\"./foo\")},\n       compute=\"trial\",\n       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\"\
+  ,\n       limits=CommandJobLimits(timeout=120),\n   )\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.Output.get
   name: get

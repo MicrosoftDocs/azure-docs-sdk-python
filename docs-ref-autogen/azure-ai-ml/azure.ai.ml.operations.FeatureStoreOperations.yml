@@ -15,12 +15,15 @@ summary: 'FeatureStoreOperations.
   attaches it as an attribute.'
 constructor:
   syntax: 'FeatureStoreOperations(operation_scope: OperationScope, service_client:
-    AzureMachineLearningServices, all_operations: OperationsContainer, credentials:
+    AzureMachineLearningWorkspaces, all_operations: OperationsContainer, credentials:
     TokenCredential | None = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    isRequired: true
   - name: service_client
+    isRequired: true
   - name: all_operations
+    isRequired: true
   - name: credentials
     defaultValue: None
 methods:
@@ -46,13 +49,14 @@ methods:
   name: begin_delete
   summary: Delete a FeatureStore.
   signature: 'begin_delete(name: str, *, delete_dependent_resources: bool = False,
-    **kwargs: Dict) -> LROPoller[None]'
+    **kwargs: Any) -> LROPoller[None]'
   parameters:
   - name: name
     description: Name of the FeatureStore
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: delete_dependent_resources
     description: 'Whether to delete resources associated with the feature store,
 
@@ -80,8 +84,8 @@ methods:
 
     as true prepares the feature store managed network for supporting Spark.'
   signature: 'begin_provision_network(*, feature_store_name: str | None = None, include_spark:
-    bool | None = False, **kwargs) -> LROPoller[ManagedNetworkProvisionStatus]'
-  parameters:
+    bool | None = False, **kwargs: Any) -> LROPoller[ManagedNetworkProvisionStatus]'
+  keywordOnlyParameters:
   - name: feature_store_name
     description: Name of the feature store.
     types:
@@ -95,13 +99,14 @@ methods:
   summary: "Update friendly name, description, online store connection, offline store\
     \ connection, materialization\n   identities or tags of a feature store."
   signature: 'begin_update(feature_store: FeatureStore, *, grant_materialization_permissions:
-    bool = True, update_dependent_resources: bool = False, **kwargs: Dict) -> LROPoller[FeatureStore]'
+    bool = True, update_dependent_resources: bool = False, **kwargs: Any) -> LROPoller[FeatureStore]'
   parameters:
   - name: feature_store
     description: FeatureStore resource.
     isRequired: true
     types:
     - <xref:azure.ai.ml.entities.FeatureStore>
+  keywordOnlyParameters:
   - name: update_dependent_resources
     description: 'gives your consent to update the feature store dependent resources.
 
@@ -134,7 +139,7 @@ methods:
 - uid: azure.ai.ml.operations.FeatureStoreOperations.get
   name: get
   summary: Get a feature store by name.
-  signature: 'get(name: str, **kwargs: Dict) -> FeatureStore'
+  signature: 'get(name: str, **kwargs: Any) -> FeatureStore'
   parameters:
   - name: name
     description: Name of the feature store.
@@ -145,13 +150,18 @@ methods:
     description: The feature store with the provided name.
     types:
     - <xref:azure.ai.ml.entities.FeatureStore>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: 'Raised if the corresponding name and version cannot be
+
+      retrieved from the service.'
 - uid: azure.ai.ml.operations.FeatureStoreOperations.list
   name: list
   summary: 'List all feature stores that the user has access to in the current
 
     resource group or subscription.'
   signature: 'list(*, scope: str = ''resource_group'', **kwargs: Dict) -> Iterable[FeatureStore]'
-  parameters:
+  keywordOnlyParameters:
   - name: scope
     description: scope of the listing, "resource_group" or "subscription", defaults
       to "resource_group"

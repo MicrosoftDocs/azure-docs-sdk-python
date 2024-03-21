@@ -10,18 +10,31 @@ summary: 'Base class for sweep node.
 
 
   This class should not be instantiated directly. Instead, it should be created via
-  the builder function: sweep.'
+  the builder function: sweep.
+
+
+  ]
+
+
+  ]]
+
+
+  ]]
+
+
+  ]'
 constructor:
   syntax: 'Sweep(*, trial: CommandComponent | str | None = None, compute: str | None
     = None, limits: SweepJobLimits | None = None, sampling_algorithm: str | SamplingAlgorithm
     | None = None, objective: Objective | None = None, early_termination: BanditPolicy
-    | MedianStoppingPolicy | TruncationSelectionPolicy | None = None, search_space:
-    Dict[str, Choice | LogNormal | LogUniform | Normal | QLogNormal | QLogUniform
-    | QNormal | QUniform | Randint | Uniform] | None = None, inputs: Dict[str, int
-    | str | float | bool | Input] | None = None, outputs: Dict[str, str | Output]
-    | None = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration
-    | UserIdentityConfiguration | None = None, queue_settings: QueueSettings | None
-    = None, resources: dict | JobResourceConfiguration | None = None, **kwargs)'
+    | MedianStoppingPolicy | TruncationSelectionPolicy | EarlyTerminationPolicy |
+    str | None = None, search_space: Dict[str, Choice | LogNormal | LogUniform | Normal
+    | QLogNormal | QLogUniform | QNormal | QUniform | Randint | Uniform] | None =
+    None, inputs: Dict[str, Input | str | bool | int | float] | None = None, outputs:
+    Dict[str, str | Output] | None = None, identity: Dict | ManagedIdentityConfiguration
+    | AmlTokenConfiguration | UserIdentityConfiguration | None = None, queue_settings:
+    QueueSettings | None = None, resources: dict | JobResourceConfiguration | None
+    = None, **kwargs: Any)'
   parameters:
   - name: trial
     description: The ID or instance of the command component or job to be run for
@@ -57,24 +70,12 @@ constructor:
   - name: early_termination_policy
     description: The early termination policy of the sweep node.
     isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:azure.mgmt.machinelearningservices.models.BanditPolicy>,
-      <xref:azure.mgmt.machinelearningservices.models.MedianStoppingPolicy>, <xref:azure.mgmt.machinelearningservices.models.TruncationSelectionPolicy>]
   - name: search_space
     description: The hyperparameter search space to run trials in.
     isRequired: true
-    types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.entities.Choice>,
-      <xref:azure.ai.ml.entities.LogNormal>, <xref:azure.ai.ml.entities.LogUniform>,
-      <xref:azure.ai.ml.entities.Normal>, <xref:azure.ai.ml.entities.QLogNormal>,
-      <xref:azure.ai.ml.entities.QLogUniform>, <xref:azure.ai.ml.entities.QNormal>,
-      <xref:azure.ai.ml.entities.QUniform>, <xref:azure.ai.ml.entities.Randint>, <xref:azure.ai.ml.entities.Uniform>]]
   - name: inputs
     description: Mapping of input data bindings used in the job.
     isRequired: true
-    types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:azure.ai.ml.Input>,
-      <xref:str>, <xref:bool>, <xref:int>, <xref:float>]]
   - name: outputs
     description: Mapping of output data bindings used in the job.
     isRequired: true
@@ -83,9 +84,6 @@ constructor:
   - name: identity
     description: The identity that the training job will use while running on compute.
     isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration>, <xref:azure.ai.ml.AmlTokenConfiguration>,
-      <xref:azure.ai.ml.UserIdentityConfiguration>]
   - name: queue_settings
     description: The queue settings for the job.
     isRequired: true
@@ -96,6 +94,31 @@ constructor:
     isRequired: true
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>, <xref:azure.ai.ml.entities.ResourceConfiguration>]]
+  keywordOnlyParameters:
+  - name: trial
+    isRequired: true
+  - name: compute
+    isRequired: true
+  - name: limits
+    isRequired: true
+  - name: sampling_algorithm
+    isRequired: true
+  - name: objective
+    isRequired: true
+  - name: early_termination
+    isRequired: true
+  - name: search_space
+    isRequired: true
+  - name: inputs
+    isRequired: true
+  - name: outputs
+    isRequired: true
+  - name: identity
+    isRequired: true
+  - name: queue_settings
+    isRequired: true
+  - name: resources
+    isRequired: true
 methods:
 - uid: azure.ai.ml.entities.Sweep.clear
   name: clear
@@ -106,7 +129,7 @@ methods:
 - uid: azure.ai.ml.entities.Sweep.dump
   name: dump
   summary: Dumps the job content into a file in YAML format.
-  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  signature: 'dump(dest: str | PathLike | IO, **kwargs: Any) -> None'
   parameters:
   - name: dest
     description: 'The local path or file stream to write the YAML content to.
@@ -117,6 +140,7 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  keywordOnlyParameters:
   - name: kwargs
     description: Additional arguments to pass to the YAML serializer.
     types:
@@ -130,18 +154,19 @@ methods:
   name: fromkeys
   summary: Create a new dictionary with keys from iterable and values set to value.
   signature: fromkeys(value=None, /)
-  parameters:
-  - name: type
-    isRequired: true
+  positionalOnlyParameters:
   - name: iterable
     isRequired: true
   - name: value
     defaultValue: None
+  parameters:
+  - name: type
+    isRequired: true
 - uid: azure.ai.ml.entities.Sweep.get
   name: get
   summary: Return the value for key if key is in the dictionary, else default.
   signature: get(key, default=None, /)
-  parameters:
+  positionalOnlyParameters:
   - name: key
     isRequired: true
   - name: default
@@ -174,7 +199,7 @@ methods:
   signature: 'set_limits(*, max_concurrent_trials: int | None = None, max_total_trials:
     int | None = None, timeout: int | None = None, trial_timeout: int | None = None)
     -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: max_concurrent_trials
     description: maximum concurrent trial number.
     types:
@@ -193,29 +218,41 @@ methods:
     - <xref:int>
 - uid: azure.ai.ml.entities.Sweep.set_objective
   name: set_objective
-  summary: 'Set the sweep object.. Leave parameters as None if you don''t want to
-    update corresponding values.
-
-
-    "minimize", "maximize".
-
-    :type goal: str
-
-    :keyword primary_metric: Name of the metric to optimize.
-
-    :paramtype primary_metric: str'
+  summary: Set the sweep object.. Leave parameters as None if you don't want to update
+    corresponding values.
   signature: 'set_objective(*, goal: str | None = None, primary_metric: str | None
     = None) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: goal
     description: 'Defines supported metric goals for hyperparameter tuning. Acceptable
-      values are:'
+      values are:
+
+      "minimize" and "maximize".'
+    types:
+    - <xref:str>
+  - name: primary_metric
+    description: Name of the metric to optimize.
+    types:
+    - <xref:str>
 - uid: azure.ai.ml.entities.Sweep.set_resources
   name: set_resources
   summary: Set resources for Sweep.
   signature: 'set_resources(*, instance_type: str | List[str] | None = None, instance_count:
     int | None = None, locations: List[str] | None = None, properties: Dict | None
-    = None, docker_args: str | None = None, shm_size: str | None = None)'
+    = None, docker_args: str | None = None, shm_size: str | None = None) -> None'
+  keywordOnlyParameters:
+  - name: instance_type
+    isRequired: true
+  - name: instance_count
+    isRequired: true
+  - name: locations
+    isRequired: true
+  - name: properties
+    isRequired: true
+  - name: docker_args
+    isRequired: true
+  - name: shm_size
+    isRequired: true
 - uid: azure.ai.ml.entities.Sweep.setdefault
   name: setdefault
   summary: 'Insert key with a value of default if key is not in the dictionary.
@@ -223,7 +260,7 @@ methods:
 
     Return the value for key if key is in the dictionary, else default.'
   signature: setdefault(key, default=None, /)
-  parameters:
+  positionalOnlyParameters:
   - name: key
     isRequired: true
   - name: default

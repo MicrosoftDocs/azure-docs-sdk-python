@@ -9,17 +9,22 @@ functions:
   summary: "Create a Parallel object which can be used inside dsl.pipeline as a function\
     \ and can also be created as a\nstandalone parallel job.\n\nFor an example of\
     \ using ParallelRunStep, see the notebook\n[https://aka.ms/parallel-example-notebook](https://aka.ms/parallel-example-notebook)\n\
-    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"force\": false, \"highlight_args\": {}, \"xml:space\"\
-    : \"preserve\", \"language\": \"python\", \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.ai.ml import Input, Output, parallel\n\n   parallel_run = parallel_run_function(\n\
-    \       name=\"batch_score_with_tabular_input\",\n       display_name=\"Batch\
-    \ Score with Tabular Dataset\",\n       description=\"parallel component for batch\
-    \ score\",\n       inputs=dict(\n           job_data_path=Input(\n           \
-    \    type=AssetTypes.MLTABLE,\n               description=\"The data to be split\
-    \ and scored in parallel\",\n           ),\n           score_model=Input(\n  \
-    \             type=AssetTypes.URI_FOLDER, description=\"The model for batch score.\"\
-    \n           ),\n       ),\n       outputs=dict(job_output_path=Output(type=AssetTypes.MLTABLE)),\n\
+    \n> [!NOTE]\n> To use parallel_run_function:\n>\n> \n>\n> Create a <xref:azure.ai.ml.entities._builders.Parallel>\
+    \ object to specify how parallel run is performed,\n>\n> with parameters to control\
+    \ batch size,number of nodes per compute target, and a\n>\n> reference to your\
+    \ custom Python script.\n>\n> \n>\n> Build pipeline with the parallel object as\
+    \ a function. defines inputs and\n>\n> outputs for the step.\n>\n> \n>\n> Sumbit\
+    \ the pipeline to run.\n>\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
+    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"force\": false, \"highlight_args\"\
+    : {}, \"xml:space\": \"preserve\", \"language\": \"python\", \"linenos\": false}\
+    \ -->\n\n````python\n\n   from azure.ai.ml import Input, Output, parallel\n\n\
+    \   parallel_run = parallel_run_function(\n       name=\"batch_score_with_tabular_input\"\
+    ,\n       display_name=\"Batch Score with Tabular Dataset\",\n       description=\"\
+    parallel component for batch score\",\n       inputs=dict(\n           job_data_path=Input(\n\
+    \               type=AssetTypes.MLTABLE,\n               description=\"The data\
+    \ to be split and scored in parallel\",\n           ),\n           score_model=Input(\n\
+    \               type=AssetTypes.URI_FOLDER, description=\"The model for batch\
+    \ score.\"\n           ),\n       ),\n       outputs=dict(job_output_path=Output(type=AssetTypes.MLTABLE)),\n\
     \       input_data=\"${{inputs.job_data_path}}\",\n       max_concurrency_per_instance=2,\
     \  # Optional, default is 1\n       mini_batch_size=\"100\",  # optional\n   \
     \    mini_batch_error_threshold=5,  # Optional, allowed failed count on mini batch\
@@ -44,9 +49,9 @@ functions:
     Dict | None = None, outputs: Dict | None = None, instance_count: int | None =
     None, instance_type: str | None = None, docker_args: str | None = None, shm_size:
     str | None = None, identity: ManagedIdentityConfiguration | AmlTokenConfiguration
-    | UserIdentityConfiguration | None = None, is_deterministic: bool = True, **kwargs)
-    -> Parallel'
-  parameters:
+    | UserIdentityConfiguration | None = None, is_deterministic: bool = True, **kwargs:
+    Any) -> Parallel'
+  keywordOnlyParameters:
   - name: name
     description: Name of the parallel job or component created.
     types:
@@ -223,17 +228,13 @@ functions:
       specify is_deterministic=False if you would like to avoid such reuse behavior,
 
       defaults to True.'
+    defaultValue: 'True'
     types:
     - <xref:bool>
   return:
     description: The parallel node
     types:
     - <xref:azure.ai.ml.entities.Parallel>
-  remarks: "To use parallel_run_function:\n\n* Create a <xref:azure.ai.ml.entities._builders.Parallel>\
-    \ object to specify how parallel run is performed, with parameters to control\
-    \ batch size,number of nodes per compute target, and a reference to your custom\
-    \ Python script. \n\n* Build pipeline with the parallel object as a function.\
-    \ defines inputs and outputs for the step. \n\n* Sumbit the pipeline to run. \n"
 classes:
 - azure.ai.ml.parallel.ParallelJob
 - azure.ai.ml.parallel.RunFunction

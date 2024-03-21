@@ -11,7 +11,7 @@ summary: 'Configuration for AutoML Forecasting Task.
   Initialize a new AutoML Forecasting task.'
 constructor:
   syntax: 'ForecastingJob(*, primary_metric: str | None = None, forecasting_settings:
-    ForecastingSettings | None = None, **kwargs)'
+    ForecastingSettings | None = None, **kwargs: Any)'
   parameters:
   - name: primary_metric
     description: The primary metric to use for model selection.
@@ -28,11 +28,16 @@ constructor:
     isRequired: true
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  keywordOnlyParameters:
+  - name: primary_metric
+    isRequired: true
+  - name: forecasting_settings
+    isRequired: true
 methods:
 - uid: azure.ai.ml.automl.ForecastingJob.dump
   name: dump
   summary: Dumps the job content into a file in YAML format.
-  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  signature: 'dump(dest: str | PathLike | IO, **kwargs: Any) -> None'
   parameters:
   - name: dest
     description: 'The local path or file stream to write the YAML content to.
@@ -43,6 +48,7 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  keywordOnlyParameters:
   - name: kwargs
     description: Additional arguments to pass to the YAML serializer.
     types:
@@ -60,7 +66,7 @@ methods:
     float | None = None, n_cross_validations: str | int | None = None, cv_split_column_names:
     List[str] | None = None, test_data: Input | None = None, test_data_size: float
     | None = None) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: training_data
     description: Training data.
     types:
@@ -105,7 +111,7 @@ methods:
     str | None = None, transformer_params: Dict[str, List[ColumnTransformer]] | None
     = None, mode: str | None = None, enable_dnn_featurization: bool | None = None)
     -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: blocked_transformers
     description: A list of transformer names to be blocked during featurization, defaults
       to None
@@ -159,7 +165,7 @@ methods:
     None, short_series_handling_config: str | None = None, frequency: str | None =
     None, target_aggregate_function: str | None = None, cv_step_size: int | None =
     None, features_unknown_at_forecast_time: str | List[str] | None = None) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: time_column_name
     description: 'The name of the time column. This parameter is required when forecasting
       to specify the datetime
@@ -194,7 +200,7 @@ methods:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.List>[<xref:str>]]]
   - name: target_lags
     description: "The number of past periods to lag from the target column. By default\
-      \ the lags are turned off.\n\nWhen forecasting, this parameter represents the\
+      \ the lags are turned\noff.\n\nWhen forecasting, this parameter represents the\
       \ number of rows to lag the target values based\non the frequency of the data.\
       \ This is represented as a list or single integer. Lag should be used\nwhen\
       \ the relationship between the independent variables and dependent variable\
@@ -230,7 +236,9 @@ methods:
     - <xref:typing.Optional>[<xref:str>]
   - name: target_rolling_window_size
     description: 'The number of past periods used to create a rolling window average
-      of the target column.
+      of the
+
+      target column.
 
 
       When forecasting, this parameter represents *n* historical periods to use to
@@ -275,32 +283,32 @@ methods:
   - name: short_series_handling_config
     description: "The parameter defining how if AutoML should handle short time series.\n\
       \nPossible values: 'auto' (default), 'pad', 'drop' and None.\n\n* **auto** short\
-      \ series will be padded if there are no long series, \n\notherwise short series\
-      \ will be dropped.\n* **pad** all the short series will be padded.\n* **drop**\
-      \  all the short series will be dropped\".\n* **None** the short series will\
-      \ not be modified.\n\nIf set to 'pad', the table will be padded with the zeroes\
-      \ and\nempty values for the regressors and random values for target with the\
-      \ mean\nequal to target value median for given time series id. If median is\
-      \ more or equal\nto zero, the minimal padded value will be clipped by zero:\n\
-      Input:\n\n:::row:::\n:::column:::\n**Date**\n:::column-end:::\n:::column:::\n\
-      **numeric_value**\n:::column-end:::\n:::column:::\n**string**\n:::column-end:::\n\
-      :::column:::\n**target**\n:::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\n\
-      2020-01-01\n:::column-end:::\n:::column:::\n23\n:::column-end:::\n:::column:::\n\
-      green\n:::column-end:::\n:::column:::\n55\n:::column-end:::\n:::row-end:::\n\
-      \nOutput assuming minimal number of values is four:\n\n:::row:::\n:::column:::\n\
-      **Date**\n:::column-end:::\n:::column:::\n**numeric_value**\n:::column-end:::\n\
-      :::column:::\n**string**\n:::column-end:::\n:::column:::\n**target**\n:::column-end:::\n\
-      :::row-end:::\n:::row:::\n:::column:::\n2019-12-29\n:::column-end:::\n:::column:::\n\
-      0\n:::column-end:::\n:::column:::\nNA\n:::column-end:::\n:::column:::\n55.1\n\
-      :::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\n2019-12-30\n:::column-end:::\n\
-      :::column:::\n0\n:::column-end:::\n:::column:::\nNA\n:::column-end:::\n:::column:::\n\
-      55.6\n:::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\n2019-12-31\n\
+      \ series will be padded if there are no long series,\n\n     otherwise short\
+      \ series will be dropped.\n\n* **pad** all the short series will be padded.\
+      \ \n\n* **drop**  all the short series will be dropped\". \n\n* **None** the\
+      \ short series will not be modified. \n\nIf set to 'pad', the table will be\
+      \ padded with the zeroes and\nempty values for the regressors and random values\
+      \ for target with the mean\nequal to target value median for given time series\
+      \ id. If median is more or equal\nto zero, the minimal padded value will be\
+      \ clipped by zero:\nInput:\n\n:::row:::\n:::column:::\n**Date**\n:::column-end:::\n\
+      :::column:::\n**numeric_value**\n:::column-end:::\n:::column:::\n**string**\n\
+      :::column-end:::\n:::column:::\n**target**\n:::column-end:::\n:::row-end:::\n\
+      :::row:::\n:::column:::\n2020-01-01\n:::column-end:::\n:::column:::\n23\n:::column-end:::\n\
+      :::column:::\ngreen\n:::column-end:::\n:::column:::\n55\n:::column-end:::\n\
+      :::row-end:::\n\nOutput assuming minimal number of values is four:\n\n:::row:::\n\
+      :::column:::\n**Date**\n:::column-end:::\n:::column:::\n**numeric_value**\n\
+      :::column-end:::\n:::column:::\n**string**\n:::column-end:::\n:::column:::\n\
+      **target**\n:::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\n2019-12-29\n\
       :::column-end:::\n:::column:::\n0\n:::column-end:::\n:::column:::\nNA\n:::column-end:::\n\
-      :::column:::\n54.5\n:::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\n\
-      2020-01-01\n:::column-end:::\n:::column:::\n23\n:::column-end:::\n:::column:::\n\
-      green\n:::column-end:::\n:::column:::\n55\n:::column-end:::\n:::row-end:::\n\
-      \n**Note:** We have two parameters short_series_handling_configuration and\n\
-      legacy short_series_handling. When both parameters are set we are\nsynchronize\
+      :::column:::\n55.1\n:::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\n\
+      2019-12-30\n:::column-end:::\n:::column:::\n0\n:::column-end:::\n:::column:::\n\
+      NA\n:::column-end:::\n:::column:::\n55.6\n:::column-end:::\n:::row-end:::\n\
+      :::row:::\n:::column:::\n2019-12-31\n:::column-end:::\n:::column:::\n0\n:::column-end:::\n\
+      :::column:::\nNA\n:::column-end:::\n:::column:::\n54.5\n:::column-end:::\n:::row-end:::\n\
+      :::row:::\n:::column:::\n2020-01-01\n:::column-end:::\n:::column:::\n23\n:::column-end:::\n\
+      :::column:::\ngreen\n:::column-end:::\n:::column:::\n55\n:::column-end:::\n\
+      :::row-end:::\n\n**Note:** We have two parameters short_series_handling_configuration\
+      \ and\nlegacy short_series_handling. When both parameters are set we are\nsynchronize\
       \ them as shown in the table below (short_series_handling_configuration and\n\
       short_series_handling for brevity are marked as handling_configuration and handling\n\
       respectively).\n\n:::row:::\n:::column:::\n**handling**\n:::column-end:::\n\
@@ -349,54 +357,53 @@ methods:
 
       [https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects)'
   - name: target_aggregate_function
-    description: "The function to be used to aggregate the time series target\n  \
-      \ column to conform to a user specified frequency. If the\n   target_aggregation_function\
-      \ is set, but the freq parameter\n   is not set, the error is raised. The possible\
-      \ target\n   aggregation functions are: \"sum\", \"max\", \"min\" and \"mean\"\
-      .\n\n* The target column values are aggregated based on the specified operation.\
-      \ Typically, sum is appropriate for most scenarios. \n\n* Numerical predictor\
+    description: "The function to be used to aggregate the time series target\ncolumn\
+      \ to conform to a user specified frequency. If the target_aggregation_function\
+      \ is set,\nbut the freq parameter is not set, the error is raised. The possible\
+      \ target aggregation\nfunctions are: \"sum\", \"max\", \"min\" and \"mean\"\
+      .\n\n   * The target column values are aggregated based on the specified operation.\
+      \ Typically, sum is appropriate for most scenarios. \n\n   * Numerical predictor\
       \ columns in your data are aggregated by sum, mean, minimum value, and maximum\
       \ value. As a result, automated ML generates new columns suffixed with the aggregation\
-      \ function name and applies the selected aggregate operation. \n\n* For categorical\
+      \ function name and applies the selected aggregate operation. \n\n   * For categorical\
       \ predictor columns, the data is aggregated by mode, the most prominent category\
-      \ in the window. \n\n* Date predictor columns are aggregated by minimum value,\
-      \ maximum value and mode. \n\n:::row:::\n:::column:::\n**freq**\n:::column-end:::\n\
-      :::column:::\n**target_aggregation_function**\n:::column-end:::\n:::column:::\n\
-      **Data regularityfixing mechanism**\n:::column-end:::\n:::row-end:::\n:::row:::\n\
-      :::column:::\nNone (Default)\n:::column-end:::\n:::column:::\nNone (Default)\n\
-      :::column-end:::\n:::column:::\nThe aggregationis not applied.If the validfrequency\
-      \ cannot bedeterminedthe errorwill be raised.\n:::column-end:::\n:::row-end:::\n\
-      :::row:::\n:::column:::\nSome Value\n:::column-end:::\n:::column:::\nNone (Default)\n\
-      :::column-end:::\n:::column:::\nThe aggregationis not applied.If the numberof\
-      \ data pointscompliant togiven frequencygrid isless then 90%these pointswill\
-      \ beremoved,otherwisethe error willbe raised.\n:::column-end:::\n:::row-end:::\n\
-      :::row:::\n:::column:::\nNone (Default)\n:::column-end:::\n:::column:::\nAggregation\
-      \ function\n:::column-end:::\n:::column:::\nThe error aboutmissingfrequencyparameter\
-      \ israised.\n:::column-end:::\n:::row-end:::\n:::row:::\n:::column:::\nSome\
-      \ Value\n:::column-end:::\n:::column:::\nAggregation function\n:::column-end:::\n\
-      :::column:::\nAggregate tofrequency usingprovidedaggregationfunction.\n:::column-end:::\n\
-      :::row-end:::"
+      \ in the window. \n\n   * Date predictor columns are aggregated by minimum value,\
+      \ maximum value and mode. \n\n   :::row:::\n   :::column:::\n   **freq**\n \
+      \  :::column-end:::\n   :::column:::\n   **target_aggregation_function**\n \
+      \  :::column-end:::\n   :::column:::\n   **Data regularityfixing mechanism**\n\
+      \   :::column-end:::\n   :::row-end:::\n   :::row:::\n   :::column:::\n   None\
+      \ (Default)\n   :::column-end:::\n   :::column:::\n   None (Default)\n   :::column-end:::\n\
+      \   :::column:::\n   The aggregationis not applied.If the validfrequency cannot\
+      \ bedeterminedthe errorwill be raised.\n   :::column-end:::\n   :::row-end:::\n\
+      \   :::row:::\n   :::column:::\n   Some Value\n   :::column-end:::\n   :::column:::\n\
+      \   None (Default)\n   :::column-end:::\n   :::column:::\n   The aggregationis\
+      \ not applied.If the numberof data pointscompliant togiven frequencygrid isless\
+      \ then 90%these pointswill beremoved,otherwisethe error willbe raised.\n   :::column-end:::\n\
+      \   :::row-end:::\n   :::row:::\n   :::column:::\n   None (Default)\n   :::column-end:::\n\
+      \   :::column:::\n   Aggregation function\n   :::column-end:::\n   :::column:::\n\
+      \   The error aboutmissingfrequencyparameter israised.\n   :::column-end:::\n\
+      \   :::row-end:::\n   :::row:::\n   :::column:::\n   Some Value\n   :::column-end:::\n\
+      \   :::column:::\n   Aggregation function\n   :::column-end:::\n   :::column:::\n\
+      \   Aggregate tofrequency usingprovidedaggregationfunction.\n   :::column-end:::\n\
+      \   :::row-end:::"
   - name: cv_step_size
     description: 'Number of periods between the origin_time of one CV fold and the
-      next fold. For
+      next fold.
 
-      example, if *n_step* = 3 for daily data, the origin time for each fold will
-      be
-
-      three days apart.'
+      For example, if *n_step* = 3 for daily data, the origin time for each fold will
+      be three days apart.'
     types:
     - <xref:typing.Optional>[<xref:int>]
   - name: features_unknown_at_forecast_time
-    description: 'The feature columns that are available for training but unknown
-      at the time of forecast/inference.
+    description: 'The feature columns that are available for training but
 
-      If features_unknown_at_forecast_time is set to an empty list, it is assumed
-      that
+      unknown at the time of forecast/inference. If features_unknown_at_forecast_time
+      is set to an empty
 
-      all the feature columns in the dataset are known at inference time. If this
-      parameter is not set
+      list, it is assumed that all the feature columns in the dataset are known at
+      inference time. If this
 
-      the support for future features is not enabled.'
+      parameter is not set the support for future features is not enabled.'
     types:
     - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.List>[<xref:str>]]]
 - uid: azure.ai.ml.automl.ForecastingJob.set_limits
@@ -407,7 +414,7 @@ methods:
     int | None = None, max_nodes: int | None = None, max_trials: int | None = None,
     timeout_minutes: int | None = None, trial_timeout_minutes: int | None = None)
     -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: enable_early_termination
     description: "Whether to enable early termination if the score is not improving\
       \ in the\nshort term, defaults to None.\n\nEarly stopping logic:\n\n* No early\
@@ -436,16 +443,16 @@ methods:
   - name: max_concurrent_trials
     description: "This is the maximum number of iterations that would be executed\
       \ in parallel.\nThe default value is 1.\n\n* AmlCompute clusters support one\
-      \ iteration running per node. \n\nFor multiple AutoML experiment parent runs\
-      \ executed in parallel on a single AmlCompute cluster, the\nsum of the `max_concurrent_trials`\
-      \ values for all experiments should be less\nthan or equal to the maximum number\
-      \ of nodes. Otherwise, runs will be queued until nodes are available.\n\n* DSVM\
-      \ supports multiple iterations per node. `max_concurrent_trials` should \n\n\
-      be less than or equal to the number of cores on the DSVM. For multiple experiments\n\
-      run in parallel on a single DSVM, the sum of the `max_concurrent_trials` values\
-      \ for all\nexperiments should be less than or equal to the maximum number of\
-      \ nodes.\n\n* Databricks - `max_concurrent_trials` should be less than or equal\
-      \ to the number of \n\nworker nodes on Databricks.\n\n`max_concurrent_trials`\
+      \ iteration running per node. For multiple AutoML experiment parent runs\n\n\
+      \     executed in parallel on a single AmlCompute cluster, the sum of the `max_concurrent_trials`\
+      \ values\n     for all experiments should be less than or equal to the maximum\
+      \ number of nodes. Otherwise, runs\n     will be queued until nodes are available.\n\
+      \n* DSVM supports multiple iterations per node. `max_concurrent_trials` should\n\
+      \n     be less than or equal to the number of cores on the DSVM. For multiple\
+      \ experiments\n     run in parallel on a single DSVM, the sum of the `max_concurrent_trials`\
+      \ values for all\n     experiments should be less than or equal to the maximum\
+      \ number of nodes.\n\n* Databricks - `max_concurrent_trials` should be less\
+      \ than or equal to the number of\n\n     worker nodes on Databricks.\n\n`max_concurrent_trials`\
       \ does not apply to local runs. Formerly, this parameter\nwas named `concurrent_iterations`."
     types:
     - <xref:typing.Optional>[<xref:int>]
@@ -501,7 +508,7 @@ methods:
     StackEnsembleSettings | None = None, ensemble_model_download_timeout: int | None
     = None, allowed_training_algorithms: List[str] | None = None, blocked_training_algorithms:
     List[str] | None = None, training_mode: str | TrainingMode | None = None) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: enable_onnx_compatible_models
     description: 'Whether to enable or disable enforcing the ONNX-compatible models.
 

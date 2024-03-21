@@ -15,14 +15,14 @@ constructor:
   syntax: 'Command(*, component: str | CommandComponent, compute: str | None = None,
     inputs: Dict[str, Input | str | bool | int | float | Enum] | None = None, outputs:
     Dict[str, str | Output] | None = None, limits: CommandJobLimits | None = None,
-    identity: ManagedIdentityConfiguration | AmlTokenConfiguration | UserIdentityConfiguration
+    identity: Dict | ManagedIdentityConfiguration | AmlTokenConfiguration | UserIdentityConfiguration
     | None = None, distribution: Dict | MpiDistribution | TensorFlowDistribution |
-    PyTorchDistribution | RayDistribution | None = None, environment: Environment
-    | str | None = None, environment_variables: Dict | None = None, resources: JobResourceConfiguration
-    | None = None, services: Dict[str, JobService | JupyterLabJobService | SshJobService
-    | TensorBoardJobService | VsCodeJobService] | None = None, queue_settings: QueueSettings
-    | None = None, **kwargs)'
-  parameters:
+    PyTorchDistribution | RayDistribution | DistributionConfiguration | None = None,
+    environment: Environment | str | None = None, environment_variables: Dict | None
+    = None, resources: JobResourceConfiguration | None = None, services: Dict[str,
+    JobService | JupyterLabJobService | SshJobService | TensorBoardJobService | VsCodeJobService]
+    | None = None, queue_settings: QueueSettings | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: component
     description: The ID or instance of the command component or job to be run for
       the step.
@@ -97,7 +97,7 @@ methods:
 - uid: azure.ai.ml.entities.Command.dump
   name: dump
   summary: Dumps the job content into a file in YAML format.
-  signature: 'dump(dest: str | PathLike | IO, **kwargs) -> None'
+  signature: 'dump(dest: str | PathLike | IO, **kwargs: Any) -> None'
   parameters:
   - name: dest
     description: 'The local path or file stream to write the YAML content to.
@@ -108,6 +108,7 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  keywordOnlyParameters:
   - name: kwargs
     description: Additional arguments to pass to the YAML serializer.
     types:
@@ -121,18 +122,19 @@ methods:
   name: fromkeys
   summary: Create a new dictionary with keys from iterable and values set to value.
   signature: fromkeys(value=None, /)
-  parameters:
-  - name: type
-    isRequired: true
+  positionalOnlyParameters:
   - name: iterable
     isRequired: true
   - name: value
     defaultValue: None
+  parameters:
+  - name: type
+    isRequired: true
 - uid: azure.ai.ml.entities.Command.get
   name: get
   summary: Return the value for key if key is in the dictionary, else default.
   signature: get(key, default=None, /)
-  parameters:
+  positionalOnlyParameters:
   - name: key
     isRequired: true
   - name: default
@@ -161,8 +163,8 @@ methods:
 - uid: azure.ai.ml.entities.Command.set_limits
   name: set_limits
   summary: Set limits for Command.
-  signature: 'set_limits(*, timeout: int, **kwargs) -> None'
-  parameters:
+  signature: 'set_limits(*, timeout: int, **kwargs: Any) -> None'
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout for the job in seconds.
     types:
@@ -172,7 +174,7 @@ methods:
     ml_samples_command_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.14.0\\\\samples\\\\ml_samples_command_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
@@ -188,7 +190,7 @@ methods:
   summary: Set QueueSettings for the job.
   signature: 'set_queue_settings(*, job_tier: str | None = None, priority: str | None
     = None) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: job_tier
     description: The job tier. Accepted values are "Spot", "Basic", "Standard", or
       "Premium".
@@ -203,7 +205,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    10\\\\azure-ai-ml-1.14.0\\\\samples\\\\ml_samples_command_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
@@ -219,16 +221,16 @@ methods:
   summary: Set resources for Command.
   signature: 'set_resources(*, instance_type: str | List[str] | None = None, instance_count:
     int | None = None, locations: List[str] | None = None, properties: Dict | None
-    = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs)
-    -> None'
-  parameters:
+    = None, docker_args: str | None = None, shm_size: str | None = None, **kwargs:
+    Any) -> None'
+  keywordOnlyParameters:
   - name: instance_type
     description: 'The type of compute instance to run the job on. If not specified,
       the job will run on
 
       the default compute target.'
     types:
-    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:list>[<xref:str>]]]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.List>[<xref:str>]]]
   - name: instance_count
     description: 'The number of instances to run the job on. If not specified, the
       job will run on a
@@ -242,7 +244,7 @@ methods:
 
       default compute target.'
     types:
-    - <xref:typing.Optional>[<xref:list>[<xref:str>]]
+    - <xref:typing.Optional>[<xref:typing.List>[<xref:str>]]
   - name: properties
     description: The properties of the job.
     types:
@@ -266,7 +268,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    10\\\\azure-ai-ml-1.14.0\\\\samples\\\\ml_samples_command_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import Input, Output, command\n\n   command_node = command(\n\
@@ -285,7 +287,7 @@ methods:
 
     Return the value for key if key is in the dictionary, else default.'
   signature: setdefault(key, default=None, /)
-  parameters:
+  positionalOnlyParameters:
   - name: key
     isRequired: true
   - name: default
@@ -302,13 +304,13 @@ methods:
   signature: 'sweep(*, primary_metric: str, goal: str, sampling_algorithm: str = ''random'',
     compute: str | None = None, max_concurrent_trials: int | None = None, max_total_trials:
     int | None = None, timeout: int | None = None, trial_timeout: int | None = None,
-    early_termination_policy: EarlyTerminationPolicy | str | None = None, search_space:
+    early_termination_policy: str | EarlyTerminationPolicy | None = None, search_space:
     Dict[str, Choice | LogNormal | LogUniform | Normal | QLogNormal | QLogUniform
     | QNormal | QUniform | Randint | Uniform] | None = None, identity: ManagedIdentityConfiguration
     | AmlTokenConfiguration | UserIdentityConfiguration | None = None, queue_settings:
     QueueSettings | None = None, job_tier: str | None = None, priority: str | None
     = None) -> Sweep'
-  parameters:
+  keywordOnlyParameters:
   - name: primary_metric
     description: 'The primary metric of the sweep objective - e.g. AUC (Area Under
       the Curve).
@@ -325,6 +327,7 @@ methods:
     description: 'The sampling algorithm to use inside the search space.
 
       Acceptable values are "random", "grid", or "bayesian". Defaults to "random".'
+    defaultValue: random
     types:
     - <xref:str>
   - name: compute
@@ -384,6 +387,8 @@ methods:
       "medium", and "high".'
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: search_space
+    isRequired: true
   return:
     description: A Sweep node with the component from current Command node as its
       trial component.
@@ -394,7 +399,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.7\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    10\\\\azure-ai-ml-1.13.0\\\\samples\\\\ml_samples_sweep_configurations.py\", \"\
+    10\\\\azure-ai-ml-1.14.0\\\\samples\\\\ml_samples_sweep_configurations.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
     \ import command\n\n   job = command(\n       inputs=dict(kernel=\"linear\", penalty=1.0),\n\
