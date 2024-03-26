@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: sphere
 ---
-# Azure Sphere SDK for Python - preview
-## Packages - preview
+# Azure Sphere SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](sphere-index.md)]
