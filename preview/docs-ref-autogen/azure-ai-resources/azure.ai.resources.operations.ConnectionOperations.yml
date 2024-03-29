@@ -5,17 +5,28 @@ fullName: azure.ai.resources.operations.ConnectionOperations
 module: azure.ai.resources.operations
 inheritances:
 - builtins.object
-summary: 'ConnectionOperations.
+summary: 'Operations class for Connection objects
 
 
   You should not instantiate this class directly. Instead, you should
 
-  create an MLClient instance that instantiates it for you and
+  create an AIClient instance that instantiates it for you and
 
   attaches it as an attribute.'
 constructor:
   syntax: 'ConnectionOperations(*, resource_ml_client: MLClient = None, project_ml_client:
     MLClient = None, **kwargs: Any)'
+  parameters:
+  - name: resource_ml_client
+    description: The Azure Machine Learning client for the AI resource
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.MLClient>
+  - name: project_ml_client
+    description: The Azure Machine Learning client for the project
+    isRequired: true
+    types:
+    - <xref:azure.ai.ml.MLClient>
   keywordOnlyParameters:
   - name: resource_ml_client
     isRequired: true
@@ -57,6 +68,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: scope
+    description: 'The scope of the operation, which determines if the operation should
+      search amongst
+
+      the connections available to the AI Client''s AI Resource for the target connection,
+      or through
+
+      the connections available to the project. Defaults to AI resource-level scoping.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.resources.constants.OperationScope>
 - uid: azure.ai.resources.operations.ConnectionOperations.get
   name: get
   summary: Get a connection by name.
@@ -67,6 +89,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: scope
+    description: 'The scope of the operation, which determines if the operation will
+      search among
+
+      all connections that are available to the AI Client''s AI Resource or just those
+      available to the project.
+
+      Defaults to AI resource-level scoping.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.resources.constants.OperationScope>
   return:
     description: The connection with the provided name.
     types:
@@ -74,15 +107,31 @@ methods:
 - uid: azure.ai.resources.operations.ConnectionOperations.list
   name: list
   summary: List all connection assets in a project.
-  signature: 'list(connection_type: str | None = None, scope: str = ''ai_resource'')
-    -> Iterable[BaseConnection]'
+  signature: 'list(connection_type: str | None = None, scope: str = ''ai_resource'',
+    include_data_connections: bool = False) -> Iterable[BaseConnection]'
   parameters:
   - name: connection_type
     description: If set, return only connections of the specified type.
     isRequired: true
     types:
     - <xref:str>
+  - name: scope
+    description: 'The scope of the operation, which determines if the operation will
+      list all connections
+
+      that are available to the AI Client''s AI Resource or just those available to
+      the project.
+
+      Defaults to AI resource-level scoping.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.resources.constants.OperationScope>
+  - name: include_data_connections
+    description: If true, also return data connections. Defaults to False.
+    isRequired: true
+    types:
+    - <xref:bool>
   return:
-    description: An iterator like instance of connection objects
+    description: An iterator of connection objects
     types:
     - <xref:typing.Iterable>[<xref:Connection>]
