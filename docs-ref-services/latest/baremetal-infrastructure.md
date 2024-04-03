@@ -1,7 +1,7 @@
 ---
 title: Azure BareMetal Infrastructure SDK for Python
 description: Reference for Azure BareMetal Infrastructure SDK for Python
-ms.date: 04/02/2024
+ms.date: 04/03/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: baremetalinfrastructure
