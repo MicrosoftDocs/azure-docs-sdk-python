@@ -1,7 +1,7 @@
 ---
 title: Azure Service Networking SDK for Python
 description: Reference for Azure Service Networking SDK for Python
-ms.date: 04/05/2024
+ms.date: 04/08/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: servicenetworking
