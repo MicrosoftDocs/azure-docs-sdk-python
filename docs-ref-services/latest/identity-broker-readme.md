@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-identity-broker, identity
-ms.date: 11/07/2023
+ms.date: 04/09/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: identity
@@ -61,7 +61,16 @@ from azure.storage.blob import BlobServiceClient
 current_window_handle = win32gui.GetForegroundWindow()
 
 credential = InteractiveBrowserBrokerCredential(parent_window_handle=current_window_handle)
-client = BlobServiceClient(account_url, credential=default_credential)
+client = BlobServiceClient(account_url, credential=credential)
+```
+
+To bypass the account selection dialog and use the default broker account, set the `use_default_broker_account` argument to `True`. The credential will attempt to silently use the default broker account. If using the default account fails, the credential will fall back to interactive authentication.
+
+```python
+credential = InteractiveBrowserBrokerCredential(
+    parent_window_handle=current_window_handle,
+    use_default_broker_account=True
+)
 ```
 
 ## Troubleshooting
@@ -100,6 +109,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [entra_id]: https://learn.microsoft.com/entra/identity/
 [pip]: https://pypi.org/project/pip
 [ref_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity-broker/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.0.0/sdk/identity/azure-identity-broker
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.0.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.1.0/sdk/identity/azure-identity-broker
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.1.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
 
