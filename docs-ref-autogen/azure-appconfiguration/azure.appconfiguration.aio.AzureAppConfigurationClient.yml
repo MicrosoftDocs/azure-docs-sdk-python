@@ -142,7 +142,8 @@ methods:
     \ function\n   deleted_config_setting = await async_client.delete_configuration_setting(\n\
     \       key=\"MyKey\", label=\"MyLabel\"\n   )\n   ````"
   signature: 'async delete_configuration_setting(key: str, label: str | None = None,
-    **kwargs) -> ConfigurationSetting'
+    *, etag: str | None = None, match_condition: MatchConditions = MatchConditions.Unconditionally,
+    **kwargs) -> None | ConfigurationSetting'
   parameters:
   - name: key
     description: key used to identify the ConfigurationSetting
@@ -170,9 +171,9 @@ methods:
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
+  - type: azure.appconfiguration.ResourceReadOnlyError
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ClientAuthenticationError
-  - type: azure.core.exceptions.ResourceReadOnlyError
   - type: azure.core.exceptions.ResourceModifiedError
   - type: azure.core.exceptions.ResourceNotModifiedError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -214,7 +215,7 @@ methods:
     \n   )\n   ````"
   signature: 'async get_configuration_setting(key: str, label: str | None = None,
     etag: str | None = ''*'', match_condition: MatchConditions = MatchConditions.Unconditionally,
-    **kwargs) -> None | ConfigurationSetting'
+    *, accept_datetime: datetime | str | None = None, **kwargs) -> None | ConfigurationSetting'
   parameters:
   - name: key
     description: key of the ConfigurationSetting
@@ -297,7 +298,8 @@ methods:
     Ke*\", accept_datetime=str(accept_datetime)\n   )\n   async for item in filtered_revisions:\n\
     \       pass  # do something\n   ````"
   signature: 'list_revisions(key_filter: str | None = None, label_filter: str | None
-    = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
+    = None, *, accept_datetime: datetime | str | None = None, fields: List[str] |
+    None = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
   parameters:
   - name: key_filter
     description: 'filter results based on their keys. ''*'' can be
@@ -380,6 +382,39 @@ methods:
     - <xref:azure.appconfiguration.ConfigurationSnapshot>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.send_request
+  name: send_request
+  summary: 'Runs a network request using the client''s existing pipeline.
+
+
+    The request URL can be relative to the vault URL. The service API version used
+    for the request is the same as
+
+    the client''s unless otherwise specified. This method does not raise if the response
+    is an error; to raise an
+
+    exception, call *raise_for_status()* on the returned response object. For more
+    information about how to send
+
+    custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
+  signature: 'async send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
+    -> AsyncHttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.set_configuration_setting
   name: set_configuration_setting
   summary: "Add or update a ConfigurationSetting.\nIf the configuration setting identified\
@@ -393,8 +428,8 @@ methods:
     \ \"my set tag value\"}\n   )\n   returned_config_setting = await async_client.set_configuration_setting(config_setting)\n\
     \   ````"
   signature: 'async set_configuration_setting(configuration_setting: ConfigurationSetting,
-    match_condition: MatchConditions = MatchConditions.Unconditionally, **kwargs)
-    -> ConfigurationSetting'
+    match_condition: MatchConditions = MatchConditions.Unconditionally, *, etag: str
+    | None = None, **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: 'the ConfigurationSetting to be added (if not exists)
@@ -410,8 +445,8 @@ methods:
     - <xref:azure.core.MatchConditions>
   keywordOnlyParameters:
   - name: etag
-    description: check if the ConfigurationSetting is changed. Set None to skip checking
-      etag
+    description: check if the ConfigurationSetting is changed.             Will use
+      the value from param configuration_setting if not set.
     types:
     - <xref:str>
   return:
@@ -419,9 +454,9 @@ methods:
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   exceptions:
+  - type: azure.appconfiguration.ResourceReadOnlyError
   - type: azure.core.exceptions.HttpResponseError
   - type: azure.core.exceptions.ClientAuthenticationError
-  - type: azure.core.exceptions.ResourceReadOnlyError
   - type: azure.core.exceptions.ResourceModifiedError
   - type: azure.core.exceptions.ResourceNotModifiedError
   - type: azure.core.exceptions.ResourceNotFoundError
@@ -437,7 +472,8 @@ methods:
     \   read_only_config_setting = await client.set_read_only(config_setting, read_only=False)\n\
     \   ````"
   signature: 'async set_read_only(configuration_setting: ConfigurationSetting, read_only:
-    bool = True, **kwargs) -> ConfigurationSetting'
+    bool = True, *, match_condition: MatchConditions = MatchConditions.Unconditionally,
+    **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
     description: the ConfigurationSetting to be set read only
