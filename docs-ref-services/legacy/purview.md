@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: purview
 ---
-# Azure Purview SDK for Python - preview
-## Packages - preview
+# Azure Purview SDK for Python - legacy
+## Packages - legacy
 [!INCLUDE [packages](purview-index.md)]
