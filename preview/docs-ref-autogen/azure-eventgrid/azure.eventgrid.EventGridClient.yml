@@ -4,36 +4,46 @@ name: EventGridClient
 fullName: azure.eventgrid.EventGridClient
 module: azure.eventgrid
 inheritances:
-- azure.eventgrid._operations._patch.EventGridClientOperationsMixin
+- azure.eventgrid._client.EventGridClient
 summary: Azure Messaging EventGrid Client.
 constructor:
-  syntax: 'EventGridClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
-    **kwargs: Any)'
+  syntax: 'EventGridClient(endpoint: str, credential: AzureKeyCredential | AzureSasCredential
+    | TokenCredential, *, api_version: str | None = None, level: str | ClientLevel
+    = ''Standard'', **kwargs: Any)'
   parameters:
   - name: endpoint
-    description: 'The host name of the namespace, e.g.
-
-      namespaceName1.westus-1.eventgrid.azure.net. Required.'
+    description: The endpoint to the Event Grid resource.
     isRequired: true
     types:
     - <xref:str>
   - name: credential
-    description: 'Credential needed for the client to connect to Azure. Is either
-      a
-
-      AzureKeyCredential type or a TokenCredential type. Required.'
+    description: Credential needed for the client to connect to Azure.
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
     - <xref:azure.core.credentials.TokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    description: 'The API version to use for this operation. Default value is
+    description: 'The API version to use for this operation. Default value for namespaces
+      is
 
-      "2023-10-01-preview". Note that overriding this default value may result in
-      unsupported
+      "2023-10-01-preview". Default value for basic is "2018-01-01". Note that overriding
+      this default value may result in unsupported
 
       behavior.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: level
+    description: 'The level of client to use. Known values are
+
+      *Standard* and *Basic*. Default value is *Standard*.
+
+      *Standard* is used for working with a namespace topic.
+
+      *Basic* is used for working with a basic topic.'
+    defaultValue: Standard
     types:
     - <xref:str>
 methods:
@@ -49,44 +59,24 @@ methods:
 
     information. Successfully acknowledged events will no longer be available to any
     consumer.'
-  signature: 'acknowledge_cloud_events(topic_name: str, event_subscription_name: str,
-    acknowledge_options: AcknowledgeOptions | MutableMapping[str, Any] | IO, **kwargs:
-    Any) -> AcknowledgeResult'
+  signature: 'acknowledge_cloud_events(topic_name: str, subscription_name: str, *,
+    lock_tokens: List[str], **kwargs: Any) -> AcknowledgeResult'
   parameters:
   - name: topic_name
     description: Topic Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: event_subscription_name
+  - name: subscription_name
     description: Event Subscription Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: acknowledge_options
-    description: 'AcknowledgeOptions. Is one of the following types:
-
-      AcknowledgeOptions, JSON, IO Required.'
-    isRequired: true
-    types:
-    - <xref:azure.eventgrid.models.AcknowledgeOptions>
-    - <xref:JSON>
-    - <xref:typing.IO>
   keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
     types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
+    - <xref:typing.List>[<xref:str>]
   return:
     description: AcknowledgeResult. The AcknowledgeResult is compatible with MutableMapping
     types:
@@ -96,76 +86,18 @@ methods:
 - uid: azure.eventgrid.EventGridClient.close
   name: close
   signature: close() -> None
-- uid: azure.eventgrid.EventGridClient.publish_cloud_events
-  name: publish_cloud_events
-  summary: 'Publish Batch Cloud Event or Events to namespace topic. In case of success,
-    the server responds with an
-
-    HTTP 200 status code with an empty JSON object in response. Otherwise, the server
-    can return
-
-    various error codes. For example, 401: which indicates authorization failure,
-    403: which
-
-    indicates quota exceeded or message is too large, 410: which indicates that specific
-    topic is
-
-    not found, 400: for bad request, and 500: for internal server error.'
-  signature: 'publish_cloud_events(topic_name: str, body: List[CloudEvent] | CloudEvent
-    | List[Dict[str, Any]] | Dict[str, Any], *, binary_mode: bool = False, **kwargs)
-    -> None'
-  parameters:
-  - name: topic_name
-    description: Topic Name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: body
-    description: Cloud Event or array of Cloud Events being published. Required.
-    isRequired: true
-    types:
-    - <xref:azure.core.messaging.CloudEvent>
-    - <xref:list>[<xref:azure.core.messaging.CloudEvent>]
-    - <xref:dict>[<xref:str>, <xref:any>]
-    - <xref:list>[<xref:dict>[<xref:str>, <xref:any>]]
-  keywordOnlyParameters:
-  - name: binary_mode
-    description: 'Whether to publish the events in binary mode. Defaults to False.
-
-      When True and *datacontenttype* is specified in CloudEvent, content type is
-      set to *datacontenttype*.
-
-      If not specified, the default content type is "application/cloudevents+json;
-      charset=utf-8".
-
-      Requires CloudEvent data to be passed in as bytes.'
-    types:
-    - <xref:bool>
-  - name: content_type
-    description: 'content type. Default value is "application/cloudevents+json;
-
-      charset=utf-8".'
-    types:
-    - <xref:str>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.eventgrid.EventGridClient.receive_cloud_events
   name: receive_cloud_events
   summary: Receive Batch of Cloud Events from the Event Subscription.
-  signature: 'receive_cloud_events(topic_name: str, event_subscription_name: str,
-    *, max_events: int | None = None, max_wait_time: int | None = None, **kwargs:
-    Any) -> ReceiveResult'
+  signature: 'receive_cloud_events(topic_name: str, subscription_name: str, *, max_events:
+    int | None = None, max_wait_time: int | None = None, **kwargs: Any) -> ReceiveResult'
   parameters:
   - name: topic_name
     description: Topic Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: event_subscription_name
+  - name: subscription_name
     description: Event Subscription Name. Required.
     isRequired: true
     types:
@@ -194,13 +126,6 @@ methods:
       60 seconds. Default value is None.'
     types:
     - <xref:int>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
     description: ReceiveResult. The ReceiveResult is compatible with MutableMapping
     types:
@@ -217,44 +142,24 @@ methods:
 
     lockTokens, along with other failed lockTokens with their corresponding error
     information.'
-  signature: 'reject_cloud_events(topic_name: str, event_subscription_name: str, reject_options:
-    RejectOptions | MutableMapping[str, Any] | IO, **kwargs: Any) -> RejectResult'
+  signature: 'reject_cloud_events(topic_name: str, subscription_name: str, *, lock_tokens:
+    List[str], **kwargs: Any) -> RejectResult'
   parameters:
   - name: topic_name
     description: Topic Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: event_subscription_name
+  - name: subscription_name
     description: Event Subscription Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: reject_options
-    description: 'RejectOptions. Is one of the following types: RejectOptions, JSON,
-      IO
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:azure.eventgrid.models.RejectOptions>
-    - <xref:JSON>
-    - <xref:typing.IO>
   keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
     types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
+    - <xref:typing.List>[<xref:str>]
   return:
     description: RejectResult. The RejectResult is compatible with MutableMapping
     types:
@@ -271,52 +176,32 @@ methods:
 
     lockTokens, along with other failed lockTokens with their corresponding error
     information.'
-  signature: 'release_cloud_events(topic_name: str, event_subscription_name: str,
-    release_options: ReleaseOptions | MutableMapping[str, Any] | IO, *, release_delay_in_seconds:
-    int | ReleaseDelay | None = None, **kwargs: Any) -> ReleaseResult'
+  signature: 'release_cloud_events(topic_name: str, subscription_name: str, *, lock_tokens:
+    List[str], release_delay: int | ReleaseDelay | None = None, **kwargs: Any) ->
+    ReleaseResult'
   parameters:
   - name: topic_name
     description: Topic Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: event_subscription_name
+  - name: subscription_name
     description: Event Subscription Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: release_options
-    description: 'ReleaseOptions. Is one of the following types: ReleaseOptions, JSON,
-      IO
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:azure.eventgrid.models.ReleaseOptions>
-    - <xref:JSON>
-    - <xref:typing.IO>
   keywordOnlyParameters:
-  - name: release_delay_in_seconds
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
+    types:
+    - <xref:typing.List>[<xref:str>]
+  - name: release_delay
     description: 'Release cloud events with the specified delay in seconds.
 
       Known values are: 0, 10, 60, 600, and 3600. Default value is None.'
     types:
     - <xref:int>
     - <xref:azure.eventgrid.models.ReleaseDelay>
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
     description: ReleaseResult. The ReleaseResult is compatible with MutableMapping
     types:
@@ -334,44 +219,24 @@ methods:
     error
 
     information.'
-  signature: 'renew_cloud_event_locks(topic_name: str, event_subscription_name: str,
-    renew_lock_options: RenewLockOptions | MutableMapping[str, Any] | IO, **kwargs:
-    Any) -> RenewCloudEventLocksResult'
+  signature: 'renew_cloud_event_locks(topic_name: str, subscription_name: str, *,
+    lock_tokens: List[str], **kwargs: Any) -> RenewCloudEventLocksResult'
   parameters:
   - name: topic_name
     description: Topic Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: event_subscription_name
+  - name: subscription_name
     description: Event Subscription Name. Required.
     isRequired: true
     types:
     - <xref:str>
-  - name: renew_lock_options
-    description: 'RenewLockOptions. Is one of the following types: RenewLockOptions,
-
-      JSON, IO Required.'
-    isRequired: true
-    types:
-    - <xref:azure.eventgrid.models.RenewLockOptions>
-    - <xref:JSON>
-    - <xref:typing.IO>
   keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
     types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
+    - <xref:typing.List>[<xref:str>]
   return:
     description: 'RenewCloudEventLocksResult. The RenewCloudEventLocksResult is compatible
       with
@@ -381,6 +246,76 @@ methods:
     - <xref:azure.eventgrid.models.RenewCloudEventLocksResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.eventgrid.EventGridClient.send
+  name: send
+  summary: 'Send events to the Event Grid Service.
+
+
+    A single instance or a list of dictionaries, CloudEvents are accepted. In the
+    case of an Azure Event Grid
+
+    Basic Resource, EventGridEvent(s) and CNCFCloudEvents are also accepted.'
+  signature: send(*args, **kwargs) -> None
+  parameters:
+  - name: topic_name
+    description: The name of the topic to send the event to.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: event
+    description: The event to send.
+    isRequired: true
+    types:
+    - <xref:CloudEvent>
+    - <xref:typing.List>[<xref:CloudEvent>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:CNCFCloudEvent>
+    - <xref:typing.List>[<xref:CNCFCloudEvent>]
+    - <xref:azure.eventgrid.EventGridEvent>
+    - <xref:typing.List>[<xref:azure.eventgrid.EventGridEvent>]
+  keywordOnlyParameters:
+  - name: binary_mode
+    description: 'Whether to send the event in binary mode. If not specified, the
+      default
+
+      value is False.'
+    types:
+    - <xref:bool>
+  - name: channel_name
+    description: The name of the channel to send the event to.
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: content_type
+    description: 'The content type of the event. If not specified, the default value
+      is
+
+      "application/cloudevents+json; charset=utf-8".'
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  examples:
+  - "Publishing a CloudEvent to a Basic Topic.<!--[!code-python[Main](les\\sync_samples\\\
+    sample_publish_events_using_cloud_events_1.0_schema.py )]-->\n\n<!-- literal_block\
+    \ {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\"\
+    : [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\
+    \\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\33\\\\azure-eventgrid-4.20.0b1\\\
+    \\samples\\\\sync_samples\\\\sample_publish_events_using_cloud_events_1.0_schema.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   import os\n   from azure.eventgrid import EventGridClient\n   from azure.core.credentials\
+    \ import AzureKeyCredential\n   from azure.core.messaging import CloudEvent\n\n\
+    \   topic_key = os.environ[\"EVENTGRID_CLOUD_EVENT_TOPIC_KEY\"]\n   endpoint =\
+    \ os.environ[\"EVENTGRID_CLOUD_EVENT_TOPIC_ENDPOINT\"]\n\n   credential = AzureKeyCredential(topic_key)\n\
+    \   client = EventGridClient(endpoint, credential, level=\"Basic\")\n\n   client.send(\n\
+    \       [\n           CloudEvent(\n               type=\"Contoso.Items.ItemReceived\"\
+    ,\n               source=\"/contoso/items\",\n               data={\"itemSku\"\
+    : \"Contoso Item SKU #1\"},\n               subject=\"Door1\",\n           )\n\
+    \       ]\n   )\n\n   ````\n"
 - uid: azure.eventgrid.EventGridClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
