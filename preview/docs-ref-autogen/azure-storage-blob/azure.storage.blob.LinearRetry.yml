@@ -10,17 +10,17 @@ summary: 'Linear retry.
 
   Constructs a Linear retry object.'
 constructor:
-  syntax: LinearRetry(backoff=15, retry_total=3, retry_to_secondary=False, random_jitter_range=3,
-    **kwargs)
+  syntax: 'LinearRetry(backoff: int = 15, retry_total: int = 3, retry_to_secondary:
+    bool = False, random_jitter_range: int = 3, **kwargs: Any)'
   parameters:
   - name: backoff
     description: The backoff interval, in seconds, between retries.
     defaultValue: '15'
     types:
     - <xref:int>
-  - name: max_attempts
+  - name: retry_total
     description: The maximum number of retry attempts.
-    isRequired: true
+    defaultValue: '3'
     types:
     - <xref:int>
   - name: retry_to_secondary
@@ -42,57 +42,57 @@ constructor:
     defaultValue: '3'
     types:
     - <xref:int>
-  - name: retry_total
-    defaultValue: '3'
 methods:
 - uid: azure.storage.blob.LinearRetry.configure_retries
   name: configure_retries
-  signature: configure_retries(request)
+  signature: 'configure_retries(request: PipelineRequest) -> Dict[str, Any]'
   parameters:
   - name: request
     isRequired: true
 - uid: azure.storage.blob.LinearRetry.get_backoff_time
   name: get_backoff_time
   summary: Calculates how long to sleep before retrying.
-  signature: get_backoff_time(settings)
+  signature: 'get_backoff_time(settings: Dict[str, Any]) -> float'
   parameters:
   - name: settings
     description: The configurable values pertaining to the backoff time.
     isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   return:
-    description: 'An integer indicating how long to wait before retrying the request,
+    description: 'A float indicating how long to wait before retrying the request,
 
       or None to indicate no retry should be performed.'
     types:
-    - <xref:int>
-    - <xref:None>
+    - <xref:float>
 - uid: azure.storage.blob.LinearRetry.increment
   name: increment
   summary: Increment the retry counters.
-  signature: increment(settings, request, response=None, error=None)
+  signature: 'increment(settings: Dict[str, Any], request: PipelineRequest, response:
+    PipelineResponse | None = None, error: AzureError | None = None) -> bool'
   parameters:
   - name: settings
     description: The configurable values pertaining to the increment operation.
     isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: request
     description: A pipeline request object.
     isRequired: true
     types:
-    - <xref:<xref:"PipelineRequest">>
-  - name: '"PipelineResponse"'
+    - <xref:PipelineRequest>
+  - name: response
     description: A pipeline response object.
-    isRequired: true
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:PipelineResponse>]
   - name: error
     description: 'An error encountered during the request, or
 
       None if the response was received successfully.'
     defaultValue: None
-  - name: response
-    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:AzureError>]
   return:
     description: Whether the retry attempts are exhausted.
     types:
@@ -112,8 +112,37 @@ methods:
   - name: transport
     isRequired: true
 attributes:
+- uid: azure.storage.blob.LinearRetry.connect_retries
+  name: connect_retries
+  summary: The max number of connect retries.
+  signature: 'connect_retries: int'
+- uid: azure.storage.blob.LinearRetry.initial_backoff
+  name: initial_backoff
+  summary: The backoff interval, in seconds, between retries.
+  signature: 'initial_backoff: int'
 - uid: azure.storage.blob.LinearRetry.next
   name: next
   summary: Pointer to the next policy or a transport (wrapped as a policy). Will be
     set at pipeline creation.
   signature: 'next: HTTPPolicy[HTTPRequestType, HTTPResponseType]'
+- uid: azure.storage.blob.LinearRetry.random_jitter_range
+  name: random_jitter_range
+  summary: A number in seconds which indicates a range to jitter/randomize for the
+    back-off interval.
+  signature: 'random_jitter_range: int'
+- uid: azure.storage.blob.LinearRetry.retry_read
+  name: retry_read
+  summary: The max number of read retries.
+  signature: 'retry_read: int'
+- uid: azure.storage.blob.LinearRetry.retry_status
+  name: retry_status
+  summary: The max number of status retries.
+  signature: 'retry_status: int'
+- uid: azure.storage.blob.LinearRetry.retry_to_secondary
+  name: retry_to_secondary
+  summary: Whether the secondary endpoint should be retried.
+  signature: 'retry_to_secondary: bool'
+- uid: azure.storage.blob.LinearRetry.total_retries
+  name: total_retries
+  summary: The max number of retries.
+  signature: 'total_retries: int'
