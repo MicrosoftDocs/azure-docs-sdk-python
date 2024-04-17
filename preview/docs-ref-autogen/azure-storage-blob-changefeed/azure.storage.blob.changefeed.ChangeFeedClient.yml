@@ -7,8 +7,8 @@ inheritances:
 - builtins.object
 summary: A client to interact with a specific account change feed.
 constructor:
-  syntax: 'ChangeFeedClient(account_url: str, credential: Any | None = None, **kwargs:
-    Any)'
+  syntax: 'ChangeFeedClient(account_url: str, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: The URI to the storage account.
@@ -21,15 +21,21 @@ constructor:
 
       account URL already has a SAS token. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      shared access key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
 
       - except in the case of AzureSasCredential, where the conflicting SAS tokens
-      will raise a ValueError.'
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   keywordOnlyParameters:
   - name: secondary_hostname
@@ -59,7 +65,8 @@ methods:
 - uid: azure.storage.blob.changefeed.ChangeFeedClient.from_connection_string
   name: from_connection_string
   summary: Create ChangeFeedClient from a Connection String.
-  signature: 'from_connection_string(conn_str: str, credential: Any | None = None,
+  signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
+    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
     **kwargs: Any) -> ChangeFeedClient'
   parameters:
   - name: conn_str
@@ -75,13 +82,18 @@ methods:
 
       access key values. The value can be a SAS token string,
 
-      an instance of a AzureSasCredential from azure.core.credentials, an account
-      shared access
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      key, or an instance of a TokenCredentials class from azure.identity.
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
 
       Credentials provided here will take precedence over those in the connection
-      string.'
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
     defaultValue: None
   return:
     description: A change feed client.
