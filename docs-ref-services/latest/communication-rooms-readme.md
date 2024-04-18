@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Rooms client library for Python
 keywords: Azure, python, SDK, API, azure-communication-rooms, communication
-ms.date: 06/13/2023
+ms.date: 04/18/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Rooms client library for Python - version 1.0.0 
+# Azure Communication Rooms client library for Python - version 1.1.0 
 
 This package contains a Python SDK for Azure Communication Services for Rooms.
 Read more about Azure Communication Services [here](/azure/communication-services/overview)
@@ -54,9 +54,11 @@ client = RoomsClient.from_connection_string(conn_str='<connection_str>' )
 - `participants`: A list of `RoomParticipant`s containing MRI's of invitees to the room as well as optional `ParticipantRole`. If `ParticipantRole` is not specified, then it will be `Attendee` by default.
 All the above attributes are optional. The service provides default values of valid_until and
 valid_from if they are missing. The default for`valid_from` is current date time and the default for `valid_until` is `valid_from + 180 days`.
+- `pstn_dial_out_enabled`: Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. This flag is optional.
 
 ### Create a room
 To create a room, call the `create_room` function from `RoomsClient`. The `valid_from`, `valid_until`, and `participants` arguments are all optional.
+Starting in 1.1.0 release, ACS Rooms supports PSTN Dial-Out feature. To create room with PSTN Dial-Out property, call `create_room` function and set `pstn_dial_out_enabled` to either true or false. If `pstn_dial_out_enabled` is not provided, then the default value for `pstn_dial_out_enabled` is false.
 
 ```python
 from azure.core.exceptions import HttpResponseError
@@ -67,33 +69,38 @@ from azure.communication.rooms import (
     ParticipantRole
 )
 from azure.communication.identity import CommunicationUserIdentifier
+from dateutil.relativedelta import relativedelta
 
 client = RoomsClient.from_connection_string(conn_str='<connection_str>')
 valid_from = datetime.now()
 valid_until = valid_from + relativedelta(months=+1)
 participants = []
-participants.append(RoomParticipant(CommunicationUserIdentifier("<ACS User MRI identity 1>")))
-participants.append(RoomParticipant(CommunicationUserIdentifier("<ACS User MRI identity 2>"), ParticipantRole.CONSUMER))
-participants.append(RoomParticipant(CommunicationUserIdentifier("<ACS User MRI identity 3>"), ParticipantRole.PRESENTER))
+participants.append(RoomParticipant(communication_identifier=CommunicationUserIdentifier("<ACS User MRI identity 1>")))
+participants.append(RoomParticipant(communication_identifier=CommunicationUserIdentifier("<ACS User MRI identity 2>"), role=ParticipantRole.CONSUMER))
+participants.append(RoomParticipant(communication_identifier=CommunicationUserIdentifier("<ACS User MRI identity 3>"), role=ParticipantRole.PRESENTER))
 
 try:
     create_room_response = client.create_room(
         valid_from=valid_from,
         valid_until=valid_until,
-        participants=participants
+        participants=participants,
+        pstn_dial_out_enabled=false
+
     )
 except HttpResponseError as ex:
     print(ex)
 ```
 ### Update a room
 The `valid_from` and `valid_until` properties of a created room can be updated by calling the `update_room` function from `RoomsClient`.
+Starting in 1.1.0 release, ACS Rooms supports PSTN Dial-Out feature. To update a room with PSTN Dial-Out property, call `update_room` and set `pstn_dial_out_enabled` to either true or false. If `pstn_dial_out_enabled`  is not provided, then there is no changes to PstnDialOutEnabled property in the room.
 
 ```python
 try:
     update_room_response = client.update_room(
         room_id="id of the room to be updated",
         valid_from=datetime.now(),
-        valid_until=valid_from + timedelta(weeks=4)
+        valid_until=valid_from + timedelta(weeks=4),
+        pstn_dial_out_enabled=false
     )
 except HttpResponseError as e:
     print('service responds error: {}'.format(e))
@@ -137,9 +144,9 @@ In order to insert new participants or update existing participants, call the `a
 
 ```python
 participants = []
-participants.append(RoomParticipant(CommunicationUserIdentifier("<ACS User MRI identity 1>")))
-participants.append(RoomParticipant(CommunicationUserIdentifier("<ACS User MRI identity 2>"), ParticipantRole.ATTENDEE))
-participants.append(RoomParticipant(CommunicationUserIdentifier("<ACS User MRI identity 3>"), ParticipantRole.CONSUMER))
+participants.append(RoomParticipant(communication_identifier=CommunicationUserIdentifier("<ACS User MRI identity 1>")))
+participants.append(RoomParticipant(communication_identifier=CommunicationUserIdentifier("<ACS User MRI identity 2>"), role=ParticipantRole.ATTENDEE))
+participants.append(RoomParticipant(communication_identifier=CommunicationUserIdentifier("<ACS User MRI identity 3>"), role=ParticipantRole.CONSUMER))
 try:
     response = client.add_or_update_participants(
         room_id="id of the room to be updated",
@@ -157,7 +164,7 @@ communication_identifiers = [CommunicationUserIdentifier("<ACS User MRI identity
 
 try:
     remove_participants_response = client.remove_participants(
-        room_id=room_id,
+        room_id="id of the room to remove participants",
         participants=communication_identifiers
     )
 except HttpResponseError as ex:
@@ -168,17 +175,17 @@ Retrieve the list of participants for an existing room by referencing the `room_
 
 ```python
 try:
-    participants = self.rooms_client.list_participants(room_id)
+    participants = client.list_participants(room_id="id of the room to list participants")
 except HttpResponseError as ex:
     print(ex)
 ```
 ## Troubleshooting
 
-Rooms operations will throw an exception if the request to the server fails. The Rooms client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-rooms_1.0.0/sdk/core/azure-core/README.md).
+Rooms operations will throw an exception if the request to the server fails. The Rooms client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-rooms_1.1.0/sdk/core/azure-core/README.md).
 
 ## Next steps
 ### More sample code
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.0.0/sdk/communication/azure-communication-rooms/samples) directory for detailed examples of how to use this library to create and manage rooms.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.0/sdk/communication/azure-communication-rooms/samples) directory for detailed examples of how to use this library to create and manage rooms.
 
 ## Provide Feedback
 
@@ -204,9 +211,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.0.0/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.0/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.0.0/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.0/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 
