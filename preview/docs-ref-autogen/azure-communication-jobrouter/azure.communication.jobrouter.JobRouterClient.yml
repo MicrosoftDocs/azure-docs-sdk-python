@@ -4,7 +4,7 @@ name: JobRouterClient
 fullName: azure.communication.jobrouter.JobRouterClient
 module: azure.communication.jobrouter
 inheritances:
-- builtins.object
+- azure.communication.jobrouter._client.JobRouterClient
 summary: 'A client to interact with the AzureCommunicationService JobRouter service.
 
 
@@ -27,7 +27,7 @@ constructor:
   - name: api_version
     description: 'Azure Communication Job Router API version.
 
-      Default value is "2022-07-18-preview".
+      Default value is "2023-11-01".
 
       Note that overriding this default value may result in unsupported behavior.'
 methods:
@@ -36,69 +36,61 @@ methods:
   summary: 'Accepts an offer to work on a job and returns a 409/Conflict if another
     agent accepted the job
 
+    already.
+
+
+    Accepts an offer to work on a job and returns a 409/Conflict if another agent
+    accepted the job
+
     already.'
   signature: 'accept_job_offer(worker_id: str, offer_id: str, **kwargs: Any) -> AcceptJobOfferResult'
   parameters:
   - name: worker_id
-    description: Id of the worker.
+    description: Id of a worker. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: offer_id
-    description: Id of the offer.
+    description: Id of an offer. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Instance of AcceptJobOfferResult
+    description: AcceptJobOfferResult. The AcceptJobOfferResult is compatible with
+      MutableMapping
     types:
-    - <xref:azure.communication.jobrouter.AcceptJobOfferResult>
+    - <xref:azure.communication.jobrouter.models.AcceptJobOfferResult>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  - type: azure.core.exceptions.HttpResponseError
   examples:
-  - "Use a JobRouterClient to accept a job offer<!--[!code-python[Main](les\\router_job_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import (\n       RouterJob,\n       AcceptJobOfferResult\n\
-    \   )\n\n   accept_job_offer_result: AcceptJobOfferResult = router_client.accept_job_offer(\n\
-    \       worker_id = worker_id,\n       offer_id = offer_id\n   )\n\n   queried_job:\
-    \ RouterJob = router_client.get_job(job_id = job_id)\n\n   print(f\"Job has been\
-    \ successfully assigned to worker. Current job status: {queried_job.status}\"\
-    )\n   print(f\"Job has been successfully assigned with a worker with assignment\
-    \ \"\n         f\"id: {accept_job_offer_result.assignment_id}\")\n\n   ````\n"
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"assignmentId\"\
+    : \"str\",  # Id of job assignment that assigns a worker that has\n         accepted\
+    \ an offer to a job. Required.\n       \"jobId\": \"str\",  # Id of the job assigned.\
+    \ Required.\n       \"workerId\": \"str\"  # Id of the worker that has been assigned\
+    \ this job.\n         Required.\n   }\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.cancel_job
   name: cancel_job
-  summary: Submits request to cancel an existing job by Id while supplying free-form
-    cancellation reason.
-  signature: 'cancel_job(job_id: str, *, disposition_code: str | None = None, note:
-    str | None = None, **kwargs: Any) -> None'
+  summary: Closes a completed job.
+  signature: 'cancel_job(job_id: str, options: CancelJobOptions | MutableMapping[str,
+    Any] | IO | None = None, **kwargs: Any) -> None'
   parameters:
   - name: job_id
     description: Id of the job.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: note
-    description: 'A note that will be appended to the jobs'' Notes collection with
-      the
+  - name: options
+    description: 'Request model for cancelling job. Is one of the following types:
 
-      current timestamp. Default value is None.'
+      CancelJobOptions, JSON, IO Default value is None.'
+    isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: disposition_code
-    description: 'Indicates the outcome of the job, populate this field with your
-      own
-
-      custom values.
-
-      If not provided, default value of "Cancelled" is set. Default value is None.'
-    types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:azure.communication.jobrouter.models.CancelJobOptions>
+    - <xref:JSON>
+    - <xref:typing.IO>
   return:
     description: None
     types:
@@ -110,21 +102,20 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
+    24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\\router_job_crud_ops.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  router_client.delete_job(job_id = job_id)\n\n\n   ````\n"
+    \ = JobRouterClient.from_connection_string(conn_str=connection_string)\n\n   router_client.cancel_job(job_id)\n\
+    \n\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.close
   name: close
   signature: close() -> None
 - uid: azure.communication.jobrouter.JobRouterClient.close_job
   name: close_job
   summary: Closes a completed job.
-  signature: 'close_job(job_id: str, assignment_id: str, *, disposition_code: str
-    | None = None, close_at: datetime | None = None, note: str | None = None, **kwargs:
-    Any) -> None'
+  signature: 'close_job(job_id: str, assignment_id: str, options: CloseJobOptions
+    | MutableMapping[str, Any] | IO | None = None, **kwargs: Any) -> None'
   parameters:
   - name: job_id
     description: Id of the job.
@@ -132,35 +123,19 @@ methods:
     types:
     - <xref:str>
   - name: assignment_id
-    description: The assignment within which the job is to be closed.
+    description: The Id of the job assignment. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: disposition_code
-    description: 'Indicates the outcome of the job, populate this field with your
-      own
+  - name: options
+    description: 'Request model for closing job. Is one of the following types: CloseJobOptions,
 
-      custom values. Default value is None.'
+      JSON, IO Default value is None.'
+    isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: close_at
-    description: 'If not provided, worker capacity is released immediately along with
-      a
-
-      JobClosedEvent notification. If provided, worker capacity is released along
-      with a JobClosedEvent notification
-
-      at a future time. Default value is None.'
-    types:
-    - <xref:typing.Optional>[<xref:datetime.datetime>]
-  - name: note
-    description: '(Optional) A note that will be appended to the jobs'' Notes collection
-      with the
-
-      current timestamp. Default value is None.'
-    types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:azure.communication.jobrouter.models.CloseJobOptions>
+    - <xref:JSON>
+    - <xref:typing.IO>
   return:
     description: None
     types:
@@ -172,18 +147,19 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
+    24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\\router_job_crud_ops.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   router_client.close_job(\n       job_id = job_id,\n       assignment_id =\
-    \ assignment_id\n   )\n\n   queried_job: RouterJob = router_client.get_job(job_id\
-    \ = job_id)\n\n   print(f\"Job has been successfully closed. Current status: {queried_job.status}\"\
-    )\n\n\n   ````\n"
+    \n   from azure.communication.jobrouter.models import RouterJob, CloseJobOptions\n\
+    \n   router_client.close_job(job_id, assignment_id, CloseJobOptions(note=\"Close\
+    \ job\"))\n\n   queried_job: RouterJob = router_client.get_job(job_id)\n\n   print(f\"\
+    Job has been successfully closed. Current status: {queried_job.status}\")\n\n\n\
+    \   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.complete_job
   name: complete_job
   summary: Completes an assigned job.
-  signature: 'complete_job(job_id: str, assignment_id: str, *, note: str | None =
-    None, **kwargs: Any) -> None'
+  signature: 'complete_job(job_id: str, assignment_id: str, options: CompleteJobOptions
+    | MutableMapping[str, Any] | IO | None = None, **kwargs: Any) -> None'
   parameters:
   - name: job_id
     description: Id of the job.
@@ -191,18 +167,19 @@ methods:
     types:
     - <xref:str>
   - name: assignment_id
-    description: The assignment within the job to complete.
+    description: The Id of the job assignment. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: note
-    description: '(Optional) A note that will be appended to the jobs'' Notes collection
-      with th
+  - name: options
+    description: 'Request model for completing job. Is one of the following types:
 
-      current timestamp. Default value is None.'
+      CompleteJobOptions, JSON, IO Default value is None.'
+    isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:str>]
+    - <xref:azure.communication.jobrouter.models.CompleteJobOptions>
+    - <xref:JSON>
+    - <xref:typing.IO>
   return:
     description: None
     types:
@@ -214,149 +191,42 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
+    24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\\router_job_crud_ops.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import (\n       JobRouterClient,\n  \
-    \     RouterJob\n   )\n\n   router_client = JobRouterClient.from_connection_string(conn_str\
-    \ = connection_string)\n\n   queried_job: RouterJob = router_client.get_job(job_id\
-    \ = job_id)\n\n   assignment_id = [k for k, v in queried_job.assignments.items()][0]\n\
-    \n   router_client.complete_job(\n       job_id = job_id,\n       assignment_id\
-    \ = assignment_id\n   )\n\n   queried_job: RouterJob = router_client.get_job(job_id\
-    \ = job_id)\n\n   print(f\"Job has been successfully completed. Current status:\
-    \ {queried_job.status}\")\n\n   ````\n"
-- uid: azure.communication.jobrouter.JobRouterClient.create_job
-  name: create_job
-  summary: Create a job.
-  signature: 'create_job(job_id: str, router_job: RouterJob, **kwargs: Any) -> RouterJob'
-  parameters:
-  - name: job_id
-    description: Id of the job.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: router_job
-    description: An instance of RouterJob.
-    isRequired: true
-    types:
-    - <xref:azure.communication.jobrouter.RouterJob>
-  return:
-    description: Instance of RouterJob
-    types:
-    - <xref:azure.communication.jobrouter.RouterJob>
-  exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
-  examples:
-  - "Use a JobRouterClient to create a job<!--[!code-python[Main](les\\router_job_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from datetime import datetime, timedelta\n   from azure.communication.jobrouter\
-    \ import (\n       JobRouterClient,\n       RouterJob,\n       JobMatchingMode,\n\
-    \       ScheduleAndSuspendMode\n   )\n\n   # set `connection_string` to an existing\
-    \ ACS endpoint\n   router_client = JobRouterClient.from_connection_string(conn_str\
-    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
-    )\n\n   # We need to create a distribution policy + queue as a pre-requisite to\
-    \ start creating job\n   router_job = router_client.create_job(\n       job_id\
-    \ = job_id,\n       router_job = RouterJob(\n           channel_id = \"general\"\
-    ,\n           queue_id = queue_id,\n           priority = 10,\n           channel_reference\
-    \ = \"12345\"\n       )\n   )\n\n   print(f\"Job has been successfully created\
-    \ with status: {router_job.status}\")\n\n   # Alternatively, a job can also be\
-    \ created while specifying a classification policy\n   # As a pre-requisite, we\
-    \ would need to create a classification policy first\n   router_job_with_cp =\
-    \ router_client.create_job(\n       job_id = job_w_cp_id,\n       router_job =\
-    \ RouterJob(\n           channel_id = \"general\",\n           classification_policy_id\
-    \ = classification_policy_id,\n           channel_reference = \"12345\"\n    \
-    \   )\n   )\n   print(f\"Job has been successfully created with status: {router_job_with_cp.status}\"\
-    )\n\n   # Additionally, any job can be created as a scheduled job\n   # by simply\
-    \ specifying a scheduled_time_utc and setting unavailable_for_matching to true\n\
-    \   router_scheduled_job = router_client.create_job(\n       job_id = scheduled_job_id,\n\
-    \       router_job = RouterJob(\n           channel_id = \"general\",\n      \
-    \     queue_id = queue_id,\n           priority = 10,\n           channel_reference\
-    \ = \"12345\",\n           matching_mode = JobMatchingMode(schedule_and_suspend_mode\
-    \ = ScheduleAndSuspendMode(\n               schedule_at = datetime.utcnow() +\
-    \ timedelta(0, 30)))\n       )\n   )\n   print(f\"Scheduled job has been successfully\
-    \ created with status: {router_scheduled_job.status}\")\n\n\n   ````\n"
-- uid: azure.communication.jobrouter.JobRouterClient.create_worker
-  name: create_worker
-  summary: Create a new worker.
-  signature: 'create_worker(worker_id: str, router_worker: RouterWorker, **kwargs:
-    Any) -> RouterWorker'
-  parameters:
-  - name: worker_id
-    description: Id of the worker.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: router_worker
-    description: An instance of RouterWorker.
-    isRequired: true
-    types:
-    - <xref:azure.communication.jobrouter.RouterWorker>
-  return:
-    description: Instance of RouterWorker
-    types:
-    - <xref:azure.communication.jobrouter.RouterWorker>
-  exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
-  examples:
-  - "Use a JobRouterClient to create a worker<!--[!code-python[Main](les\\router_worker_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_worker_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import (\n       JobRouterClient,\n  \
-    \     RouterWorker,\n       ChannelConfiguration,\n   )\n\n   # set `connection_string`\
-    \ to an existing ACS endpoint\n   router_client = JobRouterClient.from_connection_string(conn_str\
-    \ = connection_string)\n   print(\"JobRouterClient created successfully!\")\n\n\
-    \   router_worker: RouterWorker = router_client.create_worker(\n       worker_id\
-    \ = worker_id,\n       router_worker = RouterWorker(\n           total_capacity\
-    \ = 100,\n           queue_assignments = {\n               \"worker-q-1\": {},\n\
-    \               \"worker-q-2\": {}\n           },\n           channel_configurations\
-    \ = {\n               \"WebChat\": ChannelConfiguration(capacity_cost_per_job\
-    \ = 1),\n               \"WebChatEscalated\": ChannelConfiguration(capacity_cost_per_job\
-    \ = 20),\n               \"Voip\": ChannelConfiguration(capacity_cost_per_job\
-    \ = 100)\n           },\n           labels = {\n               \"Location\": \"\
-    NA\",\n               \"English\": 7,\n               \"O365\": True,\n      \
-    \         \"Xbox_Support\": False\n           },\n           tags = {\n      \
-    \         \"Name\": \"John Doe\",\n               \"Department\": \"IT_HelpDesk\"\
-    \n           }\n       )\n   )\n\n   print(f\"Router worker successfully created\
-    \ with id: {router_worker.id}\")\n\n\n   ````\n"
+    \n   from azure.communication.jobrouter import JobRouterClient\n   from azure.communication.jobrouter.models\
+    \ import (\n       RouterJob,\n       CompleteJobOptions,\n   )\n\n   router_client\
+    \ = JobRouterClient.from_connection_string(conn_str=connection_string)\n\n   queried_job:\
+    \ RouterJob = router_client.get_job(job_id)\n\n   assignment_id = [k for k, v\
+    \ in queried_job.assignments.items()][0]\n\n   router_client.complete_job(job_id,\
+    \ assignment_id, CompleteJobOptions(note=\"Complete job\"))\n\n   queried_job:\
+    \ RouterJob = router_client.get_job(job_id)\n\n   print(f\"Job has been successfully\
+    \ completed. Current status: {queried_job.status}\")\n\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.decline_job_offer
   name: decline_job_offer
   summary: Declines an offer to work on a job.
-  signature: 'decline_job_offer(worker_id: str, offer_id: str, *, retry_offer_at:
-    datetime | None = None, **kwargs: Any) -> None'
+  signature: 'decline_job_offer(worker_id: str, offer_id: str, options: DeclineJobOfferOptions
+    | MutableMapping[str, Any] | IO | None = None, **kwargs: Any) -> None'
   parameters:
   - name: worker_id
-    description: Id of the worker.
+    description: Id of the worker. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: offer_id
-    description: Id of the offer.
+    description: Id of the offer. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: retry_offer_at
-    description: 'If the retry_offer_at is not provided, then this job will not be
-      re-offered to the
+  - name: options
+    description: 'Request model for declining offer. Is one of the following types:
 
-      worker who declined this job unless the worker is de-registered and re-registered.  If
-      a retry_offer_at is
-
-      provided, then the job will be re-matched to eligible workers after the reoffer
-      time. The worker that declined
-
-      the job will also be eligible for the job at that time.'
+      DeclineJobOfferOptions, JSON, IO Default value is None.'
+    isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:datetime.datetime>]
+    - <xref:azure.communication.jobrouter.models.DeclineJobOfferOptions>
+    - <xref:JSON>
+    - <xref:typing.IO>
   return:
     description: None
     types:
@@ -364,23 +234,28 @@ methods:
   exceptions:
   - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
   examples:
-  - "Use a JobRouterClient to decline a job offer<!--[!code-python[Main](les\\router_job_crud_ops.py\
+  - "Use a JobRouterClient to close a job<!--[!code-python[Main](les\\router_job_crud_ops.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
+    24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\\router_job_crud_ops.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n       router_client.decline_job_offer(\n           worker_id = worker_id,\n\
-    \           offer_id = offer_id,\n           reoffer_time_utc = datetime.utcnow()\
-    \ + timedelta(0, 30)  # re-offer after 30 secs\n       )\n\n   ````\n"
+    \n   from azure.communication.jobrouter.models import RouterJob, CloseJobOptions\n\
+    \n   router_client.close_job(job_id, assignment_id, CloseJobOptions(note=\"Close\
+    \ job\"))\n\n   queried_job: RouterJob = router_client.get_job(job_id)\n\n   print(f\"\
+    Job has been successfully closed. Current status: {queried_job.status}\")\n\n\n\
+    \   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.delete_job
   name: delete_job
-  summary: Delete a job by Id.
+  summary: 'Deletes a job and all of its traces.
+
+
+    Deletes a job and all of its traces.'
   signature: 'delete_job(job_id: str, **kwargs: Any) -> None'
   parameters:
   - name: job_id
-    description: Id of the job to delete.
+    description: Id of a job. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -389,25 +264,17 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
-  examples:
-  - "Use a JobRouterClient to delete a job<!--[!code-python[Main](les\\router_job_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  router_client.delete_job(job_id = job_id)\n\n\n   ````\n"
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.jobrouter.JobRouterClient.delete_worker
   name: delete_worker
-  summary: Delete a worker by Id.
+  summary: 'Deletes a worker and all of its traces.
+
+
+    Deletes a worker and all of its traces.'
   signature: 'delete_worker(worker_id: str, **kwargs: Any) -> None'
   parameters:
   - name: worker_id
-    description: Id of the worker to delete.
+    description: Id of a worker. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -416,18 +283,7 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
-  examples:
-  - "Use a JobRouterClient to delete an existing worker<!--[!code-python[Main](les\\\
-    router_worker_crud_ops.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\
-    \\router_worker_crud_ops.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.communication.jobrouter import JobRouterClient\n\
-    \n   router_client = JobRouterClient.from_connection_string(conn_str = connection_string)\n\
-    \n   router_client.delete_worker(worker_id = worker_id)\n\n\n   ````\n"
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.jobrouter.JobRouterClient.from_connection_string
   name: from_connection_string
   summary: Create JobRouterClient from a Connection String.
@@ -447,127 +303,159 @@ methods:
     sample_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\
+    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\
     \\sample_authentication.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.communication.jobrouter import JobRouterClient\n\
     \n   # set `connection_string` to an existing ACS endpoint\n   router_client =\
-    \ JobRouterClient.from_connection_string(conn_str = connection_string)\n   print(\"\
+    \ JobRouterClient.from_connection_string(conn_str=connection_string)\n   print(\"\
     JobRouterClient created successfully!\")\n\n\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.get_job
   name: get_job
-  summary: Retrieves an existing worker by Id.
+  summary: 'Retrieves an existing job by Id.
+
+
+    Retrieves an existing job by Id.'
   signature: 'get_job(job_id: str, **kwargs: Any) -> RouterJob'
   parameters:
   - name: job_id
-    description: Id of the job.
+    description: Id of a job. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Instance of RouterJob
+    description: RouterJob. The RouterJob is compatible with MutableMapping
     types:
-    - <xref:azure.communication.jobrouter.RouterJob>
+    - <xref:azure.communication.jobrouter.models.RouterJob>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
-  examples:
-  - "Use a JobRouterClient to get a job<!--[!code-python[Main](les\\router_job_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  router_job = router_client.get_job(job_id = job_id)\n\n   print(f\"Successfully\
-    \ fetched router worker with id: {router_job.id}\")\n\n   ````\n"
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.jobrouter.JobRouterClient.get_queue_position
   name: get_queue_position
-  summary: Gets a job's position details.
+  summary: 'Gets a job''s position details.
+
+
+    Gets a job''s position details.'
   signature: 'get_queue_position(job_id: str, **kwargs: Any) -> RouterJobPositionDetails'
   parameters:
   - name: job_id
-    description: Id of the job.
+    description: Id of the job. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Instance of RouterJobPositionDetails
+    description: 'RouterJobPositionDetails. The RouterJobPositionDetails is compatible
+      with
+
+      MutableMapping'
     types:
-    - <xref:azure.communication.jobrouter.RouterJobPositionDetails>
+    - <xref:azure.communication.jobrouter.models.RouterJobPositionDetails>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  - type: azure.core.exceptions.HttpResponseError
   examples:
-  - "Use a JobRouterClient to get a job position in queue<!--[!code-python[Main](les\\\
-    router_job_crud_ops.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
-    \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\
-    \\router_job_crud_ops.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
-    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.communication.jobrouter import JobRouterClient\n\
-    \n   router_client = JobRouterClient.from_connection_string(conn_str = connection_string)\n\
-    \n   router_job_position = router_client.get_queue_position(job_id = job_id)\n\
-    \n   print(f\"Successfully fetched router job position: {router_job_position.position}\"\
-    )\n\n   ````\n"
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"estimatedWaitTimeMinutes\"\
+    : 0.0,  # Estimated wait time of the job rounded up\n         to the nearest minute.\
+    \ Required.\n       \"jobId\": \"str\",  # Id of the job these details are about.\
+    \ Required.\n       \"position\": 0,  # Position of the job in question within\
+    \ that queue.\n         Required.\n       \"queueId\": \"str\",  # Id of the queue\
+    \ this job is enqueued in. Required.\n       \"queueLength\": 0  # Length of the\
+    \ queue: total number of enqueued jobs.\n         Required.\n   }\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.get_queue_statistics
   name: get_queue_statistics
-  summary: Retrieves a queue's statistics.
+  summary: 'Retrieves a queue''s statistics.
+
+
+    Retrieves a queue''s statistics.'
   signature: 'get_queue_statistics(queue_id: str, **kwargs: Any) -> RouterQueueStatistics'
   parameters:
   - name: queue_id
-    description: Id of the queue.
+    description: Id of the queue to retrieve statistics. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Instance of RouterQueueStatistics
+    description: RouterQueueStatistics. The RouterQueueStatistics is compatible with
+      MutableMapping
     types:
-    - <xref:azure.communication.jobrouter.RouterQueueStatistics>
+    - <xref:azure.communication.jobrouter.models.RouterQueueStatistics>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  - type: azure.core.exceptions.HttpResponseError
   examples:
-  - "Use a JobRouterClient to fetch queue statistics<!--[!code-python[Main](les\\\
-    job_queue_crud_ops.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
-    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
-    \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\job_queue_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import (\n       JobRouterClient,\n  \
-    \     RouterQueueStatistics\n   )\n\n   router_client: JobRouterClient = JobRouterClient.from_connection_string(conn_str\
-    \ = connection_string)\n\n   job_queue_statistics: RouterQueueStatistics = router_client.get_queue_statistics(queue_id\
-    \ = job_queue_id)\n\n   print(f\"Successfully fetched queue statistics router\
-    \ queue: {job_queue_statistics}\")\n\n   ````\n"
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"length\"\
+    : 0,  # Length of the queue: total number of enqueued jobs. Required.\n      \
+    \ \"queueId\": \"str\",  # Id of the queue these details are about. Required.\n\
+    \       \"estimatedWaitTimeMinutes\": {\n           \"str\": 0.0  # Optional.\
+    \ The estimated wait time of this queue rounded\n             up to the nearest\
+    \ minute, grouped by job priority.\n       },\n       \"longestJobWaitTimeMinutes\"\
+    : 0.0  # Optional. The wait time of the job that\n         has been enqueued in\
+    \ this queue for the longest.\n   }\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.get_worker
   name: get_worker
-  summary: Retrieves an existing worker by Id.
+  summary: 'Retrieves an existing worker by Id.
+
+
+    Retrieves an existing worker by Id.'
   signature: 'get_worker(worker_id: str, **kwargs: Any) -> RouterWorker'
   parameters:
   - name: worker_id
-    description: Id of the worker.
+    description: Id of a worker. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: Instance of RouterWorker
+    description: RouterWorker. The RouterWorker is compatible with MutableMapping
     types:
-    - <xref:azure.communication.jobrouter.RouterWorker>
+    - <xref:azure.communication.jobrouter.models.RouterWorker>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  - type: azure.core.exceptions.HttpResponseError
   examples:
-  - "Use a JobRouterClient to get a worker<!--[!code-python[Main](les\\router_worker_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_worker_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  router_worker = router_client.get_worker(worker_id = worker_id)\n\n   print(f\"\
-    Successfully fetched router worker with id: {router_worker.id}\")\n\n   ````\n"
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"etag\"\
+    : \"str\",  # The entity tag for this resource. Required.\n       \"id\": \"str\"\
+    ,  # Id of a worker. Required.\n       \"assignedJobs\": [\n           {\n   \
+    \            \"assignedAt\": \"2020-02-20 00:00:00\",  # The assignment time\n\
+    \                 of the job in UTC. Required.\n               \"assignmentId\"\
+    : \"str\",  # Id of the assignment. Required.\n               \"capacityCost\"\
+    : 0,  # The amount of capacity this assignment\n                 has consumed\
+    \ on the worker. Required.\n               \"jobId\": \"str\"  # Id of the job\
+    \ assigned. Required.\n           }\n       ],\n       \"availableForOffers\"\
+    : bool,  # Optional. A flag indicating this worker is\n         open to receive\
+    \ offers or not.\n       \"capacity\": 0,  # Optional. The total capacity score\
+    \ this worker has to\n         manage multiple concurrent jobs.\n       \"channels\"\
+    : [\n           {\n               \"capacityCostPerJob\": 0,  # The amount of\
+    \ capacity that an\n                 instance of a job of this channel will consume\
+    \ of the total worker\n                 capacity. Required.\n               \"\
+    channelId\": \"str\",  # Id of a channel. Required.\n               \"maxNumberOfJobs\"\
+    : 0  # Optional. The maximum number of jobs\n                 that can be supported\
+    \ concurrently for this channel.\n           }\n       ],\n       \"labels\":\
+    \ {\n           \"str\": {}  # Optional. A set of key/value pairs that are identifying\n\
+    \             attributes used by the rules engines to make decisions. Values must\
+    \ be\n             primitive values - number, string, boolean.\n       },\n  \
+    \     \"loadRatio\": 0.0,  # Optional. A value indicating the workers capacity.\
+    \ A\n         value of '1' means all capacity is consumed. A value of '0' means\
+    \ no capacity is\n         currently consumed.\n       \"maxConcurrentOffers\"\
+    : 0,  # Optional. If this is set, the worker will only\n         receive up to\
+    \ this many new offers at a time.\n       \"offers\": [\n           {\n      \
+    \         \"capacityCost\": 0,  # The capacity cost consumed by the job\n    \
+    \             offer. Required.\n               \"jobId\": \"str\",  # Id of the\
+    \ job. Required.\n               \"offerId\": \"str\",  # Id of an offer. Required.\n\
+    \               \"expiresAt\": \"2020-02-20 00:00:00\",  # Optional. Timestamp\n\
+    \                 when the offer will expire in UTC.\n               \"offeredAt\"\
+    : \"2020-02-20 00:00:00\"  # Optional. Timestamp\n                 when the offer\
+    \ was created in UTC.\n           }\n       ],\n       \"queues\": [\n       \
+    \    \"str\"  # Optional. Collection of queue(s) that this worker can\n      \
+    \       receive work from.\n       ],\n       \"state\": \"str\",  # Optional.\
+    \ Current state of a worker. Known values are:\n         \"active\", \"draining\"\
+    , and \"inactive\".\n       \"tags\": {\n           \"str\": {}  # Optional. A\
+    \ set of non-identifying attributes attached\n             to this worker. Values\
+    \ must be primitive values - number, string, boolean.\n       }\n   }\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.list_jobs
   name: list_jobs
   summary: Retrieves list of jobs based on filter parameters.
@@ -575,7 +463,7 @@ methods:
     | None = ''all'', channel_id: str | None = None, queue_id: str | None = None,
     classification_policy_id: str | None = None, scheduled_before: str | datetime
     | None = None, scheduled_after: str | datetime | None = None, results_per_page:
-    int | None = None, **kwargs: Any) -> ItemPaged[RouterJobItem]'
+    int | None = None, **kwargs: Any) -> ItemPaged[RouterJob]'
   keywordOnlyParameters:
   - name: status
     description: 'If specified, filter jobs by status. Default value is "all".
@@ -585,7 +473,7 @@ methods:
 
       classificationFailed, active, all'
     types:
-    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.communication.jobrouter.RouterJobStatus>,
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.communication.jobrouter.models.RouterJobStatus>,
       <xref:typing.Literal>["all","active"]]]
   - name: channel_id
     description: If specified, filter jobs by channel. Default value is None.
@@ -619,7 +507,7 @@ methods:
   return:
     description: An iterator like instance of RouterJobItem
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.jobrouter.RouterJobItem>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.jobrouter.models.RouterJobItem>]
   exceptions:
   - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
   examples:
@@ -627,24 +515,23 @@ methods:
     router_job_crud_ops.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\":\
     \ [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\
+    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\
     \\router_job_crud_ops.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
     language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from datetime import datetime\n   from azure.communication.jobrouter\
-    \ import JobRouterClient\n\n   router_client = JobRouterClient.from_connection_string(conn_str\
-    \ = connection_string)\n\n   scheduled_before = datetime.utcnow()\n\n   router_job_iterator\
-    \ = router_client.list_jobs(scheduled_before = scheduled_before, results_per_page\
-    \ = 10)\n\n   for job_page in router_job_iterator.by_page():\n       jobs_in_page\
-    \ = list(job_page)\n       print(f\"Retrieved {len(jobs_in_page)} jobs in current\
-    \ page\")\n\n       for j in jobs_in_page:\n           print(f\"Retrieved job\
-    \ with id: {j.job.id}\")\n\n   print(f\"Successfully completed fetching scheduled\
-    \ jobs\")\n\n   ````\n"
+    \ import JobRouterClient\n\n   router_client = JobRouterClient.from_connection_string(conn_str=connection_string)\n\
+    \n   scheduled_before = datetime.utcnow()\n\n   router_job_iterator = router_client.list_jobs(scheduled_before=scheduled_before,\
+    \ results_per_page=10)\n\n   for job_page in router_job_iterator.by_page():\n\
+    \       jobs_in_page = list(job_page)\n       print(f\"Retrieved {len(jobs_in_page)}\
+    \ jobs in current page\")\n\n       for j in jobs_in_page:\n           print(f\"\
+    Retrieved job with id: {j.id}\")\n\n   print(f\"Successfully completed fetching\
+    \ scheduled jobs\")\n\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.list_workers
   name: list_workers
   summary: Retrieves existing workers.
   signature: 'list_workers(*, state: str | RouterWorkerState | Literal[''all''] |
     None = ''all'', channel_id: str | None = None, queue_id: str | None = None, has_capacity:
-    bool | None = None, results_per_page: int | None = None, **kwargs: Any) -> ItemPaged[RouterWorkerItem]'
+    bool | None = None, results_per_page: int | None = None, **kwargs: Any) -> ItemPaged[RouterWorker]'
   keywordOnlyParameters:
   - name: state
     description: 'If specified, select workers by worker status. Default value is
@@ -652,7 +539,7 @@ methods:
 
       Accepted value(s): active, draining, inactive, all'
     types:
-    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.communication.jobrouter.RouterWorkerState>,
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.communication.jobrouter.models.RouterWorkerState>,
       <xref:typing.Literal>["all"]]]
   - name: channel_id
     description: 'If specified, select workers who have a channel configuration
@@ -679,7 +566,7 @@ methods:
   return:
     description: An iterator like instance of RouterWorkerItem
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.jobrouter.RouterWorkerItem>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.jobrouter.models.RouterWorkerItem>]
   exceptions:
   - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
   examples:
@@ -687,17 +574,17 @@ methods:
     router_worker_crud_ops.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\
+    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\
     \\router_worker_crud_ops.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.communication.jobrouter import JobRouterClient\n\
-    \n   router_client = JobRouterClient.from_connection_string(conn_str = connection_string)\n\
-    \n   router_worker_iterator = router_client.list_workers(results_per_page = 10)\n\
+    \n   router_client = JobRouterClient.from_connection_string(conn_str=connection_string)\n\
+    \n   router_worker_iterator = router_client.list_workers(results_per_page=10)\n\
     \n   for worker_page in router_worker_iterator.by_page():\n       workers_in_page\
     \ = list(worker_page)\n       print(f\"Retrieved {len(workers_in_page)} workers\
     \ in current page\")\n\n       for w in workers_in_page:\n           print(f\"\
-    Retrieved worker with id: {w.worker.id}\")\n\n   print(f\"Successfully completed\
-    \ fetching workers\")\n\n   ````\n"
+    Retrieved worker with id: {w.id}\")\n\n   print(f\"Successfully completed fetching\
+    \ workers\")\n\n   ````\n"
 - uid: azure.communication.jobrouter.JobRouterClient.reclassify_job
   name: reclassify_job
   summary: Reclassify a job.
@@ -719,71 +606,108 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
+    24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\\router_job_crud_ops.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  router_client.reclassify_job(job_id = job_id)\n\n   print(f\"Successfully re-classified\
-    \ job\")\n\n   ````\n"
+    \ = JobRouterClient.from_connection_string(conn_str=connection_string)\n\n   router_client.reclassify_job(job_id)\n\
+    \n   print(f\"Successfully re-classified job\")\n\n   ````\n"
+- uid: azure.communication.jobrouter.JobRouterClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
 - uid: azure.communication.jobrouter.JobRouterClient.unassign_job
   name: unassign_job
-  summary: Unassign a job.
-  signature: 'unassign_job(job_id: str, assignment_id: str, *, suspend_matching: bool
-    | None = None, **kwargs: Any) -> UnassignJobResult'
+  summary: 'Unassign a job.
+
+
+    Unassign a job.'
+  signature: 'unassign_job(job_id: str, assignment_id: str, options: UnassignJobOptions
+    | MutableMapping[str, Any] | IO[bytes] | None = None, **kwargs: Any) -> UnassignJobResult'
   parameters:
   - name: job_id
-    description: Id of the job.
+    description: Id of a job. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: assignment_id
-    description: Id of the assignment.
+    description: Id of a job assignment. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: suspend_matching
-    description: 'If set to true, then the job is not queued for
+  - name: options
+    description: 'Request body for unassign route. Is one of the following types:
 
-      re-matching with a worker.'
+      UnassignJobOptions, JSON, IO[bytes] Default value is None.'
+    isRequired: true
     types:
-    - <xref:typing.Optional>[<xref:bool>]
+    - <xref:azure.communication.jobrouter.models.UnassignJobOptions>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: Instance of UnassignJobResult
+    description: UnassignJobResult. The UnassignJobResult is compatible with MutableMapping
     types:
-    - <xref:azure.communication.jobrouter.UnassignJobResult>
+    - <xref:azure.communication.jobrouter.models.UnassignJobResult>
   exceptions:
-  - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
+  - type: azure.core.exceptions.HttpResponseError
   examples:
-  - "Use a JobRouterClient to unassign a job<!--[!code-python[Main](les\\router_job_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  unassign_job_result = router_client.unassign_job(job_id = job_id, assignment_id\
-    \ = assignment_id)\n\n   print(f\"Successfully unassigned job\")\n\n   ````\n"
-- uid: azure.communication.jobrouter.JobRouterClient.update_job
-  name: update_job
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   options\
+    \ = {\n       \"suspendMatching\": bool  # Optional. If SuspendMatching is true,\
+    \ then a job\n         is not queued for re-matching with a worker.\n   }\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"jobId\"\
+    : \"str\",  # Id of an unassigned job. Required.\n       \"unassignmentCount\"\
+    : 0  # The number of times a job is unassigned. At a\n         maximum 3. Required.\n\
+    \   }\n   ````\n"
+- uid: azure.communication.jobrouter.JobRouterClient.upsert_job
+  name: upsert_job
   summary: Update a job.
-  signature: 'update_job(job_id: str, router_job: RouterJob, **kwargs: Any) -> RouterJob'
+  signature: 'upsert_job(job_id: str, *args: RouterJob | MutableMapping[str, Any]
+    | IO[bytes], **kwargs: Any) -> RouterJob'
   parameters:
   - name: job_id
     description: Id of the job.
     isRequired: true
     types:
     - <xref:str>
-  - name: router_job
-    description: 'An instance of RouterJob.  This is a positional-only parameter.
-
-      Please provide either this or individual keyword parameters.'
-    isRequired: true
-    types:
-    - <xref:azure.communication.jobrouter.RouterJob>
   keywordOnlyParameters:
   - name: channel_reference
     description: Reference to an external parent context, eg. call ID.
@@ -816,7 +740,7 @@ methods:
 
       a worker must satisfy in order to process this job.'
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:azure.communication.jobrouter.RouterWorkerSelector>]]
+    - <xref:typing.Optional>[<xref:typing.List>[ <xref:azure.communication.jobrouter.models.RouterWorkerSelector>]]
   - name: labels
     description: 'A set of key/value pairs that are identifying attributes used by
       the rules
@@ -838,11 +762,28 @@ methods:
   - name: matching_mode
     description: If set, determines how a job will be matched
     types:
-    - <xref:typing.Optional>[<xref:azure.communication.jobrouter.JobMatchingMode>]
+    - <xref:typing.Optional>[<xref:azure.communication.jobrouter.models.JobMatchingMode>]
+  - name: if_unmodified_since
+    description: 'The request should only proceed if the entity was not modified
+
+      after this time. Default value is None.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'check if resource is changed. Set None to skip checking etag. Default
+      value is
+
+      None.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag. Default value is None.
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: Instance of RouterJob
     types:
-    - <xref:azure.communication.jobrouter.RouterJob>
+    - <xref:azure.communication.jobrouter.models.RouterJob>
   exceptions:
   - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
   examples:
@@ -850,34 +791,27 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_job_crud_ops.py\"\
+    24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\\router_job_crud_ops.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.communication.jobrouter import (\n       JobRouterClient,\n  \
-    \     RouterWorker,\n       ChannelConfiguration,\n   )\n\n   # set `connection_string`\
-    \ to an existing ACS endpoint\n   router_client: JobRouterClient = JobRouterClient.from_connection_string(conn_str\
-    \ = connection_string)\n   print(\"JobRouterAdministrationClient created successfully!\"\
-    )\n\n   update_job = router_client.update_job(\n       job_id = job_id,\n    \
-    \   channel_reference = \"45678\"\n   )\n\n   print(f\"Job has been successfully\
-    \ update with channel reference: {update_job.channel_reference}\")\n\n   ````\n"
-- uid: azure.communication.jobrouter.JobRouterClient.update_worker
-  name: update_worker
+    \ )\n\n   # set `connection_string` to an existing ACS endpoint\n   router_client:\
+    \ JobRouterClient = JobRouterClient.from_connection_string(conn_str=connection_string)\n\
+    \   print(\"JobRouterAdministrationClient created successfully!\")\n\n   update_job\
+    \ = router_client.upsert_job(job_id, channel_reference=\"45678\")\n\n   print(f\"\
+    Job has been successfully update with channel reference: {update_job.channel_reference}\"\
+    )\n\n   ````\n"
+- uid: azure.communication.jobrouter.JobRouterClient.upsert_worker
+  name: upsert_worker
   summary: Update a router worker.
-  signature: 'update_worker(worker_id: str, router_worker: RouterWorker, **kwargs:
-    Any) -> RouterWorker'
+  signature: 'upsert_worker(worker_id: str, *args: RouterWorker | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> RouterWorker'
   parameters:
   - name: worker_id
     description: Id of the worker.
     isRequired: true
     types:
     - <xref:str>
-  - name: router_worker
-    description: 'An instance of RouterWorker. This is a positional-only parameter.
-
-      Please provide either this or individual keyword parameters.'
-    isRequired: true
-    types:
-    - <xref:azure.communication.jobrouter.RouterWorker>
   keywordOnlyParameters:
   - name: queue_assignments
     description: The queue(s) that this worker can receive work from.
@@ -896,41 +830,73 @@ methods:
 
       engines to make decisions.'
     types:
-    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:int>,
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:int>,
       <xref:float>, <xref:str>, <xref:bool>, <xref:None>]]]
   - name: tags
     description: A set of tags. A set of non-identifying attributes attached to this
       worker.
     types:
-    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:typing.Union>[<xref:int>,
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:int>,
       <xref:float>, <xref:str>, <xref:bool>, <xref:None>]]]
   - name: channel_configurations
     description: 'The channel(s) this worker can handle and their impact on the
 
       workers capacity.'
     types:
-    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:azure.communication.jobrouter.ChannelConfiguration>]]
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:azure.communication.jobrouter.models.ChannelConfiguration>]]
   - name: available_for_offers
     description: A flag indicating this worker is open to receive offers or not.
     types:
     - <xref:typing.Optional>[<xref:bool>]
+  - name: max_concurrent_offers
+    description: 'If this is set, the worker will only receive up to this many new
+
+      offers at a time.'
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+  - name: if_unmodified_since
+    description: 'The request should only proceed if the entity was not modified
+
+      after this time. Default value is None.'
+    types:
+    - <xref:datetime.datetime>
+  - name: etag
+    description: 'check if resource is changed. Set None to skip checking etag. Default
+      value is
+
+      None.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag. Default value is None.
+    types:
+    - <xref:azure.core.MatchConditions>
   return:
     description: Instance of RouterWorker
     types:
-    - <xref:azure.communication.jobrouter.RouterWorker>
+    - <xref:azure.communication.jobrouter.models.RouterWorker>
   exceptions:
   - type: <xref:azure.core.exceptions.HttpResponseError>, <xref:ValueError>
   examples:
-  - "Use a JobRouterClient to de-register a worker<!--[!code-python[Main](les\\router_worker_crud_ops.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    24\\\\azure-communication-jobrouter-1.0.0b1\\\\samples\\\\router_worker_crud_ops.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.communication.jobrouter import JobRouterClient\n\n   router_client\
-    \ = JobRouterClient.from_connection_string(conn_str = connection_string)\n\n \
-    \  router_worker = router_client.update_worker(\n       worker_id = worker_id,\n\
-    \       available_for_offers = False\n   )\n\n   print(f\"Successfully de-registered\
-    \ router worker with id: {router_worker.id} with status: {router_worker.state}\"\
-    )\n\n   ````\n"
+  - "Use a JobRouterClient to create a worker with concurrent offer limit<!--[!code-python[Main](les\\\
+    router_worker_crud_ops.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\24\\\\azure-communication-jobrouter-1.1.0b1\\\\samples\\\
+    \\router_worker_crud_ops.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.communication.jobrouter import (\n\
+    \       JobRouterClient,\n   )\n   from azure.communication.jobrouter.models import\
+    \ (\n       RouterWorker,\n       RouterChannel,\n   )\n\n   # set `connection_string`\
+    \ to an existing ACS endpoint\n   router_client = JobRouterClient.from_connection_string(conn_str=connection_string)\n\
+    \   print(\"JobRouterClient created successfully!\")\n\n   router_worker: RouterWorker\
+    \ = router_client.upsert_worker(\n       worker_id,\n       RouterWorker(\n  \
+    \         capacity=100,\n           queues=[\"worker-q-1\", \"worker-q-2\"],\n\
+    \           channels=[\n               RouterChannel(channel_id=\"WebChat\", capacity_cost_per_job=1),\n\
+    \               RouterChannel(channel_id=\"WebChatEscalated\", capacity_cost_per_job=20),\n\
+    \               RouterChannel(channel_id=\"Voip\", capacity_cost_per_job=100),\n\
+    \           ],\n           labels={\"Location\": \"NA\", \"English\": 7, \"O365\"\
+    : True, \"Xbox_Support\": False},\n           tags={\"Name\": \"John Doe\", \"\
+    Department\": \"IT_HelpDesk\"},\n           max_concurrent_offers=1,\n       ),\n\
+    \   )\n\n   print(f\"Router worker successfully created with id: {router_worker.id}\"\
+    )\n\n\n   ````\n"
