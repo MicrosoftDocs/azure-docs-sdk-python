@@ -1,7 +1,7 @@
 ---
 title: Azure Palo Alto Networks SDK for Python
 description: Reference for Azure Palo Alto Networks SDK for Python
-ms.date: 04/30/2024
+ms.date: 05/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: paloaltonetworks
