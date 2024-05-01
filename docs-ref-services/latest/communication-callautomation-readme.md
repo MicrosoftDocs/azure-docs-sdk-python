@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Call Automation client library for Python
 keywords: Azure, python, SDK, API, azure-communication-callautomation, communication
-ms.date: 11/23/2023
+ms.date: 05/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Call Automation client library for Python - version 1.1.0 
+# Azure Communication Call Automation client library for Python - version 1.2.0 
 
 
 This package contains a Python SDK for Azure Communication Call Automation. Call Automation provides developers the ability to build server-based, intelligent call workflows, and call recording for voice and PSTN channels.
@@ -62,7 +62,10 @@ user = CommunicationUserIdentifier("8:acs:...")
 callback_url = "https://<MY-EVENT-HANDLER-URL>/events"
 
 # send out the invitation, creating call
-result = client.create_call(user, callback_url)
+result = client.create_call(
+    target_participant=user,
+    callback_url=callback_uri
+)
 
 # this id can be used to do further actions in the call
 call_connection_id = result.call_connection_id
@@ -75,7 +78,7 @@ call_connection = client.get_call_connection(call_connection_id)
 
 # from callconnection of result above, play media to all participants
 my_file = FileSource(url="https://<FILE-SOURCE>/<SOME-FILE>.wav")
-call_connection.play_media(my_file)
+call_connection.play_to_all(my_file)
 ```
 
 ## Troubleshooting
@@ -84,7 +87,6 @@ call_connection.play_media(my_file)
 - [Incoming Call Concept][incomingcall]
 - [Build a customer interaction workflow using Call Automation][build1]
 - [Redirect inbound telephony calls with Call Automation][build2]
-- [Connect Azure Communication Services with Azure AI services][cognitive_integration]
 - [Quickstart: Play action][build3]
 - [Quickstart: Recognize action][build4]
 - [Read more about Call Recording in Azure Communication Services][recording1]
@@ -120,11 +122,10 @@ additional questions or comments.
 [azure_powershell]: /powershell/module/az.communication/new-azcommunicationservice
 [build_doc]: https://aka.ms/AzureSDKBundling
 [incomingcall]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/incoming-call-notification
-[build1]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-python
-[build2]: https://learn.microsoft.com/azure/communication-services/how-tos/call-automation-sdk/redirect-inbound-telephony-calls?pivots=programming-language-python
-[build3]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/play-action?pivots=programming-language-python
-[build4]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/recognize-action?pivots=programming-language-python
+[build1]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-csha
+[build2]: https://learn.microsoft.com/azure/communication-services/how-tos/call-automation-sdk/redirect-inbound-telephony-calls?pivots=programming-language-csharp
+[build3]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/play-action?pivots=programming-language-csharp
+[build4]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/recognize-action?pivots=programming-language-csharp
 [recording1]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
-[recording2]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/get-started-call-recording?pivots=programming-language-python
-[cognitive_integration]: https://learn.microsoft.com/azure/communication-services/concepts/call-automation/azure-communication-services-azure-cognitive-services-integration
+[recording2]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/get-started-call-recording?pivots=programming-language-csharp
 
