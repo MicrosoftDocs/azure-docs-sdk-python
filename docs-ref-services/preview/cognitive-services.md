@@ -167,12 +167,12 @@ The Text Analytics API is a cloud-based service that provides  natural language 
 - Key phrase extraction
 - Language detection
 
-[Try the Text Analytics API](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) in your browser.
+[Try the Text Analytics API](https://azure.microsoft.com/services/cognitive-services/text-analytics/) in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
 ```python
-pip install azure-cognitiveservices-language-textanalytics
+pip install azure-ai-textanalytics
 ```
 
 [Learn more](/azure/cognitive-services/text-analytics/overview) about the Text Analytics API and get started with the [Text Analytics API Python quickstart](/azure/cognitive-services/text-analytics/quickstarts/python).
