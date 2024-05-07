@@ -11,7 +11,7 @@ summary: 'Azure VM workload-specific protected item representing SAP HANA Databa
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'AzureVmWorkloadSAPHanaDatabaseProtectedItem(*, container_name: str | None
     = None, source_resource_id: str | None = None, policy_id: str | None = None, last_recovery_point:
@@ -20,7 +20,7 @@ constructor:
     = None, is_scheduled_for_deferred_delete: bool | None = None, deferred_delete_time_remaining:
     str | None = None, is_deferred_delete_schedule_upcoming: bool | None = None, is_rehydrate:
     bool | None = None, resource_guard_operation_requests: List[str] | None = None,
-    is_archive_enabled: bool | None = None, policy_name: str | None = None, soft_delete_retention_period:
+    is_archive_enabled: bool | None = None, policy_name: str | None = None, soft_delete_retention_period_in_days:
     int | None = None, server_name: str | None = None, parent_name: str | None = None,
     parent_type: str | None = None, protection_state: str | _models.ProtectionState
     | None = None, last_backup_status: str | _models.LastBackupStatus | None = None,
@@ -28,8 +28,9 @@ constructor:
     | None = None, protected_item_data_source_id: str | None = None, protected_item_health_status:
     str | _models.ProtectedItemHealthStatus | None = None, extended_info: _models.AzureVmWorkloadProtectedItemExtendedInfo
     | None = None, kpis_healths: Dict[str, _models.KPIResourceHealthDetails] | None
-    = None, **kwargs: Any)'
-  parameters:
+    = None, nodes_list: List[_models.DistributedNodesInfo] | None = None, **kwargs:
+    Any)'
+  keywordOnlyParameters:
   - name: container_name
     description: Unique name of container.
     types:
@@ -93,7 +94,7 @@ constructor:
 
       will be performed.'
     types:
-    - <xref:azure.mgmt.recoveryservicesbackup.activestamp.aio.operations.BackupEnginesOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
   - name: is_archive_enabled
     description: Flag to identify whether datasource is protected in archive.
     types:
@@ -102,7 +103,7 @@ constructor:
     description: Name of the policy used for protection.
     types:
     - <xref:str>
-  - name: soft_delete_retention_period
+  - name: soft_delete_retention_period_in_days
     description: Soft delete retention period in days.
     types:
     - <xref:int>
@@ -167,7 +168,11 @@ constructor:
   - name: kpis_healths
     description: Health details of different KPIs.
     types:
-    - <xref:dict>[<xref:str,azure.mgmt.recoveryservicesbackup.activestamp.models.KPIResourceHealthDetails>]
+    - <xref:dict>[<xref:str>, <xref:azure.mgmt.recoveryservicesbackup.activestamp.models.KPIResourceHealthDetails>]
+  - name: nodes_list
+    description: List of the nodes in case of distributed container.
+    types:
+    - <xref:list>[<xref:azure.mgmt.recoveryservicesbackup.activestamp.models.DistributedNodesInfo>]
 variables:
 - description: backup item type. Required.
   name: protected_item_type
@@ -267,9 +272,13 @@ variables:
   types:
   - <xref:str>
 - description: Soft delete retention period in days.
-  name: soft_delete_retention_period
+  name: soft_delete_retention_period_in_days
   types:
   - <xref:int>
+- description: ID of the vault which protects this item.
+  name: vault_id
+  types:
+  - <xref:str>
 - description: Friendly name of the DB represented by this backup item.
   name: friendly_name
   types:
@@ -339,4 +348,8 @@ variables:
 - description: Health details of different KPIs.
   name: kpis_healths
   types:
-  - <xref:dict>[<xref:str,azure.mgmt.recoveryservicesbackup.activestamp.models.KPIResourceHealthDetails>]
+  - <xref:dict>[<xref:str>, <xref:azure.mgmt.recoveryservicesbackup.activestamp.models.KPIResourceHealthDetails>]
+- description: List of the nodes in case of distributed container.
+  name: nodes_list
+  types:
+  - <xref:list>[<xref:azure.mgmt.recoveryservicesbackup.activestamp.models.DistributedNodesInfo>]

@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hanaonazure, saphanaonazure
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/12/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: sap-on-azure
 ms.subservice: sap-large-instances
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure SAP Hana on Azure Management Client Library.

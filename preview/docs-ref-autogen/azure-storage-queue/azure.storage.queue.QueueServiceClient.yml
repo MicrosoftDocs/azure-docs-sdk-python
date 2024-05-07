@@ -58,6 +58,7 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  keywordOnlyParameters:
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -70,7 +71,45 @@ constructor:
     description: The hostname of the secondary endpoint.
     types:
     - <xref:str>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    types:
+    - <xref:str>
+examples:
+- "Creating the QueueServiceClient with an account url and credential.<!--[!code-python[Main](les\\\
+  queue_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\queue_samples_authentication.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.queue\
+  \ import QueueServiceClient\n   queue_service = QueueServiceClient(account_url=self.account_url,\
+  \ credential=self.access_key)\n\n   ````\n\nCreating the QueueServiceClient with\
+  \ Azure Identity credentials.<!--[!code-python[Main](les\\queue_samples_authentication.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\206\\\\azure-storage-queue-12.10.0b1\\\
+  \\samples\\\\queue_samples_authentication.py\", \"xml:space\": \"preserve\", \"\
+  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
+  \ 1}, \"linenos\": false} -->\n\n````python\n\n   # Get a token credential for authentication\n\
+  \   from azure.identity import ClientSecretCredential\n   token_credential = ClientSecretCredential(\n\
+  \       self.active_directory_tenant_id,\n       self.active_directory_application_id,\n\
+  \       self.active_directory_application_secret\n   )\n\n   # Instantiate a QueueServiceClient\
+  \ using a token credential\n   from azure.storage.queue import QueueServiceClient\n\
+  \   queue_service = QueueServiceClient(account_url=self.account_url, credential=token_credential)\n\
+  \n   ````\n"
 methods:
+- uid: azure.storage.queue.QueueServiceClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: close()
 - uid: azure.storage.queue.QueueServiceClient.create_queue
   name: create_queue
   summary: 'Creates a new queue under the specified account.
@@ -93,14 +132,25 @@ methods:
       queue as metadata. Example: {''Category'': ''test''}'
     isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>
   return:
+    description: A QueueClient for the newly created Queue.
     types:
     - <xref:azure.storage.queue.QueueClient>
+  examples:
+  - "Create a queue in the service.<!--[!code-python[Main](les\\queue_samples_service.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\queue_samples_service.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   queue_service.create_queue(\"myqueue1\")\n\n   ````\n"
 - uid: azure.storage.queue.QueueServiceClient.delete_queue
   name: delete_queue
   summary: 'Deletes the specified queue and any messages it contains.
@@ -128,6 +178,7 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.queue.QueueProperties>
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -135,6 +186,15 @@ methods:
   return:
     types:
     - <xref:None>
+  examples:
+  - "Delete a queue in the service.<!--[!code-python[Main](les\\queue_samples_service.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\queue_samples_service.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   queue_service.delete_queue(\"myqueue1\")\n\n   ````\n"
 - uid: azure.storage.queue.QueueServiceClient.from_connection_string
   name: from_connection_string
   summary: Create QueueServiceClient from a Connection String.
@@ -168,10 +228,34 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>,
+      <xref:str>], <xref:AzureNamedKeyCredential>, <xref:AzureSasCredential>, <xref:"TokenCredential">]]
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    types:
+    - <xref:str>
   return:
     description: A Queue service client.
     types:
     - <xref:azure.storage.queue.QueueClient>
+  examples:
+  - "Creating the QueueServiceClient with a connection string.<!--[!code-python[Main](les\\\
+    queue_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\\
+    queue_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.storage.queue import QueueServiceClient\n\
+    \   queue_service = QueueServiceClient.from_connection_string(conn_str=self.connection_string)\n\
+    \n   ````\n"
 - uid: azure.storage.queue.QueueServiceClient.get_queue_client
   name: get_queue_client
   summary: 'Get a client to interact with the specified queue.
@@ -192,13 +276,23 @@ methods:
     description: A <xref:azure.storage.queue.QueueClient> object.
     types:
     - <xref:azure.storage.queue.QueueClient>
+  examples:
+  - "Get the queue client.<!--[!code-python[Main](les\\queue_samples_service.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\206\\\\azure-storage-queue-12.10.0b1\\\
+    \\samples\\\\queue_samples_service.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   # Get the queue client to interact with\
+    \ a specific queue\n   queue = queue_service.get_queue_client(queue=\"myqueue2\"\
+    )\n\n   ````\n"
 - uid: azure.storage.queue.QueueServiceClient.get_service_properties
   name: get_service_properties
   summary: 'Gets the properties of a storage account''s Queue service, including
 
     Azure Storage Analytics.'
   signature: 'get_service_properties(**kwargs: Any) -> Dict[str, Any]'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -208,7 +302,16 @@ methods:
 
       analytics logging, hour/minute metrics, cors rules, etc.'
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  examples:
+  - "Getting queue service properties.<!--[!code-python[Main](les\\queue_samples_service.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\queue_samples_service.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   properties = queue_service.get_service_properties()\n\n   ````\n"
 - uid: azure.storage.queue.QueueServiceClient.get_service_stats
   name: get_service_stats
   summary: 'Retrieves statistics related to replication for the Queue service.
@@ -243,7 +346,7 @@ methods:
 
     replication is enabled for your storage account.'
   signature: 'get_service_stats(**kwargs: Any) -> Dict[str, Any]'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -251,7 +354,7 @@ methods:
   return:
     description: The queue service stats.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.queue.QueueServiceClient.list_queues
   name: list_queues
   summary: 'Returns a generator to list the queues under the specified account.
@@ -275,6 +378,7 @@ methods:
     isRequired: true
     types:
     - <xref:bool>
+  keywordOnlyParameters:
   - name: results_per_page
     description: 'The maximum number of queue names to retrieve per API
 
@@ -302,6 +406,18 @@ methods:
     description: An iterable (auto-paging) of QueueProperties.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.queue.QueueProperties>]
+  examples:
+  - "List queues in the service.<!--[!code-python[Main](les\\queue_samples_service.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\queue_samples_service.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # List all the queues in the service\n   list_queues = queue_service.list_queues()\n\
+    \   for queue in list_queues:\n       print(queue)\n\n   # List the queues in\
+    \ the service that start with the name \"my\"\n   list_my_queues = queue_service.list_queues(name_starts_with=\"\
+    my\")\n   for queue in list_my_queues:\n       print(queue)\n\n   ````\n"
 - uid: azure.storage.queue.QueueServiceClient.set_service_properties
   name: set_service_properties
   summary: 'Sets the properties of a storage account''s Queue service, including
@@ -343,11 +459,99 @@ methods:
       and CORS will be disabled for the service.'
     isRequired: true
     types:
-    - <xref:list>(<xref:azure.storage.queue.CorsRule>)
+    - <xref:typing.Optional>[<xref:typing.List>[<xref:azure.storage.queue.CorsRule>]]
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
     - <xref:int>
+  examples:
+  - "Setting queue service properties.<!--[!code-python[Main](les\\queue_samples_service.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    206\\\\azure-storage-queue-12.10.0b1\\\\samples\\\\queue_samples_service.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Create service properties\n   from azure.storage.queue import QueueAnalyticsLogging,\
+    \ Metrics, CorsRule, RetentionPolicy\n\n   # Create logging settings\n   logging\
+    \ = QueueAnalyticsLogging(read=True, write=True, delete=True, retention_policy=RetentionPolicy(enabled=True,\
+    \ days=5))\n\n   # Create metrics for requests statistics\n   hour_metrics = Metrics(enabled=True,\
+    \ include_apis=True, retention_policy=RetentionPolicy(enabled=True, days=5))\n\
+    \   minute_metrics = Metrics(enabled=True, include_apis=True, retention_policy=RetentionPolicy(enabled=True,\
+    \ days=5))\n\n   # Create CORS rules\n   cors_rule1 = CorsRule(['www.xyz.com'],\
+    \ ['GET'])\n   allowed_origins = ['www.xyz.com', \"www.ab.com\", \"www.bc.com\"\
+    ]\n   allowed_methods = ['GET', 'PUT']\n   max_age_in_seconds = 500\n   exposed_headers\
+    \ = [\"x-ms-meta-data*\", \"x-ms-meta-source*\", \"x-ms-meta-abc\", \"x-ms-meta-bcd\"\
+    ]\n   allowed_headers = [\"x-ms-meta-data*\", \"x-ms-meta-target*\", \"x-ms-meta-xyz\"\
+    , \"x-ms-meta-foo\"]\n   cors_rule2 = CorsRule(\n       allowed_origins,\n   \
+    \    allowed_methods,\n       max_age_in_seconds=max_age_in_seconds,\n       exposed_headers=exposed_headers,\n\
+    \       allowed_headers=allowed_headers\n   )\n\n   cors = [cors_rule1, cors_rule2]\n\
+    \n   # Set the service properties\n   queue_service.set_service_properties(logging,\
+    \ hour_metrics, minute_metrics, cors)\n\n   ````\n"
+attributes:
+- uid: azure.storage.queue.QueueServiceClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
   return:
     types:
-    - <xref:None>
+    - <xref:str>
+- uid: azure.storage.queue.QueueServiceClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.QueueServiceClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.QueueServiceClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.QueueServiceClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.queue.QueueServiceClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.storage.queue.QueueServiceClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.queue.QueueServiceClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

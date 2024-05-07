@@ -8,171 +8,240 @@ inheritances:
 - azure.ai.ml.entities._job.parameterized_spark.ParameterizedSpark
 - azure.ai.ml.entities._job.job_io_mixin.JobIOMixin
 - azure.ai.ml.entities._job.spark_job_entry_mixin.SparkJobEntryMixin
-summary: Create a standalone spark job.
+summary: A standalone Spark job.
 constructor:
-  syntax: 'SparkJob(*, driver_cores: int | None = None, driver_memory: str | None
-    = None, executor_cores: int | None = None, executor_memory: str | None = None,
-    executor_instances: int | None = None, dynamic_allocation_enabled: bool | None
-    = None, dynamic_allocation_min_executors: int | None = None, dynamic_allocation_max_executors:
-    int | None = None, inputs: Dict | None = None, outputs: Dict | None = None, compute:
-    str | None = None, identity: Dict[str, str] | ManagedIdentityConfiguration | AmlTokenConfiguration
-    | UserIdentityConfiguration | None = None, resources: Dict | SparkResourceConfiguration
-    | None = None, **kwargs)'
-  parameters:
-  - name: experiment_name
-    description: Name of the experiment the job will be created under.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: name
-    description: The name of the job.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: display_name
-    description: Display name of the job.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: description
-    description: Description of the job.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: tags
-    description: Tag dictionary. Tags can be added, removed, and updated.
-    isRequired: true
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: code
-    description: The source code to run the job.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:str>, <xref:os.PathLike>]
-  - name: entry
-    description: File or class entry point.
-    isRequired: true
-    types:
-    - <xref:dict>[<xref:str>, <xref:str>]
-  - name: py_files
-    description: List of .zip, .egg or .py files to place on the PYTHONPATH for Python
-      apps.
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:typing.List>[<xref:str>]]
-  - name: jars
-    description: List of jars to include on the driver and executor classpaths.
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:typing.List>[<xref:str>]]
-  - name: files
-    description: List of files to be placed in the working directory of each executor.
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:typing.List>[<xref:str>]]
-  - name: archives
-    description: List of archives to be extracted into the working directory of each
-      executor.
-    isRequired: true
-    types:
-    - <xref:Optional>[<xref:typing.List>[<xref:str>]]
-  - name: identity
-    description: Identity that spark job will use while running on compute.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:Dict,azure.ai.ml.entities.ManagedIdentityConfiguration,azure.ai.ml.entities.AmlTokenConfiguration,azure.ai.ml.entities.UserIdentityConfiguration>]
+  syntax: 'SparkJob(*, driver_cores: int | str | None = None, driver_memory: str |
+    None = None, executor_cores: int | str | None = None, executor_memory: str | None
+    = None, executor_instances: int | str | None = None, dynamic_allocation_enabled:
+    bool | str | None = None, dynamic_allocation_min_executors: int | str | None =
+    None, dynamic_allocation_max_executors: int | str | None = None, inputs: Dict[str,
+    Input | str | bool | int | float] | None = None, outputs: Dict[str, Output] |
+    None = None, compute: str | None = None, identity: Dict[str, str] | ManagedIdentityConfiguration
+    | AmlTokenConfiguration | UserIdentityConfiguration | None = None, resources:
+    Dict | SparkResourceConfiguration | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: driver_cores
-    description: Number of cores to use for the driver process, only in cluster mode.
-    isRequired: true
+    description: The number of cores to use for the driver process, only in cluster
+      mode.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: driver_memory
-    description: Amount of memory to use for the driver process.
-    isRequired: true
+    description: 'The amount of memory to use for the driver process, formatted as
+      strings with a size unit
+
+      suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: executor_cores
     description: The number of cores to use on each executor.
-    isRequired: true
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: executor_memory
-    description: 'Amount of memory to use per executor process, in the same format
-      as JVM memory strings with
+    description: 'The amount of memory to use per executor process, formatted as strings
+      with a size unit
 
-      a size unit suffix ("k", "m", "g" or "t") (e.g. 512m, 2g).'
-    isRequired: true
+      suffix ("k", "m", "g" or "t") (e.g. "512m", "2g").'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: executor_instances
-    description: Initial number of executors.
-    isRequired: true
+    description: The initial number of executors.
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_enabled
     description: 'Whether to use dynamic resource allocation, which scales the number
-      of executors
+      of
 
-      registered with this application up and down based on the workload.'
-    isRequired: true
+      executors registered with this application up and down based on the workload.'
     types:
-    - <xref:bool>
+    - <xref:typing.Optional>[<xref:bool>]
   - name: dynamic_allocation_min_executors
-    description: Lower bound for the number of executors if dynamic allocation is
-      enabled.
-    isRequired: true
+    description: 'The lower bound for the number of executors if dynamic allocation
+      is
+
+      enabled.'
     types:
-    - <xref:int>
+    - <xref:typing.Optional>[<xref:int>]
   - name: dynamic_allocation_max_executors
-    description: Upper bound for the number of executors if dynamic allocation is
-      enabled.
-    isRequired: true
+    description: 'The upper bound for the number of executors if dynamic allocation
+      is
+
+      enabled.'
     types:
-    - <xref:int>
-  - name: conf
-    description: A dict with pre-defined spark configurations key and values.
-    isRequired: true
-    types:
-    - <xref:dict>
-  - name: environment
-    description: Azure ML environment to run the job in.
-    isRequired: true
-    types:
-    - <xref:Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]
+    - <xref:typing.Optional>[<xref:int>]
   - name: inputs
-    description: Mapping of inputs data bindings used in the job.
-    isRequired: true
+    description: The mapping of input data bindings used in the job.
     types:
-    - <xref:dict>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:azure.ai.ml.Input>]]
   - name: outputs
-    description: Mapping of outputs data bindings used in the job.
-    isRequired: true
+    description: The mapping of output data bindings used in the job.
     types:
-    - <xref:dict>
-  - name: args
-    description: Arguments for the job.
-    isRequired: true
-    types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:azure.ai.ml.Output>]]
   - name: compute
     description: The compute resource the job runs on.
-    isRequired: true
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: identity
-    description: Identity that spark job will use while running on compute.
-    isRequired: true
+    description: The identity that the Spark job will use while running on compute.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:dict>[<xref:str>, <xref:str>],
+      <xref:azure.ai.ml.ManagedIdentityConfiguration>, <xref:azure.ai.ml.AmlTokenConfiguration>,
+      <xref:azure.ai.ml.UserIdentityConfiguration>]]
   - name: resources
-    description: Compute Resource configuration for the job.
+    isRequired: true
+examples:
+- "Configuring a SparkJob.<!--[!code-python[Main](les\\ml_samples_spark_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\
+  \\samples\\\\ml_samples_spark_configurations.py\", \"xml:space\": \"preserve\",\
+  \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import Input,\
+  \ Output\n   from azure.ai.ml.entities import SparkJob\n\n   spark_job = SparkJob(\n\
+  \       code=\"./sdk/ml/azure-ai-ml/tests/test_configs/dsl_pipeline/spark_job_in_pipeline/basic_src\"\
+  ,\n       entry={\"file\": \"sampleword.py\"},\n       conf={\n           \"spark.driver.cores\"\
+  : 2,\n           \"spark.driver.memory\": \"1g\",\n           \"spark.executor.cores\"\
+  : 1,\n           \"spark.executor.memory\": \"1g\",\n           \"spark.executor.instances\"\
+  : 1,\n       },\n       environment=\"AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33\"\
+  ,\n       inputs={\n           \"input1\": Input(\n               type=\"uri_file\"\
+  , path=\"azureml://datastores/workspaceblobstore/paths/python/data.csv\", mode=\"\
+  direct\"\n           )\n       },\n       compute=\"synapsecompute\",\n       outputs={\"\
+  component_out_path\": Output(type=\"uri_folder\")},\n       args=\"--input1 ${{inputs.input1}}\
+  \ --output2 ${{outputs.output1}} --my_sample_rate ${{inputs.sample_rate}}\",\n \
+  \  )\n\n\n   ````\n"
+methods:
+- uid: azure.ai.ml.entities.SparkJob.dump
+  name: dump
+  summary: Dumps the job content into a file in YAML format.
+  signature: 'dump(dest: str | PathLike | IO, **kwargs: Any) -> None'
+  parameters:
+  - name: dest
+    description: 'The local path or file stream to write the YAML content to.
+
+      If dest is a file path, a new file will be created.
+
+      If dest is an open file, the file will be written to directly.'
     isRequired: true
     types:
-    - <xref:Union>[<xref:Dict>, <xref:azure.ai.ml.entities.SparkResourceConfiguration>]
-methods:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  keywordOnlyParameters:
+  - name: kwargs
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
 - uid: azure.ai.ml.entities.SparkJob.filter_conf_fields
   name: filter_conf_fields
-  signature: filter_conf_fields()
+  summary: 'Filters out the fields of the conf attribute that are not among the Spark
+    configuration fields
+
+    listed in ~azure.ai.ml._schema.job.parameterized_spark.CONF_KEY_MAP and returns
+    them in their own dictionary.'
+  signature: filter_conf_fields() -> Dict[str, str]
+  return:
+    description: A dictionary of the conf fields that are not Spark configuration
+      fields.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
 attributes:
+- uid: azure.ai.ml.entities.SparkJob.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.entities.SparkJob.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+- uid: azure.ai.ml.entities.SparkJob.entry
+  name: entry
+- uid: azure.ai.ml.entities.SparkJob.environment
+  name: environment
+  summary: The Azure ML environment to run the Spark component or job in.
+  return:
+    description: The Azure ML environment to run the Spark component or job in.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.entities.Environment>]]
+- uid: azure.ai.ml.entities.SparkJob.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.SparkJob.identity
   name: identity
+  summary: The identity that the Spark job will use while running on compute.
+  return:
+    description: The identity that the Spark job will use while running on compute.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:azure.ai.ml.ManagedIdentityConfiguration>,
+      <xref:azure.ai.ml.AmlTokenConfiguration>, <xref:azure.ai.ml.UserIdentityConfiguration>]]
+- uid: azure.ai.ml.entities.SparkJob.inputs
+  name: inputs
+- uid: azure.ai.ml.entities.SparkJob.log_files
+  name: log_files
+  summary: Job output files.
+  return:
+    description: The dictionary of log names and URLs.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
+- uid: azure.ai.ml.entities.SparkJob.outputs
+  name: outputs
 - uid: azure.ai.ml.entities.SparkJob.resources
   name: resources
+  summary: The compute resource configuration for the job.
+  return:
+    description: The compute resource configuration for the job.
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SparkResourceConfiguration>]
+- uid: azure.ai.ml.entities.SparkJob.status
+  name: status
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
+  return:
+    description: Status of the job.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.SparkJob.studio_url
+  name: studio_url
+  summary: Azure ML studio endpoint.
+  return:
+    description: The URL to the job details page.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.SparkJob.type
+  name: type
+  summary: The type of the job.
+  return:
+    description: The type of the job.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.entities.SparkJob.CODE_ID_RE_PATTERN
+  name: CODE_ID_RE_PATTERN
+  signature: CODE_ID_RE_PATTERN = re.compile('\\/subscriptions\\/(?P<subscription>[\\w,-]+)\\/resourceGroups\\/(?P<resource_group>[\\w,-]+)\\/providers\\/Microsoft\\.MachineLearningServices\\/workspaces\\/(?P<workspace>[\\w,-]+)\\/codes\\/(?P<co)

@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datamigration, databasemigrationservice
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 08/26/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: dms
+ms.technology: azure
 ---
-
 # Microsoft Azure Data Migration SDK for Python
 
 This is the Microsoft Azure Data Migration Client Library.

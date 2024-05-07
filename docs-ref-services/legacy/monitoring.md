@@ -2,17 +2,13 @@
 title: Azure Monitoring libraries for python
 description: Reference for Azure Monitoring libraries for python
 keywords: Azure, python, SDK, API, Monitoring
-author: lisawong19
-ms.author: ramyar
-manager: douge
-
 ms.date: 07/19/2017
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-monitor
+ms.technology: azure
+manager: douge
 ---
-
 # Azure Monitoring libraries for python
 
 ## Overview 
@@ -175,3 +171,4 @@ my_alert = client.alert_rules.create_or_update(
 ```
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/monitoring/management)
+

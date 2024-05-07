@@ -11,28 +11,35 @@ summary: 'Represents a migration resource.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'MigrationResource(*, location: str, tags: Dict[str, str] | None = None,
-    migration_mode: str | _models.MigrationMode | None = None, source_db_server_resource_id:
-    str | None = None, source_db_server_fully_qualified_domain_name: str | None =
-    None, target_db_server_fully_qualified_domain_name: str | None = None, secret_parameters:
-    _models.MigrationSecretParameters | None = None, dbs_to_migrate: List[str] | None
-    = None, setup_logical_replication_on_source_db_if_needed: str | _models.LogicalReplicationOnSourceDbEnum
-    | None = None, overwrite_dbs_in_target: str | _models.OverwriteDbsInTargetEnum
-    | None = None, migration_window_start_time_in_utc: datetime | None = None, migration_window_end_time_in_utc:
-    datetime | None = None, start_data_migration: str | _models.StartDataMigrationEnum
-    | None = None, trigger_cutover: str | _models.TriggerCutoverEnum | None = None,
-    dbs_to_trigger_cutover_on: List[str] | None = None, cancel: str | _models.CancelEnum
-    | None = None, dbs_to_cancel_migration_on: List[str] | None = None, **kwargs:
-    Any)'
-  parameters:
+    migration_instance_resource_id: str | None = None, migration_mode: str | _models.MigrationMode
+    | None = None, migration_option: str | _models.MigrationOption | None = None,
+    source_type: str | _models.SourceType | None = None, ssl_mode: str | _models.SslMode
+    | None = None, source_db_server_resource_id: str | None = None, source_db_server_fully_qualified_domain_name:
+    str | None = None, target_db_server_fully_qualified_domain_name: str | None =
+    None, secret_parameters: _models.MigrationSecretParameters | None = None, dbs_to_migrate:
+    List[str] | None = None, setup_logical_replication_on_source_db_if_needed: str
+    | _models.LogicalReplicationOnSourceDbEnum | None = None, overwrite_dbs_in_target:
+    str | _models.OverwriteDbsInTargetEnum | None = None, migration_window_start_time_in_utc:
+    datetime | None = None, migration_window_end_time_in_utc: datetime | None = None,
+    migrate_roles: str | _models.MigrateRolesEnum | None = None, start_data_migration:
+    str | _models.StartDataMigrationEnum | None = None, trigger_cutover: str | _models.TriggerCutoverEnum
+    | None = None, dbs_to_trigger_cutover_on: List[str] | None = None, cancel: str
+    | _models.CancelEnum | None = None, dbs_to_cancel_migration_on: List[str] | None
+    = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: tags
     description: Resource tags.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: location
     description: The geo-location where the resource lives. Required.
+    types:
+    - <xref:str>
+  - name: migration_instance_resource_id
+    description: ResourceId of the private endpoint migration instance.
     types:
     - <xref:str>
   - name: migration_mode
@@ -42,8 +49,42 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrationMode>
+  - name: migration_option
+    description: 'This indicates the supported Migration option for the migration.
+
+      Known values are: "Validate", "Migrate", and "ValidateAndMigrate".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrationOption>
+  - name: source_type
+    description: 'migration source server type : OnPremises, AWS, GCP, AzureVM,
+
+      PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB,
+      GCP_Compute,
+
+      or EDB. Known values are: "OnPremises", "AWS", "GCP", "AzureVM", "PostgreSQLSingleServer",
+
+      "AWS_RDS", "AWS_AURORA", "AWS_EC2", "GCP_CloudSQL", "GCP_AlloyDB", "GCP_Compute",
+      and "EDB".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.SourceType>
+  - name: ssl_mode
+    description: 'SSL modes for migration. Default SSL mode for PostgreSQLSingleServer
+      is
+
+      VerifyFull and Prefer for other source types. Known values are: "Prefer", "Require",
+
+      "VerifyCA", and "VerifyFull".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.SslMode>
   - name: source_db_server_resource_id
-    description: ResourceId of the source database server.
+    description: 'ResourceId of the source database server in case the
+
+      sourceType is PostgreSQLSingleServer. For other source types this should be
+
+      ipaddress:port@username or hostname:port@username.'
     types:
     - <xref:str>
   - name: source_db_server_fully_qualified_domain_name
@@ -71,7 +112,7 @@ constructor:
   - name: dbs_to_migrate
     description: Number of databases to migrate.
     types:
-    - <xref:azure.mgmt.rdbms.mariadb.aio.operations.LocationBasedPerformanceTierOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
   - name: setup_logical_replication_on_source_db_if_needed
     description: 'Indicates whether to setup
 
@@ -100,6 +141,13 @@ constructor:
     description: End time in UTC for migration window.
     types:
     - <xref:datetime.datetime>
+  - name: migrate_roles
+    description: 'To migrate roles and permissions we need to send this flag as True.
+
+      Known values are: "True" and "False".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrateRolesEnum>
   - name: start_data_migration
     description: 'Indicates whether the data migration should start right away.
 
@@ -120,7 +168,7 @@ constructor:
 
       send triggerCutover flag as True and database names in this array.'
     types:
-    - <xref:azure.mgmt.rdbms.mariadb.aio.operations.LocationBasedPerformanceTierOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
   - name: cancel
     description: 'To trigger cancel for entire migration we need to send this flag
       as True.
@@ -134,11 +182,12 @@ constructor:
 
       send cancel flag as True and database names in this array.'
     types:
-    - <xref:azure.mgmt.rdbms.mariadb.aio.operations.LocationBasedPerformanceTierOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
 variables:
-- description: 'Fully qualified resource ID for the resource. Ex -
+- description: 'Fully qualified resource ID for the resource. E.g.
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.'
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
@@ -175,6 +224,10 @@ variables:
   name: current_status
   types:
   - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrationStatus>
+- description: ResourceId of the private endpoint migration instance.
+  name: migration_instance_resource_id
+  types:
+  - <xref:str>
 - description: 'There are two types of migration modes Online and Offline. Known values
 
     are: "Offline" and "Online".'
@@ -182,6 +235,36 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrationMode>
+- description: 'This indicates the supported Migration option for the migration. Known
+
+    values are: "Validate", "Migrate", and "ValidateAndMigrate".'
+  name: migration_option
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrationOption>
+- description: 'migration source server type : OnPremises, AWS, GCP, AzureVM,
+
+    PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB,
+    GCP_Compute,
+
+    or EDB. Known values are: "OnPremises", "AWS", "GCP", "AzureVM", "PostgreSQLSingleServer",
+
+    "AWS_RDS", "AWS_AURORA", "AWS_EC2", "GCP_CloudSQL", "GCP_AlloyDB", "GCP_Compute",
+    and "EDB".'
+  name: source_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.SourceType>
+- description: 'SSL modes for migration. Default SSL mode for PostgreSQLSingleServer
+    is
+
+    VerifyFull and Prefer for other source types. Known values are: "Prefer", "Require",
+
+    "VerifyCA", and "VerifyFull".'
+  name: ssl_mode
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.SslMode>
 - description: Metadata of the source database server.
   name: source_db_server_metadata
   types:
@@ -190,7 +273,11 @@ variables:
   name: target_db_server_metadata
   types:
   - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.DbServerMetadata>
-- description: ResourceId of the source database server.
+- description: 'ResourceId of the source database server in case the
+
+    sourceType is PostgreSQLSingleServer. For other source types this should be
+
+    ipaddress:port@username or hostname:port@username.'
   name: source_db_server_resource_id
   types:
   - <xref:str>
@@ -248,6 +335,14 @@ variables:
   name: migration_window_end_time_in_utc
   types:
   - <xref:datetime.datetime>
+- description: 'To migrate roles and permissions we need to send this flag as True.
+    Known
+
+    values are: "True" and "False".'
+  name: migrate_roles
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.rdbms.postgresql_flexibleservers.models.MigrateRolesEnum>
 - description: 'Indicates whether the data migration should start right away. Known
 
     values are: "True" and "False".'

@@ -1,16 +1,13 @@
 ---
 title: Azure DevTest Labs SDK for Python
 description: Reference for Azure DevTest Labs SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
+ms.technology: azure
 manager: routlaw
 keywords: Azure, python, SDK, API, DevTest Labs
-ms.date: 03/30/2023
-ms.technology: azure
 ---
 # Azure DevTest Labs libraries for python
 
@@ -59,4 +56,4 @@ lab = async_lab.result() # Blocking wait
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/mgmt-devtestlabs-readme)
+> [Explore the Management APIs](/python/api/azure-mgmt-devtestlabs)

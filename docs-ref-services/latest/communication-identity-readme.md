@@ -1,19 +1,21 @@
 ---
 title: Azure Communication Identity Package client library for Python
 keywords: Azure, python, SDK, API, azure-communication-identity, communication
-author: petrsvihlik
-ms.author: petrsvihlik
-ms.date: 10/31/2022
+ms.date: 02/15/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Identity Package client library for Python - version 1.3.1 
+# Azure Communication Identity Package client library for Python - version 1.5.0 
 
 
 Azure Communication Identity client package is intended to be used to setup the basics for opening a way to use Azure Communication Service offerings. This package helps to create identity user tokens to be used by other client packages such as chat, calling, sms.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.3.1/sdk/communication/azure-communication-identity) | [Package (Pypi)](https://pypi.org/project/azure-communication-identity/) | [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.3.1/sdk/communication/azure-communication-identity) | [Product documentation](/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.5.0/sdk/communication/azure-communication-identity)
+| [Package (Pypi)](https://pypi.org/project/azure-communication-identity/)
+| [Package (Conda)](https://anaconda.org/microsoft/azure-communication/)
+| [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.5.0/sdk/communication/azure-communication-identity)
+| [Product documentation](/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-python)
 
 ## _Disclaimer_
 
@@ -80,8 +82,11 @@ print("User created with id:" + user.properties['id'])
 
 Use the `get_token` method to issue or refresh a scoped access token for the user. \
 Pass in the user object as a parameter, and a list of `CommunicationTokenScope`. Scope options are:
-- `CHAT` (Chat)
-- `VOIP` (VoIP)
+- `CHAT` (Use this for full access to Chat APIs)
+- `VOIP` (Use this for full access to Calling APIs)
+- `CHAT_JOIN` (Access to Chat APIs but without the authorization to create, delete or update chat threads)
+- `CHAT_JOIN_LIMITED` (A more limited version of CHAT_JOIN that doesn't allow to add or remove participants)
+- `VOIP_JOIN` (Access to Calling APIs but without the authorization to start new calls)
 
 ```python
 tokenresponse = identity_client.get_token(user, scopes=[CommunicationTokenScope.CHAT])
@@ -144,7 +149,7 @@ The Azure Communication Service Identity client will raise exceptions defined in
 # Next steps
 ## More sample code
 
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.3.1/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-identity_1.5.0/sdk/communication/azure-communication-identity/samples) directory for detailed examples of how to use this library to manage identities and tokens.
 
 ## Provide Feedback
 
@@ -161,5 +166,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.3.1/sdk/core/azure-core/README.md
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-identity_1.5.0/sdk/core/azure-core/README.md
 

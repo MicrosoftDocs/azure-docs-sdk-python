@@ -1,0 +1,178 @@
+### YamlMime:PythonClass
+uid: azure.communication.messages.aio.NotificationMessagesClient
+name: NotificationMessagesClient
+fullName: azure.communication.messages.aio.NotificationMessagesClient
+module: azure.communication.messages.aio
+inheritances:
+- azure.communication.messages.aio._client.NotificationMessagesClient
+summary: 'A client to interact with the AzureCommunicationService Messaging service.
+
+
+  This client allows you to send and receive WhatsApp template messages using the
+
+  Azure Communication Services Messaging SDK.'
+constructor:
+  syntax: 'NotificationMessagesClient(endpoint: str, credential: AsyncTokenCredential
+    | AzureKeyCredential, **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: The endpoint of the Azure Communication resource.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: The credentials with which to authenticate
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+  keywordOnlyParameters:
+  - name: api_version
+    description: 'Azure Communication Messaging API version.
+
+      Default value is "2024-02-01".
+
+      Note that overriding this default value may result in unsupported behavior.'
+methods:
+- uid: azure.communication.messages.aio.NotificationMessagesClient.close
+  name: close
+  signature: async close() -> None
+- uid: azure.communication.messages.aio.NotificationMessagesClient.download_media
+  name: download_media
+  summary: Download the Media payload from a User to Business message.
+  signature: 'async download_media(id: str, **kwargs: Any) -> AsyncIterator[bytes]'
+  parameters:
+  - name: id
+    description: The stream ID. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: AsyncIterator[bytes]
+    types:
+    - <xref:typing.AsyncIterator>[<xref:bytes>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.messages.aio.NotificationMessagesClient.from_connection_string
+  name: from_connection_string
+  summary: 'Create NotificationMessagesClient from a Connection String.
+
+    :param conn_str: Azure Communication Service endpoint. Required.
+
+    :type conn_str: str
+
+    :return: instance of NotificationMessagesClient.
+
+    :rtype:~azure.communication.message.notificationmessagesclient'
+  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> NotificationMessagesClient'
+  parameters:
+  - name: conn_str
+    isRequired: true
+- uid: azure.communication.messages.aio.NotificationMessagesClient.send
+  name: send
+  summary: Sends a notification message from Business to User.
+  signature: 'async send(body: NotificationContent | MutableMapping[str, Any] | IO[bytes],
+    **kwargs: Any) -> SendMessageResult'
+  parameters:
+  - name: body
+    description: 'Is one of the following types: NotificationContent, JSON, IO[bytes]
+      Required.'
+    isRequired: true
+    types:
+    - <xref:azure.communication.messages.models.NotificationContent>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: SendMessageResult. The SendMessageResult is compatible with MutableMapping
+    types:
+    - <xref:azure.communication.messages.models.SendMessageResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The input is polymorphic. The following are possible polymorphic inputs\
+    \ based off\n     discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"image\":\n   notification_content = {\n       \"channelRegistrationId\"\
+    : \"str\",  # The Channel Registration ID for the\n         Business Identifier.\
+    \ Required.\n       \"kind\": \"image\",\n       \"mediaUri\": \"str\",  # A media\
+    \ url for the file. Required if the type is one\n         of the supported media\
+    \ types, e.g. image. Required.\n       \"to\": [\n           \"str\"  # The native\
+    \ external platform user identifiers of the\n             recipient. Required.\n\
+    \       ],\n       \"content\": \"str\"  # Optional. Optional text content.\n\
+    \   }\n\n   # JSON input template for discriminator value \"template\":\n   notification_content\
+    \ = {\n       \"channelRegistrationId\": \"str\",  # The Channel Registration\
+    \ ID for the\n         Business Identifier. Required.\n       \"kind\": \"template\"\
+    ,\n       \"template\": {\n           \"language\": \"str\",  # The template's\
+    \ language, in the ISO 639 format,\n             consist of a two-letter language\
+    \ code followed by an optional two-letter\n             country code, e.g., 'en'\
+    \ or 'en_US'. Required.\n           \"name\": \"str\",  # Name of the template.\
+    \ Required.\n           \"bindings\": message_template_bindings,\n           \"\
+    values\": [\n               message_template_value\n           ]\n       },\n\
+    \       \"to\": [\n           \"str\"  # The native external platform user identifiers\
+    \ of the\n             recipient. Required.\n       ]\n   }\n\n   # JSON input\
+    \ template for discriminator value \"whatsApp\":\n   message_template_bindings\
+    \ = {\n       \"kind\": \"whatsApp\",\n       \"body\": [\n           {\n    \
+    \           \"refValue\": \"str\"  # The name of the referenced item in the\n\
+    \                 template values. Required.\n           }\n       ],\n      \
+    \ \"buttons\": [\n           {\n               \"refValue\": \"str\",  # The name\
+    \ of the referenced item in the\n                 template values. Required.\n\
+    \               \"subType\": \"str\"  # The WhatsApp button sub type. Required.\n\
+    \                 Known values are: \"quickReply\" and \"url\".\n           }\n\
+    \       ],\n       \"footer\": [\n           {\n               \"refValue\": \"\
+    str\"  # The name of the referenced item in the\n                 template values.\
+    \ Required.\n           }\n       ],\n       \"header\": [\n           {\n   \
+    \            \"refValue\": \"str\"  # The name of the referenced item in the\n\
+    \                 template values. Required.\n           }\n       ]\n   }\n\n\
+    \   # JSON input template for discriminator value \"text\":\n   notification_content\
+    \ = {\n       \"channelRegistrationId\": \"str\",  # The Channel Registration\
+    \ ID for the\n         Business Identifier. Required.\n       \"content\": \"\
+    str\",  # Message content. Required.\n       \"kind\": \"text\",\n       \"to\"\
+    : [\n           \"str\"  # The native external platform user identifiers of the\n\
+    \             recipient. Required.\n       ]\n   }\n\n   # JSON input template\
+    \ you can fill out and use as your body input.\n   body = notification_content\n\
+    \n   # response body for status code(s): 202\n   response == {\n       \"receipts\"\
+    : [\n           {\n               \"messageId\": \"str\",  # The message id. Required.\n\
+    \               \"to\": \"str\"  # The native external platform user identifier\n\
+    \                 of the recipient. Required.\n           }\n       ]\n   }\n\
+    \   ````\n"
+- uid: azure.communication.messages.aio.NotificationMessagesClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>

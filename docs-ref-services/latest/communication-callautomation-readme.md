@@ -1,14 +1,12 @@
 ---
 title: Azure Communication Call Automation client library for Python
 keywords: Azure, python, SDK, API, azure-communication-callautomation, communication
-author: acsdevx-msft
-ms.author: acsdevx-msft
-ms.date: 06/16/2023
+ms.date: 05/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Call Automation client library for Python - version 1.0.0 
+# Azure Communication Call Automation client library for Python - version 1.2.0 
 
 
 This package contains a Python SDK for Azure Communication Call Automation. Call Automation provides developers the ability to build server-based, intelligent call workflows, and call recording for voice and PSTN channels.
@@ -47,28 +45,27 @@ from azure.communication.callautomation import (CallAutomationClient)
 
 # Your unique Azure Communication service endpoint
 endpoint_url = '<ENDPOINT>'
-client = new CallAutomationClient.from_connection_string(endpoint_url)
+client = CallAutomationClient.from_connection_string(endpoint_url)
 ```
 
 ### Create Call
 ```Python
 from azure.communication.callautomation import (
     CallAutomationClient,
-    CallInvite,
     CommunicationUserIdentifier
 )
 
 # target endpoint for ACS User
 user = CommunicationUserIdentifier("8:acs:...")
 
-# make invitation
-call_invite = CallInvite(target=user)
-
 # callback url to receive callback events
 callback_url = "https://<MY-EVENT-HANDLER-URL>/events"
 
 # send out the invitation, creating call
-result = client.create_call(call_invite, callback_url)
+result = client.create_call(
+    target_participant=user,
+    callback_url=callback_uri
+)
 
 # this id can be used to do further actions in the call
 call_connection_id = result.call_connection_id

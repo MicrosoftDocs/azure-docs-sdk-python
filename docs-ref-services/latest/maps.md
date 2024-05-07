@@ -1,9 +1,7 @@
 ---
 title: Azure Maps SDK for Python
 description: Reference for Azure Maps SDK for Python
-author: alextts627
-ms.author: alextts627
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: maps

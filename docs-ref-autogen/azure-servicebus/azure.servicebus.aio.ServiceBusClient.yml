@@ -10,7 +10,9 @@ summary: 'The ServiceBusClient class defines a high level interface for
   getting ServiceBusSender and ServiceBusReceiver.'
 constructor:
   syntax: 'ServiceBusClient(fully_qualified_namespace: str, credential: AsyncTokenCredential
-    | AzureSasCredential | AzureNamedKeyCredential, **kwargs: Any)'
+    | AzureSasCredential | AzureNamedKeyCredential, *, retry_total: int = 3, retry_backoff_factor:
+    float = 0.8, retry_backoff_max: float = 120, retry_mode: str = ''exponential'',
+    **kwargs: Any)'
   parameters:
   - name: fully_qualified_namespace
     description: 'The fully qualified host name for the Service Bus namespace.
@@ -34,6 +36,7 @@ constructor:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
+  keywordOnlyParameters:
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
     types:
@@ -58,7 +61,7 @@ constructor:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:typing.Dict>
   - name: user_agent
     description: If specified, this will be added in front of the built-in user agent
       string.
@@ -69,19 +72,61 @@ constructor:
       error occurs.
 
       Default value is 3.'
+    defaultValue: '3'
     types:
     - <xref:int>
   - name: retry_backoff_factor
     description: 'Delta back-off internal in the unit of second between retries.
 
       Default value is 0.8.'
+    defaultValue: '0.8'
     types:
     - <xref:float>
   - name: retry_backoff_max
     description: Maximum back-off interval in the unit of second. Default value is
       120.
+    defaultValue: '120'
     types:
     - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      "fixed" or "exponential",
+
+      where default is "exponential".'
+    defaultValue: exponential
+    types:
+    - <xref:str>
+  - name: custom_endpoint_address
+    description: 'The custom endpoint address to use for establishing a connection
+      to
+
+      the Service Bus service, allowing network requests to be routed through any
+      application gateways or
+
+      other paths needed for the host environment. Default is None.
+
+      The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
+
+      If port is not specified in the *custom_endpoint_address*, by default port 443
+      will be used.'
+    types:
+    - <xref:str>
+  - name: connection_verify
+    description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
+      used to
+
+      authenticate the identity of the connection endpoint.
+
+      Default is None in which case *certifi.where()* will be used.'
+    types:
+    - <xref:str>
+  - name: uamqp_transport
+    description: 'Whether to use the *uamqp* library as the underlying transport.
+      The default value is
+
+      False and the Pure Python AMQP library will be used as the underlying transport.'
+    types:
+    - <xref:bool>
 variables:
 - description: 'The fully qualified host name for the Service Bus namespace.
 
@@ -92,14 +137,14 @@ variables:
 examples:
 - "Create a new instance of the ServiceBusClient.<!--[!code-python[Main](les\\async_samples\\\
   sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\\samples\\\\async_samples\\\
-  \\sample_code_servicebus_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-  : false} -->\n\n````python\n\n   import os\n   from azure.identity.aio import DefaultAzureCredential\n\
-  \   from azure.servicebus.aio import ServiceBusClient\n   fully_qualified_namespace\
-  \ = os.environ['SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE']\n   servicebus_client =\
-  \ ServiceBusClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\221\\\\azure-servicebus-7.12.1\\\\samples\\\\async_samples\\\\sample_code_servicebus_async.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.identity.aio import DefaultAzureCredential\n   from azure.servicebus.aio\
+  \ import ServiceBusClient\n   fully_qualified_namespace = os.environ['SERVICEBUS_FULLY_QUALIFIED_NAMESPACE']\n\
+  \   servicebus_client = ServiceBusClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
   \       credential=DefaultAzureCredential()\n   )\n\n   ````\n"
 methods:
 - uid: azure.servicebus.aio.ServiceBusClient.close
@@ -113,13 +158,16 @@ methods:
 - uid: azure.servicebus.aio.ServiceBusClient.from_connection_string
   name: from_connection_string
   summary: Create a ServiceBusClient from a connection string.
-  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> ServiceBusClient'
+  signature: 'from_connection_string(conn_str: str, *, retry_total: int = 3, retry_backoff_factor:
+    float = 0.8, retry_backoff_max: float = 120, retry_mode: str = ''exponential'',
+    **kwargs: Any) -> ServiceBusClient'
   parameters:
   - name: conn_str
     description: The connection string of a Service Bus.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
     types:
@@ -144,7 +192,7 @@ methods:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:dict>
+    - <xref:typing.Dict>
   - name: user_agent
     description: If specified, this will be added in front of the built-in user agent
       string.
@@ -155,19 +203,61 @@ methods:
       error occurs.
 
       Default value is 3.'
+    defaultValue: '3'
     types:
     - <xref:int>
   - name: retry_backoff_factor
     description: 'Delta back-off internal in the unit of second between retries.
 
       Default value is 0.8.'
+    defaultValue: '0.8'
     types:
     - <xref:float>
   - name: retry_backoff_max
     description: Maximum back-off interval in the unit of second. Default value is
       120.
+    defaultValue: '120'
     types:
     - <xref:float>
+  - name: retry_mode
+    description: 'The delay behavior between retry attempts. Supported values are
+      ''fixed'' or ''exponential'',
+
+      where default is ''exponential''.'
+    defaultValue: exponential
+    types:
+    - <xref:str>
+  - name: custom_endpoint_address
+    description: 'The custom endpoint address to use for establishing a connection
+      to
+
+      the Service Bus service, allowing network requests to be routed through any
+      application gateways or
+
+      other paths needed for the host environment. Default is None.
+
+      The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
+
+      If port is not specified in the custom_endpoint_address, by default port 443
+      will be used.'
+    types:
+    - <xref:str>
+  - name: connection_verify
+    description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
+      used to
+
+      authenticate the identity of the connection endpoint.
+
+      Default is None in which case *certifi.where()* will be used.'
+    types:
+    - <xref:str>
+  - name: uamqp_transport
+    description: 'Whether to use the *uamqp* library as the underlying transport.
+      The default value is
+
+      False and the Pure Python AMQP library will be used as the underlying transport.'
+    types:
+    - <xref:bool>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusClient>
@@ -175,23 +265,30 @@ methods:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\\
+    Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
     \   from azure.servicebus.aio import ServiceBusClient\n   servicebus_connection_str\
-    \ = os.environ['SERVICE_BUS_CONNECTION_STR']\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
+    \ = os.environ['SERVICEBUS_CONNECTION_STR']\n   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusClient.get_queue_receiver
   name: get_queue_receiver
   summary: Get ServiceBusReceiver for the specific queue.
-  signature: 'get_queue_receiver(queue_name: str, **kwargs: Any) -> ServiceBusReceiver'
+  signature: 'get_queue_receiver(queue_name: str, *, session_id: str | ~typing.Literal[<ServiceBusSessionFilter.NEXT_AVAILABLE:
+    0>] | None = None, sub_queue: ~azure.servicebus._common.constants.ServiceBusSubQueue
+    | str | None = None, receive_mode: ~azure.servicebus._common.constants.ServiceBusReceiveMode
+    | str = ServiceBusReceiveMode.PEEK_LOCK, max_wait_time: float | None = None, auto_lock_renewer:
+    ~azure.servicebus._common.auto_lock_renewer.AutoLockRenewer | None = None, prefetch_count:
+    int = 0, **kwargs: ~typing.Any) -> ServiceBusReceiver'
   parameters:
   - name: queue_name
     description: The path of specific Service Bus Queue the client connects to.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: session_id
     description: 'A specific session from which to receive. This must be specified
       for a
@@ -201,11 +298,11 @@ methods:
 
       session, set this to ~azure.servicebus.NEXT_AVAILABLE_SESSION.'
     types:
-    - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
+    - <xref:str>
+    - <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>
+    - <xref:None>
   - name: sub_queue
-    description: 'If specified, the subqueue this receiver will
-
-      connect to.
+    description: 'If specified, the subqueue this receiver will connect to.
 
       This includes the DEAD_LETTER and TRANSFER_DEAD_LETTER queues, holds messages
       that can''t be delivered to any
@@ -217,7 +314,9 @@ methods:
 
       enum or equivalent string values "deadletter" and "transferdeadletter".'
     types:
-    - <xref:Optional>[<xref:Union>[<xref:azure.servicebus.ServiceBusSubQueue>, <xref:str>]]
+    - <xref:str>
+    - <xref:azure.servicebus.ServiceBusSubQueue>
+    - <xref:None>
   - name: receive_mode
     description: 'The mode with which messages will be retrieved from the entity.
       The two options
@@ -232,15 +331,27 @@ methods:
       or re-received if
 
       the client fails to process the message. The default mode is PEEK_LOCK.'
+    defaultValue: ServiceBusReceiveMode.PEEK_LOCK
     types:
-    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
+    - <xref:typing.Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
   - name: max_wait_time
-    description: 'The timeout in seconds between received messages after which the
+    description: 'The timeout in seconds to wait for the first and subsequent
 
-      receiver will automatically stop receiving. The default value is None, meaning
-      no timeout.'
+      messages to arrive. If no messages arrive, and no timeout is specified, this
+      call will not return
+
+      until the connection is closed. The default value is None, meaning no timeout.
+      On a sessionful
+
+      queue/topic when NEXT_AVAILABLE_SESSION is specified, this will act as the timeout
+      for connecting.
+
+      If connection errors are occurring due to write timing out,the connection timeout
+
+      value may need to be adjusted. See the *socket_timeout* optional parameter for
+      more details.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   - name: auto_lock_renewer
     description: 'An
 
@@ -250,7 +361,7 @@ methods:
       receipt. If the receiver is a session receiver, it will apply to the session
       instead.'
     types:
-    - <xref:Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
+    - <xref:typing.Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
   - name: prefetch_count
     description: 'The maximum number of messages to cache with each request to the
       service.
@@ -266,12 +377,45 @@ methods:
       The default value is 0, meaning messages will be received from the service and
       processed one at a time.
 
-      In the case of prefetch_count being 0, *ServiceBusReceiver.receive* would try
-      to cache *max_message_count*
+      In the case of prefetch_count being 0, *ServiceBusReceiver.receive_messages*
+      would try to cache
 
-      (if provided) within its request to the service.'
+      *max_message_count* (if provided) within its request to the service.
+
+      >>**<<WARNING: If prefetch_count > 0 and RECEIVE_AND_DELETE mode is used, all
+      prefetched messages will stay in
+
+      the in-memory prefetch buffer until they''re received into the application.
+      If the application ends before
+
+      the messages are received into the application, those messages will be lost
+      and unable to be recovered.
+
+      Therefore, it''s recommended that PEEK_LOCK mode be used with prefetch.'
     types:
     - <xref:int>
+  - name: client_identifier
+    description: 'A string-based identifier to uniquely identify the receiver instance.
+
+      Service Bus will associate it with some error messages for easier correlation
+      of errors.
+
+      If not specified, a unique id will be generated.'
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If connection errors are occurring
+      due to write timing out,
+
+      a larger than default value may need to be passed in.'
+    types:
+    - <xref:float>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusReceiver>
@@ -279,12 +423,13 @@ methods:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\\
+    Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
     \   from azure.servicebus.aio import ServiceBusClient\n   servicebus_connection_str\
-    \ = os.environ['SERVICE_BUS_CONNECTION_STR']\n   queue_name = os.environ['SERVICE_BUS_QUEUE_NAME']\n\
+    \ = os.environ['SERVICEBUS_CONNECTION_STR']\n   queue_name = os.environ['SERVICEBUS_QUEUE_NAME']\n\
     \   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       queue_receiver = servicebus_client.get_queue_receiver(queue_name=queue_name)\n\
     \n   ````\n"
@@ -298,27 +443,57 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: client_identifier
+    description: 'A string-based identifier to uniquely identify the sender instance.
+
+      Service Bus will associate it with some error messages for easier correlation
+      of errors.
+
+      If not specified, a unique id will be generated.'
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If connection errors are occurring
+      due to write timing out,
+
+      a larger than default value may need to be passed in.'
+    types:
+    - <xref:float>
   return:
+    description: A queue sender.
     types:
     - <xref:azure.servicebus.aio.ServiceBusSender>
   examples:
   - "Create a new instance of the ServiceBusClient from connection string.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\\
+    Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
     \   from azure.servicebus.aio import ServiceBusClient\n   servicebus_connection_str\
-    \ = os.environ['SERVICE_BUS_CONNECTION_STR']\n   queue_name = os.environ['SERVICE_BUS_QUEUE_NAME']\n\
+    \ = os.environ['SERVICEBUS_CONNECTION_STR']\n   queue_name = os.environ['SERVICEBUS_QUEUE_NAME']\n\
     \   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       queue_sender = servicebus_client.get_queue_sender(queue_name=queue_name)\n\
     \n   ````\n"
 - uid: azure.servicebus.aio.ServiceBusClient.get_subscription_receiver
   name: get_subscription_receiver
   summary: Get ServiceBusReceiver for the specific subscription under the topic.
-  signature: 'get_subscription_receiver(topic_name: str, subscription_name: str, **kwargs:
-    Any) -> ServiceBusReceiver'
+  signature: 'get_subscription_receiver(topic_name: str, subscription_name: str, *,
+    session_id: str | ~typing.Literal[<ServiceBusSessionFilter.NEXT_AVAILABLE: 0>]
+    | None = None, sub_queue: ~azure.servicebus._common.constants.ServiceBusSubQueue
+    | str | None = None, receive_mode: ~azure.servicebus._common.constants.ServiceBusReceiveMode
+    | str = ServiceBusReceiveMode.PEEK_LOCK, max_wait_time: float | None = None, auto_lock_renewer:
+    ~azure.servicebus._common.auto_lock_renewer.AutoLockRenewer | None = None, prefetch_count:
+    int = 0, **kwargs: ~typing.Any) -> ServiceBusReceiver'
   parameters:
   - name: topic_name
     description: The name of specific Service Bus Topic the client connects to.
@@ -332,6 +507,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: session_id
     description: 'A specific session from which to receive. This must be specified
       for a
@@ -341,11 +517,11 @@ methods:
 
       session, set this to ~azure.servicebus.NEXT_AVAILABLE_SESSION.'
     types:
-    - <xref:Union>[<xref:str>, <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>]
+    - <xref:str>
+    - <xref:azure.servicebus.NEXT_AVAILABLE_SESSION>
+    - <xref:None>
   - name: sub_queue
-    description: 'If specified, the subqueue this receiver will
-
-      connect to.
+    description: 'If specified, the subqueue this receiver will connect to.
 
       This includes the DEAD_LETTER and TRANSFER_DEAD_LETTER queues, holds messages
       that can''t be delivered to any
@@ -357,7 +533,9 @@ methods:
 
       enum or equivalent string values "deadletter" and "transferdeadletter".'
     types:
-    - <xref:Optional>[<xref:Union>[<xref:azure.servicebus.ServiceBusSubQueue>, <xref:str>]]
+    - <xref:str>
+    - <xref:azure.servicebus.ServiceBusSubQueue>
+    - <xref:None>
   - name: receive_mode
     description: 'The mode with which messages will be retrieved from the entity.
       The two options
@@ -372,15 +550,27 @@ methods:
       rejected or re-received if
 
       the client fails to process the message. The default mode is PEEK_LOCK.'
+    defaultValue: ServiceBusReceiveMode.PEEK_LOCK
     types:
-    - <xref:Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
+    - <xref:typing.Union>[<xref:azure.servicebus.ServiceBusReceiveMode>, <xref:str>]
   - name: max_wait_time
-    description: 'The timeout in seconds between received messages after which the
+    description: 'The timeout in seconds to wait for the first and subsequent
 
-      receiver will automatically stop receiving. The default value is None, meaning
-      no timeout.'
+      messages to arrive. If no messages arrive, and no timeout is specified, this
+      call will not return
+
+      until the connection is closed. The default value is None, meaning no timeout.
+      On a sessionful
+
+      queue/topic when NEXT_AVAILABLE_SESSION is specified, this will act as the timeout
+      for connecting.
+
+      If connection errors are occurring due to write timing out,the connection timeout
+
+      value may need to be adjusted. See the *socket_timeout* optional parameter for
+      more details.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   - name: auto_lock_renewer
     description: 'An
 
@@ -390,7 +580,7 @@ methods:
       receipt. If the receiver is a session receiver, it will apply to the session
       instead.'
     types:
-    - <xref:Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
+    - <xref:typing.Optional>[<xref:azure.servicebus.aio.AutoLockRenewer>]
   - name: prefetch_count
     description: 'The maximum number of messages to cache with each request to the
       service.
@@ -406,12 +596,45 @@ methods:
       The default value is 0, meaning messages will be received from the service and
       processed one at a time.
 
-      In the case of prefetch_count being 0, *ServiceBusReceiver.receive* would try
-      to cache *max_message_count*
+      In the case of prefetch_count being 0, *ServiceBusReceiver.receive_messages*
+      would try to cache
 
-      (if provided) within its request to the service.'
+      *max_message_count* (if provided) within its request to the service.
+
+      >>**<<WARNING: If prefetch_count > 0 and RECEIVE_AND_DELETE mode is used, all
+      prefetched messages will stay in
+
+      the in-memory prefetch buffer until they''re received into the application.
+      If the application ends before
+
+      the messages are received into the application, those messages will be lost
+      and unable to be recovered.
+
+      Therefore, it''s recommended that PEEK_LOCK mode be used with prefetch.'
     types:
     - <xref:int>
+  - name: client_identifier
+    description: 'A string-based identifier to uniquely identify the receiver instance.
+
+      Service Bus will associate it with some error messages for easier correlation
+      of errors.
+
+      If not specified, a unique id will be generated.'
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If connection errors are occurring
+      due to write timing out,
+
+      a larger than default value may need to be passed in.'
+    types:
+    - <xref:float>
   return:
     types:
     - <xref:azure.servicebus.aio.ServiceBusReceiver>
@@ -419,13 +642,14 @@ methods:
   - "Create a new instance of the ServiceBusReceiver from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\\
+    Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
     \   from azure.servicebus.aio import ServiceBusClient\n   servicebus_connection_str\
-    \ = os.environ['SERVICE_BUS_CONNECTION_STR']\n   topic_name = os.environ[\"SERVICE_BUS_TOPIC_NAME\"\
-    ]\n   subscription_name = os.environ[\"SERVICE_BUS_SUBSCRIPTION_NAME\"]\n   servicebus_client\
+    \ = os.environ['SERVICEBUS_CONNECTION_STR']\n   topic_name = os.environ[\"SERVICEBUS_TOPIC_NAME\"\
+    ]\n   subscription_name = os.environ[\"SERVICEBUS_SUBSCRIPTION_NAME\"]\n   servicebus_client\
     \ = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       subscription_receiver = servicebus_client.get_subscription_receiver(\n\
     \           topic_name=topic_name,\n           subscription_name=subscription_name,\n\
@@ -440,19 +664,44 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: client_identifier
+    description: 'A string-based identifier to uniquely identify the sender instance.
+
+      Service Bus will associate it with some error messages for easier correlation
+      of errors.
+
+      If not specified, a unique id will be generated.'
+    types:
+    - <xref:str>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If connection errors are occurring
+      due to write timing out,
+
+      a larger than default value may need to be passed in.'
+    types:
+    - <xref:float>
   return:
+    description: A topic sender.
     types:
     - <xref:azure.servicebus.aio.ServiceBusSender>
   examples:
   - "Create a new instance of the ServiceBusSender from ServiceBusClient.<!--[!code-python[Main](les\\\
     async_samples\\sample_code_servicebus_async.py )]-->\n\n<!-- literal_block {\"\
     ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [],\
-    \ \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\
+    \ \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\\
+    Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\
     \\samples\\\\async_samples\\\\sample_code_servicebus_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
     \   from azure.servicebus.aio import ServiceBusClient\n   servicebus_connection_str\
-    \ = os.environ['SERVICE_BUS_CONNECTION_STR']\n   topic_name = os.environ['SERVICE_BUS_TOPIC_NAME']\n\
+    \ = os.environ['SERVICEBUS_CONNECTION_STR']\n   topic_name = os.environ['SERVICEBUS_TOPIC_NAME']\n\
     \   servicebus_client = ServiceBusClient.from_connection_string(conn_str=servicebus_connection_str)\n\
     \   async with servicebus_client:\n       topic_sender = servicebus_client.get_topic_sender(topic_name=topic_name)\n\
     \n   ````\n"

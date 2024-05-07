@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-artifacts, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-synapse-artifacts,
 ms.date: 07/03/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: synapse-analytics
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Artifacts Client Library.

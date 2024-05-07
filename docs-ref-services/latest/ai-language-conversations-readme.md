@@ -1,8 +1,6 @@
 ---
 title: Azure Conversational Language Understanding client library for Python
 keywords: Azure, python, SDK, API, azure-ai-language-conversations, cognitivelanguage
-author: kristapratico
-ms.author: krpratic
 ms.date: 06/14/2023
 ms.topic: reference
 ms.devlang: python

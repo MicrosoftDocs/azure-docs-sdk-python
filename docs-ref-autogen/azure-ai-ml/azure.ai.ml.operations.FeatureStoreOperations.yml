@@ -19,8 +19,11 @@ constructor:
     TokenCredential | None = None, **kwargs: Dict)'
   parameters:
   - name: operation_scope
+    isRequired: true
   - name: service_client
+    isRequired: true
   - name: all_operations
+    isRequired: true
   - name: credentials
     defaultValue: None
 methods:
@@ -30,14 +33,14 @@ methods:
 
 
     Returns the feature store if already exists.'
-  signature: 'begin_create(feature_store: FeatureStore, *, update_dependent_resources:
-    bool = False, **kwargs: Dict) -> LROPoller[FeatureStore]'
+  signature: 'begin_create(feature_store: FeatureStore, *, grant_materialization_permissions:
+    bool = True, update_dependent_resources: bool = False, **kwargs: Dict) -> LROPoller[FeatureStore]'
   parameters:
-  - name: store
+  - name: feature_store
     description: FeatureStore definition.
     isRequired: true
     types:
-    - <xref:feature>
+    - <xref:azure.ai.ml.entities.FeatureStore>
   return:
     description: An instance of LROPoller that returns a FeatureStore.
     types:
@@ -46,38 +49,56 @@ methods:
   name: begin_delete
   summary: Delete a FeatureStore.
   signature: 'begin_delete(name: str, *, delete_dependent_resources: bool = False,
-    **kwargs: Dict) -> LROPoller[None]'
+    **kwargs: Any) -> LROPoller[None]'
   parameters:
   - name: name
     description: Name of the FeatureStore
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: delete_dependent_resources
     description: 'Whether to delete resources associated with the feature store,
 
       i.e., container registry, storage account, key vault, and application insights.
 
       The default is False. Set to True to delete these resources.'
-    isRequired: true
     types:
     - <xref:bool>
   return:
     description: A poller to track the operation status.
     types:
     - <xref:azure.core.polling.LROPoller>[<xref:None>]
+- uid: azure.ai.ml.operations.FeatureStoreOperations.begin_provision_network
+  name: begin_provision_network
+  summary: 'Triggers the feature store to provision the managed network. Specifying
+    spark enabled
+
+    as true prepares the feature store managed network for supporting Spark.'
+  signature: 'begin_provision_network(*, feature_store_name: str | None = None, include_spark:
+    bool = False, **kwargs: Any) -> LROPoller[ManagedNetworkProvisionStatus]'
+  keywordOnlyParameters:
+  - name: feature_store_name
+    description: Name of the feature store.
+    types:
+    - <xref:str>
+  return:
+    description: An instance of LROPoller.
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.ManagedNetworkProvisionStatus>]
 - uid: azure.ai.ml.operations.FeatureStoreOperations.begin_update
   name: begin_update
-  summary: Update friendly name, description, materialization identities or tags of
-    a feature store.
-  signature: 'begin_update(feature_store: FeatureStore, *, update_dependent_resources:
-    bool = False, **kwargs: Dict) -> LROPoller[FeatureStore]'
+  summary: "Update friendly name, description, online store connection, offline store\
+    \ connection, materialization\n   identities or tags of a feature store."
+  signature: 'begin_update(feature_store: FeatureStore, *, grant_materialization_permissions:
+    bool = True, update_dependent_resources: bool = False, **kwargs: Any) -> LROPoller[FeatureStore]'
   parameters:
-  - name: store
+  - name: feature_store
     description: FeatureStore resource.
     isRequired: true
     types:
-    - <xref:feature>
+    - <xref:azure.ai.ml.entities.FeatureStore>
+  keywordOnlyParameters:
   - name: update_dependent_resources
     description: 'gives your consent to update the feature store dependent resources.
 
@@ -95,13 +116,14 @@ methods:
       to perform this operation. If this argument is not set, the command to update
 
       Azure Container Registry and Azure Application Insights will fail.'
-    isRequired: true
   - name: application_insights
-    description: Application insights resource for feature store.
-    isRequired: true
+    description: Application insights resource for feature store. Defaults to None.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   - name: container_registry
-    description: Container registry resource for feature store.
-    isRequired: true
+    description: Container registry resource for feature store. Defaults to None.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
   return:
     description: An instance of LROPoller that returns a FeatureStore.
     types:
@@ -109,7 +131,7 @@ methods:
 - uid: azure.ai.ml.operations.FeatureStoreOperations.get
   name: get
   summary: Get a feature store by name.
-  signature: 'get(name: str, **kwargs: Dict) -> FeatureStore'
+  signature: 'get(name: str, **kwargs: Any) -> FeatureStore'
   parameters:
   - name: name
     description: Name of the feature store.
@@ -120,19 +142,23 @@ methods:
     description: The feature store with the provided name.
     types:
     - <xref:azure.ai.ml.entities.FeatureStore>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+    description: 'Raised if the corresponding name and version cannot be
+
+      retrieved from the service.'
 - uid: azure.ai.ml.operations.FeatureStoreOperations.list
   name: list
   summary: 'List all feature stores that the user has access to in the current
 
     resource group or subscription.'
   signature: 'list(*, scope: str = ''resource_group'', **kwargs: Dict) -> Iterable[FeatureStore]'
-  parameters:
+  keywordOnlyParameters:
   - name: scope
     description: scope of the listing, "resource_group" or "subscription", defaults
       to "resource_group"
-    isRequired: true
     types:
-    - <xref:str>, <xref:optional>
+    - <xref:str>
   return:
     description: An iterator like instance of FeatureStore objects
     types:

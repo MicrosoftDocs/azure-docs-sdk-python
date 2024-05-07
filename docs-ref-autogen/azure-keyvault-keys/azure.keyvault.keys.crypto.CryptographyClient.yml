@@ -17,11 +17,10 @@ summary: 'Performs cryptographic operations using Azure Key Vault keys.
   by the Key Vault service.'
 constructor:
   syntax: 'CryptographyClient(key: KeyVaultKey | str, credential: TokenCredential,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: key
-    description: 'Either a <xref:azure.keyvault.keys.KeyVaultKey> instance as returned
-      by
+    description: 'Either a azure.keyvault.keys.KeyVaultKey instance as returned by
 
       <xref:azure.keyvault.keys.KeyClient.get_key>, or a string.
 
@@ -39,10 +38,12 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
+  keywordOnlyParameters:
   - name: api_version
     description: Version of the service API to use. Defaults to the most recent.
     types:
     - <xref:azure.keyvault.keys.ApiVersion>
+    - <xref:str>
   - name: verify_challenge_resource
     description: 'Whether to verify the authentication challenge resource matches
       the Key
@@ -51,6 +52,41 @@ constructor:
     types:
     - <xref:bool>
 methods:
+- uid: azure.keyvault.keys.crypto.CryptographyClient.close
+  name: close
+  summary: 'Close sockets opened by the client.
+
+
+    Calling this method is unnecessary when using the client as a context manager.'
+  signature: close() -> None
+- uid: azure.keyvault.keys.crypto.CryptographyClient.create_rsa_private_key
+  name: create_rsa_private_key
+  summary: 'Create an *RSAPrivateKey* implementation backed by this *CryptographyClient*,
+    as a *KeyVaultRSAPrivateKey*.
+
+
+    The *CryptographyClient* will attempt to download the key, if it hasn''t been
+    already, as part of this operation.'
+  signature: create_rsa_private_key() -> KeyVaultRSAPrivateKey
+  return:
+    description: A *KeyVaultRSAPrivateKey*, which implements *cryptography*'s *RSAPrivateKey*
+      interface.
+    types:
+    - <xref:azure.keyvault.keys.crypto.KeyVaultRSAPrivateKey>
+- uid: azure.keyvault.keys.crypto.CryptographyClient.create_rsa_public_key
+  name: create_rsa_public_key
+  summary: 'Create an *RSAPublicKey* implementation backed by this *CryptographyClient*,
+    as a *KeyVaultRSAPublicKey*.
+
+
+    The *CryptographyClient* will attempt to download the key, if it hasn''t been
+    already, as part of this operation.'
+  signature: create_rsa_public_key() -> KeyVaultRSAPublicKey
+  return:
+    description: A *KeyVaultRSAPublicKey*, which implements *cryptography*'s *RSAPublicKey*
+      interface.
+    types:
+    - <xref:azure.keyvault.keys.crypto.KeyVaultRSAPublicKey>
 - uid: azure.keyvault.keys.crypto.CryptographyClient.decrypt
   name: decrypt
   summary: 'Decrypt a single block of encrypted data using the client''s key.
@@ -60,8 +96,8 @@ methods:
     of data, whose size depends on
 
     the key and encryption algorithm.'
-  signature: 'decrypt(algorithm: EncryptionAlgorithm, ciphertext: bytes, **kwargs)
-    -> DecryptResult'
+  signature: 'decrypt(algorithm: EncryptionAlgorithm, ciphertext: bytes, **kwargs:
+    Any) -> DecryptResult'
   parameters:
   - name: algorithm
     description: Encryption algorithm to use
@@ -79,6 +115,7 @@ methods:
     isRequired: true
     types:
     - <xref:bytes>
+  keywordOnlyParameters:
   - name: iv
     description: The initialization vector used during encryption. Required for AES
       decryption.
@@ -101,6 +138,7 @@ methods:
     - <xref:bytes>
     - <xref:None>
   return:
+    description: The result of the decryption operation.
     types:
     - <xref:azure.keyvault.keys.crypto.DecryptResult>
   exceptions:
@@ -116,8 +154,8 @@ methods:
     of data, whose size depends on
 
     the key and encryption algorithm.'
-  signature: 'encrypt(algorithm: EncryptionAlgorithm, plaintext: bytes, **kwargs)
-    -> EncryptResult'
+  signature: 'encrypt(algorithm: EncryptionAlgorithm, plaintext: bytes, **kwargs:
+    Any) -> EncryptResult'
   parameters:
   - name: algorithm
     description: Encryption algorithm to use
@@ -129,6 +167,7 @@ methods:
     isRequired: true
     types:
     - <xref:bytes>
+  keywordOnlyParameters:
   - name: iv
     description: 'Initialization vector. Required for only AES-CBC(PAD) encryption.
       If you pass your own IV,
@@ -151,6 +190,7 @@ methods:
     - <xref:bytes>
     - <xref:None>
   return:
+    description: The result of the encryption operation.
     types:
     - <xref:azure.keyvault.keys.crypto.EncryptResult>
   exceptions:
@@ -169,17 +209,52 @@ methods:
     isRequired: true
     types:
     - <xref:azure.keyvault.keys.JsonWebKey>
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   return:
+    description: A client that can only perform local cryptographic operations.
     types:
     - <xref:azure.keyvault.keys.crypto.CryptographyClient>
+- uid: azure.keyvault.keys.crypto.CryptographyClient.send_request
+  name: send_request
+  summary: 'Runs a network request using the client''s existing pipeline.
+
+
+    The request URL can be relative to the vault URL. The service API version used
+    for the request is the same as
+
+    the client''s unless otherwise specified. This method does not raise if the response
+    is an error; to raise an
+
+    exception, call *raise_for_status()* on the returned response object. For more
+    information about how to send
+
+    custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
 - uid: azure.keyvault.keys.crypto.CryptographyClient.sign
   name: sign
   summary: 'Create a signature from a digest using the client''s key.
 
 
     Requires the keys/sign permission.'
-  signature: 'sign(algorithm: SignatureAlgorithm, digest: bytes, **kwargs) -> SignResult'
+  signature: 'sign(algorithm: SignatureAlgorithm, digest: bytes, **kwargs: Any) ->
+    SignResult'
   parameters:
   - name: algorithm
     description: signing algorithm
@@ -192,6 +267,7 @@ methods:
     types:
     - <xref:bytes>
   return:
+    description: The result of the signing operation.
     types:
     - <xref:azure.keyvault.keys.crypto.SignResult>
 - uid: azure.keyvault.keys.crypto.CryptographyClient.unwrap_key
@@ -200,8 +276,8 @@ methods:
 
 
     Requires the keys/unwrapKey permission.'
-  signature: 'unwrap_key(algorithm: KeyWrapAlgorithm, encrypted_key: bytes, **kwargs)
-    -> UnwrapResult'
+  signature: 'unwrap_key(algorithm: KeyWrapAlgorithm, encrypted_key: bytes, **kwargs:
+    Any) -> UnwrapResult'
   parameters:
   - name: algorithm
     description: wrapping algorithm to use
@@ -214,6 +290,7 @@ methods:
     types:
     - <xref:bytes>
   return:
+    description: The result of the unwrapping operation.
     types:
     - <xref:azure.keyvault.keys.crypto.UnwrapResult>
 - uid: azure.keyvault.keys.crypto.CryptographyClient.verify
@@ -223,7 +300,7 @@ methods:
 
     Requires the keys/verify permission.'
   signature: 'verify(algorithm: SignatureAlgorithm, digest: bytes, signature: bytes,
-    **kwargs) -> VerifyResult'
+    **kwargs: Any) -> VerifyResult'
   parameters:
   - name: algorithm
     description: verification algorithm
@@ -244,6 +321,7 @@ methods:
     types:
     - <xref:bytes>
   return:
+    description: The result of the verifying operation.
     types:
     - <xref:azure.keyvault.keys.crypto.VerifyResult>
 - uid: azure.keyvault.keys.crypto.CryptographyClient.wrap_key
@@ -252,7 +330,8 @@ methods:
 
 
     Requires the keys/wrapKey permission.'
-  signature: 'wrap_key(algorithm: KeyWrapAlgorithm, key: bytes, **kwargs) -> WrapResult'
+  signature: 'wrap_key(algorithm: KeyWrapAlgorithm, key: bytes, **kwargs: Any) ->
+    WrapResult'
   parameters:
   - name: algorithm
     description: wrapping algorithm to use
@@ -265,6 +344,7 @@ methods:
     types:
     - <xref:bytes>
   return:
+    description: The result of the wrapping operation.
     types:
     - <xref:azure.keyvault.keys.crypto.WrapResult>
 attributes:
@@ -275,6 +355,7 @@ attributes:
 
     This property may be None when a client is constructed with <xref:azure.keyvault.keys.crypto.CryptographyClient.from_jwk>.'
   return:
+    description: The full identifier of the client's key.
     types:
     - <xref:str>
     - <xref:None>
@@ -285,6 +366,7 @@ attributes:
 
     This property may be None when a client is constructed with <xref:azure.keyvault.keys.crypto.CryptographyClient.from_jwk>.'
   return:
+    description: The base vault URL of the client's key.
     types:
     - <xref:str>
     - <xref:None>

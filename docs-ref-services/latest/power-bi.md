@@ -1,13 +1,10 @@
 ---
 title: Azure Power BI SDK for Python
 description: Reference for Azure Power BI SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 12/14/2022
+ms.date: 08/24/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: powerbi
-ms.date: 08/24/2022
 ---
 # Azure PowerBI libraries for python
 
@@ -21,4 +18,5 @@ pip install azure-mgmt-powerbiembedded
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/powerbiembedded/management/resourcemanagement-powerbiembedded)
+> [Explore the Management APIs](/python/api/azure-mgmt-powerbiembedded)
+

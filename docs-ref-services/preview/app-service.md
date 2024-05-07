@@ -2,16 +2,13 @@
 title: Azure Web Apps libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, web apps, App Service
-author: lisawong19
-ms.author: ramyar
-manager: douge
 ms.date: 06/12/2017
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: app-service
+ms.technology: azure
+manager: douge
 ---
-
 # Azure Web Apps libraries for Python
 
 ## Overview
@@ -63,7 +60,7 @@ source_control_async_operation = web_client.web_apps.create_or_update_source_con
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/webapps/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-web)
 
 ## Samples
 
@@ -74,3 +71,4 @@ View the [complete list](https://azure.microsoft.com/resources/samples/?platform
 
 [1]: https://github.com/Azure-Samples/app-service-web-python-manage
 [2]: /azure/python/python-sdk-azure-samples-logic-app-workflow
+

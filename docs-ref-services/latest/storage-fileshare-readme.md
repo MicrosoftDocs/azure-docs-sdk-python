@@ -2,16 +2,13 @@
 title: Azure Storage File
 description: 
 keywords: Azure, Python, SDK, API, Storage, File
-author: ramya-rao-a
-ms.author: ramyar
-manager: twolley
 ms.date: 03/12/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: storage
+ms.technology: azure
+manager: twolley
 ---
-
 # Azure Files for Python Readme - Version 12.1.1
 Azure File Share storage offers fully managed file shares in the cloud that are accessible via the industry standard [Server Message Block (SMB) protocol](https://docs.microsoft.com/windows/desktop/FileIO/microsoft-smb-protocol-and-cifs-protocol-overview). Azure file shares can be mounted concurrently by cloud or on-premises deployments of Windows, Linux, and macOS. Additionally, Azure file shares can be cached on Windows Servers with Azure File Sync for fast access near where the data is being used.
 
@@ -375,3 +372,4 @@ Several Storage File Share Python SDK samples are available to you in the SDK's 
 
 ### Additional documentation
 For more extensive documentation on Azure File Share storage, see the [Azure File Share storage documentation](https://docs.microsoft.com/azure/storage/files/) on docs.microsoft.com.
+

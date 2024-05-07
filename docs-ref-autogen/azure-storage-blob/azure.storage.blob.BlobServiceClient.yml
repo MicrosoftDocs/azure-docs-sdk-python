@@ -58,6 +58,7 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  keywordOnlyParameters:
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -66,7 +67,7 @@ constructor:
       feature compatibility.
 
 
-      New in version 12.2.0.'
+      *New in version 12.2.0.*'
     types:
     - <xref:str>
   - name: secondary_hostname
@@ -118,6 +119,12 @@ constructor:
     types:
     - <xref:int>
 methods:
+- uid: azure.storage.blob.BlobServiceClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: close()
 - uid: azure.storage.blob.BlobServiceClient.create_container
   name: create_container
   summary: 'Creates a new container under the specified account.
@@ -149,6 +156,7 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.blob.PublicAccess>
+  keywordOnlyParameters:
   - name: container_encryption_scope
     description: 'Specifies the default encryption scope to set on the container and
       use for
@@ -156,7 +164,7 @@ methods:
       all future writes.
 
 
-      New in version 12.2.0.'
+      *New in version 12.2.0.*'
     types:
     - <xref:dict>
     - <xref:azure.storage.blob.ContainerEncryptionScope>
@@ -202,6 +210,7 @@ methods:
 
       Required if the container has an active lease.'
     isRequired: true
+  keywordOnlyParameters:
   - name: if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
 
@@ -272,6 +281,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: results_per_page
     description: The max result per page when paginating.
     types:
@@ -350,7 +360,8 @@ methods:
 
     The blob need not already exist.'
   signature: 'get_blob_client(container: ContainerProperties | str, blob: BlobProperties
-    | str, snapshot: Dict[str, Any] | str | None = None) -> BlobClient'
+    | str, snapshot: Dict[str, Any] | str | None = None, *, version_id: str | None
+    = None) -> BlobClient'
   parameters:
   - name: container
     description: 'The container that the blob is in. This can either be the name of
@@ -378,7 +389,15 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+  keywordOnlyParameters:
+  - name: version_id
+    description: 'The version id parameter is an opaque DateTime value that, when
+      present,
+
+      specifies the version of the blob to operate on.'
+    types:
+    - <xref:str>
   return:
     description: A BlobClient.
     types:
@@ -409,7 +428,7 @@ methods:
 
     Azure Storage Analytics.'
   signature: 'get_service_properties(**kwargs: Any) -> Dict[str, Any]'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -427,7 +446,7 @@ methods:
 
       analytics logging, hour/minute metrics, cors rules, etc.'
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.blob.BlobServiceClient.get_service_stats
   name: get_service_stats
   summary: 'Retrieves statistics related to replication for the Blob service.
@@ -462,7 +481,7 @@ methods:
 
     replication is enabled for your storage account.'
   signature: 'get_service_stats(**kwargs: Any) -> Dict[str, Any]'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -478,7 +497,7 @@ methods:
   return:
     description: The blob service stats.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.blob.BlobServiceClient.get_user_delegation_key
   name: get_user_delegation_key
   summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
@@ -497,6 +516,7 @@ methods:
     isRequired: true
     types:
     - <xref:datetime.datetime>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -538,6 +558,7 @@ methods:
     isRequired: true
     types:
     - <xref:bool>
+  keywordOnlyParameters:
   - name: include_deleted
     description: 'Specifies that deleted containers to be returned in the response.
       This is for container restore enabled
@@ -641,6 +662,7 @@ methods:
     isRequired: true
     types:
     - <xref:azure.storage.blob.StaticWebsite>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -666,7 +688,7 @@ methods:
     set in the delete retention policy.
 
 
-    New in version 12.4.0: This operation was introduced in API version ''2019-12-12''.'
+    *New in version 12.4.0:* This operation was introduced in API version ''2019-12-12''.'
   signature: 'undelete_container(deleted_container_name: str, deleted_container_version:
     str, **kwargs: Any) -> ContainerClient'
   parameters:
@@ -680,6 +702,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -693,5 +716,54 @@ methods:
     types:
     - <xref:int>
   return:
+    description: The undeleted ContainerClient.
     types:
     - <xref:azure.storage.blob.ContainerClient>
+attributes:
+- uid: azure.storage.blob.BlobServiceClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+- uid: azure.storage.blob.BlobServiceClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+- uid: azure.storage.blob.BlobServiceClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+- uid: azure.storage.blob.BlobServiceClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+- uid: azure.storage.blob.BlobServiceClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.blob.BlobServiceClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+- uid: azure.storage.blob.BlobServiceClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.blob.BlobServiceClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

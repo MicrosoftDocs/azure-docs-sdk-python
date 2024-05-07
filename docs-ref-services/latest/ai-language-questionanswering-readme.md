@@ -1,8 +1,6 @@
 ---
 title: Azure Cognitive Language Service Question Answering client library for Python
 keywords: Azure, python, SDK, API, azure-ai-language-questionanswering, cognitivelanguage
-author: kristapratico
-ms.author: krpratic
 ms.date: 10/13/2022
 ms.topic: reference
 ms.devlang: python

@@ -2,16 +2,12 @@
 title: Azure Resources libraries for python
 description: Reference for Azure Resources libraries for python
 keywords: Azure, python, SDK, API, Resources
-author: lisawong19
-ms.author: ramyar
-manager: routlaw
-
 ms.date: 08/11/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: multiple
+manager: routlaw
 ---
-
 # Azure Resources libraries for python
 
 ## Overview 
@@ -43,3 +39,4 @@ resource_client.resource_groups.create_or_update(GROUP_NAME, {'location': LOCATI
 [Manage Azure resources and resource groups](https://github.com/Azure-Samples/resource-manager-python-resources-and-groups)
 
 View the [complete list](https://azure.microsoft.com/resources/samples/?platform=python&term=resource) of Azure Resource Manager samples.
+

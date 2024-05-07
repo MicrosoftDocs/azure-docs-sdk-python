@@ -1,0 +1,131 @@
+### YamlMime:PythonClass
+uid: corehttp.runtime.PipelineClient
+name: PipelineClient
+fullName: corehttp.runtime.PipelineClient
+module: corehttp.runtime
+inheritances:
+- corehttp.runtime._base.PipelineClientBase
+- typing.Generic
+summary: 'Service client core methods.
+
+
+  Builds a Pipeline client.'
+constructor:
+  syntax: 'PipelineClient(endpoint: str, *, pipeline: Pipeline[HTTPRequestType, HTTPResponseType]
+    | None = None, **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: URL for the request.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: pipeline
+    description: If omitted, a Pipeline object is created.
+    types:
+    - <xref:<xref:corehttp.runtime.pipeline#corehttp.runtime.pipeline.Pipeline>>
+  - name: policies
+    description: If omitted, a set of standard policies is used.
+    types:
+    - <xref:list>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.HTTPPolicy>]
+  - name: per_call_policies
+    description: If specified, the policies will be added into the policy list before
+      RetryPolicy
+    types:
+    - <xref:typing.Union>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.HTTPPolicy>,
+      <xref:corehttp.runtime.policies#corehttp.runtime.policies.SansIOHTTPPolicy>,
+      <xref:list>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.HTTPPolicy>],
+      <xref:list>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.SansIOHTTPPolicy>]]
+  - name: per_retry_policies
+    description: If specified, the policies will be added into the policy list after
+      RetryPolicy
+    types:
+    - <xref:typing.Union>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.HTTPPolicy>,
+      <xref:corehttp.runtime.policies#corehttp.runtime.policies.SansIOHTTPPolicy>,
+      <xref:list>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.HTTPPolicy>],
+      <xref:list>[<xref:corehttp.runtime.policies#corehttp.runtime.policies.SansIOHTTPPolicy>]]
+  - name: transport
+    description: If omitted, RequestsTransport is used for synchronous transport.
+    types:
+    - <xref:<xref:corehttp.transport#corehttp.transport.HttpTransport>>
+variables:
+- description: The Pipeline object associated with the client.
+  name: pipeline
+  types:
+  - <xref:<xref:corehttp.runtime.pipeline#corehttp.runtime.pipeline.Pipeline>>
+  - <xref:None>
+examples:
+- "Builds the pipeline client.<!--[!code-python[Main](les\\sample_pipeline_client.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\214\\\\corehttp-1.0.0b5\\\
+  \\samples\\\\sample_pipeline_client.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from corehttp.runtime import PipelineClient\n\
+  \   from corehttp.rest import HttpRequest, HttpResponse\n   from corehttp.runtime.policies\
+  \ import (\n       HTTPPolicy,\n       SansIOHTTPPolicy,\n       HeadersPolicy,\n\
+  \       UserAgentPolicy,\n       RetryPolicy,\n   )\n\n   policies: Iterable[Union[HTTPPolicy,\
+  \ SansIOHTTPPolicy]] = [\n       HeadersPolicy(),\n       UserAgentPolicy(\"myuseragent\"\
+  ),\n       RetryPolicy(),\n   ]\n\n   client: PipelineClient[HttpRequest, HttpResponse]\
+  \ = PipelineClient(\"https://bing.com\", policies=policies)\n   request = HttpRequest(\"\
+  GET\", \"https://bing.com\")\n   response = client.send_request(request)\n\n   ````\n"
+methods:
+- uid: corehttp.runtime.PipelineClient.close
+  name: close
+  signature: close() -> None
+- uid: corehttp.runtime.PipelineClient.format_url
+  name: format_url
+  summary: 'Format request URL with the client base URL, unless the
+
+    supplied URL is already absolute.
+
+
+    Note that both the base url and the template url can contain query parameters.'
+  signature: 'format_url(url_template: str, **kwargs: Any) -> str'
+  parameters:
+  - name: url_template
+    description: The request URL to be formatted if necessary.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: The formatted URL.
+    types:
+    - <xref:str>
+- uid: corehttp.runtime.PipelineClient.send_request
+  name: send_request
+  summary: 'Method that runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from corehttp.rest import HttpRequest
+
+    >>> request = HttpRequest(''GET'', ''http://www.example.com'')
+
+    <HttpRequest [GET], url: ''http://www.example.com''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```'
+  signature: 'send_request(request: HTTPRequestType, *, stream: bool = False, **kwargs:
+    Any) -> HTTPResponseType'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:<xref:corehttp.rest#corehttp.rest.HttpRequest>>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:corehttp.rest.HttpResponse>

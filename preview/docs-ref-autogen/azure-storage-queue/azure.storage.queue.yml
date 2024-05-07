@@ -2,7 +2,7 @@
 uid: azure.storage.queue
 name: queue
 fullName: azure.storage.queue
-type: import
+type: rootImport
 functions:
 - uid: azure.storage.queue.generate_account_sas
   name: generate_account_sas
@@ -12,8 +12,9 @@ functions:
     Use the returned signature with the credential parameter of any Queue Service.'
   signature: 'generate_account_sas(account_name: str, account_key: str, resource_types:
     ResourceTypes | str, permission: AccountSasPermissions | str, expiry: datetime
-    | str | None, start: datetime | str | None = None, ip: str | None = None, **kwargs:
-    Any) -> str'
+    | str, start: datetime | str | None = None, ip: str | None = None, *, services:
+    ~azure.storage.queue._shared.models.Services | str = <azure.storage.queue._shared.models.Services
+    object>, **kwargs: ~typing.Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -39,18 +40,11 @@ functions:
     isRequired: true
     types:
     - <xref:azure.storage.queue.AccountSasPermissions>
+    - <xref:str>
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
-      Required unless an id is given referencing a stored access policy
-
-      which contains this field. This field must be omitted if it has
-
-      been specified in an associated stored access policy. Azure will always
-
-      convert values to UTC. If a date is passed in without timezone info, it
-
-      is assumed to be UTC.'
+      The provided datetime will always be interpreted as UTC.'
     isRequired: true
     types:
     - <xref:datetime.datetime>
@@ -60,11 +54,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -83,6 +75,15 @@ functions:
     defaultValue: None
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: services
+    description: 'Specifies the services that the Shared Access Signature (sas) token
+      will be able to be utilized with.
+
+      Will default to only this package (i.e. queue) if not provided.'
+    defaultValue: q
+    types:
+    - <xref:typing.Union>[<xref:azure.storage.queue.Services>, <xref:str>]
   - name: protocol
     description: Specifies the protocol permitted for a request made. The default
       value is https.
@@ -132,6 +133,7 @@ functions:
     defaultValue: None
     types:
     - <xref:azure.storage.queue.QueueSasPermissions>
+    - <xref:str>
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
@@ -153,11 +155,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -187,6 +187,7 @@ functions:
     defaultValue: None
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: protocol
     description: Specifies the protocol permitted for a request made. The default
       value is https.
@@ -196,6 +197,17 @@ functions:
     description: A Shared Access Signature (sas) token.
     types:
     - <xref:str>
+  examples:
+  - "Generate a sas token.<!--[!code-python[Main](les\\queue_samples_message.py )]-->\n\
+    \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\206\\\\azure-storage-queue-12.10.0b1\\\
+    \\samples\\\\queue_samples_message.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.storage.queue import generate_queue_sas\n\
+    \   sas_token = generate_queue_sas(\n       queue.account_name,\n       queue.queue_name,\n\
+    \       queue.credential.account_key,\n       policy_id='my-access-policy-id'\n\
+    \   )\n\n   ````\n"
 classes:
 - azure.storage.queue.AccessPolicy
 - azure.storage.queue.AccountSasPermissions
@@ -214,6 +226,7 @@ classes:
 - azure.storage.queue.QueueServiceClient
 - azure.storage.queue.ResourceTypes
 - azure.storage.queue.RetentionPolicy
+- azure.storage.queue.Services
 - azure.storage.queue.TextBase64DecodePolicy
 - azure.storage.queue.TextBase64EncodePolicy
 packages:

@@ -2,16 +2,12 @@
 title: Azure CDN libraries for python
 description: Reference for Azure CDN libraries for python
 keywords: Azure, python, SDK, API, CDN
-author: sptramer
-ms.author: sttramer
-manager: douge
-
 ms.date: 07/10/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-cdn
+manager: douge
 ---
-
 # Azure CDN libraries for python
 
 ## Overview
@@ -64,3 +60,4 @@ endpoint = endpoint_poller.result()
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/cdn/management)
+

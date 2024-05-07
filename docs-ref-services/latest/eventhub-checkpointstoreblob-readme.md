@@ -1,15 +1,12 @@
 ---
 title: Azure EventHubs Checkpoint Store client library for Python
 keywords: Azure, python, SDK, API, azure-eventhub-checkpointstoreblob, eventhubs
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/07/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: event-hubs
+ms.technology: azure
 ---
-
 # Azure EventHubs Checkpoint Store client library for Python - version 1.1.4 
  using Storage Blobs
 

@@ -1,9 +1,7 @@
 ---
 title: Azure Private DNS SDK for Python
 description: Reference for Azure Private DNS SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: privatedns
@@ -27,7 +25,7 @@ pip install azure-mgmt-privatedns
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/azure-mgmt-privatedns/azure.mgmt.privatedns)
+> [Explore the Management APIs](/python/api/azure-mgmt-privatedns)
 
 ## Samples
 

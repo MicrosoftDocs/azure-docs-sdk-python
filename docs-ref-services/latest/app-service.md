@@ -1,9 +1,7 @@
 ---
 title: Azure App Service SDK for Python
 description: Reference for Azure App Service SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: appservice
@@ -59,7 +57,7 @@ source_control_async_operation = web_client.web_apps.create_or_update_source_con
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/webapps/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-web)
 
 ## Samples
 

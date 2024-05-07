@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-appconfiguration, appconfiguration
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 09/18/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-app-configuration
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure App Configuration Management Client Library.

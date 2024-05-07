@@ -1,9 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datafactory, datafactory
-author: hvermis
-ms.author: hvermis
-ms.date: 03/20/2023
+ms.date: 04/22/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: datafactory
@@ -11,7 +9,7 @@ ms.service: datafactory
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Data Factory Management Client Library.
-This package has been tested with Python 3.7+.
+This package has been tested with Python 3.8+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -22,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.7+ is required to use this package.
+- Python 3.8+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
@@ -55,8 +53,9 @@ client = DataFactoryManagementClient(credential=DefaultAzureCredential(), subscr
 
 ## Examples
 
-
-Code samples for this package can be found at [Data Factory Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Data Factory Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
@@ -68,7 +67,4 @@ Code samples for this package can be found at [Data Factory Management](/samples
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-datafactory%2FREADME.png)
 

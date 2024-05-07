@@ -1,12 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-netapp, netapp
-author: lmazuel
-ms.author: lmazuel
-ms.date: 02/16/2023
+ms.date: 12/22/2023
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-netapp-files
+ms.service: netapp
 ---
 # Microsoft Azure SDK for Python
 
@@ -38,7 +36,7 @@ By default, [Azure Active Directory](https://aka.ms/awps/aad) token authenticati
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+- `AZURE_CLIENT_SECRET` for Azure client secret.
 
 In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
 
@@ -55,8 +53,9 @@ client = NetAppManagementClient(credential=DefaultAzureCredential(), subscriptio
 
 ## Examples
 
-
-Code samples for this package can be found at [NetApp Files Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search NetApp Files Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
@@ -68,7 +67,4 @@ Code samples for this package can be found at [NetApp Files Management](/samples
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-netapp%2FREADME.png)
 

@@ -14,7 +14,7 @@ summary: 'A simple policy that sends the given headers with the request.
 
   operations, and additional headers can also be added dynamically per operation.'
 constructor:
-  syntax: 'HeadersPolicy(base_headers: Dict[str, str] | None = None, **kwargs)'
+  syntax: 'HeadersPolicy(base_headers: Dict[str, str] | None = None, **kwargs: Any)'
   parameters:
   - name: base_headers
     description: Headers to send with the request.
@@ -24,14 +24,15 @@ constructor:
 examples:
 - "Configuring a headers policy.<!--[!code-python[Main](les\\test_example_sansio.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  79\\\\azure-core-1.27.1\\\\samples\\\\test_example_sansio.py\", \"xml:space\": \"\
-  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.policies\
-  \ import HeadersPolicy\n\n   headers_policy = HeadersPolicy()\n   headers_policy.add_header(\"\
-  CustomValue\", \"Foo\")\n\n   # Or headers can be added per operation. These headers\
-  \ will supplement existing headers\n   # or those defined in the config headers\
-  \ policy. They will also overwrite existing\n   # identical headers.\n   policies.append(headers_policy)\n\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\36\\\\azure-core-1.30.1\\\
+  \\samples\\\\test_example_sansio.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.core.pipeline.policies import HeadersPolicy\n\
+  \n   headers_policy = HeadersPolicy()\n   headers_policy.add_header(\"CustomValue\"\
+  , \"Foo\")\n\n   # Or headers can be added per operation. These headers will supplement\
+  \ existing headers\n   # or those defined in the config headers policy. They will\
+  \ also overwrite existing\n   # identical headers.\n   policies.append(headers_policy)\n\
   \   client: PipelineClient[HttpRequest, HttpResponse] = PipelineClient(base_url=url,\
   \ policies=policies)\n   request = HttpRequest(\"GET\", url)\n   pipeline_response\
   \ = client._pipeline.run(request, headers={\"CustomValue\": \"Bar\"})\n\n   ````\n"
@@ -51,17 +52,50 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+- uid: azure.core.pipeline.policies.HeadersPolicy.on_exception
+  name: on_exception
+  summary: 'Is executed if an exception is raised while executing the next policy.
+
+
+    This method is executed inside the exception handler.'
+  signature: 'on_exception(request: PipelineRequest[HTTPRequestType]) -> None'
+  parameters:
+  - name: request
+    description: The Pipeline request object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
 - uid: azure.core.pipeline.policies.HeadersPolicy.on_request
   name: on_request
   summary: Updates with the given headers before sending the request to the next policy.
-  signature: 'on_request(request: PipelineRequest[HTTPRequestType]) -> None'
+  signature: 'on_request(request: PipelineRequest[HttpRequest | HttpRequest]) -> None'
   parameters:
   - name: request
     description: The PipelineRequest object
     isRequired: true
     types:
     - <xref:azure.core.pipeline.PipelineRequest>
+- uid: azure.core.pipeline.policies.HeadersPolicy.on_response
+  name: on_response
+  summary: Is executed after the request comes back from the policy.
+  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
+    HTTPResponseType]) -> None | Awaitable[None]'
+  parameters:
+  - name: request
+    description: Request to be modified after returning from the policy.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  - name: response
+    description: Pipeline response object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
 attributes:
 - uid: azure.core.pipeline.policies.HeadersPolicy.headers
   name: headers
   summary: The current headers collection.
+  return:
+    description: The current headers collection.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]

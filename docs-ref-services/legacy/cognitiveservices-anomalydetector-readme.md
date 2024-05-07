@@ -1,16 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-cognitiveservices-anomalydetector, 
-author: ramya-rao-a
-ms.author: ramyar
-ms.date: 07/23/2020
+keywords: Azure, python, SDK, API, azure-cognitiveservices-anomalydetector, cognitiveservices
+ms.date: 05/01/2024
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: anomaly-detector
+ms.service: cognitiveservices
 ---
-
 # Microsoft Azure SDK for Python
 
-This package is no longer being maintained. Please use the azure-ai-anomalydetector package instead for latest features and support.
+This package is no longer being maintained. Use the [azure-ai-anomalydetector](https://pypi.org/project/azure-ai-anomalydetector/) package instead for latest features and support.
+

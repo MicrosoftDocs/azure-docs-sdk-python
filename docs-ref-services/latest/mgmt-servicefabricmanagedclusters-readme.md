@@ -1,15 +1,12 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-servicefabricmanagedclusters, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-mgmt-servicefabricmanagedclusters,
 ms.date: 04/29/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: service-fabric
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Servicefabricmanagedclusters Management Client Library.
@@ -37,5 +34,4 @@ section of the project.
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-servicefabricmanagedclusters%2FREADME.png)
-
 

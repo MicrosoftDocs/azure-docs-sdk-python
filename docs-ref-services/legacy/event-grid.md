@@ -1,14 +1,12 @@
 ---
 title: Azure Event Grid libraries for Python
 description: 
-keywords: Azure, Python, SDK, API, Event Grid 
-author: lisawong19
-ms.author: ramyar
-manager: routlaw
+keywords: Azure, Python, SDK, API, Event Grid
 ms.date: 08/21/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: event-grid
+manager: routlaw
 ---
 # Event Grid libraries for Python
 
@@ -144,3 +142,4 @@ az group delete --name gridResourceGroup
 ## Learn more
 
 [Receive events using the Event Grid SDK](/azure/event-grid/receive-events)
+

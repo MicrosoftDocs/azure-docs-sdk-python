@@ -8,20 +8,22 @@ inheritances:
 summary: 'Web activity.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'WebActivity(*, name: str, method: str | _models.WebActivityMethod, url:
     MutableMapping[str, Any], additional_properties: Dict[str, MutableMapping[str,
-    Any]] | None = None, description: str | None = None, depends_on: List[_models.ActivityDependency]
-    | None = None, user_properties: List[_models.UserProperty] | None = None, linked_service_name:
-    _models.LinkedServiceReference | None = None, policy: _models.ActivityPolicy |
-    None = None, headers: MutableMapping[str, Any] | None = None, body: MutableMapping[str,
-    Any] | None = None, authentication: _models.WebActivityAuthentication | None =
-    None, disable_cert_validation: bool | None = None, datasets: List[_models.DatasetReference]
-    | None = None, linked_services: List[_models.LinkedServiceReference] | None =
-    None, connect_via: _models.IntegrationRuntimeReference | None = None, **kwargs:
-    Any)'
-  parameters:
+    Any]] | None = None, description: str | None = None, state: str | _models.ActivityState
+    | None = None, on_inactive_mark_as: str | _models.ActivityOnInactiveMarkAs | None
+    = None, depends_on: List[_models.ActivityDependency] | None = None, user_properties:
+    List[_models.UserProperty] | None = None, linked_service_name: _models.LinkedServiceReference
+    | None = None, policy: _models.ActivityPolicy | None = None, headers: Dict[str,
+    MutableMapping[str, Any]] | None = None, body: MutableMapping[str, Any] | None
+    = None, authentication: _models.WebActivityAuthentication | None = None, disable_cert_validation:
+    bool | None = None, http_request_timeout: MutableMapping[str, Any] | None = None,
+    turn_off_async: bool | None = None, datasets: List[_models.DatasetReference] |
+    None = None, linked_services: List[_models.LinkedServiceReference] | None = None,
+    connect_via: _models.IntegrationRuntimeReference | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
 
@@ -36,14 +38,32 @@ constructor:
     description: Activity description.
     types:
     - <xref:str>
+  - name: state
+    description: 'Activity state. This is an optional property and if not provided,
+      the state
+
+      will be Active by default. Known values are: "Active" and "Inactive".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityState>
+  - name: on_inactive_mark_as
+    description: 'Status result of the activity when the state is set to Inactive.
+
+      This is an optional property and if not provided when the activity is inactive,
+      the status will
+
+      be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
   - name: depends_on
     description: Activity depends on condition.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
   - name: user_properties
     description: Activity user properties.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
   - name: linked_service_name
     description: Linked service reference.
     types:
@@ -76,7 +96,7 @@ constructor:
 
       "application/json" }. Type: string (or Expression with resultType string).'
     types:
-    - <xref:JSON>
+    - <xref:dict>[<xref:str>, <xref:JSON>]
   - name: body
     description: 'Represents the payload that will be sent to the endpoint. Required
       for POST/PUT
@@ -93,14 +113,35 @@ constructor:
     description: When set to true, Certificate validation will be disabled.
     types:
     - <xref:bool>
+  - name: http_request_timeout
+    description: 'Timeout for the HTTP request to get a response. Format is in
+
+      TimeSpan (hh:mm:ss). This value is the timeout to get a response, not the activity
+      timeout. The
+
+      default value is 00:01:00 (1 minute). The range is from 1 to 10 minutes.'
+    types:
+    - <xref:JSON>
+  - name: turn_off_async
+    description: 'Option to disable invoking HTTP GET on location given in response
+
+      header of a HTTP 202 Response. If set true, it stops invoking HTTP GET on http
+      location given
+
+      in response header. If set false then continues to invoke HTTP GET call on location
+      given in
+
+      http response headers.'
+    types:
+    - <xref:bool>
   - name: datasets
     description: List of datasets passed to web endpoint.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.DatasetReference>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.DatasetReference>]
   - name: linked_services
     description: List of linked services passed to web endpoint.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.LinkedServiceReference>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.LinkedServiceReference>]
   - name: connect_via
     description: The integration runtime reference.
     types:
@@ -124,6 +165,24 @@ variables:
   name: description
   types:
   - <xref:str>
+- description: 'Activity state. This is an optional property and if not provided,
+    the state will
+
+    be Active by default. Known values are: "Active" and "Inactive".'
+  name: state
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityState>
+- description: 'Status result of the activity when the state is set to Inactive.
+
+    This is an optional property and if not provided when the activity is inactive,
+    the status will
+
+    be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+  name: on_inactive_mark_as
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
 - description: Activity depends on condition.
   name: depends_on
   types:
@@ -163,7 +222,7 @@ variables:
     "application/json" }. Type: string (or Expression with resultType string).'
   name: headers
   types:
-  - <xref:JSON>
+  - <xref:dict>[<xref:str>, <xref:JSON>]
 - description: 'Represents the payload that will be sent to the endpoint. Required
     for POST/PUT
 
@@ -178,6 +237,28 @@ variables:
   - <xref:azure.mgmt.datafactory.models.WebActivityAuthentication>
 - description: When set to true, Certificate validation will be disabled.
   name: disable_cert_validation
+  types:
+  - <xref:bool>
+- description: 'Timeout for the HTTP request to get a response. Format is in
+
+    TimeSpan (hh:mm:ss). This value is the timeout to get a response, not the activity
+    timeout. The
+
+    default value is 00:01:00 (1 minute). The range is from 1 to 10 minutes.'
+  name: http_request_timeout
+  types:
+  - <xref:JSON>
+- description: 'Option to disable invoking HTTP GET on location given in response
+    header
+
+    of a HTTP 202 Response. If set true, it stops invoking HTTP GET on http location
+    given in
+
+    response header. If set false then continues to invoke HTTP GET call on location
+    given in http
+
+    response headers.'
+  name: turn_off_async
   types:
   - <xref:bool>
 - description: List of datasets passed to web endpoint.

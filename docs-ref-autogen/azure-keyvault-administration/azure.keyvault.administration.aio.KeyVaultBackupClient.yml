@@ -8,7 +8,7 @@ inheritances:
 summary: Performs Key Vault backup and restore operations.
 constructor:
   syntax: 'KeyVaultBackupClient(vault_url: str, credential: AsyncTokenCredential,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: vault_url
     description: 'URL of the vault on which the client will operate. This is also
@@ -30,10 +30,12 @@ constructor:
     isRequired: true
     types:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
+  keywordOnlyParameters:
   - name: api_version
     description: Version of the service API to use. Defaults to the most recent.
     types:
     - <xref:azure.keyvault.administration.ApiVersion>
+    - <xref:str>
   - name: verify_challenge_resource
     description: 'Whether to verify the authentication challenge resource matches
       the Key
@@ -45,25 +47,37 @@ methods:
 - uid: azure.keyvault.administration.aio.KeyVaultBackupClient.begin_backup
   name: begin_backup
   summary: Begin a full backup of the Key Vault.
-  signature: 'async begin_backup(blob_storage_url: str, sas_token: str, **kwargs)
-    -> AsyncLROPoller[KeyVaultBackupResult]'
+  signature: 'async begin_backup(blob_storage_url: str, *, use_managed_identity: Literal[True],
+    continuation_token: str | None = None, **kwargs: Any) -> AsyncLROPoller[KeyVaultBackupResult]'
   parameters:
   - name: blob_storage_url
     description: 'URL of the blob storage container in which the backup will be stored,
       for example
 
-      [https:/](https:/)/<account>.blob.core.windows.net/backup'
+      [https:/](https:/)/<account>.blob.core.windows.net/backup.'
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: sas_token
-    description: a Shared Access Signature (SAS) token authorizing access to the blob
-      storage resource
-    isRequired: true
+    description: 'Optional Shared Access Signature (SAS) token to authorize access
+      to the blob. Required
+
+      unless *use_managed_identity* is set to True.'
     types:
     - <xref:str>
+  - name: use_managed_identity
+    description: 'Indicates which authentication method should be used. If set to
+      True, Managed HSM
+
+      will use the configured user-assigned managed identity to authenticate with
+      Azure Storage. Otherwise, a SAS
+
+      token has to be specified.'
+    types:
+    - <xref:bool>
   - name: continuation_token
-    description: a continuation token to restart polling from a saved state
+    description: A continuation token to restart polling from a saved state.
     types:
     - <xref:str>
   return:
@@ -77,7 +91,9 @@ methods:
 
     This method restores either a complete Key Vault backup or when `key_name` has
     a value, a single key.'
-  signature: 'async begin_restore(folder_url: str, sas_token: str, **kwargs) -> AsyncLROPoller'
+  signature: 'async begin_restore(folder_url: str, *, use_managed_identity: Literal[True],
+    key_name: str | None = None, continuation_token: str | None = None, **kwargs:
+    Any) -> AsyncLROPoller[None]'
   parameters:
   - name: folder_url
     description: 'URL for the blob storage resource, including the path to the blob
@@ -93,21 +109,80 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: sas_token
-    description: a Shared Access Signature (SAS) token authorizing access to the blob
-      storage resource
-    isRequired: true
+    description: 'Optional Shared Access Signature (SAS) token to authorize access
+      to the blob. Required
+
+      unless *use_managed_identity* is set to True.'
     types:
     - <xref:str>
-  - name: continuation_token
-    description: a continuation token to restart polling from a saved state
+  - name: use_managed_identity
+    description: 'Indicates which authentication method should be used. If set to
+      True, Managed HSM
+
+      will use the configured user-assigned managed identity to authenticate with
+      Azure Storage. Otherwise, a SAS
+
+      token has to be specified.'
     types:
-    - <xref:str>
+    - <xref:bool>
   - name: key_name
-    description: name of a single key in the backup. When set, only this key will
+    description: Name of a single key in the backup. When set, only this key will
       be restored.
     types:
     - <xref:str>
+  - name: continuation_token
+    description: A continuation token to restart polling from a saved state.
+    types:
+    - <xref:str>
   return:
+    description: 'An AsyncLROPoller. Call *wait()* or *result()* on this object to
+      wait for the operation to complete
+
+      (the return value is None in either case).'
     types:
     - <xref:azure.core.polling.AsyncLROPoller>
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.close
+  name: close
+  summary: 'Close sockets opened by the client.
+
+
+    Calling this method is unnecessary when using the client as a context manager.'
+  signature: async close() -> None
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.send_request
+  name: send_request
+  summary: 'Runs a network request using the client''s existing pipeline.
+
+
+    The request URL can be relative to the vault URL. The service API version used
+    for the request is the same as
+
+    the client''s unless otherwise specified. This method does not raise if the response
+    is an error; to raise an
+
+    exception, call *raise_for_status()* on the returned response object. For more
+    information about how to send
+
+    custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
+  signature: 'async send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
+attributes:
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.vault_url
+  name: vault_url

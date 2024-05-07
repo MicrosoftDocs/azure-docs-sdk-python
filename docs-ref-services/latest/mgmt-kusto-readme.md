@@ -1,9 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-kusto, kusto
-author: lmazuel
-ms.author: lmazuel
-ms.date: 02/16/2023
+ms.date: 10/23/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: kusto
@@ -55,8 +53,9 @@ client = KustoManagementClient(credential=DefaultAzureCredential(), subscription
 
 ## Examples
 
-
-Code samples for this package can be found at [Kusto Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com and [Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
+Code samples for this package can be found at:
+- [Search Kusto Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
 ## Troubleshooting
@@ -68,7 +67,4 @@ Code samples for this package can be found at [Kusto Management](/samples/browse
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-kusto%2FREADME.png)
 

@@ -11,16 +11,19 @@ summary: 'Describes a hybrid machine.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'Machine(*, location: str, tags: Dict[str, str] | None = None, identity:
-    _models.Identity | None = None, location_data: _models.LocationData | None = None,
-    service_statuses: _models.ServiceStatuses | None = None, cloud_metadata: _models.CloudMetadata
-    | None = None, os_profile: _models.OSProfile | None = None, vm_id: str | None
-    = None, client_public_key: str | None = None, os_type: str | None = None, private_link_scope_resource_id:
+    _models.Identity | None = None, kind: str | _models.ArcKindEnum | None = None,
+    location_data: _models.LocationData | None = None, service_statuses: _models.ServiceStatuses
+    | None = None, cloud_metadata: _models.CloudMetadata | None = None, agent_upgrade:
+    _models.AgentUpgrade | None = None, os_profile: _models.OSProfile | None = None,
+    license_profile: _models.LicenseProfileMachineInstanceView | None = None, vm_id:
+    str | None = None, client_public_key: str | None = None, os_type: str | None =
+    None, extensions: List[_models.MachineExtensionInstanceView] | None = None, private_link_scope_resource_id:
     str | None = None, parent_cluster_resource_id: str | None = None, mssql_discovered:
-    str | None = None, **kwargs)'
-  parameters:
+    str | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: tags
     description: Resource tags.
     types:
@@ -33,6 +36,15 @@ constructor:
     description: Identity for the resource.
     types:
     - <xref:azure.mgmt.hybridcompute.models.Identity>
+  - name: kind
+    description: 'Indicates which kind of Arc machine placement on-premises, such
+      as HCI, SCVMM or
+
+      VMware etc. Known values are: "AVS", "HCI", "SCVMM", "VMware", "EPS", "GCP",
+      and "AWS".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.hybridcompute.models.ArcKindEnum>
   - name: location_data
     description: Metadata pertaining to the geographic location of the resource.
     types:
@@ -45,10 +57,18 @@ constructor:
     description: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
     types:
     - <xref:azure.mgmt.hybridcompute.models.CloudMetadata>
+  - name: agent_upgrade
+    description: The info of the machine w.r.t Agent Upgrade.
+    types:
+    - <xref:azure.mgmt.hybridcompute.models.AgentUpgrade>
   - name: os_profile
     description: Specifies the operating system settings for the hybrid machine.
     types:
     - <xref:azure.mgmt.hybridcompute.models.OSProfile>
+  - name: license_profile
+    description: Specifies the License related properties for a machine.
+    types:
+    - <xref:azure.mgmt.hybridcompute.models.LicenseProfileMachineInstanceView>
   - name: vm_id
     description: Specifies the hybrid machine unique ID.
     types:
@@ -63,6 +83,10 @@ constructor:
     description: The type of Operating System (windows/linux).
     types:
     - <xref:str>
+  - name: extensions
+    description: Machine Extensions information (deprecated field).
+    types:
+    - <xref:list>[<xref:azure.mgmt.hybridcompute.models.MachineExtensionInstanceView>]
   - name: private_link_scope_resource_id
     description: 'The resource id of the private link scope this machine
 
@@ -82,7 +106,8 @@ constructor:
 variables:
 - description: 'Fully qualified resource ID for the resource. Ex -
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.'
+    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
@@ -119,6 +144,15 @@ variables:
   name: identity
   types:
   - <xref:azure.mgmt.hybridcompute.models.Identity>
+- description: 'Indicates which kind of Arc machine placement on-premises, such as
+    HCI, SCVMM or
+
+    VMware etc. Known values are: "AVS", "HCI", "SCVMM", "VMware", "EPS", "GCP", and
+    "AWS".'
+  name: kind
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.hybridcompute.models.ArcKindEnum>
 - description: Metadata pertaining to the geographic location of the resource.
   name: location_data
   types:
@@ -137,10 +171,18 @@ variables:
   name: cloud_metadata
   types:
   - <xref:azure.mgmt.hybridcompute.models.CloudMetadata>
+- description: The info of the machine w.r.t Agent Upgrade.
+  name: agent_upgrade
+  types:
+  - <xref:azure.mgmt.hybridcompute.models.AgentUpgrade>
 - description: Specifies the operating system settings for the hybrid machine.
   name: os_profile
   types:
   - <xref:azure.mgmt.hybridcompute.models.OSProfile>
+- description: Specifies the License related properties for a machine.
+  name: license_profile
+  types:
+  - <xref:azure.mgmt.hybridcompute.models.LicenseProfileMachineInstanceView>
 - description: The provisioning state, which only appears in the response.
   name: provisioning_state
   types:
@@ -198,8 +240,16 @@ variables:
   name: vm_uuid
   types:
   - <xref:str>
+- description: Machine Extensions information (deprecated field).
+  name: extensions
+  types:
+  - <xref:list>[<xref:azure.mgmt.hybridcompute.models.MachineExtensionInstanceView>]
 - description: Specifies the Operating System product SKU.
   name: os_sku
+  types:
+  - <xref:str>
+- description: The edition of the Operating System.
+  name: os_edition
   types:
   - <xref:str>
 - description: Specifies the Windows domain name.
@@ -234,3 +284,7 @@ variables:
   name: detected_properties
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
+- description: Information about the network the machine is on.
+  name: network_profile
+  types:
+  - <xref:azure.mgmt.hybridcompute.models.NetworkProfile>

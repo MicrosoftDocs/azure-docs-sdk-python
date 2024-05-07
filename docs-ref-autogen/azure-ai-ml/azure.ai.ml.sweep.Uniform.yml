@@ -8,15 +8,32 @@ inheritances:
 summary: Uniform distribution configuration.
 constructor:
   syntax: 'Uniform(min_value: float | None = None, max_value: float | None = None,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: min_value
+    description: Minimum value of the distribution.
     defaultValue: None
+    types:
+    - <xref:float>
   - name: max_value
+    description: Maximum value of the distribution.
     defaultValue: None
-variables:
-- description: Specifies the type of sweep distribution. Set automatically to "uniform"
-    for this class.
-  name: type
-  types:
-  - <xref:str>
+    types:
+    - <xref:float>
+examples:
+- "Configuring Uniform distributions for learning rates and momentum\nduring a hyperparameter\
+  \ sweep on a Command job.<!--[!code-python[Main](les\\ml_samples_sweep_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\
+  \\samples\\\\ml_samples_sweep_configurations.py\", \"xml:space\": \"preserve\",\
+  \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import command\n\
+  \n   job = command(\n       inputs=dict(kernel=\"linear\", penalty=1.0),\n     \
+  \  compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
+  ,\n       code=\"./scripts\",\n       command=\"python scripts/train.py --kernel\
+  \ $kernel --penalty $penalty\",\n       experiment_name=\"sklearn-iris-flowers\"\
+  ,\n   )\n\n   # we can reuse an existing Command Job as a function that we can apply\
+  \ inputs to for the sweep configurations\n   from azure.ai.ml.sweep import Uniform\n\
+  \n   job_for_sweep = job(\n       kernel=Uniform(min_value=0.0005, max_value=0.005),\n\
+  \       penalty=Uniform(min_value=0.9, max_value=0.99),\n   )\n\n   ````\n"

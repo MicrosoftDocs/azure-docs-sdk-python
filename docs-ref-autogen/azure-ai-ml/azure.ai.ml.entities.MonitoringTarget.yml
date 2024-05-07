@@ -5,30 +5,35 @@ fullName: azure.ai.ml.entities.MonitoringTarget
 module: azure.ai.ml.entities
 inheritances:
 - builtins.object
-summary: '> [!NOTE]
-
-  > This is an experimental class, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
-  for more information.
-
-  >
-
-
-  Monitoring target'
+summary: Monitoring target.
 constructor:
-  syntax: 'MonitoringTarget(*, endpoint_deployment_id: str = None, model_id: str =
-    None)'
-  parameters:
+  syntax: 'MonitoringTarget(*, ml_task: str | MonitorTargetTasks | None = None, endpoint_deployment_id:
+    str | None = None, model_id: str | None = None)'
+  keywordOnlyParameters:
+  - name: ml_task
+    description: 'Type of task. Allowed values: Classification, Regression, and QuestionAnswering'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:azure.ai.ml.constants.MonitorTargetTasks>]]
   - name: endpoint_deployment_id
-    description: 'ARM ID of the target deployment id. Exclusive with
-
-      model_id'
-    isRequired: true
+    description: The ARM ID of the target deployment. Mutually exclusive with model_id.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: model_id
-    description: 'ARM ID of the target model id. Exclusive with
-
-      endpoint_deployment_id'
-    isRequired: true
+    description: ARM ID of the target model ID. Mutually exclusive with endpoint_deployment_id.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
+examples:
+- "Setting a monitoring target using endpoint_deployment_id.<!--[!code-python[Main](les\\\
+  ml_samples_spark_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
+  C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+  \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_spark_configurations.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+  \ import (\n       AlertNotification,\n       MonitorDefinition,\n       MonitoringTarget,\n\
+  \       SparkResourceConfiguration,\n   )\n\n   monitor_definition = MonitorDefinition(\n\
+  \       compute=SparkResourceConfiguration(instance_type=\"standard_e4s_v3\", runtime_version=\"\
+  3.2\"),\n       monitoring_target=MonitoringTarget(\n           ml_task=\"Classification\"\
+  ,\n           endpoint_deployment_id=\"azureml:fraud_detection_endpoint:fraud_detection_deployment\"\
+  ,\n       ),\n       alert_notification=AlertNotification(emails=[\"abc@example.com\"\
+  , \"def@example.com\"]),\n   )\n\n\n   ````\n"

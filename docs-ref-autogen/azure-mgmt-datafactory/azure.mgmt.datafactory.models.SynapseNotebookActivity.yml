@@ -8,19 +8,23 @@ inheritances:
 summary: 'Execute Synapse notebook activity.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'SynapseNotebookActivity(*, name: str, notebook: _models.SynapseNotebookReference,
     additional_properties: Dict[str, MutableMapping[str, Any]] | None = None, description:
-    str | None = None, depends_on: List[_models.ActivityDependency] | None = None,
-    user_properties: List[_models.UserProperty] | None = None, linked_service_name:
+    str | None = None, state: str | _models.ActivityState | None = None, on_inactive_mark_as:
+    str | _models.ActivityOnInactiveMarkAs | None = None, depends_on: List[_models.ActivityDependency]
+    | None = None, user_properties: List[_models.UserProperty] | None = None, linked_service_name:
     _models.LinkedServiceReference | None = None, policy: _models.ActivityPolicy |
     None = None, spark_pool: _models.BigDataPoolParametrizationReference | None =
     None, parameters: Dict[str, _models.NotebookParameter] | None = None, executor_size:
     MutableMapping[str, Any] | None = None, conf: MutableMapping[str, Any] | None
-    = None, driver_size: MutableMapping[str, Any] | None = None, num_executors: int
-    | None = None, **kwargs: Any)'
-  parameters:
+    = None, driver_size: MutableMapping[str, Any] | None = None, num_executors: MutableMapping[str,
+    Any] | None = None, configuration_type: str | _models.ConfigurationType | None
+    = None, target_spark_configuration: _models.SparkConfigurationParametrizationReference
+    | None = None, spark_config: Dict[str, MutableMapping[str, Any]] | None = None,
+    **kwargs: Any)'
+  keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
 
@@ -35,14 +39,32 @@ constructor:
     description: Activity description.
     types:
     - <xref:str>
+  - name: state
+    description: 'Activity state. This is an optional property and if not provided,
+      the state
+
+      will be Active by default. Known values are: "Active" and "Inactive".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityState>
+  - name: on_inactive_mark_as
+    description: 'Status result of the activity when the state is set to Inactive.
+
+      This is an optional property and if not provided when the activity is inactive,
+      the status will
+
+      be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
   - name: depends_on
     description: Activity depends on condition.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
   - name: user_properties
     description: Activity user properties.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
   - name: linked_service_name
     description: Linked service reference.
     types:
@@ -99,9 +121,27 @@ constructor:
     description: 'Number of executors to launch for this session, which will override
       the
 
-      ''numExecutors'' of the notebook you provide.'
+      ''numExecutors'' of the notebook you provide. Type: integer (or Expression with
+      resultType
+
+      integer).'
     types:
-    - <xref:int>
+    - <xref:JSON>
+  - name: configuration_type
+    description: 'The type of the spark config. Known values are: "Default",
+
+      "Customized", and "Artifact".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ConfigurationType>
+  - name: target_spark_configuration
+    description: The spark configuration of the spark job.
+    types:
+    - <xref:azure.mgmt.datafactory.models.SparkConfigurationParametrizationReference>
+  - name: spark_config
+    description: Spark configuration property.
+    types:
+    - <xref:dict>[<xref:str>, <xref:JSON>]
 variables:
 - description: 'Unmatched properties from the message are deserialized to this
 
@@ -121,6 +161,24 @@ variables:
   name: description
   types:
   - <xref:str>
+- description: 'Activity state. This is an optional property and if not provided,
+    the state will
+
+    be Active by default. Known values are: "Active" and "Inactive".'
+  name: state
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityState>
+- description: 'Status result of the activity when the state is set to Inactive.
+
+    This is an optional property and if not provided when the activity is inactive,
+    the status will
+
+    be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+  name: on_inactive_mark_as
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
 - description: Activity depends on condition.
   name: depends_on
   types:
@@ -180,7 +238,25 @@ variables:
 - description: 'Number of executors to launch for this session, which will override
     the
 
-    ''numExecutors'' of the notebook you provide.'
+    ''numExecutors'' of the notebook you provide. Type: integer (or Expression with
+    resultType
+
+    integer).'
   name: num_executors
   types:
-  - <xref:int>
+  - <xref:JSON>
+- description: 'The type of the spark config. Known values are: "Default",
+
+    "Customized", and "Artifact".'
+  name: configuration_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ConfigurationType>
+- description: The spark configuration of the spark job.
+  name: target_spark_configuration
+  types:
+  - <xref:azure.mgmt.datafactory.models.SparkConfigurationParametrizationReference>
+- description: Spark configuration property.
+  name: spark_config
+  types:
+  - <xref:dict>[<xref:str>, <xref:JSON>]

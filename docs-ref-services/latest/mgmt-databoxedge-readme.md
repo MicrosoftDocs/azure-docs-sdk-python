@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-databoxedge, stackedge
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 04/26/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: databox
 ms.subservice: edge
+ms.technology: azure
 ---
-
 # Microsoft Azure Data Box Edge SDK for Python
 
 This is the Microsoft Azure Databoxedge Management Client Library.

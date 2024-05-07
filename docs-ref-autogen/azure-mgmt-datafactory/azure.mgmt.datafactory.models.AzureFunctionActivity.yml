@@ -8,16 +8,18 @@ inheritances:
 summary: 'Azure Function activity.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'AzureFunctionActivity(*, name: str, method: str | _models.AzureFunctionActivityMethod,
     function_name: MutableMapping[str, Any], additional_properties: Dict[str, MutableMapping[str,
-    Any]] | None = None, description: str | None = None, depends_on: List[_models.ActivityDependency]
-    | None = None, user_properties: List[_models.UserProperty] | None = None, linked_service_name:
-    _models.LinkedServiceReference | None = None, policy: _models.ActivityPolicy |
-    None = None, headers: MutableMapping[str, Any] | None = None, body: MutableMapping[str,
-    Any] | None = None, **kwargs: Any)'
-  parameters:
+    Any]] | None = None, description: str | None = None, state: str | _models.ActivityState
+    | None = None, on_inactive_mark_as: str | _models.ActivityOnInactiveMarkAs | None
+    = None, depends_on: List[_models.ActivityDependency] | None = None, user_properties:
+    List[_models.UserProperty] | None = None, linked_service_name: _models.LinkedServiceReference
+    | None = None, policy: _models.ActivityPolicy | None = None, headers: Dict[str,
+    MutableMapping[str, Any]] | None = None, body: MutableMapping[str, Any] | None
+    = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
 
@@ -32,14 +34,32 @@ constructor:
     description: Activity description.
     types:
     - <xref:str>
+  - name: state
+    description: 'Activity state. This is an optional property and if not provided,
+      the state
+
+      will be Active by default. Known values are: "Active" and "Inactive".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityState>
+  - name: on_inactive_mark_as
+    description: 'Status result of the activity when the state is set to Inactive.
+
+      This is an optional property and if not provided when the activity is inactive,
+      the status will
+
+      be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
   - name: depends_on
     description: Activity depends on condition.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
   - name: user_properties
     description: Activity user properties.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
   - name: linked_service_name
     description: Linked service reference.
     types:
@@ -72,7 +92,7 @@ constructor:
 
       "application/json" }. Type: string (or Expression with resultType string).'
     types:
-    - <xref:JSON>
+    - <xref:dict>[<xref:str>, <xref:JSON>]
   - name: body
     description: 'Represents the payload that will be sent to the endpoint. Required
       for POST/PUT
@@ -100,6 +120,24 @@ variables:
   name: description
   types:
   - <xref:str>
+- description: 'Activity state. This is an optional property and if not provided,
+    the state will
+
+    be Active by default. Known values are: "Active" and "Inactive".'
+  name: state
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityState>
+- description: 'Status result of the activity when the state is set to Inactive.
+
+    This is an optional property and if not provided when the activity is inactive,
+    the status will
+
+    be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+  name: on_inactive_mark_as
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
 - description: Activity depends on condition.
   name: depends_on
   types:
@@ -138,7 +176,7 @@ variables:
     "application/json" }. Type: string (or Expression with resultType string).'
   name: headers
   types:
-  - <xref:JSON>
+  - <xref:dict>[<xref:str>, <xref:JSON>]
 - description: 'Represents the payload that will be sent to the endpoint. Required
     for POST/PUT
 

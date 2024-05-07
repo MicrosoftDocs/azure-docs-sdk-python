@@ -15,13 +15,20 @@ summary: 'FeatureSetOperations.
   attaches it as an attribute.'
 constructor:
   syntax: 'FeatureSetOperations(operation_scope: OperationScope, operation_config:
-    OperationConfig, service_client: AzureMachineLearningWorkspaces, datastore_operations:
-    DatastoreOperations, **kwargs: Dict)'
+    OperationConfig, service_client: AzureMachineLearningServices, service_client_for_jobs:
+    AzureMachineLearningWorkspaces, datastore_operations: DatastoreOperations, **kwargs:
+    Dict)'
   parameters:
   - name: operation_scope
+    isRequired: true
   - name: operation_config
+    isRequired: true
   - name: service_client
+    isRequired: true
+  - name: service_client_for_jobs
+    isRequired: true
   - name: datastore_operations
+    isRequired: true
 methods:
 - uid: azure.ai.ml.operations.FeatureSetOperations.archive
   name: archive
@@ -44,58 +51,57 @@ methods:
   name: begin_backfill
   summary: Backfill.
   signature: 'begin_backfill(*, name: str, version: str, feature_window_start_time:
-    datetime, feature_window_end_time: datetime, display_name: str | None = None,
-    description: str | None = None, tags: Dict[str, str] | None = None, compute_resource:
-    MaterializationComputeResource | None = None, spark_configuration: Dict[str, str]
-    | None = None, **kwargs: Dict) -> LROPoller[FeatureSetBackfillMetadata]'
-  parameters:
+    datetime | None = None, feature_window_end_time: datetime | None = None, display_name:
+    str | None = None, description: str | None = None, tags: Dict[str, str] | None
+    = None, compute_resource: MaterializationComputeResource | None = None, spark_configuration:
+    Dict[str, str] | None = None, data_status: List[str | DataAvailabilityStatus]
+    | None = None, job_id: str | None = None, **kwargs: Dict) -> LROPoller[FeatureSetBackfillMetadata]'
+  keywordOnlyParameters:
   - name: name
     description: Feature set name. This is case-sensitive.
-    isRequired: true
     types:
     - <xref:str>
   - name: version
     description: Version identifier. This is case-sensitive.
-    isRequired: true
     types:
     - <xref:str>
   - name: feature_window_start_time
     description: Start time of the feature window to be materialized.
-    isRequired: true
     types:
     - <xref:datetime>
   - name: feature_window_end_time
     description: End time of the feature window to be materialized.
-    isRequired: true
     types:
     - <xref:datetime>
   - name: display_name
     description: Specifies description.
-    isRequired: true
     types:
     - <xref:str>
   - name: description
     description: Specifies description.
-    isRequired: true
     types:
     - <xref:str>
   - name: tags
     description: A set of tags. Specifies the tags.
-    isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: compute_resource
     description: Specifies the compute resource settings.
-    isRequired: true
     types:
     - <xref:azure.ai.ml.entities.MaterializationComputeResource>
   - name: spark_configuration
     description: Specifies the spark compute settings.
-    isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: data_status
+    description: Specifies the data status that you want to backfill.
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.ai.ml.entities.DataAvailabilityStatus>]
   return:
     description: An instance of LROPoller that returns ~azure.ai.ml.entities.FeatureSetBackfillMetadata
+    types:
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.ai.ml.entities.FeatureSetBackfillMetadata>]
 - uid: azure.ai.ml.operations.FeatureSetOperations.begin_create_or_update
   name: begin_create_or_update
   summary: Create or update FeatureSet
@@ -134,25 +140,15 @@ methods:
     description: 'Raised if FeatureSet cannot be successfully
 
       identified and retrieved. Details will be provided in the error message.'
+  - type: azure.core.exceptions.HttpResponseError
+    description: 'Raised if the corresponding name and version cannot be
+
+      retrieved from the service.'
 - uid: azure.ai.ml.operations.FeatureSetOperations.get_feature
   name: get_feature
-  summary: 'Get Feature
-
-
-    :param feature_name. This is case-sensitive.
-
-    :type feature_name: str
-
-    :param tags: Comma-separated list of tag names (and optionally values). Example:
-    tag1,tag2=value2.
-
-    :type tags: str
-
-    :return: Feature object
-
-    :rtype: ~azure.ai.ml.entities.Feature'
+  summary: Get Feature
   signature: 'get_feature(feature_set_name: str, version: str, *, feature_name: str,
-    **kwargs: Dict) -> Feature'
+    **kwargs: Dict) -> Feature | None'
   parameters:
   - name: feature_set_name
     description: Feature set name.
@@ -164,18 +160,26 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: feature_name
+    description: This is case-sensitive.
+    types:
+    - <xref:str>
+  - name: tags
+    description: 'String representation of a comma-separated list of tag names, and
+      optionally, values.
+
+      For example, "tag1,tag2=value2". If provided, only features matching the specified
+      tags are returned.'
+    types:
+    - <xref:str>
+  return:
+    description: Feature object
+    types:
+    - <xref:azure.ai.ml.entities.Feature>
 - uid: azure.ai.ml.operations.FeatureSetOperations.list
   name: list
-  summary: 'List the FeatureSet assets of the workspace.
-
-
-    Default: ACTIVE_ONLY.
-
-    :type list_view_type: Optional[ListViewType]
-
-    :return: An iterator like instance of FeatureSet objects
-
-    :rtype: ~azure.core.paging.ItemPaged[FeatureSet]'
+  summary: List the FeatureSet assets of the workspace.
   signature: 'list(name: str | None = None, *, list_view_type: ListViewType = ListViewType.ACTIVE_ONLY,
     **kwargs: Dict) -> ItemPaged[FeatureSet]'
   parameters:
@@ -183,11 +187,17 @@ methods:
     description: Name of a specific FeatureSet asset, optional.
     isRequired: true
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
+  keywordOnlyParameters:
   - name: list_view_type
-    description: View type for including/excluding (for example) archived FeatureSet
+    description: 'View type for including/excluding (for example) archived FeatureSet
       assets.
-    isRequired: true
+
+      Defaults to ACTIVE_ONLY.'
+  return:
+    description: An iterator like instance of FeatureSet objects
+    types:
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.ml.entities.FeatureSet>]
 - uid: azure.ai.ml.operations.FeatureSetOperations.list_features
   name: list_features
   summary: List features
@@ -205,20 +215,18 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: feature_name
     description: feature name.
-    isRequired: true
     types:
     - <xref:str>
   - name: description
     description: Description of the featureset.
-    isRequired: true
     types:
     - <xref:str>
   - name: tags
     description: 'Comma-separated list of tag names (and optionally values). Example:
       tag1,tag2=value2.'
-    isRequired: true
     types:
     - <xref:str>
   return:
@@ -242,20 +250,18 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: feature_window_start_time
     description: Start time of the feature window to filter materialization jobs.
-    isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:datetime>]
+    - <xref:typing.Union>[<xref:str>, <xref:datetime>]
   - name: feature_window_end_time
     description: End time of the feature window to filter materialization jobs.
-    isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:datetime>]
+    - <xref:typing.Union>[<xref:str>, <xref:datetime>]
   - name: filters
     description: 'Comma-separated list of tag names (and optionally values). Example:
       tag1,tag2=value2.'
-    isRequired: true
     types:
     - <xref:str>
   return:

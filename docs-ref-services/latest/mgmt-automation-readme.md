@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-automation, automation
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: automation
+ms.technology: azure
 ---
-
 ## Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Automation Client Library.
@@ -45,5 +42,4 @@ the [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
 ![image](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-automation%2FREADME.png)
-
 

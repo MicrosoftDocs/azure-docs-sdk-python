@@ -17,7 +17,9 @@ constructor:
   syntax: 'ServiceBusSession(session_id: str, receiver: ServiceBusReceiver | ServiceBusReceiverAsync)'
   parameters:
   - name: session_id
+    isRequired: true
   - name: receiver
+    isRequired: true
 variables:
 - description: Error when AutoLockRenewer is used and it fails to renew the session
     lock.
@@ -28,10 +30,11 @@ variables:
 examples:
 - "Get session from a receiver<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  54\\\\azure-servicebus-7.4.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n       with servicebus_client.get_queue_receiver(queue_name=queue_name,\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\
+  \\samples\\\\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\"\
+  , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n       with servicebus_client.get_queue_receiver(queue_name=queue_name,\
   \ session_id=session_id) as receiver:\n           session = receiver.session\n\n\
   \   ````\n"
 methods:
@@ -41,8 +44,8 @@ methods:
 
 
     Returns None if no state has been set.'
-  signature: 'get_state(**kwargs: Any) -> bytes'
-  parameters:
+  signature: 'get_state(*, timeout: float | None = None, **kwargs: Any) -> bytes'
+  keywordOnlyParameters:
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
       The value must be
@@ -51,13 +54,15 @@ methods:
     types:
     - <xref:float>
   return:
+    description: The session state.
     types:
-    - <xref:str>
+    - <xref:bytes>
   examples:
   - "Get the session state<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    221\\\\azure-servicebus-7.12.1\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       with servicebus_client.get_queue_receiver(queue_name=queue_name, session_id=session_id)\
@@ -81,8 +86,8 @@ methods:
     the session
 
     with an *azure.servicebus.AutoLockRenewer* instance.'
-  signature: 'renew_lock(**kwargs: Any) -> datetime'
-  parameters:
+  signature: 'renew_lock(*, timeout: float | None = None, **kwargs: Any) -> datetime'
+  keywordOnlyParameters:
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
       The value must be
@@ -97,23 +102,26 @@ methods:
   examples:
   - "Renew the session lock before it expires<!--[!code-python[Main](les\\sync_samples\\\
     sample_code_servicebus.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\\
-    a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\\samples\\\
-    \\sync_samples\\\\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"\
-    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n       with servicebus_client.get_queue_receiver(queue_name=queue_name,\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\221\\\\azure-servicebus-7.12.1\\\\samples\\\\sync_samples\\\
+    \\sample_code_servicebus.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n       with servicebus_client.get_queue_receiver(queue_name=queue_name,\
     \ session_id=session_id) as receiver:\n           session = receiver.session\n\
     \           session.renew_lock()\n\n   ````\n"
 - uid: azure.servicebus.ServiceBusSession.set_state
   name: set_state
   summary: Set the session state.
-  signature: 'set_state(state: str | bytes | bytearray, **kwargs: Any) -> None'
+  signature: 'set_state(state: str | bytes | bytearray | None, *, timeout: float |
+    None = None, **kwargs: Any) -> None'
   parameters:
   - name: state
-    description: The state value.
+    description: The state value. Setting state to None will clear the current session.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:bytes>, <xref:bytearray>]
+    - <xref:typing.Union>[<xref:str>, <xref:bytes>, <xref:bytearray>, <xref:None>]
+  keywordOnlyParameters:
   - name: timeout
     description: 'The total operation timeout in seconds including all the retries.
       The value must be
@@ -121,13 +129,31 @@ methods:
       greater than 0 if specified. The default value is None, meaning no timeout.'
     types:
     - <xref:float>
+  return:
+    description: None
+    types:
+    - <xref:None>
   examples:
   - "Set the session state<!--[!code-python[Main](les\\sync_samples\\sample_code_servicebus.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\54\\\\azure-servicebus-7.4.0\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    221\\\\azure-servicebus-7.12.1\\\\samples\\\\sync_samples\\\\sample_code_servicebus.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       with servicebus_client.get_queue_receiver(queue_name=queue_name, session_id=session_id)\
     \ as receiver:\n           session = receiver.session\n           session.set_state(\"\
     START\")\n\n   ````\n"
+attributes:
+- uid: azure.servicebus.ServiceBusSession.locked_until_utc
+  name: locked_until_utc
+  summary: The time at which this session's lock will expire.
+  return:
+    types:
+    - <xref:datetime.datetime>
+- uid: azure.servicebus.ServiceBusSession.session_id
+  name: session_id
+  summary: Session id of the current session.
+  return:
+    types:
+    - <xref:str>

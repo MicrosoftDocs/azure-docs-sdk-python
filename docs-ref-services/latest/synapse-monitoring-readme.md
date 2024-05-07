@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-monitoring, synapseanalytics
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 03/09/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: synapse-analytics
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Monitoring Client Library.

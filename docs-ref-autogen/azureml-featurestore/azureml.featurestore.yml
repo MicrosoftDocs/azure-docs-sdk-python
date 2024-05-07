@@ -1,0 +1,159 @@
+### YamlMime:PythonPackage
+uid: azureml.featurestore
+name: featurestore
+fullName: azureml.featurestore
+type: rootImport
+functions:
+- uid: azureml.featurestore.create_feature_set_spec
+  name: create_feature_set_spec
+  summary: 'Utility for creating a FeatureSetSpec.
+
+
+    If infer schema is True, infer the type for every column that is not an index
+    column or timestamp column.
+
+    Add all these columns and their column type to the Feature list of the returned
+    FeatureSetSpec.
+
+
+    :type FeatureSource, optional
+
+    :param features: List of Feature object to be included in feature set spec result
+
+    :type features: List[Feature], optional
+
+    :param index_columns: List of Index Column object to be included in feature set
+    spec result
+
+    :type index_columns: List[Column], optional
+
+    :param transformation_code: Transformation code to be included in feature set
+    spec result
+
+    :type transformation_code: TransformationCode, optional, Deprecated
+
+    :param feature_transformation: Transformation logic to be applied to the feature
+    set, can be UDF or DSL
+
+    :type feature_transformation: FeatureTransformation, optional
+
+    :param source_lookback: source lookback to be included in feature set spec result
+
+    :type source_lookback: DateTimeOffset, optional
+
+    :param temporal_join_lookback: temporal join lookback to be included in feature
+    set spec result
+
+    :type temporal_join_lookback: DateTimeOffset, optional
+
+    :returns: Featureset Spec
+
+    :rtype: FeaturesetSpec'
+  signature: 'create_feature_set_spec(*, infer_schema: bool | None = False, spec_path:
+    str | PathLike | IO[str] | None = None, source: FeatureSource | FeatureSourceBase
+    | None = None, features: List[Feature] | None = None, index_columns: List[Column]
+    | None = None, transformation_code: TransformationCode | None = None, feature_transformation:
+    FeatureTransformation | None = None, source_lookback: DateTimeOffset | None =
+    None, temporal_join_lookback: DateTimeOffset | None = None) -> FeatureSetSpec'
+  parameters:
+  - name: infer_schema
+    description: whether to infer the schema
+    isRequired: true
+    types:
+    - '<xref:bool>, <xref:default: False>'
+  - name: spec_path
+    description: 'feature set spec path to infer from, required if other objects are
+      not provided,
+
+      will override other objects if provided.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:PathLike>, <xref:typing.IO>[<xref:str>]],
+      <xref:optional>
+  - name: source
+    description: FeatureSource object to be included in feature set spec result
+    isRequired: true
+- uid: azureml.featurestore.get_offline_features
+  name: get_offline_features
+  summary: "Join offline features in a spark dataframe. Requires spark context.\n\n\
+    Enrich an entity dataframe with historical feature values for either training\
+    \ or batch scoring.\nThis method joins historical feature data from one or more\
+    \ feature sets to an entity dataframe by using a time\ntravel join.\n\nEach feature\
+    \ set is joined to the entity dataframe using all entities configured for the\
+    \ respective feature set.\n\nAll configured entities must be available in the\
+    \ entity dataframe. Therefore, the entity dataframe must\ncontain all entities\
+    \ found in all feature sets, but the individual feature sets can have different\
+    \ entities.\n\nTime travel is based on the configured temporal join lookback for\
+    \ each feature set. A shorter lookback will limit\nthe amount of scanning that\
+    \ will be done in order to find feature data for a specific entity key. Setting\
+    \ a short\nlookback period may result in null values being returned.\n:param observation_data:\
+    \ (Spark.Sql.Dataframe): An entity dataframe is a collection of rows containing\
+    \ all entity\n\n   columns (e.g., customer_id, driver_id) on which features need\
+    \ to be joined, as well as an event_timestamp\n   column used to ensure point-in-time\
+    \ correctness. The entity dataframe is a Spark Dataframe."
+  signature: 'get_offline_features(*, features: List[Feature], observation_data, timestamp_column:
+    str, use_materialized_data: bool = True, **kwargs)'
+  parameters:
+  - name: features
+    description: 'The list of features that should be retrieved from the offline store.
+      Feature is obtained by
+
+      featuresetspec[''feature_name'']'
+    isRequired: true
+  - name: timestamp_column
+    description: The name of the timestamp column of the entity dataframe
+    isRequired: true
+  - name: use_materialized_data
+    description: 'When set to true, sdk will first try to pull feature data from offline
+      store and fallback
+
+      to run the query through if None is in offline store'
+    isRequired: true
+  return:
+    description: Spark Dataframe which can be used to show the results.
+- uid: azureml.featurestore.get_online_features
+  name: get_online_features
+  summary: "Join online features in a dataframe.\n\nEnrich an entity dataframe with\
+    \ online feature values for batch scoring.\nThis method joins online feature data\
+    \ from one or more feature sets to an entity dataframe.\nEach feature set is joined\
+    \ to the entity dataframe using all entities configured for the respective feature\
+    \ set.\nAll configured entities must be available in the entity dataframe. Therefore,\
+    \ the entity dataframe must\ncontain all entities found in all feature sets, but\
+    \ the individual feature sets can have different entities.\n:param observation_data:\
+    \ (pyarrow.Table): An entity dataframe is a collection of rows containing all\
+    \ entity\n\n   columns (e.g., customer_id, driver_id) on which features need to\
+    \ be joined.\n   The entity dataframe is a pyarrow Table."
+  signature: 'get_online_features(features: List[Feature], observation_data: pyarrow.Table,
+    **kwargs) -> pyarrow.Table'
+  parameters:
+  - name: features
+    description: 'The list of features that should be retrieved from the online store.
+
+      Feature is obtained by featuresetspec[''feature_name'']'
+    isRequired: true
+  - name: observation_data
+    isRequired: true
+  return:
+    description: pyarrow Table which can be used to show the results.
+- uid: azureml.featurestore.init_online_lookup
+  name: init_online_lookup
+  signature: 'init_online_lookup(features: List[Feature], credential=None, force=False,
+    **kwargs)'
+- uid: azureml.featurestore.shutdown_online_lookup
+  name: shutdown_online_lookup
+  signature: shutdown_online_lookup()
+classes:
+- azureml.featurestore.FeatureSetSpec
+- azureml.featurestore.FeatureStoreClient
+packages:
+- azureml.featurestore.contracts
+- azureml.featurestore.feature_source
+- azureml.featurestore.grpc
+- azureml.featurestore.offline_store
+- azureml.featurestore.online
+- azureml.featurestore.schema
+- azureml.featurestore.transformation
+modules:
+- azureml.featurestore.abstract_feature_store
+- azureml.featurestore.feature_set_spec
+- azureml.featurestore.feature_store_client

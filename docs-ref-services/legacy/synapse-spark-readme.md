@@ -1,16 +1,13 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-spark, 
-author: ramya-rao-a
-ms.author: ramyar
+keywords: Azure, python, SDK, API, azure-synapse-spark,
 ms.date: 07/03/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: synapse-analytics
 ms.subservice: spark
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Spark Client Library.

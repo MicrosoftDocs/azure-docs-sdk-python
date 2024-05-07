@@ -2,7 +2,7 @@
 uid: azure.storage.blob
 name: blob
 fullName: azure.storage.blob
-type: import
+type: rootImport
 functions:
 - uid: azure.storage.blob.download_blob_from_url
   name: download_blob_from_url
@@ -48,6 +48,11 @@ functions:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>,
+      <xref:str>], <xref:AzureNamedKeyCredential>, <xref:AzureSasCredential>, <xref:"TokenCredential">]]
+      <xref:./>
+  keywordOnlyParameters:
   - name: overwrite
     description: 'Whether the local file should be overwritten if it already exists.
       The default value is
@@ -109,8 +114,9 @@ functions:
     ContainerClient or BlobClient.'
   signature: 'generate_account_sas(account_name: str, account_key: str, resource_types:
     ResourceTypes | str, permission: AccountSasPermissions | str, expiry: datetime
-    | str | None, start: datetime | str | None = None, ip: str | None = None, **kwargs:
-    Any) -> str'
+    | str, start: datetime | str | None = None, ip: str | None = None, *, services:
+    ~azure.storage.blob._shared.models.Services | str = <azure.storage.blob._shared.models.Services
+    object>, **kwargs: ~typing.Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -133,13 +139,7 @@ functions:
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
-      user is restricted to operations allowed by the permissions.
-
-      Required unless an id is given referencing a stored access policy
-
-      which contains this field. This field must be omitted if it has been
-
-      specified in an associated stored access policy.'
+      user is restricted to operations allowed by the permissions.'
     isRequired: true
     types:
     - <xref:str>
@@ -147,15 +147,7 @@ functions:
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
-      Required unless an id is given referencing a stored access policy
-
-      which contains this field. This field must be omitted if it has
-
-      been specified in an associated stored access policy. Azure will always
-
-      convert values to UTC. If a date is passed in without timezone info, it
-
-      is assumed to be UTC.'
+      The provided datetime will always be interpreted as UTC.'
     isRequired: true
     types:
     - <xref:datetime.datetime>
@@ -165,11 +157,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -188,6 +178,15 @@ functions:
     defaultValue: None
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: services
+    description: 'Specifies the services that the Shared Access Signature (sas) token
+      will be able to be utilized with.
+
+      Will default to only this package (i.e. blobs) if not provided.'
+    defaultValue: b
+    types:
+    - <xref:typing.Union>[<xref:azure.storage.blob.Services>, <xref:str>]
   - name: protocol
     description: Specifies the protocol permitted for a request made. The default
       value is https.
@@ -202,6 +201,20 @@ functions:
     description: A Shared Access Signature (sas) token.
     types:
     - <xref:str>
+  examples:
+  - "Generating a shared access signature.<!--[!code-python[Main](les\\blob_samples_authentication.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    202\\\\azure-storage-blob-12.20.0b1\\\\samples\\\\blob_samples_authentication.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Create a SAS token to use to authenticate a new client\n   from datetime\
+    \ import datetime, timedelta\n   from azure.storage.blob import ResourceTypes,\
+    \ AccountSasPermissions, generate_account_sas\n\n   sas_token = generate_account_sas(\n\
+    \       blob_service_client.account_name,\n       account_key=blob_service_client.credential.account_key,\n\
+    \       resource_types=ResourceTypes(object=True),\n       permission=AccountSasPermissions(read=True),\n\
+    \       expiry=datetime.utcnow() + timedelta(hours=1)\n   )\n\n   ````\n"
 - uid: azure.storage.blob.generate_blob_sas
   name: generate_blob_sas
   summary: 'Generates a shared access signature for a blob.
@@ -294,11 +307,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -327,6 +338,7 @@ functions:
     defaultValue: None
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: version_id
     description: 'An optional blob version ID. This parameter is only applicable for
       versioning-enabled
@@ -340,7 +352,8 @@ functions:
       SAS to operate on a specific version.
 
 
-      New in version 12.4.0: This keyword argument was introduced in API version ''2019-12-12''.'
+      *New in version 12.4.0:* This keyword argument was introduced in API version
+      ''2019-12-12''.'
     types:
     - <xref:str>
   - name: protocol
@@ -477,11 +490,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -510,6 +521,7 @@ functions:
     defaultValue: None
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: protocol
     description: Specifies the protocol permitted for a request made. The default
       value is https.
@@ -562,6 +574,18 @@ functions:
     description: A Shared Access Signature (sas) token.
     types:
     - <xref:str>
+  examples:
+  - "Generating a sas token.<!--[!code-python[Main](les\\blob_samples_containers.py\
+    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    202\\\\azure-storage-blob-12.20.0b1\\\\samples\\\\blob_samples_containers.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   # Use access policy to generate a sas token\n   from azure.storage.blob import\
+    \ generate_container_sas\n\n   sas_token = generate_container_sas(\n       container_client.account_name,\n\
+    \       container_client.container_name,\n       account_key=container_client.credential.account_key,\n\
+    \       policy_id='my-access-policy-id'\n   )\n\n   ````\n"
 - uid: azure.storage.blob.upload_blob_to_url
   name: upload_blob_to_url
   summary: 'Upload data to a given URL
@@ -585,7 +609,7 @@ functions:
     types:
     - <xref:bytes>
     - <xref:str>
-    - <xref:Iterable>
+    - <xref:typing.Iterable>
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -608,6 +632,11 @@ functions:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>,
+      <xref:str>], <xref:AzureNamedKeyCredential>, <xref:AzureSasCredential>, <xref:"TokenCredential">]]
+      <xref:./>
+  keywordOnlyParameters:
   - name: overwrite
     description: 'Whether the blob to be uploaded should overwrite the current data.
 
@@ -630,7 +659,7 @@ functions:
   - name: metadata
     description: Name-value pairs associated with the blob as metadata.
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: validate_content
     description: 'If true, calculates an MD5 hash for each chunk of the blob. The
       storage
@@ -657,7 +686,7 @@ functions:
   return:
     description: Blob-updated property dict (Etag and last modified)
     types:
-    - <xref:dict>(<xref:str>, <xref:Any>)
+    - <xref:dict>(<xref:str>, <xref:typing.Any>)
 classes:
 - azure.storage.blob.AccessPolicy
 - azure.storage.blob.AccountSasPermissions
@@ -695,6 +724,7 @@ classes:
 - azure.storage.blob.PartialBatchErrorException
 - azure.storage.blob.ResourceTypes
 - azure.storage.blob.RetentionPolicy
+- azure.storage.blob.Services
 - azure.storage.blob.StaticWebsite
 - azure.storage.blob.StorageStreamDownloader
 - azure.storage.blob.UserDelegationKey

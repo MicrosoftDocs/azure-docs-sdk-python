@@ -9,13 +9,13 @@ summary: Schedules for compute start or stop scenario.
 constructor:
   syntax: 'ComputeStartStopSchedule(*, trigger: CronTrigger | RecurrenceTrigger |
     None = None, action: ComputePowerAction | None = None, state: ScheduleStatus =
-    ScheduleStatus.ENABLED, **kwargs)'
+    ScheduleStatus.ENABLED, **kwargs: Any)'
   parameters:
   - name: trigger
     description: The trigger of the schedule.
     isRequired: true
     types:
-    - <xref:Trigger>
+    - <xref:typing.Union>[<xref:azure.ai.ml.entities.CronTrigger>, <xref:azure.ai.ml.entities.RecurrenceTrigger>]
   - name: action
     description: The compute power action.
     isRequired: true
@@ -25,24 +25,45 @@ constructor:
     description: The state of the schedule.
     isRequired: true
     types:
-    - <xref:ScheduleState>
+    - <xref:azure.ai.ml.entities.ScheduleState>
   - name: kwargs
     description: A dictionary of additional configuration parameters.
     isRequired: true
     types:
     - <xref:dict>
+  keywordOnlyParameters:
+  - name: trigger
+    isRequired: true
+  - name: action
+    isRequired: true
+  - name: state
+    defaultValue: ScheduleStatus.ENABLED
+examples:
+- "Creating a ComputeStartStopSchedule object.<!--[!code-python[Main](les\\ml_samples_compute.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\
+  \\samples\\\\ml_samples_compute.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.ai.ml.constants import TimeZone\n  \
+  \ from azure.ai.ml.entities import ComputeSchedules, ComputeStartStopSchedule, CronTrigger\n\
+  \n   start_stop = ComputeStartStopSchedule(\n       trigger=CronTrigger(\n     \
+  \      expression=\"15 10 * * 1\",\n           start_time=\"2022-03-10 10:15:00\"\
+  ,\n           end_time=\"2022-06-10 10:15:00\",\n           time_zone=TimeZone.PACIFIC_STANDARD_TIME,\n\
+  \       )\n   )\n   compute_schedules = ComputeSchedules(compute_start_stop=[start_stop])\n\
+  \n\n   ````\n"
 attributes:
 - uid: azure.ai.ml.entities.ComputeStartStopSchedule.provisioning_state
   name: provisioning_state
-  summary: Schedule provisioning state, readonly.
+  summary: The schedule provisioning state.
   return:
-    description: Schedule provisioning state.
+    description: The schedule provisioning state.
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.ai.ml.entities.ComputeStartStopSchedule.schedule_id
   name: schedule_id
-  summary: Schedule id, readonly.
+  summary: The schedule ID.
   return:
-    description: Schedule id.
+    description: The schedule ID.
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]

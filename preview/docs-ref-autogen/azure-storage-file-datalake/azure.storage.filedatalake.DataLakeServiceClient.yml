@@ -53,12 +53,22 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  keywordOnlyParameters:
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
 
       compatible with the current SDK. Setting to an older version may result in reduced
       feature compatibility.'
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
     types:
     - <xref:str>
 variables:
@@ -74,6 +84,28 @@ variables:
   name: primary_hostname
   types:
   - <xref:str>
+examples:
+- "Creating the DataLakeServiceClient from connection string.<!--[!code-python[Main](les\\\
+  datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\\datalake_samples_service.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake\
+  \ import DataLakeServiceClient\n   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
+  \n   ````\n\nCreating the DataLakeServiceClient with Azure Identity credentials.<!--[!code-python[Main](les\\\
+  datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\\datalake_samples_service.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity\
+  \ import ClientSecretCredential\n   token_credential = ClientSecretCredential(\n\
+  \       self.active_directory_tenant_id,\n       self.active_directory_application_id,\n\
+  \       self.active_directory_application_secret,\n   )\n   datalake_service_client\
+  \ = DataLakeServiceClient(\"https://{}.dfs.core.windows.net\".format(self.account_name),\n\
+  \                                                   credential=token_credential)\n\
+  \n   ````\n"
 methods:
 - uid: azure.storage.filedatalake.DataLakeServiceClient.close
   name: close
@@ -104,14 +136,15 @@ methods:
     description: 'A dict with name-value pairs to associate with the
 
       file system as metadata. Example: *{''Category'':''test''}*'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
   - name: public_access
     description: 'Possible values include: file system, file.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:azure.storage.filedatalake.PublicAccess>
+  keywordOnlyParameters:
   - name: encryption_scope_options
     description: 'Specifies the default encryption scope to set on the file system
       and use for
@@ -119,7 +152,7 @@ methods:
       all future writes.
 
 
-      New in version 12.9.0.'
+      *New in version 12.9.0.*'
     types:
     - <xref:dict>
     - <xref:azure.storage.filedatalake.EncryptionScopeOptions>
@@ -138,6 +171,16 @@ methods:
   return:
     types:
     - <xref:azure.storage.filedatalake.FileSystemClient>
+  examples:
+  - "Creating a file system in the datalake service.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   datalake_service_client.create_file_system(\"\
+    filesystem\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.delete_file_system
   name: delete_file_system
   summary: 'Marks the specified file system for deletion.
@@ -159,6 +202,7 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.filedatalake.FileSystemProperties>
+  keywordOnlyParameters:
   - name: lease
     description: 'If specified, delete_file_system only succeeds if the
 
@@ -218,14 +262,19 @@ methods:
   return:
     types:
     - <xref:None>
+  examples:
+  - "Deleting a file system in the datalake service.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   datalake_service_client.delete_file_system(\"\
+    filesystem\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.from_connection_string
   name: from_connection_string
-  summary: 'Create DataLakeServiceClient from a Connection String.
-
-
-    :return a DataLakeServiceClient
-
-    :rtype ~azure.storage.filedatalake.DataLakeServiceClient'
+  summary: Create DataLakeServiceClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
     | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
     **kwargs: Any) -> Self'
@@ -251,6 +300,38 @@ methods:
       Credentials provided here will take precedence over those in the connection
       string.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
+  return:
+    description: A DataLakeServiceClient.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeServiceClient>
+  examples:
+  - "Creating the DataLakeServiceClient from a connection string.<!--[!code-python[Main](les\\\
+    datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from azure.storage.filedatalake import DataLakeServiceClient\n\
+    \   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
+    \n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.get_directory_client
   name: get_directory_client
   summary: 'Get a client to interact with the specified directory.
@@ -282,6 +363,17 @@ methods:
     description: A DataLakeDirectoryClient.
     types:
     - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
+  examples:
+  - "Getting the directory client to interact with a specific directory.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   directory_client = datalake_service_client.get_directory_client(file_system_client.file_system_name,\n\
+    \                                                                   \"mydirectory\"\
+    )\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.get_file_client
   name: get_file_client
   summary: 'Get a client to interact with the specified file.
@@ -313,6 +405,16 @@ methods:
     description: A DataLakeFileClient.
     types:
     - <xref:azure.storage.filedatalake.DataLakeFileClient>
+  examples:
+  - "Getting the file client to interact with a specific file.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   file_client = datalake_service_client.get_file_client(file_system_client.file_system_name,\
+    \ \"myfile\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.get_file_system_client
   name: get_file_system_client
   summary: 'Get a client to interact with the specified file system.
@@ -333,6 +435,19 @@ methods:
     description: A FileSystemClient.
     types:
     - <xref:azure.storage.filedatalake.FileSystemClient>
+  examples:
+  - "Getting the file system client to interact with a specific file system.<!--[!code-python[Main](les\\\
+    datalake_samples_file_system.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_file_system.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   # Instantiate a DataLakeServiceClient using a\
+    \ connection string\n   from azure.storage.filedatalake import DataLakeServiceClient\n\
+    \   datalake_service_client = DataLakeServiceClient.from_connection_string(self.connection_string)\n\
+    \n   # Instantiate a FileSystemClient\n   file_system_client = datalake_service_client.get_file_system_client(\"\
+    mynewfilesystem\")\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.get_service_properties
   name: get_service_properties
   summary: 'Gets the properties of a storage account''s datalake service, including
@@ -340,9 +455,9 @@ methods:
     Azure Storage Analytics.
 
 
-    New in version 12.4.0: This operation was introduced in API version ''2020-06-12''.'
+    *New in version 12.4.0:* This operation was introduced in API version ''2020-06-12''.'
   signature: 'get_service_properties(**kwargs: Any) -> Dict[str, Any]'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -360,7 +475,7 @@ methods:
 
       analytics logging, hour/minute metrics, cors rules, etc.'
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.filedatalake.DataLakeServiceClient.get_user_delegation_key
   name: get_user_delegation_key
   summary: 'Obtain a user delegation key for the purpose of signing SAS tokens.
@@ -379,6 +494,7 @@ methods:
     isRequired: true
     types:
     - <xref:datetime.datetime>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -395,6 +511,18 @@ methods:
     description: The user delegation key.
     types:
     - <xref:azure.storage.filedatalake.UserDelegationKey>
+  examples:
+  - "Get user delegation key from datalake service client.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   from datetime import datetime, timedelta\n  \
+    \ user_delegation_key = datalake_service_client.get_user_delegation_key(datetime.utcnow(),\n\
+    \                                                                         datetime.utcnow()\
+    \ + timedelta(hours=1))\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.list_file_systems
   name: list_file_systems
   summary: 'Returns a generator to list the file systems under the specified account.
@@ -410,16 +538,17 @@ methods:
     description: 'Filters the results to return only file systems whose names
 
       begin with the specified prefix.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:str>
   - name: include_metadata
     description: 'Specifies that file system metadata be returned in the response.
 
       The default value is *False*.'
-    defaultValue: None
+    isRequired: true
     types:
     - <xref:bool>
+  keywordOnlyParameters:
   - name: results_per_page
     description: 'The maximum number of file system names to retrieve per API
 
@@ -458,6 +587,16 @@ methods:
     description: An iterable (auto-paging) of FileSystemProperties.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.filedatalake.FileSystemProperties>]
+  examples:
+  - "Listing the file systems in the datalake service.<!--[!code-python[Main](les\\\
+    datalake_samples_service.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\204\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+    \\datalake_samples_service.py\", \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   file_systems = datalake_service_client.list_file_systems()\n\
+    \   for file_system in file_systems:\n       print(file_system.name)\n\n   ````\n"
 - uid: azure.storage.filedatalake.DataLakeServiceClient.set_service_properties
   name: set_service_properties
   summary: 'Sets the properties of a storage account''s Datalake service, including
@@ -465,14 +604,14 @@ methods:
     Azure Storage Analytics.
 
 
-    New in version 12.4.0: This operation was introduced in API version ''2020-06-12''.
+    *New in version 12.4.0:* This operation was introduced in API version ''2020-06-12''.
 
 
     If an element (e.g. analytics_logging) is left as None, the
 
     existing settings on the service for that functionality are preserved.'
   signature: 'set_service_properties(**kwargs: Any) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: analytics_logging
     description: Groups the Azure Analytics Logging settings.
   - name: hour_metrics
@@ -529,7 +668,7 @@ methods:
     set in the delete retention policy.
 
 
-    New in version 12.3.0: This operation was introduced in API version ''2019-12-12''.'
+    *New in version 12.3.0:* This operation was introduced in API version ''2019-12-12''.'
   signature: 'undelete_file_system(name: str, deleted_version: str, **kwargs: Any)
     -> FileSystemClient'
   parameters:
@@ -543,6 +682,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -556,5 +696,72 @@ methods:
     types:
     - <xref:int>
   return:
+    description: The restored solft-deleted FileSystemClient.
     types:
     - <xref:azure.storage.filedatalake.FileSystemClient>
+attributes:
+- uid: azure.storage.filedatalake.DataLakeServiceClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.filedatalake.DataLakeServiceClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.filedatalake.DataLakeServiceClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.filedatalake.DataLakeServiceClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.filedatalake.DataLakeServiceClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.filedatalake.DataLakeServiceClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.storage.filedatalake.DataLakeServiceClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.filedatalake.DataLakeServiceClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

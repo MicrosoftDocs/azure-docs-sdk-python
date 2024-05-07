@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: Azure Cognitive Services SDK for Python
 description: Reference for Azure Cognitive Services SDK for Python
@@ -8,6 +9,16 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cognitiveservices
 ---
+=======
+---
+title: Azure Cognitive Services SDK for Python
+description: Reference for Azure Cognitive Services SDK for Python
+ms.date: 05/06/2024
+ms.topic: reference
+ms.devlang: python
+ms.service: cognitiveservices
+---
+>>>>>>> main
 # Azure Cognitive Services modules for Python
 
 Add image and face recognition, language analysis, and search to your Python apps, websites, and tools using the Azure Cognitive Services modules for Python.

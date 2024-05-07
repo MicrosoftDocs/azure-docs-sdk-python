@@ -8,17 +8,19 @@ inheritances:
 summary: 'WebHook activity.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'WebHookActivity(*, name: str, method: str | _models.WebHookActivityMethod,
     url: MutableMapping[str, Any], additional_properties: Dict[str, MutableMapping[str,
-    Any]] | None = None, description: str | None = None, depends_on: List[_models.ActivityDependency]
-    | None = None, user_properties: List[_models.UserProperty] | None = None, timeout:
-    str | None = None, headers: MutableMapping[str, Any] | None = None, body: MutableMapping[str,
-    Any] | None = None, authentication: _models.WebActivityAuthentication | None =
-    None, report_status_on_call_back: MutableMapping[str, Any] | None = None, **kwargs:
-    Any)'
-  parameters:
+    Any]] | None = None, description: str | None = None, state: str | _models.ActivityState
+    | None = None, on_inactive_mark_as: str | _models.ActivityOnInactiveMarkAs | None
+    = None, depends_on: List[_models.ActivityDependency] | None = None, user_properties:
+    List[_models.UserProperty] | None = None, policy: _models.SecureInputOutputPolicy
+    | None = None, timeout: str | None = None, headers: Dict[str, MutableMapping[str,
+    Any]] | None = None, body: MutableMapping[str, Any] | None = None, authentication:
+    _models.WebActivityAuthentication | None = None, report_status_on_call_back: MutableMapping[str,
+    Any] | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
 
@@ -33,14 +35,36 @@ constructor:
     description: Activity description.
     types:
     - <xref:str>
+  - name: state
+    description: 'Activity state. This is an optional property and if not provided,
+      the state
+
+      will be Active by default. Known values are: "Active" and "Inactive".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityState>
+  - name: on_inactive_mark_as
+    description: 'Status result of the activity when the state is set to Inactive.
+
+      This is an optional property and if not provided when the activity is inactive,
+      the status will
+
+      be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
   - name: depends_on
     description: Activity depends on condition.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.ActivityDependency>]
   - name: user_properties
     description: Activity user properties.
     types:
-    - <xref:azure.mgmt.datafactory.aio.operations.FactoriesOperations.list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
+    - <xref:list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
+  - name: policy
+    description: Activity policy.
+    types:
+    - <xref:azure.mgmt.datafactory.models.SecureInputOutputPolicy>
   - name: method
     description: Rest API method for target endpoint. Required. "POST"
     types:
@@ -71,7 +95,7 @@ constructor:
 
       "application/json" }. Type: string (or Expression with resultType string).'
     types:
-    - <xref:JSON>
+    - <xref:dict>[<xref:str>, <xref:JSON>]
   - name: body
     description: 'Represents the payload that will be sent to the endpoint. Required
       for POST/PUT
@@ -115,6 +139,24 @@ variables:
   name: description
   types:
   - <xref:str>
+- description: 'Activity state. This is an optional property and if not provided,
+    the state will
+
+    be Active by default. Known values are: "Active" and "Inactive".'
+  name: state
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityState>
+- description: 'Status result of the activity when the state is set to Inactive.
+
+    This is an optional property and if not provided when the activity is inactive,
+    the status will
+
+    be Succeeded by default. Known values are: "Succeeded", "Failed", and "Skipped".'
+  name: on_inactive_mark_as
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.datafactory.models.ActivityOnInactiveMarkAs>
 - description: Activity depends on condition.
   name: depends_on
   types:
@@ -123,6 +165,10 @@ variables:
   name: user_properties
   types:
   - <xref:list>[<xref:azure.mgmt.datafactory.models.UserProperty>]
+- description: Activity policy.
+  name: policy
+  types:
+  - <xref:azure.mgmt.datafactory.models.SecureInputOutputPolicy>
 - description: Rest API method for target endpoint. Required. "POST"
   name: method
   types:
@@ -152,7 +198,7 @@ variables:
     "application/json" }. Type: string (or Expression with resultType string).'
   name: headers
   types:
-  - <xref:JSON>
+  - <xref:dict>[<xref:str>, <xref:JSON>]
 - description: 'Represents the payload that will be sent to the endpoint. Required
     for POST/PUT
 

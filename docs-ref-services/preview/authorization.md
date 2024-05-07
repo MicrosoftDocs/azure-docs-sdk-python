@@ -1,15 +1,12 @@
 ---
 title: Azure Authorization SDK for Python
 description: Reference for Azure Authorization SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
+keywords: Azure, python, SDK, API, Authorization
+ms.date: 03/30/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: authorization
 manager: routlaw
-keywords: Azure, python, SDK, API, Authorization
-ms.date: 03/30/2023
 ms.technology: azure
 ---
 # Azure Authorization libraries for python
@@ -62,4 +59,4 @@ permissions = self.authorization_client.permissions.list_for_resource_group(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/authorization/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-authorization)

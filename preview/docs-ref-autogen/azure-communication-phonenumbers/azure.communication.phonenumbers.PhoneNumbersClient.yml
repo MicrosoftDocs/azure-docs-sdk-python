@@ -10,13 +10,16 @@ summary: "A client to interact with the AzureCommunicationService Phone Numbers 
   \ str endpoint:\n\n   The endpoint url for Azure Communication Service resource."
 constructor:
   syntax: 'PhoneNumbersClient(endpoint: str, credential: TokenCredential | AzureKeyCredential,
-    accepted_language: str = None, **kwargs: Any)'
+    **kwargs: Any)'
   parameters:
   - name: credential
     description: The credential we use to authenticate against the service.
     isRequired: true
     types:
-    - <xref:Union>[<xref:TokenCredential>, <xref:AzureKeyCredential>]
+    - <xref:typing.Union>[<xref:TokenCredential>, <xref:AzureKeyCredential>]
+  - name: endpoint
+    isRequired: true
+  keywordOnlyParameters:
   - name: api_version
     description: 'Azure Communication Phone Number API version.
 
@@ -25,9 +28,6 @@ constructor:
       Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
-  - name: endpoint
-  - name: accepted_language
-    defaultValue: None
 methods:
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.begin_purchase_phone_numbers
   name: begin_purchase_phone_numbers
@@ -39,6 +39,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: continuation_token
     description: A continuation token to restart a poller from a saved state.
     types:
@@ -70,6 +71,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: continuation_token
     description: A continuation token to restart a poller from a saved state.
     types:
@@ -128,6 +130,7 @@ methods:
     isRequired: true
     types:
     - <xref:azure.communication.phonenumbers.models.PhoneNumberCapabilities>
+  keywordOnlyParameters:
   - name: area_code
     description: 'The area code of the desired phone number, e.g. 425. If not set,
 
@@ -158,7 +161,7 @@ methods:
     - <xref:int>
   return:
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.communication.phonenumbers.models.PhoneNumberSearchResult>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.communication.phonenumbers.PhoneNumberSearchResult>]
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.begin_update_phone_number_capabilities
   name: begin_update_phone_number_capabilities
   summary: Updates the capabilities of a phone number.
@@ -186,6 +189,7 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.communication.phonenumbers.models.PhoneNumberCapabilityType>
+  keywordOnlyParameters:
   - name: continuation_token
     description: A continuation token to restart a poller from a saved state.
     types:
@@ -206,7 +210,7 @@ methods:
     - <xref:int>
   return:
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:azure.communication.phonenumbers.models.PurchasedPhoneNumber>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.communication.phonenumbers.PurchasedPhoneNumber>]
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.from_connection_string
   name: from_connection_string
   summary: "Create PhoneNumbersClient from a Connection String.\n:param str conn_str:\n\
@@ -233,8 +237,9 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The details of the given purchased phone number.
     types:
-    - <xref:azure.communication.phonenumbers.models.PurchasedPhoneNumber>
+    - <xref:azure.communication.phonenumbers.PurchasedPhoneNumber>
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_area_codes
   name: list_available_area_codes
   summary: 'Gets the list of available area codes.
@@ -278,8 +283,7 @@ methods:
 
     :raises ~azure.core.exceptions.HttpResponseError:'
   signature: 'list_available_area_codes(country_code: str, phone_number_type: PhoneNumberType,
-    assignment_type: PhoneNumberAssignmentType = None, locality: str = None, **kwargs:
-    Any) -> ItemPaged[PhoneNumberAreaCode]'
+    **kwargs: Any) -> ItemPaged[PhoneNumberAreaCode]'
   parameters:
   - name: country_code
     description: The ISO 3166-2 country/region two letter code, e.g. US. Required.
@@ -297,7 +301,7 @@ methods:
 
     Gets the list of supported countries.'
   signature: 'list_available_countries(**kwargs: Any) -> ItemPaged[PhoneNumberCountry]'
-  parameters:
+  keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
@@ -308,7 +312,7 @@ methods:
   return:
     description: An iterator like instance of PhoneNumberCountry
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PhoneNumberCountry>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.PhoneNumberCountry>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_localities
@@ -331,6 +335,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
@@ -341,7 +346,7 @@ methods:
   return:
     description: An iterator like instance of PhoneNumberLocality
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PhoneNumberLocality>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.PhoneNumberLocality>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_available_offerings
@@ -371,6 +376,7 @@ methods:
     isRequired: true
     types:
     - <xref:azure.communication.phonenumbers.models.PhoneNumberAssignmentType>
+  keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
@@ -381,14 +387,14 @@ methods:
   return:
     description: An iterator like instance of PhoneNumberOffering
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PhoneNumberOffering>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.PhoneNumberOffering>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.phonenumbers.PhoneNumbersClient.list_purchased_phone_numbers
   name: list_purchased_phone_numbers
   summary: Gets the list of all purchased phone numbers.
   signature: 'list_purchased_phone_numbers(**kwargs: Any) -> ItemPaged[PurchasedPhoneNumber]'
-  parameters:
+  keywordOnlyParameters:
   - name: skip
     description: 'An optional parameter for how many entries to skip, for pagination
       purposes. The
@@ -405,4 +411,27 @@ methods:
     - <xref:int>
   return:
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.models.PurchasedPhoneNumber>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.communication.phonenumbers.PurchasedPhoneNumber>]
+- uid: azure.communication.phonenumbers.PhoneNumbersClient.search_operator_information
+  name: search_operator_information
+  summary: Searches for operator information for a given list of phone numbers.
+  signature: 'search_operator_information(phone_numbers, options: OperatorInformationOptions
+    | None = None, **kwargs) -> OperatorInformationResult'
+  parameters:
+  - name: phone_numbers
+    description: The phone number(s) whose operator information should be searched
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:list>[<xref:str>]
+  - name: options
+    description: 'Options to modify the search.  Please note: use of options can affect
+      the cost of the search.'
+    isRequired: true
+    types:
+    - <xref:OperatorInformationOptions>
+  return:
+    description: A search result containing operator information associated with the
+      requested phone numbers
+    types:
+    - <xref:azure.communication.phonenumbers.OperatorInformationResult>

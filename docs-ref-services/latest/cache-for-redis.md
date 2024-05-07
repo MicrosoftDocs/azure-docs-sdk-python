@@ -1,9 +1,6 @@
 ---
 title: Azure Cache for Redis SDK for Python
 description: Reference for Azure Cache for Redis SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 01/05/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cache
@@ -53,4 +50,5 @@ redis_cache = redis_client.redis.create_or_update(
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/redis/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-redis)
+

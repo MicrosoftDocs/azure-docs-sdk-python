@@ -14,8 +14,9 @@ summary: 'Exponential retry.
 
   increment_power^retry_count seconds.'
 constructor:
-  syntax: ExponentialRetry(initial_backoff=15, increment_base=3, retry_total=3, retry_to_secondary=False,
-    random_jitter_range=3, **kwargs)
+  syntax: 'ExponentialRetry(initial_backoff: int = 15, increment_base: int = 3, retry_total:
+    int = 3, retry_to_secondary: bool = False, random_jitter_range: int = 3, **kwargs:
+    Any)'
   parameters:
   - name: initial_backoff
     description: The initial backoff interval, in seconds, for the first retry.
@@ -30,9 +31,9 @@ constructor:
     defaultValue: '3'
     types:
     - <xref:int>
-  - name: max_attempts
+  - name: retry_total
     description: The maximum number of retry attempts.
-    isRequired: true
+    defaultValue: '3'
     types:
     - <xref:int>
   - name: retry_to_secondary
@@ -54,20 +55,103 @@ constructor:
     defaultValue: '3'
     types:
     - <xref:int>
-  - name: retry_total
-    defaultValue: '3'
 methods:
+- uid: azure.storage.queue.ExponentialRetry.configure_retries
+  name: configure_retries
+  signature: 'configure_retries(request: PipelineRequest) -> Dict[str, Any]'
+  parameters:
+  - name: request
+    isRequired: true
 - uid: azure.storage.queue.ExponentialRetry.get_backoff_time
   name: get_backoff_time
   summary: Calculates how long to sleep before retrying.
-  signature: get_backoff_time(settings)
+  signature: 'get_backoff_time(settings: Dict[str, Any]) -> float'
   parameters:
   - name: settings
+    description: The configurable values pertaining to get backoff time.
     isRequired: true
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   return:
-    description: 'An integer indicating how long to wait before retrying the request,
+    description: 'A float indicating how long to wait before retrying the request,
 
       or None to indicate no retry should be performed.'
     types:
-    - <xref:int>
-    - <xref:None>
+    - <xref:float>
+- uid: azure.storage.queue.ExponentialRetry.increment
+  name: increment
+  summary: "Increment the retry counters.\n\nDict[str, Any]] settings: The configurable\
+    \ values pertaining to the increment operation.\n:param PipelineRequest request:\
+    \ A pipeline request object.\n:param Optional[PipelineResponse] response: A pipeline\
+    \ response object.\n:param error: An error encountered during the request, or\n\
+    \n   None if the response was received successfully."
+  signature: 'increment(settings: Dict[str, Any], request: PipelineRequest, response:
+    PipelineResponse | None = None, error: AzureError | None = None) -> bool'
+  parameters:
+  - name: settings
+    isRequired: true
+  - name: request
+    isRequired: true
+  - name: response
+    defaultValue: None
+  - name: error
+    defaultValue: None
+  return:
+    description: Whether the retry attempts are exhausted.
+    types:
+    - <xref:bool>
+- uid: azure.storage.queue.ExponentialRetry.send
+  name: send
+  signature: send(request)
+  parameters:
+  - name: request
+    isRequired: true
+- uid: azure.storage.queue.ExponentialRetry.sleep
+  name: sleep
+  signature: sleep(settings, transport)
+  parameters:
+  - name: settings
+    isRequired: true
+  - name: transport
+    isRequired: true
+attributes:
+- uid: azure.storage.queue.ExponentialRetry.connect_retries
+  name: connect_retries
+  summary: The max number of connect retries.
+  signature: 'connect_retries: int'
+- uid: azure.storage.queue.ExponentialRetry.increment_base
+  name: increment_base
+  summary: 'The base, in seconds, to increment the initial_backoff by after the
+
+    first retry.'
+  signature: 'increment_base: int'
+- uid: azure.storage.queue.ExponentialRetry.initial_backoff
+  name: initial_backoff
+  summary: The initial backoff interval, in seconds, for the first retry.
+  signature: 'initial_backoff: int'
+- uid: azure.storage.queue.ExponentialRetry.next
+  name: next
+  summary: Pointer to the next policy or a transport (wrapped as a policy). Will be
+    set at pipeline creation.
+  signature: 'next: HTTPPolicy[HTTPRequestType, HTTPResponseType]'
+- uid: azure.storage.queue.ExponentialRetry.random_jitter_range
+  name: random_jitter_range
+  summary: A number in seconds which indicates a range to jitter/randomize for the
+    back-off interval.
+  signature: 'random_jitter_range: int'
+- uid: azure.storage.queue.ExponentialRetry.retry_read
+  name: retry_read
+  summary: The max number of read retries.
+  signature: 'retry_read: int'
+- uid: azure.storage.queue.ExponentialRetry.retry_status
+  name: retry_status
+  summary: The max number of status retries.
+  signature: 'retry_status: int'
+- uid: azure.storage.queue.ExponentialRetry.retry_to_secondary
+  name: retry_to_secondary
+  summary: Whether the secondary endpoint should be retried.
+  signature: 'retry_to_secondary: bool'
+- uid: azure.storage.queue.ExponentialRetry.total_retries
+  name: total_retries
+  summary: The max number of retries.
+  signature: 'total_retries: int'

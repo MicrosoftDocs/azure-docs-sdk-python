@@ -1,16 +1,13 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-advisor, advisor
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 01/04/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: applied-ai-services
 ms.subservice: metrics-advisor
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Advisor Client Library.

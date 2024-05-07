@@ -5,30 +5,342 @@ fullName: azure.ai.ml.automl.TextNerJob
 module: azure.ai.ml.automl
 inheritances:
 - azure.ai.ml.entities._job.automl.nlp.automl_nlp_job.AutoMLNLPJob
-summary: 'Configuration for AutoML Text NER Job.
-
-
-  Initializes a new AutoML Text NER task.'
+summary: Configuration for AutoML Text NER Job.
 constructor:
   syntax: 'TextNerJob(*, training_data: Input | None = None, validation_data: Input
     | None = None, primary_metric: str | None = None, log_verbosity: str | None =
-    None, **kwargs)'
+    None, **kwargs: Any)'
   parameters:
   - name: training_data
-    description: Training data to be used for training
+    description: Training data to be used for training, defaults to None
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.Input>]
+  - name: validation_data
+    description: 'Validation data to be used for evaluating the trained model,
+
+      defaults to None'
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.Input>]
+  - name: primary_metric
+    description: The primary metric to be displayed, defaults to None
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: log_verbosity
+    description: Log verbosity level, defaults to None
+    isRequired: true
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  keywordOnlyParameters:
+  - name: training_data
     isRequired: true
   - name: validation_data
-    description: Validation data to be used for evaluating the trained model
     isRequired: true
   - name: primary_metric
-    description: The primary metric to be displayed.
     isRequired: true
   - name: log_verbosity
-    description: Log verbosity level
     isRequired: true
+examples:
+- "creating an automl text ner job<!--[!code-python[Main](les\\ml_samples_automl_nlp.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\
+  \\samples\\\\ml_samples_automl_nlp.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from azure.ai.ml import automl, Input\n\
+  \   from azure.ai.ml.constants import AssetTypes\n\n   text_ner_job = automl.TextNerJob(\n\
+  \       experiment_name=\"my_experiment\",\n       compute=\"my_compute\",\n   \
+  \    training_data=Input(type=AssetTypes.MLTABLE, path=\"./training-mltable-folder\"\
+  ),\n       validation_data=Input(type=AssetTypes.MLTABLE, path=\"./validation-mltable-folder\"\
+  ),\n       tags={\"my_custom_tag\": \"My custom value\"},\n   )\n\n   ````\n"
+methods:
+- uid: azure.ai.ml.automl.TextNerJob.dump
+  name: dump
+  summary: Dumps the job content into a file in YAML format.
+  signature: 'dump(dest: str | PathLike | IO, **kwargs: Any) -> None'
+  parameters:
+  - name: dest
+    description: 'The local path or file stream to write the YAML content to.
+
+      If dest is a file path, a new file will be created.
+
+      If dest is an open file, the file will be written to directly.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:typing.IO>[<xref:typing.AnyStr>]]
+  keywordOnlyParameters:
   - name: kwargs
-    description: Job-specific arguments
+    description: Additional arguments to pass to the YAML serializer.
+    types:
+    - <xref:dict>
+  exceptions:
+  - type: FileExistsError
+    description: Raised if dest is a file path and the file already exists.
+  - type: IOError
+    description: Raised if dest is an open file and the file is not writable.
+- uid: azure.ai.ml.automl.TextNerJob.extend_search_space
+  name: extend_search_space
+  summary: Add (a) search space(s) for an AutoML NLP job.
+  signature: 'extend_search_space(value: SearchSpace | List[SearchSpace]) -> None'
+  parameters:
+  - name: value
+    description: either a SearchSpace object or a list of SearchSpace objects with
+      nlp-specific parameters.
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:azure.ai.ml.automl.SearchSpace>, <xref:typing.List>[<xref:azure.ai.ml.automl.SearchSpace>]]
+- uid: azure.ai.ml.automl.TextNerJob.set_data
+  name: set_data
+  summary: Define data configuration for NLP job
+  signature: 'set_data(*, training_data: Input, target_column_name: str, validation_data:
+    Input) -> None'
+  keywordOnlyParameters:
+  - name: training_data
+    description: Training data
+  - name: target_column_name
+    description: Column name of the target column.
+  - name: validation_data
+    description: Validation data
+- uid: azure.ai.ml.automl.TextNerJob.set_featurization
+  name: set_featurization
+  summary: Define featurization configuration for AutoML NLP job.
+  signature: 'set_featurization(*, dataset_language: str | None = None) -> None'
+  keywordOnlyParameters:
+  - name: dataset_language
+    description: Language of the dataset, defaults to None
+- uid: azure.ai.ml.automl.TextNerJob.set_limits
+  name: set_limits
+  summary: Define limit configuration for AutoML NLP job
+  signature: 'set_limits(*, max_trials: int = 1, max_concurrent_trials: int = 1, max_nodes:
+    int = 1, timeout_minutes: int | None = None, trial_timeout_minutes: int | None
+    = None) -> None'
+  keywordOnlyParameters:
+  - name: max_trials
+    description: Maximum number of AutoML iterations, defaults to 1
+    defaultValue: '1'
+  - name: max_concurrent_trials
+    description: Maximum number of concurrent AutoML iterations, defaults to 1
+    defaultValue: '1'
+  - name: max_nodes
+    description: Maximum number of nodes used for sweep, defaults to 1
+    defaultValue: '1'
+  - name: timeout_minutes
+    description: Timeout for the AutoML job, defaults to None
+  - name: trial_timeout_minutes
+    description: Timeout for each AutoML trial, defaults to None
+- uid: azure.ai.ml.automl.TextNerJob.set_sweep
+  name: set_sweep
+  summary: Define sweep configuration for AutoML NLP job
+  signature: 'set_sweep(*, sampling_algorithm: str | SamplingAlgorithmType, early_termination:
+    EarlyTerminationPolicy | None = None) -> None'
+  keywordOnlyParameters:
+  - name: sampling_algorithm
+    description: 'Required. Specifies type of hyperparameter sampling algorithm.
+
+      Possible values include: "Grid", "Random", and "Bayesian".'
+  - name: early_termination
+    description: 'Optional. early termination policy to end poorly performing training
+      candidates,
+
+      defaults to None.'
+- uid: azure.ai.ml.automl.TextNerJob.set_training_parameters
+  name: set_training_parameters
+  summary: Fix certain training parameters throughout the training procedure for all
+    candidates.
+  signature: 'set_training_parameters(*, gradient_accumulation_steps: int | None =
+    None, learning_rate: float | None = None, learning_rate_scheduler: str | NlpLearningRateScheduler
+    | None = None, model_name: str | None = None, number_of_epochs: int | None = None,
+    training_batch_size: int | None = None, validation_batch_size: int | None = None,
+    warmup_ratio: float | None = None, weight_decay: float | None = None) -> None'
+  keywordOnlyParameters:
+  - name: gradient_accumulation_steps
+    description: 'number of steps over which to accumulate gradients before a backward
+
+      pass. This must be a positive integer., defaults to None'
+  - name: learning_rate
+    description: initial learning rate. Must be a float in (0, 1)., defaults to None
+  - name: learning_rate_scheduler
+    description: 'the type of learning rate scheduler. Must choose from ''linear'',
+      ''cosine'',
+
+      ''cosine_with_restarts'', ''polynomial'', ''constant'', and ''constant_with_warmup''.,
+      defaults to None'
+  - name: model_name
+    description: 'the model name to use during training. Must choose from ''bert-base-cased'',
+
+      ''bert-base-uncased'', ''bert-base-multilingual-cased'', ''bert-base-german-cased'',
+      ''bert-large-cased'',
+
+      ''bert-large-uncased'', ''distilbert-base-cased'', ''distilbert-base-uncased'',
+      ''roberta-base'', ''roberta-large'',
+
+      ''distilroberta-base'', ''xlm-roberta-base'', ''xlm-roberta-large'', xlnet-base-cased'',
+      and ''xlnet-large-cased''.,
+
+      defaults to None'
+  - name: number_of_epochs
+    description: the number of epochs to train with. Must be a positive integer.,
+      defaults to None
+  - name: training_batch_size
+    description: the batch size during training. Must be a positive integer., defaults
+      to None
+  - name: validation_batch_size
+    description: the batch size during validation. Must be a positive integer., defaults
+      to None
+  - name: warmup_ratio
+    description: 'ratio of total training steps used for a linear warmup from 0 to
+      learning_rate.
+
+      Must be a float in [0, 1]., defaults to None'
+  - name: weight_decay
+    description: 'value of weight decay when optimizer is sgd, adam, or adamw. This
+      must be a float in
+
+      the range [0, 1]., defaults to None'
 attributes:
+- uid: azure.ai.ml.automl.TextNerJob.base_path
+  name: base_path
+  summary: The base path of the resource.
+  return:
+    description: The base path of the resource.
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.automl.TextNerJob.creation_context
+  name: creation_context
+  summary: The creation context of the resource.
+  return:
+    description: The creation metadata for the resource.
+    types:
+    - <xref:typing.Optional>[<xref:azure.ai.ml.entities.SystemData>]
+- uid: azure.ai.ml.automl.TextNerJob.featurization
+  name: featurization
+  summary: Featurization settings used for NLP job
+  return:
+    description: featurization settings
+    types:
+    - <xref:azure.ai.ml.automl.NlpFeaturizationSettings>
+- uid: azure.ai.ml.automl.TextNerJob.id
+  name: id
+  summary: The resource ID.
+  return:
+    description: The global ID of the resource, an Azure Resource Manager (ARM) ID.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.automl.TextNerJob.inputs
+  name: inputs
+- uid: azure.ai.ml.automl.TextNerJob.limits
+  name: limits
+  summary: Limit settings for NLP jobs
+  return:
+    description: limit configuration for NLP job
+    types:
+    - <xref:azure.ai.ml.automl.NlpLimitSettings>
+- uid: azure.ai.ml.automl.TextNerJob.log_files
+  name: log_files
+  summary: Job output files.
+  return:
+    description: The dictionary of log names and URLs.
+    types:
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
+- uid: azure.ai.ml.automl.TextNerJob.log_verbosity
+  name: log_verbosity
+  summary: Log verbosity configuration
+  return:
+    description: the degree of verbosity used in logging
+    types:
+    - <xref:azure.mgmt.machinelearningservices.models.LogVerbosity>
+- uid: azure.ai.ml.automl.TextNerJob.outputs
+  name: outputs
 - uid: azure.ai.ml.automl.TextNerJob.primary_metric
   name: primary_metric
+- uid: azure.ai.ml.automl.TextNerJob.search_space
+  name: search_space
+  summary: Search space(s) to sweep over for NLP sweep jobs
+  return:
+    description: list of search spaces to sweep over for NLP jobs
+    types:
+    - <xref:typing.List>[<xref:azure.ai.ml.automl.NlpSearchSpace>]
+- uid: azure.ai.ml.automl.TextNerJob.status
+  name: status
+  summary: "The status of the job.\n\nCommon values returned include \"Running\",\
+    \ \"Completed\", and \"Failed\". All possible values are:\n\n   * NotStarted -\
+    \ This is a temporary state that client-side Run objects are in before cloud submission.\
+    \ \n\n   * Starting - The Run has started being processed in the cloud. The caller\
+    \ has a run ID at this point. \n\n   * Provisioning - On-demand compute is being\
+    \ created for a given job submission. \n\n   * Preparing - The run environment\
+    \ is being prepared and is in one of two stages:\n\n        * Docker image build\
+    \ \n\n        * conda environment setup \n\n   * Queued - The job is queued on\
+    \ the compute target. For example, in BatchAI, the job is in a queued state\n\n\
+    \        while waiting for all the requested nodes to be ready.\n\n   * Running\
+    \ - The job has started to run on the compute target. \n\n   * Finalizing - User\
+    \ code execution has completed, and the run is in post-processing stages. \n\n\
+    \   * CancelRequested - Cancellation has been requested for the job. \n\n   *\
+    \ Completed - The run has completed successfully. This includes both the user\
+    \ code execution and run\n\n        post-processing stages.\n\n   * Failed - The\
+    \ run failed. Usually the Error property on a run will provide details as to why.\
+    \ \n\n   * Canceled - Follows a cancellation request and indicates that the run\
+    \ is now successfully cancelled. \n\n   * NotResponding - For runs that have Heartbeats\
+    \ enabled, no heartbeat has been recently sent."
+  return:
+    description: Status of the job.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.automl.TextNerJob.studio_url
+  name: studio_url
+  summary: Azure ML studio endpoint.
+  return:
+    description: The URL to the job details page.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.automl.TextNerJob.sweep
+  name: sweep
+  summary: Sweep settings used for NLP job
+  return:
+    description: sweep settings
+    types:
+    - <xref:azure.ai.ml.automl.NlpSweepSettings>
+- uid: azure.ai.ml.automl.TextNerJob.task_type
+  name: task_type
+  summary: Get task type.
+  return:
+    description: 'The type of task to run. Possible values include: "classification",
+      "regression", "forecasting".'
+    types:
+    - <xref:str>
+- uid: azure.ai.ml.automl.TextNerJob.test_data
+  name: test_data
+  summary: Get test data.
+  return:
+    description: Test data input
+    types:
+    - <xref:azure.ai.ml.Input>
+- uid: azure.ai.ml.automl.TextNerJob.training_data
+  name: training_data
+  summary: Get training data.
+  return:
+    description: Training data input
+    types:
+    - <xref:azure.ai.ml.Input>
+- uid: azure.ai.ml.automl.TextNerJob.training_parameters
+  name: training_parameters
+  summary: Parameters that are used for all submitted jobs.
+  return:
+    description: fixed training parameters for NLP jobs
+    types:
+    - <xref:azure.ai.ml.automl.NlpFixedParameters>
+- uid: azure.ai.ml.automl.TextNerJob.type
+  name: type
+  summary: The type of the job.
+  return:
+    description: The type of the job.
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.automl.TextNerJob.validation_data
+  name: validation_data
+  summary: Get validation data.
+  return:
+    description: Validation data input
+    types:
+    - <xref:azure.ai.ml.Input>

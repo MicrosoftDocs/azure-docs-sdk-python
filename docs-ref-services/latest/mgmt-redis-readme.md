@@ -1,9 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-redis, cache
-author: lmazuel
-ms.author: lmazuel
-ms.date: 06/21/2023
+ms.date: 09/19/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: cache

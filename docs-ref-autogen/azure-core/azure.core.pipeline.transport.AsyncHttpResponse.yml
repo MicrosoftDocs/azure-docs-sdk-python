@@ -5,6 +5,8 @@ fullName: azure.core.pipeline.transport.AsyncHttpResponse
 module: azure.core.pipeline.transport
 inheritances:
 - azure.core.pipeline.transport._base._HttpResponseBase
+- contextlib.AbstractAsyncContextManager
+- typing.Generic
 summary: 'An AsyncHttpResponse ABC.
 
 
@@ -14,21 +16,43 @@ constructor:
     int | None = None)'
   parameters:
   - name: request
+    isRequired: true
   - name: internal_response
+    isRequired: true
   - name: block_size
     defaultValue: None
 methods:
+- uid: azure.core.pipeline.transport.AsyncHttpResponse.body
+  name: body
+  summary: 'Return the whole body as bytes in memory.
+
+
+    Sync implementer should load the body in memory if they can.
+
+    Async implementer should rely on async load_body to have been called first.'
+  signature: body() -> bytes
+  return:
+    description: The whole body as bytes in memory.
+    types:
+    - <xref:bytes>
 - uid: azure.core.pipeline.transport.AsyncHttpResponse.parts
   name: parts
   summary: Assuming the content-type is multipart/mixed, will return the parts as
     an async iterator.
-  signature: parts() -> AsyncIterator
+  signature: parts() -> AsyncIterator[AsyncHttpResponse]
   return:
+    description: An async iterator of the parts
     types:
-    - <xref:AsyncIterator>
+    - <xref:typing.AsyncIterator>
   exceptions:
   - type: ValueError
     description: If the content is not multipart/mixed
+- uid: azure.core.pipeline.transport.AsyncHttpResponse.raise_for_status
+  name: raise_for_status
+  summary: 'Raises an HttpResponseError if the response has an error status code.
+
+    If response is good, does nothing.'
+  signature: raise_for_status() -> None
 - uid: azure.core.pipeline.transport.AsyncHttpResponse.stream_download
   name: stream_download
   summary: 'Generator for streaming response body data.
@@ -37,16 +61,42 @@ methods:
     Should be implemented by sub-classes if streaming download
 
     is supported. Will return an asynchronous generator.'
-  signature: stream_download(pipeline, **kwargs) -> AsyncIterator[bytes]
+  signature: 'stream_download(pipeline: AsyncPipeline[HttpRequest, ''AsyncHttpResponse''],
+    *, decompress: bool = True, **kwargs: Any) -> AsyncIteratorType[bytes]'
   parameters:
   - name: pipeline
     description: The pipeline object
     isRequired: true
     types:
     - <xref:azure.core.pipeline.Pipeline>
+  keywordOnlyParameters:
   - name: decompress
     description: 'If True which is default, will attempt to decode the body based
 
       on the *content-encoding* header.'
+    defaultValue: 'True'
     types:
     - <xref:bool>
+  return:
+    description: An async iterator of bytes
+    types:
+    - <xref:typing.AsyncIterator>[<xref:bytes>]
+- uid: azure.core.pipeline.transport.AsyncHttpResponse.text
+  name: text
+  summary: Return the whole body as a string.
+  signature: 'text(encoding: str | None = None) -> str'
+  parameters:
+  - name: encoding
+    description: 'The encoding to apply. If None, use "utf-8" with BOM parsing (utf-8-sig).
+
+      Implementation can be smarter if they want (using headers or chardet).'
+    defaultValue: None
+    types:
+    - <xref:str>
+  return:
+    description: The whole body as a string.
+    types:
+    - <xref:str>
+  seeAlsoContent: '  ~body()
+
+    '

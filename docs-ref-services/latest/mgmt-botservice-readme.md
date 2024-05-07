@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-botservice, botservice
-author: lmazuel
-ms.author: lmazuel
 ms.date: 01/17/2023
 ms.topic: reference
 ms.devlang: python

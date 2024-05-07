@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-networkfunction, networkfunction
-author: lmazuel
-ms.author: lmazuel
 ms.date: 11/18/2022
 ms.topic: reference
 ms.devlang: python

@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-media, media
-author: naiteeks
-ms.author: naiteeks
 ms.date: 01/17/2023
 ms.topic: reference
 ms.devlang: python

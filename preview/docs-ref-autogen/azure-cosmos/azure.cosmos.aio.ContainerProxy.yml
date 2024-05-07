@@ -24,11 +24,14 @@ summary: 'An interface to interact with a specific DB Container.
   documents, each of which is represented as an Item.'
 constructor:
   syntax: 'ContainerProxy(client_connection: CosmosClientConnection, database_link:
-    str, id: str, properties: Dict[str, Any] = None)'
+    str, id: str, properties: Dict[str, Any] | None = None)'
   parameters:
   - name: client_connection
+    isRequired: true
   - name: database_link
+    isRequired: true
   - name: id
+    isRequired: true
   - name: properties
     defaultValue: None
 variables:
@@ -49,14 +52,19 @@ methods:
     To update or replace an existing item, use the
 
     <xref:azure.cosmos.aio.ContainerProxy.upsert_item> method.'
-  signature: 'async create_item(body: Dict[str, Any], **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'async create_item(body: Dict[str, Any], *, pre_trigger_include: str
+    | None = None, post_trigger_include: str | None = None, indexing_directive: int
+    | None = None, enable_automatic_id_generation: bool = False, session_token: str
+    | None = None, initial_headers: Dict[str, str] | None = None, etag: str | None
+    = None, match_condition: MatchConditions | None = None, priority: Literal[''High'',
+    ''Low''] | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
     isRequired: true
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
     types:
@@ -72,7 +80,7 @@ methods:
       be omitted from indexing. Possible values include: 0 for Default, 1 for Exclude,
       or 2 for Include.'
     types:
-    - <xref:Union>[<xref:int>, <xref:azure.cosmos.documents.IndexingDirective>]
+    - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.documents.IndexingDirective>]
   - name: enable_automatic_id_generation
     description: Enable automatic id generation if no id present.
     types:
@@ -100,28 +108,79 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the new item.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: Item with the given ID already exists.
 - uid: azure.cosmos.aio.ContainerProxy.delete_all_items_by_partition_key
   name: delete_all_items_by_partition_key
-  summary: "Exposes an API to delete all items with a single partition key without\
-    \ the user having\n   to explicitly call delete on each record in the partition\
-    \ key."
+  summary: 'The delete by partition key feature is an asynchronous, background operation
+    that allows you to delete all
+
+    documents with the same logical partition key value, using the Cosmos SDK. The
+    delete by partition key
+
+    operation is constrained to consume at most 10% of the total
+
+    available RU/s on the container each second. This helps in limiting the resources
+    used by
+
+    this background task.'
   signature: 'async delete_all_items_by_partition_key(partition_key: str | int | float
-    | bool, **kwargs: Any) -> None'
+    | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
+    None, session_token: str | None = None, etag: str | None = None, match_condition:
+    MatchConditions | None = None, **kwargs: Any) -> None'
   parameters:
   - name: partition_key
     description: Partition key for the items to be deleted.
     isRequired: true
     types:
-    - <xref:Any>
+    - <xref:typing.Any>
+  keywordOnlyParameters:
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
   return:
     types:
     - <xref:None>
@@ -131,23 +190,27 @@ methods:
 
 
     If the conflict does not already exist in the container, an exception is raised.'
-  signature: 'async delete_conflict(conflict: str | Dict[str, Any], partition_key:
-    str | int | float | bool, **kwargs: Any) -> None'
+  signature: 'async delete_conflict(conflict: str | Mapping[str, Any], partition_key:
+    str | int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    **kwargs: Any) -> None'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: Partition key for the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
+  keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:None>], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:None>],
+      <xref:None>]
   return:
     types:
     - <xref:None>
@@ -162,19 +225,24 @@ methods:
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'async delete_item(item: str | Dict[str, Any], partition_key: str | int
-    | float | bool, **kwargs: Any) -> None'
+  signature: 'async delete_item(item: str | Mapping[str, Any], partition_key: str
+    | int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
+    None, session_token: str | None = None, initial_headers: Dict[str, str] | None
+    = None, etag: str | None = None, match_condition: MatchConditions | None = None,
+    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: Specifies the partition key value for the item.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
     types:
@@ -203,10 +271,21 @@ methods:
     description: The match condition to use upon the etag.
     types:
     - <xref:azure.core.MatchConditions>
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:None>], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:None>],
+      <xref:None>]
   return:
     types:
     - <xref:None>
@@ -215,31 +294,103 @@ methods:
     description: The item wasn't deleted successfully.
   - type: azure.cosmos.exceptions.CosmosResourceNotFoundError
     description: The item does not exist in the container.
+- uid: azure.cosmos.aio.ContainerProxy.execute_item_batch
+  name: execute_item_batch
+  summary: Executes the transactional batch for the specified partition key.
+  signature: 'async execute_item_batch(batch_operations: Sequence[Tuple[str, Tuple[Any,
+    ...]] | Tuple[str, Tuple[Any, ...], Dict[str, Any]]], partition_key: str | int
+    | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
+    None, session_token: str | None = None, etag: str | None = None, match_condition:
+    MatchConditions | None = None, priority: Literal[''High'', ''Low''] | None = None,
+    **kwargs: Any) -> List[Dict[str, Any]]'
+  parameters:
+  - name: batch_operations
+    description: The batch of operations to be executed.
+    isRequired: true
+    types:
+    - <xref:typing.List>[<xref:typing.Tuple>[<xref:typing.Any>]]
+  - name: partition_key
+    description: The partition key value of the batch operations.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
+  keywordOnlyParameters:
+  - name: pre_trigger_include
+    description: trigger id to be used as pre operation trigger.
+    types:
+    - <xref:str>
+  - name: post_trigger_include
+    description: trigger id to be used as post operation trigger.
+    types:
+    - <xref:str>
+  - name: session_token
+    description: Token for use with Session consistency.
+    types:
+    - <xref:str>
+  - name: etag
+    description: 'An ETag value, or the wildcard character (*). Used to check if the
+      resource
+
+      has changed, and act according to the condition specified by the *match_condition*
+      parameter.'
+    types:
+    - <xref:str>
+  - name: match_condition
+    description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
+  return:
+    description: A list representing the items after the batch operations went through.
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+  exceptions:
+  - type: azure.cosmos.exceptions.CosmosHttpResponseError
+    description: The batch failed to execute.
+  - type: azure.cosmos.exceptions.CosmosBatchOperationError
+    description: A transactional batch operation failed in the batch.
 - uid: azure.cosmos.aio.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
-  signature: 'async get_conflict(conflict: str | Dict[str, Any], partition_key: str
-    | int | float | bool, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async get_conflict(conflict: str | Mapping[str, Any], partition_key:
+    str | int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: conflict
     description: The ID (name) or dict representing the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: Partition key for the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+  keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   return:
     description: A dict representing the retrieved conflict.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given conflict couldn't be retrieved.
@@ -250,12 +401,12 @@ methods:
 
     If no ThroughputProperties already exists for the container, an exception is raised.'
   signature: 'async get_throughput(**kwargs: Any) -> ThroughputProperties'
-  parameters:
+  keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:List>[<xref:Dict>[<xref:str>,
-      <xref:Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.List>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
   return:
     description: ThroughputProperties for the container.
     types:
@@ -268,8 +419,9 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: 'list_conflicts(**kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
-  parameters:
+  signature: 'list_conflicts(*, max_item_count: int | None = None, **kwargs: Any)
+    -> AsyncItemPaged[Dict[str, Any]]'
+  keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     types:
@@ -277,36 +429,42 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
-      <xref:Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of conflicts (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.patch_item
   name: patch_item
-  summary: "**Provisional method** Patches the specified item with the provided operations\
-    \ if it\n   exists in the container.\n\nIf the item does not already exist in\
-    \ the container, an exception is raised."
+  summary: "Patches the specified item with the provided operations if it\n   exists\
+    \ in the container.\n\nIf the item does not already exist in the container, an\
+    \ exception is raised."
   signature: 'async patch_item(item: str | Dict[str, Any], partition_key: str | int
-    | float | bool, patch_operations: List[Dict[str, Any]], **kwargs: Any) -> Dict[str,
-    Any]'
+    | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    patch_operations: List[Dict[str, Any]], *, filter_predicate: str | None = None,
+    pre_trigger_include: str | None = None, post_trigger_include: str | None = None,
+    session_token: str | None = None, etag: str | None = None, match_condition: MatchConditions
+    | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any)
+    -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: The partition key of the object to patch.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
   - name: patch_operations
     description: The list of patch operations to apply to the item.
     isRequired: true
     types:
-    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+  keywordOnlyParameters:
   - name: filter_predicate
     description: conditional filter to apply to Patch operations.
     types:
@@ -323,10 +481,6 @@ methods:
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: initial_headers
-    description: Initial headers to be sent as part of the request.
-    types:
-    - <xref:dict>[<xref:str,str>]
   - name: etag
     description: 'An ETag value, or the wildcard character (*). Used to check if the
       resource
@@ -342,11 +496,21 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>
+    - <xref:typing.Callable>
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the item after the patch operations went through.
     types:
-    - <xref:dict>[<xref:str>, <xref:Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'The patch operations failed or the item with
@@ -355,26 +519,30 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.query_conflicts
   name: query_conflicts
   summary: Return all conflicts matching a given *query*.
-  signature: 'query_conflicts(query: str | Dict[str, Any], **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+  signature: 'query_conflicts(query: str, *, parameters: List[Dict[str, object]] |
+    None = None, partition_key: str | int | float | bool | Sequence[str | int | float
+    | bool | None] | Type[NonePartitionKeyValue] | None = None, max_item_count: int
+    | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:str>
+  keywordOnlyParameters:
   - name: parameters
     description: Optional array of parameters to the query. Ignored if no query is
       provided.
     types:
-    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Specifies the partition key value for the item. If none is passed
       in, a
 
       cross partition query will be executed.'
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     types:
@@ -382,12 +550,12 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
-      <xref:Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
   return:
     description: An AsyncItemPaged of conflicts (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.query_items
   name: query_items
   summary: 'Return all results matching the given *query*.
@@ -400,14 +568,21 @@ methods:
     name is "products," and is aliased as "p" for easier referencing in
 
     the WHERE clause.'
-  signature: 'query_items(query: str | Dict[str, Any], **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+  signature: 'query_items(query: str, *, parameters: List[Dict[str, object]] | None
+    = None, partition_key: str | int | float | bool | Sequence[str | int | float |
+    bool | None] | Type[NonePartitionKeyValue] | None = None, max_item_count: int
+    | None = None, enable_scan_in_query: bool | None = None, populate_query_metrics:
+    bool | None = None, populate_index_metrics: bool | None = None, session_token:
+    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, continuation_token_limit:
+    int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:str>
+  keywordOnlyParameters:
   - name: parameters
     description: 'Optional array of parameters to the query.
 
@@ -415,13 +590,14 @@ methods:
 
       Ignored if no query is provided.'
     types:
-    - <xref:List>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: 'Specifies the partition key value for the item. If none is provided,
 
       a cross-partition query will be executed.'
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     types:
@@ -436,6 +612,16 @@ methods:
     description: Enable returning query metrics in response headers.
     types:
     - <xref:bool>
+  - name: populate_index_metrics
+    description: 'Used to obtain the index metrics to understand how the query engine
+      used
+
+      existing indexes and how it could use potential new indexes. Please note that
+      this options will incur
+
+      overhead, so it should be enabled only when debugging slow queries.'
+    types:
+    - <xref:bool>
   - name: session_token
     description: Token for use with Session consistency.
     types:
@@ -447,8 +633,16 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
-      <xref:Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
+  - name: continuation_token_limit
+    description: 'The size limit in kb of the response continuation token in the query
+
+      response. Valid values are positive integers.
+
+      A value of 0 is the same as not passing a value (default no limit).'
+    types:
+    - <xref:int>
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -458,38 +652,54 @@ methods:
       responses are guaranteed to be no staler than this value.'
     types:
     - <xref:int>
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   examples:
   - "Get all products that have not been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
-    names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\dist_temp\\\\73\\\\azure-cosmos-4.4.0b2\\\\samples\\\\examples_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n           import json\n\n           async for item in container.query_items(\n\
-    \                   query='SELECT * FROM products p WHERE p.productModel <> \"\
-    DISCONTINUED\"',\n                   enable_cross_partition_query=True,\n    \
-    \       ):\n               print(json.dumps(item, indent=True))\n\n   ````\n\n\
-    Parameterized query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
+    names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+    \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\30\\\\azure-cosmos-4.5.2b5\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
+    \ json\n\n           async for item in container.query_items(\n              \
+    \     query='SELECT * FROM products p WHERE p.productModel <> \"DISCONTINUED\"\
+    '\n           ):\n               print(json.dumps(item, indent=True))\n\n   ````\n\
+    \nParameterized query to get all products that have been discontinued:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
-    names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\dist_temp\\\\73\\\\azure-cosmos-4.4.0b2\\\\samples\\\\examples_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n           discontinued_items = container.query_items(\n               query='SELECT\
-    \ * FROM products p WHERE p.productModel = @model AND p.productName=\"Widget\"\
-    ',\n               parameters=[dict(name=\"@model\", value=\"DISCONTINUED\")],\n\
-    \           )\n           async for item in discontinued_items:\n            \
-    \   print(json.dumps(item, indent=True))\n\n   ````\n"
+    names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+    \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\30\\\\azure-cosmos-4.5.2b5\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
+    \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
+    \ p.productModel = @model AND p.productName=\"Widget\"',\n               parameters=[dict(name=\"\
+    @model\", value=\"DISCONTINUED\")],\n           )\n           async for item in\
+    \ discontinued_items:\n               print(json.dumps(item, indent=True))\n\n\
+    \   ````\n"
 - uid: azure.cosmos.aio.ContainerProxy.query_items_change_feed
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: 'query_items_change_feed(**kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
-  parameters:
+  signature: 'query_items_change_feed(*, partition_key_range_id: str | None = None,
+    is_start_from_beginning: bool = False, continuation: str | None = None, max_item_count:
+    int | None = None, partition_key: str | int | float | bool | Sequence[str | int
+    | float | bool | None] | Type[NonePartitionKeyValue] | None = None, priority:
+    Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
+  keywordOnlyParameters:
   - name: is_start_from_beginning
     description: 'Get whether change feed should start from
 
@@ -515,21 +725,35 @@ methods:
   - name: partition_key
     description: partition key at which ChangeFeed requests are targeted.
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
-      <xref:Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.read
   name: read
   summary: Read the container properties.
-  signature: 'async read(**kwargs: Any) -> Dict[str, Any]'
-  parameters:
+  signature: 'async read(*, populate_partition_key_range_statistics: bool | None =
+    None, populate_quota_info: bool | None = None, session_token: str | None = None,
+    priority: Literal[''High'', ''Low''] | None = None, initial_headers: Dict[str,
+    str] | None = None, **kwargs: Any) -> Dict[str, Any]'
+  keywordOnlyParameters:
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
 
@@ -552,12 +776,22 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: Dict representing the retrieved container.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'Raised if the container couldn''t be retrieved.
@@ -566,8 +800,11 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.read_all_items
   name: read_all_items
   summary: List all the items in the container.
-  signature: 'read_all_items(**kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
-  parameters:
+  signature: 'read_all_items(*, max_item_count: int | None = None, session_token:
+    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs:
+    Any) -> AsyncItemPaged[Dict[str, Any]]'
+  keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     types:
@@ -583,8 +820,8 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>,
-      <xref:Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -594,26 +831,42 @@ methods:
       responses are guaranteed to be no staler than this value.'
     types:
     - <xref:int>
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
-    - <xref:AsyncItemPaged>[<xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.aio.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
-  signature: 'async read_item(item: str | Dict[str, Any], partition_key: str | int
-    | float | bool, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async read_item(item: str | Mapping[str, Any], partition_key: str |
+    int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
+    *, post_trigger_include: str | None = None, session_token: str | None = None,
+    initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: partition_key
     description: Partition key for the item to retrieve.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>]]]
+  keywordOnlyParameters:
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
     types:
@@ -629,8 +882,8 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -640,42 +893,58 @@ methods:
       responses are guaranteed to be no staler than this value.'
     types:
     - <xref:int>
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: Dict representing the item to be retrieved.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given item couldn't be retrieved.
   examples:
   - "Get an item from the database and update one of its properties:<!--[!code-python[Main](les\\\
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
-    names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\
-    \\1\\\\s\\\\dist_temp\\\\73\\\\azure-cosmos-4.4.0b2\\\\samples\\\\examples_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n           item = await container.read_item(\"item2\", partition_key=\"Widget\"\
-    )\n           item[\"productModel\"] = \"DISCONTINUED\"\n           updated_item\
-    \ = await container.upsert_item(item)\n\n   ````\n"
+    names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+    \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\30\\\\azure-cosmos-4.5.2b5\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
+    \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
+    \  item[\"productModel\"] = \"DISCONTINUED\"\n           updated_item = await\
+    \ container.upsert_item(item)\n\n   ````\n"
 - uid: azure.cosmos.aio.ContainerProxy.replace_item
   name: replace_item
   summary: 'Replaces the specified item if it exists in the container.
 
 
     If the item does not already exist in the container, an exception is raised.'
-  signature: 'async replace_item(item: str | Dict[str, Any], body: Dict[str, Any],
-    **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async replace_item(item: str | Mapping[str, Any], body: Dict[str, Any],
+    *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
+    None, session_token: str | None = None, initial_headers: Dict[str, str] | None
+    = None, etag: str | None = None, match_condition: MatchConditions | None = None,
+    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
     isRequired: true
     types:
-    - <xref:Union>[<xref:str>, <xref:Dict>[<xref:str>, <xref:Any>]]
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   - name: body
-    description: A dict-like object representing the item to replace.
+    description: A dict representing the item to replace.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
     types:
@@ -707,12 +976,22 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the item after replace went through.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'The replace failed or the item with
@@ -731,12 +1010,13 @@ methods:
     description: The throughput to be set.
     isRequired: true
     types:
-    - <xref:Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
+    - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
+  keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   return:
     description: ThroughputProperties for the container, updated with new throughput.
     types:
@@ -754,14 +1034,18 @@ methods:
     If the item already exists in the container, it is replaced. If the item
 
     does not already exist, it is inserted.'
-  signature: 'async upsert_item(body: Dict[str, Any], **kwargs: Any) -> Dict[str,
-    Any]'
+  signature: 'async upsert_item(body: Dict[str, Any], *, pre_trigger_include: str
+    | None = None, post_trigger_include: str | None = None, session_token: str | None
+    = None, initial_headers: Dict[str, str] | None = None, etag: str | None = None,
+    match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
+    | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
     isRequired: true
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
     types:
@@ -793,12 +1077,22 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:Callable>[[<xref:Dict>[<xref:str>, <xref:str>], <xref:Dict>[<xref:str>,
-      <xref:Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
+  - name: priority
+    description: 'Priority based execution allows users to set a priority for each
+
+      request. Once the user has reached their provisioned throughput, low priority
+      requests are throttled
+
+      before high priority requests start getting throttled. Feature must first be
+      enabled at the account level.'
+    types:
+    - <xref:typing.Literal>["High", "Low"]
   return:
     description: A dict representing the upserted item.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given item could not be upserted.

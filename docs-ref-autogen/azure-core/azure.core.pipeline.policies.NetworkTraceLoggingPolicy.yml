@@ -11,7 +11,7 @@ summary: 'The logging policy in the pipeline is used to output HTTP network trac
 
   This accepts both global configuration, and per-request level with "enable_http_logger"'
 constructor:
-  syntax: NetworkTraceLoggingPolicy(logging_enable=False, **kwargs)
+  syntax: 'NetworkTraceLoggingPolicy(logging_enable: bool = False, **kwargs: Any)'
   parameters:
   - name: logging_enable
     description: Use to enable per operation. Defaults to False.
@@ -21,13 +21,14 @@ constructor:
 examples:
 - "Configuring a network trace logging policy.<!--[!code-python[Main](les\\test_example_sansio.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  79\\\\azure-core-1.27.1\\\\samples\\\\test_example_sansio.py\", \"xml:space\": \"\
-  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.policies\
-  \ import NetworkTraceLoggingPolicy\n   import sys\n   import logging\n\n   # Create\
-  \ a logger for the 'azure' SDK\n   logger = logging.getLogger(\"azure\")\n   logger.setLevel(logging.DEBUG)\n\
-  \n   # Configure a console output\n   handler = logging.StreamHandler(stream=sys.stdout)\n\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\36\\\\azure-core-1.30.1\\\
+  \\samples\\\\test_example_sansio.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.core.pipeline.policies import NetworkTraceLoggingPolicy\n\
+  \   import sys\n   import logging\n\n   # Create a logger for the 'azure' SDK\n\
+  \   logger = logging.getLogger(\"azure\")\n   logger.setLevel(logging.DEBUG)\n\n\
+  \   # Configure a console output\n   handler = logging.StreamHandler(stream=sys.stdout)\n\
   \   logger.addHandler(handler)\n\n   # Configure a file output\n   file_handler\
   \ = logging.FileHandler(filename)\n   logger.addHandler(file_handler)\n\n   # Enable\
   \ network trace logging. This will be logged at DEBUG level.\n   # By default, logging\
@@ -37,10 +38,23 @@ examples:
   \ policies=policies)\n   request = HttpRequest(\"GET\", url)\n   pipeline_response\
   \ = client._pipeline.run(request, logging_enable=True)\n\n\n   ````\n"
 methods:
+- uid: azure.core.pipeline.policies.NetworkTraceLoggingPolicy.on_exception
+  name: on_exception
+  summary: 'Is executed if an exception is raised while executing the next policy.
+
+
+    This method is executed inside the exception handler.'
+  signature: 'on_exception(request: PipelineRequest[HTTPRequestType]) -> None'
+  parameters:
+  - name: request
+    description: The Pipeline request object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
 - uid: azure.core.pipeline.policies.NetworkTraceLoggingPolicy.on_request
   name: on_request
   summary: Logs HTTP request to the DEBUG logger.
-  signature: 'on_request(request: PipelineRequest[HTTPRequestType]) -> None'
+  signature: 'on_request(request: PipelineRequest[HttpRequest | HttpRequest]) -> None'
   parameters:
   - name: request
     description: The PipelineRequest object.
@@ -50,8 +64,9 @@ methods:
 - uid: azure.core.pipeline.policies.NetworkTraceLoggingPolicy.on_response
   name: on_response
   summary: Logs HTTP response to the DEBUG logger.
-  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
-    HTTPResponseType]) -> None'
+  signature: 'on_response(request: PipelineRequest[HttpRequest | HttpRequest], response:
+    PipelineResponse[HttpRequest | HttpRequest, _HttpResponseBase | _HttpResponseBase])
+    -> None'
   parameters:
   - name: request
     description: The PipelineRequest object.

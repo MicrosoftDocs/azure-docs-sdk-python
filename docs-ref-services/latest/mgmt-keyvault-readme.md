@@ -1,9 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-keyvault, keyvault
-author: schaabs
-ms.author: sschaab
-ms.date: 05/24/2023
+ms.date: 10/18/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: keyvault
@@ -69,7 +67,4 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-keyvault%2FREADME.png)
 

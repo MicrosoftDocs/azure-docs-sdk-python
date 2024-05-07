@@ -1,15 +1,12 @@
 ---
 title: Azure Azure Digital Twins Core client library for Python
 keywords: Azure, python, SDK, API, azure-digitaltwins-core, digitaltwins
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 12/01/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: digital-twins
+ms.technology: azure
 ---
-
 # Azure Azure Digital Twins Core client library for Python - version 1.1.0 
 
 
@@ -444,3 +441,4 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+

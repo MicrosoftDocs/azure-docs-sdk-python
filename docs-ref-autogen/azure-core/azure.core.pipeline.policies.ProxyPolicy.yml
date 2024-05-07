@@ -12,7 +12,8 @@ summary: 'A proxy policy.
 
   to be used on each Request.'
 constructor:
-  syntax: ProxyPolicy(proxies=None, **kwargs)
+  syntax: 'ProxyPolicy(proxies: MutableMapping[str, str] | None = None, **kwargs:
+    Any)'
   parameters:
   - name: proxies
     description: 'Maps protocol or protocol and hostname to the URL
@@ -20,23 +21,53 @@ constructor:
       of the proxy.'
     defaultValue: None
     types:
-    - <xref:dict>
+    - <xref:typing.MutableMapping>
 examples:
 - "Configuring a proxy policy.<!--[!code-python[Main](les\\test_example_sansio.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  79\\\\azure-core-1.27.1\\\\samples\\\\test_example_sansio.py\", \"xml:space\": \"\
-  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.policies\
-  \ import ProxyPolicy\n\n   proxy_policy = ProxyPolicy()\n\n   # Example\n   proxy_policy.proxies\
-  \ = {\"http\": \"http://10.10.1.10:3148\"}\n\n   # Use basic auth\n   proxy_policy.proxies\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\36\\\\azure-core-1.30.1\\\
+  \\samples\\\\test_example_sansio.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.core.pipeline.policies import ProxyPolicy\n\
+  \n   proxy_policy = ProxyPolicy()\n\n   # Example\n   proxy_policy.proxies = {\"\
+  http\": \"http://10.10.1.10:3148\"}\n\n   # Use basic auth\n   proxy_policy.proxies\
   \ = {\"https\": \"http://user:password@10.10.1.10:1180/\"}\n\n   # You can also\
   \ configure proxies by setting the environment variables\n   # HTTP_PROXY and HTTPS_PROXY.\n\
   \n   ````\n"
 methods:
+- uid: azure.core.pipeline.policies.ProxyPolicy.on_exception
+  name: on_exception
+  summary: 'Is executed if an exception is raised while executing the next policy.
+
+
+    This method is executed inside the exception handler.'
+  signature: 'on_exception(request: PipelineRequest[HTTPRequestType]) -> None'
+  parameters:
+  - name: request
+    description: The Pipeline request object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
 - uid: azure.core.pipeline.policies.ProxyPolicy.on_request
   name: on_request
-  signature: 'on_request(request: PipelineRequest[HTTPRequestType]) -> None'
+  signature: 'on_request(request: PipelineRequest[HttpRequest | HttpRequest]) -> None'
   parameters:
   - name: request
     isRequired: true
+- uid: azure.core.pipeline.policies.ProxyPolicy.on_response
+  name: on_response
+  summary: Is executed after the request comes back from the policy.
+  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
+    HTTPResponseType]) -> None | Awaitable[None]'
+  parameters:
+  - name: request
+    description: Request to be modified after returning from the policy.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  - name: response
+    description: Pipeline response object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>

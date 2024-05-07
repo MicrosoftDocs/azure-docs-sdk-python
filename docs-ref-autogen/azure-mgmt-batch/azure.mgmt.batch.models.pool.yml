@@ -14,15 +14,16 @@ constructor:
     str | None = None, vm_size: str | None = None, deployment_configuration: _models.DeploymentConfiguration
     | None = None, scale_settings: _models.ScaleSettings | None = None, inter_node_communication:
     str | _models.InterNodeCommunicationState | None = None, network_configuration:
-    _models.NetworkConfiguration | None = None, task_slots_per_node: int | None =
-    None, task_scheduling_policy: _models.TaskSchedulingPolicy | None = None, user_accounts:
-    List[_models.UserAccount] | None = None, metadata: List[_models.MetadataItem]
-    | None = None, start_task: _models.StartTask | None = None, certificates: List[_models.CertificateReference]
+    _models.NetworkConfiguration | None = None, task_slots_per_node: int = 1, task_scheduling_policy:
+    _models.TaskSchedulingPolicy | None = None, user_accounts: List[_models.UserAccount]
+    | None = None, metadata: List[_models.MetadataItem] | None = None, start_task:
+    _models.StartTask | None = None, certificates: List[_models.CertificateReference]
     | None = None, application_packages: List[_models.ApplicationPackageReference]
     | None = None, application_licenses: List[str] | None = None, mount_configuration:
     List[_models.MountConfiguration] | None = None, target_node_communication_mode:
-    str | _models.NodeCommunicationMode | None = None, **kwargs)'
-  parameters:
+    str | _models.NodeCommunicationMode | None = None, upgrade_policy: _models.UpgradePolicy
+    | None = None, resource_tags: Dict[str, str] | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: identity
     description: The type of identity used for the Batch Pool.
     types:
@@ -106,6 +107,7 @@ constructor:
     description: 'The default value is 1. The maximum value is the smaller of 4
 
       times the number of cores of the vmSize of the pool or 256.'
+    defaultValue: '1'
     types:
     - <xref:int>
   - name: task_scheduling_policy
@@ -115,14 +117,14 @@ constructor:
   - name: user_accounts
     description: The list of user accounts to be created on each node in the pool.
     types:
-    - <xref:azure.mgmt.batch.aio.operations.ApplicationOperations.list>[<xref:azure.mgmt.batch.models.UserAccount>]
+    - <xref:list>[<xref:azure.mgmt.batch.models.UserAccount>]
   - name: metadata
     description: 'The Batch service does not assign any meaning to metadata; it is
       solely for
 
       the use of user code.'
     types:
-    - <xref:azure.mgmt.batch.aio.operations.ApplicationOperations.list>[<xref:azure.mgmt.batch.models.MetadataItem>]
+    - <xref:list>[<xref:azure.mgmt.batch.models.MetadataItem>]
   - name: start_task
     description: 'In an PATCH (update) operation, this property can be set to an empty
 
@@ -152,7 +154,7 @@ constructor:
       [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
       instead.'
     types:
-    - <xref:azure.mgmt.batch.aio.operations.ApplicationOperations.list>[<xref:azure.mgmt.batch.models.CertificateReference>]
+    - <xref:list>[<xref:azure.mgmt.batch.models.CertificateReference>]
   - name: application_packages
     description: 'Changes to application package references affect all new compute
 
@@ -164,7 +166,7 @@ constructor:
 
       pool.'
     types:
-    - <xref:azure.mgmt.batch.aio.operations.ApplicationOperations.list>[<xref:azure.mgmt.batch.models.ApplicationPackageReference>]
+    - <xref:list>[<xref:azure.mgmt.batch.models.ApplicationPackageReference>]
   - name: application_licenses
     description: 'The list of application licenses must be a subset of available
 
@@ -173,11 +175,11 @@ constructor:
 
       creation will fail.'
     types:
-    - <xref:azure.mgmt.batch.aio.operations.ApplicationOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
   - name: mount_configuration
     description: This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
     types:
-    - <xref:azure.mgmt.batch.aio.operations.ApplicationOperations.list>[<xref:azure.mgmt.batch.models.MountConfiguration>]
+    - <xref:list>[<xref:azure.mgmt.batch.models.MountConfiguration>]
   - name: target_node_communication_mode
     description: 'If omitted, the default value is Default. Known values
 
@@ -185,6 +187,23 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.batch.models.NodeCommunicationMode>
+  - name: upgrade_policy
+    description: Describes an upgrade policy - automatic, manual, or rolling.
+    types:
+    - <xref:azure.mgmt.batch.models.UpgradePolicy>
+  - name: resource_tags
+    description: 'The user-defined tags to be associated with the Azure Batch Pool.
+      When
+
+      specified, these tags are propagated to the backing Azure resources associated
+      with the pool.
+
+      This property can only be specified when the Batch account was created with
+      the
+
+      poolAllocationMode property set to ''UserSubscription''.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
 variables:
 - description: The ID of the resource.
   name: id
@@ -435,3 +454,19 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.batch.models.NodeCommunicationMode>
+- description: Describes an upgrade policy - automatic, manual, or rolling.
+  name: upgrade_policy
+  types:
+  - <xref:azure.mgmt.batch.models.UpgradePolicy>
+- description: 'The user-defined tags to be associated with the Azure Batch Pool.
+    When
+
+    specified, these tags are propagated to the backing Azure resources associated
+    with the pool.
+
+    This property can only be specified when the Batch account was created with the
+
+    poolAllocationMode property set to ''UserSubscription''.'
+  name: resource_tags
+  types:
+  - <xref:dict>[<xref:str>, <xref:str>]

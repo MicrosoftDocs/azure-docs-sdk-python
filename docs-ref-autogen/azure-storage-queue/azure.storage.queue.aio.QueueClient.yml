@@ -5,19 +5,19 @@ fullName: azure.storage.queue.aio.QueueClient
 module: azure.storage.queue.aio
 inheritances:
 - azure.storage.queue._shared.base_client_async.AsyncStorageAccountHostsMixin
-- azure.storage.queue._queue_client.QueueClient
+- azure.storage.queue._shared.base_client.StorageAccountHostsMixin
 - azure.storage.queue._encryption.StorageEncryptionMixin
 summary: A client to interact with a specific Queue.
 constructor:
   syntax: 'QueueClient(account_url: str, queue_name: str, credential: str | Dict[str,
-    str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
-    None, **kwargs: Any)'
+    str] | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None
+    = None, **kwargs: Any)'
   parameters:
   - name: account_url
     description: 'The URL to the storage account. In order to create a client given
       the full URI to the queue,
 
-      use the <xref:azure.storage.queue.aio.from_queue_url> classmethod.'
+      use the <xref:azure.storage.queue.aio.QueueClient.from_queue_url> classmethod.'
     isRequired: true
     types:
     - <xref:str>
@@ -48,6 +48,7 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+  keywordOnlyParameters:
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
       most recent service version that is
@@ -72,29 +73,39 @@ constructor:
       Default value is not to decode messages. Other options include <xref:azure.storage.queue.aio.TextBase64DecodePolicy>,
 
       <xref:azure.storage.queue.aio.BinaryBase64DecodePolicy> or *None*.'
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    types:
+    - <xref:str>
 examples:
 - "Create the queue client with url and credential.<!--[!code-python[Main](les\\queue_samples_message_async.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
-  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   token_auth_queue\
-  \ = QueueClient.from_queue_url(\n       queue_url=queue.url,\n       credential=sas_token\n\
-  \   )\n\n   ````\n\nCreate the queue client with a connection string.<!--[!code-python[Main](les\\\
-  queue_samples_message_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\
-  \\_work\\\\1\\\\s\\\\dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\\
-  queue_samples_message_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
-  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-  : false} -->\n\n````python\n\n   from azure.storage.queue.aio import QueueClient\n\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\226\\\\azure-storage-queue-12.9.0\\\
+  \\samples\\\\queue_samples_message_async.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   token_auth_queue = QueueClient.from_queue_url(\n\
+  \       queue_url=queue.url,\n       credential=sas_token\n   )\n\n   ````\n\nCreate\
+  \ the queue client with a connection string.<!--[!code-python[Main](les\\queue_samples_message_async.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\226\\\\azure-storage-queue-12.9.0\\\
+  \\samples\\\\queue_samples_message_async.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   from azure.storage.queue.aio import QueueClient\n\
   \   queue = QueueClient.from_connection_string(self.connection_string, \"myqueue1\"\
   )\n\n   ````\n"
 methods:
 - uid: azure.storage.queue.aio.QueueClient.clear_messages
   name: clear_messages
   summary: Deletes all messages from the specified queue.
-  signature: 'async clear_messages(**kwargs: Any | None) -> None'
-  parameters:
+  signature: 'async clear_messages(**kwargs: Any) -> None'
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -110,11 +121,18 @@ methods:
   examples:
   - "Clears all messages.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await queue.clear_messages()\n\n   ````\n"
+- uid: azure.storage.queue.aio.QueueClient.close
+  name: close
+  summary: 'This method is to close the sockets opened by the client.
+
+    It need not be used when using with a context manager.'
+  signature: async close()
 - uid: azure.storage.queue.aio.QueueClient.create_queue
   name: create_queue
   summary: 'Creates a new queue in the storage account.
@@ -123,8 +141,9 @@ methods:
     If a queue with the same name already exists, the operation fails with
 
     a *ResourceExistsError*.'
-  signature: 'async create_queue(**kwargs: Any | None) -> None'
-  parameters:
+  signature: 'async create_queue(*, metadata: Dict[str, str] | None = None, **kwargs:
+    Any) -> None'
+  keywordOnlyParameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the queue as
 
@@ -132,7 +151,7 @@ methods:
 
       were created, but are case-insensitive when set or read.'
     types:
-    - <xref:dict>(<xref:str,str>)
+    - <xref:dict>(<xref:str>,<xref:str>)
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -154,8 +173,9 @@ methods:
   examples:
   - "Create a queue.<!--[!code-python[Main](les\\queue_samples_hello_world_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_hello_world_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await queue.create_queue()\n\n   ````\n"
@@ -185,8 +205,8 @@ methods:
     or <xref:azure.storage.queue.aio.QueueClient.update_message>
 
     operation.'
-  signature: 'async delete_message(message: Any, pop_receipt: str | None = None, **kwargs:
-    Any) -> None'
+  signature: 'async delete_message(message: str | QueueMessage, pop_receipt: str |
+    None = None, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The message object or id identifying the message to delete.
@@ -201,6 +221,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -216,8 +237,9 @@ methods:
   examples:
   - "Delete a message.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get the message at the front of the queue\n   messages = queue.receive_messages()\n\
@@ -240,8 +262,8 @@ methods:
     If an operation is attempted against the queue while it was being deleted,
 
     an <xref:azure.storage.queue.aio.HttpResponseError> will be thrown.'
-  signature: 'async delete_queue(**kwargs: Any | None) -> None'
-  parameters:
+  signature: 'async delete_queue(**kwargs: Any) -> None'
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -260,18 +282,128 @@ methods:
   examples:
   - "Delete a queue.<!--[!code-python[Main](les\\queue_samples_hello_world_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_hello_world_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await queue.delete_queue()\n\n   ````\n"
+- uid: azure.storage.queue.aio.QueueClient.from_connection_string
+  name: from_connection_string
+  summary: Create QueueClient from a Connection String.
+  signature: 'from_connection_string(conn_str: str, queue_name: str, credential: str
+    | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential
+    | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: conn_str
+    description: A connection string to an Azure Storage account.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: queue_name
+    description: The queue name.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token, or the connection string already has shared
+
+      access key values. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      Credentials provided here will take precedence over those in the connection
+      string.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    types:
+    - <xref:str>
+  return:
+    description: A queue client.
+    types:
+    - <xref:azure.storage.queue.QueueClient>
+  examples:
+  - "Create the queue client from connection string.<!--[!code-python[Main](les\\\
+    queue_samples_message.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.storage.queue import QueueClient\n   queue = QueueClient.from_connection_string(self.connection_string,\
+    \ \"myqueue1\")\n\n   ````\n"
+- uid: azure.storage.queue.aio.QueueClient.from_queue_url
+  name: from_queue_url
+  summary: A client to interact with a specific Queue.
+  signature: 'from_queue_url(queue_url: str, credential: str | Dict[str, str] | AzureNamedKeyCredential
+    | AzureSasCredential | AsyncTokenCredential | None = None, **kwargs: Any) -> Self'
+  parameters:
+  - name: queue_url
+    description: The full URI to the queue, including SAS token if used.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'The credentials with which to authenticate. This is optional if
+      the
+
+      account URL already has a SAS token. The value can be a SAS token string,
+
+      an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
+
+      an account shared access key, or an instance of a TokenCredentials class from
+      azure.identity.
+
+      If the resource URI already contains a SAS token, this will be ignored in favor
+      of an explicit credential
+
+      - except in the case of AzureSasCredential, where the conflicting SAS tokens
+      will raise a ValueError.
+
+      If using an instance of AzureNamedKeyCredential, "name" should be the storage
+      account name, and "key"
+
+      should be the storage account key.'
+    defaultValue: None
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.queue.core.windows.net.'
+    types:
+    - <xref:str>
+  return:
+    description: A queue client.
+    types:
+    - <xref:azure.storage.queue.QueueClient>
 - uid: azure.storage.queue.aio.QueueClient.get_queue_access_policy
   name: get_queue_access_policy
   summary: 'Returns details about any stored access policies specified on the
 
     queue that may be used with Shared Access Signatures.'
-  signature: 'async get_queue_access_policy(**kwargs: Any | None) -> Dict[str, Any]'
-  parameters:
+  signature: 'async get_queue_access_policy(**kwargs: Any) -> Dict[str, AccessPolicy]'
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -294,8 +426,8 @@ methods:
 
 
     The data returned does not include the queue''s list of messages.'
-  signature: 'async get_queue_properties(**kwargs: Any | None) -> QueueProperties'
-  parameters:
+  signature: 'async get_queue_properties(**kwargs: Any) -> QueueProperties'
+  keywordOnlyParameters:
   - name: timeout
     description: The timeout parameter is expressed in seconds.
     types:
@@ -307,8 +439,9 @@ methods:
   examples:
   - "Get the properties on the queue.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = await queue.get_queue_properties()\n\n   ````\n"
@@ -338,8 +471,8 @@ methods:
     If the key-encryption-key or resolver field is set on the local service object,
 
     the messages will be decrypted before being returned.'
-  signature: 'async peek_messages(max_messages: int | None = None, **kwargs: Any |
-    None) -> List[QueueMessage]'
+  signature: 'async peek_messages(max_messages: int | None = None, **kwargs: Any)
+    -> List[QueueMessage]'
   parameters:
   - name: max_messages
     description: 'A nonzero integer value that specifies the number of
@@ -350,6 +483,7 @@ methods:
     isRequired: true
     types:
     - <xref:int>
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -374,13 +508,14 @@ methods:
   examples:
   - "Peek messages.<!--[!code-python[Main](les\\queue_samples_message_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Peek at one message at the front of the queue\n   msg = await queue.peek_messages()\n\
-    \n   # Peek at the last 5 messages\n   messages = await queue.peek_messages(max_messages=5)\n\
-    \n   # Print the last 5 messages\n   for message in messages:\n       print(message.content)\n\
+    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\226\\\\azure-storage-queue-12.9.0\\\
+    \\samples\\\\queue_samples_message_async.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   # Peek at one message at the\
+    \ front of the queue\n   msg = await queue.peek_messages()\n\n   # Peek at the\
+    \ last 5 messages\n   messages = await queue.peek_messages(max_messages=5)\n\n\
+    \   # Print the last 5 messages\n   for message in messages:\n       print(message.content)\n\
     \n   ````\n"
 - uid: azure.storage.queue.aio.QueueClient.receive_message
   name: receive_message
@@ -402,14 +537,15 @@ methods:
     the message will be
 
     decrypted before being returned.'
-  signature: 'async receive_message(**kwargs: Any | None) -> QueueMessage'
-  parameters:
+  signature: 'async receive_message(*, visibility_timeout: int | None = None, **kwargs:
+    Any) -> QueueMessage | None'
+  keywordOnlyParameters:
   - name: visibility_timeout
-    description: 'If not specified, the default value is 0. Specifies the
+    description: 'If not specified, the default value is 30. Specifies the
 
       new visibility timeout value, in seconds, relative to server time.
 
-      The value must be larger than or equal to 0, and cannot be
+      The value must be larger than or equal to 1, and cannot be
 
       larger than 7 days. The visibility timeout of a message cannot be
 
@@ -431,21 +567,24 @@ methods:
     types:
     - <xref:int>
   return:
-    description: Returns a message from the Queue.
+    description: Returns a message from the Queue or None if the Queue is empty.
     types:
     - <xref:azure.storage.queue.QueueMessage>
+    - <xref:None>
   examples:
   - "Receive one message from the queue.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       # Pop two messages from the front of the queue\n       message1 = await\
     \ queue.receive_message()\n       message2 = await queue.receive_message()\n \
     \      # We should see message 3 if we peek\n       message3 = await queue.peek_messages()\n\
-    \n       print(message1.content)\n       print(message2.content)\n       print(message3[0].content)\n\
-    \n   ````\n"
+    \n       if not message1 or not message2 or not message3:\n           raise ValueError(\"\
+    One of the messages are None.\")\n\n       print(message1.content)\n       print(message2.content)\n\
+    \       print(message3[0].content)\n\n   ````\n"
 - uid: azure.storage.queue.aio.QueueClient.receive_messages
   name: receive_messages
   summary: 'Removes one or more messages from the front of the queue.
@@ -470,8 +609,9 @@ methods:
     the messages will be
 
     decrypted before being returned.'
-  signature: 'receive_messages(**kwargs: Any | None) -> AsyncItemPaged[QueueMessage]'
-  parameters:
+  signature: 'receive_messages(*, messages_per_page: int | None = None, visibility_timeout:
+    int | None = None, max_messages: int | None = None, **kwargs: Any) -> AsyncItemPaged[QueueMessage]'
+  keywordOnlyParameters:
   - name: messages_per_page
     description: 'A nonzero integer value that specifies the number of
 
@@ -501,6 +641,11 @@ methods:
       should be set to a value smaller than the time-to-live value.'
     types:
     - <xref:int>
+  - name: max_messages
+    description: An integer that specifies the maximum number of messages to retrieve
+      from the queue.
+    types:
+    - <xref:int>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -513,11 +658,6 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
     types:
     - <xref:int>
-  - name: max_messages
-    description: An integer that specifies the maximum number of messages to retrieve
-      from the queue.
-    types:
-    - <xref:int>
   return:
     description: Returns a message iterator of dict-like Message objects.
     types:
@@ -525,15 +665,17 @@ methods:
   examples:
   - "Receive messages from the queue.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Receive messages one-by-one\n   messages = queue.receive_messages()\n \
     \  async for msg in messages:\n       print(msg.content)\n\n   # Receive messages\
     \ by batch\n   messages = queue.receive_messages(messages_per_page=5)\n   async\
-    \ for msg_batch in messages.by_page():\n       for msg in msg_batch:\n       \
-    \    print(msg.content)\n           await queue.delete_message(msg)\n\n   ````\n"
+    \ for msg_batch in messages.by_page():\n       async for msg in msg_batch:\n \
+    \          print(msg.content)\n           await queue.delete_message(msg)\n\n\
+    \   ````\n"
 - uid: azure.storage.queue.aio.QueueClient.send_message
   name: send_message
   summary: 'Adds a new message to the back of the message queue.
@@ -557,7 +699,8 @@ methods:
     will
 
     encrypt the content before uploading.'
-  signature: 'async send_message(content: Any, **kwargs: Any | None) -> QueueMessage'
+  signature: 'async send_message(content: object | None, *, visibility_timeout: int
+    | None = None, time_to_live: int | None = None, **kwargs: Any) -> QueueMessage'
   parameters:
   - name: content
     description: 'Message content. Allowed type is determined by the encode_function
@@ -567,7 +710,8 @@ methods:
       64KB in size.'
     isRequired: true
     types:
-    - <xref:obj>
+    - <xref:typing.Optional>[<xref:object>]
+  keywordOnlyParameters:
   - name: visibility_timeout
     description: 'If not specified, the default value is 0. Specifies the
 
@@ -614,14 +758,15 @@ methods:
   examples:
   - "Send messages.<!--[!code-python[Main](les\\queue_samples_message_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-    : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\
-    \\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   await asyncio.gather(\n       queue.send_message(\"message1\"),\n       queue.send_message(\"\
-    message2\", visibility_timeout=30),  # wait 30s before becoming visible\n    \
-    \   queue.send_message(\"message3\"),\n       queue.send_message(\"message4\"\
-    ),\n       queue.send_message(\"message5\")\n   )\n\n   ````\n"
+    : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\226\\\\azure-storage-queue-12.9.0\\\
+    \\samples\\\\queue_samples_message_async.py\", \"xml:space\": \"preserve\", \"\
+    force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+    : 1}, \"linenos\": false} -->\n\n````python\n\n   await asyncio.gather(\n    \
+    \   queue.send_message(\"message1\"),\n       queue.send_message(\"message2\"\
+    , visibility_timeout=30),  # wait 30s before becoming visible\n       queue.send_message(\"\
+    message3\"),\n       queue.send_message(\"message4\"),\n       queue.send_message(\"\
+    message5\")\n   )\n\n   ````\n"
 - uid: azure.storage.queue.aio.QueueClient.set_queue_access_policy
   name: set_queue_access_policy
   summary: 'Sets stored access policies for the queue that may be used with Shared
@@ -650,7 +795,7 @@ methods:
     <xref:azure.storage.queue.aio.HttpResponseError> until the access policy becomes
     active.'
   signature: 'async set_queue_access_policy(signed_identifiers: Dict[str, AccessPolicy],
-    **kwargs: Any | None) -> None'
+    **kwargs: Any) -> None'
   parameters:
   - name: signed_identifiers
     description: 'SignedIdentifier access policies to associate with the queue.
@@ -660,7 +805,8 @@ methods:
       will clear the access policies set on the service.'
     isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:azure.storage.queue.AccessPolicy>)
+    - <xref:typing.Dict>[<xref:str>, <xref:azure.storage.queue.AccessPolicy>]
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -676,8 +822,9 @@ methods:
   examples:
   - "Set an access policy on the queue.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create an access policy\n   from azure.storage.queue import AccessPolicy,\
@@ -692,8 +839,8 @@ methods:
 
 
     Metadata is associated with the queue as name-value pairs.'
-  signature: 'async set_queue_metadata(metadata: Dict[str, Any] | None = None, **kwargs:
-    Any | None) -> None'
+  signature: 'async set_queue_metadata(metadata: Dict[str, str] | None = None, **kwargs:
+    Any) -> Dict[str, Any]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the
@@ -701,7 +848,8 @@ methods:
       queue as metadata.'
     isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:typing.Optional>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+  keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -714,11 +862,16 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-queue#other-client--per-operation-configuration).'
     types:
     - <xref:int>
+  return:
+    description: A dictionary of response headers.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Set metadata on the queue.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   metadata = {'foo': 'val1', 'bar': 'val2', 'baz': 'val3'}\n   await queue.set_queue_metadata(metadata=metadata)\n\
@@ -749,8 +902,9 @@ methods:
     will
 
     encrypt the content before uploading.'
-  signature: 'async update_message(message: Any, pop_receipt: int = None, content:
-    str | None = None, **kwargs: Any | None) -> QueueMessage'
+  signature: 'async update_message(message: str | QueueMessage, pop_receipt: str |
+    None = None, content: object | None = None, *, visibility_timeout: int | None
+    = None, **kwargs: Any) -> QueueMessage'
   parameters:
   - name: message
     description: The message object or id identifying the message to update.
@@ -772,7 +926,8 @@ methods:
       set on the service. Default is str.'
     isRequired: true
     types:
-    - <xref:obj>
+    - <xref:typing.Optional>[<xref:object>]
+  keywordOnlyParameters:
   - name: visibility_timeout
     description: 'Specifies the new visibility timeout value, in seconds,
 
@@ -809,8 +964,9 @@ methods:
   examples:
   - "Update a message.<!--[!code-python[Main](les\\queue_samples_message_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\73\\\\azure-storage-queue-12.6.0\\\\samples\\\\queue_samples_message_async.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    226\\\\azure-storage-queue-12.9.0\\\\samples\\\\queue_samples_message_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Send a message\n   await queue.send_message(\"update me\")\n\n   # Receive\
@@ -818,3 +974,69 @@ methods:
     \   async for message in messages:\n       message = await queue.update_message(\n\
     \           message,\n           visibility_timeout=0,\n           content=\"\
     updated\")\n\n   ````\n"
+attributes:
+- uid: azure.storage.queue.aio.QueueClient.api_version
+  name: api_version
+  summary: The version of the Storage API used for requests.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.aio.QueueClient.location_mode
+  name: location_mode
+  summary: 'The location mode that the client is currently using.
+
+
+    By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.aio.QueueClient.primary_endpoint
+  name: primary_endpoint
+  summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.aio.QueueClient.primary_hostname
+  name: primary_hostname
+  summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
+- uid: azure.storage.queue.aio.QueueClient.secondary_endpoint
+  name: secondary_endpoint
+  summary: 'The full secondary endpoint URL if configured.
+
+
+    If not available a ValueError will be raised. To explicitly specify a secondary
+    hostname, use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
+  exceptions:
+  - type: ValueError
+- uid: azure.storage.queue.aio.QueueClient.secondary_hostname
+  name: secondary_hostname
+  summary: 'The hostname of the secondary endpoint.
+
+
+    If not available this will be None. To explicitly specify a secondary hostname,
+    use the optional
+
+    *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.storage.queue.aio.QueueClient.url
+  name: url
+  summary: 'The full endpoint URL to this entity, including SAS token if used.
+
+
+    This could be either the primary endpoint,
+
+    or the secondary endpoint depending on the current <xref:azure.storage.queue.aio.QueueClient.location_mode>.
+
+    :returns: The full endpoint URL to this entity, including SAS token if used.
+
+    :rtype: str'

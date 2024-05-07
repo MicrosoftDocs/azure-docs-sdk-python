@@ -1,8 +1,6 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-agrifood, agrifood
-author: lmazuel
-ms.author: lmazuel
 ms.date: 12/27/2022
 ms.topic: reference
 ms.devlang: python

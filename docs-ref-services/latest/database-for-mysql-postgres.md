@@ -2,16 +2,13 @@
 title: Azure MySQL/PostgreSQL libraries for Python
 description: 
 keywords: Azure, Python, SDK, API, SQL, database, MySQL, PostgreSQL
-author: lisawong19
-ms.author: ramyar
-manager: douge
 ms.date: 10/02/2019
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: azure-python
+ms.technology: azure
+manager: douge
 ---
-
 # Azure Database for MySQL/PostgreSQL libraries for Python
 
 This article demonstrates how you can use Python to access data stored in Azure Database for MySQL and PostgreSQL.
@@ -107,7 +104,7 @@ cursor.execute(selectsql)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/postgresql/mysql/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-rdbms)
 
 ## PostgreSQL
 
@@ -204,4 +201,5 @@ cursor.execute(selectsql)
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/postgresql/mysql/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-rdbms)
+

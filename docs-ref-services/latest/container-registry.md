@@ -1,9 +1,7 @@
 ---
 title: Azure Container Registry SDK for Python
 description: Reference for Azure Container Registry SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: containerregistry
@@ -19,4 +17,4 @@ ms.service: containerregistry
 pip install azure-mgmt-containerregistry
 ```
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/containerregistry/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-containerregistry)

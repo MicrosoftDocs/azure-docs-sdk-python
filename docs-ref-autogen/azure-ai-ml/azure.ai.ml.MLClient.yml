@@ -8,14 +8,7 @@ inheritances:
 summary: 'A client class to interact with Azure ML services.
 
 
-  Use this client to manage Azure ML resources, e.g. workspaces, jobs, models and
-  so on.
-
-
-  A client class to interact with Azure ML services.
-
-
-  Use this client to manage Azure ML resources, e.g. workspaces, jobs, models and
+  Use this client to manage Azure ML resources such as workspaces, jobs, models, and
   so on.'
 constructor:
   syntax: 'MLClient(credential: TokenCredential, subscription_id: str | None = None,
@@ -23,117 +16,72 @@ constructor:
     str | None = None, **kwargs: Any)'
   parameters:
   - name: credential
-    description: Credential to use for authentication.
+    description: The credential to use for authentication.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
   - name: subscription_id
-    description: Azure subscription ID, optional for registry assets only, defaults
+    description: The Azure subscription ID. Optional for registry assets only. Defaults
       to None.
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: resource_group_name
-    description: Azure resource group, optional for registry assets only, defaults
+    description: The Azure resource group. Optional for registry assets only. Defaults
       to None.
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: workspace_name
-    description: 'Workspace to use in the client, optional for non workspace dependent
-      operations only,
+    description: 'The workspace to use in the client. Optional only for operations
+      that are not
 
-      defaults to None.'
+      workspace-dependent. Defaults to None.'
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: registry_name
-    description: 'Registry to use in the client, optional for non registry dependent
-      operations only,
+    description: 'The registry to use in the client. Optional only for operations
+      that are not
 
-      defaults to None.'
+      workspace-dependent. Defaults to None.'
     defaultValue: None
     types:
     - <xref:typing.Optional>[<xref:str>]
+  keywordOnlyParameters:
   - name: show_progress
-    description: 'Whether to display progress bars for long-running operations. E.g.
-      customers may consider
+    description: 'Specifies whether or not to display progress bars for long-running
+      operations (e.g.
 
-      setting this to False if not using this SDK in an interactive setup. defaults
-      to True.'
-    isRequired: true
+      customers may consider setting this to False if not using this SDK in an interactive
+      setup). Defaults to True.'
     types:
     - <xref:typing.Optional>[<xref:bool>]
   - name: enable_telemetry
-    description: Whether to enable telemetry. Will be overridden to False if not in
-      a Jupyter Notebook.
-    isRequired: true
+    description: 'Specifies whether or not to enable telemetry. Will be overridden
+      to False if not in a
+
+      Jupyter Notebook. Defaults to True if in a Jupyter Notebook.'
     types:
     - <xref:typing.Optional>[<xref:bool>]
   - name: cloud
-    description: The cloud name to use, defaults to AzureCloud.
-    types:
-    - <xref:str>
-  - name: credential
-    description: Credential to use for authentication.
-    isRequired: true
-    types:
-    - <xref:azure.core.credentials.TokenCredential>
-  - name: subscription_id
-    description: Azure subscription ID, optional for registry assets only, defaults
-      to None
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: resource_group_name
-    description: Azure resource group, optional for registry assets only, defaults
-      to None
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: workspace_name
-    description: 'Workspace to use in the client, optional for non workspace dependent
-      operations only,
-
-      defaults to None'
-    isRequired: true
-    types:
-    - <xref:typing.Optional>[<xref:str>]
-  - name: registry_name
-    description: 'Registry to use in the client, optional for non registry dependent
-      operations only,
-
-      defaults to None'
-    isRequired: true
+    description: The cloud name to use. Defaults to "AzureCloud".
     types:
     - <xref:typing.Optional>[<xref:str>]
 examples:
-- "Creating the MLClient with Azure Identity credentials.<!--[!code-python[Main](les\\\
-  ml_samples_authentication_sovereign_cloud.py )]-->\n\n<!-- literal_block {\"ids\"\
-  : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\185\\\\azure-ai-ml-1.7.2\\\\samples\\\
-  \\ml_samples_authentication_sovereign_cloud.py\", \"xml:space\": \"preserve\", \"\
-  force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\":\
-  \ 1}, \"linenos\": false} -->\n\n````python\n\n   # Get a credential for authentication\n\
-  \   # Default Azure Credentials attempt a chained set of authentication methods,\
-  \ per documentation here: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity\n\
-  \   # Alternately, one can specify the AZURE_TENANT_ID, AZURE_CLIENT_ID, and AZURE_CLIENT_SECRET\
-  \ to use the EnvironmentCredentialClass.\n   # The docs above specify all mechanisms\
-  \ which the defaultCredential internally support.\n   # Enter details of your subscription\n\
-  \   subscription_id = os.environ[\"AZURE_SUBSCRIPTION_ID\"]\n   resource_group =\
-  \ os.environ[\"RESOURCE_GROUP_NAME\"]\n\n   # Instantiate a MLClient\n   from azure.identity\
-  \ import AzureAuthorityHosts, DefaultAzureCredential\n\n   from azure.ai.ml import\
-  \ MLClient\n\n   # When using sovereign domains (that is, any cloud other than AZURE_PUBLIC_CLOUD),\n\
-  \   # you must use an authority with DefaultAzureCredential.\n   # Default authority\
-  \ value : AzureAuthorityHosts.AZURE_PUBLIC_CLOUD\n   # Expected values for authority\
-  \ for sovereign clouds:\n   # AzureAuthorityHosts.AZURE_CHINA or AzureAuthorityHosts.AZURE_GOVERNMENT\n\
-  \   # credential = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_CHINA)\n\
-  \   credential = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)\n\
-  \n   # When using sovereign domains (that is, any cloud other than AZURE_PUBLIC_CLOUD),\n\
-  \   # you must pass in the cloud name in kwargs. Default cloud is AzureCloud\n \
-  \  kwargs = {\"cloud\": \"AzureCloud\"}\n   # get a handle to the subscription\n\
-  \   ml_client = MLClient(credential, subscription_id, resource_group, **kwargs)\n\
-  \n   ````\n"
+- "When using sovereign domains (i.e. any cloud other than AZURE_PUBLIC_CLOUD), you\
+  \ must pass in the\ncloud name in kwargs and you must use an authority with DefaultAzureCredential.<!--[!code-python[Main](les\\\
+  ml_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_authentication.py\", \"xml:space\"\
+  : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\":\
+  \ {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
+  \ import MLClient\n   from azure.identity import AzureAuthorityHosts, DefaultAzureCredential\n\
+  \n   kwargs = {\"cloud\": \"AzureChinaCloud\"}\n   ml_client = MLClient(\n     \
+  \  subscription_id=subscription_id,\n       resource_group_name=resource_group,\n\
+  \       credential=DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_CHINA),\n\
+  \       **kwargs,\n   )\n\n   ````\n"
 methods:
 - uid: azure.ai.ml.MLClient.begin_create_or_update
   name: begin_create_or_update
@@ -144,17 +92,18 @@ methods:
     description: The resource to create or update.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Workspace>, <xref:azure.ai.ml.entities.Registry>,
-      <xref:azure.ai.ml.entities.Compute>, <xref:azure.ai.ml.entities.OnlineDeployment>,
-      <xref:azure.ai.ml.entities.OnlineEndpoint>, <xref:azure.ai.ml.entities.BatchDeployment>,
-      <xref:azure.ai.ml.entities.BatchEndpoint>, <xref:azure.ai.ml.entities.Schedule>]
+    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Workspace> , <xref:azure.ai.ml.entities.Registry>,
+      <xref:azure.ai.ml.entities.Compute>, <xref:azure.ai.ml.entities.OnlineDeployment>
+      , <xref:azure.ai.ml.entities.OnlineEndpoint>, <xref:azure.ai.ml.entities.BatchDeployment>
+      , <xref:azure.ai.ml.entities.BatchEndpoint>, <xref:azure.ai.ml.entities.Schedule>]
   return:
     description: The resource after create/update operation.
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:typing.Union>[<xref:azure.ai.ml.entities.Workspace>,
-      <xref:azure.ai.ml.entities.Registry>, <xref:azure.ai.ml.entities.Compute>, <xref:azure.ai.ml.entities.OnlineDeployment>,
-      <xref:azure.ai.ml.entities.OnlineEndpoint>, <xref:azure.ai.ml.entities.BatchDeployment>,
-      <xref:azure.ai.ml.entities.BatchEndpoint>, <xref:azure.ai.ml.entities.Schedule>]]
+    - <xref:azure.core.polling.LROPoller>[<xref:typing.Union>[<xref:azure.ai.ml.entities.Workspace>
+      , <xref:azure.ai.ml.entities.Registry>, <xref:azure.ai.ml.entities.Compute>,
+      <xref:azure.ai.ml.entities.OnlineDeployment> , <xref:azure.ai.ml.entities.OnlineEndpoint>,
+      <xref:azure.ai.ml.entities.BatchDeployment> , <xref:azure.ai.ml.entities.BatchEndpoint>,
+      <xref:azure.ai.ml.entities.Schedule>]]
 - uid: azure.ai.ml.MLClient.create_or_update
   name: create_or_update
   summary: Creates or updates an Azure ML resource.
@@ -164,36 +113,28 @@ methods:
     description: The resource to create or update.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Job>, <xref:azure.ai.ml.entities.Model>,
-      <xref:azure.ai.ml.entities.Environment>, <xref:azure.ai.ml.entities.Component>,
-      <xref:azure.ai.ml.entities.Datastore>]
+    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Job> , <xref:azure.ai.ml.entities.Model>,
+      <xref:azure.ai.ml.entities.Environment>, <xref:azure.ai.ml.entities.Component>
+      , <xref:azure.ai.ml.entities.Datastore>]
   return:
     description: The created or updated resource.
     types:
-    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Job>, <xref:azure.ai.ml.entities.Model>,
-      <xref:azure.ai.ml.entities.Environment>, <xref:azure.ai.ml.entities.Component>,
+    - <xref:typing.Union>[<xref:azure.ai.ml.entities.Job>, <xref:azure.ai.ml.entities.Model>
+      , <xref:azure.ai.ml.entities.Environment>, <xref:azure.ai.ml.entities.Component>,
       <xref:azure.ai.ml.entities.Datastore>]
 - uid: azure.ai.ml.MLClient.from_config
   name: from_config
-  summary: 'Return a workspace object from an existing Azure Machine Learning Workspace.
-
-
-    Reads workspace configuration from a file. Throws an exception if the config file
-    can''t be found.
-
-
-    The method provides a simple way to reuse the same workspace across multiple Python
-    notebooks or projects.
-
-    Users can save the workspace Azure Resource Manager (ARM) properties using the
-
-    [workspace.write_config]([https://aka.ms/ml-workspace-class](https://aka.ms/ml-workspace-class))
-    method,
-
-    and use this method to load the same workspace in different Python notebooks or
-    projects without
-
-    retyping the workspace ARM properties.'
+  summary: "Returns a client from an existing Azure Machine Learning Workspace using\
+    \ a file configuration.\n\nThis method provides a simple way to reuse the same\
+    \ workspace across multiple Python notebooks or projects.\nYou can save a workspace's\
+    \ Azure Resource Manager (ARM) properties in a JSON configuration file using this\n\
+    format:\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
+    dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false,\
+    \ \"language\": \"json\", \"highlight_args\": {}, \"linenos\": false} -->\n\n\
+    ````json\n\n   {\n       \"subscription_id\": \"<subscription-id>\",\n       \"\
+    resource_group\": \"<resource-group>\",\n       \"workspace_name\": \"<workspace-name>\"\
+    \n   }\n   ````\n\nThen, you can use this method to load the same workspace in\
+    \ different Python notebooks or projects without\nretyping the workspace ARM properties."
   signature: 'from_config(credential: TokenCredential, *, path: PathLike | str | None
     = None, file_name=None, **kwargs) -> MLClient'
   parameters:
@@ -202,36 +143,54 @@ methods:
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
+  keywordOnlyParameters:
   - name: path
-    description: 'The path to the config file or starting directory to search.
+    description: 'The path to the configuration file or starting directory to search
+      for the configuration file
 
-      The parameter defaults to starting the search in the current directory.
-
-      Defaults to None'
-    isRequired: true
+      within. Defaults to None, indicating the current directory will be used.'
     types:
-    - <xref:typing.Union>[<xref:os.PathLike>, <xref:str>]
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:os.PathLike>, <xref:str>]]
   - name: file_name
-    description: 'Allows overriding the config file name to search for when path is
-      a directory path.
+    description: 'The configuration file name to search for when path is a directory
+      path. Defaults to
 
-      (Default value = None)'
-    isRequired: true
+      "config.json".'
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   - name: cloud
-    description: The cloud name to use. Defaults to AzureCloud.
+    description: The cloud name to use. Defaults to "AzureCloud".
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
   return:
-    description: The workspace object for an existing Azure ML Workspace.
+    description: The client for an existing Azure ML Workspace.
     types:
     - <xref:azure.ai.ml.MLClient>
   exceptions:
   - type: azure.ai.ml.exceptions.ValidationException
-    description: 'Raised if config.json cannot be found in directory.
+    description: 'Raised if "config.json", or file_name if overridden,
 
-      Details will be provided in the error message.'
+      cannot be found in directory. Details will be provided in the error message.'
+  examples:
+  - "Creating an MLClient from a file named \"config.json\" in directory \"src\".<!--[!code-python[Main](les\\\
+    ml_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_authentication.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import MLClient\n\n   client = MLClient.from_config(credential=DefaultAzureCredential(),\
+    \ path=\"./sdk/ml/azure-ai-ml/samples/src\")\n\n   ````\n\nCreating an MLClient\
+    \ from a file named \"team_workspace_configuration.json\" in the current\ndirectory.<!--[!code-python[Main](les\\\
+    ml_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
+    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_authentication.py\"\
+    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
+    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
+    \n   from azure.ai.ml import MLClient\n\n   client = MLClient.from_config(\n \
+    \      credential=DefaultAzureCredential(),\n       file_name=\"./sdk/ml/azure-ai-ml/samples/team_workspace_configuration.json\"\
+    ,\n   )\n\n   ````\n"
 attributes:
 - uid: azure.ai.ml.MLClient.batch_deployments
   name: batch_deployments
@@ -291,34 +250,25 @@ attributes:
     - <xref:azure.ai.ml.operations.EnvironmentOperations>
 - uid: azure.ai.ml.MLClient.feature_sets
   name: feature_sets
-  summary: '//aka.ms/azuremlexperimental for more information.
-
-
-    A collection of feature set related operations.
-
-    :return: FeatureSet operations
-
-    :rtype: FeatureSetOperations'
+  summary: A collection of feature set related operations.
+  return:
+    description: FeatureSet operations
+    types:
+    - <xref:azure.ai.ml.operations.FeatureSetOperations>
 - uid: azure.ai.ml.MLClient.feature_store_entities
   name: feature_store_entities
-  summary: '//aka.ms/azuremlexperimental for more information.
-
-
-    A collection of feature store entity related operations.
-
-    :return: FeatureStoreEntity operations
-
-    :rtype: FeatureStoreEntityOperations'
+  summary: A collection of feature store entity related operations.
+  return:
+    description: FeatureStoreEntity operations
+    types:
+    - <xref:azure.ai.ml.operations.FeatureStoreEntityOperations>
 - uid: azure.ai.ml.MLClient.feature_stores
   name: feature_stores
-  summary: '//aka.ms/azuremlexperimental for more information.
-
-
-    A collection of feature-store related operations.
-
-    :return: Featurestore operations
-
-    :rtype: FeatureStoreOperations'
+  summary: A collection of feature store related operations.
+  return:
+    description: FeatureStore operations
+    types:
+    - <xref:azure.ai.ml.operations.FeatureStoreOperations>
 - uid: azure.ai.ml.MLClient.jobs
   name: jobs
   summary: A collection of job related operations.
@@ -349,17 +299,14 @@ attributes:
     - <xref:azure.ai.ml.operations.OnlineEndpointOperations>
 - uid: azure.ai.ml.MLClient.registries
   name: registries
-  summary: '//aka.ms/azuremlexperimental for more information.
-
-
-    A collection of registry-related operations.'
+  summary: A collection of registry-related operations.
   return:
     description: Registry operations
     types:
     - <xref:azure.ai.ml.operations.RegistryOperations>
 - uid: azure.ai.ml.MLClient.resource_group_name
   name: resource_group_name
-  summary: Get the resource group name of a MLClient object.
+  summary: Get the resource group name of an MLClient object.
   return:
     description: An Azure resource group name.
     types:
@@ -373,21 +320,39 @@ attributes:
     - <xref:azure.ai.ml.operations.ScheduleOperations>
 - uid: azure.ai.ml.MLClient.subscription_id
   name: subscription_id
-  summary: Get the subscription Id of a MLClient object.
+  summary: Get the subscription ID of an MLClient object.
   return:
-    description: An Azure subscription Id.
+    description: An Azure subscription ID.
     types:
     - <xref:str>
+- uid: azure.ai.ml.MLClient.workspace_hubs
+  name: workspace_hubs
+  summary: '//aka.ms/azuremlexperimental for more information.
+
+
+    A collection of workspace hub-related operations.'
+  return:
+    description: Hub Operations
+    types:
+    - <xref:HubOperations>
 - uid: azure.ai.ml.MLClient.workspace_name
   name: workspace_name
-  summary: The workspace where workspace dependent operations will be executed in.
+  summary: The name of the workspace where workspace-dependent operations will be
+    executed.
   return:
-    description: Default workspace name.
+    description: The name of the default workspace.
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:str>]
+- uid: azure.ai.ml.MLClient.workspace_outbound_rules
+  name: workspace_outbound_rules
+  summary: A collection of workspace outbound rule related operations.
+  return:
+    description: Workspace outbound rule operations
+    types:
+    - <xref:azure.ai.ml.operations.WorkspaceOutboundRuleOperations>
 - uid: azure.ai.ml.MLClient.workspaces
   name: workspaces
-  summary: A collection of workspace related operations.
+  summary: A collection of workspace-related operations.
   return:
     description: Workspace operations
     types:

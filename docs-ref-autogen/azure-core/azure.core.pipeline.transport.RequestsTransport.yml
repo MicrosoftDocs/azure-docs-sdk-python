@@ -22,7 +22,7 @@ summary: 'Implements a basic requests HTTP sender.
   - All kwargs received by "send" are sent to session.request directly'
 constructor:
   syntax: RequestsTransport(**kwargs)
-  parameters:
+  keywordOnlyParameters:
   - name: session
     description: Request session to use instead of the default one.
     types:
@@ -39,12 +39,13 @@ constructor:
 examples:
 - "Synchronous transport with Requests.<!--[!code-python[Main](les\\test_example_sync.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  79\\\\azure-core-1.27.1\\\\samples\\\\test_example_sync.py\", \"xml:space\": \"\
-  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.transport\
-  \ import RequestsTransport\n\n   with Pipeline(transport=RequestsTransport(), policies=policies)\
-  \ as pipeline:\n       response = pipeline.run(request)\n\n   ````\n"
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\36\\\\azure-core-1.30.1\\\
+  \\samples\\\\test_example_sync.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.core.pipeline.transport import RequestsTransport\n\
+  \n   with Pipeline(transport=RequestsTransport(), policies=policies) as pipeline:\n\
+  \       response = pipeline.run(request)\n\n   ````\n"
 methods:
 - uid: azure.core.pipeline.transport.RequestsTransport.close
   name: close
@@ -55,25 +56,43 @@ methods:
 - uid: azure.core.pipeline.transport.RequestsTransport.send
   name: send
   summary: Send request object according to configuration.
-  signature: 'send(request: HttpRequest, **kwargs) -> HttpResponse'
+  signature: 'send(request: HttpRequest, *, proxies: MutableMapping[str, str] | None
+    = None, **kwargs) -> HttpResponse'
   parameters:
   - name: request
     description: The request object to be sent.
     isRequired: true
     types:
     - <xref:azure.core.pipeline.transport.HttpRequest>
-  - name: session
-    description: 'will override the driver session and use yours.
-
-      Should NOT be done unless really required. Anything else is sent straight to
-      requests.'
-    types:
-    - <xref:requests.Session>
+  keywordOnlyParameters:
   - name: proxies
     description: will define the proxy to use. Proxy is a dict (protocol, url)
     types:
-    - <xref:dict>
+    - <xref:typing.MutableMapping>
   return:
     description: An HTTPResponse object.
     types:
     - <xref:azure.core.pipeline.transport.HttpResponse>
+- uid: azure.core.pipeline.transport.RequestsTransport.sleep
+  name: sleep
+  summary: 'Sleep for the specified duration.
+
+
+    You should always ask the transport to sleep, and not call directly
+
+    the stdlib. This is mostly important in async, as the transport
+
+    may not use asyncio but other implementations like trio and they have their own
+
+    way to sleep, but to keep design
+
+    consistent, it''s cleaner to always ask the transport to sleep and let the transport
+
+    implementor decide how to do it.'
+  signature: 'sleep(duration: float) -> None'
+  parameters:
+  - name: duration
+    description: The number of seconds to sleep.
+    isRequired: true
+    types:
+    - <xref:float>

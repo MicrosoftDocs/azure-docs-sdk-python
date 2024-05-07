@@ -11,10 +11,10 @@ summary: 'Class representing an update to a Kusto cluster.
   Variables are only populated by the server, and will be ignored when sending a request.'
 constructor:
   syntax: 'ClusterUpdate(*, tags: Dict[str, str] | None = None, location: str | None
-    = None, sku: _models.AzureSku | None = None, identity: _models.Identity | None
-    = None, trusted_external_tenants: List[_models.TrustedExternalTenant] | None =
-    None, optimized_autoscale: _models.OptimizedAutoscale | None = None, enable_disk_encryption:
-    bool = False, enable_streaming_ingest: bool = False, virtual_network_configuration:
+    = None, sku: _models.AzureSku | None = None, zones: List[str] | None = None, identity:
+    _models.Identity | None = None, trusted_external_tenants: List[_models.TrustedExternalTenant]
+    | None = None, optimized_autoscale: _models.OptimizedAutoscale | None = None,
+    enable_disk_encryption: bool = False, enable_streaming_ingest: bool = False, virtual_network_configuration:
     _models.VirtualNetworkConfiguration | None = None, key_vault_properties: _models.KeyVaultProperties
     | None = None, enable_purge: bool = False, language_extensions: _models.LanguageExtensionsList
     | None = None, enable_double_encryption: bool = False, public_network_access:
@@ -25,7 +25,7 @@ constructor:
     allowed_fqdn_list: List[str] | None = None, public_ip_type: str | _models.PublicIPType
     = ''IPv4'', virtual_cluster_graduation_properties: str | None = None, **kwargs:
     Any)'
-  parameters:
+  keywordOnlyParameters:
   - name: tags
     description: Resource tags.
     types:
@@ -38,6 +38,10 @@ constructor:
     description: The SKU of the cluster.
     types:
     - <xref:azure.mgmt.kusto.models.AzureSku>
+  - name: zones
+    description: The availability zones of the cluster.
+    types:
+    - <xref:list>[<xref:str>]
   - name: identity
     description: The identity of the cluster, if configured.
     types:
@@ -45,7 +49,7 @@ constructor:
   - name: trusted_external_tenants
     description: The cluster's external tenants.
     types:
-    - <xref:azure.mgmt.kusto.aio.operations.ClusterPrincipalAssignmentsOperations.list>[<xref:azure.mgmt.kusto.models.TrustedExternalTenant>]
+    - <xref:list>[<xref:azure.mgmt.kusto.models.TrustedExternalTenant>]
   - name: optimized_autoscale
     description: Optimized auto scale definition.
     types:
@@ -91,6 +95,7 @@ constructor:
       values are:
 
       "Enabled" and "Disabled".'
+    defaultValue: Enabled
     types:
     - <xref:str>
     - <xref:azure.mgmt.kusto.models.PublicNetworkAccess>
@@ -99,20 +104,22 @@ constructor:
 
       cluster.'
     types:
-    - <xref:azure.mgmt.kusto.aio.operations.ClusterPrincipalAssignmentsOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
   - name: engine_type
     description: 'The engine type. Known values are: "V2" and "V3".'
+    defaultValue: V3
     types:
     - <xref:str>
     - <xref:azure.mgmt.kusto.models.EngineType>
   - name: accepted_audiences
     description: The cluster's accepted audiences.
     types:
-    - <xref:azure.mgmt.kusto.aio.operations.ClusterPrincipalAssignmentsOperations.list>[<xref:azure.mgmt.kusto.models.AcceptedAudiences>]
+    - <xref:list>[<xref:azure.mgmt.kusto.models.AcceptedAudiences>]
   - name: enable_auto_stop
     description: 'A boolean value that indicates if the cluster could be automatically
 
       stopped (due to lack of data or no activity for many days).'
+    defaultValue: 'True'
     types:
     - <xref:bool>
   - name: restrict_outbound_network_access
@@ -122,6 +129,7 @@ constructor:
       values are:
 
       "Enabled" and "Disabled".'
+    defaultValue: Disabled
     types:
     - <xref:str>
     - <xref:azure.mgmt.kusto.models.ClusterNetworkAccessFlag>
@@ -130,11 +138,12 @@ constructor:
 
       Cluster.'
     types:
-    - <xref:azure.mgmt.kusto.aio.operations.ClusterPrincipalAssignmentsOperations.list>[<xref:str>]
+    - <xref:list>[<xref:str>]
   - name: public_ip_type
     description: 'Indicates what public IP type to create - IPv4 (default), or DualStack
 
       (both IPv4 and IPv6). Known values are: "IPv4" and "DualStack".'
+    defaultValue: IPv4
     types:
     - <xref:str>
     - <xref:azure.mgmt.kusto.models.PublicIPType>
@@ -172,6 +181,10 @@ variables:
   name: sku
   types:
   - <xref:azure.mgmt.kusto.models.AzureSku>
+- description: The availability zones of the cluster.
+  name: zones
+  types:
+  - <xref:list>[<xref:str>]
 - description: The identity of the cluster, if configured.
   name: identity
   types:
@@ -179,7 +192,7 @@ variables:
 - description: 'The state of the resource. Known values are: "Creating", "Unavailable",
     "Running",
 
-    "Deleting", "Deleted", "Stopping", "Stopped", "Starting", and "Updating".'
+    "Deleting", "Deleted", "Stopping", "Stopped", "Starting", "Updating", and "Migrated".'
   name: state
   types:
   - <xref:str>
@@ -305,3 +318,9 @@ variables:
   name: private_endpoint_connections
   types:
   - <xref:list>[<xref:azure.mgmt.kusto.models.PrivateEndpointConnection>]
+- description: 'Properties of the peer cluster involved in a migration to/from this
+
+    cluster.'
+  name: migration_cluster
+  types:
+  - <xref:azure.mgmt.kusto.models.MigrationClusterProperties>

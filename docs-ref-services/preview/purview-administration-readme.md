@@ -1,15 +1,12 @@
 ---
 title: Azure Purview Administration client library for Python
 keywords: Azure, python, SDK, API, azure-purview-administration, purview
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 10/15/2021
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: purview
+ms.technology: azure
 ---
-
 # Azure Purview Administration client library for Python - version 1.0.0b1 
 
 

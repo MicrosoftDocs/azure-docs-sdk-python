@@ -7,13 +7,14 @@ inheritances:
 - azure.core.pipeline.policies._base.SansIOHTTPPolicy
 summary: User-Agent Policy. Allows custom values to be added to the User-Agent header.
 constructor:
-  syntax: 'UserAgentPolicy(base_user_agent: str | None = None, **kwargs)'
+  syntax: 'UserAgentPolicy(base_user_agent: str | None = None, **kwargs: Any)'
   parameters:
   - name: base_user_agent
     description: Sets the base user agent value.
     defaultValue: None
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: user_agent_overwrite
     description: Overwrites User-Agent when True. Defaults to False.
     types:
@@ -35,12 +36,13 @@ constructor:
 examples:
 - "Configuring a user agent policy.<!--[!code-python[Main](les\\test_example_sansio.py\
   \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\\
-  79\\\\azure-core-1.27.1\\\\samples\\\\test_example_sansio.py\", \"xml:space\": \"\
-  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
-  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.core.pipeline.policies\
-  \ import UserAgentPolicy\n\n   user_agent_policy = UserAgentPolicy()\n\n   # The\
-  \ user-agent policy allows you to append a custom value to the header.\n   user_agent_policy.add_user_agent(\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\36\\\\azure-core-1.30.1\\\
+  \\samples\\\\test_example_sansio.py\", \"xml:space\": \"preserve\", \"force\": false,\
+  \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+  : false} -->\n\n````python\n\n   from azure.core.pipeline.policies import UserAgentPolicy\n\
+  \n   user_agent_policy = UserAgentPolicy()\n\n   # The user-agent policy allows\
+  \ you to append a custom value to the header.\n   user_agent_policy.add_user_agent(\"\
   CustomValue\")\n\n   # You can also pass in a custom value per operation to append\
   \ to the end of the user-agent.\n   # This can be used together with the policy\
   \ configuration to append multiple values.\n   policies = [\n       redirect_policy,\n\
@@ -58,17 +60,50 @@ methods:
   parameters:
   - name: value
     isRequired: true
+- uid: azure.core.pipeline.policies.UserAgentPolicy.on_exception
+  name: on_exception
+  summary: 'Is executed if an exception is raised while executing the next policy.
+
+
+    This method is executed inside the exception handler.'
+  signature: 'on_exception(request: PipelineRequest[HTTPRequestType]) -> None'
+  parameters:
+  - name: request
+    description: The Pipeline request object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
 - uid: azure.core.pipeline.policies.UserAgentPolicy.on_request
   name: on_request
   summary: Modifies the User-Agent header before the request is sent.
-  signature: 'on_request(request: PipelineRequest[HTTPRequestType]) -> None'
+  signature: 'on_request(request: PipelineRequest[HttpRequest | HttpRequest]) -> None'
   parameters:
   - name: request
     description: The PipelineRequest object
     isRequired: true
     types:
     - <xref:azure.core.pipeline.PipelineRequest>
+- uid: azure.core.pipeline.policies.UserAgentPolicy.on_response
+  name: on_response
+  summary: Is executed after the request comes back from the policy.
+  signature: 'on_response(request: PipelineRequest[HTTPRequestType], response: PipelineResponse[HTTPRequestType,
+    HTTPResponseType]) -> None | Awaitable[None]'
+  parameters:
+  - name: request
+    description: Request to be modified after returning from the policy.
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineRequest>
+  - name: response
+    description: Pipeline response object
+    isRequired: true
+    types:
+    - <xref:azure.core.pipeline.PipelineResponse>
 attributes:
 - uid: azure.core.pipeline.policies.UserAgentPolicy.user_agent
   name: user_agent
   summary: The current user agent value.
+  return:
+    description: The current user agent value.
+    types:
+    - <xref:str>

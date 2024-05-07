@@ -9,7 +9,8 @@ summary: Use this client to create, update, list, and delete resources of a Serv
   namespace.
 constructor:
   syntax: 'ServiceBusAdministrationClient(fully_qualified_namespace: str, credential:
-    TokenCredential, **kwargs: Dict[str, Any])'
+    TokenCredential, *, api_version: str | ApiVersion = ApiVersion.V2021_05, **kwargs:
+    Any)'
   parameters:
   - name: fully_qualified_namespace
     description: The fully qualified host name for the Service Bus namespace.
@@ -21,6 +22,7 @@ constructor:
     isRequired: true
     types:
     - <xref:TokenCredential>
+  keywordOnlyParameters:
   - name: api_version
     description: 'The Service Bus API version to use for requests. Default value is
       the most
@@ -29,8 +31,10 @@ constructor:
       older version may result
 
       in reduced feature compatibility.'
+    defaultValue: ApiVersion.V2021_05
     types:
     - <xref:str>
+    - <xref:azure.servicebus.management.ApiVersion>
 methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.close
   name: close
@@ -38,17 +42,29 @@ methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.create_queue
   name: create_queue
   summary: Create a queue.
-  signature: 'create_queue(queue_name: str, **kwargs: Any) -> QueueProperties'
+  signature: 'create_queue(queue_name: str, *, authorization_rules: List[AuthorizationRule]
+    | None = None, auto_delete_on_idle: timedelta | str | None = None, dead_lettering_on_message_expiration:
+    bool | None = None, default_message_time_to_live: timedelta | str | None = None,
+    duplicate_detection_history_time_window: timedelta | str | None = None, enable_batched_operations:
+    bool | None = None, enable_express: bool | None = None, enable_partitioning: bool
+    | None = None, lock_duration: timedelta | str | None = None, max_delivery_count:
+    int | None = None, max_size_in_megabytes: int | None = None, requires_duplicate_detection:
+    bool | None = None, requires_session: bool | None = None, forward_to: str | None
+    = None, user_metadata: str | None = None, forward_dead_lettered_messages_to: str
+    | None = None, max_message_size_in_kilobytes: int | None = None, **kwargs: Any)
+    -> QueueProperties'
   parameters:
   - name: queue_name
     description: Name of the queue.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: authorization_rules
     description: Authorization rules for resource.
     types:
     - <xref:list>[<xref:azure.servicebus.management.AuthorizationRule>]
+    - <xref:None>
   - name: auto_delete_on_idle
     description: 'ISO 8601 timeSpan idle interval after which the queue is
 
@@ -57,7 +73,9 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:datetime.timedelta>
+    - <xref:str>
+    - <xref:one>
   - name: dead_lettering_on_message_expiration
     description: 'A value that indicates whether this queue has dead
 
@@ -76,7 +94,9 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:datetime.timedelta>
+    - <xref:str>
+    - <xref:None>
   - name: duplicate_detection_history_time_window
     description: 'ISO 8601 timeSpan structure that defines the
 
@@ -85,7 +105,9 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:datetime.timedelta>
+    - <xref:str>
+    - <xref:None>
   - name: enable_batched_operations
     description: 'Value that indicates whether server-side batched operations
 
@@ -118,7 +140,9 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:datetime.timedelta>
+    - <xref:str>
+    - <xref:None>
   - name: max_delivery_count
     description: 'The maximum delivery count. A message is automatically deadlettered
 
@@ -182,7 +206,9 @@ methods:
   name: create_rule
   summary: Create a rule for a topic subscription.
   signature: 'create_rule(topic_name: str, subscription_name: str, rule_name: str,
-    **kwargs: Any) -> RuleProperties'
+    *, filter: ~azure.servicebus.management._models.CorrelationRuleFilter | ~azure.servicebus.management._models.SqlRuleFilter
+    = <azure.servicebus.management._models.TrueRuleFilter object>, action: ~azure.servicebus.management._models.SqlRuleAction
+    | None = None, **kwargs: ~typing.Any) -> RuleProperties'
   parameters:
   - name: topic_name
     description: 'The topic that will own the
@@ -203,21 +229,30 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: filter
     description: The filter of the rule. The default value is ~azure.servicebus.management.TrueRuleFilter
+    defaultValue: <azure.servicebus.management._models.TrueRuleFilter object at 0x0000025E889EE3D0>
     types:
-    - <xref:Union>[<xref:azure.servicebus.management.CorrelationRuleFilter,azure.servicebus.management.SqlRuleFilter>]
+    - <xref:typing.Union>[<xref:azure.servicebus.management.CorrelationRuleFilter>,
+      <xref:azure.servicebus.management.SqlRuleFilter>]
   - name: action
     description: The action of the rule.
     types:
-    - <xref:Optional>[<xref:azure.servicebus.management.SqlRuleAction>]
+    - <xref:typing.Optional>[<xref:azure.servicebus.management.SqlRuleAction>]
   return:
     types:
     - <xref:azure.servicebus.management.RuleProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.create_subscription
   name: create_subscription
   summary: Create a topic subscription.
-  signature: 'create_subscription(topic_name: str, subscription_name: str, **kwargs:
+  signature: 'create_subscription(topic_name: str, subscription_name: str, *, lock_duration:
+    timedelta | str | None = None, requires_session: bool | None = None, default_message_time_to_live:
+    timedelta | str | None = None, dead_lettering_on_message_expiration: bool | None
+    = None, dead_lettering_on_filter_evaluation_exceptions: bool | None = None, max_delivery_count:
+    int | None = None, enable_batched_operations: bool | None = None, forward_to:
+    str | None = None, user_metadata: str | None = None, forward_dead_lettered_messages_to:
+    str | None = None, auto_delete_on_idle: timedelta | str | None = None, **kwargs:
     Any) -> SubscriptionProperties'
   parameters:
   - name: topic_name
@@ -232,6 +267,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: lock_duration
     description: 'ISO 8601 timespan duration of a peek-lock; that is, the amount of
       time
@@ -244,7 +280,7 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:typing.Union>[<xref:datetime.timedelta>, <xref:str>]
   - name: requires_session
     description: 'A value that indicates whether the queue supports the concept of
 
@@ -263,7 +299,7 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:typing.Union>[<xref:datetime.timedelta>, <xref:str>]
   - name: dead_lettering_on_message_expiration
     description: 'A value that indicates whether this subscription
 
@@ -315,20 +351,29 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:typing.Union>[<xref:datetime.timedelta>, <xref:str>]
   return:
     types:
     - <xref:azure.servicebus.management.SubscriptionProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.create_topic
   name: create_topic
   summary: Create a topic.
-  signature: 'create_topic(topic_name: str, **kwargs: Any) -> TopicProperties'
+  signature: 'create_topic(topic_name: str, *, default_message_time_to_live: timedelta
+    | str | None = None, max_size_in_megabytes: int | None = None, requires_duplicate_detection:
+    bool | None = None, duplicate_detection_history_time_window: timedelta | str |
+    None = None, enable_batched_operations: bool | None = None, size_in_bytes: int
+    | None = None, filtering_messages_before_publishing: bool | None = None, authorization_rules:
+    List[AuthorizationRule] | None = None, support_ordering: bool | None = None, auto_delete_on_idle:
+    timedelta | str | None = None, enable_partitioning: bool | None = None, enable_express:
+    bool | None = None, user_metadata: str | None = None, max_message_size_in_kilobytes:
+    int | None = None, **kwargs: Any) -> TopicProperties'
   parameters:
   - name: topic_name
     description: Name of the topic.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: default_message_time_to_live
     description: 'ISO 8601 default message timespan to live value. This is
 
@@ -341,13 +386,13 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:typing.Union>[<xref:datetime.timedelta>, <xref:str>]
   - name: max_size_in_megabytes
     description: 'The maximum size of the topic in megabytes, which is the size of
 
       memory allocated for the topic.'
     types:
-    - <xref:long>
+    - <xref:int>
   - name: requires_duplicate_detection
     description: 'A value indicating if this topic requires duplicate
 
@@ -362,7 +407,7 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:typing.Union>[<xref:datetime.timedelta>, <xref:str>]
   - name: enable_batched_operations
     description: 'Value that indicates whether server-side batched operations
 
@@ -393,7 +438,7 @@ methods:
       Input value of either type ~datetime.timedelta or string in ISO 8601 duration
       format like "PT300S" is accepted.'
     types:
-    - <xref:Union>[<xref:datetime.timedelta>, <xref:str>]
+    - <xref:typing.Union>[<xref:datetime.timedelta>, <xref:str>]
   - name: enable_partitioning
     description: 'A value that indicates whether the topic is to be partitioned
 
@@ -505,13 +550,15 @@ methods:
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.from_connection_string
   name: from_connection_string
   summary: Create a client from connection string.
-  signature: 'from_connection_string(conn_str: str, **kwargs: Any) -> ServiceBusAdministrationClient'
+  signature: 'from_connection_string(conn_str: str, *, api_version: str | ApiVersion
+    = ApiVersion.V2021_05, **kwargs: Any) -> ServiceBusAdministrationClient'
   parameters:
   - name: conn_str
     description: The connection string of the Service Bus Namespace.
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: api_version
     description: 'The Service Bus API version to use for requests. Default value is
       the most
@@ -520,8 +567,10 @@ methods:
       older version may result
 
       in reduced feature compatibility.'
+    defaultValue: ApiVersion.V2021_05
     types:
     - <xref:str>
+    - <xref:azure.servicebus.management.ApiVersion>
   return:
     types:
     - <xref:azure.servicebus.management.ServiceBusAdministrationClient>
@@ -530,6 +579,7 @@ methods:
   summary: Get the namespace properties
   signature: 'get_namespace_properties(**kwargs: Any) -> NamespaceProperties'
   return:
+    description: The namespace properties.
     types:
     - <xref:azure.servicebus.management.NamespaceProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_queue
@@ -543,6 +593,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of the queue.
     types:
     - <xref:azure.servicebus.management.QueueProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_queue_runtime_properties
@@ -556,6 +607,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The runtime information of the queue.
     types:
     - <xref:azure.servicebus.management.QueueRuntimeProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_rule
@@ -582,6 +634,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of the specified rule.
     types:
     - <xref:azure.servicebus.management.RuleProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_subscription
@@ -601,6 +654,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: An instance of SubscriptionProperties
     types:
     - <xref:azure.servicebus.management.SubscriptionProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_subscription_runtime_properties
@@ -620,6 +674,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: An instance of SubscriptionRuntimeProperties
     types:
     - <xref:azure.servicebus.management.SubscriptionRuntimeProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_topic
@@ -633,6 +688,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The properties of the topic.
     types:
     - <xref:azure.servicebus.management.TopicProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.get_topic_runtime_properties
@@ -646,6 +702,7 @@ methods:
     types:
     - <xref:str>
   return:
+    description: The runtime info of the topic.
     types:
     - <xref:azure.servicebus.management.TopicRuntimeProperties>
 - uid: azure.servicebus.management.ServiceBusAdministrationClient.list_queues
@@ -751,7 +808,8 @@ methods:
 
     the *QueueProperties* instance. Refer to ~azure.servicebus.management.QueueProperties
     for names of properties.'
-  signature: 'update_queue(queue: QueueProperties | Mapping, **kwargs: Any) -> None'
+  signature: 'update_queue(queue: QueueProperties | Mapping[str, Any], **kwargs: Any)
+    -> None'
   parameters:
   - name: queue
     description: 'The queue that is returned from *get_queue*, *create_queue* or *list_queues*

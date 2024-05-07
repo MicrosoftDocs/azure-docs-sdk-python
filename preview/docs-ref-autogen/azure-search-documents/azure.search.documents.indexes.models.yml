@@ -9,8 +9,9 @@ functions:
   summary: 'Configure a Complex or Complex collection field for an Azure Search
 
     Index'
-  signature: 'ComplexField(**kw: Any) -> SearchField'
-  parameters:
+  signature: 'ComplexField(*, name: str, collection: bool = False, fields: List[SearchField]
+    | None = None, **kw) -> SearchField'
+  keywordOnlyParameters:
   - name: name
     description: 'Required. The name of the field, which must be unique within the
       fields collection
@@ -25,12 +26,21 @@ functions:
   - name: fields
     description: A list of sub-fields
     types:
-    - <xref:list>[<xref:search_service_client.models.Field>]
+    - <xref:list>[<xref:azure.search.documents.indexes.models.SearchField>]
+  return:
+    description: The search field object.
+    types:
+    - <xref:azure.search.documents.indexes.models.SearchField>
 - uid: azure.search.documents.indexes.models.SearchableField
   name: SearchableField
   summary: Configure a searchable text field for an Azure Search Index
-  signature: 'SearchableField(**kw: Any) -> SearchField'
-  parameters:
+  signature: 'SearchableField(*, name: str, collection: bool = False, key: bool =
+    False, hidden: bool = False, searchable: bool = True, filterable: bool = False,
+    sortable: bool = False, facetable: bool = False, analyzer_name: str | LexicalAnalyzerName
+    | None = None, search_analyzer_name: str | LexicalAnalyzerName | None = None,
+    index_analyzer_name: str | LexicalAnalyzerName | None = None, synonym_map_names:
+    List[str] | None = None, **kw) -> SearchField'
+  keywordOnlyParameters:
   - name: name
     description: 'Required. The name of the field, which must be unique within the
       fields collection
@@ -96,6 +106,7 @@ functions:
       to false. Default
 
       is True.'
+    defaultValue: 'True'
     types:
     - <xref:bool>
   - name: filterable
@@ -121,7 +132,7 @@ functions:
       expressions. By default Azure Cognitive Search sorts results by score, but in
       many experiences
 
-      users will want to sort by fields in the documents.  The default is true False.'
+      users will want to sort by fields in the documents.  The default is False.'
     types:
     - <xref:bool>
   - name: facetable
@@ -194,7 +205,7 @@ functions:
       ''simple'', ''stop'', ''whitespace''.'
     types:
     - <xref:str>
-    - <xref:azure.search.documents.indexes.models.AnalyzerName>
+    - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
   - name: search_analyzer_name
     description: 'The name of the analyzer used at search time for the field. It must
       be
@@ -260,7 +271,7 @@ functions:
       ''whitespace''.'
     types:
     - <xref:str>
-    - <xref:azure.search.documents.indexes.models.AnalyzerName>
+    - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
   - name: index_analyzer_name
     description: 'The name of the analyzer used at indexing time for the field.
 
@@ -325,7 +336,7 @@ functions:
       ''whitespace''.'
     types:
     - <xref:str>
-    - <xref:azure.search.documents.indexes.models.AnalyzerName>
+    - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
   - name: synonym_map_names
     description: 'A list of the names of synonym maps to associate with this field.
       Currently
@@ -339,11 +350,17 @@ functions:
       This attribute can be changed on existing fields.'
     types:
     - <xref:list>[<xref:str>]
+  return:
+    description: The search field object.
+    types:
+    - <xref:azure.search.documents.indexes.models.SearchField>
 - uid: azure.search.documents.indexes.models.SimpleField
   name: SimpleField
   summary: Configure a simple field for an Azure Search Index
-  signature: 'SimpleField(**kw: Any) -> SearchField'
-  parameters:
+  signature: 'SimpleField(*, name: str, type: str, key: bool = False, hidden: bool
+    = False, filterable: bool = False, sortable: bool = False, facetable: bool = False,
+    **kw) -> SearchField'
+  keywordOnlyParameters:
   - name: name
     description: 'Required. The name of the field, which must be unique within the
       fields collection
@@ -359,9 +376,9 @@ functions:
 
       SearchFieldDataType.DateTimeOffset, SearchFieldDataType.GeographyPoint, SearchFieldDataType.ComplexType,
 
-      from *azure.search.documents.SearchFieldDataType*.
-
-      :paramtype type: str'
+      from *azure.search.documents.SearchFieldDataType*.'
+    types:
+    - <xref:str>
   - name: key
     description: 'A value indicating whether the field uniquely identifies documents
       in the index.
@@ -455,16 +472,23 @@ functions:
       is False.'
     types:
     - <xref:bool>
+  return:
+    description: The search field object.
+    types:
+    - <xref:azure.search.documents.indexes.models.SearchField>
 classes:
 - azure.search.documents.indexes.models.AnalyzeResult
 - azure.search.documents.indexes.models.AnalyzeTextOptions
 - azure.search.documents.indexes.models.AnalyzedTokenInfo
 - azure.search.documents.indexes.models.AsciiFoldingTokenFilter
 - azure.search.documents.indexes.models.AzureMachineLearningSkill
-- azure.search.documents.indexes.models.BM25Similarity
+- azure.search.documents.indexes.models.AzureOpenAIEmbeddingSkill
+- azure.search.documents.indexes.models.AzureOpenAIParameters
+- azure.search.documents.indexes.models.AzureOpenAIVectorizer
+- azure.search.documents.indexes.models.BM25SimilarityAlgorithm
 - azure.search.documents.indexes.models.CharFilter
 - azure.search.documents.indexes.models.CjkBigramTokenFilter
-- azure.search.documents.indexes.models.ClassicSimilarity
+- azure.search.documents.indexes.models.ClassicSimilarityAlgorithm
 - azure.search.documents.indexes.models.ClassicTokenizer
 - azure.search.documents.indexes.models.CognitiveServicesAccount
 - azure.search.documents.indexes.models.CognitiveServicesAccountKey
@@ -472,8 +496,14 @@ classes:
 - azure.search.documents.indexes.models.ConditionalSkill
 - azure.search.documents.indexes.models.CorsOptions
 - azure.search.documents.indexes.models.CustomAnalyzer
+- azure.search.documents.indexes.models.CustomEntity
+- azure.search.documents.indexes.models.CustomEntityAlias
 - azure.search.documents.indexes.models.CustomEntityLookupSkill
 - azure.search.documents.indexes.models.CustomNormalizer
+- azure.search.documents.indexes.models.CustomVectorizer
+- azure.search.documents.indexes.models.CustomWebApiParameters
+- azure.search.documents.indexes.models.DataChangeDetectionPolicy
+- azure.search.documents.indexes.models.DataDeletionDetectionPolicy
 - azure.search.documents.indexes.models.DefaultCognitiveServicesAccount
 - azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter
 - azure.search.documents.indexes.models.DistanceScoringFunction
@@ -485,13 +515,20 @@ classes:
 - azure.search.documents.indexes.models.ElisionTokenFilter
 - azure.search.documents.indexes.models.EntityLinkingSkill
 - azure.search.documents.indexes.models.EntityRecognitionSkill
+- azure.search.documents.indexes.models.ExhaustiveKnnAlgorithmConfiguration
+- azure.search.documents.indexes.models.ExhaustiveKnnParameters
 - azure.search.documents.indexes.models.FieldMapping
 - azure.search.documents.indexes.models.FieldMappingFunction
 - azure.search.documents.indexes.models.FreshnessScoringFunction
 - azure.search.documents.indexes.models.FreshnessScoringParameters
 - azure.search.documents.indexes.models.GetIndexStatisticsResult
+- azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy
+- azure.search.documents.indexes.models.HnswAlgorithmConfiguration
+- azure.search.documents.indexes.models.HnswParameters
 - azure.search.documents.indexes.models.ImageAnalysisSkill
+- azure.search.documents.indexes.models.IndexerExecutionResult
 - azure.search.documents.indexes.models.IndexingParameters
+- azure.search.documents.indexes.models.IndexingParametersConfiguration
 - azure.search.documents.indexes.models.IndexingSchedule
 - azure.search.documents.indexes.models.InputFieldMappingEntry
 - azure.search.documents.indexes.models.KeepTokenFilter
@@ -514,6 +551,7 @@ classes:
 - azure.search.documents.indexes.models.MicrosoftLanguageTokenizer
 - azure.search.documents.indexes.models.NGramTokenFilter
 - azure.search.documents.indexes.models.NGramTokenizer
+- azure.search.documents.indexes.models.NativeBlobSoftDeleteDeletionDetectionPolicy
 - azure.search.documents.indexes.models.OcrSkill
 - azure.search.documents.indexes.models.OutputFieldMappingEntry
 - azure.search.documents.indexes.models.PIIDetectionSkill
@@ -524,7 +562,8 @@ classes:
 - azure.search.documents.indexes.models.PatternReplaceTokenFilter
 - azure.search.documents.indexes.models.PatternTokenizer
 - azure.search.documents.indexes.models.PhoneticTokenFilter
-- azure.search.documents.indexes.models.PrioritizedFields
+- azure.search.documents.indexes.models.ScalarQuantizationCompressionConfiguration
+- azure.search.documents.indexes.models.ScalarQuantizationParameters
 - azure.search.documents.indexes.models.ScoringFunction
 - azure.search.documents.indexes.models.ScoringProfile
 - azure.search.documents.indexes.models.SearchAlias
@@ -538,19 +577,30 @@ classes:
 - azure.search.documents.indexes.models.SearchIndexerDataSourceConnection
 - azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity
 - azure.search.documents.indexes.models.SearchIndexerError
+- azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector
+- azure.search.documents.indexes.models.SearchIndexerIndexProjections
+- azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters
 - azure.search.documents.indexes.models.SearchIndexerKnowledgeStore
+- azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreBlobProjectionSelector
 - azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreFileProjectionSelector
 - azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreObjectProjectionSelector
 - azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection
+- azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector
 - azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreTableProjectionSelector
 - azure.search.documents.indexes.models.SearchIndexerLimits
+- azure.search.documents.indexes.models.SearchIndexerSkill
 - azure.search.documents.indexes.models.SearchIndexerSkillset
 - azure.search.documents.indexes.models.SearchIndexerStatus
+- azure.search.documents.indexes.models.SearchIndexerWarning
 - azure.search.documents.indexes.models.SearchResourceEncryptionKey
+- azure.search.documents.indexes.models.SearchServiceCounters
+- azure.search.documents.indexes.models.SearchServiceLimits
+- azure.search.documents.indexes.models.SearchServiceStatistics
 - azure.search.documents.indexes.models.SearchSuggester
 - azure.search.documents.indexes.models.SemanticConfiguration
 - azure.search.documents.indexes.models.SemanticField
-- azure.search.documents.indexes.models.SemanticSettings
+- azure.search.documents.indexes.models.SemanticPrioritizedFields
+- azure.search.documents.indexes.models.SemanticSearch
 - azure.search.documents.indexes.models.SentimentSkill
 - azure.search.documents.indexes.models.ShaperSkill
 - azure.search.documents.indexes.models.ShingleTokenFilter
@@ -574,9 +624,20 @@ classes:
 - azure.search.documents.indexes.models.TruncateTokenFilter
 - azure.search.documents.indexes.models.UaxUrlEmailTokenizer
 - azure.search.documents.indexes.models.UniqueTokenFilter
+- azure.search.documents.indexes.models.VectorSearch
+- azure.search.documents.indexes.models.VectorSearchAlgorithmConfiguration
+- azure.search.documents.indexes.models.VectorSearchCompressionConfiguration
+- azure.search.documents.indexes.models.VectorSearchProfile
+- azure.search.documents.indexes.models.VectorSearchVectorizer
 - azure.search.documents.indexes.models.WebApiSkill
 - azure.search.documents.indexes.models.WordDelimiterTokenFilter
 enums:
+- azure.search.documents.indexes.models.BlobIndexerDataToExtract
+- azure.search.documents.indexes.models.BlobIndexerImageAction
+- azure.search.documents.indexes.models.BlobIndexerPDFTextRotationAlgorithm
+- azure.search.documents.indexes.models.BlobIndexerParsingMode
+- azure.search.documents.indexes.models.CharFilterName
+- azure.search.documents.indexes.models.CjkBigramTokenFilterScripts
 - azure.search.documents.indexes.models.CustomEntityLookupSkillLanguage
 - azure.search.documents.indexes.models.EdgeNGramTokenFilterSide
 - azure.search.documents.indexes.models.EntityCategory
@@ -584,10 +645,16 @@ enums:
 - azure.search.documents.indexes.models.EntityRecognitionSkillVersion
 - azure.search.documents.indexes.models.ImageAnalysisSkillLanguage
 - azure.search.documents.indexes.models.ImageDetail
+- azure.search.documents.indexes.models.IndexProjectionMode
+- azure.search.documents.indexes.models.IndexerExecutionEnvironment
 - azure.search.documents.indexes.models.IndexerExecutionStatus
 - azure.search.documents.indexes.models.IndexerStatus
+- azure.search.documents.indexes.models.IndexingMode
 - azure.search.documents.indexes.models.KeyPhraseExtractionSkillLanguage
+- azure.search.documents.indexes.models.LexicalAnalyzerName
 - azure.search.documents.indexes.models.LexicalNormalizerName
+- azure.search.documents.indexes.models.LexicalTokenizerName
+- azure.search.documents.indexes.models.LineEnding
 - azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage
 - azure.search.documents.indexes.models.MicrosoftTokenizerLanguage
 - azure.search.documents.indexes.models.OcrSkillLanguage
@@ -607,4 +674,8 @@ enums:
 - azure.search.documents.indexes.models.TextTranslationSkillLanguage
 - azure.search.documents.indexes.models.TokenCharacterKind
 - azure.search.documents.indexes.models.TokenFilterName
+- azure.search.documents.indexes.models.VectorSearchAlgorithmKind
+- azure.search.documents.indexes.models.VectorSearchAlgorithmMetric
+- azure.search.documents.indexes.models.VectorSearchCompressionTargetDataType
+- azure.search.documents.indexes.models.VectorSearchVectorizerKind
 - azure.search.documents.indexes.models.VisualFeature

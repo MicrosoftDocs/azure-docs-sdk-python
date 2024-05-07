@@ -11,18 +11,21 @@ summary: 'An environment for hosting container apps.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'ManagedEnvironment(*, location: str, tags: Dict[str, str] | None = None,
-    kind: str | None = None, dapr_ai_instrumentation_key: str | None = None, dapr_ai_connection_string:
-    str | None = None, vnet_configuration: _models.VnetConfiguration | None = None,
-    app_logs_configuration: _models.AppLogsConfiguration | None = None, zone_redundant:
-    bool | None = None, custom_domain_configuration: _models.CustomDomainConfiguration
-    | None = None, workload_profiles: List[_models.WorkloadProfile] | None = None,
-    keda_configuration: _models.KedaConfiguration | None = None, dapr_configuration:
+    kind: str | None = None, identity: _models.ManagedServiceIdentity | None = None,
+    dapr_ai_instrumentation_key: str | None = None, dapr_ai_connection_string: str
+    | None = None, vnet_configuration: _models.VnetConfiguration | None = None, app_logs_configuration:
+    _models.AppLogsConfiguration | None = None, app_insights_configuration: _models.AppInsightsConfiguration
+    | None = None, open_telemetry_configuration: _models.OpenTelemetryConfiguration
+    | None = None, zone_redundant: bool | None = None, custom_domain_configuration:
+    _models.CustomDomainConfiguration | None = None, workload_profiles: List[_models.WorkloadProfile]
+    | None = None, keda_configuration: _models.KedaConfiguration | None = None, dapr_configuration:
     _models.DaprConfiguration | None = None, infrastructure_resource_group: str |
-    None = None, **kwargs: Any)'
-  parameters:
+    None = None, peer_authentication: _models.ManagedEnvironmentPropertiesPeerAuthentication
+    | None = None, **kwargs: Any)'
+  keywordOnlyParameters:
   - name: tags
     description: Resource tags.
     types:
@@ -35,6 +38,13 @@ constructor:
     description: Kind of the Environment.
     types:
     - <xref:str>
+  - name: identity
+    description: 'Managed identities for the Managed Environment to interact with
+      other Azure
+
+      services without maintaining any secrets or credentials in code.'
+    types:
+    - <xref:azure.mgmt.appcontainers.models.ManagedServiceIdentity>
   - name: dapr_ai_instrumentation_key
     description: 'Azure Monitor instrumentation key used by Dapr to export
 
@@ -59,6 +69,14 @@ constructor:
       supported.'
     types:
     - <xref:azure.mgmt.appcontainers.models.AppLogsConfiguration>
+  - name: app_insights_configuration
+    description: Environment level Application Insights configuration.
+    types:
+    - <xref:azure.mgmt.appcontainers.models.AppInsightsConfiguration>
+  - name: open_telemetry_configuration
+    description: Environment Open Telemetry configuration.
+    types:
+    - <xref:azure.mgmt.appcontainers.models.OpenTelemetryConfiguration>
   - name: zone_redundant
     description: Whether or not this Managed Environment is zone-redundant.
     types:
@@ -70,7 +88,7 @@ constructor:
   - name: workload_profiles
     description: Workload profiles configured for the Managed Environment.
     types:
-    - <xref:azure.mgmt.appcontainers.aio.operations.CertificatesOperations.list>[<xref:azure.mgmt.appcontainers.models.WorkloadProfile>]
+    - <xref:list>[<xref:azure.mgmt.appcontainers.models.WorkloadProfile>]
   - name: keda_configuration
     description: The configuration of Keda component.
     types:
@@ -88,10 +106,15 @@ constructor:
       resource group will be created in the same subscription as the subnet.'
     types:
     - <xref:str>
+  - name: peer_authentication
+    description: Peer authentication settings for the Managed Environment.
+    types:
+    - <xref:azure.mgmt.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication>
 variables:
 - description: 'Fully qualified resource ID for the resource. Ex -
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.'
+    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
@@ -124,6 +147,13 @@ variables:
   name: kind
   types:
   - <xref:str>
+- description: 'Managed identities for the Managed Environment to interact with other
+    Azure
+
+    services without maintaining any secrets or credentials in code.'
+  name: identity
+  types:
+  - <xref:azure.mgmt.appcontainers.models.ManagedServiceIdentity>
 - description: 'Provisioning state of the Environment. Known values are: "Succeeded",
 
     "Failed", "Canceled", "Waiting", "InitializationInProgress", "InfrastructureSetupInProgress",
@@ -169,6 +199,14 @@ variables:
   name: app_logs_configuration
   types:
   - <xref:azure.mgmt.appcontainers.models.AppLogsConfiguration>
+- description: Environment level Application Insights configuration.
+  name: app_insights_configuration
+  types:
+  - <xref:azure.mgmt.appcontainers.models.AppInsightsConfiguration>
+- description: Environment Open Telemetry configuration.
+  name: open_telemetry_configuration
+  types:
+  - <xref:azure.mgmt.appcontainers.models.OpenTelemetryConfiguration>
 - description: Whether or not this Managed Environment is zone-redundant.
   name: zone_redundant
   types:
@@ -202,3 +240,7 @@ variables:
   name: infrastructure_resource_group
   types:
   - <xref:str>
+- description: Peer authentication settings for the Managed Environment.
+  name: peer_authentication
+  types:
+  - <xref:azure.mgmt.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication>

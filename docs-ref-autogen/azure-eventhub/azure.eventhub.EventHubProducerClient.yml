@@ -39,6 +39,7 @@ constructor:
     - <xref:azure.core.credentials.TokenCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
+  keywordOnlyParameters:
   - name: buffered_mode
     description: 'If True, the producer client will collect events in a buffer, efficiently
       batch,
@@ -59,33 +60,60 @@ constructor:
     - <xref:int>
     - <xref:None>
   - name: on_success
-    description: "The callback to be called once a batch has been successfully published.\n\
-      The callback takes two parameters:\n\n   * *events*: The list of events that\
-      \ have been successfully published \n\n   * *partition_id*: The partition id\
-      \ that the events in the list have been published to. \n\nThe callback function\
-      \ should be defined like: *on_success(events, partition_id)*.\nIt is required\
-      \ when *buffered_mode* is True while optional if *buffered_mode* is False."
+    description: 'The callback to be called once a batch has been successfully published.
+
+      The callback takes two parameters:
+
+      - *events*: The list of events that have been successfully published
+
+      - *partition_id*: The partition id that the events in the list have been published
+      to.
+
+
+      The callback function should be defined like: *on_success(events, partition_id)*.
+
+      It is required when *buffered_mode* is True while optional if *buffered_mode*
+      is False.'
     types:
-    - <xref:Optional>[<xref:Callable>[[<xref:SendEventTypes>, <xref:Optional>[<xref:str>]],
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>]],
       <xref:None>]]
   - name: on_error
-    description: "The callback to be called once a batch has failed to be published.\n\
-      The callback function should be defined like: *on_error(events, partition_id,\
-      \ error)*, where:\n\n   * *events*: The list of events that failed to be published,\
-      \ \n\n   * *partition_id*: The partition id that the events in the list have\
-      \ been tried to be published to and \n\n   * *error*: The exception related\
-      \ to the sending failure. \n\nIf *buffered_mode* is False, *on_error* callback\
-      \ is optional and errors will be handled as follows:\n   * If an *on_error*\
-      \ callback is passed during the producer client instantiation,\n\n        then\
-      \ error information will be passed to the *on_error* callback, which will then\
-      \ be called.\n\n   * If an *on_error* callback is not passed in during client\
-      \ instantiation,\n\n        then the error will be raised by default.\n\nIf\
-      \ *buffered_mode* is True, *on_error* callback is required and errors will be\
-      \ handled as follows:\n   * If events fail to enqueue within the given timeout,\
-      \ then an error will be directly raised. \n\n   * If events fail to send after\
-      \ enqueuing successfully, the *on_error* callback will be called."
+    description: 'The callback to be called once a batch has failed to be published.
+
+      The callback function should be defined like: *on_error(events, partition_id,
+      error)*, where:
+
+      - *events*: The list of events that failed to be published,
+
+      - *partition_id*: The partition id that the events in the list have been tried
+      to be published to and
+
+      - *error*: The exception related to the sending failure.
+
+
+      If *buffered_mode* is False, *on_error* callback is optional and errors will
+      be handled as follows:
+
+      - If an *on_error* callback is passed during the producer client instantiation,
+
+      then error information will be passed to the *on_error* callback, which will
+      then be called.
+
+      - If an *on_error* callback is not passed in during client instantiation,
+
+      then the error will be raised by default.
+
+
+      If *buffered_mode* is True, *on_error* callback is required and errors will
+      be handled as follows:
+
+      - If events fail to enqueue within the given timeout, then an error will be
+      directly raised.
+
+      - If events fail to send after enqueuing successfully, the *on_error* callback
+      will be called.'
     types:
-    - <xref:Optional>[<xref:Callable>[[<xref:SendEventTypes>, <xref:Optional>[<xref:str>],
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>],
       <xref:Exception>], <xref:None>]]
   - name: max_buffer_length
     description: 'Buffered mode only.
@@ -104,7 +132,7 @@ constructor:
 
       The default value is 1 in buffered mode.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
     types:
@@ -184,7 +212,7 @@ constructor:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:Dict>
+    - <xref:typing.Dict>
   - name: custom_endpoint_address
     description: 'The custom endpoint address to use for establishing a connection
       to
@@ -199,7 +227,7 @@ constructor:
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
   - name: connection_verify
     description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
       used to
@@ -208,7 +236,7 @@ constructor:
 
       Default is None in which case *certifi.where()* will be used.'
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -216,18 +244,34 @@ constructor:
       False and the Pure Python AMQP library will be used as the underlying transport.'
     types:
     - <xref:bool>
+  - name: socket_timeout
+    description: 'The time in seconds that the underlying socket on the connection
+      should
+
+      wait when sending and receiving data before timing out. The default value is
+      0.2 for TransportType.Amqp
+
+      and 1 for TransportType.AmqpOverWebsocket. If EventHubsConnectionError errors
+      are occurring due to write
+
+      timing out, a larger than default value may need to be passed in. This is for
+      advanced usage scenarios
+
+      and ordinarily the default value should be sufficient.'
+    types:
+    - <xref:float>
 examples:
 - "Create a new instance of the EventHubProducerClient.<!--[!code-python[Main](les\\\
   sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-  : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\85\\\\azure-eventhub-5.11.2\\\\samples\\\
-  \\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub import\
-  \ EventHubProducerClient, EventHubSharedKeyCredential\n\n   fully_qualified_namespace\
-  \ = os.environ['EVENT_HUB_HOSTNAME']\n   eventhub_name = os.environ['EVENT_HUB_NAME']\n\
-  \   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n   shared_access_key\
-  \ = os.environ['EVENT_HUB_SAS_KEY']\n\n   credential = EventHubSharedKeyCredential(shared_access_policy,\
+  : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+  \\py2docfx\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.7\\\\samples\\\\sync_samples\\\
+  \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+  : \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\
+  \n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient,\
+  \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n\
+  \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
+  \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   credential = EventHubSharedKeyCredential(shared_access_policy,\
   \ shared_access_key)\n   producer = EventHubProducerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
   \       eventhub_name=eventhub_name,  # EventHub name should be specified if it\
   \ doesn't show up in connection string.\n       credential=credential\n   )\n\n\
@@ -237,12 +281,13 @@ methods:
   name: close
   summary: Close the Producer client underlying AMQP connection and links.
   signature: 'close(*, flush: bool = True, **kwargs: Any) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: flush
     description: 'Buffered mode only. If set to True, events in the buffer will be
       sent
 
       immediately. Default is True.'
+    defaultValue: 'True'
     types:
     - <xref:bool>
   - name: timeout
@@ -250,7 +295,8 @@ methods:
 
       Default is None which means no timeout.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:float>
+    - <xref:None>
   return:
     types:
     - <xref:None>
@@ -263,8 +309,9 @@ methods:
   examples:
   - "Close down the client.<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\85\\\\azure-eventhub-5.11.2\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    43\\\\azure-eventhub-5.11.7\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import os\n   from azure.eventhub import EventHubProducerClient, EventData\n\
@@ -288,42 +335,6 @@ methods:
     The max_size_in_bytes should be no greater than the max allowed message size defined
     by the service.'
   signature: 'create_batch(**kwargs: Any) -> EventDataBatch'
-  parameters:
-  - name: partition_id
-    description: 'The specific partition ID to send to. Default is None, in which
-      case the service
-
-      will assign to all partitions using round-robin.'
-    types:
-    - <xref:str>
-  - name: partition_key
-    description: 'With the given partition_key, event data will be sent to
-
-      a particular partition of the Event Hub decided by the service.
-
-      If both partition_id and partition_key are provided, the partition_id will take
-      precedence.
-
-      **WARNING: Setting partition_key of non-string value on the events to be sent
-      is discouraged
-
-      as the partition_key will be ignored by the Event Hub service and events will
-      be assigned
-
-      to all partitions using round-robin. Furthermore, there are SDKs for consuming
-      events which expect
-
-      partition_key to only be string type, they might fail to parse the non-string
-      value.**'
-    types:
-    - <xref:str>
-  - name: max_size_in_bytes
-    description: 'The maximum size of bytes data that an EventDataBatch object can
-      hold. By
-
-      default, the value is determined by your Event Hubs tier.'
-    types:
-    - <xref:int>
   return:
     types:
     - <xref:azure.eventhub.EventDataBatch>
@@ -331,10 +342,11 @@ methods:
   - "Create EventDataBatch object within limited size<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\85\\\\azure-eventhub-5.11.2\\\\\
-    samples\\\\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n       event_data_batch = producer.create_batch()\n\
+    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.7\\\\samples\\\\sync_samples\\\
+    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
+    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n       event_data_batch = producer.create_batch()\n\
     \       while True:\n           try:\n               event_data_batch.add(EventData('Message\
     \ inside EventBatchData'))\n           except ValueError:\n               # The\
     \ EventDataBatch object reaches its max_size.\n               # You can send the\
@@ -347,12 +359,12 @@ methods:
     Flush events in the buffer to be sent immediately if the client is working in
     buffered mode.'
   signature: 'flush(**kwargs: Any) -> None'
-  parameters:
+  keywordOnlyParameters:
   - name: timeout
     description: Timeout to flush the buffered events, default is None which means
       no timeout.
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   return:
     types:
     - <xref:None>
@@ -372,6 +384,7 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
   - name: eventhub_name
     description: The path of the specific Event Hub to connect the client to.
     types:
@@ -396,34 +409,62 @@ methods:
     - <xref:int>
     - <xref:None>
   - name: on_success
-    description: "The callback to be called once a batch has been successfully published.\n\
-      The callback takes two parameters:\n\n   * *events*: The list of events that\
-      \ have been successfully published \n\n   * *partition_id*: The partition id\
-      \ that the events in the list have been published to. \n\nThe callback function\
-      \ should be defined like: *on_success(events, partition_id)*.\nRequired when\
-      \ *buffered_mode* is True while optional if *buffered_mode* is False."
+    description: 'The callback to be called once a batch has been successfully published.
+
+      The callback takes two parameters:
+
+      - *events*: The list of events that have been successfully published
+
+      - *partition_id*: The partition id that the events in the list have been published
+      to.
+
+
+      The callback function should be defined like: *on_success(events, partition_id)*.
+
+      Required when *buffered_mode* is True while optional if *buffered_mode* is False.'
     types:
-    - <xref:Optional>[<xref:Callable>[[<xref:SendEventTypes>, <xref:Optional>[<xref:str>]],
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>]],
       <xref:None>]]
   - name: on_error
-    description: "The callback to be called once a batch has failed to be published.\n\
-      Required when in *buffered_mode* is True while optional if *buffered_mode* is\
-      \ False.\nThe callback function should be defined like: *on_error(events, partition_id,\
-      \ error)*, where:\n\n   * *events*: The list of events that failed to be published,\
-      \ \n\n   * *partition_id*: The partition id that the events in the list have\
-      \ been tried to be published to and \n\n   * *error*: The exception related\
-      \ to the sending failure. \n\nIf *buffered_mode* is False, *on_error* callback\
-      \ is optional and errors will be handled as follows:\n   * If an *on_error*\
-      \ callback is passed during the producer client instantiation,\n\n        then\
-      \ error information will be passed to the *on_error* callback, which will then\
-      \ be called.\n\n   * If an *on_error* callback is not passed in during client\
-      \ instantiation,\n\n        then the error will be raised by default.\n\nIf\
-      \ *buffered_mode* is True, *on_error* callback is required and errors will be\
-      \ handled as follows:\n   * If events fail to enqueue within the given timeout,\
-      \ then an error will be directly raised. \n\n   * If events fail to send after\
-      \ enqueuing successfully, the *on_error* callback will be called."
+    description: 'The callback to be called once a batch has failed to be published.
+
+      Required when in *buffered_mode* is True while optional if *buffered_mode* is
+      False.
+
+      The callback function should be defined like: *on_error(events, partition_id,
+      error)*, where:
+
+      - *events*: The list of events that failed to be published,
+
+      - *partition_id*: The partition id that the events in the list have been tried
+      to be published to and
+
+      - *error*: The exception related to the sending failure.
+
+
+      If *buffered_mode* is False, *on_error* callback is optional and errors will
+      be handled as follows:
+
+      - If an *on_error* callback is passed during the producer client instantiation,
+
+      then error information will be passed to the *on_error* callback, which will
+      then be called.
+
+      - If an *on_error* callback is not passed in during client instantiation,
+
+      then the error will be raised by default.
+
+
+      If *buffered_mode* is True, *on_error* callback is required and errors will
+      be handled as follows:
+
+      - If events fail to enqueue within the given timeout, then an error will be
+      directly raised.
+
+      - If events fail to send after enqueuing successfully, the *on_error* callback
+      will be called.'
     types:
-    - <xref:Optional>[<xref:Callable>[[<xref:SendEventTypes>, <xref:Optional>[<xref:str>],
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:SendEventTypes>, <xref:typing.Optional>[<xref:str>],
       <xref:Exception>], <xref:None>]]
   - name: max_buffer_length
     description: 'Buffered mode only.
@@ -442,7 +483,7 @@ methods:
 
       The default value is 1 in buffered mode.'
     types:
-    - <xref:Optional>[<xref:float>]
+    - <xref:typing.Optional>[<xref:float>]
   - name: logging_enable
     description: Whether to output network trace logs to the logger. Default is *False*.
     types:
@@ -454,7 +495,7 @@ methods:
 
       Additionally the following keys may also be present: *''username'', ''password''*.'
     types:
-    - <xref:Dict>
+    - <xref:typing.Dict>
   - name: auth_timeout
     description: 'The time in seconds to wait for a token to be authorized by the
       service.
@@ -543,7 +584,7 @@ methods:
       If port is not specified in the *custom_endpoint_address*, by default port 443
       will be used.'
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
   - name: connection_verify
     description: 'Path to the custom CA_BUNDLE file of the SSL certificate which is
       used to
@@ -552,7 +593,7 @@ methods:
 
       Default is None in which case *certifi.where()* will be used.'
     types:
-    - <xref:Optional>[<xref:str>]
+    - <xref:typing.Optional>[<xref:str>]
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -567,12 +608,13 @@ methods:
   - "Create a new instance of the EventHubProducerClient from connection string.<!--[!code-python[Main](les\\\
     sync_samples\\sample_code_eventhub.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
-    : \"D:\\\\a\\\\_work\\\\1\\\\s\\\\dist_temp\\\\85\\\\azure-eventhub-5.11.2\\\\\
-    samples\\\\sync_samples\\\\sample_code_eventhub.py\", \"xml:space\": \"preserve\"\
-    , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
-    : 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n   from azure.eventhub\
-    \ import EventHubProducerClient\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
-    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(\n\
+    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\43\\\\azure-eventhub-5.11.7\\\\samples\\\\sync_samples\\\
+    \\sample_code_eventhub.py\", \"xml:space\": \"preserve\", \"force\": false, \"\
+    language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
+    : false} -->\n\n````python\n\n   import os\n   from azure.eventhub import EventHubProducerClient\n\
+    \   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n   eventhub_name\
+    \ = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(\n\
     \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
     \  # EventHub name should be specified if it doesn't show up in connection string.\n\
     \   )\n\n   ````\n"
@@ -603,8 +645,9 @@ methods:
     \   * *partition_ids* (list[str])"
   signature: get_eventhub_properties() -> Dict[str, Any]
   return:
+    description: A dictionary containing eventhub properties.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:dict>[<xref:str>, <xref:any>]
   exceptions:
   - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.EventHubProducerClient.get_partition_ids
@@ -612,6 +655,7 @@ methods:
   summary: Get partition IDs of the Event Hub.
   signature: get_partition_ids() -> List[str]
   return:
+    description: A list of partition IDs.
     types:
     - <xref:list>[<xref:str>]
   exceptions:
@@ -631,8 +675,9 @@ methods:
     types:
     - <xref:str>
   return:
+    description: A dictionary of partition properties.
     types:
-    - <xref:Dict>[<xref:str>, <xref:Any>]
+    - <xref:dict>[<xref:str>, <xref:any>]
   exceptions:
   - type: azure.eventhub.exceptions.EventHubError
 - uid: azure.eventhub.EventHubProducerClient.send_batch
@@ -670,7 +715,9 @@ methods:
       land on the same partition.'
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.eventhub.EventDataBatch>, <xref:List>[<xref:Union>[<xref:azure.eventhub.EventData,azure.eventhub.amqp.AmqpAnnotatedMessage>]]
+    - <xref:typing.Union>[<xref:azure.eventhub.EventDataBatch>, <xref:typing.List>[<xref:typing.Union>[<xref:azure.eventhub.EventData>,
+      <xref:azure.eventhub.amqp.AmqpAnnotatedMessage>]]
+  keywordOnlyParameters:
   - name: timeout
     description: 'The maximum wait time to send the event data in non-buffered mode
       or the
@@ -730,8 +777,8 @@ methods:
   - type: azure.eventhub.exceptions.EventDataError
   - type: azure.eventhub.exceptions.EventDataSendError
   - type: azure.eventhub.exceptions.EventHubError
-  - type: azure.eventhub.ValueError
-  - type: azure.eventhub.TypeError
+  - type: ValueError
+  - type: TypeError
   - type: azure.eventhub.exceptions.OperationTimeoutError
     description: 'If the value specified by the timeout parameter elapses before the
       event can be
@@ -741,8 +788,9 @@ methods:
   examples:
   - "Sends event data<!--[!code-python[Main](les\\sync_samples\\sample_code_eventhub.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"D:\\\\a\\\\_work\\\\1\\\\s\\\\\
-    dist_temp\\\\85\\\\azure-eventhub-5.11.2\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
+    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
+    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
+    43\\\\azure-eventhub-5.11.7\\\\samples\\\\sync_samples\\\\sample_code_eventhub.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       with producer:\n           event_data_batch = producer.create_batch()\n\
@@ -767,14 +815,16 @@ methods:
     \ and errors will be handled as follows:\n      * If events fail to enqueue within\
     \ the given timeout, then an error will be directly raised. \n\n      * If events\
     \ fail to send after enqueuing successfully, the *on_error* callback will be called."
-  signature: 'send_event(event_data: EventData | AmqpAnnotatedMessage, **kwargs: Any)
-    -> None'
+  signature: 'send_event(event_data: EventData | AmqpAnnotatedMessage, *, partition_id:
+    str | None = None, partition_key: str | None = None, timeout: float | None = None,
+    **kwargs: Any) -> None'
   parameters:
   - name: event_data
     description: The *EventData* object to be sent.
     isRequired: true
     types:
-    - <xref:Union>[<xref:azure.eventhub.EventData>, <xref:azure.eventhub.amqp.AmqpAnnotatedMessage>]
+    - <xref:typing.Union>[<xref:azure.eventhub.EventData>, <xref:azure.eventhub.amqp.AmqpAnnotatedMessage>]
+  keywordOnlyParameters:
   - name: timeout
     description: 'The maximum wait time to send the event data in non-buffered mode
       or the
@@ -783,7 +833,10 @@ methods:
 
       In non-buffered mode, the default wait time specified when the producer
 
-      was created will be used. In buffered mode, the default wait time is None.'
+      was created will be used. In buffered mode, the default wait time is None indicating
+      that the event will be
+
+      scheduled to send immediately.'
     types:
     - <xref:float>
   - name: partition_id

@@ -1,14 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-spark, synapse
-author: wonner
-ms.author: wanyang
 ms.date: 03/31/2022
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: synapse-analytics
 ms.subservice: spark
+ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

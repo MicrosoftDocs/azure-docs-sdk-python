@@ -1,13 +1,10 @@
 ---
 title: Azure Storage SDK for Python
 description: Reference for Azure Storage SDK for Python
-author: annatisch
-ms.author: antisch
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
-ms.date: 05/25/2023
 ---
 # Azure Storage client libraries for Python
 
@@ -67,7 +64,7 @@ This section details known issues for the Azure Storage client libraries for Pyt
 
 ### InvalidHeaderValue error message when using beta version of SDK
 
-In rare scenarios, applications that have upgraded to a beta version of the SDK can receive an `InvalidHeaderValue` error message. This issue can occur when using any of the Storage libraries. The error message looks similar to the following sample:
+In rare scenarios, applications that have upgraded to the latest beta or generally available version of the SDK can receive an `InvalidHeaderValue` error message. This issue can occur when using any of the Storage libraries. The error message looks similar to the following sample:
 
 ```console
 HTTP/1.1 400 The value for one of the HTTP headers is not in the correct format.
@@ -82,4 +79,4 @@ RequestId:<REMOVED>
 Time:2023-05-19T17:10:34.2972651Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>yyyy-mm-dd</HeaderValue></Error> 
 ```
 
-If you've upgraded to a beta version of the SDK and you experience this error, it's recommended that you downgrade to a supported, generally available version of the SDK to see if the issue resolves. If the issue persists, or if the recommendation is not feasible, [open a support ticket](https://ms.portal.azure.com/#create/Microsoft.Support) to explore further options.
+If you've upgraded to the latest beta or generally available of the SDK and you experience this error, it's recommended that you downgrade to the previous generally available version of the SDK to see if the issue resolves. If the issue persists, or if the recommendation is not feasible, [open a support ticket](https://ms.portal.azure.com/#create/Microsoft.Support) to explore further options.

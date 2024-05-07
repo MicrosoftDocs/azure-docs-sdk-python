@@ -1,9 +1,7 @@
 ---
 title: Azure Content Delivery Network SDK for Python
 description: Reference for Azure Content Delivery Network SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
+ms.date: 05/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: contentdeliverynetwork
@@ -59,4 +57,4 @@ endpoint = endpoint_poller.result()
 ```
 
 > [!div class="nextstepaction"]
-> [Explore the Management APIs](/python/api/overview/azure/cdn/management)
+> [Explore the Management APIs](/python/api/azure-mgmt-cdn)

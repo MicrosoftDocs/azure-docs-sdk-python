@@ -1,15 +1,12 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-cognitiveservices, cognitiveservices
-author: ramya-rao-a
-ms.author: ramyar
 ms.date: 10/13/2020
 ms.topic: reference
-ms.technology: azure
 ms.devlang: python
 ms.service: cognitive-services
+ms.technology: azure
 ---
-
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Cognitive Services Management Client Library.

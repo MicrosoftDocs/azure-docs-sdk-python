@@ -1,9 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-dataprotection, dataprotection
-author: lmazuel
-ms.author: lmazuel
-ms.date: 06/21/2023
+ms.date: 12/18/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: dataprotection
@@ -69,7 +67,4 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-dataprotection%2FREADME.png)
 
