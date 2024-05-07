@@ -1,15 +1,3 @@
-<<<<<<< HEAD
----
-title: Azure Cognitive Services SDK for Python
-description: Reference for Azure Cognitive Services SDK for Python
-author: lmazuel
-ms.author: lmazuel
-ms.data: 07/03/2023
-ms.topic: reference
-ms.devlang: python
-ms.service: cognitiveservices
----
-=======
 ---
 title: Azure Cognitive Services SDK for Python
 description: Reference for Azure Cognitive Services SDK for Python
@@ -18,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cognitiveservices
 ---
->>>>>>> main
 # Azure Cognitive Services modules for Python
 
 Add image and face recognition, language analysis, and search to your Python apps, websites, and tools using the Azure Cognitive Services modules for Python.
@@ -33,7 +20,7 @@ Returns information about visual content found in an image:
 - Apply adult/racy settings to enable automated restriction of adult content.
 - Identify image types and color schemes in pictures.
 
-[Try Computer Vision](https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/) for free in your browser.
+[Try Computer Vision](https://azure.microsoft.com/services/cognitive-services/computer-vision/) for free in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
@@ -71,7 +58,7 @@ pip install azure-cognitiveservices-vision-customvision
 
 Detect, identify, analyze, organize, and tag faces in photos. 
 
-[Try the Face API](https://azure.microsoft.com/en-us/services/cognitive-services/face/) in your browser.
+[Try the Face API](https://azure.microsoft.com/services/cognitive-services/face/) in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
@@ -87,7 +74,7 @@ pip install cognitive-face
 
 Retrieve web documents indexed by the Bing Web Search API and narrow down the results by result type, freshness and more. 
 
-[Try the Web Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/) in your browser.
+[Try the Web Search API](https://azure.microsoft.com/services/cognitive-services/bing-web-search-api/) in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
@@ -101,7 +88,7 @@ pip install azure-cognitiveservices-search-websearch
 
 Search for images and get thumbnails, full image URLs, image metadata and more in your results.
 
-[Try the Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) in your browser.
+[Try the Image Search API](https://azure.microsoft.com/services/cognitive-services/bing-image-search-api/) in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
@@ -207,7 +194,7 @@ pip install azure-cognitiveservices-language-luis
 
 Perform contextual grammar and spell checking with the Bing Spell Check API.
 
-[Try the Spell Check API](https://azure.microsoft.com/en-us/services/cognitive-services/spell-check/) in your browser.
+[Try the Spell Check API](https://azure.microsoft.com/services/cognitive-services/spell-check/) in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
