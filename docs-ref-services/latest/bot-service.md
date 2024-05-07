@@ -1,7 +1,7 @@
 ---
 title: Azure Bot Service SDK for Python
 description: Reference for Azure Bot Service SDK for Python
-ms.date: 05/06/2024
+ms.date: 05/07/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: botservice
