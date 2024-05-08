@@ -1,7 +1,7 @@
 ---
 title: Azure Core SDK for Python
 description: Reference for Azure Core SDK for Python
-ms.date: 05/07/2024
+ms.date: 05/08/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: core
