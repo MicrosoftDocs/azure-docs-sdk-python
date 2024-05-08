@@ -4,9 +4,11 @@ keywords: Azure, python, SDK, API, azure-ai-anomalydetector, anomalydetector
 ms.date: 12/09/2022
 ms.topic: reference
 ms.devlang: python
-ms.service: anomalydetector
+ms.service: anomaly-detector
 ---
-# Cognitive Services Anomaly Detector client library for Python
+# Cognitive Services Anomaly Detector client library for Python - Legacy
+
+NOTE: This package is no longer being maintained, as the Anomaly Detector service retires on October 1, 2026.
 
 [Anomaly Detector](https://learn.microsoft.com/azure/cognitive-services/Anomaly-Detector/overview) is an AI service with a set of APIs, which enables you to monitor and detect anomalies in your time series data with little machine learning (ML) knowledge, either batch validation or real-time inference.
 
