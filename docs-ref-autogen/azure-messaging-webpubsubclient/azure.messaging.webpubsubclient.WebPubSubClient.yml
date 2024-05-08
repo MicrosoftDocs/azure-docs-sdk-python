@@ -4,7 +4,7 @@ name: WebPubSubClient
 fullName: azure.messaging.webpubsubclient.WebPubSubClient
 module: azure.messaging.webpubsubclient
 inheritances:
-- builtins.object
+- azure.messaging.webpubsubclient._client.WebPubSubClientBase
 constructor:
   syntax: 'WebPubSubClient(credential: WebPubSubClientCredential | str, *, message_retry_backoff_factor:
     float = 0.8, message_retry_backoff_max: float = 120.0, message_retry_mode: RetryMode
@@ -62,10 +62,12 @@ constructor:
     types:
     - <xref:float>
   - name: reconnect_retry_mode
-    description: Fixed or exponential delay between attemps, default is exponential.
+    description: 'Fixed or exponential delay
+
+      between attemps, default is exponential.'
     defaultValue: RetryMode.Exponential
     types:
-    - <xref:RetryMode>
+    - <xref:azure.messaging.webpubsubclient.RetryMode>
   - name: message_retry_total
     description: total number of retries to allow for sending message. Default is
       3.
@@ -129,6 +131,14 @@ methods:
   name: close
   summary: close the client
   signature: close() -> None
+- uid: azure.messaging.webpubsubclient.WebPubSubClient.is_connected
+  name: is_connected
+  summary: check whether the client is still connected to server after open
+  signature: is_connected() -> bool
+  return:
+    description: True if the client is connected to server, otherwise False
+    types:
+    - <xref:bool>
 - uid: azure.messaging.webpubsubclient.WebPubSubClient.join_group
   name: join_group
   summary: Join the client to group.
@@ -169,7 +179,7 @@ methods:
 
     to [https://learn.microsoft.com/en-us/azure/azure-web-pubsub/howto-develop-eventhandler](https://learn.microsoft.com/en-us/azure/azure-web-pubsub/howto-develop-eventhandler)'
   signature: 'send_event(event_name: str, content: str, data_type: ~typing.Literal[<WebPubSubDataType.TEXT:
-    ''text''>] | ~typing.Literal[''text''], **kwargs: ~typing.Any) -> None'
+    ''text''>], **kwargs: ~typing.Any) -> None'
   parameters:
   - name: event_name
     description: The event name. Required.
@@ -208,10 +218,11 @@ methods:
     :type group_name: str.\n:param content: The data content. Required.\n:type content:\
     \ Union[str, memoryview, Dict[str, Any]].\n:param data_type: The data type. Required.\n\
     :type data_type: ~azure.messaging.webpubsubclient.models.WebPubSubDataType or\
-    \ str.\n:keyword bool ack: If False, the message won't contains ackId and no AckMessage\n\
-    \n   will be returned from the service. Default is True."
+    \ str.\n:keyword int ack_id: The optional ackId. If not specified, client will\
+    \ generate one.\n:keyword bool ack: If False, the message won't contains ackId\
+    \ and no AckMessage\n\n   will be returned from the service. Default is True."
   signature: 'send_to_group(group_name: str, content: str, data_type: ~typing.Literal[<WebPubSubDataType.TEXT:
-    ''text''>] | ~typing.Literal[''text''], **kwargs: ~typing.Any) -> None'
+    ''text''>], **kwargs: ~typing.Any) -> None'
   parameters:
   - name: group_name
     isRequired: true
@@ -230,13 +241,13 @@ methods:
 
     :param event: The event name. Required.
 
-    :type event: ~azure.messaging.webpubsubclient.models.CallbackType or str
+    :type event: ~azure.messaging.webpubsubclient.models.CallbackType
 
     :param listener: The handler
 
     :type listener: callable.'
-  signature: 'subscribe(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>]
-    | str, listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
+  signature: 'subscribe(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>],
+    listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
     None]) -> None'
   parameters:
   - name: event
@@ -249,13 +260,13 @@ methods:
 
     :param event: The event name. Required.
 
-    :type event: ~azure.messaging.webpubsubclient.models.CallbackType or str
+    :type event: ~azure.messaging.webpubsubclient.models.CallbackType
 
     :param listener: The handler
 
     :type listener: callable.'
-  signature: 'unsubscribe(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>]
-    | str, listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
+  signature: 'unsubscribe(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>],
+    listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
     None]) -> None'
   parameters:
   - name: event
