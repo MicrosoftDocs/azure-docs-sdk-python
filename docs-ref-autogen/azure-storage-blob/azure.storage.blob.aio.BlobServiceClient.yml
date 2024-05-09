@@ -114,6 +114,15 @@ constructor:
       or 4MB.'
     types:
     - <xref:int>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.storage.blob.aio.BlobServiceClient.close
   name: close
@@ -177,6 +186,7 @@ methods:
     types:
     - <xref:int>
   return:
+    description: A container client to interact with the newly created container.
     types:
     - <xref:azure.storage.blob.aio.ContainerClient>
 - uid: azure.storage.blob.aio.BlobServiceClient.delete_container
@@ -189,7 +199,7 @@ methods:
 
     If the container is not found, a ResourceNotFoundError will be raised.'
   signature: 'async delete_container(container: ContainerProperties | str, lease:
-    BlobLeaseClient | str | None = None, **kwargs) -> None'
+    BlobLeaseClient | str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: container
     description: 'The container to delete. This can either be the name of the container,
@@ -206,6 +216,9 @@ methods:
 
       Required if the container has an active lease.'
     isRequired: true
+    types:
+    - <xref:azure.storage.blob.aio.BlobLeaseClient>
+    - <xref:str>
   keywordOnlyParameters:
   - name: if_modified_since
     description: 'A DateTime value. Azure expects the date value passed in to be UTC.
@@ -331,6 +344,23 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
   return:
     description: A Blob service client.
     types:
@@ -355,9 +385,8 @@ methods:
 
 
     The blob need not already exist.'
-  signature: 'get_blob_client(container: ContainerProperties | str, blob: BlobProperties
-    | str, snapshot: Dict[str, Any] | str | None = None, *, version_id: str | None
-    = None) -> BlobClient'
+  signature: 'get_blob_client(container: ContainerProperties | str, blob: str, snapshot:
+    str | Dict[str, Any] | None = None, *, version_id: str | None = None) -> BlobClient'
   parameters:
   - name: container
     description: 'The container that the blob is in. This can either be the name of
@@ -369,14 +398,10 @@ methods:
     - <xref:str>
     - <xref:azure.storage.blob.ContainerProperties>
   - name: blob
-    description: 'The blob with which to interact. This can either be the name of
-      the blob,
-
-      or an instance of BlobProperties.'
+    description: The blob with which to interact.
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.storage.blob.BlobProperties>
   - name: snapshot
     description: 'The optional blob snapshot on which to operate. This can either
       be the ID of the snapshot,
@@ -721,18 +746,30 @@ attributes:
 - uid: azure.storage.blob.aio.BlobServiceClient.api_version
   name: api_version
   summary: The version of the Storage API used for requests.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.BlobServiceClient.location_mode
   name: location_mode
   summary: 'The location mode that the client is currently using.
 
 
     By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.BlobServiceClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.BlobServiceClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.BlobServiceClient.secondary_endpoint
   name: secondary_endpoint
   summary: 'The full secondary endpoint URL if configured.
@@ -742,6 +779,9 @@ attributes:
     hostname, use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
   exceptions:
   - type: ValueError
 - uid: azure.storage.blob.aio.BlobServiceClient.secondary_hostname
@@ -753,6 +793,9 @@ attributes:
     use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.blob.aio.BlobServiceClient.url
   name: url
   summary: 'The full endpoint URL to this entity, including SAS token if used.

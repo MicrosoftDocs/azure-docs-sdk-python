@@ -136,6 +136,15 @@ constructor:
       specifies the version of the blob to operate on.'
     types:
     - <xref:str>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.storage.blob.BlobClient.abort_copy
   name: abort_copy
@@ -606,6 +615,11 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  return:
+    description: Result after appending a new block.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime>,
+      <xref:int>]]
 - uid: azure.storage.blob.BlobClient.clear_page
   name: clear_page
   summary: Clears a range of pages.
@@ -1714,9 +1728,12 @@ methods:
       should be the storage account key.'
     defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>,
-      <xref:str>], <xref:"AzureNamedKeyCredential">, <xref:"AzureSasCredential">,
-      <xref:"TokenCredential">]]  <xref:./>
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   - name: snapshot
     description: 'The optional blob snapshot on which to operate. This can be the
       snapshot ID string
@@ -1734,6 +1751,15 @@ methods:
       present,
 
       specifies the version of the blob to operate on.'
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
     types:
     - <xref:str>
   return:
@@ -1793,15 +1819,27 @@ methods:
       should be the storage account key.'
     defaultValue: None
     types:
-    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>,
-      <xref:str>], <xref:"AzureNamedKeyCredential">, <xref:"AzureSasCredential">,
-      <xref:"TokenCredential">]]  <xref:./>
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   keywordOnlyParameters:
   - name: version_id
     description: 'The version id parameter is an opaque DateTime value that, when
       present,
 
       specifies the version of the blob to operate on.'
+    types:
+    - <xref:str>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
     types:
     - <xref:str>
   return:
@@ -2035,6 +2073,8 @@ methods:
 
       its previous snapshot.'
     isRequired: true
+    types:
+    - <xref:str>
   - name: offset
     description: 'Start of byte range to use for getting valid page ranges.
 
@@ -2411,7 +2451,15 @@ methods:
       as a string or enum).
 
       These dialects can be passed through their respective classes, the QuickQueryDialect
-      enum or as a string'
+      enum or as a string
+
+
+
+      > [!NOTE]
+
+      > "ParquetDialect" is in preview, so some features may not work as intended.
+
+      >'
     types:
     - <xref:azure.storage.blob.DelimitedTextDialect>
     - <xref:azure.storage.blob.DelimitedJsonDialect>
@@ -2800,6 +2848,8 @@ methods:
     - <xref:int>
   return:
     description: Blob-updated property dict (Etag and last modified)
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime>]]
 - uid: azure.storage.blob.BlobClient.set_blob_tags
   name: set_blob_tags
   summary: "The Set Tags operation enables users to set tags on a blob or specific\
@@ -3268,6 +3318,8 @@ methods:
   - name: data
     description: The blob data.
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:typing.Iterable>[<xref:typing.AnyStr>], <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: length
     description: Size of the block.
     isRequired: true
@@ -3809,13 +3861,16 @@ methods:
 - uid: azure.storage.blob.BlobClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'upload_blob(data: bytes | str | Iterable | IO, blob_type: str | BlobType
-    = BlobType.BLOCKBLOB, length: int | None = None, metadata: Dict[str, str] | None
-    = None, **kwargs) -> Dict[str, Any]'
+  signature: 'upload_blob(data: bytes | str | Iterable | IO[bytes], blob_type: str
+    | BlobType = BlobType.BLOCKBLOB, length: int | None = None, metadata: Dict[str,
+    str] | None = None, **kwargs) -> Dict[str, Any]'
   parameters:
   - name: data
     description: The blob data to upload.
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:bytes>, <xref:str>, <xref:typing.Iterable>[<xref:typing.AnyStr>],
+      <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: blob_type
     description: 'The type of the blob. This can be
 
@@ -4269,6 +4324,10 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  return:
+    description: Response from creating a new block blob for a given URL.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.blob.BlobClient.upload_page
   name: upload_page
   summary: The Upload Pages operation writes a range of pages to a page blob.
@@ -4639,22 +4698,38 @@ methods:
       the prefix of the source_authorization string.'
     types:
     - <xref:str>
+  return:
+    description: Response after uploading pages from specified URL.
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
 attributes:
 - uid: azure.storage.blob.BlobClient.api_version
   name: api_version
   summary: The version of the Storage API used for requests.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.BlobClient.location_mode
   name: location_mode
   summary: 'The location mode that the client is currently using.
 
 
     By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.BlobClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.BlobClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.BlobClient.secondary_endpoint
   name: secondary_endpoint
   summary: 'The full secondary endpoint URL if configured.
@@ -4664,6 +4739,9 @@ attributes:
     hostname, use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
   exceptions:
   - type: ValueError
 - uid: azure.storage.blob.BlobClient.secondary_hostname
@@ -4675,6 +4753,9 @@ attributes:
     use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.blob.BlobClient.url
   name: url
   summary: 'The full endpoint URL to this entity, including SAS token if used.

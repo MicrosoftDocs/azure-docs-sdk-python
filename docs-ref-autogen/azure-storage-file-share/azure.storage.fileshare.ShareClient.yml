@@ -68,6 +68,13 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   keywordOnlyParameters:
   - name: token_intent
     description: "Required when using *TokenCredential* for authentication and ignored\
@@ -158,7 +165,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_share.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   share.create_directory(\"mydir\")\n   lease = share.acquire_lease()\n   share.get_share_properties(lease=lease)\n\
@@ -184,6 +191,8 @@ methods:
   keywordOnlyParameters:
   - name: metadata
     description: Name-value pairs associated with the directory as metadata.
+    types:
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -245,7 +254,7 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the share as metadata.
     types:
-    - <xref:dict>(<xref:str>,<xref:str>)
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: quota
     description: The quota to be allotted.
     types:
@@ -288,7 +297,7 @@ methods:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.15.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.16.0\\\
     \\samples\\\\file_samples_share.py\", \"xml:space\": \"preserve\", \"force\":\
     \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Create share with Access Tier set\
@@ -315,7 +324,7 @@ methods:
   - name: metadata
     description: Name-value pairs associated with the share as metadata.
     types:
-    - <xref:dict>(<xref:str>,<xref:str>)
+    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -337,7 +346,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_share.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   share.create_snapshot()\n\n   ````\n"
@@ -374,13 +383,21 @@ methods:
   summary: 'Marks the specified share for deletion. The share is
 
     later deleted during garbage collection.'
-  signature: 'delete_share(delete_snapshots: bool | None = False, **kwargs) -> None'
+  signature: 'delete_share(delete_snapshots: bool | Literal[''include'', ''include-leased'']
+    | None = False, **kwargs: Any) -> None'
   parameters:
   - name: delete_snapshots
-    description: Indicates if snapshots are to be deleted.
+    description: 'Indicates if snapshots are to be deleted. If "True" or enum "include",
+      snapshots will
+
+      be deleted (but not include leased). To include leased snapshots, specify the
+      "include-leased"
+
+      enum.'
     isRequired: true
     types:
-    - <xref:bool>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:bool>, <xref:typing.Literal>['include',
+      'include-leased']]]
   keywordOnlyParameters:
   - name: lease
     description: "Required if the share has an active lease. Value can be a ShareLeaseClient\
@@ -403,7 +420,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_share.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   share.delete_share(delete_snapshots=True)\n\n   ````\n"
@@ -431,7 +448,8 @@ methods:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>,
+      <xref:typing.Any>]]]
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -454,6 +472,13 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   return:
     description: A share client.
     types:
@@ -463,7 +488,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_share.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.storage.fileshare import ShareClient\n   share = ShareClient.from_connection_string(self.connection_string,\
@@ -486,7 +511,8 @@ methods:
       or the response returned from <xref:azure.storage.fileshare.ShareClient.create_snapshot>.'
     defaultValue: None
     types:
-    - <xref:str>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:dict>[<xref:str>,
+      <xref:typing.Any>]]]
   - name: credential
     description: 'The credentials with which to authenticate. This is optional if
       the
@@ -509,6 +535,13 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   return:
     description: A share client.
     types:
@@ -636,7 +669,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_hello_world.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_hello_world.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = share.get_share_properties()\n\n   ````\n"
@@ -727,13 +760,13 @@ methods:
   return:
     description: An auto-paging iterable of dict-like DirectoryProperties and FileProperties
     types:
-    - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>,<xref:str>]]
+    - <xref:typing.Iterable>[<xref:dict>[<xref:str>, <xref:str>]]
   examples:
   - "List directories and files in the share.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_share.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create a directory in the share\n   dir_client = share.create_directory(\"\
@@ -759,7 +792,7 @@ methods:
       will clear the access policies set on the service.'
     isRequired: true
     types:
-    - dict(str, <xref:azure.storage.fileshare.AccessPolicy>)
+    - <xref:dict>[<xref:str>, <xref:azure.storage.fileshare.AccessPolicy>]
   keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -780,7 +813,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+    - <xref:dict>[<xref:str>, <xref:str>]
 - uid: azure.storage.fileshare.ShareClient.set_share_metadata
   name: set_share_metadata
   summary: 'Sets the metadata for the share.
@@ -798,7 +831,7 @@ methods:
     description: Name-value pairs associated with the share as metadata.
     isRequired: true
     types:
-    - <xref:dict>(<xref:str>, <xref:str>)
+    - <xref:dict>[<xref:str>, <xref:str>]
   keywordOnlyParameters:
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -819,12 +852,12 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Sets the share metadata.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.15.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.16.0\\\
     \\samples\\\\file_samples_share.py\", \"xml:space\": \"preserve\", \"force\":\
     \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   data = {'category': 'test'}\n   share.set_share_metadata(metadata=data)\n\
@@ -878,13 +911,13 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Sets the share properties.<!--[!code-python[Main](les\\file_samples_share.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.15.0\\\\samples\\\\file_samples_share.py\"\
+    225\\\\azure-storage-file-share-12.16.0\\\\samples\\\\file_samples_share.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Set the tier for the first share to Hot\n   share1.set_share_properties(access_tier=\"\
@@ -925,12 +958,12 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>(<xref:str>, <xref:typing.Any>)
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Sets the share quota.<!--[!code-python[Main](les\\file_samples_share.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.15.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.16.0\\\
     \\samples\\\\file_samples_share.py\", \"xml:space\": \"preserve\", \"force\":\
     \ false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Set the quota for the share to 1GB\n\
@@ -939,18 +972,30 @@ attributes:
 - uid: azure.storage.fileshare.ShareClient.api_version
   name: api_version
   summary: The version of the Storage API used for requests.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.fileshare.ShareClient.location_mode
   name: location_mode
   summary: 'The location mode that the client is currently using.
 
 
     By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.fileshare.ShareClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.fileshare.ShareClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.fileshare.ShareClient.secondary_endpoint
   name: secondary_endpoint
   summary: 'The full secondary endpoint URL if configured.
@@ -960,6 +1005,9 @@ attributes:
     hostname, use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
   exceptions:
   - type: ValueError
 - uid: azure.storage.fileshare.ShareClient.secondary_hostname
@@ -971,6 +1019,9 @@ attributes:
     use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.fileshare.ShareClient.url
   name: url
   summary: 'The full endpoint URL to this entity, including SAS token if used.

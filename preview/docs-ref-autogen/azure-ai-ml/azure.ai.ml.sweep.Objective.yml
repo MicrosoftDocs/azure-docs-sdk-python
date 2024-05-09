@@ -1,0 +1,59 @@
+### YamlMime:PythonClass
+uid: azure.ai.ml.sweep.Objective
+name: Objective
+fullName: azure.ai.ml.sweep.Objective
+module: azure.ai.ml.sweep
+inheritances:
+- azure.ai.ml.entities._mixins.RestTranslatableMixin
+summary: 'Optimization objective.
+
+
+  Optimization objective.'
+constructor:
+  syntax: 'Objective(goal: str | None, primary_metric: str | None = None)'
+  parameters:
+  - name: goal
+    description: 'Defines supported metric goals for hyperparameter tuning. Accepted
+      values
+
+      are: "minimize", "maximize".'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: primary_metric
+    description: The name of the metric to optimize.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: goal
+    description: 'Defines supported metric goals for hyperparameter tuning. Acceptable
+      values
+
+      are: "minimize" or "maximize".'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: primary_metric
+    description: The name of the metric to optimize.
+    isRequired: true
+    types:
+    - <xref:str>
+examples:
+- "Assigning an objective to a SweepJob.<!--[!code-python[Main](les\\ml_samples_sweep_configurations.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.16.0b1\\\
+  \\samples\\\\ml_samples_sweep_configurations.py\", \"xml:space\": \"preserve\",\
+  \ \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
+  : 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities import\
+  \ CommandJob\n   from azure.ai.ml.sweep import BayesianSamplingAlgorithm, Objective,\
+  \ SweepJob, SweepJobLimits\n\n   command_job = CommandJob(\n       inputs=dict(kernel=\"\
+  linear\", penalty=1.0),\n       compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
+  ,\n       code=\"./scripts\",\n       command=\"python scripts/train.py --kernel\
+  \ $kernel --penalty $penalty\",\n       experiment_name=\"sklearn-iris-flowers\"\
+  ,\n   )\n\n   sweep = SweepJob(\n       sampling_algorithm=BayesianSamplingAlgorithm(),\n\
+  \       trial=command_job,\n       search_space={\"ss\": Choice(type=\"choice\"\
+  , values=[{\"space1\": True}, {\"space2\": True}])},\n       inputs={\"input1\"\
+  : {\"file\": \"top_level.csv\", \"mode\": \"ro_mount\"}},\n       compute=\"top_level\"\
+  ,\n       limits=SweepJobLimits(trial_timeout=600),\n       objective=Objective(goal=\"\
+  maximize\", primary_metric=\"accuracy\"),\n   )\n\n   ````\n"

@@ -48,6 +48,13 @@ functions:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   keywordOnlyParameters:
   - name: overwrite
     description: 'Whether the local file should be overwritten if it already exists.
@@ -110,8 +117,9 @@ functions:
     ContainerClient or BlobClient.'
   signature: 'generate_account_sas(account_name: str, account_key: str, resource_types:
     ResourceTypes | str, permission: AccountSasPermissions | str, expiry: datetime
-    | str | None, start: datetime | str | None = None, ip: str | None = None, **kwargs:
-    Any) -> str'
+    | str, start: datetime | str | None = None, ip: str | None = None, *, services:
+    ~azure.storage.blob._shared.models.Services | str = <azure.storage.blob._shared.models.Services
+    object>, **kwargs: ~typing.Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -134,13 +142,7 @@ functions:
   - name: permission
     description: 'The permissions associated with the shared access signature. The
 
-      user is restricted to operations allowed by the permissions.
-
-      Required unless an id is given referencing a stored access policy
-
-      which contains this field. This field must be omitted if it has been
-
-      specified in an associated stored access policy.'
+      user is restricted to operations allowed by the permissions.'
     isRequired: true
     types:
     - <xref:str>
@@ -148,15 +150,7 @@ functions:
   - name: expiry
     description: 'The time at which the shared access signature becomes invalid.
 
-      Required unless an id is given referencing a stored access policy
-
-      which contains this field. This field must be omitted if it has
-
-      been specified in an associated stored access policy. Azure will always
-
-      convert values to UTC. If a date is passed in without timezone info, it
-
-      is assumed to be UTC.'
+      The provided datetime will always be interpreted as UTC.'
     isRequired: true
     types:
     - <xref:datetime.datetime>
@@ -166,11 +160,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -190,6 +182,14 @@ functions:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: services
+    description: 'Specifies the services that the Shared Access Signature (sas) token
+      will be able to be utilized with.
+
+      Will default to only this package (i.e. blobs) if not provided.'
+    defaultValue: b
+    types:
+    - <xref:typing.Union>[<xref:azure.storage.blob.Services>, <xref:str>]
   - name: protocol
     description: Specifies the protocol permitted for a request made. The default
       value is https.
@@ -296,11 +296,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -481,11 +479,9 @@ functions:
 
       omitted, start time for this call is assumed to be the time when the
 
-      storage service receives the request. Azure will always convert values
+      storage service receives the request. The provided datetime will always
 
-      to UTC. If a date is passed in without timezone info, it is assumed to
-
-      be UTC.'
+      be interpreted as UTC.'
     defaultValue: None
     types:
     - <xref:datetime.datetime>
@@ -613,6 +609,13 @@ functions:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   keywordOnlyParameters:
   - name: overwrite
     description: 'Whether the blob to be uploaded should overwrite the current data.
@@ -701,6 +704,7 @@ classes:
 - azure.storage.blob.PartialBatchErrorException
 - azure.storage.blob.ResourceTypes
 - azure.storage.blob.RetentionPolicy
+- azure.storage.blob.Services
 - azure.storage.blob.StaticWebsite
 - azure.storage.blob.StorageStreamDownloader
 - azure.storage.blob.UserDelegationKey

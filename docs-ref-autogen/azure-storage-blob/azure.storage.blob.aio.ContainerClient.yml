@@ -117,6 +117,15 @@ constructor:
       or 4MB.'
     types:
     - <xref:int>
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
 methods:
 - uid: azure.storage.blob.aio.ContainerClient.acquire_lease
   name: acquire_lease
@@ -278,17 +287,14 @@ methods:
     specifying *include=["deleted"]*
 
     Soft-deleted blob or snapshot can be restored using <xref:azure.storage.blob.aio.BlobClient.undelete>'
-  signature: 'async delete_blob(blob: str | BlobProperties, delete_snapshots: str
-    | None = None, **kwargs) -> None'
+  signature: 'async delete_blob(blob: str, delete_snapshots: str | None = None, **kwargs:
+    Any) -> None'
   parameters:
   - name: blob
-    description: 'The blob with which to interact. If specified, this value will override
-
-      a blob value specified in the blob URL.'
+    description: The blob with which to interact.
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.storage.blob.BlobProperties>
   - name: delete_snapshots
     description: "Required if the blob has associated snapshots. Values include:\n\
       \   * \"only\": Deletes only the blobs snapshots. \n\n   * \"include\": Deletes\
@@ -562,17 +568,14 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'async download_blob(blob: str | BlobProperties, offset: int = None,
-    length: int = None, *, encoding: str, **kwargs) -> StorageStreamDownloader[str]'
+  signature: 'async download_blob(blob: str, offset: int = None, length: int = None,
+    *, encoding: str, **kwargs: Any) -> StorageStreamDownloader[str]'
   parameters:
   - name: blob
-    description: 'The blob with which to interact. If specified, this value will override
-
-      a blob value specified in the blob URL.'
+    description: The blob with which to interact.
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.storage.blob.BlobProperties>
   - name: offset
     description: 'Start of byte range to use for downloading a section of the blob.
 
@@ -819,6 +822,23 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
   return:
     description: A container client.
     types:
@@ -863,6 +883,23 @@ methods:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  keywordOnlyParameters:
+  - name: audience
+    description: 'The audience to use when requesting tokens for Azure Active Directory
+
+      authentication. Only has an effect when credential is of type TokenCredential.
+      The value could be
+
+      [https://storage.azure.com/](https://storage.azure.com/) (default) or [https:/](https:/)/<account>.blob.core.windows.net.'
+    types:
+    - <xref:str>
   return:
     description: A container client.
     types:
@@ -887,15 +924,14 @@ methods:
 
 
     The blob need not already exist.'
-  signature: 'get_blob_client(blob: BlobProperties | str, snapshot: str = None, *,
-    version_id: str | None = None) -> BlobClient'
+  signature: 'get_blob_client(blob: str, snapshot: str = None, *, version_id: str
+    | None = None) -> BlobClient'
   parameters:
   - name: blob
     description: The blob with which to interact.
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.storage.blob.BlobProperties>
   - name: snapshot
     description: 'The optional blob snapshot on which to operate. This can be the
       snapshot ID string
@@ -1191,6 +1227,8 @@ methods:
     - <xref:int>
   return:
     description: Container-updated property dict (Etag and last modified).
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:str>, <xref:datetime>]]
 - uid: azure.storage.blob.aio.ContainerClient.set_premium_page_blob_tier_blobs
   name: set_premium_page_blob_tier_blobs
   summary: 'Sets the page blob tiers on the blobs. This API is only supported for
@@ -1369,21 +1407,21 @@ methods:
 - uid: azure.storage.blob.aio.ContainerClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'async upload_blob(name: str | BlobProperties, data: bytes | str | Iterable
-    | AsyncIterable | IO, blob_type: str | BlobType = BlobType.BLOCKBLOB, length:
-    int | None = None, metadata: Dict[str, str] | None = None, **kwargs) -> BlobClient'
+  signature: 'async upload_blob(name: str, data: bytes | str | Iterable | AsyncIterable
+    | IO, blob_type: str | BlobType = BlobType.BLOCKBLOB, length: int | None = None,
+    metadata: Dict[str, str] | None = None, **kwargs) -> BlobClient'
   parameters:
   - name: name
-    description: 'The blob with which to interact. If specified, this value will override
-
-      a blob value specified in the blob URL.'
+    description: The blob with which to interact.
     isRequired: true
     types:
     - <xref:str>
-    - <xref:azure.storage.blob.BlobProperties>
   - name: data
     description: The blob data to upload.
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:bytes>, <xref:str>, <xref:typing.Iterable>[<xref:typing.AnyStr>],
+      <xref:typing.AsyncIterable>[<xref:typing.AnyStr>], <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: blob_type
     description: 'The type of the blob. This can be
 
@@ -1609,7 +1647,7 @@ methods:
 
     as delimited by the specified delimiter character.'
   signature: 'walk_blobs(name_starts_with: str | None = None, include: str | List[str]
-    | None = None, delimiter: str = ''/'', **kwargs: Any | None) -> AsyncItemPaged[BlobProperties]'
+    | None = None, delimiter: str = ''/'', **kwargs: Any) -> AsyncItemPaged[BlobProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only blobs whose names
@@ -1662,18 +1700,30 @@ attributes:
 - uid: azure.storage.blob.aio.ContainerClient.api_version
   name: api_version
   summary: The version of the Storage API used for requests.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.ContainerClient.location_mode
   name: location_mode
   summary: 'The location mode that the client is currently using.
 
 
     By default this will be "primary". Options include "primary" and "secondary".'
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.ContainerClient.primary_endpoint
   name: primary_endpoint
   summary: The full primary endpoint URL.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.ContainerClient.primary_hostname
   name: primary_hostname
   summary: The hostname of the primary endpoint.
+  return:
+    types:
+    - <xref:str>
 - uid: azure.storage.blob.aio.ContainerClient.secondary_endpoint
   name: secondary_endpoint
   summary: 'The full secondary endpoint URL if configured.
@@ -1683,6 +1733,9 @@ attributes:
     hostname, use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:str>
   exceptions:
   - type: ValueError
 - uid: azure.storage.blob.aio.ContainerClient.secondary_hostname
@@ -1694,6 +1747,9 @@ attributes:
     use the optional
 
     *secondary_hostname* keyword argument on instantiation.'
+  return:
+    types:
+    - <xref:typing.Optional>[<xref:str>]
 - uid: azure.storage.blob.aio.ContainerClient.url
   name: url
   summary: 'The full endpoint URL to this entity, including SAS token if used.

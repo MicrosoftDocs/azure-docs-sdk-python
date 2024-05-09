@@ -1,0 +1,45 @@
+### YamlMime:PythonClass
+uid: azure.ai.ml.sweep.RandomSamplingAlgorithm
+name: RandomSamplingAlgorithm
+fullName: azure.ai.ml.sweep.RandomSamplingAlgorithm
+module: azure.ai.ml.sweep
+inheritances:
+- azure.ai.ml.entities._job.sweep.sampling_algorithm.SamplingAlgorithm
+summary: Random Sampling Algorithm.
+constructor:
+  syntax: 'RandomSamplingAlgorithm(*, rule: str | None = None, seed: int | None =
+    None, logbase: float | str | None = None)'
+  keywordOnlyParameters:
+  - name: rule
+    description: 'The specific type of random algorithm. Accepted values are: "random"
+      and "sobol".'
+  - name: seed
+    description: The seed for random number generation.
+    types:
+    - <xref:int>
+  - name: logbase
+    description: 'A positive number or the number "e" in string format to be used
+      as the base for log
+
+      based random sampling.'
+    types:
+    - <xref:typing.Union>[<xref:float>, <xref:str>]
+examples:
+- "Assigning a random sampling algorithm for a SweepJob<!--[!code-python[Main](les\\\
+  ml_samples_sweep_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
+  C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+  \\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.16.0b1\\\\samples\\\\ml_samples_sweep_configurations.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml.entities\
+  \ import CommandJob\n   from azure.ai.ml.sweep import RandomSamplingAlgorithm, SweepJob,\
+  \ SweepJobLimits\n\n   command_job = CommandJob(\n       inputs=dict(kernel=\"linear\"\
+  , penalty=1.0),\n       compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
+  ,\n       code=\"./scripts\",\n       command=\"python scripts/train.py --kernel\
+  \ $kernel --penalty $penalty\",\n       experiment_name=\"sklearn-iris-flowers\"\
+  ,\n   )\n\n   sweep = SweepJob(\n       sampling_algorithm=RandomSamplingAlgorithm(seed=999,\
+  \ rule=\"sobol\", logbase=\"e\"),\n       trial=command_job,\n       search_space={\"\
+  ss\": Choice(type=\"choice\", values=[{\"space1\": True}, {\"space2\": True}])},\n\
+  \       inputs={\"input1\": {\"file\": \"top_level.csv\", \"mode\": \"ro_mount\"\
+  }},\n       compute=\"top_level\",\n       limits=SweepJobLimits(trial_timeout=600),\n\
+  \   )\n\n   ````\n"

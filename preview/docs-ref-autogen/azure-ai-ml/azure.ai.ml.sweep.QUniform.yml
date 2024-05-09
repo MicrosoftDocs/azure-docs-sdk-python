@@ -1,0 +1,47 @@
+### YamlMime:PythonClass
+uid: azure.ai.ml.sweep.QUniform
+name: QUniform
+fullName: azure.ai.ml.sweep.QUniform
+module: azure.ai.ml.sweep
+inheritances:
+- azure.ai.ml.entities._job.sweep.search_space.Uniform
+summary: QUniform distribution configuration.
+constructor:
+  syntax: 'QUniform(min_value: int | float | None = None, max_value: int | float |
+    None = None, q: int | None = None, **kwargs: Any)'
+  parameters:
+  - name: min_value
+    description: Minimum value of the distribution.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:int>, <xref:float>]]
+  - name: max_value
+    description: Maximum value of the distribution.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:int>, <xref:float>]]
+  - name: q
+    description: Quantization factor.
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:int>]
+examples:
+- "Configuring QUniform distributions for a hyperparameter sweep on a Command job.<!--[!code-python[Main](les\\\
+  ml_samples_sweep_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
+  classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
+  C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+  \\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-ml-1.16.0b1\\\\samples\\\\ml_samples_sweep_configurations.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
+  \ import command\n\n   job = command(\n       inputs=dict(kernel=\"linear\", penalty=1.0),\n\
+  \       compute=cpu_cluster,\n       environment=f\"{job_env.name}:{job_env.version}\"\
+  ,\n       code=\"./scripts\",\n       command=\"python scripts/train.py --kernel\
+  \ $kernel --penalty $penalty\",\n       experiment_name=\"sklearn-iris-flowers\"\
+  ,\n   )\n\n   # we can reuse an existing Command Job as a function that we can apply\
+  \ inputs to for the sweep configurations\n   from azure.ai.ml.sweep import QUniform,\
+  \ TruncationSelectionPolicy, Uniform\n\n   job_for_sweep = job(\n       kernel=Uniform(min_value=0.0005,\
+  \ max_value=0.005),\n       penalty=QUniform(min_value=0.05, max_value=0.75, q=1),\n\
+  \   )\n\n   sweep_job = job_for_sweep.sweep(\n       sampling_algorithm=\"random\"\
+  ,\n       primary_metric=\"best_val_acc\",\n       goal=\"Maximize\",\n       max_total_trials=8,\n\
+  \       max_concurrent_trials=4,\n       early_termination_policy=TruncationSelectionPolicy(delay_evaluation=5,\
+  \ evaluation_interval=2),\n   )\n\n   ````\n"
