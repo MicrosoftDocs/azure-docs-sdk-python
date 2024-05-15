@@ -185,7 +185,7 @@ functions:
     ml_samples_command_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [],\
     \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_command_configurations.py\"\
+    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_command_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import Input, Output, command\n\n   train_func = command(\n\
@@ -199,7 +199,8 @@ functions:
   name: load_batch_deployment
   summary: Construct a batch deployment object from yaml file.
   signature: 'load_batch_deployment(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> BatchDeployment'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    BatchDeployment'
   parameters:
   - name: source
     description: 'The local yaml source of a batch deployment object. Must be either
@@ -242,7 +243,8 @@ functions:
   name: load_batch_endpoint
   summary: Construct a batch endpoint object from yaml file.
   signature: 'load_batch_endpoint(source: str | PathLike | IO, relative_origin: str
-    | None = None, **kwargs: Any) -> BatchEndpoint'
+    | None = None, *, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    BatchEndpoint'
   parameters:
   - name: source
     description: 'The local yaml source of a batch endpoint object. Must be either
@@ -286,7 +288,8 @@ functions:
   name: load_component
   summary: Load component from local or remote to a component function.
   signature: 'load_component(source: PathLike | str | IO | None = None, *, relative_origin:
-    str | None = None, **kwargs: Any) -> CommandComponent | ParallelComponent | PipelineComponent'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    CommandComponent | ParallelComponent | PipelineComponent'
   parameters:
   - name: source
     description: 'The local yaml source of a component. Must be either a
@@ -331,7 +334,7 @@ functions:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_component_configurations.py\"\
+    10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_component_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import load_component\n\n   component = load_component(\n\
@@ -372,11 +375,9 @@ functions:
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: params_override
-    description: 'Fields to overwrite on top of the yaml file.
-
-      Format is [{"field1": "value1"}, {"field2": "value2"}]'
+    description: Optional parameters to override in the loaded yaml.
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:typing.Dict>]]
+    - <xref:typing.Optional>[<xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:str>]]
   return:
     description: Loaded compute object.
     types:
@@ -386,17 +387,67 @@ functions:
     ml_samples_compute.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_compute.py\", \"xml:space\"\
+    \\10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_compute.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
     \ import load_compute\n\n   compute = load_compute(\n       \"../tests/test_configs/compute/compute-vm.yaml\"\
     ,\n       params_override=[{\"description\": \"loaded from compute-vm.yaml\"}],\n\
     \   )\n\n   ````\n"
+- uid: azure.ai.ml.load_connection
+  name: load_connection
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Construct a connection object from yaml file.'
+  signature: 'load_connection(source: str | PathLike | IO, *, relative_origin: str
+    | None = None, params_override: List[Dict] | None = None, **kwargs: Any) -> WorkspaceConnection'
+  parameters:
+  - name: source
+    description: 'The local yaml source of a connection object. Must be either a
+
+      path to a local file, or an already-open file.
+
+      If the source is a path, it will be open and read.
+
+      An exception is raised if the file does not exist.
+
+      If the source is an open file, the file will be read directly,
+
+      and an exception is raised if the file is not readable.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:io.TextIOWrapper>]
+  keywordOnlyParameters:
+  - name: relative_origin
+    description: 'The origin to be used when deducing
+
+      the relative locations of files referenced in the parsed yaml.
+
+      Defaults to the inputted source''s directory if it is a file or file path input.
+
+      Defaults to "./" if the source is a stream input with no name value.'
+    types:
+    - <xref:str>
+  - name: params_override
+    description: 'Fields to overwrite on top of the yaml file.
+
+      Format is [{"field1": "value1"}, {"field2": "value2"}]'
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>]
+  return:
+    description: Constructed connection object.
+    types:
+    - <xref:Connection>
 - uid: azure.ai.ml.load_data
   name: load_data
   summary: Construct a data object from yaml file.
   signature: 'load_data(source: str | PathLike | IO, *, relative_origin: str | None
-    = None, **kwargs: Any) -> Data'
+    = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Data'
   parameters:
   - name: source
     description: 'The local yaml source of a data object. Must be either a
@@ -443,7 +494,7 @@ functions:
   name: load_datastore
   summary: Construct a datastore object from a yaml file.
   signature: 'load_datastore(source: str | PathLike | IO, *, relative_origin: str
-    | None = None, **kwargs: Any) -> Datastore'
+    | None = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Datastore'
   parameters:
   - name: source
     description: 'The local yaml source of a datastore. Must be either a
@@ -490,7 +541,7 @@ functions:
   name: load_environment
   summary: Construct a environment object from yaml file.
   signature: 'load_environment(source: str | PathLike | IO, *, relative_origin: str
-    | None = None, **kwargs: Any) -> Environment'
+    | None = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Environment'
   parameters:
   - name: source
     description: 'The local yaml source of an environment. Must be either a
@@ -537,7 +588,7 @@ functions:
   name: load_feature_set
   summary: Construct a FeatureSet object from yaml file.
   signature: 'load_feature_set(source: str | PathLike | IO, *, relative_origin: str
-    | None = None, **kwargs: Any) -> FeatureSet'
+    | None = None, params_override: List[Dict] | None = None, **kwargs: Any) -> FeatureSet'
   parameters:
   - name: source
     description: 'The local yaml source of a FeatureSet object. Must be either a
@@ -584,7 +635,8 @@ functions:
   name: load_feature_store
   summary: Load a feature store object from a yaml file.
   signature: 'load_feature_store(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> FeatureStore'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    FeatureStore'
   parameters:
   - name: source
     description: 'The local yaml source of a feature store. Must be either a
@@ -626,7 +678,8 @@ functions:
   name: load_feature_store_entity
   summary: Construct a FeatureStoreEntity object from yaml file.
   signature: 'load_feature_store_entity(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> FeatureStoreEntity'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    FeatureStoreEntity'
   parameters:
   - name: source
     description: 'The local yaml source of a FeatureStoreEntity object. Must be either
@@ -670,11 +723,63 @@ functions:
     description: 'Raised if FeatureStoreEntity cannot be successfully validated.
 
       Details will be provided in the error message.'
+- uid: azure.ai.ml.load_index
+  name: load_index
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    Constructs a Index object from a YAML file.'
+  signature: 'load_index(source: str | PathLike | IO, *, relative_origin: str | None
+    = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Index'
+  parameters:
+  - name: source
+    description: 'A path to a local YAML file or an already-open file object containing
+      an index configuration.
+
+      If the source is a path, it will be opened and read. If the source is an open
+      file, the file will be read
+
+      directly.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:io.TextIOWrapper>]
+  keywordOnlyParameters:
+  - name: relative_origin
+    description: 'The root directory for the YAML. This directory will be used as
+      the origin for deducing
+
+      the relative locations of files referenced in the parsed YAML. Defaults to the
+      same directory as source if
+
+      source is a file or file path input. Defaults to "./" if the source is a stream
+      input with no name value.'
+    types:
+    - <xref:typing.Optional>[<xref:str>]
+  - name: params_override
+    description: 'Fields to overwrite on top of the yaml file.
+
+      Format is [{"field1": "value1"}, {"field2": "value2"}]'
+    types:
+    - <xref:typing.List>[<xref:typing.Dict>]
+  return:
+    description: A loaded Index object.
+    types:
+    - <xref:azure.ai.ml.entities.Index>
+  exceptions:
+  - type: azure.ai.ml.exceptions.ValidationException
+    description: 'Raised if Index cannot be successfully validated.
+
+      Details will be provided in the error message.'
 - uid: azure.ai.ml.load_job
   name: load_job
   summary: Constructs a Job object from a YAML file.
   signature: 'load_job(source: str | PathLike | IO, *, relative_origin: str | None
-    = None, **kwargs: Any) -> Job'
+    = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Job'
   parameters:
   - name: source
     description: 'A path to a local YAML file or an already-open file object containing
@@ -700,9 +805,11 @@ functions:
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: params_override
-    description: Parameter fields to overwrite values in the YAML file.
+    description: 'Fields to overwrite on top of the yaml file.
+
+      Format is [{"field1": "value1"}, {"field2": "value2"}]'
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:dict>]]
+    - <xref:typing.List>[<xref:typing.Dict>]
   return:
     description: A loaded Job object.
     types:
@@ -717,16 +824,29 @@ functions:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\": \"\
+    10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\": \"\
     preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
     linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
     \ import load_job\n\n   job = load_job(source=\"./sdk/ml/azure-ai-ml/tests/test_configs/command_job/command_job_test_local_env.yml\"\
     )\n\n   ````\n"
+- uid: azure.ai.ml.load_marketplace_subscription
+  name: load_marketplace_subscription
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    >'
+  signature: 'load_marketplace_subscription(source: str | PathLike | IO, *, relative_origin:
+    str | None = None, **kwargs: Any) -> MarketplaceSubscription'
 - uid: azure.ai.ml.load_model
   name: load_model
   summary: Constructs a Model object from a YAML file.
   signature: 'load_model(source: str | PathLike | IO, *, relative_origin: str | None
-    = None, **kwargs: Any) -> Model'
+    = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Model'
   parameters:
   - name: source
     description: 'A path to a local YAML file or an already-open file object containing
@@ -752,9 +872,11 @@ functions:
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: params_override
-    description: Parameter fields to overwrite values in the YAML file.
+    description: 'Fields to overwrite on top of the yaml file.
+
+      Format is [{"field1": "value1"}, {"field2": "value2"}]'
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:dict>]]
+    - <xref:typing.List>[<xref:typing.Dict>]
   return:
     description: A loaded Model object.
     types:
@@ -769,7 +891,7 @@ functions:
     ml_samples_misc.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
+    \\10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
     \ import load_model\n\n   model = load_model(\n       source=\"./sdk/ml/azure-ai-ml/tests/test_configs/model/model_with_stage.yml\"\
@@ -787,7 +909,8 @@ functions:
 
     Constructs a ModelPackage object from a YAML file.'
   signature: 'load_model_package(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> ModelPackage'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    ModelPackage'
   parameters:
   - name: source
     description: 'A path to a local YAML file or an already-open file object containing
@@ -813,9 +936,11 @@ functions:
     types:
     - <xref:typing.Optional>[<xref:str>]
   - name: params_override
-    description: Parameter fields to overwrite values in the YAML file.
+    description: 'Fields to overwrite on top of the yaml file.
+
+      Format is [{"field1": "value1"}, {"field2": "value2"}]'
     types:
-    - <xref:typing.Optional>[<xref:typing.List>[<xref:dict>]]
+    - <xref:typing.List>[<xref:typing.Dict>]
   return:
     description: A loaded ModelPackage object.
     types:
@@ -830,7 +955,7 @@ functions:
     ml_samples_misc.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
     \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
+    \\10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_misc.py\", \"xml:space\":\
     \ \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
     \ import load_model_package\n\n   model_package = load_model_package(\n      \
@@ -840,7 +965,8 @@ functions:
   name: load_online_deployment
   summary: Construct a online deployment object from yaml file.
   signature: 'load_online_deployment(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> OnlineDeployment'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    OnlineDeployment'
   parameters:
   - name: source
     description: 'The local yaml source of an online deployment object. Must be either
@@ -888,7 +1014,8 @@ functions:
   name: load_online_endpoint
   summary: Construct a online endpoint object from yaml file.
   signature: 'load_online_endpoint(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> OnlineEndpoint'
+    str | None = None, params_override: List[Dict] | None = None, **kwargs: Any) ->
+    OnlineEndpoint'
   parameters:
   - name: source
     description: 'The local yaml source of an online endpoint object. Must be either
@@ -936,7 +1063,7 @@ functions:
   name: load_registry
   summary: Load a registry object from a yaml file.
   signature: 'load_registry(source: str | PathLike | IO, *, relative_origin: str |
-    None = None, **kwargs: Any) -> Registry'
+    None = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Registry'
   parameters:
   - name: source
     description: 'The local yaml source of a registry. Must be either a
@@ -974,11 +1101,26 @@ functions:
     description: Loaded registry object.
     types:
     - <xref:azure.ai.ml.entities.Registry>
+- uid: azure.ai.ml.load_serverless_endpoint
+  name: load_serverless_endpoint
+  summary: '> [!NOTE]
+
+    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+    for more information.
+
+    >
+
+
+    >'
+  signature: 'load_serverless_endpoint(source: str | PathLike | IO, *, relative_origin:
+    str | None = None, **kwargs: Any) -> ServerlessEndpoint'
 - uid: azure.ai.ml.load_workspace
   name: load_workspace
-  summary: Load a workspace object from a yaml file.
+  summary: 'Load a workspace object from a yaml file. This includes workspace sub-classes
+
+    like hubs and projects.'
   signature: 'load_workspace(source: str | PathLike | IO, *, relative_origin: str
-    | None = None, **kwargs: Any) -> Workspace'
+    | None = None, params_override: List[Dict] | None = None, **kwargs: Any) -> Workspace'
   parameters:
   - name: source
     description: 'The local yaml source of a workspace. Must be either a
@@ -1021,7 +1163,7 @@ functions:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
+    10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_workspace.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.ml\
     \ import load_workspace\n\n   ws = load_workspace(\n       \"../tests/test_configs/workspace/workspace_min.yaml\"\
@@ -1029,13 +1171,13 @@ functions:
     }],\n   )\n\n   ````\n"
 - uid: azure.ai.ml.load_workspace_connection
   name: load_workspace_connection
-  summary: Construct a workspace connection object from yaml file.
+  summary: Deprecated - use 'load_connection' instead. Construct a connection object
+    from yaml file.
   signature: 'load_workspace_connection(source: str | PathLike | IO, *, relative_origin:
     str | None = None, **kwargs: Any) -> WorkspaceConnection'
   parameters:
   - name: source
-    description: 'The local yaml source of a workspace connection object. Must be
-      either a
+    description: 'The local yaml source of a connection object. Must be either a
 
       path to a local file, or an already-open file.
 
@@ -1060,88 +1202,10 @@ functions:
       Defaults to "./" if the source is a stream input with no name value.'
     types:
     - <xref:str>
-  - name: params_override
-    description: 'Fields to overwrite on top of the yaml file.
-
-      Format is [{"field1": "value1"}, {"field2": "value2"}]'
-    types:
-    - <xref:typing.List>[<xref:typing.Dict>]
   return:
-    description: Constructed workspace connection object.
+    description: Constructed connection object.
     types:
-    - <xref:azure.ai.ml.entities.WorkspaceConnection>
-  examples:
-  - "Loading a Workspace Connection from a YAML config file.<!--[!code-python[Main](les\\\
-    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_workspace.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.ai.ml import load_workspace_connection\n\n   wps_connection =\
-    \ load_workspace_connection(\n       source=\"../tests/test_configs/workspace_connection/snowflake_user_pwd.yaml\"\
-    \n   )\n\n   ````\n"
-- uid: azure.ai.ml.load_workspace_hub
-  name: load_workspace_hub
-  summary: '> [!NOTE]
-
-    > This is an experimental method, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
-    for more information.
-
-    >
-
-
-    Load a WorkspaceHub object from a yaml file.'
-  signature: 'load_workspace_hub(source: str | PathLike | IO, *, relative_origin:
-    str | None = None, **kwargs: Any) -> WorkspaceHub'
-  parameters:
-  - name: source
-    description: 'The local yaml source of a WorkspaceHub. Must be either a
-
-      path to a local file, or an already-open file.
-
-      If the source is a path, it will be open and read.
-
-      An exception is raised if the file does not exist.
-
-      If the source is an open file, the file will be read directly,
-
-      and an exception is raised if the file is not readable.'
-    isRequired: true
-    types:
-    - <xref:typing.Union>[<xref:PathLike>, <xref:str>, <xref:io.TextIOWrapper>]
-  keywordOnlyParameters:
-  - name: relative_origin
-    description: 'The origin to be used when deducing
-
-      the relative locations of files referenced in the parsed yaml.
-
-      Defaults to the inputted source''s directory if it is a file or file path input.
-
-      Defaults to "./" if the source is a stream input with no name value.'
-    types:
-    - <xref:str>
-  - name: params_override
-    description: 'Fields to overwrite on top of the yaml file.
-
-      Format is [{"field1": "value1"}, {"field2": "value2"}]'
-    types:
-    - <xref:typing.List>[<xref:typing.Dict>]
-  return:
-    description: Loaded WorkspaceHub object.
-    types:
-    - <xref:azure.ai.ml.entities.WorkspaceHub>
-  examples:
-  - "Loading a Workspace Hub from a YAML config file.<!--[!code-python[Main](les\\\
-    ml_samples_workspace.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_workspace.py\"\
-    , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
-    highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.ai.ml import load_workspace_hub\n\n   hub = load_workspace_hub(\n\
-    \       \"../tests/test_configs/workspace/workspacehub_min.yaml\",\n       params_override=[{\"\
-    description\": \"loaded from workspacehub_min.yaml\"}],\n   )\n\n   ````\n"
+    - <xref:Connection>
 - uid: azure.ai.ml.spark
   name: spark
   summary: Creates a Spark object which can be used inside a dsl.pipeline function
@@ -1310,7 +1374,7 @@ functions:
     ml_samples_spark_configurations.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
     classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\":\
     \ \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.15.0\\\\samples\\\\ml_samples_spark_configurations.py\"\
+    \\py2docfx\\\\dist_temp\\\\10\\\\azure-ai-ml-1.16.0\\\\samples\\\\ml_samples_spark_configurations.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.ai.ml import Input, Output, dsl, spark\n   from azure.ai.ml.constants\
