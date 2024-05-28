@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-selfhelp, selfhelp
-ms.date: 04/24/2024
+ms.date: 05/28/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: selfhelp
