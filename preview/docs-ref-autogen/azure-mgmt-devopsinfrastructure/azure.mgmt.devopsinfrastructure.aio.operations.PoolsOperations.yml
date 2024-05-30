@@ -1,0 +1,769 @@
+### YamlMime:PythonClass
+uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations
+name: PoolsOperations
+fullName: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations
+module: azure.mgmt.devopsinfrastructure.aio.operations
+inheritances:
+- builtins.object
+summary: "> [!WARNING]\n> DO NOT instantiate this class directly.\n>\n> \n>\n> Instead,\
+  \ you should access the following operations through\n>\n> <xref:azure.mgmt.devopsinfrastructure.aio.DevOpsInfrastructureMgmtClient>'s\n\
+  >\n> <xref:pools> attribute.\n>"
+constructor:
+  syntax: PoolsOperations(*args, **kwargs)
+methods:
+- uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations.begin_create_or_update
+  name: begin_create_or_update
+  summary: Create a Pool.
+  signature: 'async begin_create_or_update(resource_group_name: str, pool_name: str,
+    resource: _models.Pool, *, content_type: str = ''application/json'', **kwargs:
+    Any) -> AsyncLROPoller[_models.Pool]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: pool_name
+    description: Name of the pool. It needs to be globally unique. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: resource
+    description: 'Resource create parameters. Is one of the following types: Pool,
+      JSON,
+
+      IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.devopsinfrastructure.models.Pool>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of AsyncLROPoller that returns Pool. The Pool is compatible
+      with
+
+      MutableMapping'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.devopsinfrastructure.models.Pool>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The input is polymorphic. The following are possible polymorphic inputs\
+    \ based off\n     discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"AzureDevOps\":\n   organization_profile = {\n       \"kind\": \"AzureDevOps\"\
+    ,\n       \"organizations\": [\n           {\n               \"url\": \"str\"\
+    ,  # The Azure DevOps organization URL in which\n                 the pool should\
+    \ be created. Required.\n               \"parallelism\": 0,  # Optional. How many\
+    \ machines can be\n                 created at maximum in this organization out\
+    \ of the maximumConcurrency of\n                 the pool.\n               \"\
+    projects\": [\n                   \"str\"  # Optional. Optional list of projects\
+    \ in which\n                     the pool should be created.\n               ]\n\
+    \           }\n       ],\n       \"permissionProfile\": {\n           \"kind\"\
+    : \"str\",  # Determines who has admin permissions to the Azure\n            \
+    \ DevOps pool. Required. Known values are: \"Inherit\", \"CreatorOnly\", and\n\
+    \             \"SpecificAccounts\".\n           \"groups\": [\n              \
+    \ \"str\"  # Optional. Group email addresses.\n           ],\n           \"users\"\
+    : [\n               \"str\"  # Optional. User email addresses.\n           ]\n\
+    \       }\n   }\n\n   # JSON input template for discriminator value \"GitHub\"\
+    :\n   organization_profile = {\n       \"kind\": \"GitHub\",\n       \"organizations\"\
+    : [\n           {\n               \"url\": \"str\",  # The GitHub organization\
+    \ URL in which the\n                 pool should be created. Required.\n     \
+    \          \"repositories\": [\n                   \"str\"  # Optional. Optional\
+    \ list of repositories in\n                     which the pool should be created.\n\
+    \               ]\n           }\n       ]\n   }\n\n   # JSON input template for\
+    \ discriminator value \"Stateful\":\n   agent_profile = {\n       \"kind\": \"\
+    Stateful\",\n       \"gracePeriodTimeSpan\": \"str\",  # Optional. How long should\
+    \ the machine be\n         kept around after it ran a workload when there are\
+    \ no stand-by agents. The\n         maximum is one week.\n       \"maxAgentLifetime\"\
+    : \"str\",  # Optional. How long should stateful machines be\n         kept around.\
+    \ The maximum is one week.\n       \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\"\
+    : resource_predictions_profile\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Automatic\":\n   resource_predictions_profile = {\n       \"kind\":\
+    \ \"Automatic\",\n       \"predictionPreference\": \"str\"  # Optional. Determines\
+    \ the balance between\n         cost and performance. Known values are: \"Balanced\"\
+    , \"MostCostEffective\",\n         \"MoreCostEffective\", \"MorePerformance\"\
+    , and \"BestPerformance\".\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Manual\":\n   resource_predictions_profile = {\n       \"kind\": \"\
+    Manual\"\n   }\n\n   # JSON input template you can fill out and use as your body\
+    \ input.\n   resource = {\n       \"location\": \"str\",  # The geo-location where\
+    \ the resource lives. Required.\n       \"id\": \"str\",  # Optional. Fully qualified\
+    \ resource ID for the resource. Ex -\n         /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.\n\
+    \       \"identity\": {\n           \"type\": \"str\",  # The type of managed\
+    \ identity assigned to this\n             resource. Required. Known values are:\
+    \ \"None\", \"SystemAssigned\",\n             \"UserAssigned\", and \"SystemAssigned,\
+    \ UserAssigned\".\n           \"principalId\": \"str\",  # Optional. The active\
+    \ directory identifier of\n             this principal.\n           \"tenantId\"\
+    : \"str\",  # Optional. The Active Directory tenant id of the\n             principal.\n\
+    \           \"userAssignedIdentities\": {\n               \"str\": {\n       \
+    \            \"clientId\": \"str\",  # Optional. The active directory\n      \
+    \               client identifier for this principal.\n                   \"principalId\"\
+    : \"str\"  # Optional. The active\n                     directory identifier for\
+    \ this principal.\n               }\n           }\n       },\n       \"name\"\
+    : \"str\",  # Optional. The name of the resource.\n       \"properties\": {\n\
+    \           \"agentProfile\": agent_profile,\n           \"devCenterProjectResourceId\"\
+    : \"str\",  # The resource id of the\n             DevCenter Project the pool\
+    \ belongs to. Required.\n           \"fabricProfile\": fabric_profile,\n     \
+    \      \"maximumConcurrency\": 0,  # Defines how many resources can there be\n\
+    \             created at any given time. Required.\n           \"organizationProfile\"\
+    : organization_profile,\n           \"provisioningState\": \"str\"  # Optional.\
+    \ The status of the current\n             operation. Known values are: \"Succeeded\"\
+    , \"Failed\", \"Canceled\",\n             \"Provisioning\", \"Updating\", \"Deleting\"\
+    , and \"Accepted\".\n       },\n       \"systemData\": {\n           \"createdAt\"\
+    : \"2020-02-20\",  # Optional. The type of identity that\n             created\
+    \ the resource.\n           \"createdBy\": \"str\",  # Optional. The identity\
+    \ that created the\n             resource.\n           \"createdByType\": \"str\"\
+    ,  # Optional. The type of identity that\n             created the resource. Known\
+    \ values are: \"User\", \"Application\",\n             \"ManagedIdentity\", and\
+    \ \"Key\".\n           \"lastModifiedAt\": \"2020-02-20\",  # Optional. The timestamp\
+    \ of\n             resource last modification (UTC).\n           \"lastModifiedBy\"\
+    : \"str\",  # Optional. The identity that last modified\n             the resource.\n\
+    \           \"lastModifiedByType\": \"str\"  # Optional. The type of identity\
+    \ that\n             last modified the resource. Known values are: \"User\", \"\
+    Application\",\n             \"ManagedIdentity\", and \"Key\".\n       },\n  \
+    \     \"tags\": {\n           \"str\": \"str\"  # Optional. Resource tags.\n \
+    \      },\n       \"type\": \"str\"  # Optional. The type of the resource. E.g.\n\
+    \         \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\"\
+    .\n   }\n\n   # The response is polymorphic. The following are possible polymorphic\
+    \ responses based\n     off discriminator \"kind\":\n\n   # JSON input template\
+    \ for discriminator value \"AzureDevOps\":\n   organization_profile = {\n    \
+    \   \"kind\": \"AzureDevOps\",\n       \"organizations\": [\n           {\n  \
+    \             \"url\": \"str\",  # The Azure DevOps organization URL in which\n\
+    \                 the pool should be created. Required.\n               \"parallelism\"\
+    : 0,  # Optional. How many machines can be\n                 created at maximum\
+    \ in this organization out of the maximumConcurrency of\n                 the\
+    \ pool.\n               \"projects\": [\n                   \"str\"  # Optional.\
+    \ Optional list of projects in which\n                     the pool should be\
+    \ created.\n               ]\n           }\n       ],\n       \"permissionProfile\"\
+    : {\n           \"kind\": \"str\",  # Determines who has admin permissions to\
+    \ the Azure\n             DevOps pool. Required. Known values are: \"Inherit\"\
+    , \"CreatorOnly\", and\n             \"SpecificAccounts\".\n           \"groups\"\
+    : [\n               \"str\"  # Optional. Group email addresses.\n           ],\n\
+    \           \"users\": [\n               \"str\"  # Optional. User email addresses.\n\
+    \           ]\n       }\n   }\n\n   # JSON input template for discriminator value\
+    \ \"GitHub\":\n   organization_profile = {\n       \"kind\": \"GitHub\",\n   \
+    \    \"organizations\": [\n           {\n               \"url\": \"str\",  # The\
+    \ GitHub organization URL in which the\n                 pool should be created.\
+    \ Required.\n               \"repositories\": [\n                   \"str\"  #\
+    \ Optional. Optional list of repositories in\n                     which the pool\
+    \ should be created.\n               ]\n           }\n       ]\n   }\n\n   # JSON\
+    \ input template for discriminator value \"Stateful\":\n   agent_profile = {\n\
+    \       \"kind\": \"Stateful\",\n       \"gracePeriodTimeSpan\": \"str\",  # Optional.\
+    \ How long should the machine be\n         kept around after it ran a workload\
+    \ when there are no stand-by agents. The\n         maximum is one week.\n    \
+    \   \"maxAgentLifetime\": \"str\",  # Optional. How long should stateful machines\
+    \ be\n         kept around. The maximum is one week.\n       \"resourcePredictions\"\
+    : {},\n       \"resourcePredictionsProfile\": resource_predictions_profile\n \
+    \  }\n\n   # JSON input template for discriminator value \"Automatic\":\n   resource_predictions_profile\
+    \ = {\n       \"kind\": \"Automatic\",\n       \"predictionPreference\": \"str\"\
+    \  # Optional. Determines the balance between\n         cost and performance.\
+    \ Known values are: \"Balanced\", \"MostCostEffective\",\n         \"MoreCostEffective\"\
+    , \"MorePerformance\", and \"BestPerformance\".\n   }\n\n   # JSON input template\
+    \ for discriminator value \"Manual\":\n   resource_predictions_profile = {\n \
+    \      \"kind\": \"Manual\"\n   }\n\n   # The response is polymorphic. The following\
+    \ are possible polymorphic responses based\n     off discriminator \"kind\":\n\
+    \n   # JSON input template for discriminator value \"AzureDevOps\":\n   organization_profile\
+    \ = {\n       \"kind\": \"AzureDevOps\",\n       \"organizations\": [\n      \
+    \     {\n               \"url\": \"str\",  # The Azure DevOps organization URL\
+    \ in which\n                 the pool should be created. Required.\n         \
+    \      \"parallelism\": 0,  # Optional. How many machines can be\n           \
+    \      created at maximum in this organization out of the maximumConcurrency of\n\
+    \                 the pool.\n               \"projects\": [\n                \
+    \   \"str\"  # Optional. Optional list of projects in which\n                \
+    \     the pool should be created.\n               ]\n           }\n       ],\n\
+    \       \"permissionProfile\": {\n           \"kind\": \"str\",  # Determines\
+    \ who has admin permissions to the Azure\n             DevOps pool. Required.\
+    \ Known values are: \"Inherit\", \"CreatorOnly\", and\n             \"SpecificAccounts\"\
+    .\n           \"groups\": [\n               \"str\"  # Optional. Group email addresses.\n\
+    \           ],\n           \"users\": [\n               \"str\"  # Optional. User\
+    \ email addresses.\n           ]\n       }\n   }\n\n   # JSON input template for\
+    \ discriminator value \"GitHub\":\n   organization_profile = {\n       \"kind\"\
+    : \"GitHub\",\n       \"organizations\": [\n           {\n               \"url\"\
+    : \"str\",  # The GitHub organization URL in which the\n                 pool\
+    \ should be created. Required.\n               \"repositories\": [\n         \
+    \          \"str\"  # Optional. Optional list of repositories in\n           \
+    \          which the pool should be created.\n               ]\n           }\n\
+    \       ]\n   }\n\n   # JSON input template for discriminator value \"Stateful\"\
+    :\n   agent_profile = {\n       \"kind\": \"Stateful\",\n       \"gracePeriodTimeSpan\"\
+    : \"str\",  # Optional. How long should the machine be\n         kept around after\
+    \ it ran a workload when there are no stand-by agents. The\n         maximum is\
+    \ one week.\n       \"maxAgentLifetime\": \"str\",  # Optional. How long should\
+    \ stateful machines be\n         kept around. The maximum is one week.\n     \
+    \  \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\": resource_predictions_profile\n\
+    \   }\n\n   # JSON input template for discriminator value \"Automatic\":\n   resource_predictions_profile\
+    \ = {\n       \"kind\": \"Automatic\",\n       \"predictionPreference\": \"str\"\
+    \  # Optional. Determines the balance between\n         cost and performance.\
+    \ Known values are: \"Balanced\", \"MostCostEffective\",\n         \"MoreCostEffective\"\
+    , \"MorePerformance\", and \"BestPerformance\".\n   }\n\n   # JSON input template\
+    \ for discriminator value \"Manual\":\n   resource_predictions_profile = {\n \
+    \      \"kind\": \"Manual\"\n   }\n\n   # response body for status code(s): 200,\
+    \ 201\n   response == {\n       \"location\": \"str\",  # The geo-location where\
+    \ the resource lives. Required.\n       \"id\": \"str\",  # Optional. Fully qualified\
+    \ resource ID for the resource. Ex -\n         /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.\n\
+    \       \"identity\": {\n           \"type\": \"str\",  # The type of managed\
+    \ identity assigned to this\n             resource. Required. Known values are:\
+    \ \"None\", \"SystemAssigned\",\n             \"UserAssigned\", and \"SystemAssigned,\
+    \ UserAssigned\".\n           \"principalId\": \"str\",  # Optional. The active\
+    \ directory identifier of\n             this principal.\n           \"tenantId\"\
+    : \"str\",  # Optional. The Active Directory tenant id of the\n             principal.\n\
+    \           \"userAssignedIdentities\": {\n               \"str\": {\n       \
+    \            \"clientId\": \"str\",  # Optional. The active directory\n      \
+    \               client identifier for this principal.\n                   \"principalId\"\
+    : \"str\"  # Optional. The active\n                     directory identifier for\
+    \ this principal.\n               }\n           }\n       },\n       \"name\"\
+    : \"str\",  # Optional. The name of the resource.\n       \"properties\": {\n\
+    \           \"agentProfile\": agent_profile,\n           \"devCenterProjectResourceId\"\
+    : \"str\",  # The resource id of the\n             DevCenter Project the pool\
+    \ belongs to. Required.\n           \"fabricProfile\": fabric_profile,\n     \
+    \      \"maximumConcurrency\": 0,  # Defines how many resources can there be\n\
+    \             created at any given time. Required.\n           \"organizationProfile\"\
+    : organization_profile,\n           \"provisioningState\": \"str\"  # Optional.\
+    \ The status of the current\n             operation. Known values are: \"Succeeded\"\
+    , \"Failed\", \"Canceled\",\n             \"Provisioning\", \"Updating\", \"Deleting\"\
+    , and \"Accepted\".\n       },\n       \"systemData\": {\n           \"createdAt\"\
+    : \"2020-02-20\",  # Optional. The type of identity that\n             created\
+    \ the resource.\n           \"createdBy\": \"str\",  # Optional. The identity\
+    \ that created the\n             resource.\n           \"createdByType\": \"str\"\
+    ,  # Optional. The type of identity that\n             created the resource. Known\
+    \ values are: \"User\", \"Application\",\n             \"ManagedIdentity\", and\
+    \ \"Key\".\n           \"lastModifiedAt\": \"2020-02-20\",  # Optional. The timestamp\
+    \ of\n             resource last modification (UTC).\n           \"lastModifiedBy\"\
+    : \"str\",  # Optional. The identity that last modified\n             the resource.\n\
+    \           \"lastModifiedByType\": \"str\"  # Optional. The type of identity\
+    \ that\n             last modified the resource. Known values are: \"User\", \"\
+    Application\",\n             \"ManagedIdentity\", and \"Key\".\n       },\n  \
+    \     \"tags\": {\n           \"str\": \"str\"  # Optional. Resource tags.\n \
+    \      },\n       \"type\": \"str\"  # Optional. The type of the resource. E.g.\n\
+    \         \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\"\
+    .\n   }\n   ````\n"
+- uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations.begin_delete
+  name: begin_delete
+  summary: Delete a Pool.
+  signature: 'async begin_delete(resource_group_name: str, pool_name: str, **kwargs:
+    Any) -> AsyncLROPoller[None]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: pool_name
+    description: Name of the pool. It needs to be globally unique. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An instance of AsyncLROPoller that returns None
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations.begin_update
+  name: begin_update
+  summary: Update a Pool.
+  signature: 'async begin_update(resource_group_name: str, pool_name: str, properties:
+    _models.PoolUpdate, *, content_type: str = ''application/json'', **kwargs: Any)
+    -> AsyncLROPoller[_models.Pool]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: pool_name
+    description: Name of the pool. It needs to be globally unique. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: properties
+    description: 'The resource properties to be updated. Is one of the following types:
+
+      PoolUpdate, JSON, IO[bytes] Required.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.devopsinfrastructure.models.PoolUpdate>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of AsyncLROPoller that returns Pool. The Pool is compatible
+      with
+
+      MutableMapping'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.devopsinfrastructure.models.Pool>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The input is polymorphic. The following are possible polymorphic inputs\
+    \ based off\n     discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"AzureDevOps\":\n   organization_profile = {\n       \"kind\": \"AzureDevOps\"\
+    ,\n       \"organizations\": [\n           {\n               \"url\": \"str\"\
+    ,  # The Azure DevOps organization URL in which\n                 the pool should\
+    \ be created. Required.\n               \"parallelism\": 0,  # Optional. How many\
+    \ machines can be\n                 created at maximum in this organization out\
+    \ of the maximumConcurrency of\n                 the pool.\n               \"\
+    projects\": [\n                   \"str\"  # Optional. Optional list of projects\
+    \ in which\n                     the pool should be created.\n               ]\n\
+    \           }\n       ],\n       \"permissionProfile\": {\n           \"kind\"\
+    : \"str\",  # Determines who has admin permissions to the Azure\n            \
+    \ DevOps pool. Required. Known values are: \"Inherit\", \"CreatorOnly\", and\n\
+    \             \"SpecificAccounts\".\n           \"groups\": [\n              \
+    \ \"str\"  # Optional. Group email addresses.\n           ],\n           \"users\"\
+    : [\n               \"str\"  # Optional. User email addresses.\n           ]\n\
+    \       }\n   }\n\n   # JSON input template for discriminator value \"GitHub\"\
+    :\n   organization_profile = {\n       \"kind\": \"GitHub\",\n       \"organizations\"\
+    : [\n           {\n               \"url\": \"str\",  # The GitHub organization\
+    \ URL in which the\n                 pool should be created. Required.\n     \
+    \          \"repositories\": [\n                   \"str\"  # Optional. Optional\
+    \ list of repositories in\n                     which the pool should be created.\n\
+    \               ]\n           }\n       ]\n   }\n\n   # JSON input template for\
+    \ discriminator value \"Stateful\":\n   agent_profile = {\n       \"kind\": \"\
+    Stateful\",\n       \"gracePeriodTimeSpan\": \"str\",  # Optional. How long should\
+    \ the machine be\n         kept around after it ran a workload when there are\
+    \ no stand-by agents. The\n         maximum is one week.\n       \"maxAgentLifetime\"\
+    : \"str\",  # Optional. How long should stateful machines be\n         kept around.\
+    \ The maximum is one week.\n       \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\"\
+    : resource_predictions_profile\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Automatic\":\n   resource_predictions_profile = {\n       \"kind\":\
+    \ \"Automatic\",\n       \"predictionPreference\": \"str\"  # Optional. Determines\
+    \ the balance between\n         cost and performance. Known values are: \"Balanced\"\
+    , \"MostCostEffective\",\n         \"MoreCostEffective\", \"MorePerformance\"\
+    , and \"BestPerformance\".\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Manual\":\n   resource_predictions_profile = {\n       \"kind\": \"\
+    Manual\"\n   }\n\n   # JSON input template you can fill out and use as your body\
+    \ input.\n   properties = {\n       \"identity\": {\n           \"type\": \"str\"\
+    ,  # The type of managed identity assigned to this\n             resource. Required.\
+    \ Known values are: \"None\", \"SystemAssigned\",\n             \"UserAssigned\"\
+    , and \"SystemAssigned, UserAssigned\".\n           \"principalId\": \"str\",\
+    \  # Optional. The active directory identifier of\n             this principal.\n\
+    \           \"tenantId\": \"str\",  # Optional. The Active Directory tenant id\
+    \ of the\n             principal.\n           \"userAssignedIdentities\": {\n\
+    \               \"str\": {\n                   \"clientId\": \"str\",  # Optional.\
+    \ The active directory\n                     client identifier for this principal.\n\
+    \                   \"principalId\": \"str\"  # Optional. The active\n       \
+    \              directory identifier for this principal.\n               }\n  \
+    \         }\n       },\n       \"properties\": {\n           \"agentProfile\"\
+    : agent_profile,\n           \"devCenterProjectResourceId\": \"str\",  # Optional.\
+    \ The resource id of\n             the DevCenter Project the pool belongs to.\n\
+    \           \"fabricProfile\": fabric_profile,\n           \"maximumConcurrency\"\
+    : 0,  # Optional. Defines how many resources can\n             there be created\
+    \ at any given time.\n           \"organizationProfile\": organization_profile,\n\
+    \           \"provisioningState\": \"str\"  # Optional. The status of the current\n\
+    \             operation. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    ,\n             \"Provisioning\", \"Updating\", \"Deleting\", and \"Accepted\"\
+    .\n       },\n       \"tags\": {\n           \"str\": \"str\"  # Optional. Resource\
+    \ tags.\n       }\n   }\n\n   # The response is polymorphic. The following are\
+    \ possible polymorphic responses based\n     off discriminator \"kind\":\n\n \
+    \  # JSON input template for discriminator value \"AzureDevOps\":\n   organization_profile\
+    \ = {\n       \"kind\": \"AzureDevOps\",\n       \"organizations\": [\n      \
+    \     {\n               \"url\": \"str\",  # The Azure DevOps organization URL\
+    \ in which\n                 the pool should be created. Required.\n         \
+    \      \"parallelism\": 0,  # Optional. How many machines can be\n           \
+    \      created at maximum in this organization out of the maximumConcurrency of\n\
+    \                 the pool.\n               \"projects\": [\n                \
+    \   \"str\"  # Optional. Optional list of projects in which\n                \
+    \     the pool should be created.\n               ]\n           }\n       ],\n\
+    \       \"permissionProfile\": {\n           \"kind\": \"str\",  # Determines\
+    \ who has admin permissions to the Azure\n             DevOps pool. Required.\
+    \ Known values are: \"Inherit\", \"CreatorOnly\", and\n             \"SpecificAccounts\"\
+    .\n           \"groups\": [\n               \"str\"  # Optional. Group email addresses.\n\
+    \           ],\n           \"users\": [\n               \"str\"  # Optional. User\
+    \ email addresses.\n           ]\n       }\n   }\n\n   # JSON input template for\
+    \ discriminator value \"GitHub\":\n   organization_profile = {\n       \"kind\"\
+    : \"GitHub\",\n       \"organizations\": [\n           {\n               \"url\"\
+    : \"str\",  # The GitHub organization URL in which the\n                 pool\
+    \ should be created. Required.\n               \"repositories\": [\n         \
+    \          \"str\"  # Optional. Optional list of repositories in\n           \
+    \          which the pool should be created.\n               ]\n           }\n\
+    \       ]\n   }\n\n   # JSON input template for discriminator value \"Stateful\"\
+    :\n   agent_profile = {\n       \"kind\": \"Stateful\",\n       \"gracePeriodTimeSpan\"\
+    : \"str\",  # Optional. How long should the machine be\n         kept around after\
+    \ it ran a workload when there are no stand-by agents. The\n         maximum is\
+    \ one week.\n       \"maxAgentLifetime\": \"str\",  # Optional. How long should\
+    \ stateful machines be\n         kept around. The maximum is one week.\n     \
+    \  \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\": resource_predictions_profile\n\
+    \   }\n\n   # JSON input template for discriminator value \"Automatic\":\n   resource_predictions_profile\
+    \ = {\n       \"kind\": \"Automatic\",\n       \"predictionPreference\": \"str\"\
+    \  # Optional. Determines the balance between\n         cost and performance.\
+    \ Known values are: \"Balanced\", \"MostCostEffective\",\n         \"MoreCostEffective\"\
+    , \"MorePerformance\", and \"BestPerformance\".\n   }\n\n   # JSON input template\
+    \ for discriminator value \"Manual\":\n   resource_predictions_profile = {\n \
+    \      \"kind\": \"Manual\"\n   }\n\n   # The response is polymorphic. The following\
+    \ are possible polymorphic responses based\n     off discriminator \"kind\":\n\
+    \n   # JSON input template for discriminator value \"AzureDevOps\":\n   organization_profile\
+    \ = {\n       \"kind\": \"AzureDevOps\",\n       \"organizations\": [\n      \
+    \     {\n               \"url\": \"str\",  # The Azure DevOps organization URL\
+    \ in which\n                 the pool should be created. Required.\n         \
+    \      \"parallelism\": 0,  # Optional. How many machines can be\n           \
+    \      created at maximum in this organization out of the maximumConcurrency of\n\
+    \                 the pool.\n               \"projects\": [\n                \
+    \   \"str\"  # Optional. Optional list of projects in which\n                \
+    \     the pool should be created.\n               ]\n           }\n       ],\n\
+    \       \"permissionProfile\": {\n           \"kind\": \"str\",  # Determines\
+    \ who has admin permissions to the Azure\n             DevOps pool. Required.\
+    \ Known values are: \"Inherit\", \"CreatorOnly\", and\n             \"SpecificAccounts\"\
+    .\n           \"groups\": [\n               \"str\"  # Optional. Group email addresses.\n\
+    \           ],\n           \"users\": [\n               \"str\"  # Optional. User\
+    \ email addresses.\n           ]\n       }\n   }\n\n   # JSON input template for\
+    \ discriminator value \"GitHub\":\n   organization_profile = {\n       \"kind\"\
+    : \"GitHub\",\n       \"organizations\": [\n           {\n               \"url\"\
+    : \"str\",  # The GitHub organization URL in which the\n                 pool\
+    \ should be created. Required.\n               \"repositories\": [\n         \
+    \          \"str\"  # Optional. Optional list of repositories in\n           \
+    \          which the pool should be created.\n               ]\n           }\n\
+    \       ]\n   }\n\n   # JSON input template for discriminator value \"Stateful\"\
+    :\n   agent_profile = {\n       \"kind\": \"Stateful\",\n       \"gracePeriodTimeSpan\"\
+    : \"str\",  # Optional. How long should the machine be\n         kept around after\
+    \ it ran a workload when there are no stand-by agents. The\n         maximum is\
+    \ one week.\n       \"maxAgentLifetime\": \"str\",  # Optional. How long should\
+    \ stateful machines be\n         kept around. The maximum is one week.\n     \
+    \  \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\": resource_predictions_profile\n\
+    \   }\n\n   # JSON input template for discriminator value \"Automatic\":\n   resource_predictions_profile\
+    \ = {\n       \"kind\": \"Automatic\",\n       \"predictionPreference\": \"str\"\
+    \  # Optional. Determines the balance between\n         cost and performance.\
+    \ Known values are: \"Balanced\", \"MostCostEffective\",\n         \"MoreCostEffective\"\
+    , \"MorePerformance\", and \"BestPerformance\".\n   }\n\n   # JSON input template\
+    \ for discriminator value \"Manual\":\n   resource_predictions_profile = {\n \
+    \      \"kind\": \"Manual\"\n   }\n\n   # response body for status code(s): 200,\
+    \ 202\n   response == {\n       \"location\": \"str\",  # The geo-location where\
+    \ the resource lives. Required.\n       \"id\": \"str\",  # Optional. Fully qualified\
+    \ resource ID for the resource. Ex -\n         /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.\n\
+    \       \"identity\": {\n           \"type\": \"str\",  # The type of managed\
+    \ identity assigned to this\n             resource. Required. Known values are:\
+    \ \"None\", \"SystemAssigned\",\n             \"UserAssigned\", and \"SystemAssigned,\
+    \ UserAssigned\".\n           \"principalId\": \"str\",  # Optional. The active\
+    \ directory identifier of\n             this principal.\n           \"tenantId\"\
+    : \"str\",  # Optional. The Active Directory tenant id of the\n             principal.\n\
+    \           \"userAssignedIdentities\": {\n               \"str\": {\n       \
+    \            \"clientId\": \"str\",  # Optional. The active directory\n      \
+    \               client identifier for this principal.\n                   \"principalId\"\
+    : \"str\"  # Optional. The active\n                     directory identifier for\
+    \ this principal.\n               }\n           }\n       },\n       \"name\"\
+    : \"str\",  # Optional. The name of the resource.\n       \"properties\": {\n\
+    \           \"agentProfile\": agent_profile,\n           \"devCenterProjectResourceId\"\
+    : \"str\",  # The resource id of the\n             DevCenter Project the pool\
+    \ belongs to. Required.\n           \"fabricProfile\": fabric_profile,\n     \
+    \      \"maximumConcurrency\": 0,  # Defines how many resources can there be\n\
+    \             created at any given time. Required.\n           \"organizationProfile\"\
+    : organization_profile,\n           \"provisioningState\": \"str\"  # Optional.\
+    \ The status of the current\n             operation. Known values are: \"Succeeded\"\
+    , \"Failed\", \"Canceled\",\n             \"Provisioning\", \"Updating\", \"Deleting\"\
+    , and \"Accepted\".\n       },\n       \"systemData\": {\n           \"createdAt\"\
+    : \"2020-02-20\",  # Optional. The type of identity that\n             created\
+    \ the resource.\n           \"createdBy\": \"str\",  # Optional. The identity\
+    \ that created the\n             resource.\n           \"createdByType\": \"str\"\
+    ,  # Optional. The type of identity that\n             created the resource. Known\
+    \ values are: \"User\", \"Application\",\n             \"ManagedIdentity\", and\
+    \ \"Key\".\n           \"lastModifiedAt\": \"2020-02-20\",  # Optional. The timestamp\
+    \ of\n             resource last modification (UTC).\n           \"lastModifiedBy\"\
+    : \"str\",  # Optional. The identity that last modified\n             the resource.\n\
+    \           \"lastModifiedByType\": \"str\"  # Optional. The type of identity\
+    \ that\n             last modified the resource. Known values are: \"User\", \"\
+    Application\",\n             \"ManagedIdentity\", and \"Key\".\n       },\n  \
+    \     \"tags\": {\n           \"str\": \"str\"  # Optional. Resource tags.\n \
+    \      },\n       \"type\": \"str\"  # Optional. The type of the resource. E.g.\n\
+    \         \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\"\
+    .\n   }\n   ````\n"
+- uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations.get
+  name: get
+  summary: Get a Pool.
+  signature: 'async get(resource_group_name: str, pool_name: str, **kwargs: Any) ->
+    Pool'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: pool_name
+    description: Name of the pool. It needs to be globally unique. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Pool. The Pool is compatible with MutableMapping
+    types:
+    - <xref:azure.mgmt.devopsinfrastructure.models.Pool>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The response is polymorphic. The following are possible polymorphic responses\
+    \ based\n     off discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"AzureDevOps\":\n   organization_profile = {\n       \"kind\": \"AzureDevOps\"\
+    ,\n       \"organizations\": [\n           {\n               \"url\": \"str\"\
+    ,  # The Azure DevOps organization URL in which\n                 the pool should\
+    \ be created. Required.\n               \"parallelism\": 0,  # Optional. How many\
+    \ machines can be\n                 created at maximum in this organization out\
+    \ of the maximumConcurrency of\n                 the pool.\n               \"\
+    projects\": [\n                   \"str\"  # Optional. Optional list of projects\
+    \ in which\n                     the pool should be created.\n               ]\n\
+    \           }\n       ],\n       \"permissionProfile\": {\n           \"kind\"\
+    : \"str\",  # Determines who has admin permissions to the Azure\n            \
+    \ DevOps pool. Required. Known values are: \"Inherit\", \"CreatorOnly\", and\n\
+    \             \"SpecificAccounts\".\n           \"groups\": [\n              \
+    \ \"str\"  # Optional. Group email addresses.\n           ],\n           \"users\"\
+    : [\n               \"str\"  # Optional. User email addresses.\n           ]\n\
+    \       }\n   }\n\n   # JSON input template for discriminator value \"GitHub\"\
+    :\n   organization_profile = {\n       \"kind\": \"GitHub\",\n       \"organizations\"\
+    : [\n           {\n               \"url\": \"str\",  # The GitHub organization\
+    \ URL in which the\n                 pool should be created. Required.\n     \
+    \          \"repositories\": [\n                   \"str\"  # Optional. Optional\
+    \ list of repositories in\n                     which the pool should be created.\n\
+    \               ]\n           }\n       ]\n   }\n\n   # JSON input template for\
+    \ discriminator value \"Stateful\":\n   agent_profile = {\n       \"kind\": \"\
+    Stateful\",\n       \"gracePeriodTimeSpan\": \"str\",  # Optional. How long should\
+    \ the machine be\n         kept around after it ran a workload when there are\
+    \ no stand-by agents. The\n         maximum is one week.\n       \"maxAgentLifetime\"\
+    : \"str\",  # Optional. How long should stateful machines be\n         kept around.\
+    \ The maximum is one week.\n       \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\"\
+    : resource_predictions_profile\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Automatic\":\n   resource_predictions_profile = {\n       \"kind\":\
+    \ \"Automatic\",\n       \"predictionPreference\": \"str\"  # Optional. Determines\
+    \ the balance between\n         cost and performance. Known values are: \"Balanced\"\
+    , \"MostCostEffective\",\n         \"MoreCostEffective\", \"MorePerformance\"\
+    , and \"BestPerformance\".\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Manual\":\n   resource_predictions_profile = {\n       \"kind\": \"\
+    Manual\"\n   }\n\n   # response body for status code(s): 200\n   response == {\n\
+    \       \"location\": \"str\",  # The geo-location where the resource lives. Required.\n\
+    \       \"id\": \"str\",  # Optional. Fully qualified resource ID for the resource.\
+    \ Ex -\n         /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.\n\
+    \       \"identity\": {\n           \"type\": \"str\",  # The type of managed\
+    \ identity assigned to this\n             resource. Required. Known values are:\
+    \ \"None\", \"SystemAssigned\",\n             \"UserAssigned\", and \"SystemAssigned,\
+    \ UserAssigned\".\n           \"principalId\": \"str\",  # Optional. The active\
+    \ directory identifier of\n             this principal.\n           \"tenantId\"\
+    : \"str\",  # Optional. The Active Directory tenant id of the\n             principal.\n\
+    \           \"userAssignedIdentities\": {\n               \"str\": {\n       \
+    \            \"clientId\": \"str\",  # Optional. The active directory\n      \
+    \               client identifier for this principal.\n                   \"principalId\"\
+    : \"str\"  # Optional. The active\n                     directory identifier for\
+    \ this principal.\n               }\n           }\n       },\n       \"name\"\
+    : \"str\",  # Optional. The name of the resource.\n       \"properties\": {\n\
+    \           \"agentProfile\": agent_profile,\n           \"devCenterProjectResourceId\"\
+    : \"str\",  # The resource id of the\n             DevCenter Project the pool\
+    \ belongs to. Required.\n           \"fabricProfile\": fabric_profile,\n     \
+    \      \"maximumConcurrency\": 0,  # Defines how many resources can there be\n\
+    \             created at any given time. Required.\n           \"organizationProfile\"\
+    : organization_profile,\n           \"provisioningState\": \"str\"  # Optional.\
+    \ The status of the current\n             operation. Known values are: \"Succeeded\"\
+    , \"Failed\", \"Canceled\",\n             \"Provisioning\", \"Updating\", \"Deleting\"\
+    , and \"Accepted\".\n       },\n       \"systemData\": {\n           \"createdAt\"\
+    : \"2020-02-20\",  # Optional. The type of identity that\n             created\
+    \ the resource.\n           \"createdBy\": \"str\",  # Optional. The identity\
+    \ that created the\n             resource.\n           \"createdByType\": \"str\"\
+    ,  # Optional. The type of identity that\n             created the resource. Known\
+    \ values are: \"User\", \"Application\",\n             \"ManagedIdentity\", and\
+    \ \"Key\".\n           \"lastModifiedAt\": \"2020-02-20\",  # Optional. The timestamp\
+    \ of\n             resource last modification (UTC).\n           \"lastModifiedBy\"\
+    : \"str\",  # Optional. The identity that last modified\n             the resource.\n\
+    \           \"lastModifiedByType\": \"str\"  # Optional. The type of identity\
+    \ that\n             last modified the resource. Known values are: \"User\", \"\
+    Application\",\n             \"ManagedIdentity\", and \"Key\".\n       },\n  \
+    \     \"tags\": {\n           \"str\": \"str\"  # Optional. Resource tags.\n \
+    \      },\n       \"type\": \"str\"  # Optional. The type of the resource. E.g.\n\
+    \         \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\"\
+    .\n   }\n   ````\n"
+- uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations.list_by_resource_group
+  name: list_by_resource_group
+  summary: List Pool resources by resource group.
+  signature: 'list_by_resource_group(resource_group_name: str, **kwargs: Any) -> AsyncIterable[Pool]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: An iterator like instance of Pool
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.devopsinfrastructure.models.Pool>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The response is polymorphic. The following are possible polymorphic responses\
+    \ based\n     off discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"AzureDevOps\":\n   organization_profile = {\n       \"kind\": \"AzureDevOps\"\
+    ,\n       \"organizations\": [\n           {\n               \"url\": \"str\"\
+    ,  # The Azure DevOps organization URL in which\n                 the pool should\
+    \ be created. Required.\n               \"parallelism\": 0,  # Optional. How many\
+    \ machines can be\n                 created at maximum in this organization out\
+    \ of the maximumConcurrency of\n                 the pool.\n               \"\
+    projects\": [\n                   \"str\"  # Optional. Optional list of projects\
+    \ in which\n                     the pool should be created.\n               ]\n\
+    \           }\n       ],\n       \"permissionProfile\": {\n           \"kind\"\
+    : \"str\",  # Determines who has admin permissions to the Azure\n            \
+    \ DevOps pool. Required. Known values are: \"Inherit\", \"CreatorOnly\", and\n\
+    \             \"SpecificAccounts\".\n           \"groups\": [\n              \
+    \ \"str\"  # Optional. Group email addresses.\n           ],\n           \"users\"\
+    : [\n               \"str\"  # Optional. User email addresses.\n           ]\n\
+    \       }\n   }\n\n   # JSON input template for discriminator value \"GitHub\"\
+    :\n   organization_profile = {\n       \"kind\": \"GitHub\",\n       \"organizations\"\
+    : [\n           {\n               \"url\": \"str\",  # The GitHub organization\
+    \ URL in which the\n                 pool should be created. Required.\n     \
+    \          \"repositories\": [\n                   \"str\"  # Optional. Optional\
+    \ list of repositories in\n                     which the pool should be created.\n\
+    \               ]\n           }\n       ]\n   }\n\n   # JSON input template for\
+    \ discriminator value \"Stateful\":\n   agent_profile = {\n       \"kind\": \"\
+    Stateful\",\n       \"gracePeriodTimeSpan\": \"str\",  # Optional. How long should\
+    \ the machine be\n         kept around after it ran a workload when there are\
+    \ no stand-by agents. The\n         maximum is one week.\n       \"maxAgentLifetime\"\
+    : \"str\",  # Optional. How long should stateful machines be\n         kept around.\
+    \ The maximum is one week.\n       \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\"\
+    : resource_predictions_profile\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Automatic\":\n   resource_predictions_profile = {\n       \"kind\":\
+    \ \"Automatic\",\n       \"predictionPreference\": \"str\"  # Optional. Determines\
+    \ the balance between\n         cost and performance. Known values are: \"Balanced\"\
+    , \"MostCostEffective\",\n         \"MoreCostEffective\", \"MorePerformance\"\
+    , and \"BestPerformance\".\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Manual\":\n   resource_predictions_profile = {\n       \"kind\": \"\
+    Manual\"\n   }\n\n   # response body for status code(s): 200\n   response == {\n\
+    \       \"location\": \"str\",  # The geo-location where the resource lives. Required.\n\
+    \       \"id\": \"str\",  # Optional. Fully qualified resource ID for the resource.\
+    \ Ex -\n         /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.\n\
+    \       \"identity\": {\n           \"type\": \"str\",  # The type of managed\
+    \ identity assigned to this\n             resource. Required. Known values are:\
+    \ \"None\", \"SystemAssigned\",\n             \"UserAssigned\", and \"SystemAssigned,\
+    \ UserAssigned\".\n           \"principalId\": \"str\",  # Optional. The active\
+    \ directory identifier of\n             this principal.\n           \"tenantId\"\
+    : \"str\",  # Optional. The Active Directory tenant id of the\n             principal.\n\
+    \           \"userAssignedIdentities\": {\n               \"str\": {\n       \
+    \            \"clientId\": \"str\",  # Optional. The active directory\n      \
+    \               client identifier for this principal.\n                   \"principalId\"\
+    : \"str\"  # Optional. The active\n                     directory identifier for\
+    \ this principal.\n               }\n           }\n       },\n       \"name\"\
+    : \"str\",  # Optional. The name of the resource.\n       \"properties\": {\n\
+    \           \"agentProfile\": agent_profile,\n           \"devCenterProjectResourceId\"\
+    : \"str\",  # The resource id of the\n             DevCenter Project the pool\
+    \ belongs to. Required.\n           \"fabricProfile\": fabric_profile,\n     \
+    \      \"maximumConcurrency\": 0,  # Defines how many resources can there be\n\
+    \             created at any given time. Required.\n           \"organizationProfile\"\
+    : organization_profile,\n           \"provisioningState\": \"str\"  # Optional.\
+    \ The status of the current\n             operation. Known values are: \"Succeeded\"\
+    , \"Failed\", \"Canceled\",\n             \"Provisioning\", \"Updating\", \"Deleting\"\
+    , and \"Accepted\".\n       },\n       \"systemData\": {\n           \"createdAt\"\
+    : \"2020-02-20\",  # Optional. The type of identity that\n             created\
+    \ the resource.\n           \"createdBy\": \"str\",  # Optional. The identity\
+    \ that created the\n             resource.\n           \"createdByType\": \"str\"\
+    ,  # Optional. The type of identity that\n             created the resource. Known\
+    \ values are: \"User\", \"Application\",\n             \"ManagedIdentity\", and\
+    \ \"Key\".\n           \"lastModifiedAt\": \"2020-02-20\",  # Optional. The timestamp\
+    \ of\n             resource last modification (UTC).\n           \"lastModifiedBy\"\
+    : \"str\",  # Optional. The identity that last modified\n             the resource.\n\
+    \           \"lastModifiedByType\": \"str\"  # Optional. The type of identity\
+    \ that\n             last modified the resource. Known values are: \"User\", \"\
+    Application\",\n             \"ManagedIdentity\", and \"Key\".\n       },\n  \
+    \     \"tags\": {\n           \"str\": \"str\"  # Optional. Resource tags.\n \
+    \      },\n       \"type\": \"str\"  # Optional. The type of the resource. E.g.\n\
+    \         \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\"\
+    .\n   }\n   ````\n"
+- uid: azure.mgmt.devopsinfrastructure.aio.operations.PoolsOperations.list_by_subscription
+  name: list_by_subscription
+  summary: List Pool resources by subscription ID.
+  signature: 'list_by_subscription(**kwargs: Any) -> AsyncIterable[Pool]'
+  return:
+    description: An iterator like instance of Pool
+    types:
+    - <xref:azure.core.async_paging.AsyncItemPaged>[<xref:azure.mgmt.devopsinfrastructure.models.Pool>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # The response is polymorphic. The following are possible polymorphic responses\
+    \ based\n     off discriminator \"kind\":\n\n   # JSON input template for discriminator\
+    \ value \"AzureDevOps\":\n   organization_profile = {\n       \"kind\": \"AzureDevOps\"\
+    ,\n       \"organizations\": [\n           {\n               \"url\": \"str\"\
+    ,  # The Azure DevOps organization URL in which\n                 the pool should\
+    \ be created. Required.\n               \"parallelism\": 0,  # Optional. How many\
+    \ machines can be\n                 created at maximum in this organization out\
+    \ of the maximumConcurrency of\n                 the pool.\n               \"\
+    projects\": [\n                   \"str\"  # Optional. Optional list of projects\
+    \ in which\n                     the pool should be created.\n               ]\n\
+    \           }\n       ],\n       \"permissionProfile\": {\n           \"kind\"\
+    : \"str\",  # Determines who has admin permissions to the Azure\n            \
+    \ DevOps pool. Required. Known values are: \"Inherit\", \"CreatorOnly\", and\n\
+    \             \"SpecificAccounts\".\n           \"groups\": [\n              \
+    \ \"str\"  # Optional. Group email addresses.\n           ],\n           \"users\"\
+    : [\n               \"str\"  # Optional. User email addresses.\n           ]\n\
+    \       }\n   }\n\n   # JSON input template for discriminator value \"GitHub\"\
+    :\n   organization_profile = {\n       \"kind\": \"GitHub\",\n       \"organizations\"\
+    : [\n           {\n               \"url\": \"str\",  # The GitHub organization\
+    \ URL in which the\n                 pool should be created. Required.\n     \
+    \          \"repositories\": [\n                   \"str\"  # Optional. Optional\
+    \ list of repositories in\n                     which the pool should be created.\n\
+    \               ]\n           }\n       ]\n   }\n\n   # JSON input template for\
+    \ discriminator value \"Stateful\":\n   agent_profile = {\n       \"kind\": \"\
+    Stateful\",\n       \"gracePeriodTimeSpan\": \"str\",  # Optional. How long should\
+    \ the machine be\n         kept around after it ran a workload when there are\
+    \ no stand-by agents. The\n         maximum is one week.\n       \"maxAgentLifetime\"\
+    : \"str\",  # Optional. How long should stateful machines be\n         kept around.\
+    \ The maximum is one week.\n       \"resourcePredictions\": {},\n       \"resourcePredictionsProfile\"\
+    : resource_predictions_profile\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Automatic\":\n   resource_predictions_profile = {\n       \"kind\":\
+    \ \"Automatic\",\n       \"predictionPreference\": \"str\"  # Optional. Determines\
+    \ the balance between\n         cost and performance. Known values are: \"Balanced\"\
+    , \"MostCostEffective\",\n         \"MoreCostEffective\", \"MorePerformance\"\
+    , and \"BestPerformance\".\n   }\n\n   # JSON input template for discriminator\
+    \ value \"Manual\":\n   resource_predictions_profile = {\n       \"kind\": \"\
+    Manual\"\n   }\n\n   # response body for status code(s): 200\n   response == {\n\
+    \       \"location\": \"str\",  # The geo-location where the resource lives. Required.\n\
+    \       \"id\": \"str\",  # Optional. Fully qualified resource ID for the resource.\
+    \ Ex -\n         /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.\n\
+    \       \"identity\": {\n           \"type\": \"str\",  # The type of managed\
+    \ identity assigned to this\n             resource. Required. Known values are:\
+    \ \"None\", \"SystemAssigned\",\n             \"UserAssigned\", and \"SystemAssigned,\
+    \ UserAssigned\".\n           \"principalId\": \"str\",  # Optional. The active\
+    \ directory identifier of\n             this principal.\n           \"tenantId\"\
+    : \"str\",  # Optional. The Active Directory tenant id of the\n             principal.\n\
+    \           \"userAssignedIdentities\": {\n               \"str\": {\n       \
+    \            \"clientId\": \"str\",  # Optional. The active directory\n      \
+    \               client identifier for this principal.\n                   \"principalId\"\
+    : \"str\"  # Optional. The active\n                     directory identifier for\
+    \ this principal.\n               }\n           }\n       },\n       \"name\"\
+    : \"str\",  # Optional. The name of the resource.\n       \"properties\": {\n\
+    \           \"agentProfile\": agent_profile,\n           \"devCenterProjectResourceId\"\
+    : \"str\",  # The resource id of the\n             DevCenter Project the pool\
+    \ belongs to. Required.\n           \"fabricProfile\": fabric_profile,\n     \
+    \      \"maximumConcurrency\": 0,  # Defines how many resources can there be\n\
+    \             created at any given time. Required.\n           \"organizationProfile\"\
+    : organization_profile,\n           \"provisioningState\": \"str\"  # Optional.\
+    \ The status of the current\n             operation. Known values are: \"Succeeded\"\
+    , \"Failed\", \"Canceled\",\n             \"Provisioning\", \"Updating\", \"Deleting\"\
+    , and \"Accepted\".\n       },\n       \"systemData\": {\n           \"createdAt\"\
+    : \"2020-02-20\",  # Optional. The type of identity that\n             created\
+    \ the resource.\n           \"createdBy\": \"str\",  # Optional. The identity\
+    \ that created the\n             resource.\n           \"createdByType\": \"str\"\
+    ,  # Optional. The type of identity that\n             created the resource. Known\
+    \ values are: \"User\", \"Application\",\n             \"ManagedIdentity\", and\
+    \ \"Key\".\n           \"lastModifiedAt\": \"2020-02-20\",  # Optional. The timestamp\
+    \ of\n             resource last modification (UTC).\n           \"lastModifiedBy\"\
+    : \"str\",  # Optional. The identity that last modified\n             the resource.\n\
+    \           \"lastModifiedByType\": \"str\"  # Optional. The type of identity\
+    \ that\n             last modified the resource. Known values are: \"User\", \"\
+    Application\",\n             \"ManagedIdentity\", and \"Key\".\n       },\n  \
+    \     \"tags\": {\n           \"str\": \"str\"  # Optional. Resource tags.\n \
+    \      },\n       \"type\": \"str\"  # Optional. The type of the resource. E.g.\n\
+    \         \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\"\
+    .\n   }\n   ````\n"
