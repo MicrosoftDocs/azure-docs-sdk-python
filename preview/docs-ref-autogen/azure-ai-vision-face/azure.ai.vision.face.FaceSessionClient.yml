@@ -1,0 +1,811 @@
+### YamlMime:PythonClass
+uid: azure.ai.vision.face.FaceSessionClient
+name: FaceSessionClient
+fullName: azure.ai.vision.face.FaceSessionClient
+module: azure.ai.vision.face
+inheritances:
+- azure.ai.vision.face._client.FaceSessionClient
+summary: FaceSessionClient.
+constructor:
+  syntax: 'FaceSessionClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
+    **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: 'Supported Cognitive Services endpoints (protocol and hostname, for
+      example:
+
+      [https:/](https:/)/{resource-name}.cognitiveservices.azure.com). Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'Credential used to authenticate requests to the service. Is either
+      a
+
+      AzureKeyCredential type or a TokenCredential type. Required.'
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+  keywordOnlyParameters:
+  - name: api_version
+    description: 'API Version. Default value is "v1.1-preview.1". Note that overriding
+      this
+
+      default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.vision.face.models.Versions>
+methods:
+- uid: azure.ai.vision.face.FaceSessionClient.close
+  name: close
+  signature: close() -> None
+- uid: azure.ai.vision.face.FaceSessionClient.create_liveness_session
+  name: create_liveness_session
+  summary: "Create a new detect liveness session.\n\nA session is best for client\
+    \ device scenarios where developers want to authorize a client\ndevice to perform\
+    \ only a liveness detection without granting full access to their resource.\n\
+    Created sessions have a limited life span and only authorize clients to perform\
+    \ the desired\naction before access is expired.\n\nPermissions includes...\n>\n\
+    *\n\n* Ability to call /detectLiveness/singleModal for up to 3 retries. \n\n*\
+    \ A token lifetime of 10 minutes. \n\n   [!NOTE]\n   Client access can be revoked\
+    \ by deleting the session using the Delete Liveness Session\n\noperation. To retrieve\
+    \ a result, use the Get Liveness Session. To audit the individual requests\nthat\
+    \ a client has made to your resource, use the List Liveness Session Audit Entries."
+  signature: 'create_liveness_session(body: CreateLivenessSessionContent | MutableMapping[str,
+    Any] | IO[bytes], **kwargs: Any) -> CreateLivenessSessionResult'
+  parameters:
+  - name: body
+    description: 'Is one of the following types: CreateLivenessSessionContent, JSON,
+      IO[bytes]
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.vision.face.models.CreateLivenessSessionContent>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'CreateLivenessSessionResult. The CreateLivenessSessionResult is
+      compatible with
+
+      MutableMapping'
+    types:
+    - <xref:azure.ai.vision.face.models.CreateLivenessSessionResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   body\
+    \ = {\n       \"livenessOperationMode\": \"str\",  # Type of liveness mode the\
+    \ client should\n         follow. Required. Known values are: \"Passive\" and\
+    \ \"PassiveActive\".\n       \"authTokenTimeToLiveInSeconds\": 0,  # Optional.\
+    \ Seconds the session should\n         last for. Range is 60 to 86400 seconds.\
+    \ Default value is 600.\n       \"deviceCorrelationId\": \"str\",  # Optional.\
+    \ Unique Guid per each end-user\n         device. This is to provide rate limiting\
+    \ and anti-hammering. If\n         'deviceCorrelationIdSetInClient' is true in\
+    \ this request, this\n         'deviceCorrelationId' must be null.\n       \"\
+    deviceCorrelationIdSetInClient\": bool,  # Optional. Whether or not to allow\n\
+    \         client to set their own 'deviceCorrelationId' via the Vision SDK. Default\
+    \ is\n         false, and 'deviceCorrelationId' must be set in this request body.\n\
+    \       \"sendResultsToClient\": bool  # Optional. Whether or not to allow a '200\
+    \ -\n         Success' response body to be sent to the client, which may be undesirable\
+    \ for\n         security reasons. Default is false, clients will receive a '204\
+    \ - NoContent'\n         empty body response. Regardless of selection, calling\
+    \ Session GetResult will\n         always contain a response body enabling business\
+    \ logic to be implemented.\n   }\n\n   # response body for status code(s): 200\n\
+    \   response == {\n       \"authToken\": \"str\",  # Bearer token to provide authentication\
+    \ for the Vision\n         SDK running on a client application. This Bearer token\
+    \ has limited permissions to\n         perform only the required action and expires\
+    \ after the TTL time. It is also\n         auditable. Required.\n       \"sessionId\"\
+    : \"str\"  # The unique session ID of the created session. It will\n         expire\
+    \ 48 hours after it was created or may be deleted sooner using the\n         corresponding\
+    \ Session DELETE operation. Required.\n   }\n   ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.create_liveness_with_verify_session
+  name: create_liveness_with_verify_session
+  summary: "Create a new liveness session with verify. Client device submits VerifyImage\
+    \ during the\n/detectLivenessWithVerify/singleModal call.\n\nA session is best\
+    \ for client device scenarios where developers want to authorize a client\ndevice\
+    \ to perform only a liveness detection without granting full access to their resource.\n\
+    Created sessions have a limited life span and only authorize clients to perform\
+    \ the desired\naction before access is expired.\n\nPermissions includes...\n>\n\
+    *\n\n* Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.\
+    \ \n\n* A token lifetime of 10 minutes. \n\n   [!NOTE]\n\n   * Client access can\
+    \ be revoked by deleting the session using the Delete Liveness With Verify \n\n\
+    Session operation.\n   * To retrieve a result, use the Get Liveness With Verify\
+    \ Session. \n\n   * To audit the individual requests that a client has made to\
+    \ your resource, use the List \n\nLiveness With Verify Session Audit Entries.\n\
+    \nAlternative Option: Client device submits VerifyImage during the\n/detectLivenessWithVerify/singleModal\
+    \ call.\n\n   [!NOTE]\n   Extra measures should be taken to validate that the\
+    \ client is sending the expected\n\nVerifyImage."
+  signature: 'create_liveness_with_verify_session(body: _models.CreateLivenessSessionContent,
+    *, verify_image: bytes | None, content_type: str = ''application/json'', **kwargs:
+    Any) -> _models.CreateLivenessWithVerifySessionResult'
+  parameters:
+  - name: body
+    description: 'Is one of the following types: CreateLivenessSessionContent, JSON,
+      IO[bytes]
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.vision.face.models.CreateLivenessSessionContent>
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
+  - name: verify_image
+    description: 'The image for verify. If you don''t have any images to use for verification,
+
+      set it to None. Required.'
+    types:
+    - <xref:bytes>
+    - <xref:None>
+  return:
+    description: 'CreateLivenessWithVerifySessionResult. The CreateLivenessWithVerifySessionResult
+      is
+
+      compatible with MutableMapping'
+    types:
+    - <xref:azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # JSON input template you can fill out and use as your body input.\n   body\
+    \ = {\n       \"livenessOperationMode\": \"str\",  # Type of liveness mode the\
+    \ client should\n         follow. Required. \"Passive\"\n       \"authTokenTimeToLiveInSeconds\"\
+    : 0,  # Optional. Seconds the session should\n         last for. Range is 60 to\
+    \ 86400 seconds. Default value is 600.\n       \"deviceCorrelationId\": \"str\"\
+    ,  # Optional. Unique Guid per each end-user\n         device. This is to provide\
+    \ rate limiting and anti-hammering. If\n         'deviceCorrelationIdSetInClient'\
+    \ is true in this request, this\n         'deviceCorrelationId' must be null.\n\
+    \       \"deviceCorrelationIdSetInClient\": bool,  # Optional. Whether or not\
+    \ to allow\n         client to set their own 'deviceCorrelationId' via the Vision\
+    \ SDK. Default is\n         false, and 'deviceCorrelationId' must be set in this\
+    \ request body.\n       \"sendResultsToClient\": bool  # Optional. Whether or\
+    \ not to allow a '200 -\n         Success' response body to be sent to the client,\
+    \ which may be undesirable for\n         security reasons. Default is false, clients\
+    \ will receive a '204 - NoContent'\n         empty body response. Regardless of\
+    \ selection, calling Session GetResult will\n         always contain a response\
+    \ body enabling business logic to be implemented.\n   }\n\n   # response body\
+    \ for status code(s): 200\n   response == {\n       \"authToken\": \"str\",  #\
+    \ Bearer token to provide authentication for the Vision\n         SDK running\
+    \ on a client application. This Bearer token has limited permissions to\n    \
+    \     perform only the required action and expires after the TTL time. It is also\n\
+    \         auditable. Required.\n       \"sessionId\": \"str\"  # The unique session\
+    \ ID of the created session. It will\n         expire 48 hours after it was created\
+    \ or may be deleted sooner using the\n         corresponding Session DELETE operation.\
+    \ Required.\n   }\n   ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.delete_liveness_session
+  name: delete_liveness_session
+  summary: "Delete all session related information for matching the specified session\
+    \ id.\n\n   [!NOTE]\n   Deleting a session deactivates the Session Auth Token\
+    \ by blocking future API calls made with\n\nthat Auth Token. While this can be\
+    \ used to remove any access for that token, those requests\nwill still count towards\
+    \ overall resource rate limits. It's best to leverage TokenTTL to limit\nlength\
+    \ of tokens in the case that it is misused."
+  signature: 'delete_liveness_session(session_id: str, **kwargs: Any) -> None'
+  parameters:
+  - name: session_id
+    description: The unique ID to reference this session. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.vision.face.FaceSessionClient.delete_liveness_with_verify_session
+  name: delete_liveness_with_verify_session
+  summary: "Delete all session related information for matching the specified session\
+    \ id.\n\n   [!NOTE]\n   Deleting a session deactivates the Session Auth Token\
+    \ by blocking future API calls made with\n\nthat Auth Token. While this can be\
+    \ used to remove any access for that token, those requests\nwill still count towards\
+    \ overall resource rate limits. It's best to leverage TokenTTL to limit\nlength\
+    \ of tokens in the case that it is misused."
+  signature: 'delete_liveness_with_verify_session(session_id: str, **kwargs: Any)
+    -> None'
+  parameters:
+  - name: session_id
+    description: The unique ID to reference this session. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.ai.vision.face.FaceSessionClient.get_liveness_session_audit_entries
+  name: get_liveness_session_audit_entries
+  summary: Gets session requests and response body for the session.
+  signature: 'get_liveness_session_audit_entries(session_id: str, *, start: str |
+    None = None, top: int | None = None, **kwargs: Any) -> List[LivenessSessionAuditEntry]'
+  parameters:
+  - name: session_id
+    description: The unique ID to reference this session. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: start
+    description: 'List resources greater than the "start". It contains no more than
+      64
+
+      characters. Default is empty. Default value is None.'
+    types:
+    - <xref:str>
+  - name: top
+    description: 'The number of items to list, ranging in [1, 1000]. Default is 1000.
+      Default value
+
+      is None.'
+    types:
+    - <xref:int>
+  return:
+    description: list of LivenessSessionAuditEntry
+    types:
+    - <xref:list>[<xref:azure.ai.vision.face.models.LivenessSessionAuditEntry>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == [\n       {\n    \
+    \       \"clientRequestId\": \"str\",  # The unique clientRequestId that is sent\n\
+    \             by the client in the 'client-request-id' header. Required.\n   \
+    \        \"digest\": \"str\",  # The server calculated digest for this request.\
+    \ If\n             the client reported digest differs from the server calculated\
+    \ digest, then\n             the message integrity between the client and service\
+    \ has been compromised and\n             the result should not be trusted. For\
+    \ more information, see how to guides on\n             how to leverage this value\
+    \ to secure your end-to-end solution. Required.\n           \"id\": 0,  # The\
+    \ unique id to refer to this audit request. Use this id\n             with the\
+    \ 'start' query parameter to continue on to the next page of audit\n         \
+    \    results. Required.\n           \"receivedDateTime\": \"2020-02-20 00:00:00\"\
+    ,  # The UTC DateTime that\n             the request was received. Required.\n\
+    \           \"request\": {\n               \"contentType\": \"str\",  # The content\
+    \ type of the request.\n                 Required.\n               \"method\"\
+    : \"str\",  # The HTTP method of the request (i.e.,\n                 GET, POST,\
+    \ DELETE). Required.\n               \"url\": \"str\",  # The relative URL and\
+    \ query of the liveness\n                 request. Required.\n               \"\
+    contentLength\": 0,  # Optional. The length of the request\n                 body\
+    \ in bytes.\n               \"userAgent\": \"str\"  # Optional. The user agent\
+    \ used to submit\n                 the request.\n           },\n           \"\
+    requestId\": \"str\",  # The unique requestId that is returned by the\n      \
+    \       service to the client in the 'apim-request-id' header. Required.\n   \
+    \        \"response\": {\n               \"body\": {\n                   \"livenessDecision\"\
+    : \"str\",  # Optional. The liveness\n                     classification for\
+    \ the target face. Known values are: \"uncertain\",\n                     \"realface\"\
+    , and \"spoofface\".\n                   \"modelVersionUsed\": \"str\",  # Optional.\
+    \ The model\n                     version used for liveness classification. Known\
+    \ values are:\n                     \"2020-02-15-preview.01\", \"2021-11-12-preview.03\"\
+    ,\n                     \"2022-10-15-preview.04\", and \"2023-03-02-preview.05\"\
+    .\n                   \"target\": {\n                       \"faceRectangle\"\
+    : {\n                           \"height\": 0,  # The height of the\n        \
+    \                     rectangle, in pixels. Required.\n                      \
+    \     \"left\": 0,  # The distance from the\n                             left\
+    \ edge if the image to the left edge of the rectangle, in\n                  \
+    \           pixels. Required.\n                           \"top\": 0,  # The distance\
+    \ from the\n                             top edge if the image to the top edge\
+    \ of the rectangle, in\n                             pixels. Required.\n     \
+    \                      \"width\": 0  # The width of the\n                    \
+    \         rectangle, in pixels. Required.\n                       },\n       \
+    \                \"fileName\": \"str\",  # The file name which\n             \
+    \            contains the face rectangle where the liveness classification was\n\
+    \                         made on. Required.\n                       \"imageType\"\
+    : \"str\",  # The image type which\n                         contains the face\
+    \ rectangle where the liveness classification was\n                         made\
+    \ on. Required. Known values are: \"Color\", \"Infrared\", and\n             \
+    \            \"Depth\".\n                       \"timeOffsetWithinFile\": 0  #\
+    \ The time offset\n                         within the file of the frame which\
+    \ contains the face rectangle\n                         where the liveness classification\
+    \ was made on. Required.\n                   },\n                   \"verifyResult\"\
+    : {\n                       \"isIdentical\": bool,  # Whether the target\n   \
+    \                      liveness face and comparison image face match. Required.\n\
+    \                       \"matchConfidence\": 0.0,  # The target face\n       \
+    \                  liveness face and comparison image face verification confidence.\n\
+    \                         Required.\n                       \"verifyImage\": {\n\
+    \                           \"faceRectangle\": {\n                           \
+    \    \"height\": 0,  # The height of\n                                 the rectangle,\
+    \ in pixels. Required.\n                               \"left\": 0,  # The distance\n\
+    \                                 from the left edge if the image to the left\
+    \ edge of the\n                                 rectangle, in pixels. Required.\n\
+    \                               \"top\": 0,  # The distance\n                \
+    \                 from the top edge if the image to the top edge of the\n    \
+    \                             rectangle, in pixels. Required.\n              \
+    \                 \"width\": 0  # The width of\n                             \
+    \    the rectangle, in pixels. Required.\n                           },\n    \
+    \                       \"qualityForRecognition\": \"str\"  #\n              \
+    \               Quality of face image for recognition. Required. Known values\n\
+    \                             are: \"low\", \"medium\", and \"high\".\n      \
+    \                 }\n                   }\n               },\n               \"\
+    latencyInMilliseconds\": 0,  # The server measured latency\n                 for\
+    \ this request in milliseconds. Required.\n               \"statusCode\": 0  #\
+    \ The HTTP status code returned to the\n                 client. Required.\n \
+    \          },\n           \"sessionId\": \"str\"  # The unique sessionId of the\
+    \ created session. It\n             will expire 48 hours after it was created\
+    \ or may be deleted sooner using the\n             corresponding session DELETE\
+    \ operation. Required.\n       }\n   ]\n   ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.get_liveness_session_result
+  name: get_liveness_session_result
+  summary: Get session result of detectLiveness/singleModal call.
+  signature: 'get_liveness_session_result(session_id: str, **kwargs: Any) -> LivenessSession'
+  parameters:
+  - name: session_id
+    description: The unique ID to reference this session. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: LivenessSession. The LivenessSession is compatible with MutableMapping
+    types:
+    - <xref:azure.ai.vision.face.models.LivenessSession>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"createdDateTime\"\
+    : \"2020-02-20 00:00:00\",  # DateTime when this session was\n         created.\
+    \ Required.\n       \"id\": \"str\",  # The unique ID to reference this session.\
+    \ Required.\n       \"sessionExpired\": bool,  # Whether or not the session is\
+    \ expired. Required.\n       \"status\": \"str\",  # The current status of the\
+    \ session. Required. Known values\n         are: \"NotStarted\", \"Started\",\
+    \ and \"ResultAvailable\".\n       \"authTokenTimeToLiveInSeconds\": 0,  # Optional.\
+    \ Seconds the session should\n         last for. Range is 60 to 86400 seconds.\
+    \ Default value is 600.\n       \"deviceCorrelationId\": \"str\",  # Optional.\
+    \ Unique Guid per each end-user\n         device. This is to provide rate limiting\
+    \ and anti-hammering. If\n         'deviceCorrelationIdSetInClient' is true in\
+    \ this request, this\n         'deviceCorrelationId' must be null.\n       \"\
+    result\": {\n           \"clientRequestId\": \"str\",  # The unique clientRequestId\
+    \ that is sent\n             by the client in the 'client-request-id' header.\
+    \ Required.\n           \"digest\": \"str\",  # The server calculated digest for\
+    \ this request. If\n             the client reported digest differs from the server\
+    \ calculated digest, then\n             the message integrity between the client\
+    \ and service has been compromised and\n             the result should not be\
+    \ trusted. For more information, see how to guides on\n             how to leverage\
+    \ this value to secure your end-to-end solution. Required.\n           \"id\"\
+    : 0,  # The unique id to refer to this audit request. Use this id\n          \
+    \   with the 'start' query parameter to continue on to the next page of audit\n\
+    \             results. Required.\n           \"receivedDateTime\": \"2020-02-20\
+    \ 00:00:00\",  # The UTC DateTime that\n             the request was received.\
+    \ Required.\n           \"request\": {\n               \"contentType\": \"str\"\
+    ,  # The content type of the request.\n                 Required.\n          \
+    \     \"method\": \"str\",  # The HTTP method of the request (i.e.,\n        \
+    \         GET, POST, DELETE). Required.\n               \"url\": \"str\",  # The\
+    \ relative URL and query of the liveness\n                 request. Required.\n\
+    \               \"contentLength\": 0,  # Optional. The length of the request\n\
+    \                 body in bytes.\n               \"userAgent\": \"str\"  # Optional.\
+    \ The user agent used to submit\n                 the request.\n           },\n\
+    \           \"requestId\": \"str\",  # The unique requestId that is returned by\
+    \ the\n             service to the client in the 'apim-request-id' header. Required.\n\
+    \           \"response\": {\n               \"body\": {\n                   \"\
+    livenessDecision\": \"str\",  # Optional. The liveness\n                     classification\
+    \ for the target face. Known values are: \"uncertain\",\n                    \
+    \ \"realface\", and \"spoofface\".\n                   \"modelVersionUsed\": \"\
+    str\",  # Optional. The model\n                     version used for liveness\
+    \ classification. Known values are:\n                     \"2020-02-15-preview.01\"\
+    , \"2021-11-12-preview.03\",\n                     \"2022-10-15-preview.04\",\
+    \ and \"2023-03-02-preview.05\".\n                   \"target\": {\n         \
+    \              \"faceRectangle\": {\n                           \"height\": 0,\
+    \  # The height of the\n                             rectangle, in pixels. Required.\n\
+    \                           \"left\": 0,  # The distance from the\n          \
+    \                   left edge if the image to the left edge of the rectangle,\
+    \ in\n                             pixels. Required.\n                       \
+    \    \"top\": 0,  # The distance from the\n                             top edge\
+    \ if the image to the top edge of the rectangle, in\n                        \
+    \     pixels. Required.\n                           \"width\": 0  # The width\
+    \ of the\n                             rectangle, in pixels. Required.\n     \
+    \                  },\n                       \"fileName\": \"str\",  # The file\
+    \ name which\n                         contains the face rectangle where the liveness\
+    \ classification was\n                         made on. Required.\n          \
+    \             \"imageType\": \"str\",  # The image type which\n              \
+    \           contains the face rectangle where the liveness classification was\n\
+    \                         made on. Required. Known values are: \"Color\", \"Infrared\"\
+    , and\n                         \"Depth\".\n                       \"timeOffsetWithinFile\"\
+    : 0  # The time offset\n                         within the file of the frame\
+    \ which contains the face rectangle\n                         where the liveness\
+    \ classification was made on. Required.\n                   },\n             \
+    \      \"verifyResult\": {\n                       \"isIdentical\": bool,  # Whether\
+    \ the target\n                         liveness face and comparison image face\
+    \ match. Required.\n                       \"matchConfidence\": 0.0,  # The target\
+    \ face\n                         liveness face and comparison image face verification\
+    \ confidence.\n                         Required.\n                       \"verifyImage\"\
+    : {\n                           \"faceRectangle\": {\n                       \
+    \        \"height\": 0,  # The height of\n                                 the\
+    \ rectangle, in pixels. Required.\n                               \"left\": 0,\
+    \  # The distance\n                                 from the left edge if the\
+    \ image to the left edge of the\n                                 rectangle, in\
+    \ pixels. Required.\n                               \"top\": 0,  # The distance\n\
+    \                                 from the top edge if the image to the top edge\
+    \ of the\n                                 rectangle, in pixels. Required.\n \
+    \                              \"width\": 0  # The width of\n                \
+    \                 the rectangle, in pixels. Required.\n                      \
+    \     },\n                           \"qualityForRecognition\": \"str\"  #\n \
+    \                            Quality of face image for recognition. Required.\
+    \ Known values\n                             are: \"low\", \"medium\", and \"\
+    high\".\n                       }\n                   }\n               },\n \
+    \              \"latencyInMilliseconds\": 0,  # The server measured latency\n\
+    \                 for this request in milliseconds. Required.\n              \
+    \ \"statusCode\": 0  # The HTTP status code returned to the\n                \
+    \ client. Required.\n           },\n           \"sessionId\": \"str\"  # The unique\
+    \ sessionId of the created session. It\n             will expire 48 hours after\
+    \ it was created or may be deleted sooner using the\n             corresponding\
+    \ session DELETE operation. Required.\n       },\n       \"sessionStartDateTime\"\
+    : \"2020-02-20 00:00:00\"  # Optional. DateTime when this\n         session was\
+    \ started by the client.\n   }\n   ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.get_liveness_sessions
+  name: get_liveness_sessions
+  summary: 'Lists sessions for /detectLiveness/SingleModal.
+
+
+    List sessions from the last sessionId greater than the ''start''.
+
+
+    The result should be ordered by sessionId in ascending order.'
+  signature: 'get_liveness_sessions(*, start: str | None = None, top: int | None =
+    None, **kwargs: Any) -> List[LivenessSessionItem]'
+  keywordOnlyParameters:
+  - name: start
+    description: 'List resources greater than the "start". It contains no more than
+      64
+
+      characters. Default is empty. Default value is None.'
+    types:
+    - <xref:str>
+  - name: top
+    description: 'The number of items to list, ranging in [1, 1000]. Default is 1000.
+      Default value
+
+      is None.'
+    types:
+    - <xref:int>
+  return:
+    description: list of LivenessSessionItem
+    types:
+    - <xref:list>[<xref:azure.ai.vision.face.models.LivenessSessionItem>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == [\n       {\n    \
+    \       \"createdDateTime\": \"2020-02-20 00:00:00\",  # DateTime when this\n\
+    \             session was created. Required.\n           \"id\": \"str\",  # The\
+    \ unique ID to reference this session. Required.\n           \"sessionExpired\"\
+    : bool,  # Whether or not the session is expired.\n             Required.\n  \
+    \         \"authTokenTimeToLiveInSeconds\": 0,  # Optional. Seconds the session\n\
+    \             should last for. Range is 60 to 86400 seconds. Default value is\
+    \ 600.\n           \"deviceCorrelationId\": \"str\",  # Optional. Unique Guid\
+    \ per each\n             end-user device. This is to provide rate limiting and\
+    \ anti-hammering. If\n             'deviceCorrelationIdSetInClient' is true in\
+    \ this request, this\n             'deviceCorrelationId' must be null.\n     \
+    \      \"sessionStartDateTime\": \"2020-02-20 00:00:00\"  # Optional. DateTime\n\
+    \             when this session was started by the client.\n       }\n   ]\n \
+    \  ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.get_liveness_with_verify_session_audit_entries
+  name: get_liveness_with_verify_session_audit_entries
+  summary: Gets session requests and response body for the session.
+  signature: 'get_liveness_with_verify_session_audit_entries(session_id: str, *, start:
+    str | None = None, top: int | None = None, **kwargs: Any) -> List[LivenessSessionAuditEntry]'
+  parameters:
+  - name: session_id
+    description: The unique ID to reference this session. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: start
+    description: 'List resources greater than the "start". It contains no more than
+      64
+
+      characters. Default is empty. Default value is None.'
+    types:
+    - <xref:str>
+  - name: top
+    description: 'The number of items to list, ranging in [1, 1000]. Default is 1000.
+      Default value
+
+      is None.'
+    types:
+    - <xref:int>
+  return:
+    description: list of LivenessSessionAuditEntry
+    types:
+    - <xref:list>[<xref:azure.ai.vision.face.models.LivenessSessionAuditEntry>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == [\n       {\n    \
+    \       \"clientRequestId\": \"str\",  # The unique clientRequestId that is sent\n\
+    \             by the client in the 'client-request-id' header. Required.\n   \
+    \        \"digest\": \"str\",  # The server calculated digest for this request.\
+    \ If\n             the client reported digest differs from the server calculated\
+    \ digest, then\n             the message integrity between the client and service\
+    \ has been compromised and\n             the result should not be trusted. For\
+    \ more information, see how to guides on\n             how to leverage this value\
+    \ to secure your end-to-end solution. Required.\n           \"id\": 0,  # The\
+    \ unique id to refer to this audit request. Use this id\n             with the\
+    \ 'start' query parameter to continue on to the next page of audit\n         \
+    \    results. Required.\n           \"receivedDateTime\": \"2020-02-20 00:00:00\"\
+    ,  # The UTC DateTime that\n             the request was received. Required.\n\
+    \           \"request\": {\n               \"contentType\": \"str\",  # The content\
+    \ type of the request.\n                 Required.\n               \"method\"\
+    : \"str\",  # The HTTP method of the request (i.e.,\n                 GET, POST,\
+    \ DELETE). Required.\n               \"url\": \"str\",  # The relative URL and\
+    \ query of the liveness\n                 request. Required.\n               \"\
+    contentLength\": 0,  # Optional. The length of the request\n                 body\
+    \ in bytes.\n               \"userAgent\": \"str\"  # Optional. The user agent\
+    \ used to submit\n                 the request.\n           },\n           \"\
+    requestId\": \"str\",  # The unique requestId that is returned by the\n      \
+    \       service to the client in the 'apim-request-id' header. Required.\n   \
+    \        \"response\": {\n               \"body\": {\n                   \"livenessDecision\"\
+    : \"str\",  # Optional. The liveness\n                     classification for\
+    \ the target face. Known values are: \"uncertain\",\n                     \"realface\"\
+    , and \"spoofface\".\n                   \"modelVersionUsed\": \"str\",  # Optional.\
+    \ The model\n                     version used for liveness classification. Known\
+    \ values are:\n                     \"2020-02-15-preview.01\", \"2021-11-12-preview.03\"\
+    ,\n                     \"2022-10-15-preview.04\", and \"2023-03-02-preview.05\"\
+    .\n                   \"target\": {\n                       \"faceRectangle\"\
+    : {\n                           \"height\": 0,  # The height of the\n        \
+    \                     rectangle, in pixels. Required.\n                      \
+    \     \"left\": 0,  # The distance from the\n                             left\
+    \ edge if the image to the left edge of the rectangle, in\n                  \
+    \           pixels. Required.\n                           \"top\": 0,  # The distance\
+    \ from the\n                             top edge if the image to the top edge\
+    \ of the rectangle, in\n                             pixels. Required.\n     \
+    \                      \"width\": 0  # The width of the\n                    \
+    \         rectangle, in pixels. Required.\n                       },\n       \
+    \                \"fileName\": \"str\",  # The file name which\n             \
+    \            contains the face rectangle where the liveness classification was\n\
+    \                         made on. Required.\n                       \"imageType\"\
+    : \"str\",  # The image type which\n                         contains the face\
+    \ rectangle where the liveness classification was\n                         made\
+    \ on. Required. Known values are: \"Color\", \"Infrared\", and\n             \
+    \            \"Depth\".\n                       \"timeOffsetWithinFile\": 0  #\
+    \ The time offset\n                         within the file of the frame which\
+    \ contains the face rectangle\n                         where the liveness classification\
+    \ was made on. Required.\n                   },\n                   \"verifyResult\"\
+    : {\n                       \"isIdentical\": bool,  # Whether the target\n   \
+    \                      liveness face and comparison image face match. Required.\n\
+    \                       \"matchConfidence\": 0.0,  # The target face\n       \
+    \                  liveness face and comparison image face verification confidence.\n\
+    \                         Required.\n                       \"verifyImage\": {\n\
+    \                           \"faceRectangle\": {\n                           \
+    \    \"height\": 0,  # The height of\n                                 the rectangle,\
+    \ in pixels. Required.\n                               \"left\": 0,  # The distance\n\
+    \                                 from the left edge if the image to the left\
+    \ edge of the\n                                 rectangle, in pixels. Required.\n\
+    \                               \"top\": 0,  # The distance\n                \
+    \                 from the top edge if the image to the top edge of the\n    \
+    \                             rectangle, in pixels. Required.\n              \
+    \                 \"width\": 0  # The width of\n                             \
+    \    the rectangle, in pixels. Required.\n                           },\n    \
+    \                       \"qualityForRecognition\": \"str\"  #\n              \
+    \               Quality of face image for recognition. Required. Known values\n\
+    \                             are: \"low\", \"medium\", and \"high\".\n      \
+    \                 }\n                   }\n               },\n               \"\
+    latencyInMilliseconds\": 0,  # The server measured latency\n                 for\
+    \ this request in milliseconds. Required.\n               \"statusCode\": 0  #\
+    \ The HTTP status code returned to the\n                 client. Required.\n \
+    \          },\n           \"sessionId\": \"str\"  # The unique sessionId of the\
+    \ created session. It\n             will expire 48 hours after it was created\
+    \ or may be deleted sooner using the\n             corresponding session DELETE\
+    \ operation. Required.\n       }\n   ]\n   ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.get_liveness_with_verify_session_result
+  name: get_liveness_with_verify_session_result
+  summary: Get session result of detectLivenessWithVerify/singleModal call.
+  signature: 'get_liveness_with_verify_session_result(session_id: str, **kwargs: Any)
+    -> LivenessWithVerifySession'
+  parameters:
+  - name: session_id
+    description: The unique ID to reference this session. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: 'LivenessWithVerifySession. The LivenessWithVerifySession is compatible
+      with
+
+      MutableMapping'
+    types:
+    - <xref:azure.ai.vision.face.models.LivenessWithVerifySession>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"createdDateTime\"\
+    : \"2020-02-20 00:00:00\",  # DateTime when this session was\n         created.\
+    \ Required.\n       \"id\": \"str\",  # The unique ID to reference this session.\
+    \ Required.\n       \"sessionExpired\": bool,  # Whether or not the session is\
+    \ expired. Required.\n       \"status\": \"str\",  # The current status of the\
+    \ session. Required. Known values\n         are: \"NotStarted\", \"Started\",\
+    \ and \"ResultAvailable\".\n       \"authTokenTimeToLiveInSeconds\": 0,  # Optional.\
+    \ Seconds the session should\n         last for. Range is 60 to 86400 seconds.\
+    \ Default value is 600.\n       \"deviceCorrelationId\": \"str\",  # Optional.\
+    \ Unique Guid per each end-user\n         device. This is to provide rate limiting\
+    \ and anti-hammering. If\n         'deviceCorrelationIdSetInClient' is true in\
+    \ this request, this\n         'deviceCorrelationId' must be null.\n       \"\
+    result\": {\n           \"clientRequestId\": \"str\",  # The unique clientRequestId\
+    \ that is sent\n             by the client in the 'client-request-id' header.\
+    \ Required.\n           \"digest\": \"str\",  # The server calculated digest for\
+    \ this request. If\n             the client reported digest differs from the server\
+    \ calculated digest, then\n             the message integrity between the client\
+    \ and service has been compromised and\n             the result should not be\
+    \ trusted. For more information, see how to guides on\n             how to leverage\
+    \ this value to secure your end-to-end solution. Required.\n           \"id\"\
+    : 0,  # The unique id to refer to this audit request. Use this id\n          \
+    \   with the 'start' query parameter to continue on to the next page of audit\n\
+    \             results. Required.\n           \"receivedDateTime\": \"2020-02-20\
+    \ 00:00:00\",  # The UTC DateTime that\n             the request was received.\
+    \ Required.\n           \"request\": {\n               \"contentType\": \"str\"\
+    ,  # The content type of the request.\n                 Required.\n          \
+    \     \"method\": \"str\",  # The HTTP method of the request (i.e.,\n        \
+    \         GET, POST, DELETE). Required.\n               \"url\": \"str\",  # The\
+    \ relative URL and query of the liveness\n                 request. Required.\n\
+    \               \"contentLength\": 0,  # Optional. The length of the request\n\
+    \                 body in bytes.\n               \"userAgent\": \"str\"  # Optional.\
+    \ The user agent used to submit\n                 the request.\n           },\n\
+    \           \"requestId\": \"str\",  # The unique requestId that is returned by\
+    \ the\n             service to the client in the 'apim-request-id' header. Required.\n\
+    \           \"response\": {\n               \"body\": {\n                   \"\
+    livenessDecision\": \"str\",  # Optional. The liveness\n                     classification\
+    \ for the target face. Known values are: \"uncertain\",\n                    \
+    \ \"realface\", and \"spoofface\".\n                   \"modelVersionUsed\": \"\
+    str\",  # Optional. The model\n                     version used for liveness\
+    \ classification. Known values are:\n                     \"2020-02-15-preview.01\"\
+    , \"2021-11-12-preview.03\",\n                     \"2022-10-15-preview.04\",\
+    \ and \"2023-03-02-preview.05\".\n                   \"target\": {\n         \
+    \              \"faceRectangle\": {\n                           \"height\": 0,\
+    \  # The height of the\n                             rectangle, in pixels. Required.\n\
+    \                           \"left\": 0,  # The distance from the\n          \
+    \                   left edge if the image to the left edge of the rectangle,\
+    \ in\n                             pixels. Required.\n                       \
+    \    \"top\": 0,  # The distance from the\n                             top edge\
+    \ if the image to the top edge of the rectangle, in\n                        \
+    \     pixels. Required.\n                           \"width\": 0  # The width\
+    \ of the\n                             rectangle, in pixels. Required.\n     \
+    \                  },\n                       \"fileName\": \"str\",  # The file\
+    \ name which\n                         contains the face rectangle where the liveness\
+    \ classification was\n                         made on. Required.\n          \
+    \             \"imageType\": \"str\",  # The image type which\n              \
+    \           contains the face rectangle where the liveness classification was\n\
+    \                         made on. Required. Known values are: \"Color\", \"Infrared\"\
+    , and\n                         \"Depth\".\n                       \"timeOffsetWithinFile\"\
+    : 0  # The time offset\n                         within the file of the frame\
+    \ which contains the face rectangle\n                         where the liveness\
+    \ classification was made on. Required.\n                   },\n             \
+    \      \"verifyResult\": {\n                       \"isIdentical\": bool,  # Whether\
+    \ the target\n                         liveness face and comparison image face\
+    \ match. Required.\n                       \"matchConfidence\": 0.0,  # The target\
+    \ face\n                         liveness face and comparison image face verification\
+    \ confidence.\n                         Required.\n                       \"verifyImage\"\
+    : {\n                           \"faceRectangle\": {\n                       \
+    \        \"height\": 0,  # The height of\n                                 the\
+    \ rectangle, in pixels. Required.\n                               \"left\": 0,\
+    \  # The distance\n                                 from the left edge if the\
+    \ image to the left edge of the\n                                 rectangle, in\
+    \ pixels. Required.\n                               \"top\": 0,  # The distance\n\
+    \                                 from the top edge if the image to the top edge\
+    \ of the\n                                 rectangle, in pixels. Required.\n \
+    \                              \"width\": 0  # The width of\n                \
+    \                 the rectangle, in pixels. Required.\n                      \
+    \     },\n                           \"qualityForRecognition\": \"str\"  #\n \
+    \                            Quality of face image for recognition. Required.\
+    \ Known values\n                             are: \"low\", \"medium\", and \"\
+    high\".\n                       }\n                   }\n               },\n \
+    \              \"latencyInMilliseconds\": 0,  # The server measured latency\n\
+    \                 for this request in milliseconds. Required.\n              \
+    \ \"statusCode\": 0  # The HTTP status code returned to the\n                \
+    \ client. Required.\n           },\n           \"sessionId\": \"str\"  # The unique\
+    \ sessionId of the created session. It\n             will expire 48 hours after\
+    \ it was created or may be deleted sooner using the\n             corresponding\
+    \ session DELETE operation. Required.\n       },\n       \"sessionStartDateTime\"\
+    : \"2020-02-20 00:00:00\"  # Optional. DateTime when this\n         session was\
+    \ started by the client.\n   }\n   ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.get_liveness_with_verify_sessions
+  name: get_liveness_with_verify_sessions
+  summary: 'Lists sessions for /detectLivenessWithVerify/SingleModal.
+
+
+    List sessions from the last sessionId greater than the "start".
+
+
+    The result should be ordered by sessionId in ascending order.'
+  signature: 'get_liveness_with_verify_sessions(*, start: str | None = None, top:
+    int | None = None, **kwargs: Any) -> List[LivenessSessionItem]'
+  keywordOnlyParameters:
+  - name: start
+    description: 'List resources greater than the "start". It contains no more than
+      64
+
+      characters. Default is empty. Default value is None.'
+    types:
+    - <xref:str>
+  - name: top
+    description: 'The number of items to list, ranging in [1, 1000]. Default is 1000.
+      Default value
+
+      is None.'
+    types:
+    - <xref:int>
+  return:
+    description: list of LivenessSessionItem
+    types:
+    - <xref:list>[<xref:azure.ai.vision.face.models.LivenessSessionItem>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == [\n       {\n    \
+    \       \"createdDateTime\": \"2020-02-20 00:00:00\",  # DateTime when this\n\
+    \             session was created. Required.\n           \"id\": \"str\",  # The\
+    \ unique ID to reference this session. Required.\n           \"sessionExpired\"\
+    : bool,  # Whether or not the session is expired.\n             Required.\n  \
+    \         \"authTokenTimeToLiveInSeconds\": 0,  # Optional. Seconds the session\n\
+    \             should last for. Range is 60 to 86400 seconds. Default value is\
+    \ 600.\n           \"deviceCorrelationId\": \"str\",  # Optional. Unique Guid\
+    \ per each\n             end-user device. This is to provide rate limiting and\
+    \ anti-hammering. If\n             'deviceCorrelationIdSetInClient' is true in\
+    \ this request, this\n             'deviceCorrelationId' must be null.\n     \
+    \      \"sessionStartDateTime\": \"2020-02-20 00:00:00\"  # Optional. DateTime\n\
+    \             when this session was started by the client.\n       }\n   ]\n \
+    \  ````\n"
+- uid: azure.ai.vision.face.FaceSessionClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = client.send_request(request)
+
+    <HttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.HttpResponse>
