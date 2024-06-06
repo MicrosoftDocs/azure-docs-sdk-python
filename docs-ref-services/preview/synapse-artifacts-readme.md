@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-artifacts, synapse
-ms.date: 11/01/2023
+keywords: Azure, python, SDK, API, azure-synapse-artifacts, synapse-analytics
+ms.date: 06/06/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: synapse
+ms.service: synapse-analytics
 ---
 # Microsoft Azure SDK for Python
 
