@@ -1,28 +1,24 @@
 ---
 title: Azure Core shared client library for Python
 keywords: Azure, python, SDK, API, azure-core, core
-ms.date: 02/29/2024
+ms.date: 06/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: core
 ---
 
-# Azure Core shared client library for Python - version 1.30.1 
+# Azure Core shared client library for Python - version 1.30.2 
 
 
 Azure core provides shared exceptions and modules for Python SDK client libraries.
 These libraries follow the [Azure SDK Design Guidelines for Python](https://azure.github.io/azure-sdk/python/guidelines/index.html) .
 
-If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
+If you are a client library developer, please reference [client library developer reference](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md) for more information.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.1/sdk/core/azure-core/) 
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.2/sdk/core/azure-core/)
 | [Package (Pypi)][package]
 | [Package (Conda)](https://anaconda.org/microsoft/azure-core/)
-| [API reference documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-core_1.30.1/sdk/core/azure-core/)
-
-## _Disclaimer_
-
-_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to <https://github.com/Azure/azure-sdk-for-python/issues/20691>_
+| [API reference documentation](/python/api/overview/azure/core-readme)
 
 ## Getting started
 
