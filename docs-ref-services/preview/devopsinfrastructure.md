@@ -1,7 +1,7 @@
 ---
 title: Azure Devopsinfrastructure SDK for Python
 description: Reference for Azure Devopsinfrastructure SDK for Python
-ms.date: 06/10/2024
+ms.date: 06/11/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: devopsinfrastructure
