@@ -1,12 +1,12 @@
 ---
 title: Azure Monitor Ingestion client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-ingestion, monitor
-ms.date: 11/07/2023
+ms.date: 06/11/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Ingestion client library for Python - version 1.0.3 
+# Azure Monitor Ingestion client library for Python - version 1.0.4 
 
 
 The Azure Monitor Ingestion client library is used to send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview].
@@ -78,7 +78,12 @@ logs_client = LogsIngestionClient(endpoint, credential)
 By default, `LogsIngestionClient` is configured to connect to the public Azure cloud. To connect to non-public Azure clouds, some additional configuration is required. The appropriate scope for authentication must be provided using the `credential_scopes` keyword argument. The following example shows how to configure the client to connect to Azure US Government:
 
 ```python
-logs_client = LogsIngestionClient(endpoint, credential_scopes=["https://monitor.azure.us//.default"])
+from azure.identity import AzureAuthorityHosts, DefaultAzureCredential
+from azure.monitor.ingestion import LogsIngestionClient
+
+# Authority can also be set via the AZURE_AUTHORITY_HOST environment variable.
+credential = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_GOVERNMENT)
+logs_client = LogsIngestionClient(endpoint, credential, credential_scopes=["https://monitor.azure.us/.default"])
 ```
 
 ## Key concepts
@@ -111,6 +116,7 @@ The logs that were uploaded using this library can be queried using the [Azure M
 ## Examples
 
 - [Upload custom logs](#upload-custom-logs)
+- [Upload data from JSON file or string](#upload-data-from-json-file-or-string)
 - [Upload with custom error handling](#upload-with-custom-error-handling)
 
 ### Upload custom logs
@@ -125,11 +131,12 @@ from azure.identity import DefaultAzureCredential
 from azure.monitor.ingestion import LogsIngestionClient
 
 endpoint = os.environ['DATA_COLLECTION_ENDPOINT']
-credential = DefaultAzureCredential()
+rule_id = os.environ['LOGS_DCR_RULE_ID']
+stream_name = os.environ['LOGS_DCR_STREAM_NAME']
 
+credential = DefaultAzureCredential()
 client = LogsIngestionClient(endpoint=endpoint, credential=credential, logging_enable=True)
 
-rule_id = os.environ['LOGS_DCR_RULE_ID']
 body = [
       {
         "Time": "2021-12-08T23:51:14.1104269Z",
@@ -144,7 +151,44 @@ body = [
     ]
 
 try:
-    client.upload(rule_id=rule_id, stream_name=os.environ['LOGS_DCR_STREAM_NAME'], logs=body)
+    client.upload(rule_id=rule_id, stream_name=stream_name, logs=body)
+except HttpResponseError as e:
+    print(f"Upload failed: {e}")
+```
+
+### Upload data from JSON file or string
+
+This example shows uploading when the data is in a JSON file or string.
+
+```python
+import json
+import os
+
+from azure.core.exceptions import HttpResponseError
+from azure.identity import DefaultAzureCredential
+from azure.monitor.ingestion import LogsIngestionClient
+
+endpoint = os.environ["DATA_COLLECTION_ENDPOINT"]
+rule_id = os.environ['LOGS_DCR_RULE_ID']
+stream_name = os.environ["LOGS_DCR_STREAM_NAME"]
+
+credential = DefaultAzureCredential()
+client = LogsIngestionClient(endpoint=endpoint, credential=credential, logging_enable=True)
+
+# If you have a JSON file containing an array of JSON objects
+file_path = "./test-logs.json"
+with open(file_path, "r") as f:
+    logs = json.load(f)
+    try:
+        client.upload(rule_id=rule_id, stream_name=stream_name, logs=logs)
+    except HttpResponseError as e:
+        print(f"Upload failed: {e}")
+
+# If you have a JSON string representing an array of JSON objects
+string = '[{"Time": "2023-12-08T23:51:14.1104269Z", "Computer": "Computer1", "AdditionalContext": "context-2"}]'
+logs = json.loads(string)
+try:
+    client.upload(rule_id=rule_id, stream_name=stream_name, logs=logs)
 except HttpResponseError as e:
     print(f"Upload failed: {e}")
 ```
@@ -164,12 +208,12 @@ def on_error(error):
 def on_error_pass(error):
     pass
 
-client.upload(rule_id=rule_id, stream_name=os.environ['LOGS_DCR_STREAM_NAME'], logs=body, on_error=on_error)
+client.upload(rule_id=rule_id, stream_name=stream_name, logs=body, on_error=on_error)
 ```
 
 ## Troubleshooting
 
-For details on diagnosing various failure scenarios, see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/TROUBLESHOOTING.md).
+For details on diagnosing various failure scenarios, see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/TROUBLESHOOTING.md).
 
 ## Next steps
 
@@ -200,9 +244,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_ref_docs]: https://aka.ms/azsdk/python/core/docs
 [azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
-[azure_monitor_query]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-query#readme
+[azure_monitor_query]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-query#readme
 [azure_subscription]: https://azure.microsoft.com/free/python/
-[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/CHANGELOG.md
+[changelog]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/CHANGELOG.md
 [data_collection_endpoint]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview
 [data_collection_rule]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
 [data_collection_rule_structure]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure
@@ -212,17 +256,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [pip]: https://pypi.org/project/pip/
 [python_logging]: https://docs.python.org/3/library/logging.html
 [python-ingestion-ref-docs]: https://aka.ms/azsdk/python/monitor-ingestion/docs
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples
-[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples
+[source]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/
 
-[sample_send_small_logs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/sample_send_small_logs.py
-[sample_send_small_logs_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_send_small_logs_async.py
-[sample_custom_error_callback]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/sample_custom_error_callback.py
-[sample_custom_error_callback_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_custom_error_callback_async.py
-[sample_upload_file_contents]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_file_contents.py
-[sample_upload_file_contents_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_file_contents_async.py
-[sample_upload_pandas_dataframe]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_pandas_dataframe.py
-[sample_upload_pandas_dataframe_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.3/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_pandas_dataframe_async.py
+[sample_send_small_logs]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/sample_send_small_logs.py
+[sample_send_small_logs_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_send_small_logs_async.py
+[sample_custom_error_callback]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/sample_custom_error_callback.py
+[sample_custom_error_callback_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_custom_error_callback_async.py
+[sample_upload_file_contents]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_file_contents.py
+[sample_upload_file_contents_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_file_contents_async.py
+[sample_upload_pandas_dataframe]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/sample_upload_pandas_dataframe.py
+[sample_upload_pandas_dataframe_async]: https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-ingestion_1.0.4/sdk/monitor/azure-monitor-ingestion/samples/async_samples/sample_upload_pandas_dataframe_async.py
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
