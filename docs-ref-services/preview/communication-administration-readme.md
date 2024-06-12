@@ -122,7 +122,7 @@ print(location_options_response)
 
 ### Get Area Codes
 
-Fetching area codes for geographic phone plans will require the the location options queries set. You must include the chain of geographic locations traversing down the location options object returned by the GetLocationOptions API.
+Fetching area codes for geographic phone plans will require the location options queries set. You must include the chain of geographic locations traversing down the location options object returned by the GetLocationOptions API.
 
 ```python
 phone_number_administration_client = PhoneNumberAdministrationClient.from_connection_string(connection_str)

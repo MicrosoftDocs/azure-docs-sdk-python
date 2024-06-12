@@ -455,7 +455,7 @@ new_users = [identity_client.create_user() for i in range(2)]
 # from azure.communication.chat import CommunicationUserIdentifier
 #
 # user_id = 'some user id'
-# user_display_name = "Wilma Flinstone"
+# user_display_name = "Wilma Flintstone"
 # new_user = CommunicationUserIdentifier(user_id)
 # participant = ChatParticipant(
 #     identifier=new_user,
@@ -466,7 +466,7 @@ participants = []
 for _user in new_users:
   chat_participant = ChatParticipant(
     identifier=_user,
-    display_name='Fred Flinstone',
+    display_name='Fred Flintstone',
     share_history_time=datetime.utcnow()
   )
   participants.append(chat_participant)

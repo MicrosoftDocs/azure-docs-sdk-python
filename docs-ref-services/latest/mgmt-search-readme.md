@@ -54,7 +54,7 @@ client = SearchManagementClient(credential=DefaultAzureCredential(), subscriptio
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Search Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 

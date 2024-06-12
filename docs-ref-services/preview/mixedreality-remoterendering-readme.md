@@ -59,7 +59,7 @@ There are several different forms of authentication:
 
 See [here](/azure/remote-rendering/how-tos/authentication) for detailed instructions and information.
 
-In all the following examples, the client is constructed with a `endpoint` parameter.
+In all the following examples, the client is constructed with an `endpoint` parameter.
 The available endpoints correspond to regions, and the choice of endpoint determines the region in which the service performs its work.
 An example is `https://remoterendering.eastus2.mixedreality.azure.com`.
 
@@ -175,7 +175,7 @@ Callers should wait for the operation to complete by calling result() on the pol
 ### Convert an asset
 
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
-The following snippet describes how to request that "box.fbx", found at at a path of "/input/box/box.fbx" of the blob container at the given storage container URI, gets converted.
+The following snippet describes how to request that "box.fbx", found at a path of "/input/box/box.fbx" of the blob container at the given storage container URI, gets converted.
 
 Converting an asset can take anywhere from seconds to hours.
 This code uses an existing conversion poller and polls regularly until the conversion has finished or failed.
