@@ -29,6 +29,20 @@ constructor:
       this default value may result in unsupported behavior.'
     types:
     - <xref:str>
+examples:
+- "Creating the LogsIngestionClient for use with a sovereign cloud (i.e. non-public\
+  \ cloud).<!--[!code-python[Main](les\\async_samples\\sample_authentication_async.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\213\\\\azure-monitor-ingestion-1.0.4\\\
+  \\samples\\\\async_samples\\\\sample_authentication_async.py\", \"xml:space\": \"\
+  preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\": {\"\
+  linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.identity\
+  \ import AzureAuthorityHosts\n   from azure.identity.aio import DefaultAzureCredential\n\
+  \   from azure.monitor.ingestion.aio import LogsIngestionClient\n\n   credential\
+  \ = DefaultAzureCredential(authority=AzureAuthorityHosts.AZURE_GOVERNMENT)\n   endpoint\
+  \ = \"https://example.ingest.monitor.azure.us\"\n   client = LogsIngestionClient(endpoint,\
+  \ credential, credential_scopes=[\"https://monitor.azure.us/.default\"])\n\n   ````\n"
 methods:
 - uid: azure.monitor.ingestion.aio.LogsIngestionClient.close
   name: close
@@ -55,7 +69,8 @@ methods:
 
 
     For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
-  signature: 'send_request(request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
   parameters:
   - name: request
     description: The network request you want to make. Required.
@@ -82,15 +97,15 @@ methods:
 
     If an I/O stream is passed in, the stream is uploaded as-is.'
   signature: 'async upload(rule_id: str, stream_name: str, logs: List[MutableMapping[str,
-    Any]] | IO, *, on_error: Callable[[LogsUploadError], Awaitable[None]] | None =
-    None, **kwargs: Any) -> None'
+    Any]] | IO[bytes], *, on_error: Callable[[LogsUploadError], Awaitable[None]] |
+    None = None, **kwargs: Any) -> None'
   parameters:
   - name: rule_id
     description: The immutable ID of the Data Collection Rule resource.
     isRequired: true
     types:
     - <xref:str>
-  - name: stream
+  - name: stream_name
     description: The streamDeclaration name as defined in the Data Collection Rule.
     isRequired: true
     types:
@@ -101,8 +116,6 @@ methods:
     types:
     - <xref:list>[<xref:JSON>]
     - <xref:typing.IO>
-  - name: stream_name
-    isRequired: true
   keywordOnlyParameters:
   - name: on_error
     description: 'The callback function that is called when a chunk of logs fails

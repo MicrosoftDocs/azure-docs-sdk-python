@@ -57,6 +57,13 @@ constructor:
 
       should be the storage account key.'
     defaultValue: None
+    types:
+    - <xref:azure.core.credentials.AzureNamedKeyCredential>
+    - <xref:azure.core.credentials.AzureSasCredential>
+    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:str>
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   keywordOnlyParameters:
   - name: api_version
     description: 'The Storage API version to use for requests. Default value is the
@@ -93,7 +100,7 @@ examples:
   datalake_samples_instantiate_client.py )]-->\n\n<!-- literal_block {\"ids\": [],\
   \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
   : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\210\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\
+  \\py2docfx\\\\dist_temp\\\\210\\\\azure-storage-file-datalake-12.16.0b1\\\\samples\\\
   \\datalake_samples_instantiate_client.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
   linenos\": false} -->\n\n````python\n\n   from azure.storage.filedatalake import\
@@ -344,7 +351,7 @@ methods:
   - "Create directory.<!--[!code-python[Main](les\\datalake_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\210\\\\azure-storage-file-datalake-12.15.0b1\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\210\\\\azure-storage-file-datalake-12.16.0b1\\\
     \\samples\\\\datalake_samples_directory.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   directory_client.create_directory()\n\
@@ -518,7 +525,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: DataLakeFileClient
+    description: A DataLakeFileClient with newly created file.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeFileClient>
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.create_sub_directory
   name: create_sub_directory
   summary: Create a subdirectory and return the subdirectory client to be interacted
@@ -679,6 +688,8 @@ methods:
     - <xref:int>
   return:
     description: DataLakeDirectoryClient for the subdirectory.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.delete_directory
   name: delete_directory
   summary: Marks the specified directory for deletion.
@@ -740,12 +751,14 @@ methods:
     types:
     - <xref:int>
   return:
-    description: None
+    description: None.
+    types:
+    - <xref:None>
   examples:
   - "Delete directory.<!--[!code-python[Main](les\\datalake_samples_directory.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\210\\\\azure-storage-file-datalake-12.15.0b1\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\210\\\\azure-storage-file-datalake-12.16.0b1\\\
     \\samples\\\\datalake_samples_directory.py\", \"xml:space\": \"preserve\", \"\
     force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   new_directory.delete_directory()\n\
@@ -822,7 +835,9 @@ methods:
     types:
     - <xref:int>
   return:
-    description: DataLakeDirectoryClient for the subdirectory
+    description: DataLakeDirectoryClient for the subdirectory.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.exists
   name: exists
   summary: Returns True if a directory exists and returns False otherwise.
@@ -991,8 +1006,10 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
-  - name: response dict
-    description: response dict.
+  return:
+    description: response dict containing access control options with no modifications.
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.get_directory_properties
   name: get_directory_properties
   summary: 'Returns all user-defined metadata, standard HTTP properties, and
@@ -1052,21 +1069,20 @@ methods:
     types:
     - <xref:azure.storage.filedatalake.CustomerProvidedEncryptionKey>
   - name: upn
-    description: 'Optional. Valid only when Hierarchical Namespace is
+    description: 'If True, the user identity values returned in the x-ms-owner, x-ms-group,
 
-      enabled for the account. If "True", the user identity values returned
+      and x-ms-acl response headers will be transformed from Azure Active Directory
+      Object IDs to User
 
-      in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be
+      Principal Names in the owner, group, and acl fields of
 
-      transformed from Azure Active Directory Object IDs to User Principal
+      <xref:azure.storage.filedatalake.DirectoryProperties>. If False, the values
+      will be returned
 
-      Names. If "False", the values will be returned as Azure Active
+      as Azure Active Directory Object IDs. The default value is False. Note that
+      group and application
 
-      Directory Object IDs. The default value is false. Note that group and
-
-      application Object IDs are not translated because they do not have
-
-      unique friendly names.'
+      Object IDs are not translate because they do not have unique friendly names.'
     types:
     - <xref:bool>
   - name: timeout
@@ -1082,6 +1098,11 @@ methods:
     types:
     - <xref:int>
   return:
+    description: 'DirectoryProperties with all user-defined metadata, standard HTTP
+      properties,
+
+      and system properties for the directory. It does not return the content of the
+      directory.'
     types:
     - <xref:azure.storage.filedatalake.DirectoryProperties>
   examples:
@@ -1089,7 +1110,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    210\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\\datalake_samples_directory.py\"\
+    210\\\\azure-storage-file-datalake-12.16.0b1\\\\samples\\\\datalake_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   props = new_directory.get_directory_properties()\n\n   ````\n"
@@ -1338,13 +1359,15 @@ methods:
     types:
     - <xref:int>
   return:
-    description: DataLakeDirectoryClient
+    description: A DataLakeDirectoryClient with the renamed directory.
+    types:
+    - <xref:azure.storage.filedatalake.DataLakeDirectoryClient>
   examples:
   - "Rename the source directory.<!--[!code-python[Main](les\\datalake_samples_directory.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    210\\\\azure-storage-file-datalake-12.15.0b1\\\\samples\\\\datalake_samples_directory.py\"\
+    210\\\\azure-storage-file-datalake-12.16.0b1\\\\samples\\\\datalake_samples_directory.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   new_dir_name = \"testdir2\"\n   print(\"Renaming the directory named '{}'\
@@ -1456,8 +1479,11 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-datalake#other-client--per-operation-configuration).'
     types:
     - <xref:int>
-  - name: response dict
-    description: response dict (Etag and last modified).
+  return:
+    description: response dict containing access control options (Etag and last modified).
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:dict>[<xref:str>, <xref:datetime.datetime>]
 - uid: azure.storage.filedatalake.DataLakeDirectoryClient.set_access_control_recursive
   name: set_access_control_recursive
   summary: Sets the Access Control on a path and sub-paths.
