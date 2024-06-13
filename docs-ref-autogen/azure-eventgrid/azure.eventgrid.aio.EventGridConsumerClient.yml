@@ -1,0 +1,228 @@
+### YamlMime:PythonClass
+uid: azure.eventgrid.aio.EventGridConsumerClient
+name: EventGridConsumerClient
+fullName: azure.eventgrid.aio.EventGridConsumerClient
+module: azure.eventgrid.aio
+inheritances:
+- azure.eventgrid.aio._client.EventGridConsumerClient
+summary: 'EventGridConsumerClient.
+
+
+  Consumes and manages events from a namespace topic
+
+  and event subscription specified during the client initialization.'
+constructor:
+  syntax: 'EventGridConsumerClient(endpoint: str, credential: AzureKeyCredential |
+    AsyncTokenCredential, *, namespace_topic: str, subscription: str, api_version:
+    str | None = None, **kwargs: Any)'
+  parameters:
+  - name: endpoint
+    description: 'The endpoint of the Event Grid tier (basic or namespace), e.g.
+
+      namespaceName1.westus-1.eventgrid.azure.net. Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: credential
+    description: 'Credential used to authenticate requests to the service. Is either
+      a
+
+      AzureKeyCredential type or a AsyncTokenCredential type. Required.'
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
+  keywordOnlyParameters:
+  - name: namespace_topic
+    description: The name of the topic to consume events from. Required.
+    types:
+    - <xref:str>
+  - name: subscription
+    description: The name of the subscription to consume events from. Required.
+    types:
+    - <xref:str>
+  - name: api_version
+    description: 'The API version to use for this operation. Default value is "2024-06-01".
+
+      Note that overriding this default value may result in unsupported behavior.'
+    types:
+    - <xref:str>
+methods:
+- uid: azure.eventgrid.aio.EventGridConsumerClient.acknowledge
+  name: acknowledge
+  summary: 'Acknowledge a batch of Cloud Events. The response will include the set
+    of successfully
+
+    acknowledged lock tokens, along with other failed lock tokens with their corresponding
+    error
+
+    information. Successfully acknowledged events will no longer be available to be
+    received by any
+
+    consumer.'
+  signature: 'async acknowledge(*, lock_tokens: List[str], **kwargs: Any) -> AcknowledgeResult'
+  keywordOnlyParameters:
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
+    types:
+    - <xref:typing.List>[<xref:str>]
+  return:
+    description: AcknowledgeResult. The AcknowledgeResult is compatible with MutableMapping
+    types:
+    - <xref:azure.eventgrid.models.AcknowledgeResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.eventgrid.aio.EventGridConsumerClient.close
+  name: close
+  signature: async close() -> None
+- uid: azure.eventgrid.aio.EventGridConsumerClient.receive
+  name: receive
+  summary: Receive Batch of Cloud Events from the Event Subscription.
+  signature: 'async receive(*, max_events: int | None = None, max_wait_time: int |
+    None = None, **kwargs: Any) -> List[ReceiveDetails]'
+  keywordOnlyParameters:
+  - name: max_events
+    description: 'Max Events count to be received. Minimum value is 1, while maximum
+      value
+
+      is 100 events. The default is None, meaning it will receive one event if available.'
+    types:
+    - <xref:int>
+  - name: max_wait_time
+    description: 'Max wait time value for receive operation in Seconds. It is the
+      time in
+
+      seconds that the server approximately waits for the availability of an event
+      and responds to
+
+      the request. If an event is available, the broker responds immediately to the
+      client. Minimum
+
+      value is 10 seconds, while maximum value is 120 seconds. The default value is
+      None, meaning it
+
+      will wait for 60 seconds.'
+    types:
+    - <xref:int>
+  return:
+    description: ReceiveDetails list of received events and their broker properties.
+    types:
+    - <xref:list>[<xref:azure.eventgrid.models.ReceiveDetails>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.eventgrid.aio.EventGridConsumerClient.reject
+  name: reject
+  summary: 'Reject a batch of Cloud Events. The response will include the set of successfully
+    rejected lock
+
+    tokens, along with other failed lock tokens with their corresponding error information.
+
+    Successfully rejected events will be dead-lettered and can no longer be received
+    by a consumer.'
+  signature: 'async reject(*, lock_tokens: List[str], **kwargs: Any) -> RejectResult'
+  keywordOnlyParameters:
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
+    types:
+    - <xref:typing.List>[<xref:str>]
+  return:
+    description: RejectResult. The RejectResult is compatible with MutableMapping
+    types:
+    - <xref:azure.eventgrid.models.RejectResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.eventgrid.aio.EventGridConsumerClient.release
+  name: release
+  summary: 'Release a batch of Cloud Events. The response will include the set of
+    successfully released
+
+    lock tokens, along with other failed lock tokens with their corresponding error
+    information.
+
+    Successfully released events can be received by consumers.'
+  signature: 'async release(*, lock_tokens: List[str], release_delay: int | ReleaseDelay
+    | None = None, **kwargs: Any) -> ReleaseResult'
+  keywordOnlyParameters:
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
+    types:
+    - <xref:typing.List>[<xref:str>]
+  - name: release_delay
+    description: 'Release cloud events with the specified delay in seconds.
+
+      Known values are: 0, 10, 60, 600, and 3600. Default value is None, indicating
+      no delay.'
+    types:
+    - <xref:int>
+    - <xref:azure.eventgrid.models.ReleaseDelay>
+  return:
+    description: ReleaseResult. The ReleaseResult is compatible with MutableMapping
+    types:
+    - <xref:azure.eventgrid.models.ReleaseResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.eventgrid.aio.EventGridConsumerClient.renew_locks
+  name: renew_locks
+  summary: 'Renew lock for batch of Cloud Events. The server responds with an HTTP
+    200 status code if the
+
+    request is successfully accepted. The response body will include the set of successfully
+
+    renewed lockTokens, along with other failed lockTokens with their corresponding
+    error
+
+    information.'
+  signature: 'async renew_locks(*, lock_tokens: List[str], **kwargs: Any) -> RenewLocksResult'
+  keywordOnlyParameters:
+  - name: lock_tokens
+    description: Array of lock tokens of Cloud Events. Required.
+    types:
+    - <xref:typing.List>[<xref:str>]
+  return:
+    description: 'RenewLocksResult. The RenewLocksResult is compatible with
+
+      MutableMapping'
+    types:
+    - <xref:azure.eventgrid.models.RenewLocksResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.eventgrid.aio.EventGridConsumerClient.send_request
+  name: send_request
+  summary: 'Runs the network request through the client''s chained policies.
+
+
+    ```
+
+
+    >>> from azure.core.rest import HttpRequest
+
+    >>> request = HttpRequest("GET", "https://www.example.org/")
+
+    <HttpRequest [GET], url: ''https://www.example.org/''>
+
+    >>> response = await client.send_request(request)
+
+    <AsyncHttpResponse: 200 OK>
+
+    ```
+
+
+    For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
+  parameters:
+  - name: request
+    description: The network request you want to make. Required.
+    isRequired: true
+    types:
+    - <xref:azure.core.rest.HttpRequest>
+  keywordOnlyParameters:
+  - name: stream
+    description: Whether the response payload will be streamed. Defaults to False.
+    types:
+    - <xref:bool>
+  return:
+    description: The response of your network call. Does not do error handling on
+      your response.
+    types:
+    - <xref:azure.core.rest.AsyncHttpResponse>
