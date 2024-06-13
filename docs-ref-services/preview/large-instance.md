@@ -1,7 +1,7 @@
 ---
 title: Azure Large Instance SDK for Python
 description: Reference for Azure Large Instance SDK for Python
-ms.date: 05/03/2024
+ms.date: 06/13/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: largeinstance
