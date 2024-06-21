@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-oracledatabase, oracle
-ms.date: 05/30/2024
+keywords: Azure, python, SDK, API, azure-mgmt-oracledatabase, oracledatabase
+ms.date: 06/21/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: oracle
+ms.service: oracledatabase
 ---
 # Microsoft Azure SDK for Python
 
