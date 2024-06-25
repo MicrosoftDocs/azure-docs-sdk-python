@@ -1,12 +1,12 @@
 ---
 title: Azure Cognitive Services Health Insights Radiology Insights client library for Python
 keywords: Azure, python, SDK, API, azure-healthinsights-radiologyinsights, healthinsights
-ms.date: 03/04/2024
+ms.date: 06/25/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: healthinsights
 ---
-# Azure Cognitive Services Health Insights Radiology Insights client library for Python - version 1.0.0b1 
+# Azure Cognitive Services Health Insights Radiology Insights client library for Python - version 1.0.0a20240624001 
 
 [Health Insights][health_insights] is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
 
@@ -157,4 +157,4 @@ additional questions or comments.
 [azure_cli]: https://learn.microsoft.com/cli/azure/
 [inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[sample_folder]: https://github.com/Azure/azure-sdk-for-python/tree/azure-healthinsights-radiologyinsights_1.0.0b1/sdk/healthinsights/azure-healthinsights-radiologyinsights/samples
+[sample_folder]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/healthinsights/azure-healthinsights-radiologyinsights/samples
