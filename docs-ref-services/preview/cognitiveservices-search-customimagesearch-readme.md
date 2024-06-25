@@ -1,12 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-search-customimagesearch, cognitiveservices
-ms.date: 03/31/2022
+ms.date: 06/25/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: bing-image-search
-ms.technology: azure
+ms.service: cognitiveservices
 ---
 # Microsoft Azure SDK for Python
 
@@ -20,7 +18,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 
-For code examples, see [Cognitive Services Custom Image Search](https://docs.microsoft.com/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
+For code examples, see [Cognitive Services Custom Image Search](/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
 
 
 # Provide Feedback
