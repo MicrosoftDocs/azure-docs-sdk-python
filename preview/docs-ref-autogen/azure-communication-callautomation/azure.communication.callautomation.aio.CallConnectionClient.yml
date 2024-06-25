@@ -5,10 +5,10 @@ fullName: azure.communication.callautomation.aio.CallConnectionClient
 module: azure.communication.callautomation.aio
 inheritances:
 - builtins.object
-summary: 'A client to interact with ongoing call. This client can be used to do mid-call
-  actions,
+summary: 'A client to interact with an ongoing call. This client can be used to do
+  mid-call actions,
 
-  such as Transfer and Play Media. Call must be estbalished to perform these actions.'
+  such as Transfer and Play Media. Call must be established to perform these actions.'
 constructor:
   syntax: 'CallConnectionClient(endpoint: str, credential: AsyncTokenCredential |
     AzureKeyCredential, call_connection_id: str, *, api_version: str | None = None,
@@ -20,7 +20,7 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: The access key we use to authenticate against the service.
+    description: The credentials with which to authenticate.
     isRequired: true
     types:
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
@@ -38,11 +38,12 @@ constructor:
 methods:
 - uid: azure.communication.callautomation.aio.CallConnectionClient.add_participant
   name: add_participant
-  summary: Add a participant to the call.
+  summary: Add a participant to this call.
   signature: 'async add_participant(target_participant: CommunicationIdentifier, *,
     invitation_timeout: int | None = None, operation_context: str | None = None, source_caller_id_number:
-    PhoneNumberIdentifier | None = None, source_display_name: str | None = None, **kwargs)
-    -> AddParticipantResult'
+    PhoneNumberIdentifier | None = None, source_display_name: str | None = None, operation_callback_url:
+    str | None = None, sip_headers: Dict[str, str] | None = None, voip_headers: Dict[str,
+    str] | None = None, **kwargs) -> AddParticipantResult'
   parameters:
   - name: target_participant
     description: The participant being added.
@@ -58,7 +59,7 @@ methods:
     - <xref:int>
     - <xref:None>
   - name: operation_context
-    description: Value that can be used to track the call and its associated events.
+    description: Value that can be used to track this call and its associated events.
     types:
     - <xref:str>
     - <xref:None>
@@ -76,15 +77,69 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: sip_headers
+    description: Sip Headers for PSTN Call
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: voip_headers
+    description: Voip Headers for Voip Call
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   return:
     description: AddParticipantResult
     types:
     - <xref:azure.communication.callautomation.AddParticipantResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.cancel_add_participant_operation
+  name: cancel_add_participant_operation
+  summary: Cancel add participant request sent out to a participant.
+  signature: 'async cancel_add_participant_operation(invitation_id: str, *, operation_context:
+    str | None = None, operation_callback_url: str | None = None, **kwargs) -> CancelAddParticipantOperationResult'
+  parameters:
+  - name: invitation_id
+    description: The invitation ID that was used to add the participant.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: CancelAddParticipantOperationResult
+    types:
+    - <xref:azure.communication.callautomation.CancelAddParticipantOperationResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.cancel_all_media_operations
   name: cancel_all_media_operations
-  summary: Cancels all the queued media operations.
+  summary: Cancels all the ongoing and queued media operations for this call.
   signature: async cancel_all_media_operations(**kwargs) -> None
   return:
     description: None
@@ -117,7 +172,7 @@ methods:
     - <xref:azure.communication.callautomation.CallConnectionClient>
 - uid: azure.communication.callautomation.aio.CallConnectionClient.get_call_properties
   name: get_call_properties
-  summary: Get the latest properties of the call.
+  summary: Get the latest properties of this call.
   signature: async get_call_properties(**kwargs) -> CallConnectionProperties
   return:
     description: CallConnectionProperties
@@ -127,7 +182,7 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.get_participant
   name: get_participant
-  summary: Get details of a participant in a call.
+  summary: Get details of a participant in this call.
   signature: 'async get_participant(target_participant: CommunicationIdentifier, **kwargs)
     -> CallParticipant'
   parameters:
@@ -144,11 +199,11 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.hang_up
   name: hang_up
-  summary: Hangup the call.
+  summary: Hangup this call.
   signature: 'async hang_up(is_for_everyone: bool, **kwargs) -> None'
   parameters:
   - name: is_for_everyone
-    description: Determine if the call should be ended for all participants.
+    description: Determine if this call should be ended for all participants.
     isRequired: true
     types:
     - <xref:bool>
@@ -158,9 +213,50 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.hold
+  name: hold
+  summary: Play media to specific participant(s) in this call.
+  signature: 'async hold(target_participant: CommunicationIdentifier, *, play_source:
+    FileSource | TextSource | SsmlSource | None = None, operation_context: str | None
+    = None, operation_callback_url: str | None = None, **kwargs) -> None'
+  parameters:
+  - name: target_participant
+    description: The participant being added.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: play_source
+    description: A PlaySource representing the source to play.
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.list_participants
   name: list_participants
-  summary: List all participants from a call.
+  summary: List all participants in this call.
   signature: list_participants(**kwargs) -> AsyncItemPaged[CallParticipant]
   return:
     description: Async iterable of CallParticipant
@@ -176,7 +272,6 @@ methods:
   parameters:
   - name: target_participant
     description: Participant to be muted from the call. Only ACS Users are supported.
-      Required.
     isRequired: true
     types:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
@@ -196,15 +291,19 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.play_media
   name: play_media
-  summary: Play media to specific participant(s) in the call.
-  signature: 'async play_media(play_source: FileSource | TextSource | SsmlSource |
-    List[FileSource | TextSource | SsmlSource], play_to: Literal[''all''] | List[CommunicationIdentifier]
-    = ''all'', *, loop: bool = False, operation_context: str | None = None, **kwargs)
-    -> None'
+  summary: Play media to specific participant(s) in this call.
+  signature: 'async play_media(play_source: FileSource | TextSource | SsmlSource,
+    play_to: Literal[''all''] | List[CommunicationIdentifier] = ''all'', *, loop:
+    bool = False, operation_context: str | None = None, operation_callback_url: str
+    | None = None, **kwargs) -> None'
   parameters:
   - name: play_source
     description: A PlaySource representing the source to play.
     isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
   - name: play_to
     description: 'The targets to play media to. Default value is ''all'', to play
       media
@@ -223,6 +322,17 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: None
     types:
@@ -231,19 +341,191 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.play_media_to_all
   name: play_media_to_all
-  summary: Play media to all participants in the call.
-  signature: 'async play_media_to_all(play_source: FileSource | List[FileSource],
-    *, loop: bool = False, operation_context: str | None = None, **kwargs) -> None'
+  summary: Play media to all participants in this call.
+  signature: 'async play_media_to_all(play_source: FileSource | TextSource | SsmlSource,
+    *, loop: bool = False, operation_context: str | None = None, operation_callback_url:
+    str | None = None, interrupt_call_media_operation: bool = False, **kwargs) ->
+    None'
   parameters:
   - name: play_source
     description: A PlaySource representing the source to play.
     isRequired: true
     types:
     - <xref:azure.communication.callautomation.FileSource>
-    - <xref:list>[<xref:azure.communication.callautomation.FileSource>]
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
   keywordOnlyParameters:
   - name: loop
-    description: if the media should be repeated until cancelled.
+    description: Whether the media should be repeated until cancelled.
+    types:
+    - <xref:bool>
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: interrupt_call_media_operation
+    description: 'If set play can barge into other existing
+
+      queued-up/currently-processing requests.'
+    types:
+    - <xref:bool>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.remove_participant
+  name: remove_participant
+  summary: Remove a participant from this call.
+  signature: 'async remove_participant(target_participant: CommunicationIdentifier,
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, **kwargs) -> RemoveParticipantResult'
+  parameters:
+  - name: target_participant
+    description: The participant being removed.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: RemoveParticipantResult
+    types:
+    - <xref:azure.communication.callautomation.RemoveParticipantResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.send_dtmf_tones
+  name: send_dtmf_tones
+  summary: Send Dtmf tones to this call.
+  signature: 'async send_dtmf_tones(tones: List[str | DtmfTone], target_participant:
+    CommunicationIdentifier, *, operation_context: str | None = None, operation_callback_url:
+    str | None = None, **kwargs) -> SendDtmfTonesResult'
+  parameters:
+  - name: tones
+    description: List of tones to be sent to target participant.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.communication.callautomation.DtmfTone>]
+  - name: target_participant
+    description: Target participant.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: The value to identify context of the operation.
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: SendDtmfTonesResult
+    types:
+    - <xref:azure.communication.callautomation.SendDtmfTonesResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.start_continuous_dtmf_recognition
+  name: start_continuous_dtmf_recognition
+  summary: Start continuous Dtmf recognition by subscribing to tones.
+  signature: 'async start_continuous_dtmf_recognition(target_participant: CommunicationIdentifier,
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, **kwargs) -> None'
+  parameters:
+  - name: target_participant
+    description: Target participant.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.start_hold_music
+  name: start_hold_music
+  summary: Hold participant from call while playing music.
+  signature: 'async start_hold_music(target_participant: CommunicationIdentifier,
+    play_source: FileSource | TextSource | SsmlSource, *, loop: bool = True, operation_context:
+    str | None = None, **kwargs) -> None'
+  parameters:
+  - name: play_source
+    description: A PlaySource representing the source to play.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
+    - <xref:list>[<xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>]
+  - name: target_participant
+    description: 'The targets to play media to. Default value is ''all'', to play
+      media
+
+      to all participants in the call.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
+  keywordOnlyParameters:
+  - name: loop
+    description: 'Whether the media should be repeated until stopped.
+
+      **DEPRECATED**: ''loop'' has been deprecated and will be removed from future
+      releases.'
     types:
     - <xref:bool>
   - name: operation_context
@@ -257,91 +539,18 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-- uid: azure.communication.callautomation.aio.CallConnectionClient.remove_participant
-  name: remove_participant
-  summary: Remove a participant from the call.
-  signature: 'async remove_participant(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> RemoveParticipantResult'
-  parameters:
-  - name: target_participant
-    description: The participant being removed.
-    isRequired: true
-    types:
-    - <xref:azure.communication.callautomation.CommunicationIdentifier>
-  keywordOnlyParameters:
-  - name: operation_context
-    description: Value that can be used to track the call and its associated events.
-    types:
-    - <xref:str>
-  return:
-    description: RemoveParticipantResult
-    types:
-    - <xref:azure.communication.callautomation.RemoveParticipantResult>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.communication.callautomation.aio.CallConnectionClient.send_dtmf_tones
-  name: send_dtmf_tones
-  summary: 'Send Dtmf tones to the call.
-
-
-    :type tones:list[str or ~azure.communication.callautomation.DtmfTone]
-
-    :param target_participant: Target participant.
-
-    :type target_participant: ~azure.communication.callautomation.CommunicationIdentifier
-
-    :keyword operation_context: Value that can be used to track the call and its associated
-    events.
-
-    :paramtype operation_context: str
-
-    :return: SendDtmfTonesResult
-
-    :rtype: ~azure.communication.callautomation.SendDtmfTonesResult
-
-    :raises ~azure.core.exceptions.HttpResponseError:'
-  signature: 'async send_dtmf_tones(tones: List[str | DtmfTone], target_participant:
-    CommunicationIdentifier, *, operation_context: str | None = None, **kwargs) ->
-    SendDtmfTonesResult'
-  parameters:
-  - name: tones
-    description: List of tones to be sent to target participant.
-    isRequired: true
-- uid: azure.communication.callautomation.aio.CallConnectionClient.start_continuous_dtmf_recognition
-  name: start_continuous_dtmf_recognition
-  summary: Start continuous Dtmf recognition by subscribing to tones.
-  signature: 'async start_continuous_dtmf_recognition(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> None'
-  parameters:
-  - name: target_participant
-    description: Target participant.
-    isRequired: true
-    types:
-    - <xref:azure.communication.callautomation.CommunicationIdentifier>
-  keywordOnlyParameters:
-  - name: operation_context
-    description: Value that can be used to track the call and its associated events.
-    types:
-    - <xref:str>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.start_recognizing_media
   name: start_recognizing_media
-  summary: Recognize tones from specific participant in the call.
+  summary: Recognize inputs from specific participant in this call.
   signature: 'async start_recognizing_media(input_type: str | RecognizeInputType,
     target_participant: CommunicationIdentifier, *, initial_silence_timeout: int |
-    None = None, play_prompt: FileSource | TextSource | SsmlSource | List[FileSource
-    | TextSource | SsmlSource] | None = None, interrupt_call_media_operation: bool
-    = False, operation_context: str | None = None, interrupt_prompt: bool = False,
-    dtmf_inter_tone_timeout: int | None = None, dtmf_max_tones_to_collect: int | None
-    = None, dtmf_stop_tones: List[str] | None = None, speech_language: str | None
-    = None, choices: List[RecognitionChoice] | None = None, end_silence_timeout: int
-    | None = None, speech_recognition_model_endpoint_id: str | None = None, **kwargs)
-    -> None'
+    None = None, play_prompt: FileSource | TextSource | SsmlSource | None = None,
+    interrupt_call_media_operation: bool = False, operation_context: str | None =
+    None, interrupt_prompt: bool = False, dtmf_inter_tone_timeout: int | None = None,
+    dtmf_max_tones_to_collect: int | None = None, dtmf_stop_tones: List[str] | None
+    = None, speech_language: str | None = None, choices: List[RecognitionChoice] |
+    None = None, end_silence_timeout: int | None = None, speech_recognition_model_endpoint_id:
+    str | None = None, operation_callback_url: str | None = None, **kwargs) -> None'
   parameters:
   - name: input_type
     description: Determines the type of the recognition.
@@ -361,13 +570,17 @@ methods:
     - <xref:int>
   - name: play_prompt
     description: The source of the audio to be played for recognition.
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
   - name: interrupt_call_media_operation
     description: If set recognize can barge into other existing queued-up/currently-processing
       requests.
     types:
     - <xref:bool>
   - name: operation_context
-    description: Value that can be used to track the call and its associated events.
+    description: Value that can be used to track this call and its associated events.
     types:
     - <xref:str>
   - name: interrupt_prompt
@@ -375,15 +588,21 @@ methods:
     types:
     - <xref:bool>
   - name: dtmf_inter_tone_timeout
-    description: Time to wait between DTMF inputs to stop recognizing.
+    description: 'Time to wait between DTMF inputs to stop recognizing. Will be ignored
+
+      unless input_type is ''dtmf'' or ''speechOrDtmf''.'
     types:
     - <xref:int>
   - name: dtmf_max_tones_to_collect
-    description: Maximum number of DTMF tones to be collected.
+    description: 'Maximum number of DTMF tones to be collected. Will be ignored
+
+      unless input_type is ''dtmf'' or ''speechOrDtmf''.'
     types:
     - <xref:int>
   - name: dtmf_stop_tones
-    description: List of tones that will stop recognizing.
+    description: 'List of tones that will stop recognizing. Will be ignored
+
+      unless input_type is ''dtmf'' or ''speechOrDtmf''.'
     types:
     - <xref:list>[<xref:str>
     - <xref:azure.communication.callautomation.DtmfTone>]
@@ -392,17 +611,49 @@ methods:
     types:
     - <xref:str>
   - name: choices
-    description: Defines Ivr choices for recognize.
+    description: Defines Ivr choices for recognize. Will be ignored unless input_type
+      is 'choices'.
     types:
     - <xref:list>[<xref:azure.communication.callautomation.RecognitionChoice>]
   - name: end_silence_timeout
     description: 'The length of end silence when user stops speaking and cogservice
 
-      send response.'
+      send response. Will be ingored unless input_type is ''speech'' or ''speechOrDtmf''.'
     types:
     - <xref:int>
   - name: speech_recognition_model_endpoint_id
     description: Endpoint where the custom model was deployed.
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.start_transcription
+  name: start_transcription
+  summary: Starts transcription in the call.
+  signature: 'async start_transcription(*, locale: str | None = None, operation_context:
+    str | None = None, **kwargs) -> None'
+  keywordOnlyParameters:
+  - name: locale
+    description: Defines Locale for the transcription e,g en-US.
+    types:
+    - <xref:str>
+  - name: operation_context
+    description: The value to identify context of the operation.
     types:
     - <xref:str>
   return:
@@ -415,7 +666,8 @@ methods:
   name: stop_continuous_dtmf_recognition
   summary: Stop continuous Dtmf recognition by unsubscribing to tones.
   signature: 'async stop_continuous_dtmf_recognition(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> None'
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, **kwargs) -> None'
   parameters:
   - name: target_participant
     description: Target participant.
@@ -424,7 +676,60 @@ methods:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
   keywordOnlyParameters:
   - name: operation_context
-    description: Value that can be used to track the call and its associated events.
+    description: The value to identify context of the operation.
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.stop_hold_music
+  name: stop_hold_music
+  summary: Remove hold from participant.
+  signature: 'async stop_hold_music(target_participant: CommunicationIdentifier, *,
+    operation_context: str | None = None, **kwargs) -> None'
+  parameters:
+  - name: target_participant
+    description: 'The targets to play media to. Default value is ''all'', to play
+      media
+
+      to all participants in the call.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.stop_transcription
+  name: stop_transcription
+  summary: Stops transcription in the call.
+  signature: 'async stop_transcription(*, operation_context: str | None = None, **kwargs)
+    -> None'
+  keywordOnlyParameters:
+  - name: operation_context
+    description: The value to identify context of the operation.
     types:
     - <xref:str>
   return:
@@ -435,9 +740,12 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.transfer_call_to_participant
   name: transfer_call_to_participant
-  summary: Transfer the call to a participant.
+  summary: Transfer this call to another participant.
   signature: 'async transfer_call_to_participant(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> TransferCallResult'
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, transferee: CommunicationIdentifier | None = None, sip_headers: Dict[str,
+    str] | None = None, voip_headers: Dict[str, str] | None = None, source_caller_id_number:
+    PhoneNumberIdentifier | None = None, **kwargs) -> TransferCallResult'
   parameters:
   - name: target_participant
     description: The transfer target.
@@ -446,12 +754,82 @@ methods:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
   keywordOnlyParameters:
   - name: operation_context
-    description: Value that can be used to track the call and its associated events.
+    description: Value that can be used to track this call and its associated events.
     types:
     - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: transferee
+    description: Transferee is the participant who is transferred away.
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+    - <xref:None>
+  - name: sip_headers
+    description: Custom context for PSTN
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: voip_headers
+    description: Custom context for VOIP
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: source_caller_id_number
+    description: 'The source caller Id, a phone number, that''s will be used as the
+
+      transferor''s(Contoso) caller id when transfering a call a pstn target.'
+    types:
+    - <xref:azure.communication.callautomation.PhoneNumberIdentifier>
+    - <xref:None>
   return:
     description: TransferCallResult
     types:
     - <xref:azure.communication.callautomation.TransferCallResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.unhold
+  name: unhold
+  summary: Play media to specific participant(s) in this call.
+  signature: 'async unhold(target_participant: CommunicationIdentifier, *, operation_context:
+    str | None = None, **kwargs) -> None'
+  parameters:
+  - name: target_participant
+    description: The participant being added.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.update_transcription
+  name: update_transcription
+  summary: API to change transcription language.
+  signature: 'async update_transcription(locale: str, **kwargs) -> None'
+  parameters:
+  - name: locale
+    description: Defines new locale for transcription.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
