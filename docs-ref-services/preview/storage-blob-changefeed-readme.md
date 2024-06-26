@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
-# Azure Storage Blob ChangeFeed client library for Python - version 12.0.0a20240625011 
+# Azure Storage Blob ChangeFeed client library for Python - version 12.0.0a20240626002 
 
 
 This preview package for Python enables users to get blob change feed events. These events can be lazily generated, iterated by page, retrieved for a specific time interval, or iterated from a specific continuation token.
