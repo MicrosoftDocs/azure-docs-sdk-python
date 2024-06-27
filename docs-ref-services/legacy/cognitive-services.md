@@ -1,13 +1,13 @@
 ---
 title: Azure Cognitive Services SDK for Python
 description: Reference for Azure Cognitive Services SDK for Python
-ms.date: 06/26/2024
+ms.date: 06/27/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitiveservices
-manager: angerobe
-ms.technology: azure
 keywords: Azure, python, SDK, API, Cognitive Services
+ms.technology: azure
+manager: angerobe
 ---
 # Azure Cognitive Services modules for Python
 

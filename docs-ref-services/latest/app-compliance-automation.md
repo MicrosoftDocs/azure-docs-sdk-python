@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: appcomplianceautomation
 ---
-# Azure App Compliance Automation SDK for Python - preview
-## Packages - preview
+# Azure App Compliance Automation SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](app-compliance-automation-index.md)]
