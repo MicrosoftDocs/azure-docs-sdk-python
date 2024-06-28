@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-cognitiveservices-search-customsearch, cognitiveservices
+keywords: Azure, python, SDK, API, azure-cognitiveservices-search-videosearch, cognitiveservices
 ms.date: 06/28/2024
 ms.topic: reference
 ms.devlang: python
