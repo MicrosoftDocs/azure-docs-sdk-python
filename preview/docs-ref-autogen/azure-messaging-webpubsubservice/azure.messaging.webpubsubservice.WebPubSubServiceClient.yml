@@ -258,17 +258,39 @@ methods:
     - <xref:azure.messaging.webpubsubservice.WebPubSubServiceClient>
 - uid: azure.messaging.webpubsubservice.WebPubSubServiceClient.get_client_access_token
   name: get_client_access_token
-  summary: "Build an authentication token.\n:keyword user_id: User Id.\n:paramtype\
-    \ user_id: str\n:keyword roles: Roles that the connection with the generated token\
-    \ will have.\n:paramtype roles: list[str]\n:keyword minutes_to_expire: The expire\
-    \ time of the generated token.\n:paramtype minutes_to_expire: int\n:keyword dict[str,\
-    \ any] jwt_headers: Any headers you want to pass to jwt encoding.\n:returns: JSON\
-    \ response containing the web socket endpoint, the token and a url with the generated\
-    \ access token.\n:rtype: JSON\nExample:\n>>> get_client_access_token()\n{\n\n\
-    \   'baseUrl': 'wss://contoso.com/api/webpubsub/client/hubs/theHub',\n   'token':\
-    \ '<access-token>...',\n   'url': 'wss://contoso.com/api/webpubsub/client/hubs/theHub?access_token=<access-token>...'\n\
-    \n}"
+  summary: Build an authentication token.
   signature: 'get_client_access_token(**kwargs: Any) -> MutableMapping[str, Any]'
+  keywordOnlyParameters:
+  - name: user_id
+    description: User Id.
+    types:
+    - <xref:str>
+  - name: roles
+    description: Roles that the connection with the generated token will have.
+    types:
+    - <xref:list>[<xref:str>]
+  - name: minutes_to_expire
+    description: The expire time of the generated token.
+    types:
+    - <xref:int>
+  - name: jwt_headers
+    description: Any headers you want to pass to jwt encoding.
+    types:
+    - <xref:dict>[<xref:str>, <xref:any>]
+  - name: groups
+    description: Groups that the connection will join when it connects. Default value
+      is None.
+    types:
+    - <xref:list>[<xref:str>]
+  return:
+    description: JSON response containing the web socket endpoint, the token and a
+      url with the generated access token.
+    types:
+    - <xref:JSON>
+  examples:
+  - "\n```\n\n>>> get_client_access_token()\n{\n    'baseUrl': 'wss://contoso.com/api/webpubsub/client/hubs/theHub',\n\
+    \    'token': '<access-token>...',\n    'url': 'wss://contoso.com/api/webpubsub/client/hubs/theHub?access_token=<access-token>...'\n\
+    }\n```\n"
 - uid: azure.messaging.webpubsubservice.WebPubSubServiceClient.grant_permission
   name: grant_permission
   summary: 'Grant permission to the connection.
@@ -541,14 +563,15 @@ methods:
 
 
     Broadcast content inside request body to all the connected client connections.'
-  signature: 'send_to_all(message: IO, *, excluded: List[str] | None = None, filter:
-    str | None = None, **kwargs: Any) -> None'
+  signature: 'send_to_all(message: IO | str | MutableMapping[str, Any], *, excluded:
+    List[str] | None = None, filter: str | None = None, content_type: str | None =
+    None, **kwargs: Any) -> None'
   parameters:
   - name: message
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
   keywordOnlyParameters:
   - name: excluded
     description: Excluded connection Ids. Default value is None.
@@ -559,6 +582,11 @@ methods:
       the
 
       messages. Default value is None.'
+    types:
+    - <xref:str>
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
     types:
     - <xref:str>
   return:
@@ -573,8 +601,8 @@ methods:
 
 
     Send content inside request body to the specific connection.'
-  signature: 'send_to_connection(connection_id: str, message: IO, **kwargs: Any) ->
-    None'
+  signature: 'send_to_connection(connection_id: str, message: IO | str | MutableMapping[str,
+    Any], *, content_type: str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: connection_id
     description: The connection Id. Required.
@@ -585,7 +613,13 @@ methods:
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
+  keywordOnlyParameters:
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
+    types:
+    - <xref:str>
   return:
     description: None
     types:
@@ -598,8 +632,9 @@ methods:
 
 
     Send content inside request body to a group of connections.'
-  signature: 'send_to_group(group: str, message: IO, *, excluded: List[str] | None
-    = None, filter: str | None = None, **kwargs: Any) -> None'
+  signature: 'send_to_group(group: str, message: IO | str | MutableMapping[str, Any],
+    *, excluded: List[str] | None = None, filter: str | None = None, content_type:
+    str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: group
     description: 'Target group name, which length should be greater than 0 and less
@@ -613,7 +648,7 @@ methods:
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
   keywordOnlyParameters:
   - name: excluded
     description: Excluded connection Ids. Default value is None.
@@ -624,6 +659,11 @@ methods:
       the
 
       messages. Default value is None.'
+    types:
+    - <xref:str>
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
     types:
     - <xref:str>
   return:
@@ -638,8 +678,9 @@ methods:
 
 
     Send content inside request body to the specific user.'
-  signature: 'send_to_user(user_id: str, message: IO, *, filter: str | None = None,
-    **kwargs: Any) -> None'
+  signature: 'send_to_user(user_id: str, message: IO | str | MutableMapping[str, Any],
+    *, filter: str | None = None, content_type: str | None = None, **kwargs: Any)
+    -> None'
   parameters:
   - name: user_id
     description: The user Id. Required.
@@ -650,13 +691,18 @@ methods:
     description: The payload body. Required.
     isRequired: true
     types:
-    - <xref:typing.IO>
+    - <xref:typing.Union>[<xref:typing.IO>, <xref:str>, <xref:JSON>]
   keywordOnlyParameters:
   - name: filter
     description: 'Following OData filter syntax to filter out the subscribers receiving
       the
 
       messages. Default value is None.'
+    types:
+    - <xref:str>
+  - name: content_type
+    description: The content type of the payload. Default value is None. Allowed values
+      are 'application/json', 'application/octet-stream' and 'text/plain'
     types:
     - <xref:str>
   return:
