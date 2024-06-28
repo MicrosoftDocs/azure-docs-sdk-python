@@ -1,12 +1,12 @@
 ---
 title: Azure AI Face client library for Python
-keywords: Azure, python, SDK, API, azure-ai-vision-face, face
-ms.date: 05/28/2024
+keywords: Azure, python, SDK, API, azure-ai-vision-face, azure-ai-face
+ms.date: 06/28/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: face
+ms.service: azure-ai-face
 ---
-# Azure AI Face client library for Python - version 1.0.0b1 
+# Azure AI Face client library for Python - version 1.0.0a20240628001 
 
 
 The Azure AI Face service provides AI algorithms that detect, recognize, and analyze human faces in images. It includes the following main features:
@@ -353,11 +353,11 @@ see the Code of Conduct FAQ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-face_1.0.0b1/sdk/face/azure-ai-vision-face/azure/ai/vision/face
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/face/azure-ai-vision-face/azure/ai/vision/face
 [face_pypi]: https://aka.ms/azsdk-python-face-pkg
 [face_ref_docs]: https://aka.ms/azsdk-python-face-ref
 [face_product_docs]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-identity
-[face_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-face_1.0.0b1/sdk/face/azure-ai-vision-face/samples
+[face_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/face/azure-ai-vision-face/samples
 
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_role_assignment]: https://learn.microsoft.com/azure/role-based-access-control/role-assignments-steps
@@ -373,9 +373,9 @@ additional questions or comments.
 [regional_endpoints]: https://azure.microsoft.com/global-infrastructure/services/?products=cognitive-services
 [how_to_migrate_resource_to_custom_subdomain]: https://learn.microsoft.com/azure/ai-services/cognitive-services-custom-subdomains#how-does-this-impact-existing-resources
 [azure_sdk_python_azure_key_credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[azure_sdk_python_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-face_1.0.0b1/sdk/identity/azure-identity
+[azure_sdk_python_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
 [custom_subdomain]: /azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[azure_sdk_python_default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-face_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[azure_sdk_python_default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: /azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 
 [face_verification]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-identity#verification
@@ -395,8 +395,8 @@ additional questions or comments.
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-face_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-face_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 
