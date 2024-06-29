@@ -11,11 +11,11 @@ summary: 'Parameters to create and update Cosmos DB database accounts.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'DatabaseAccountCreateUpdateParameters(*, locations: List[_models.Location],
-    location: str | None = None, tags: Dict[str, str] | None = None, identity: _models.ManagedServiceIdentity
-    | None = None, kind: str | _models.DatabaseAccountKind | None = None, consistency_policy:
+    location: str | None = None, tags: Dict[str, str] | None = None, kind: str | _models.DatabaseAccountKind
+    | None = None, identity: _models.ManagedServiceIdentity | None = None, consistency_policy:
     _models.ConsistencyPolicy | None = None, ip_rules: List[_models.IpAddressOrRange]
     | None = None, is_virtual_network_filter_enabled: bool | None = None, enable_automatic_failover:
     bool | None = None, capabilities: List[_models.Capability] | None = None, virtual_network_rules:
@@ -27,17 +27,14 @@ constructor:
     = None, enable_free_tier: bool | None = None, api_properties: _models.ApiProperties
     | None = None, enable_analytical_storage: bool | None = None, analytical_storage_configuration:
     _models.AnalyticalStorageConfiguration | None = None, create_mode: str | _models.CreateMode
-    | None = None, backup_policy: _models.BackupPolicy | None = None, cors: List[_models.CorsPolicy]
+    = ''Default'', backup_policy: _models.BackupPolicy | None = None, cors: List[_models.CorsPolicy]
     | None = None, network_acl_bypass: str | _models.NetworkAclBypass | None = None,
-    network_acl_bypass_resource_ids: List[str] | None = None, diagnostic_log_settings:
-    _models.DiagnosticLogSettings | None = None, disable_local_auth: bool | None =
-    None, restore_parameters: _models.RestoreParameters | None = None, capacity: _models.Capacity
-    | None = None, enable_materialized_views: bool | None = None, enable_partition_merge:
-    bool | None = None, enable_burst_capacity: bool | None = None, minimal_tls_version:
-    str | _models.MinimalTlsVersion | None = None, customer_managed_key_status: str
-    | None = None, enable_priority_based_execution: bool | None = None, default_priority_level:
-    str | _models.DefaultPriorityLevel | None = None, enable_per_region_per_partition_autoscale:
-    bool | None = None, **kwargs: Any)'
+    network_acl_bypass_resource_ids: List[str] | None = None, disable_local_auth:
+    bool | None = None, restore_parameters: _models.RestoreParameters | None = None,
+    capacity: _models.Capacity | None = None, enable_partition_merge: bool | None
+    = None, minimal_tls_version: str | _models.MinimalTlsVersion | None = None, enable_burst_capacity:
+    bool | None = None, customer_managed_key_status: str | None = None, **kwargs:
+    Any)'
   keywordOnlyParameters:
   - name: location
     description: The location of the resource group to which the resource belongs.
@@ -62,10 +59,6 @@ constructor:
       "Graph", "DocumentDB", and "MongoDB".'
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: identity
-    description: Identity for the resource.
-    types:
-    - <xref:azure.mgmt.cosmosdb.models.ManagedServiceIdentity>
   - name: kind
     description: 'Indicates the type of database account. This can only be set at
       database account
@@ -74,6 +67,10 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.cosmosdb.models.DatabaseAccountKind>
+  - name: identity
+    description: Identity for the resource.
+    types:
+    - <xref:azure.mgmt.cosmosdb.models.ManagedServiceIdentity>
   - name: consistency_policy
     description: The consistency policy for the Cosmos DB account.
     types:
@@ -179,7 +176,8 @@ constructor:
   - name: create_mode
     description: 'Enum to indicate the mode of account creation. Known values are:
 
-      "Default", "Restore", and "PointInTimeRestore".'
+      "Default" and "Restore".'
+    defaultValue: Default
     types:
     - <xref:str>
     - <xref:azure.mgmt.cosmosdb.models.CreateMode>
@@ -204,12 +202,6 @@ constructor:
       Acl Bypass for the Cosmos DB account.'
     types:
     - <xref:list>[<xref:str>]
-  - name: diagnostic_log_settings
-    description: 'The Object representing the different Diagnostic log settings
-
-      for the Cosmos DB Account.'
-    types:
-    - <xref:azure.mgmt.cosmosdb.models.DiagnosticLogSettings>
   - name: disable_local_auth
     description: 'Opt-out of local authentication and ensure only MSI and AAD can
       be
@@ -228,34 +220,28 @@ constructor:
       an account.'
     types:
     - <xref:azure.mgmt.cosmosdb.models.Capacity>
-  - name: enable_materialized_views
-    description: 'Flag to indicate whether to enable MaterializedViews on the
-
-      Cosmos DB account.'
-    types:
-    - <xref:bool>
   - name: enable_partition_merge
     description: 'Flag to indicate enabling/disabling of Partition Merge feature
 
       on the account.'
     types:
     - <xref:bool>
+  - name: minimal_tls_version
+    description: 'Indicates the minimum allowed Tls version. The default value is
+
+      Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2. Known values are:
+      "Tls", "Tls11", and
+
+      "Tls12".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.cosmosdb.models.MinimalTlsVersion>
   - name: enable_burst_capacity
     description: 'Flag to indicate enabling/disabling of Burst Capacity Preview
 
       feature on the account.'
     types:
     - <xref:bool>
-  - name: minimal_tls_version
-    description: 'Indicates the minimum allowed Tls version. The default is Tls
-
-      1.0, except for Cassandra and Mongo API''s, which only work with Tls 1.2. Known
-      values are:
-
-      "Tls", "Tls11", and "Tls12".'
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.cosmosdb.models.MinimalTlsVersion>
   - name: customer_managed_key_status
     description: 'Indicates the status of the Customer Managed Key feature
 
@@ -263,25 +249,6 @@ constructor:
       guidance.'
     types:
     - <xref:str>
-  - name: enable_priority_based_execution
-    description: 'Flag to indicate enabling/disabling of Priority Based
-
-      Execution Preview feature on the account.'
-    types:
-    - <xref:bool>
-  - name: default_priority_level
-    description: 'Enum to indicate default Priority Level of request for
-
-      Priority Based Execution. Known values are: "High" and "Low".'
-    types:
-    - <xref:str>
-    - <xref:azure.mgmt.cosmosdb.models.DefaultPriorityLevel>
-  - name: enable_per_region_per_partition_autoscale
-    description: 'Flag to indicate enabling/disabling of
-
-      Per-Region Per-partition autoscale Preview feature on the account.'
-    types:
-    - <xref:bool>
 variables:
 - description: The unique resource identifier of the ARM resource.
   name: id
@@ -318,10 +285,6 @@ variables:
   name: tags
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
-- description: Identity for the resource.
-  name: identity
-  types:
-  - <xref:azure.mgmt.cosmosdb.models.ManagedServiceIdentity>
 - description: 'Indicates the type of database account. This can only be set at database
     account
 
@@ -330,6 +293,10 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.cosmosdb.models.DatabaseAccountKind>
+- description: Identity for the resource.
+  name: identity
+  types:
+  - <xref:azure.mgmt.cosmosdb.models.ManagedServiceIdentity>
 - description: The consistency policy for the Cosmos DB account.
   name: consistency_policy
   types:
@@ -436,9 +403,9 @@ variables:
   name: analytical_storage_configuration
   types:
   - <xref:azure.mgmt.cosmosdb.models.AnalyticalStorageConfiguration>
-- description: 'Enum to indicate the mode of account creation. Known values are: "Default",
+- description: 'Enum to indicate the mode of account creation. Known values are: "Default"
 
-    "Restore", and "PointInTimeRestore".'
+    and "Restore".'
   name: create_mode
   types:
   - <xref:str>
@@ -464,12 +431,6 @@ variables:
   name: network_acl_bypass_resource_ids
   types:
   - <xref:list>[<xref:str>]
-- description: 'The Object representing the different Diagnostic log settings
-
-    for the Cosmos DB Account.'
-  name: diagnostic_log_settings
-  types:
-  - <xref:azure.mgmt.cosmosdb.models.DiagnosticLogSettings>
 - description: 'Opt-out of local authentication and ensure only MSI and AAD can be
 
     used exclusively for authentication.'
@@ -487,12 +448,6 @@ variables:
   name: capacity
   types:
   - <xref:azure.mgmt.cosmosdb.models.Capacity>
-- description: 'Flag to indicate whether to enable MaterializedViews on the
-
-    Cosmos DB account.'
-  name: enable_materialized_views
-  types:
-  - <xref:bool>
 - description: 'This property is ignored during the update/create operation, as the
 
     metadata is read-only. The object represents the metadata for the Account Keys
@@ -508,47 +463,28 @@ variables:
   name: enable_partition_merge
   types:
   - <xref:bool>
+- description: 'Indicates the minimum allowed Tls version. The default value is Tls
+
+    1.2. Cassandra and Mongo APIs only work with Tls 1.2. Known values are: "Tls",
+    "Tls11", and
+
+    "Tls12".'
+  name: minimal_tls_version
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.cosmosdb.models.MinimalTlsVersion>
 - description: 'Flag to indicate enabling/disabling of Burst Capacity Preview
 
     feature on the account.'
   name: enable_burst_capacity
   types:
   - <xref:bool>
-- description: 'Indicates the minimum allowed Tls version. The default is Tls 1.0,
-
-    except for Cassandra and Mongo API''s, which only work with Tls 1.2. Known values
-    are: "Tls",
-
-    "Tls11", and "Tls12".'
-  name: minimal_tls_version
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.cosmosdb.models.MinimalTlsVersion>
 - description: 'Indicates the status of the Customer Managed Key feature on
 
     the account. In case there are errors, the property provides troubleshooting guidance.'
   name: customer_managed_key_status
   types:
   - <xref:str>
-- description: 'Flag to indicate enabling/disabling of Priority Based
-
-    Execution Preview feature on the account.'
-  name: enable_priority_based_execution
-  types:
-  - <xref:bool>
-- description: 'Enum to indicate default Priority Level of request for Priority
-
-    Based Execution. Known values are: "High" and "Low".'
-  name: default_priority_level
-  types:
-  - <xref:str>
-  - <xref:azure.mgmt.cosmosdb.models.DefaultPriorityLevel>
-- description: 'Flag to indicate enabling/disabling of
-
-    Per-Region Per-partition autoscale Preview feature on the account.'
-  name: enable_per_region_per_partition_autoscale
-  types:
-  - <xref:bool>
 attributes:
 - uid: azure.mgmt.cosmosdb.models.DatabaseAccountCreateUpdateParameters.database_account_offer_type
   name: database_account_offer_type
