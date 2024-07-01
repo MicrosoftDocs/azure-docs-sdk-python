@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-hdinsightcontainers, hdinsight
+keywords: Azure, python, SDK, API, azure-mgmt-hdinsight, hdinsight
 ms.date: 07/01/2024
 ms.topic: reference
 ms.devlang: python
@@ -8,8 +8,8 @@ ms.service: hdinsight
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Hdinsightcontainers Management Client Library.
-This package has been tested with Python 3.8+.
+This is the Microsoft Azure HDInsight Management Client Library.
+This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,13 +20,13 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.8+ is required to use this package.
+- Python 3.7+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
 
 ```bash
-pip install azure-mgmt-hdinsightcontainers
+pip install azure-mgmt-hdinsight
 pip install azure-identity
 ```
 
@@ -44,17 +44,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.hdinsightcontainers import HDInsightContainersMgmtClient
+from azure.mgmt.hdinsight import HDInsightManagementClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = HDInsightContainersMgmtClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = HDInsightManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search Hdinsightcontainers Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search HDInsight Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
@@ -67,4 +67,7 @@ Code samples for this package can be found at:
 If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project. 
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-hdinsight%2FREADME.png)
 
