@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-dnsresolver, dnsresolver
-ms.date: 12/28/2022
+ms.date: 07/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: dnsresolver
@@ -44,11 +44,11 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.dnsresolver import DnsresolverManagementClient
+from azure.mgmt.dnsresolver import DnsResolverManagementClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = DnsresolverManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = DnsResolverManagementClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
