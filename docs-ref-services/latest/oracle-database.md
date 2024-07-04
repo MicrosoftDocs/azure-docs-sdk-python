@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: oracledatabase
 ---
-# Azure Oracle Database SDK for Python - preview
-## Packages - preview
+# Azure Oracle Database SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](oracle-database-index.md)]
