@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: edgezones
 ---
-# Azure Edgezones SDK for Python - preview
-## Packages - preview
+# Azure Edgezones SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](edgezones-index.md)]
