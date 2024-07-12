@@ -1,7 +1,7 @@
 ---
 title: Azure Self Help SDK for Python
 description: Reference for Azure Self Help SDK for Python
-ms.date: 07/11/2024
+ms.date: 07/12/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: selfhelp
