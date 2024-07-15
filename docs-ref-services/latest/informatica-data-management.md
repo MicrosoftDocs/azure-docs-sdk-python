@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: informaticadatamanagement
 ---
-# Azure Informatica Data Management SDK for Python - preview
-## Packages - preview
+# Azure Informatica Data Management SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](informatica-data-management-index.md)]

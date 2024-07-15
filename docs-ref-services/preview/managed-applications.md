@@ -1,7 +1,7 @@
 ---
 title: Azure Managed Applications SDK for Python
 description: Reference for Azure Managed Applications SDK for Python
-ms.date: 07/12/2024
+ms.date: 07/15/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: managedapplications
