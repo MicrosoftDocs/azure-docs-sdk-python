@@ -25,11 +25,11 @@ variables:
 
     "Edm.Int64", "Edm.Double", "Edm.Boolean", "Edm.DateTimeOffset", "Edm.GeographyPoint",
 
-    "Edm.ComplexType", and "Edm.Single".'
+    "Edm.ComplexType", "Edm.Single", "Edm.Half", "Edm.Int16", "Edm.SByte", and "Edm.Byte".'
   name: type
   types:
   - <xref:str>
-  - <xref:search_service_client.models.SearchFieldDataType>
+  - <xref:azure.search.documents.indexes.models.SearchFieldDataType>
 - description: 'A value indicating whether the field uniquely identifies documents
     in the index.
 
@@ -41,6 +41,30 @@ variables:
 
     specific documents. Default is false for simple fields and null for complex fields.'
   name: key
+  types:
+  - <xref:bool>
+- description: 'An immutable value indicating whether the field will be persisted
+    separately on
+
+    disk to be returned in a search result. You can disable this option if you don''t
+    plan to return
+
+    the field contents in a search response to save on storage overhead. This can
+    only be set
+
+    during index creation and only for vector fields. This property cannot be changed
+    for existing
+
+    fields or set as false for new fields. If this property is set as false, the property
+
+    ''hidden'' must be set to true. This property must be true or unset for key fields,
+
+    for new fields, and for non-vector fields, and it must be null for complex fields.
+    Disabling
+
+    this property will reduce index storage requirements. The default is true for
+    vector fields.'
+  name: stored
   types:
   - <xref:bool>
 - description: 'A value indicating whether the field is full-text searchable. This
@@ -189,7 +213,7 @@ variables:
   name: analyzer_name
   types:
   - <xref:str>
-  - <xref:search_service_client.models.LexicalAnalyzerName>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
 - description: 'The name of the analyzer used at search time for the field. This option
 
     can be used only with searchable fields. It must be set together with indexAnalyzer
@@ -242,7 +266,7 @@ variables:
   name: search_analyzer_name
   types:
   - <xref:str>
-  - <xref:search_service_client.models.LexicalAnalyzerName>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
 - description: 'The name of the analyzer used at indexing time for the field. This
     option
 
@@ -297,7 +321,7 @@ variables:
   name: index_analyzer_name
   types:
   - <xref:str>
-  - <xref:search_service_client.models.LexicalAnalyzerName>
+  - <xref:azure.search.documents.indexes.models.LexicalAnalyzerName>
 - description: The dimensionality of the vector field.
   name: vector_search_dimensions
   types:
@@ -329,37 +353,37 @@ variables:
     Collection(Edm.ComplexType). Must be null or empty for simple fields.'
   name: fields
   types:
-  - <xref:list>[<xref:search_service_client.models.SearchField>]
+  - <xref:list>[<xref:azure.search.documents.indexes.models.SearchField>]
+- description: The encoding format to interpret the field contents. "packedBit"
+  name: vector_encoding_format
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.VectorEncodingFormat>
 methods:
 - uid: azure.search.documents.indexes.models.SearchField.as_dict
   name: as_dict
-  summary: "Return a dict that can be serialized using json.dump.\n\nAdvanced usage\
-    \ might optionally use a callback as parameter:\n\nKey is the attribute name used\
-    \ in Python. Attr_desc\nis a dict of metadata. Currently contains 'type' with\
-    \ the\nmsrest type and 'key' with the RestAPI encoded key.\nValue is the current\
-    \ value in this object.\n\nThe string returned will be used to serialize the key.\n\
-    If the return type is a list, this is considered hierarchical\nresult dict.\n\n\
-    See the three examples in this file:\n\n* attribute_transformer \n\n* full_restapi_key_transformer\
-    \ \n\n* last_restapi_key_transformer \n\nIf you want XML serialization, you can\
-    \ pass the kwargs is_xml=True."
+  summary: Return a dict that can be serialized using json.dump.
   signature: 'as_dict(keep_readonly: bool = True, key_transformer: ~typing.Callable[[str,
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
-  - name: key_transformer
-    description: A key transformer function.
-    types:
-    - <xref:function>
   - name: keep_readonly
+    description: If you want to serialize the readonly attributes
     defaultValue: 'True'
+    types:
+    - <xref:bool>
+  - name: key_transformer
+    description: A callable that will transform the key of the dict
+    types:
+    - <xref:typing.Callable>
   return:
     description: A dict JSON compatible object
     types:
     - <xref:dict>
 - uid: azure.search.documents.indexes.models.SearchField.deserialize
   name: deserialize
-  summary: Parse a str using the RestAPI syntax and return a model.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
+  summary: Parse a str using the RestAPI syntax and return a SearchField instance.
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self | None'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -372,7 +396,7 @@ methods:
     types:
     - <xref:str>
   return:
-    description: An instance of this model
+    description: A SearchField instance
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.search.documents.indexes.models.SearchField.enable_additional_properties_sending
@@ -389,22 +413,27 @@ methods:
 
     and last_rest_key_case_insensitive_extractor)'
   signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
-    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
+    Any], Any] | None = None, content_type: str | None = None) -> SearchField | None'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A callable that will extract a key from a dict
+    defaultValue: None
+    types:
+    - <xref:typing.Callable>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
-  - name: key_extractors
-    defaultValue: None
   return:
-    description: An instance of this model
+    description: A SearchField instance
+    types:
+    - <xref:azure.search.documents.indexes.models.SearchField>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.search.documents.indexes.models.SearchField.is_xml_model
@@ -414,20 +443,13 @@ methods:
   name: serialize
   summary: 'Return the JSON that would be sent to server from this model.
 
+    :param bool keep_readonly: If you want to serialize the readonly attributes
 
-    This is an alias to *as_dict(full_restapi_key_transformer, keep_readonly=False)*.
+    :returns: A dict JSON compatible object
 
-
-    If you want XML serialization, you can pass the kwargs is_xml=True.'
+    :rtype: dict'
   signature: 'serialize(keep_readonly: bool = False, **kwargs: Any) -> MutableMapping[str,
     Any]'
   parameters:
   - name: keep_readonly
-    description: If you want to serialize the readonly attributes
     defaultValue: 'False'
-    types:
-    - <xref:bool>
-  return:
-    description: A dict JSON compatible object
-    types:
-    - <xref:dict>
