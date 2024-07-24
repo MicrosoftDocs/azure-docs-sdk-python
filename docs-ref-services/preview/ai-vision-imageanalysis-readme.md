@@ -1,12 +1,12 @@
 ---
 title: Azure Image Analysis client library for Python
 keywords: Azure, python, SDK, API, azure-ai-vision-imageanalysis, vision
-ms.date: 02/13/2024
+ms.date: 07/24/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: vision
 ---
-# Azure Image Analysis client library for Python - version 1.0.0b2 
+# Azure Image Analysis client library for Python - version 1.0.0b3 
 
 
 The Image Analysis service provides AI algorithms for processing images and returning information about their content. In a single service call, you can extract one or more visual features from the image simultaneously, including getting a caption for the image, extracting text shown in the image (OCR) and detecting objects. For more information on the service and the supported visual features, see [Image Analysis overview](https://learn.microsoft.com/azure/ai-services/computer-vision/overview-image-analysis?tabs=4-0), and the [Concepts](https://learn.microsoft.com/azure/ai-services/computer-vision/concept-tag-images-40) page.
@@ -22,7 +22,7 @@ Use the Image Analysis client library to:
 | [Vision Studio](https://aka.ms/vision-studio/image-analysis)
 | [API reference documentation](https://aka.ms/azsdk/image-analysis/ref-docs/python)
 | [Package (Pypi)](https://aka.ms/azsdk/image-analysis/package/pypi)
-| [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/azure/ai/vision/imageanalysis)
+| [SDK source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/azure/ai/vision/imageanalysis)
 
 ## Getting started
 
@@ -39,19 +39,20 @@ Use the Image Analysis client library to:
 ```bash
 pip install azure-ai-vision-imageanalysis
 ```
-### Set environment variables
 
-To authenticate the `ImageAnalysisClient`, you will need the endpoint and key from your Azure Computer Vision resource in the [Azure Portal](https://portal.azure.com). The code snippet below assumes these values are stored in environment variables:
+### Create and authenticate the client
+
+#### Using API key
+
+To authenticate the `ImageAnalysisClient` using api key, you will need the endpoint and api key from your Azure Computer Vision resource in the [Azure Portal](https://portal.azure.com). The code snippet below assumes these values are stored in environment variables:
 
 * Set the environment variable `VISION_ENDPOINT` to the endpoint URL. It has the form `https://your-resource-name.cognitiveservices.azure.com`, where `your-resource-name` is your unique Azure Computer Vision resource name.
 
 * Set the environment variable `VISION_KEY` to the key. The key is a 32-character Hexadecimal number.
 
-Note that the client library does not directly read these environment variable at run time. The endpoint and key must be provided to the constructor of `ImageAnalysisClient` in your code. The code snippet below reads environment variables to promote the practice of not hard-coding secrets in your source code.
+>Note: The client library does not directly read these environment variable at run time. The endpoint and key must be provided to the constructor of `ImageAnalysisClient` in your code. The code snippet below reads environment variables to promote the practice of not hard-coding secrets in your source code.
 
-### Create and authenticate the client
-
-Once you define the environment variables, this Python code will create and authenticate a synchronous `ImageAnalysisClient`:
+Once you define the environment variables, this Python code will create and authenticate a synchronous `ImageAnalysisClient` using key:
 
 <!-- SNIPPET:sample_caption_image_file.create_client -->
 
@@ -71,7 +72,8 @@ except KeyError:
     print("Set them before running this sample.")
     exit()
 
-# Create an Image Analysis client for synchronous operations
+# Create an Image Analysis client for synchronous operations,
+# using API key authentication
 client = ImageAnalysisClient(
     endpoint=endpoint,
     credential=AzureKeyCredential(key)
@@ -80,15 +82,57 @@ client = ImageAnalysisClient(
 
 <!-- END SNIPPET -->
 
+#### Using Entra ID
+
+You can also authenticate `ImageAnalysisClient` with [Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) using the [Azure Identity library](https://learn.microsoft.com/python/api/overview/azure/identity-readme?view=azure-python). To use the [DefaultAzureCredential](https://learn.microsoft.com/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) provider shown below, or other credential providers in this library, install the `azure-identity` package:
+
+```bash
+pip install azure.identity
+```
+
+Assuming you defined the environment variable `VISION_ENDPOINT` mentioned above, this Python code will create and authenticate a synchronous `ImageAnalysisClient` using Entra ID:
+
+<!-- SNIPPET:sample_caption_image_file_entra_id_auth.create_client -->
+
+```python
+import os
+from azure.ai.vision.imageanalysis import ImageAnalysisClient
+from azure.ai.vision.imageanalysis.models import VisualFeatures
+from azure.identity import DefaultAzureCredential
+
+# Set the value of your computer vision endpoint as environment variable:
+try:
+    endpoint = os.environ["VISION_ENDPOINT"]
+except KeyError:
+    print("Missing environment variable 'VISION_ENDPOINT'.")
+    print("Set it before running this sample.")
+    exit()
+
+# Create an Image Analysis client for synchronous operations,
+# using Entra ID authentication
+client = ImageAnalysisClient(
+    endpoint=endpoint,
+    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),
+)
+```
+
+<!-- END SNIPPET -->
+
+### Creating an asynchronous client
+
 A synchronous client supports synchronous analysis methods, meaning they will block until the service responds with analysis results. The code snippets below all use synchronous methods because it's easier for a getting-started guide. The SDK offers equivalent asynchronous APIs which are often preferred. To create an asynchronous client, do the following:
 
-* Update the above code to import `ImageAnalysisClient` from the `aio` namespace:
-    ```python
-    from azure.ai.vision.imageanalysis.aio import ImageAnalysisClient
-    ```
 * Install the additional package [aiohttp](https://pypi.org/project/aiohttp/):
     ```bash
     pip install aiohttp
+    ```
+* Update the above code to import `ImageAnalysisClient` from the `azure.ai.vision.imageanalysis.aio`:
+    ```python
+    from azure.ai.vision.imageanalysis.aio import ImageAnalysisClient
+    ```
+* If you are using Entra ID authentication with `DefaultAzureCredential`, update the above code to import `DefaultAzureCredential` from `azure.identity.aio`:
+    ```python
+    from azure.identity.aio import DefaultAzureCredential
     ```
 
 ## Key concepts
@@ -97,13 +141,13 @@ A synchronous client supports synchronous analysis methods, meaning they will bl
 
 Once you've initialized an `ImageAnalysisClient`, you need to select one or more visual features to analyze. The options are specified by the enum class `VisualFeatures`. The following features are supported:
 
-1. `VisualFeatures.CAPTION` ([Examples](#generate-an-image-caption-for-an-image-file) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Generate a human-readable sentence that describes the content of an image.
-1. `VisualFeatures.READ` ([Examples](#extract-text-from-an-image-file) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Also known as Optical Character Recognition (OCR). Extract printed or handwritten text from images. **Note**: For extracting text from PDF, Office, and HTML documents and document images, use the Document Intelligence service with the [Read model](https://learn.microsoft.com/azure/ai-services/document-intelligence/concept-read?view=doc-intel-4.0.0). This model is optimized for text-heavy digital and scanned documents with an asynchronous REST API that makes it easy to power your intelligent document processing scenarios. This service is separate from the Image Analysis service and has its own SDK.
-1. `VisualFeatures.DENSE_CAPTIONS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Dense Captions provides more details by generating one-sentence captions for up to 10 different regions in the image, including one for the whole image. 
-1. `VisualFeatures.TAGS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in images.
-1. `VisualFeatures.OBJECTS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Object detection. This is similar to tagging, but focused on detecting physical objects in the image and returning their location.
-1. `VisualFeatures.SMART_CROPS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Used to find a representative sub-region of the image for thumbnail generation, with priority given to include faces.
-1. `VisualFeatures.PEOPLE` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples)): Detect people in the image and return their location.
+1. `VisualFeatures.CAPTION` ([Examples](#generate-an-image-caption-for-an-image-file) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Generate a human-readable sentence that describes the content of an image.
+1. `VisualFeatures.READ` ([Examples](#extract-text-from-an-image-file) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Also known as Optical Character Recognition (OCR). Extract printed or handwritten text from images. **Note**: For extracting text from PDF, Office, and HTML documents and document images, use the Document Intelligence service with the [Read model](https://learn.microsoft.com/azure/ai-services/document-intelligence/concept-read?view=doc-intel-4.0.0). This model is optimized for text-heavy digital and scanned documents with an asynchronous REST API that makes it easy to power your intelligent document processing scenarios. This service is separate from the Image Analysis service and has its own SDK.
+1. `VisualFeatures.DENSE_CAPTIONS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Dense Captions provides more details by generating one-sentence captions for up to 10 different regions in the image, including one for the whole image. 
+1. `VisualFeatures.TAGS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in images.
+1. `VisualFeatures.OBJECTS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Object detection. This is similar to tagging, but focused on detecting physical objects in the image and returning their location.
+1. `VisualFeatures.SMART_CROPS` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Used to find a representative sub-region of the image for thumbnail generation, with priority given to include faces.
+1. `VisualFeatures.PEOPLE` ([Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples)): Detect people in the image and return their location.
 
 For more information about these features, see [Image Analysis overview](https://learn.microsoft.com/azure/ai-services/computer-vision/overview-image-analysis?tabs=4-0), and the [Concepts](https://learn.microsoft.com/azure/ai-services/computer-vision/concept-tag-images-40) page.
 
@@ -134,7 +178,7 @@ The following sections provide code snippets covering these common Image Analysi
 
 These snippets use the synchronous `client` from [Create and authenticate the client](#create-and-authenticate-the-client).
 
-See the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples) folder for fully working samples for all visual features, including asynchronous clients.
+See the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples) folder for fully working samples for all visual features, including asynchronous clients.
 
 ### Generate an image caption for an image file
 
@@ -330,7 +374,7 @@ None redacted logs are generated for log level `logging.DEBUG` only. Be sure to 
 
 ## Next steps
 
-* Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b2/sdk/vision/azure-ai-vision-imageanalysis/samples) folder, containing fully runnable Python code for Image Analysis (all visual features, synchronous and asynchronous clients, from image file or URL).
+* Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-vision-imageanalysis_1.0.0b3/sdk/vision/azure-ai-vision-imageanalysis/samples) folder, containing fully runnable Python code for Image Analysis (all visual features, synchronous and asynchronous clients, from image file or URL).
 
 ## Contributing
 
