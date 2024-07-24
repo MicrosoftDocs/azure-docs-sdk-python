@@ -1,7 +1,7 @@
 ---
 title: Azure Security Insights SDK for Python
 description: Reference for Azure Security Insights SDK for Python
-ms.date: 07/23/2024
+ms.date: 07/24/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: securityinsights
