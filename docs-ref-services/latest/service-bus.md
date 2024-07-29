@@ -1,7 +1,7 @@
 ---
 title: Azure Service Bus SDK for Python
 description: Reference for Azure Service Bus SDK for Python
-ms.date: 07/26/2024
+ms.date: 07/29/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: service-bus-messaging
