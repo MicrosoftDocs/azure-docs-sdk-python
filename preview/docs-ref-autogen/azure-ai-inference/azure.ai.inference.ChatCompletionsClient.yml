@@ -8,7 +8,13 @@ inheritances:
 summary: ChatCompletionsClient.
 constructor:
   syntax: 'ChatCompletionsClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
-    **kwargs: Any)'
+    *, frequency_penalty: float | None = None, presence_penalty: float | None = None,
+    temperature: float | None = None, top_p: float | None = None, max_tokens: int
+    | None = None, response_format: str | ChatCompletionsResponseFormat | None = None,
+    stop: List[str] | None = None, tools: List[ChatCompletionsToolDefinition] | None
+    = None, tool_choice: str | ChatCompletionsToolSelectionPreset | ChatCompletionsNamedToolSelection
+    | None = None, seed: int | None = None, model: str | None = None, model_extras:
+    Dict[str, Any] | None = None, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: Service host. Required.
@@ -25,80 +31,6 @@ constructor:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials.TokenCredential>
   keywordOnlyParameters:
-  - name: api_version
-    description: 'The API version to use for this operation. Default value is
-
-      "2024-05-01-preview". Note that overriding this default value may result in
-      unsupported
-
-      behavior.'
-    types:
-    - <xref:str>
-methods:
-- uid: azure.ai.inference.ChatCompletionsClient.close
-  name: close
-  signature: close() -> None
-- uid: azure.ai.inference.ChatCompletionsClient.complete
-  name: complete
-  summary: 'Gets chat completions for the provided chat messages.
-
-    Completions support a wide variety of tasks and generate text that continues from
-    or
-
-    "completes" provided prompt data. When using this method with *stream=True*, the
-    response is streamed
-
-    back to the client. Iterate over the resulting ~azure.ai.inference.models.StreamingChatCompletions
-
-    object to get content updates as they arrive.
-
-
-    :raises ~azure.core.exceptions.HttpResponseError'
-  signature: 'complete(*, messages: List[_models.ChatRequestMessage], content_type:
-    str = ''application/json'', model_extras: Dict[str, Any] | None = None, frequency_penalty:
-    float | None = None, presence_penalty: float | None = None, temperature: float
-    | None = None, top_p: float | None = None, max_tokens: int | None = None, response_format:
-    str | _models.ChatCompletionsResponseFormat | None = None, stop: List[str] | None
-    = None, stream: Literal[False] = False, tools: List[_models.ChatCompletionsToolDefinition]
-    | None = None, tool_choice: str | _models.ChatCompletionsToolSelectionPreset |
-    _models.ChatCompletionsNamedToolSelection | None = None, seed: int | None = None,
-    model: str | None = None, **kwargs: Any) -> _models.ChatCompletions'
-  parameters:
-  - name: body
-    description: 'Is either a MutableMapping[str, Any] type (like a dictionary) or
-      a IO[bytes] type
-
-      that specifies the full request payload. Required.'
-    isRequired: true
-    types:
-    - <xref:JSON>
-    - <xref:typing.IO>[<xref:bytes>]
-  keywordOnlyParameters:
-  - name: messages
-    description: 'The collection of context messages associated with this chat completions
-
-      request.
-
-      Typical usage begins with a chat message for the System role that provides instructions
-      for
-
-      the behavior of the assistant, followed by alternating messages between the
-      User and
-
-      Assistant roles. Required.'
-    types:
-    - <xref:list>[<xref:azure.ai.inference.models.ChatRequestMessage>]
-  - name: model_extras
-    description: 'Additional, model-specific parameters that are not in the
-
-      standard request payload. They will be added as-is to the root of the JSON in
-      the request body.
-
-      How the service handles these extra parameters depends on the value of the
-
-      `unknown-parameters` request header. Default value is None.'
-    types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: frequency_penalty
     description: 'A value that influences the probability of generated tokens
 
@@ -196,15 +128,6 @@ methods:
       value is None.'
     types:
     - <xref:list>[<xref:str>]
-  - name: stream
-    description: 'A value indicating whether chat completions should be streamed for
-      this request.
-
-      Default value is False. If streaming is enabled, the response will be a StreamingChatCompletions.
-
-      Otherwise the response will be a ChatCompletions.'
-    types:
-    - <xref:bool>
   - name: tools
     description: 'The available tool definitions that the chat completions request
       can use,
@@ -243,23 +166,250 @@ methods:
       endpoint. Default value is None.'
     types:
     - <xref:str>
+  - name: model_extras
+    description: 'Additional, model-specific parameters that are not in the
+
+      standard request payload. They will be added as-is to the root of the JSON in
+      the request body.
+
+      How the service handles these extra parameters depends on the value of the
+
+      `extra-parameters` request header. Default value is None.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+  - name: api_version
+    description: 'The API version to use for this operation. Default value is
+
+      "2024-05-01-preview". Note that overriding this default value may result in
+      unsupported
+
+      behavior.'
+    types:
+    - <xref:str>
+methods:
+- uid: azure.ai.inference.ChatCompletionsClient.close
+  name: close
+  signature: close() -> None
+- uid: azure.ai.inference.ChatCompletionsClient.complete
+  name: complete
+  summary: 'Gets chat completions for the provided chat messages.
+
+    Completions support a wide variety of tasks and generate text that continues from
+    or
+
+    "completes" provided prompt data. When using this method with *stream=True*, the
+    response is streamed
+
+    back to the client. Iterate over the resulting <xref:azure.ai.inference.models.StreamingChatCompletions>
+
+    object to get content updates as they arrive.'
+  signature: 'complete(*, messages: List[_models.ChatRequestMessage], stream: Literal[False]
+    = False, frequency_penalty: float | None = None, presence_penalty: float | None
+    = None, temperature: float | None = None, top_p: float | None = None, max_tokens:
+    int | None = None, response_format: str | _models.ChatCompletionsResponseFormat
+    | None = None, stop: List[str] | None = None, tools: List[_models.ChatCompletionsToolDefinition]
+    | None = None, tool_choice: str | _models.ChatCompletionsToolSelectionPreset |
+    _models.ChatCompletionsNamedToolSelection | None = None, seed: int | None = None,
+    model: str | None = None, model_extras: Dict[str, Any] | None = None, **kwargs:
+    Any) -> _models.ChatCompletions'
+  parameters:
+  - name: body
+    description: 'Is either a MutableMapping[str, Any] type (like a dictionary) or
+      a IO[bytes] type
+
+      that specifies the full request payload. Required.'
+    isRequired: true
+    types:
+    - <xref:JSON>
+    - <xref:typing.IO>[<xref:bytes>]
+  keywordOnlyParameters:
+  - name: messages
+    description: 'The collection of context messages associated with this chat completions
+
+      request.
+
+      Typical usage begins with a chat message for the System role that provides instructions
+      for
+
+      the behavior of the assistant, followed by alternating messages between the
+      User and
+
+      Assistant roles. Required.'
+    types:
+    - <xref:list>[<xref:azure.ai.inference.models.ChatRequestMessage>]
+  - name: stream
+    description: 'A value indicating whether chat completions should be streamed for
+      this request.
+
+      Default value is False. If streaming is enabled, the response will be a StreamingChatCompletions.
+
+      Otherwise the response will be a ChatCompletions.'
+    types:
+    - <xref:bool>
+  - name: frequency_penalty
+    description: 'A value that influences the probability of generated tokens
+
+      appearing based on their cumulative frequency in generated text.
+
+      Positive values will make tokens less likely to appear as their frequency increases
+      and
+
+      decrease the likelihood of the model repeating the same statements verbatim.
+
+      Supported range is [-2, 2].
+
+      Default value is None.'
+    types:
+    - <xref:float>
+  - name: presence_penalty
+    description: 'A value that influences the probability of generated tokens
+
+      appearing based on their existing
+
+      presence in generated text.
+
+      Positive values will make tokens less likely to appear when they already exist
+      and increase
+
+      the model''s likelihood to output new topics.
+
+      Supported range is [-2, 2].
+
+      Default value is None.'
+    types:
+    - <xref:float>
+  - name: temperature
+    description: 'The sampling temperature to use that controls the apparent creativity
+      of
+
+      generated completions.
+
+      Higher values will make output more random while lower values will make results
+      more focused
+
+      and deterministic.
+
+      It is not recommended to modify temperature and top_p for the same completions
+      request as the
+
+      interaction of these two settings is difficult to predict.
+
+      Supported range is [0, 1].
+
+      Default value is None.'
+    types:
+    - <xref:float>
+  - name: top_p
+    description: 'An alternative to sampling with temperature called nucleus sampling.
+      This value
+
+      causes the
+
+      model to consider the results of tokens with the provided probability mass.
+      As an example, a
+
+      value of 0.15 will cause only the tokens comprising the top 15% of probability
+      mass to be
+
+      considered.
+
+      It is not recommended to modify temperature and top_p for the same completions
+      request as the
+
+      interaction of these two settings is difficult to predict.
+
+      Supported range is [0, 1].
+
+      Default value is None.'
+    types:
+    - <xref:float>
+  - name: max_tokens
+    description: The maximum number of tokens to generate. Default value is None.
+    types:
+    - <xref:int>
+  - name: response_format
+    description: 'An object specifying the format that the model must output. Used
+      to
+
+      enable JSON mode. Known values are: "text" and "json_object". Default value
+      is None.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.inference.models.ChatCompletionsResponseFormat>
+  - name: stop
+    description: 'A collection of textual sequences that will end completions generation.
+      Default
+
+      value is None.'
+    types:
+    - <xref:list>[<xref:str>]
+  - name: tools
+    description: 'The available tool definitions that the chat completions request
+      can use,
+
+      including caller-defined functions. Default value is None.'
+    types:
+    - <xref:list>[<xref:azure.ai.inference.models.ChatCompletionsToolDefinition>]
+  - name: tool_choice
+    description: 'If specified, the model will configure which of the provided tools
+      it can
+
+      use for the chat completions response. Is either a Union[str,
+
+      "_models.ChatCompletionsToolSelectionPreset"] type or a ChatCompletionsNamedToolSelection
+      type.
+
+      Default value is None.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.inference.models.ChatCompletionsToolSelectionPreset>
+    - <xref:azure.ai.inference.models.ChatCompletionsNamedToolSelection>
+  - name: seed
+    description: 'If specified, the system will make a best effort to sample deterministically
+
+      such that repeated requests with the
+
+      same seed and parameters should return the same result. Determinism is not guaranteed.
+
+      Default value is None.'
+    types:
+    - <xref:int>
+  - name: model
+    description: 'ID of the specific AI model to use, if more than one model is available
+      on the
+
+      endpoint. Default value is None.'
+    types:
+    - <xref:str>
+  - name: model_extras
+    description: 'Additional, model-specific parameters that are not in the
+
+      standard request payload. They will be added as-is to the root of the JSON in
+      the request body.
+
+      How the service handles these extra parameters depends on the value of the
+
+      `extra-parameters` request header. Default value is None.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: ChatCompletions for non-streaming, or Iterable[StreamingChatCompletionsUpdate]
       for streaming.
     types:
     - <xref:azure.ai.inference.models.ChatCompletions>
     - <xref:azure.ai.inference.models.StreamingChatCompletions>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.inference.ChatCompletionsClient.get_model_info
   name: get_model_info
-  summary: 'Returns information about the AI model.
-
-
-    :raises ~azure.core.exceptions.HttpResponseError'
+  summary: Returns information about the AI model.
   signature: 'get_model_info(**kwargs: Any) -> ModelInfo'
   return:
     description: ModelInfo. The ModelInfo is compatible with MutableMapping
     types:
     - <xref:azure.ai.inference.models.ModelInfo>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.inference.ChatCompletionsClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.

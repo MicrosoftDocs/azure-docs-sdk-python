@@ -8,7 +8,9 @@ inheritances:
 summary: EmbeddingsClient.
 constructor:
   syntax: 'EmbeddingsClient(endpoint: str, credential: AzureKeyCredential | AsyncTokenCredential,
-    **kwargs: Any)'
+    *, dimensions: int | None = None, encoding_format: str | EmbeddingEncodingFormat
+    | None = None, input_type: str | EmbeddingInputType | None = None, model: str
+    | None = None, model_extras: Dict[str, Any] | None = None, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: Service host. Required.
@@ -19,12 +21,54 @@ constructor:
     description: 'Credential used to authenticate requests to the service. Is either
       a
 
-      AzureKeyCredential type or a TokenCredential type. Required.'
+      AzureKeyCredential type or a AsyncTokenCredential type. Required.'
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
     - <xref:azure.core.credentials_async.AsyncTokenCredential>
   keywordOnlyParameters:
+  - name: dimensions
+    description: 'Optional. The number of dimensions the resulting output embeddings
+      should
+
+      have. Default value is None.'
+    types:
+    - <xref:int>
+  - name: encoding_format
+    description: 'Optional. The desired format for the returned embeddings.
+
+      Known values are:
+
+      "base64", "binary", "float", "int8", "ubinary", and "uint8". Default value is
+      None.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.inference.models.EmbeddingEncodingFormat>
+  - name: input_type
+    description: 'Optional. The type of the input. Known values are:
+
+      "text", "query", and "document". Default value is None.'
+    types:
+    - <xref:str>
+    - <xref:azure.ai.inference.models.EmbeddingInputType>
+  - name: model
+    description: 'ID of the specific AI model to use, if more than one model is available
+      on the
+
+      endpoint. Default value is None.'
+    types:
+    - <xref:str>
+  - name: model_extras
+    description: 'Additional, model-specific parameters that are not in the
+
+      standard request payload. They will be added as-is to the root of the JSON in
+      the request body.
+
+      How the service handles these extra parameters depends on the value of the
+
+      `extra-parameters` request header. Default value is None.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: api_version
     description: 'The API version to use for this operation. Default value is
 
@@ -42,14 +86,11 @@ methods:
   name: embed
   summary: 'Return the embedding vectors for given text prompts.
 
-    The method makes a REST API call to the */embeddings* route on the given endpoint.
-
-
-    :raises ~azure.core.exceptions.HttpResponseError'
-  signature: 'async embed(*, model_extras: Dict[str, Any] | None = None, input: List[str],
-    content_type: str = ''application/json'', dimensions: int | None = None, encoding_format:
+    The method makes a REST API call to the */embeddings* route on the given endpoint.'
+  signature: 'async embed(*, input: List[str], dimensions: int | None = None, encoding_format:
     str | _models.EmbeddingEncodingFormat | None = None, input_type: str | _models.EmbeddingInputType
-    | None = None, **kwargs: Any) -> _models.EmbeddingsResult'
+    | None = None, model: str | None = None, model_extras: Dict[str, Any] | None =
+    None, **kwargs: Any) -> _models.EmbeddingsResult'
   parameters:
   - name: body
     description: 'Is either a MutableMapping[str, Any] type (like a dictionary) or
@@ -61,17 +102,6 @@ methods:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
-  - name: model_extras
-    description: 'Additional, model-specific parameters that are not in the
-
-      standard request payload. They will be added as-is to the root of the JSON in
-      the request body.
-
-      How the service handles these extra parameters depends on the value of the
-
-      `unknown-parameters` request header. Default value is None.'
-    types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   - name: input
     description: 'Input text to embed, encoded as a string or array of tokens.
 
@@ -84,14 +114,7 @@ methods:
     description: 'Optional. The number of dimensions the resulting output embeddings
       should
 
-      have.
-
-      Passing null causes the model to use its default value.
-
-      Returns a 422 error if the model doesn''t support the value or parameter. Default
-      value is
-
-      None.'
+      have. Default value is None.'
     types:
     - <xref:int>
   - name: encoding_format
@@ -105,30 +128,46 @@ methods:
     - <xref:str>
     - <xref:azure.ai.inference.models.EmbeddingEncodingFormat>
   - name: input_type
-    description: 'Optional. The type of the input.
-
-      Returns a 422 error if the model doesn''t support the value or parameter. Known
-      values are:
+    description: 'Optional. The type of the input. Known values are:
 
       "text", "query", and "document". Default value is None.'
     types:
     - <xref:str>
     - <xref:azure.ai.inference.models.EmbeddingInputType>
+  - name: model
+    description: 'ID of the specific AI model to use, if more than one model is available
+      on the
+
+      endpoint. Default value is None.'
+    types:
+    - <xref:str>
+  - name: model_extras
+    description: 'Additional, model-specific parameters that are not in the
+
+      standard request payload. They will be added as-is to the root of the JSON in
+      the request body.
+
+      How the service handles these extra parameters depends on the value of the
+
+      `extra-parameters` request header. Default value is None.'
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   return:
     description: EmbeddingsResult. The EmbeddingsResult is compatible with MutableMapping
     types:
     - <xref:azure.ai.inference.models.EmbeddingsResult>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.inference.aio.EmbeddingsClient.get_model_info
   name: get_model_info
-  summary: 'Returns information about the AI model.
-
-
-    :raises ~azure.core.exceptions.HttpResponseError'
+  summary: Returns information about the AI model.
   signature: 'async get_model_info(**kwargs: Any) -> ModelInfo'
   return:
     description: ModelInfo. The ModelInfo is compatible with MutableMapping
     types:
     - <xref:azure.ai.inference.models.ModelInfo>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.inference.aio.EmbeddingsClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
