@@ -1,7 +1,7 @@
 ---
 title: Azure Computefleet SDK for Python
 description: Reference for Azure Computefleet SDK for Python
-ms.date: 07/31/2024
+ms.date: 08/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: computefleet
