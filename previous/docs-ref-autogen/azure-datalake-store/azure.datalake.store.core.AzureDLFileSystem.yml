@@ -7,20 +7,26 @@ inheritances:
 - builtins.object
 summary: Access Azure DataLake Store as if it were a file-system
 constructor:
-  syntax: AzureDLFileSystem(token=None, per_call_timeout_seconds=60, **kwargs)
+  syntax: AzureDLFileSystem(token_credential=None, **kwargs)
   parameters:
   - name: store_name
-    description: Store name to connect to.
+    description: Store name to connect to. If not supplied, we use environment variable
+      azure_data_lake_store_name
     isRequired: true
     types:
     - "<xref:str >(<xref:``\u201D\u201D``)"
-  - name: token
+  - name: token_credential
     description: 'When setting up a new connection, this contains the authorization
 
-      credentials (see *lib.auth()*).'
+      credentials. Use Azure Identity to get this or define an implementation of azure.core.credentials.TokenCredential'
     defaultValue: None
     types:
     - <xref:<xref:azure.datalake.store.core.credentials object>>
+  - name: scopes
+    description: which is a list of scopes to use for the token.
+    isRequired: true
+    types:
+    - <xref:str>(<xref:None>)
   - name: url_suffix
     description: 'Domain to send REST requests to. The end-point URL is constructed
 
@@ -29,23 +35,19 @@ constructor:
     types:
     - <xref:str >(<xref:None>)
   - name: api_version
-    description: 'The API version to target with requests. Changing this value will
-
-      change the behavior of the requests, and can cause unexpected behavior or
-
-      breaking changes. Changes to this value should be undergone with caution.'
+    description: The API version to target with requests. Changing this value will
+      change the behavior of the requests, and can cause unexpected behavior or breaking
+      changes. Changes to this value should be undergone with caution.
     isRequired: true
     types:
     - <xref:str >(<xref:2018-09-01>)
   - name: per_call_timeout_seconds
     description: This is the timeout for each requests library call.
-    defaultValue: '60'
+    isRequired: true
     types:
     - <xref:float>(<xref:60>)
   - name: kwargs
-    description: 'See `lib.auth()`; full list: tenant_id, username, password, client_id,
-
-      client_secret, resource'
+    description: Other arguments forwarded to the DatalakeRESTInterface constructor.
     isRequired: true
     types:
     - <xref:<xref:azure.datalake.store.core.optional key/values>>
