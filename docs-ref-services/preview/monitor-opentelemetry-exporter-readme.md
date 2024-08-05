@@ -353,7 +353,7 @@ Review the [OpenTelemetry Metrics SDK][ot_metrics_sdk] to learn how to use OpenT
 
 ```python
 """
-An example to show an application using all instruments in the OpenTelemetry SDK. Metrics created
+a An example to show an application using all instruments in the OpenTelemetry SDK. Metrics created
 and recorded using the sdk are tracked and telemetry is exported to application insights with the
 AzureMonitorMetricsExporter.
 """
