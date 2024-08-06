@@ -53,117 +53,84 @@ summary: 'Text translation is a cloud-based REST API feature of the Translator s
 
   str + AzureKeyCredential - used custom domain translator endpoint
 
+  str + AzureKeyCredential + Region - used for global translator endpoint
+
   str + TokenCredential - used for regional endpoint with token authentication
 
-  str + TranslatorCredential - used for National Clouds
+  str + None - used with text translation on-prem container
 
   None + AzureKeyCredential - used for global translator endpoint with global Translator
   resource
 
-  None + Token - general translator endpoint with token authentication
+  None + TokenCredential - general translator endpoint with token authentication
 
-  None + TranslatorCredential - general translator endpoint with regional Translator
+  None + TokenCredential + Region - general translator endpoint with regional Translator
   resource'
 constructor:
-  syntax: 'TextTranslationClient(credential: AzureKeyCredential | TokenCredential
-    | TranslatorCredential, *, endpoint: str | None = None, api_version=''3.0'', **kwargs)'
-  parameters:
+  syntax: 'TextTranslationClient(*, credential: TokenCredential, region: str | None
+    = None, endpoint: str | None = None, resource_id: str | None = None, audience:
+    str | None = None, api_version: str = ''3.0'', **kwargs)'
+  keywordOnlyParameters:
   - name: endpoint
     description: 'Supported Text Translation endpoints (protocol and hostname, for
       example:
 
       [https://api.cognitive.microsofttranslator.com](https://api.cognitive.microsofttranslator.com)).
-      Required.'
-    isRequired: true
+      If not provided, global translator endpoint will be used.'
     types:
     - <xref:str>
   - name: credential
     description: Credential used to authenticate with the Translator service
-    isRequired: true
     types:
-    - <xref:typing.Union>[<xref:AzureKeyCredential> , <xref:TokenCredential> , <xref:azure.ai.translation.text.TranslatorCredential>]
-  keywordOnlyParameters:
+    - <xref:typing.Union>[<xref:AzureKeyCredential>, <xref:TokenCredential>]
+  - name: region
+    description: Used for National Clouds.
+    types:
+    - <xref:str>
+  - name: resource_id
+    description: Used with both a TokenCredential combined with a region.
+    types:
+    - <xref:str>
+  - name: audience
+    description: Scopes of the credentials.
+    types:
+    - <xref:str>
   - name: api_version
     description: 'Default value is "3.0". Note that overriding this default value
       may
 
       result in unsupported behavior.'
-    defaultValue: '3.0'
     types:
     - <xref:str>
-  - name: endpoint
-    isRequired: true
 methods:
 - uid: azure.ai.translation.text.TextTranslationClient.close
   name: close
   signature: close() -> None
 - uid: azure.ai.translation.text.TextTranslationClient.find_sentence_boundaries
   name: find_sentence_boundaries
-  summary: 'Find Sentence Boundaries.
-
-
-    Find Sentence Boundaries.'
-  signature: 'find_sentence_boundaries(content: List[InputTextItem] | IO, *, client_trace_id:
-    str | None = None, language: str | None = None, script: str | None = None, **kwargs:
-    Any) -> List[BreakSentenceItem]'
+  signature: 'find_sentence_boundaries(body: List[str] | List[InputTextItem] | IO[bytes],
+    *, client_trace_id: str | None = None, language: str | None = None, script: str
+    | None = None, **kwargs: Any) -> List[BreakSentenceItem]'
   parameters:
-  - name: content
-    description: 'Array of the text for which values the sentence boundaries will
-      be calculated.
-
-      Is either a [InputTextItem] type or a IO type. Required.'
+  - name: body
     isRequired: true
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.InputTextItem>]
-    - <xref:typing.IO>
   keywordOnlyParameters:
   - name: client_trace_id
-    description: 'A client-generated GUID to uniquely identify the request. Default
-
-      value is None.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: language
-    description: 'Language tag identifying the language of the input text.
-
-      If a code isn''t specified, automatic language detection will be applied. Default
-      value is
-
-      None.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: script
-    description: 'Script tag identifying the script used by the input text.
-
-      If a script isn''t specified, the default script of the language will be assumed.
-      Default value
-
-      is None.'
-    types:
-    - <xref:str>
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  return:
-    description: list of BreakSentenceItem
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.BreakSentenceItem>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.translation.text.TextTranslationClient.get_languages
-  name: get_languages
+    isRequired: true
+- uid: azure.ai.translation.text.TextTranslationClient.get_supported_languages
+  name: get_supported_languages
   summary: 'Gets the set of languages currently supported by other operations of the
     Translator.
 
 
     Gets the set of languages currently supported by other operations of the Translator.'
-  signature: 'get_languages(*, client_trace_id: str | None = None, scope: str | None
-    = None, accept_language: str | None = None, if_none_match: str | None = None,
-    **kwargs: Any) -> GetLanguagesResult'
+  signature: 'get_supported_languages(*, client_trace_id: str | None = None, scope:
+    str | None = None, accept_language: str | None = None, etag: str | None = None,
+    match_condition: MatchConditions | None = None, **kwargs: Any) -> GetSupportedLanguagesResult'
   keywordOnlyParameters:
   - name: client_trace_id
     description: 'A client-generated GUID to uniquely identify the request. Default
@@ -212,100 +179,119 @@ methods:
       is not available. Default value is None.'
     types:
     - <xref:str>
-  - name: if_none_match
-    description: 'Passing the value of the ETag response header in an If-None-Match
-      field
+  - name: etag
+    description: 'check if resource is changed. Set None to skip checking etag. Default
+      value is
 
-      will allow the service to optimize the response.
-
-      If the resource has not been modified, the service will return status code 304
-      and an empty
-
-      response body. Default value is None.'
+      None.'
     types:
     - <xref:str>
-  return:
-    description: GetLanguagesResult. The GetLanguagesResult is compatible with MutableMapping
+  - name: match_condition
+    description: The match condition to use upon the etag. Default value is None.
     types:
-    - <xref:azure.ai.translation.text.models.GetLanguagesResult>
+    - <xref:azure.core.MatchConditions>
+  return:
+    description: 'GetSupportedLanguagesResult. The GetSupportedLanguagesResult is
+      compatible with
+
+      MutableMapping'
+    types:
+    - <xref:azure.ai.translation.text.models.GetSupportedLanguagesResult>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == {\n       \"dictionary\"\
+    : {\n           \"str\": {\n               \"dir\": \"str\",  # Directionality,\
+    \ which is rtl for\n                 right-to-left languages or ltr for left-to-right\
+    \ languages. Required.\n                 Known values are: \"ltr\" and \"rtl\"\
+    .\n               \"name\": \"str\",  # Display name of the language in the locale\n\
+    \                 requested via Accept-Language header. Required.\n          \
+    \     \"nativeName\": \"str\",  # Display name of the language in the\n      \
+    \           locale native for this language. Required.\n               \"translations\"\
+    : [\n                   {\n                       \"code\": \"str\",  # Language\
+    \ code identifying\n                         the target language. Required.\n\
+    \                       \"dir\": \"str\",  # Directionality, which is rtl\n  \
+    \                       for right-to-left languages or ltr for left-to-right languages.\n\
+    \                         Required. Known values are: \"ltr\" and \"rtl\".\n \
+    \                      \"name\": \"str\",  # Display name of the\n           \
+    \              language in the locale requested via Accept-Language header.\n\
+    \                         Required.\n                       \"nativeName\": \"\
+    str\"  # Display name of the\n                         language in the locale\
+    \ native for this language. Required.\n                   }\n               ]\n\
+    \           }\n       },\n       \"translation\": {\n           \"str\": {\n \
+    \              \"dir\": \"str\",  # Directionality, which is rtl for\n       \
+    \          right-to-left languages or ltr for left-to-right languages. Required.\n\
+    \                 Known values are: \"ltr\" and \"rtl\".\n               \"name\"\
+    : \"str\",  # Display name of the language in the locale\n                 requested\
+    \ via Accept-Language header. Required.\n               \"nativeName\": \"str\"\
+    \  # Display name of the language in the\n                 locale native for this\
+    \ language. Required.\n           }\n       },\n       \"transliteration\": {\n\
+    \           \"str\": {\n               \"name\": \"str\",  # Display name of the\
+    \ language in the locale\n                 requested via Accept-Language header.\
+    \ Required.\n               \"nativeName\": \"str\",  # Display name of the language\
+    \ in the\n                 locale native for this language. Required.\n      \
+    \         \"scripts\": [\n                   {\n                       \"code\"\
+    : \"str\",  # Code identifying the\n                         script. Required.\n\
+    \                       \"dir\": \"str\",  # Directionality, which is rtl\n  \
+    \                       for right-to-left languages or ltr for left-to-right languages.\n\
+    \                         Required. Known values are: \"ltr\" and \"rtl\".\n \
+    \                      \"name\": \"str\",  # Display name of the script\n    \
+    \                     in the locale requested via Accept-Language header. Required.\n\
+    \                       \"nativeName\": \"str\",  # Display name of the\n    \
+    \                     language in the locale native for the language. Required.\n\
+    \                       \"toScripts\": [\n                           {\n     \
+    \                          \"code\": \"str\",  # Code\n                      \
+    \           identifying the script. Required.\n                              \
+    \ \"dir\": \"str\",  #\n                                 Directionality, which\
+    \ is rtl for right-to-left languages\n                                 or ltr\
+    \ for left-to-right languages. Required. Known\n                             \
+    \    values are: \"ltr\" and \"rtl\".\n                               \"name\"\
+    : \"str\",  # Display\n                                 name of the script in\
+    \ the locale requested via\n                                 Accept-Language header.\
+    \ Required.\n                               \"nativeName\": \"str\"  #\n     \
+    \                            Display name of the language in the locale native\
+    \ for the\n                                 language. Required.\n            \
+    \               }\n                       ]\n                   }\n          \
+    \     ]\n           }\n       }\n   }\n   ````\n"
 - uid: azure.ai.translation.text.TextTranslationClient.lookup_dictionary_entries
   name: lookup_dictionary_entries
-  summary: 'Lookup Dictionary Entries.
-
-
-    Lookup Dictionary Entries.'
-  signature: 'lookup_dictionary_entries(content: List[InputTextItem] | IO, *, from_parameter:
-    str, to: str, client_trace_id: str | None = None, **kwargs: Any) -> List[DictionaryLookupItem]'
+  signature: 'lookup_dictionary_entries(body: List[str] | List[InputTextItem] | IO[bytes],
+    *, from_language: str, to_language: str, client_trace_id: str | None = None, **kwargs:
+    Any) -> List[DictionaryLookupItem]'
   parameters:
-  - name: content
-    description: 'Array of the text to be sent to dictionary. Is either a [InputTextItem]
-      type or
-
-      a IO type. Required.'
+  - name: body
     isRequired: true
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.InputTextItem>]
-    - <xref:typing.IO>
   keywordOnlyParameters:
-  - name: from_parameter
-    description: 'Specifies the language of the input text.
-
-      The source language must be one of the supported languages included in the dictionary
-      scope.
-
-      Required.'
-    types:
-    - <xref:str>
-  - name: to
-    description: 'Specifies the language of the output text.
-
-      The target language must be one of the supported languages included in the dictionary
-      scope.
-
-      Required.'
-    types:
-    - <xref:str>
+  - name: from_language
+    isRequired: true
+  - name: to_language
+    isRequired: true
   - name: client_trace_id
-    description: 'A client-generated GUID to uniquely identify the request. Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  return:
-    description: list of DictionaryLookupItem
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.DictionaryLookupItem>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
+    isRequired: true
 - uid: azure.ai.translation.text.TextTranslationClient.lookup_dictionary_examples
   name: lookup_dictionary_examples
   summary: 'Lookup Dictionary Examples.
 
 
     Lookup Dictionary Examples.'
-  signature: 'lookup_dictionary_examples(content: List[DictionaryExampleTextItem]
-    | IO, *, from_parameter: str, to: str, client_trace_id: str | None = None, **kwargs:
+  signature: 'lookup_dictionary_examples(body: List[DictionaryExampleTextItem] | IO[bytes],
+    *, from_language: str, to_language: str, client_trace_id: str | None = None, **kwargs:
     Any) -> List[DictionaryExampleItem]'
   parameters:
-  - name: content
-    description: 'Array of the text to be sent to dictionary. Is either a
+  - name: body
+    description: 'Defines the content of the request. Is either a [DictionaryExampleTextItem]
+      type
 
-      [DictionaryExampleTextItem] type or a IO type. Required.'
+      or a IO[bytes] type. Required.'
     isRequired: true
     types:
     - <xref:list>[<xref:azure.ai.translation.text.models.DictionaryExampleTextItem>]
-    - <xref:typing.IO>
+    - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
-  - name: from_parameter
+  - name: from_language
     description: 'Specifies the language of the input text.
 
       The source language must be one of the supported languages included in the dictionary
@@ -314,7 +300,7 @@ methods:
       Required.'
     types:
     - <xref:str>
-  - name: to
+  - name: to_language
     description: 'Specifies the language of the output text.
 
       The target language must be one of the supported languages included in the dictionary
@@ -325,13 +311,6 @@ methods:
     - <xref:str>
   - name: client_trace_id
     description: 'A client-generated GUID to uniquely identify the request. Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
 
       value is None.'
     types:
@@ -342,6 +321,37 @@ methods:
     - <xref:list>[<xref:azure.ai.translation.text.models.DictionaryExampleItem>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+  examples:
+  - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+    : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+    : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+    \   # response body for status code(s): 200\n   response == [\n       {\n    \
+    \       \"examples\": [\n               {\n                   \"sourcePrefix\"\
+    : \"str\",  # The string to concatenate\n                     before the value\
+    \ of sourceTerm to form a complete example. Do not add\n                     a\
+    \ space character, since it is already there when it should be. This\n       \
+    \              value may be an empty string. Required.\n                   \"\
+    sourceSuffix\": \"str\",  # The string to concatenate\n                     after\
+    \ the value of sourceTerm to form a complete example. Do not add\n           \
+    \          a space character, since it is already there when it should be. This\n\
+    \                     value may be an empty string. Required.\n              \
+    \     \"sourceTerm\": \"str\",  # A string equal to the actual\n             \
+    \        term looked up. The string is added with sourcePrefix and\n         \
+    \            sourceSuffix to form the complete example. Its value is separated\
+    \ so\n                     it can be marked in a user interface, e.g., by bolding\
+    \ it. Required.\n                   \"targetPrefix\": \"str\",  # A string similar\
+    \ to\n                     sourcePrefix but for the target. Required.\n      \
+    \             \"targetSuffix\": \"str\",  # A string similar to\n            \
+    \         sourceSuffix but for the target. Required.\n                   \"targetTerm\"\
+    : \"str\"  # A string similar to sourceTerm\n                     but for the\
+    \ target. Required.\n               }\n           ],\n           \"normalizedSource\"\
+    : \"str\",  # A string giving the normalized form of\n             the source\
+    \ term. Generally, this should be identical to the value of the Text\n       \
+    \      field at the matching list index in the body of the request. Required.\n\
+    \           \"normalizedTarget\": \"str\"  # A string giving the normalized form\
+    \ of\n             the target term. Generally, this should be identical to the\
+    \ value of the\n             Translation field at the matching list index in the\
+    \ body of the request.\n             Required.\n       }\n   ]\n   ````\n"
 - uid: azure.ai.translation.text.TextTranslationClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
@@ -364,7 +374,8 @@ methods:
 
 
     For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
-  signature: 'send_request(request: HttpRequest, **kwargs: Any) -> HttpResponse'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
     description: The network request you want to make. Required.
@@ -383,245 +394,58 @@ methods:
     - <xref:azure.core.rest.HttpResponse>
 - uid: azure.ai.translation.text.TextTranslationClient.translate
   name: translate
-  summary: 'Translate Text.
-
-
-    Translate Text.'
-  signature: 'translate(content: List[InputTextItem] | IO, *, to: List[str], client_trace_id:
-    str | None = None, from_parameter: str | None = None, text_type: str | TextType
-    | None = None, category: str | None = None, profanity_action: str | ProfanityAction
-    | None = None, profanity_marker: str | ProfanityMarker | None = None, include_alignment:
-    bool | None = None, include_sentence_length: bool | None = None, suggested_from:
-    str | None = None, from_script: str | None = None, to_script: str | None = None,
-    allow_fallback: bool | None = None, **kwargs: Any) -> List[TranslatedTextItem]'
+  signature: 'translate(body: List[str] | List[InputTextItem] | IO[bytes], *, to_language:
+    List[str], client_trace_id: str | None = None, from_language: str | None = None,
+    text_type: str | TextType | None = None, category: str | None = None, profanity_action:
+    str | ProfanityAction | None = None, profanity_marker: str | ProfanityMarker |
+    None = None, include_alignment: bool | None = None, include_sentence_length: bool
+    | None = None, suggested_from: str | None = None, from_script: str | None = None,
+    to_script: str | None = None, allow_fallback: bool | None = None, **kwargs: Any)
+    -> List[TranslatedTextItem]'
   parameters:
-  - name: content
-    description: 'Array of the text to be translated. Is either a [InputTextItem]
-      type or a IO
-
-      type. Required.'
+  - name: body
     isRequired: true
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.InputTextItem>]
-    - <xref:typing.IO>
   keywordOnlyParameters:
-  - name: to
-    description: 'Specifies the language of the output text. The target language must
-      be one of the
-
-      supported languages included
-
-      in the translation scope. For example, use to=de to translate to German.
-
-      It''s possible to translate to multiple languages simultaneously by repeating
-      the parameter in
-
-      the query string.
-
-      For example, use to=de&to=it to translate to German and Italian. Required.'
-    types:
-    - <xref:list>[<xref:str>]
+  - name: to_language
+    isRequired: true
   - name: client_trace_id
-    description: 'A client-generated GUID to uniquely identify the request. Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: from_parameter
-    description: 'Specifies the language of the input text. Find which languages are
-
-      available to translate from by
-
-      looking up supported languages using the translation scope. If the from parameter
-      isn''t
-
-      specified,
-
-      automatic language detection is applied to determine the source language.
-
-
-      You must use the from parameter rather than autodetection when using the dynamic
-      dictionary
-
-      feature.
-
-      Note: the dynamic dictionary feature is case-sensitive. Default value is None.'
-    types:
-    - <xref:str>
+    isRequired: true
+  - name: from_language
+    isRequired: true
   - name: text_type
-    description: 'Defines whether the text being translated is plain text or HTML
-      text. Any
-
-      HTML needs to be a well-formed,
-
-      complete element. Possible values are: plain (default) or html. Known values
-      are: "plain" and
-
-      "html". Default value is None.'
-    types:
-    - <xref:str>
-    - <xref:azure.ai.translation.text.models.TextType>
+    isRequired: true
   - name: category
-    description: 'A string specifying the category (domain) of the translation. This
-      parameter
-
-      is used to get translations
-
-      from a customized system built with Custom Translator. Add the Category ID from
-      your Custom
-
-      Translator
-
-      project details to this parameter to use your deployed customized system. Default
-      value is:
-
-      general. Default value is None.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: profanity_action
-    description: 'Specifies how profanities should be treated in translations.
-
-      Possible values are: NoAction (default), Marked or Deleted. Known values are:
-      "NoAction",
-
-      "Marked", and "Deleted". Default value is None.'
-    types:
-    - <xref:str>
-    - <xref:azure.ai.translation.text.models.ProfanityAction>
+    isRequired: true
   - name: profanity_marker
-    description: 'Specifies how profanities should be marked in translations.
-
-      Possible values are: Asterisk (default) or Tag. Known values are: "Asterisk"
-      and "Tag".
-
-      Default value is None.'
-    types:
-    - <xref:str>
-    - <xref:azure.ai.translation.text.models.ProfanityMarker>
+    isRequired: true
   - name: include_alignment
-    description: 'Specifies whether to include alignment projection from source text
-
-      to translated text.
-
-      Possible values are: true or false (default). Default value is None.'
-    types:
-    - <xref:bool>
+    isRequired: true
   - name: include_sentence_length
-    description: 'Specifies whether to include sentence boundaries for the
-
-      input text and the translated text.
-
-      Possible values are: true or false (default). Default value is None.'
-    types:
-    - <xref:bool>
+    isRequired: true
   - name: suggested_from
-    description: 'Specifies a fallback language if the language of the input text
-      can''t
-
-      be identified.
-
-      Language autodetection is applied when the from parameter is omitted. If detection
-      fails,
-
-      the suggestedFrom language will be assumed. Default value is None.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: from_script
-    description: Specifies the script of the input text. Default value is None.
-    types:
-    - <xref:str>
+    isRequired: true
   - name: to_script
-    description: Specifies the script of the translated text. Default value is None.
-    types:
-    - <xref:str>
+    isRequired: true
   - name: allow_fallback
-    description: "Specifies that the service is allowed to fall back to a general\
-      \ system\nwhen a custom system doesn't exist.\nPossible values are: true (default)\
-      \ or false.\n\nallowFallback=false specifies that the translation should only\
-      \ use systems trained for the\ncategory specified\nby the request. If a translation\
-      \ for language X to language Y requires chaining through a\npivot language E,\n\
-      then all the systems in the chain (X \u2192 E and E \u2192 Y) will need to be\
-      \ custom and have the same\ncategory.\nIf no system is found with the specific\
-      \ category, the request will return a 400 status code.\nallowFallback=true\n\
-      specifies that the service is allowed to fall back to a general system when\
-      \ a custom system\ndoesn't exist. Default value is None."
-    types:
-    - <xref:bool>
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  return:
-    description: list of TranslatedTextItem
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.TranslatedTextItem>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
+    isRequired: true
 - uid: azure.ai.translation.text.TextTranslationClient.transliterate
   name: transliterate
-  summary: 'Transliterate Text.
-
-
-    Transliterate Text.'
-  signature: 'transliterate(content: List[InputTextItem] | IO, *, language: str, from_script:
-    str, to_script: str, client_trace_id: str | None = None, **kwargs: Any) -> List[TransliteratedText]'
+  signature: 'transliterate(body: List[str] | List[InputTextItem] | IO[bytes], *,
+    language: str, from_script: str, to_script: str, client_trace_id: str | None =
+    None, **kwargs: Any) -> List[TransliteratedText]'
   parameters:
-  - name: content
-    description: 'Array of the text to be transliterated. Is either a [InputTextItem]
-      type or a
-
-      IO type. Required.'
+  - name: body
     isRequired: true
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.InputTextItem>]
-    - <xref:typing.IO>
   keywordOnlyParameters:
   - name: language
-    description: 'Specifies the language of the text to convert from one script to
-      another.
-
-      Possible languages are listed in the transliteration scope obtained by querying
-      the service
-
-      for its supported languages. Required.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: from_script
-    description: 'Specifies the script used by the input text. Look up supported languages
-
-      using the transliteration scope,
-
-      to find input scripts available for the selected language. Required.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: to_script
-    description: 'Specifies the output script. Look up supported languages using the
-
-      transliteration scope, to find output
-
-      scripts available for the selected combination of input language and input script.
-      Required.'
-    types:
-    - <xref:str>
+    isRequired: true
   - name: client_trace_id
-    description: 'A client-generated GUID to uniquely identify the request. Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  return:
-    description: list of TransliteratedText
-    types:
-    - <xref:list>[<xref:azure.ai.translation.text.models.TransliteratedText>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
+    isRequired: true

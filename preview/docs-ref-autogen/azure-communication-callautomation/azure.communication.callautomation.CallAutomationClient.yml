@@ -46,7 +46,9 @@ methods:
     Retrieving IncomingCall event can be set on Azure Communication Service''s Azure
     Portal.'
   signature: 'answer_call(incoming_call_context: str, callback_url: str, *, cognitive_services_endpoint:
-    str | None = None, operation_context: str | None = None, **kwargs) -> CallConnectionProperties'
+    str | None = None, operation_context: str | None = None, media_streaming_configuration:
+    MediaStreamingConfiguration | None = None, transcription_configuration: TranscriptionConfiguration
+    | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: incoming_call_context
     description: 'This can be read from body of IncomingCall event.
@@ -69,6 +71,15 @@ methods:
     description: The operation context.
     types:
     - <xref:str>
+  - name: media_streaming_configuration
+    description: Media Streaming Configuration.
+    types:
+    - <xref:azure.communication.callautomation.MediaStreamingConfiguration>
+  - name: transcription_configuration
+    description: Configuration of live transcription.
+    types:
+    - <xref:azure.communication.callautomation.TranscriptionConfiguration>
+    - <xref:None>
   return:
     description: CallConnectionProperties
     types:
@@ -84,7 +95,10 @@ methods:
   signature: 'create_call(target_participant: CommunicationIdentifier | List[CommunicationIdentifier],
     callback_url: str, *, source_caller_id_number: PhoneNumberIdentifier | None =
     None, source_display_name: str | None = None, operation_context: str | None =
-    None, cognitive_services_endpoint: str | None = None, **kwargs) -> CallConnectionProperties'
+    None, cognitive_services_endpoint: str | None = None, sip_headers: Dict[str, str]
+    | None = None, voip_headers: Dict[str, str] | None = None, media_streaming_configuration:
+    MediaStreamingConfiguration | None = None, transcription_configuration: TranscriptionConfiguration
+    | None = None, **kwargs) -> CallConnectionProperties'
   parameters:
   - name: target_participant
     description: Call invitee's information.
@@ -122,6 +136,26 @@ methods:
       call.
     types:
     - <xref:str>
+    - <xref:None>
+  - name: sip_headers
+    description: Sip Headers for PSTN Call
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: voip_headers
+    description: Voip Headers for Voip Call
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: media_streaming_configuration
+    description: Media Streaming Configuration.
+    types:
+    - <xref:azure.communication.callautomation.MediaStreamingConfiguration>
+    - <xref:None>
+  - name: transcription_configuration
+    description: Configuration of live transcription.
+    types:
+    - <xref:azure.communication.callautomation.TranscriptionConfiguration>
     - <xref:None>
   return:
     description: CallConnectionProperties
@@ -292,7 +326,8 @@ methods:
   name: redirect_call
   summary: Redirect incoming call to a specific target.
   signature: 'redirect_call(incoming_call_context: str, target_participant: CommunicationIdentifier,
-    **kwargs) -> None'
+    *, sip_headers: Dict[str, str] | None = None, voip_headers: Dict[str, str] | None
+    = None, **kwargs) -> None'
   parameters:
   - name: incoming_call_context
     description: 'This can be read from body of IncomingCall event.
@@ -306,6 +341,17 @@ methods:
     isRequired: true
     types:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: sip_headers
+    description: Sip Headers for PSTN Call
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
+  - name: voip_headers
+    description: Voip Headers for Voip Call
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   return:
     description: None
     types:
@@ -336,7 +382,7 @@ methods:
     types:
     - <xref:None>
   exceptions:
-  - type: azure.core.exceptions.HttpResponseErrorr
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.CallAutomationClient.resume_recording
   name: resume_recording
   summary: Resume recording the call.
@@ -359,8 +405,9 @@ methods:
     str | None = None, recording_content_type: str | ''RecordingContent'' | None =
     None, recording_channel_type: str | ''RecordingChannel'' | None = None, recording_format_type:
     str | ''RecordingFormat'' | None = None, audio_channel_participant_ordering: List[''CommunicationIdentifier'']
-    | None = None, channel_affinity: List[''ChannelAffinity''] | None = None, **kwargs)
-    -> RecordingProperties'
+    | None = None, channel_affinity: List[''ChannelAffinity''] | None = None, recording_storage_kind:
+    str | ''RecordingStorageKind'' | None = None, external_storage_location: str |
+    None = None, pause_on_start: bool | None = None, **kwargs) -> RecordingProperties'
 - uid: azure.communication.callautomation.CallAutomationClient.stop_recording
   name: stop_recording
   summary: Stop recording the call.
