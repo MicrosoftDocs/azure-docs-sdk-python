@@ -1,7 +1,7 @@
 ---
 title: Azure Advisor SDK for Python
 description: Reference for Azure Advisor SDK for Python
-ms.date: 08/06/2024
+ms.date: 08/07/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: advisor
