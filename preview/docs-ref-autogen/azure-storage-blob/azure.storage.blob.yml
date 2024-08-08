@@ -7,9 +7,9 @@ functions:
 - uid: azure.storage.blob.download_blob_from_url
   name: download_blob_from_url
   summary: Download the contents of a blob to a local file or stream.
-  signature: 'download_blob_from_url(blob_url: str, output: str, credential: Optional[Union[str,
-    Dict[str, str], AzureNamedKeyCredential, AzureSasCredential, "TokenCredential"]]
-    # pylint: disable=line-too-long = None, **kwargs) -> None'
+  signature: 'download_blob_from_url(blob_url: str, output: str | IO[bytes], credential:
+    str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    | None = None, **kwargs: Any) -> None'
   parameters:
   - name: blob_url
     description: The full URI to the blob. This can also include a SAS token.
@@ -119,7 +119,8 @@ functions:
     ResourceTypes | str, permission: AccountSasPermissions | str, expiry: datetime
     | str, start: datetime | str | None = None, ip: str | None = None, *, services:
     ~azure.storage.blob._shared.models.Services | str = <azure.storage.blob._shared.models.Services
-    object>, **kwargs: ~typing.Any) -> str'
+    object>, sts_hook: ~typing.Callable[[str], None] | None = None, **kwargs: ~typing.Any)
+    -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -200,6 +201,13 @@ functions:
       operations will be service encrypted.
     types:
     - <xref:str>
+  - name: sts_hook
+    description: 'For debugging purposes only. If provided, the hook is called with
+      the string to sign
+
+      that was used to generate the SAS.'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
     description: A Shared Access Signature (sas) token.
     types:
@@ -209,7 +217,7 @@ functions:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_authentication.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_authentication.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create a SAS token to use to authenticate a new client\n   from datetime\
@@ -230,7 +238,8 @@ functions:
     str, snapshot: str | None = None, account_key: str | None = None, user_delegation_key:
     UserDelegationKey | None = None, permission: BlobSasPermissions | str | None =
     None, expiry: datetime | str | None = None, start: datetime | str | None = None,
-    policy_id: str | None = None, ip: str | None = None, **kwargs: Any) -> Any'
+    policy_id: str | None = None, ip: str | None = None, *, sts_hook: Callable[[str],
+    None] | None = None, **kwargs: Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -407,6 +416,13 @@ functions:
       SAS with delegation key.'
     types:
     - <xref:str>
+  - name: sts_hook
+    description: 'For debugging purposes only. If provided, the hook is called with
+      the string to sign
+
+      that was used to generate the SAS.'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
     description: A Shared Access Signature (sas) token.
     types:
@@ -423,7 +439,7 @@ functions:
     str | None = None, user_delegation_key: UserDelegationKey | None = None, permission:
     ContainerSasPermissions | str | None = None, expiry: datetime | str | None = None,
     start: datetime | str | None = None, policy_id: str | None = None, ip: str | None
-    = None, **kwargs: Any) -> Any'
+    = None, *, sts_hook: Callable[[str], None] | None = None, **kwargs: Any) -> str'
   parameters:
   - name: account_name
     description: The storage account name used to generate the shared access signature.
@@ -573,6 +589,13 @@ functions:
       SAS with delegation key.'
     types:
     - <xref:str>
+  - name: sts_hook
+    description: 'For debugging purposes only. If provided, the hook is called with
+      the string to sign
+
+      that was used to generate the SAS.'
+    types:
+    - <xref:typing.Optional>[<xref:typing.Callable>[[<xref:str>], <xref:None>]]
   return:
     description: A Shared Access Signature (sas) token.
     types:
@@ -582,7 +605,7 @@ functions:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_containers.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_containers.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Use access policy to generate a sas token\n   from azure.storage.blob import\
@@ -595,10 +618,9 @@ functions:
 
 
     The data will be uploaded as a block blob.'
-  signature: 'upload_blob_to_url(blob_url: str, data: Union[Iterable[AnyStr], IO[AnyStr]],
-    credential: Optional[Union[str, Dict[str, str], AzureNamedKeyCredential, AzureSasCredential,
-    "TokenCredential"]] # pylint: disable=line-too-long = None, **kwargs) -> Dict[str,
-    Any]'
+  signature: 'upload_blob_to_url(blob_url: str, data: Iterable | IO, credential: str
+    | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: blob_url
     description: The full URI to the blob. This can also include a SAS token.

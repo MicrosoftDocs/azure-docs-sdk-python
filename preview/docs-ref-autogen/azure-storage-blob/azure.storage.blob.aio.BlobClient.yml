@@ -5,7 +5,7 @@ fullName: azure.storage.blob.aio.BlobClient
 module: azure.storage.blob.aio
 inheritances:
 - azure.storage.blob._shared.base_client_async.AsyncStorageAccountHostsMixin
-- azure.storage.blob._blob_client.BlobClient
+- azure.storage.blob._shared.base_client.StorageAccountHostsMixin
 - azure.storage.blob._encryption.StorageEncryptionMixin
 summary: A client to interact with a specific blob, although that blob may not yet
   exist.
@@ -146,7 +146,7 @@ examples:
   blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
   classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
   C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_authentication_async.py\"\
+  \\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_authentication_async.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.blob.aio\
   \ import BlobClient\n   blob_client = BlobClient.from_blob_url(blob_url=\"https://account.blob.core.windows.net/container/blob-name\"\
@@ -154,7 +154,7 @@ examples:
   blob_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
   classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
   C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_authentication_async.py\"\
+  \\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_authentication_async.py\"\
   , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
   : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.storage.blob.aio\
   \ import BlobClient\n\n   sas_url = \"https://account.blob.core.windows.net/container/blob-name?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D\"\
@@ -187,13 +187,14 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_common_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_common_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Passing in copy id to abort copy operation\n   if props.copy.status !=\
-    \ \"success\":\n       await copied_blob.abort_copy(copy_id)\n\n   # check copy\
-    \ status\n   props = await copied_blob.get_blob_properties()\n   print(props.copy.status)\n\
-    \n   ````\n"
+    \ \"success\":\n       if copy_id is not None:\n           await copied_blob.abort_copy(copy_id)\n\
+    \       else:\n           print(\"copy_id was unexpectedly None, check if the\
+    \ operation completed successfully.\")\n\n   # check copy status\n   props = await\
+    \ copied_blob.get_blob_properties()\n   print(props.copy.status)\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.acquire_lease
   name: acquire_lease
   summary: 'Requests a new lease.
@@ -292,7 +293,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_common_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_common_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get the blob client\n   blob_client = blob_service_client.get_blob_client(\"\
@@ -302,8 +303,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.append_block
   name: append_block
   summary: Commits a new block of data to the end of the existing append blob.
-  signature: 'async append_block(data: bytes | str | Iterable[AnyStr] | IO[AnyStr],
-    length: int | None = None, **kwargs) -> Dict[str, str | datetime | int]'
+  signature: 'async append_block(data: bytes | str | Iterable | IO, length: int |
+    None = None, **kwargs: Any) -> Dict[str, str | datetime | int]'
   parameters:
   - name: data
     description: Content of the block.
@@ -461,8 +462,8 @@ methods:
   summary: Creates a new block to be committed as part of a blob, where the contents
     are read from a source url.
   signature: 'async append_block_from_url(copy_source_url: str, source_offset: int
-    | None = None, source_length: int | None = None, **kwargs) -> Dict[str, str |
-    datetime | int]'
+    | None = None, source_length: int | None = None, **kwargs: Any) -> Dict[str, str
+    | datetime | int]'
   parameters:
   - name: copy_source_url
     description: 'The URL of the source data. It can point to any Azure Blob or File,
@@ -793,8 +794,8 @@ methods:
 
     block IDs that make up the blob.'
   signature: 'async commit_block_list(block_list: List[BlobBlock], content_settings:
-    ContentSettings | None = None, metadata: Dict[str, str] | None = None, **kwargs)
-    -> Dict[str, str | datetime]'
+    ContentSettings | None = None, metadata: Dict[str, str] | None = None, **kwargs:
+    Any) -> Dict[str, str | datetime]'
   parameters:
   - name: block_list
     description: List of Blockblobs.
@@ -826,7 +827,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)
 
 
@@ -1004,7 +1005,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)
 
 
@@ -1117,7 +1118,7 @@ methods:
   summary: Creates a new Page Blob of the specified size.
   signature: 'async create_page_blob(size: int, content_settings: ContentSettings
     | None = None, metadata: Dict[str, str] | None = None, premium_page_blob_tier:
-    str | PremiumPageBlobTier | None = None, **kwargs) -> Dict[str, str | datetime]'
+    str | PremiumPageBlobTier | None = None, **kwargs: Any) -> Dict[str, str | datetime]'
   parameters:
   - name: size
     description: 'This specifies the maximum size for the page blob, up to 1 TB.
@@ -1161,7 +1162,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)
 
 
@@ -1405,7 +1406,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_common_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_common_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create a read-only snapshot of the blob at this point in time\n   snapshot_blob\
@@ -1439,7 +1440,8 @@ methods:
 
     option. Soft-deleted blob can be restored using <xref:azure.storage.blob.aio.undelete>
     operation.'
-  signature: 'async delete_blob(delete_snapshots: str = None, **kwargs: Any) -> None'
+  signature: 'async delete_blob(delete_snapshots: str | None = None, **kwargs: Any)
+    -> None'
   parameters:
   - name: delete_snapshots
     description: "Required if the blob has associated snapshots. Values include:\n\
@@ -1530,7 +1532,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await blob_client.delete_blob()\n\n   ````\n"
@@ -1569,8 +1571,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'async download_blob(offset: int = None, length: int = None, *, encoding:
-    str, **kwargs) -> StorageStreamDownloader[str]'
+  signature: 'async download_blob(offset: int | None = None, length: int | None =
+    None, *, encoding: str, **kwargs: Any) -> StorageStreamDownloader[str]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for downloading a section of the blob.
@@ -1723,7 +1725,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   with open(DEST_FILE, \"wb\") as my_blob:\n       stream = await blob_client.download_blob()\n\
@@ -1762,7 +1764,7 @@ methods:
   summary: Create BlobClient from a blob url. This doesn't support customized blob
     url with '/' in blob name.
   signature: 'from_blob_url(blob_url: str, credential: str | Dict[str, str] | AzureNamedKeyCredential
-    | AzureSasCredential | TokenCredential | None = None, snapshot: str | Dict[str,
+    | AzureSasCredential | AsyncTokenCredential | None = None, snapshot: str | Dict[str,
     Any] | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: blob_url
@@ -1799,12 +1801,9 @@ methods:
       should be the storage account key.'
     defaultValue: None
     types:
-    - <xref:azure.core.credentials.AzureNamedKeyCredential>
-    - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
-    - <xref:str>
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:None>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>,
+      <xref:str>], <xref:"AzureNamedKeyCredential">, <xref:"AzureSasCredential">,
+      <xref:"AsyncTokenCredential">]]  <xref:./>
   - name: snapshot
     description: 'The optional blob snapshot on which to operate. This can be the
       snapshot ID string
@@ -1842,8 +1841,8 @@ methods:
   summary: Create BlobClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, container_name: str, blob_name:
     str, snapshot: str | Dict[str, Any] | None = None, credential: str | Dict[str,
-    str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None =
-    None, **kwargs: Any) -> Self'
+    str] | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None
+    = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -1890,12 +1889,9 @@ methods:
       should be the storage account key.'
     defaultValue: None
     types:
-    - <xref:azure.core.credentials.AzureNamedKeyCredential>
-    - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
-    - <xref:str>
-    - <xref:dict>[<xref:str>, <xref:str>]
-    - <xref:None>
+    - <xref:typing.Optional>[<xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>,
+      <xref:str>], <xref:"AzureNamedKeyCredential">, <xref:"AzureSasCredential">,
+      <xref:"AsyncTokenCredential">]]  <xref:./>
   keywordOnlyParameters:
   - name: version_id
     description: 'The version id parameter is an opaque DateTime value that, when
@@ -1922,7 +1918,7 @@ methods:
     blob_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\\
+    \\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\\
     blob_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.storage.blob import BlobClient\n \
@@ -1937,7 +1933,7 @@ methods:
     blob.
 
     The keys in the returned dictionary include ''sku_name'' and ''account_kind''.'
-  signature: 'async get_account_information(**kwargs: int | None) -> Dict[str, str]'
+  signature: 'async get_account_information(**kwargs: Any) -> Dict[str, str]'
   return:
     description: A dict of account information (SKU and account type).
     types:
@@ -2039,7 +2035,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_common_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_common_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = await blob_client.get_blob_properties()\n\n   ````\n"
@@ -2094,7 +2090,7 @@ methods:
   summary: 'The Get Block List operation retrieves the list of blocks that have
 
     been uploaded as part of a block blob.'
-  signature: 'async get_block_list(block_list_type: str | None = ''committed'', **kwargs:
+  signature: 'async get_block_list(block_list_type: str = ''committed'', **kwargs:
     Any) -> Tuple[List[BlobBlock], List[BlobBlock]]'
   parameters:
   - name: block_list_type
@@ -2140,7 +2136,8 @@ methods:
   return:
     description: A tuple of two lists - committed and uncommitted blocks
     types:
-    - <xref:tuple>(<xref:list>(<xref:azure.storage.blob.BlobBlock>), <xref:list>(<xref:azure.storage.blob.BlobBlock>))
+    - <xref:typing.Tuple>[<xref:typing.List>[<xref:azure.storage.blob.BlobBlock>],
+      <xref:typing.List>[<xref:azure.storage.blob.BlobBlock>]]
 - uid: azure.storage.blob.aio.BlobClient.get_page_range_diff_for_managed_disk
   name: get_page_range_diff_for_managed_disk
   summary: 'Returns the list of valid page ranges for a managed disk or snapshot.
@@ -2155,7 +2152,7 @@ methods:
 
     *New in version 12.2.0:* This operation was introduced in API version ''2019-07-07''.'
   signature: 'async get_page_range_diff_for_managed_disk(previous_snapshot_url: str,
-    offset: int | None = None, length: int | None = None, **kwargs) -> Tuple[List[Dict[str,
+    offset: int | None = None, length: int | None = None, **kwargs: Any) -> Tuple[List[Dict[str,
     int]], List[Dict[str, int]]]'
   parameters:
   - name: previous_snapshot_url
@@ -2268,8 +2265,8 @@ methods:
 
     of a page blob.'
   signature: 'async get_page_ranges(offset: int | None = None, length: int | None
-    = None, previous_snapshot_diff: str | Dict[str, Any] | None = None, **kwargs)
-    -> Tuple[List[Dict[str, int]], List[Dict[str, int]]]'
+    = None, previous_snapshot_diff: str | Dict[str, Any] | None = None, **kwargs:
+    Any) -> Tuple[List[Dict[str, int]], List[Dict[str, int]]]'
   parameters:
   - name: offset
     description: 'Start of byte range to use for getting valid page ranges.
@@ -2511,168 +2508,6 @@ methods:
     description: An iterable (auto-paging) of PageRange.
     types:
     - <xref:azure.core.paging.ItemPaged>[<xref:azure.storage.blob.PageRange>]
-- uid: azure.storage.blob.aio.BlobClient.query_blob
-  name: query_blob
-  summary: 'Enables users to select/project on blob/or blob snapshot data by providing
-    simple query expressions.
-
-    This operations returns a BlobQueryReader, users need to use readall() or readinto()
-    to get query data.'
-  signature: 'query_blob(query_expression: str, **kwargs: Any) -> BlobQueryReader'
-  parameters:
-  - name: query_expression
-    description: 'Required. a query statement. For more details see
-
-      [https://learn.microsoft.com/azure/storage/blobs/query-acceleration-sql-reference](https://learn.microsoft.com/azure/storage/blobs/query-acceleration-sql-reference).'
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: on_error
-    description: A function to be called on any processing errors returned by the
-      service.
-    types:
-    - <xref:typing.Callable>[<xref:azure.storage.blob.BlobQueryError>]
-  - name: blob_format
-    description: 'Optional. Defines the serialization of the data currently stored
-      in the blob. The default is to
-
-      treat the blob data as CSV data formatted in the default dialect. This can be
-      overridden with
-
-      a custom DelimitedTextDialect, or DelimitedJsonDialect or "ParquetDialect" (passed
-      as a string or enum).
-
-      These dialects can be passed through their respective classes, the QuickQueryDialect
-      enum or as a string
-
-
-
-      > [!NOTE]
-
-      > "ParquetDialect" is in preview, so some features may not work as intended.
-
-      >'
-    types:
-    - <xref:azure.storage.blob.DelimitedTextDialect>
-    - <xref:azure.storage.blob.DelimitedJsonDialect>
-    - <xref:azure.storage.blob.QuickQueryDialect>
-    - <xref:str>
-  - name: output_format
-    description: 'Optional. Defines the output serialization for the data stream.
-      By default the data will be returned
-
-      as it is represented in the blob (Parquet formats default to DelimitedTextDialect).
-
-      By providing an output format, the blob data will be reformatted according to
-      that profile.
-
-      This value can be a DelimitedTextDialect or a DelimitedJsonDialect or ArrowDialect.
-
-      These dialects can be passed through their respective classes, the QuickQueryDialect
-      enum or as a string'
-    types:
-    - <xref:azure.storage.blob.DelimitedTextDialect>
-    - <xref:azure.storage.blob.DelimitedJsonDialect>
-    - <xref:list>[<xref:azure.storage.blob.ArrowDialect>]
-    - <xref:azure.storage.blob.QuickQueryDialect>
-    - <xref:str>
-  - name: lease
-    description: 'Required if the blob has an active lease. Value can be a BlobLeaseClient
-      object
-
-      or the lease ID as a string.'
-    types:
-    - <xref:azure.storage.blob.BlobLeaseClient>
-    - <xref:str>
-  - name: if_modified_since
-    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
-
-      If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-      If a date is passed in without timezone info, it is assumed to be UTC.
-
-      Specify this header to perform the operation only
-
-      if the resource has been modified since the specified time.'
-    types:
-    - <xref:datetime.datetime>
-  - name: if_unmodified_since
-    description: 'A DateTime value. Azure expects the date value passed in to be UTC.
-
-      If timezone is included, any non-UTC datetimes will be converted to UTC.
-
-      If a date is passed in without timezone info, it is assumed to be UTC.
-
-      Specify this header to perform the operation only if
-
-      the resource has not been modified since the specified date/time.'
-    types:
-    - <xref:datetime.datetime>
-  - name: etag
-    description: 'An ETag value, or the wildcard character (*). Used to check if the
-      resource has changed,
-
-      and act according to the condition specified by the *match_condition* parameter.'
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: The match condition to use upon the etag.
-    types:
-    - <xref:azure.core.MatchConditions>
-  - name: if_tags_match_condition
-    description: 'Specify a SQL where clause on blob tags to operate only on blob
-      with a matching value.
-
-      eg. `"\"tagname\"=''my tag''"`
-
-
-      *New in version 12.4.0.*'
-    types:
-    - <xref:str>
-  - name: cpk
-    description: 'Encrypts the data on the service-side with the given key.
-
-      Use of customer-provided keys must be done over HTTPS.
-
-      As the encryption key itself is provided in the request,
-
-      a secure connection must be established to transfer the key.'
-    types:
-    - <xref:azure.storage.blob.CustomerProvidedEncryptionKey>
-  - name: timeout
-    description: 'Sets the server-side timeout for the operation in seconds. For more
-      details see
-
-      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations).
-
-      This value is not tracked or validated on the client. To configure client-side
-      network timesouts
-
-      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob#other-client--per-operation-configuration).'
-    types:
-    - <xref:int>
-  return:
-    description: A streaming object (BlobQueryReader)
-    types:
-    - <xref:azure.storage.blob.BlobQueryReader>
-  examples:
-  - "select/project on blob/or blob snapshot data by providing simple query expressions.<!--[!code-python[Main](les\\\
-    blob_samples_query.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [],\
-    \ \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
-    \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_query.py\", \"\
-    xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   errors = []\n\
-    \   def on_error(error):\n       errors.append(error)\n\n   # upload the csv file\n\
-    \   blob_client = blob_service_client.get_blob_client(container_name, \"csvfile\"\
-    )\n   with open(\"./sample-blobs/quick_query.csv\", \"rb\") as stream:\n     \
-    \  blob_client.upload_blob(stream, overwrite=True)\n\n   # select the second column\
-    \ of the csv file\n   query_expression = \"SELECT _2 from BlobStorage\"\n   input_format\
-    \ = DelimitedTextDialect(delimiter=',', quotechar='\"', lineterminator='\\n',\
-    \ escapechar=\"\", has_header=False)\n   output_format = DelimitedJsonDialect(delimiter='\\\
-    n')\n   reader = blob_client.query_blob(query_expression, on_error=on_error, blob_format=input_format,\
-    \ output_format=output_format)\n   content = reader.readall()\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.resize_blob
   name: resize_blob
   summary: 'Resizes a page blob to the specified size.
@@ -2774,7 +2609,8 @@ methods:
   name: seal_append_blob
   summary: "The Seal operation seals the Append Blob to make it read-only.\n\n   *New\
     \ in version 12.4.0.*"
-  signature: async seal_append_blob(**kwargs) -> Dict[str, str | datetime | int]
+  signature: 'async seal_append_blob(**kwargs: Any) -> Dict[str, str | datetime |
+    int]'
   keywordOnlyParameters:
   - name: appendpos_condition
     description: 'Optional conditional header, used only for the Append Block operation.
@@ -2981,7 +2817,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)'
     isRequired: true
     types:
@@ -3045,7 +2881,7 @@ methods:
 
     If one property is set for the content_settings, all properties will be overridden.'
   signature: 'async set_http_headers(content_settings: ContentSettings | None = None,
-    **kwargs: Any) -> None'
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: content_settings
     description: 'ContentSettings object used to set blob properties. Used to set
@@ -3197,7 +3033,7 @@ methods:
   name: set_premium_page_blob_tier
   summary: Sets the page blob tiers on the blob. This API is only supported for page
     blobs on premium accounts.
-  signature: 'async set_premium_page_blob_tier(premium_page_blob_tier: str | PremiumPageBlobTier,
+  signature: 'async set_premium_page_blob_tier(premium_page_blob_tier: PremiumPageBlobTier,
     **kwargs: Any) -> None'
   parameters:
   - name: premium_page_blob_tier
@@ -3248,7 +3084,7 @@ methods:
   name: set_sequence_number
   summary: Sets the blob sequence number.
   signature: 'async set_sequence_number(sequence_number_action: str | SequenceNumberAction,
-    sequence_number: str | None = None, **kwargs) -> Dict[str, str | datetime]'
+    sequence_number: str | None = None, **kwargs: Any) -> Dict[str, str | datetime]'
   parameters:
   - name: sequence_number_action
     description: 'This property indicates how the service should modify the blob''s
@@ -3407,8 +3243,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.stage_block
   name: stage_block
   summary: Creates a new block to be committed as part of a blob.
-  signature: 'async stage_block(block_id: str, data: Iterable | IO, length: int |
-    None = None, **kwargs) -> Dict[str, Any]'
+  signature: 'async stage_block(block_id: str, data: bytes | str | Iterable | IO,
+    length: int | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: block_id
     description: 'A string value that identifies the block.
@@ -3423,7 +3259,8 @@ methods:
     description: The blob data.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:typing.Iterable>[<xref:typing.AnyStr>], <xref:typing.IO>[<xref:typing.AnyStr>]]
+    - <xref:typing.Union>[<xref:bytes>, <xref:str>, <xref:typing.Iterable>[<xref:typing.AnyStr>],
+      <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: length
     description: Size of the block.
     isRequired: true
@@ -3509,9 +3346,9 @@ methods:
   summary: 'Creates a new block to be committed as part of a blob where
 
     the contents are read from a URL.'
-  signature: 'async stage_block_from_url(block_id: str | int, source_url: str, source_offset:
+  signature: 'async stage_block_from_url(block_id: str, source_url: str, source_offset:
     int | None = None, source_length: int | None = None, source_content_md5: bytes
-    | bytearray | None = None, **kwargs) -> Dict[str, Any]'
+    | bytearray | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: block_id
     description: 'A string value that identifies the block.
@@ -3727,7 +3564,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_).
 
 
@@ -3945,7 +3782,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_common_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_common_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Get the blob client with the source blob\n   source_blob = \"https://www.gutenberg.org/files/59466/59466-0.txt\"\
@@ -3990,7 +3827,7 @@ methods:
   - "Undeleting a blob.<!--[!code-python[Main](les\\blob_samples_common_async.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.21.0b1\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\214\\\\azure-storage-blob-12.23.0b1\\\
     \\samples\\\\blob_samples_common_async.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Undelete the blob before the retention\
@@ -3998,13 +3835,16 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.upload_blob
   name: upload_blob
   summary: Creates a new blob from a data source with automatic chunking.
-  signature: 'async upload_blob(data: bytes | str | Iterable | AsyncIterable | IO,
+  signature: 'async upload_blob(data: bytes | str | Iterable | AsyncIterable | IO[bytes],
     blob_type: str | BlobType = BlobType.BLOCKBLOB, length: int | None = None, metadata:
-    Dict[str, str] | None = None, **kwargs) -> Dict[str, Any]'
+    Dict[str, str] | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: data
     description: The blob data to upload.
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:bytes>, <xref:str>, <xref:typing.Iterable>[<xref:typing.AnyStr>],
+      <xref:typing.AsyncIterable>[<xref:typing.AnyStr>], <xref:typing.IO>[<xref:typing.AnyStr>]]
   - name: blob_type
     description: 'The type of the blob. This can be
 
@@ -4036,7 +3876,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)
 
 
@@ -4260,11 +4100,11 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    214\\\\azure-storage-blob-12.21.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
+    214\\\\azure-storage-blob-12.23.0b1\\\\samples\\\\blob_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   # Upload content to block blob\n   with open(SOURCE_FILE, \"rb\") as data:\n\
-    \       await blob_client.upload_blob(data, blob_type=\"BlockBlob\")\n\n   ````\n"
+    \n   # Upload content to block blob\n   with open(SOURCE_FILE, \"rb\") as source:\n\
+    \       await blob_client.upload_blob(source, blob_type=\"BlockBlob\")\n\n   ````\n"
 - uid: azure.storage.blob.aio.BlobClient.upload_blob_from_url
   name: upload_blob_from_url
   summary: 'Creates a new Block Blob where the content of the blob is read from a
@@ -4279,11 +4119,11 @@ methods:
 
       The value should be URL-encoded as it would appear in a request URI.
 
-      If the source is in another account, the source must either be public
+      The source must either be public or must be authenticated via a shared
 
-      or must be authenticated via a shared access signature. If the source
+      access signature as part of the url or using the source_authorization keyword.
 
-      is public, no authentication is required.
+      If the source is public, no authentication is required.
 
       Examples:
 
@@ -4322,7 +4162,7 @@ methods:
       Valid tag key and value characters include: lowercase and uppercase letters,
       digits (0-9),
 
-      space (` >>`<<), plus (+), minus (-), period (.), solidus (/), colon (:), equals
+      space ('' ''), plus (+), minus (-), period (.), solidus (/), colon (:), equals
       (=), underscore (_)'
     types:
     - <xref:dict>(<xref:str>, <xref:str>)
@@ -4475,8 +4315,8 @@ methods:
 - uid: azure.storage.blob.aio.BlobClient.upload_page
   name: upload_page
   summary: The Upload Pages operation writes a range of pages to a page blob.
-  signature: 'async upload_page(page: bytes, offset: int, length: int, **kwargs) ->
-    Dict[str, str | datetime]'
+  signature: 'async upload_page(page: bytes, offset: int, length: int, **kwargs: Any)
+    -> Dict[str, str | datetime]'
   parameters:
   - name: page
     description: Content of the page.
@@ -4644,7 +4484,7 @@ methods:
 
     the contents are read from a URL.'
   signature: 'async upload_pages_from_url(source_url: str, offset: int, length: int,
-    source_offset: int, **kwargs) -> Dict[str, Any]'
+    source_offset: int, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: source_url
     description: 'The URL of the source data. It can point to any Azure Blob or File,
