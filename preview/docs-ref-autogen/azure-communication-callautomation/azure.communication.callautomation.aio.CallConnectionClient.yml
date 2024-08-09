@@ -291,17 +291,11 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.aio.CallConnectionClient.play_media
   name: play_media
-  signature: 'async play_media(play_source: ''FileSource'' | ''TextSource'' | ''SsmlSource''
-    | List[''FileSource'' | ''TextSource'' | ''SsmlSource''], play_to: List[''CommunicationIdentifier''],
-    *, loop: bool = False, operation_context: str | None = None, operation_callback_url:
-    str | None = None, **kwargs) -> None'
-- uid: azure.communication.callautomation.aio.CallConnectionClient.play_media_to_all
-  name: play_media_to_all
-  summary: Play media to all participants in this call.
-  signature: 'async play_media_to_all(play_source: FileSource | TextSource | SsmlSource
-    | List[FileSource | TextSource | SsmlSource], *, loop: bool = False, operation_context:
-    str | None = None, operation_callback_url: str | None = None, interrupt_call_media_operation:
-    bool = False, **kwargs) -> None'
+  summary: Play media to specific participant(s) in this call.
+  signature: 'async play_media(play_source: FileSource | TextSource | SsmlSource,
+    play_to: Literal[''all''] | List[CommunicationIdentifier] = ''all'', *, loop:
+    bool = False, operation_context: str | None = None, operation_callback_url: str
+    | None = None, **kwargs) -> None'
   parameters:
   - name: play_source
     description: A PlaySource representing the source to play.
@@ -310,9 +304,56 @@ methods:
     - <xref:azure.communication.callautomation.FileSource>
     - <xref:azure.communication.callautomation.TextSource>
     - <xref:azure.communication.callautomation.SsmlSource>
-    - <xref:list>[<xref:azure.communication.callautomation.FileSource>]
-    - <xref:list>[<xref:azure.communication.callautomation.TextSource>]
-    - <xref:list>[<xref:azure.communication.callautomation.SsmlSource>]
+  - name: play_to
+    description: 'The targets to play media to. Default value is ''all'', to play
+      media
+
+      to all participants in the call.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
+  keywordOnlyParameters:
+  - name: loop
+    description: Whether the media should be repeated until cancelled.
+    types:
+    - <xref:bool>
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.play_media_to_all
+  name: play_media_to_all
+  summary: Play media to all participants in this call.
+  signature: 'async play_media_to_all(play_source: FileSource | TextSource | SsmlSource,
+    *, loop: bool = False, operation_context: str | None = None, operation_callback_url:
+    str | None = None, interrupt_call_media_operation: bool = False, **kwargs) ->
+    None'
+  parameters:
+  - name: play_source
+    description: A PlaySource representing the source to play.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
   keywordOnlyParameters:
   - name: loop
     description: Whether the media should be repeated until cancelled.
@@ -424,7 +465,8 @@ methods:
   name: start_continuous_dtmf_recognition
   summary: Start continuous Dtmf recognition by subscribing to tones.
   signature: 'async start_continuous_dtmf_recognition(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> None'
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, **kwargs) -> None'
   parameters:
   - name: target_participant
     description: Target participant.
@@ -436,22 +478,10 @@ methods:
     description: Value that can be used to track this call and its associated events.
     types:
     - <xref:str>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.communication.callautomation.aio.CallConnectionClient.start_media_streaming
-  name: start_media_streaming
-  summary: Starts media streaming in the call.
-  signature: 'async start_media_streaming(*, operation_callback_url: str | None =
-    None, operation_context: str | None = None, **kwargs) -> None'
-  keywordOnlyParameters:
   - name: operation_callback_url
-    description: '(Optional) Set a callback URL that overrides the default
+    description: 'Set a callback URL that overrides the default callback URL set
 
-      callback URL set by CreateCall/AnswerCall for this operation.
+      by CreateCall/AnswerCall for this operation.
 
       This setup is per-action. If this is not set, the default callback URL set by
 
@@ -459,9 +489,47 @@ methods:
     types:
     - <xref:str>
     - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.aio.CallConnectionClient.start_hold_music
+  name: start_hold_music
+  summary: Hold participant from call while playing music.
+  signature: 'async start_hold_music(target_participant: CommunicationIdentifier,
+    play_source: FileSource | TextSource | SsmlSource, *, loop: bool = True, operation_context:
+    str | None = None, **kwargs) -> None'
+  parameters:
+  - name: play_source
+    description: A PlaySource representing the source to play.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
+    - <xref:list>[<xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>]
+  - name: target_participant
+    description: 'The targets to play media to. Default value is ''all'', to play
+      media
+
+      to all participants in the call.'
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
+  keywordOnlyParameters:
+  - name: loop
+    description: 'Whether the media should be repeated until stopped.
+
+      **DEPRECATED**: ''loop'' has been deprecated and will be removed from future
+      releases.'
+    types:
+    - <xref:bool>
   - name: operation_context
-    description: (Optional) Value that can be used to track this call and its associated
-      events.
+    description: Value that can be used to track this call and its associated events.
     types:
     - <xref:str>
     - <xref:None>
@@ -471,7 +539,6 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If there's an HTTP response error.
 - uid: azure.communication.callautomation.aio.CallConnectionClient.start_recognizing_media
   name: start_recognizing_media
   summary: Recognize inputs from specific participant in this call.
@@ -480,9 +547,9 @@ methods:
     None = None, play_prompt: FileSource | TextSource | SsmlSource | None = None,
     interrupt_call_media_operation: bool = False, operation_context: str | None =
     None, interrupt_prompt: bool = False, dtmf_inter_tone_timeout: int | None = None,
-    dtmf_max_tones_to_collect: int | None = None, dtmf_stop_tones: List[str | DtmfTone]
-    | None = None, speech_language: str | None = None, choices: List[RecognitionChoice]
-    | None = None, end_silence_timeout: int | None = None, speech_recognition_model_endpoint_id:
+    dtmf_max_tones_to_collect: int | None = None, dtmf_stop_tones: List[str] | None
+    = None, speech_language: str | None = None, choices: List[RecognitionChoice] |
+    None = None, end_silence_timeout: int | None = None, speech_recognition_model_endpoint_id:
     str | None = None, operation_callback_url: str | None = None, **kwargs) -> None'
   parameters:
   - name: input_type
@@ -579,8 +646,7 @@ methods:
   name: start_transcription
   summary: Starts transcription in the call.
   signature: 'async start_transcription(*, locale: str | None = None, operation_context:
-    str | None = None, speech_recognition_model_endpoint_id: str | None = None, **kwargs)
-    -> None'
+    str | None = None, **kwargs) -> None'
   keywordOnlyParameters:
   - name: locale
     description: Defines Locale for the transcription e,g en-US.
@@ -588,10 +654,6 @@ methods:
     - <xref:str>
   - name: operation_context
     description: The value to identify context of the operation.
-    types:
-    - <xref:str>
-  - name: speech_recognition_model_endpoint_id
-    description: Endpoint where the custom model was deployed.
     types:
     - <xref:str>
   return:
@@ -634,26 +696,23 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-- uid: azure.communication.callautomation.aio.CallConnectionClient.stop_media_streaming
-  name: stop_media_streaming
-  summary: Stops media streaming in the call.
-  signature: 'async stop_media_streaming(*, operation_callback_url: str | None = None,
+- uid: azure.communication.callautomation.aio.CallConnectionClient.stop_hold_music
+  name: stop_hold_music
+  summary: Remove hold from participant.
+  signature: 'async stop_hold_music(target_participant: CommunicationIdentifier, *,
     operation_context: str | None = None, **kwargs) -> None'
-  keywordOnlyParameters:
-  - name: operation_callback_url
-    description: '(Optional) Set a callback URL that overrides the default
+  parameters:
+  - name: target_participant
+    description: 'The targets to play media to. Default value is ''all'', to play
+      media
 
-      callback URL set by CreateCall/AnswerCall for this operation.
-
-      This setup is per-action. If this is not set, the default callback URL set by
-
-      CreateCall/AnswerCall will be used.'
+      to all participants in the call.'
+    isRequired: true
     types:
-    - <xref:str>
-    - <xref:None>
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
+  keywordOnlyParameters:
   - name: operation_context
-    description: (Optional) Value that can be used to track this call and its associated
-      events.
+    description: Value that can be used to track this call and its associated events.
     types:
     - <xref:str>
     - <xref:None>
@@ -663,7 +722,6 @@ methods:
     - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-    description: If there's an HTTP response error.
 - uid: azure.communication.callautomation.aio.CallConnectionClient.stop_transcription
   name: stop_transcription
   summary: Stops transcription in the call.
@@ -762,20 +820,11 @@ methods:
 - uid: azure.communication.callautomation.aio.CallConnectionClient.update_transcription
   name: update_transcription
   summary: API to change transcription language.
-  signature: 'async update_transcription(*, locale: str, operation_context: str |
-    None = None, speech_recognition_model_endpoint_id: str | None = None, **kwargs)
-    -> None'
-  keywordOnlyParameters:
+  signature: 'async update_transcription(locale: str, **kwargs) -> None'
+  parameters:
   - name: locale
     description: Defines new locale for transcription.
-    types:
-    - <xref:str>
-  - name: operation_context
-    description: The value to identify context of the operation.
-    types:
-    - <xref:str>
-  - name: speech_recognition_model_endpoint_id
-    description: Endpoint where the custom model was deployed.
+    isRequired: true
     types:
     - <xref:str>
   return:

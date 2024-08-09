@@ -5,7 +5,7 @@ fullName: azure.storage.blob.aio.ContainerClient
 module: azure.storage.blob.aio
 inheritances:
 - azure.storage.blob._shared.base_client_async.AsyncStorageAccountHostsMixin
-- azure.storage.blob._container_client.ContainerClient
+- azure.storage.blob._shared.base_client.StorageAccountHostsMixin
 - azure.storage.blob._encryption.StorageEncryptionMixin
 summary: 'A client to interact with a specific container, although that container
 
@@ -135,7 +135,7 @@ methods:
 
     lease ID.'
   signature: 'async acquire_lease(lease_duration: int = -1, lease_id: str | None =
-    None, **kwargs) -> BlobLeaseClient'
+    None, **kwargs: Any) -> BlobLeaseClient'
   parameters:
   - name: lease_duration
     description: 'Specifies the duration of the lease, in seconds, or negative one
@@ -412,9 +412,10 @@ methods:
       \ BlobProperties.\n\n\n> [!NOTE]\n> When the blob type is dict, here's a list\
       \ of keys, value rules.\n>\n> \n>\n> blob name:\n>\n> \n>\n> key: 'name', value\
       \ type: str\n>\n> \n>\n> snapshot you want to delete:\n>\n> \n>\n> key: 'snapshot',\
-      \ value type: str\n>\n> \n>\n> whether to delete snapshots when deleting blob:\n\
-      >\n> \n>\n> key: 'delete_snapshots', value: 'include' or 'only'\n>\n> \n>\n\
-      > if the blob modified or not:\n>\n> \n>\n> key: 'if_modified_since', 'if_unmodified_since',\
+      \ value type: str\n>\n> \n>\n> version id:\n>\n> \n>\n> key: 'version_id', value\
+      \ type: str\n>\n> \n>\n> whether to delete snapshots when deleting blob:\n>\n\
+      > \n>\n> key: 'delete_snapshots', value: 'include' or 'only'\n>\n> \n>\n> if\
+      \ the blob modified or not:\n>\n> \n>\n> key: 'if_modified_since', 'if_unmodified_since',\
       \ value type: datetime\n>\n> \n>\n> etag:\n>\n> \n>\n> key: 'etag', value type:\
       \ str\n>\n> \n>\n> match the etag or not:\n>\n> \n>\n> key: 'match_condition',\
       \ value type: MatchConditions\n>\n> \n>\n> tags match condition:\n>\n> \n>\n\
@@ -423,9 +424,8 @@ methods:
       \ for subrequest:\n>\n> \n>\n> key: 'timeout', value type: int\n>"
     isRequired: true
     types:
-    - <xref:str>
-    - <xref:dict>(<xref:str>, <xref:typing.Any>)
-    - <xref:azure.storage.blob.BlobProperties>
+    - <xref:typing.Union>[<xref:str>, <xref:typing.Dict>[<xref:str>, <xref:typing.Any>],
+      <xref:azure.storage.blob.BlobProperties>]
   keywordOnlyParameters:
   - name: delete_snapshots
     description: "Required if a blob has associated snapshots. Values include:\n \
@@ -568,8 +568,8 @@ methods:
 
     a stream. Using chunks() returns an async iterator which allows the user to iterate
     over the content in chunks.'
-  signature: 'async download_blob(blob: str, offset: int = None, length: int = None,
-    *, encoding: str, **kwargs: Any) -> StorageStreamDownloader[str]'
+  signature: 'async download_blob(blob: str, offset: int | None = None, length: int
+    | None = None, *, encoding: str, **kwargs: Any) -> StorageStreamDownloader[str]'
   parameters:
   - name: blob
     description: The blob with which to interact.
@@ -753,8 +753,7 @@ methods:
     The generator will lazily follow the continuation tokens returned by
 
     the service.'
-  signature: 'find_blobs_by_tags(filter_expression: str, **kwargs: Any | None) ->
-    AsyncItemPaged[FilteredBlob]'
+  signature: 'find_blobs_by_tags(filter_expression: str, **kwargs: Any) -> AsyncItemPaged[FilteredBlob]'
   parameters:
   - name: filter_expression
     description: 'The expression to find blobs whose tags matches the specified condition.
@@ -788,7 +787,7 @@ methods:
   name: from_connection_string
   summary: Create ContainerClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, container_name: str, credential:
-    str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | TokenCredential
+    str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential
     | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
@@ -825,7 +824,7 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -847,8 +846,8 @@ methods:
   name: from_container_url
   summary: Create ContainerClient from a container url.
   signature: 'from_container_url(container_url: str, credential: str | Dict[str, str]
-    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
-    **kwargs: Any) -> Self'
+    | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None =
+    None, **kwargs: Any) -> Self'
   parameters:
   - name: container_url
     description: 'The full endpoint URL to the Container, including SAS token if used.
@@ -886,7 +885,7 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -924,8 +923,8 @@ methods:
 
 
     The blob need not already exist.'
-  signature: 'get_blob_client(blob: str, snapshot: str = None, *, version_id: str
-    | None = None) -> BlobClient'
+  signature: 'get_blob_client(blob: str, snapshot: str | None = None, *, version_id:
+    str | None = None) -> BlobClient'
   parameters:
   - name: blob
     description: The blob with which to interact.
@@ -1105,7 +1104,7 @@ methods:
 
     indicate whether blobs in a container may be accessed publicly.'
   signature: 'async set_container_access_policy(signed_identifiers: Dict[str, AccessPolicy],
-    public_access: str | PublicAccess | None = None, **kwargs: Any) -> Dict[str, str
+    public_access: PublicAccess | str | None = None, **kwargs: Any) -> Dict[str, str
     | datetime]'
   parameters:
   - name: signed_identifiers
@@ -1183,7 +1182,7 @@ methods:
 
     call this operation with no metadata dict.'
   signature: 'async set_container_metadata(metadata: Dict[str, str] | None = None,
-    **kwargs) -> Dict[str, str | datetime]'
+    **kwargs: Any) -> Dict[str, str | datetime]'
   parameters:
   - name: metadata
     description: 'A dict containing name-value pairs to associate with the container
