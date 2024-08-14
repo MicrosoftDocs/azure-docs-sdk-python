@@ -127,7 +127,7 @@ geolocation_result = client.get_country_code(ip_address=INCOME_IP_ADDRESS)
 result_country_code = geolocation_result.iso_code
 
 if result_country_code in BLOCK_COUNTRY_LIST:
-    raise Exception("These IP address is from forebiden country")
+    raise Exception("These IP address is from forbidden country")
 ```
 
 ## Troubleshooting
