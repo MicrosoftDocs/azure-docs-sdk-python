@@ -12,7 +12,7 @@ Add image and face recognition, language analysis, and search to your Python app
 
 ## Vision modules
 
-### Computer Vision 
+### Computer Vision
 
 Returns information about visual content found in an image:
 
@@ -56,7 +56,7 @@ pip install azure-cognitiveservices-vision-customvision
 
 ### Face API
 
-Detect, identify, analyze, organize, and tag faces in photos. 
+Detect, identify, analyze, organize, and tag faces in photos.
 
 [Try the Face API](https://azure.microsoft.com/en-us/services/cognitive-services/face/) in your browser.
 
@@ -72,7 +72,7 @@ pip install cognitive-face
 
 ### Web search
 
-Retrieve web documents indexed by the Bing Web Search API and narrow down the results by result type, freshness and more. 
+Retrieve web documents indexed by the Bing Web Search API and narrow down the results by result type, freshness and more.
 
 [Try the Web Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/) in your browser.
 
@@ -157,7 +157,7 @@ pip install azure-cognitiveservices-search-newssearch
 
 ## Language modules
 
-### Text Analytics 
+### Text Analytics
 
 The Text Analytics API is a cloud-based service that provides  natural language processing over raw text. The API includes three main functions:
 
@@ -165,12 +165,12 @@ The Text Analytics API is a cloud-based service that provides  natural language 
 - Key phrase extraction
 - Language detection
 
-[Try the Text Analytics API](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) in your browser.
+[Try the Text Analytics API](https://azure.microsoft.com/en-us/products/ai-services/ai-language/) in your browser.
 
 Get the Python module with [pip](https://pip.pypa.io/en/stable/quickstart/):
 
 ```python
-pip install azure-cognitiveservices-language-textanalytics
+pip install azure-ai-textanalytics
 ```
 
 [Learn more](/azure/cognitive-services/text-analytics/overview) about the Text Analytics API and get started with the [Text Analytics API Python quickstart](/azure/cognitive-services/text-analytics/quickstarts/python).
