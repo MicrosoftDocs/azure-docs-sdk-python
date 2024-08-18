@@ -9,7 +9,7 @@ summary: "Represents a client that calls restful API of Azure App Configuration 
   \n   param str base_url:\n      Base url of the service.\n\n   param credential:\n\
   \      An object which can provide secrets for the app configuration service\n\n\
   \   type credential:\n      ~azure.core.credentials_async.AsyncTokenCredential\n\
-  \n   keyword api_version:\n      Api Version. Default value is \"2023-10-01\". Note\
+  \n   keyword api_version:\n      Api Version. Default value is \"2023-11-01\". Note\
   \ that overriding this default\n      value may result in unsupported behavior.\n\
   \n   paramtype api_version:\n      str\n\nThis is the async version of <xref:azure.appconfiguration.AzureAppConfigurationClient>"
 constructor:
@@ -36,7 +36,7 @@ methods:
     **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
-    description: the ConfigurationSetting object to be added
+    description: The ConfigurationSetting object to be added
     isRequired: true
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
@@ -67,9 +67,14 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
   - name: etag
     description: Check if the ConfigurationSnapshot is changed. Set None to skip checking
       etag.
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: The ConfigurationSnapshot returned from the service.
     types:
@@ -80,7 +85,7 @@ methods:
   name: begin_create_snapshot
   summary: Create a snapshot of the configuration settings.
   signature: 'async begin_create_snapshot(name: str, filters: List[ConfigurationSettingsFilter],
-    *, composition_type: Literal[''key'', ''key_label''] | None = None, retention_period:
+    *, composition_type: str | SnapshotComposition | None = None, retention_period:
     int | None = None, tags: Dict[str, str] | None = None, **kwargs) -> AsyncLROPoller[ConfigurationSnapshot]'
   parameters:
   - name: name
@@ -107,6 +112,10 @@ methods:
       composition type ensures
 
       there are no two key-values containing the same key and label.'
+    types:
+    - <xref:str>
+    - <xref:azure.appconfiguration.SnapshotComposition>
+    - <xref:None>
   - name: retention_period
     description: 'The amount of time, in seconds, that a configuration snapshot will
       remain in the
@@ -118,8 +127,14 @@ methods:
       be
 
       in range 3600(1 hour) to 7776000(90 days).'
+    types:
+    - <xref:int>
+    - <xref:None>
   - name: tags
     description: The tags of the configuration snapshot.
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:None>
   return:
     description: 'A poller for create configuration snapshot operation. Call *result()*
       on this object to wait for the
@@ -146,21 +161,22 @@ methods:
     **kwargs) -> None | ConfigurationSetting'
   parameters:
   - name: key
-    description: key used to identify the ConfigurationSetting
+    description: Key used to identify the ConfigurationSetting
     isRequired: true
     types:
     - <xref:str>
   - name: label
-    description: label used to identify the ConfigurationSetting. Default is *None*.
+    description: Label used to identify the ConfigurationSetting. Default is *None*.
     isRequired: true
     types:
     - <xref:str>
   keywordOnlyParameters:
   - name: etag
-    description: check if the ConfigurationSetting is changed. Set None to skip checking
+    description: Check if the ConfigurationSetting is changed. Set None to skip checking
       etag
     types:
     - <xref:str>
+    - <xref:None>
   - name: match_condition
     description: The match condition to use upon the etag
     types:
@@ -218,18 +234,18 @@ methods:
     *, accept_datetime: datetime | str | None = None, **kwargs) -> None | ConfigurationSetting'
   parameters:
   - name: key
-    description: key of the ConfigurationSetting
+    description: Key of the ConfigurationSetting
     isRequired: true
     types:
     - <xref:str>
   - name: label
-    description: label used to identify the ConfigurationSetting. Default is *None*.
+    description: Label used to identify the ConfigurationSetting. Default is *None*.
     isRequired: true
     types:
     - <xref:str>
     - <xref:None>
   - name: etag
-    description: check if the ConfigurationSetting is changed. Set None to skip checking
+    description: Check if the ConfigurationSetting is changed. Set None to skip checking
       etag
     isRequired: true
     types:
@@ -242,7 +258,7 @@ methods:
     - <xref:azure.core.MatchConditions>
   keywordOnlyParameters:
   - name: accept_datetime
-    description: retrieve ConfigurationSetting existed at this datetime
+    description: Retrieve ConfigurationSetting that existed at this datetime
     types:
     - <xref:datetime.datetime>
     - <xref:str>
@@ -261,8 +277,8 @@ methods:
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.get_snapshot
   name: get_snapshot
   summary: Get a configuration setting snapshot.
-  signature: 'async get_snapshot(name: str, *, fields: List[str] | None = None, **kwargs)
-    -> ConfigurationSnapshot'
+  signature: 'async get_snapshot(name: str, *, fields: List[str | SnapshotFields]
+    | None = None, **kwargs) -> ConfigurationSnapshot'
   parameters:
   - name: name
     description: The name of the configuration setting snapshot to retrieve.
@@ -271,8 +287,14 @@ methods:
     - <xref:str>
   keywordOnlyParameters:
   - name: fields
-    description: Specify which fields to include in the results. Leave None to include
-      all fields.
+    description: 'Specify which fields to include in the results. If not specified,
+      will include all fields.
+
+      Available fields see <xref:azure.appconfiguration.SnapshotFields>.'
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.appconfiguration.SnapshotFields>]
+    - <xref:None>
   return:
     description: The ConfigurationSnapshot returned from the service.
     types:
@@ -282,53 +304,118 @@ methods:
 - uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_configuration_settings
   name: list_configuration_settings
   signature: 'list_configuration_settings(*, key_filter: str | None = None, label_filter:
-    str | None = None, accept_datetime: datetime | str | None = None, fields: List[str]
-    | None = None, **kwargs: Any) -> AsyncItemPaged[ConfigurationSetting]'
-- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_revisions
-  name: list_revisions
-  summary: "Find the ConfigurationSetting revision history, optionally filtered by\
-    \ key, label and accept_datetime.\n\nExample\n\n<!-- literal_block {\"ids\": [],\
-    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\"\
-    : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
-    : {}, \"linenos\": false} -->\n\n````python\n\n   # in async function\n   from\
-    \ datetime import datetime, timedelta\n\n   accept_datetime = datetime.utcnow()\
-    \ + timedelta(days=-1)\n\n   all_revisions = async_client.list_revisions()\n \
-    \  async for item in all_revisions:\n       pass  # do something\n\n   filtered_revisions\
-    \ = async_client.list_revisions(\n       label_filter=\"Labe*\", key_filter=\"\
-    Ke*\", accept_datetime=str(accept_datetime)\n   )\n   async for item in filtered_revisions:\n\
-    \       pass  # do something\n   ````"
-  signature: 'list_revisions(key_filter: str | None = None, label_filter: str | None
-    = None, *, accept_datetime: datetime | str | None = None, fields: List[str] |
-    None = None, **kwargs) -> AsyncItemPaged[ConfigurationSetting]'
-  parameters:
-  - name: key_filter
-    description: 'filter results based on their keys. ''*'' can be
-
-      used as wildcard in the beginning or end of the filter'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:None>
-  - name: label_filter
-    description: 'filter results based on their label. ''*'' can be
-
-      used as wildcard in the beginning or end of the filter'
-    isRequired: true
-    types:
-    - <xref:str>
-    - <xref:None>
+    str | None = None, tags_filter: List[str] | None = None, accept_datetime: datetime
+    | str | None = None, fields: List[str | ConfigurationSettingFields] | None = None,
+    **kwargs: Any) -> AsyncItemPaged[ConfigurationSetting]'
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_labels
+  name: list_labels
+  summary: Gets a list of labels.
+  signature: 'list_labels(*, name: str | None = None, after: str | None = None, accept_datetime:
+    datetime | str | None = None, fields: List[str | LabelFields] | None = None, **kwargs)
+    -> AsyncItemPaged[ConfigurationSettingLabel]'
   keywordOnlyParameters:
+  - name: name
+    description: 'A filter for the name of the returned labels. ''*'' can be used
+      as wildcard
+
+      in the beginning or end of the filter. For more information about supported
+      filters, see
+
+      [https://learn.microsoft.com/azure/azure-app-configuration/rest-api-labels?pivots=v23-11#supported-filters](https://learn.microsoft.com/azure/azure-app-configuration/rest-api-labels?pivots=v23-11#supported-filters).'
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: after
+    description: 'Instructs the server to return elements that appear after the element
+      referred to
+
+      by the specified token.'
+    types:
+    - <xref:str>
+    - <xref:None>
   - name: accept_datetime
-    description: retrieve ConfigurationSetting existed at this datetime
+    description: 'Requests the server to respond with the state of the resource at
+      the
+
+      specified time.'
     types:
     - <xref:datetime.datetime>
     - <xref:str>
     - <xref:None>
   - name: fields
-    description: specify which fields to include in the results. Leave None to include
-      all fields.
+    description: 'Specify which fields to include in the results. If not specified,
+      will include all fields.
+
+      Available fields see <xref:azure.appconfiguration.LabelFields>.'
     types:
     - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.appconfiguration.LabelFields>]
+    - <xref:None>
+  return:
+    description: An async iterator of labels.
+    types:
+    - <xref:azure.core.paging.AsyncItemPaged>[<xref:azure.appconfiguration.ConfigurationSettingLabel>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.appconfiguration.aio.AzureAppConfigurationClient.list_revisions
+  name: list_revisions
+  summary: "Find the ConfigurationSetting revision history, optionally filtered by\
+    \ key, label, tags and accept_datetime.\nFor more information about supported\
+    \ filters, see\n[https://learn.microsoft.com/azure/azure-app-configuration/rest-api-revisions?pivots=v23-11#supported-filters](https://learn.microsoft.com/azure/azure-app-configuration/rest-api-revisions?pivots=v23-11#supported-filters).\n\
+    \nExample\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [],\
+    \ \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\":\
+    \ false, \"language\": \"python\", \"highlight_args\": {}, \"linenos\": false}\
+    \ -->\n\n````python\n\n   # in async function\n   from datetime import datetime,\
+    \ timedelta\n\n   accept_datetime = datetime.utcnow() + timedelta(days=-1)\n\n\
+    \   all_revisions = async_client.list_revisions()\n   async for item in all_revisions:\n\
+    \       pass  # do something\n\n   filtered_revisions = async_client.list_revisions(\n\
+    \       label_filter=\"Labe*\", key_filter=\"Ke*\", accept_datetime=str(accept_datetime)\n\
+    \   )\n   async for item in filtered_revisions:\n       pass  # do something\n\
+    \   ````"
+  signature: 'list_revisions(key_filter: str | None = None, label_filter: str | None
+    = None, *, tags_filter: List[str] | None = None, accept_datetime: datetime | str
+    | None = None, fields: List[str | ConfigurationSettingFields] | None = None, **kwargs)
+    -> AsyncItemPaged[ConfigurationSetting]'
+  parameters:
+  - name: key_filter
+    description: 'Filter results based on their keys. ''*'' can be used as wildcard
+      in the beginning or end
+
+      of the filter.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: label_filter
+    description: 'Filter results based on their label. ''*'' can be used as wildcard
+      in the beginning or end
+
+      of the filter.'
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:None>
+  keywordOnlyParameters:
+  - name: tags_filter
+    description: Filter results based on their tags.
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:None>
+  - name: accept_datetime
+    description: Retrieve ConfigurationSetting that existed at this datetime
+    types:
+    - <xref:datetime.datetime>
+    - <xref:str>
+    - <xref:None>
+  - name: fields
+    description: 'Specify which fields to include in the results. If not specified,
+      will include all fields.
+
+      Available fields see <xref:azure.appconfiguration.ConfigurationSettingFields>.'
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.appconfiguration.ConfigurationSettingFields>]
+    - <xref:None>
   return:
     description: An async iterator of <xref:azure.appconfiguration.ConfigurationSetting>
     types:
@@ -342,16 +429,32 @@ methods:
     optionally filtered by
 
     snapshot name, snapshot status and fields to present in return.'
-  signature: 'list_snapshots(*, name: str | None = None, fields: List[str] | None
-    = None, status: List[str | SnapshotStatus] | None = None, **kwargs) -> AsyncItemPaged[ConfigurationSnapshot]'
+  signature: 'list_snapshots(*, name: str | None = None, fields: List[str | SnapshotFields]
+    | None = None, status: List[str | SnapshotStatus] | None = None, **kwargs) ->
+    AsyncItemPaged[ConfigurationSnapshot]'
   keywordOnlyParameters:
   - name: name
     description: Filter results based on snapshot name.
+    types:
+    - <xref:str>
+    - <xref:None>
   - name: fields
-    description: Specify which fields to include in the results. Leave None to include
-      all fields.
+    description: 'Specify which fields to include in the results. If not specified,
+      will include all fields.
+
+      Available fields see <xref:azure.appconfiguration.SnapshotFields>.'
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.appconfiguration.SnapshotFields>]
+    - <xref:None>
   - name: status
-    description: Filter results based on snapshot keys.
+    description: 'Filter results based on snapshot keys. Available status see
+
+      <xref:azure.appconfiguration.SnapshotStatus>.'
+    types:
+    - <xref:list>[<xref:str>]
+    - <xref:list>[<xref:azure.appconfiguration.SnapshotStatus>]
+    - <xref:None>
   return:
     description: An iterator of <xref:azure.appconfiguration.ConfigurationSnapshot>
     types:
@@ -373,9 +476,14 @@ methods:
   keywordOnlyParameters:
   - name: match_condition
     description: The match condition to use upon the etag.
+    types:
+    - <xref:azure.core.MatchConditions>
   - name: etag
     description: Check if the ConfigurationSnapshot is changed. Set None to skip checking
       etag.
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: The ConfigurationSnapshot returned from the service.
     types:
@@ -432,7 +540,7 @@ methods:
     | None = None, **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
-    description: 'the ConfigurationSetting to be added (if not exists)
+    description: 'The ConfigurationSetting to be added (if not exists)
 
       or updated (if exists) to the service'
     isRequired: true
@@ -445,10 +553,11 @@ methods:
     - <xref:azure.core.MatchConditions>
   keywordOnlyParameters:
   - name: etag
-    description: check if the ConfigurationSetting is changed.             Will use
+    description: Check if the ConfigurationSetting is changed.             Will use
       the value from param configuration_setting if not set.
     types:
     - <xref:str>
+    - <xref:None>
   return:
     description: The ConfigurationSetting returned from the service
     types:
@@ -476,12 +585,12 @@ methods:
     **kwargs) -> ConfigurationSetting'
   parameters:
   - name: configuration_setting
-    description: the ConfigurationSetting to be set read only
+    description: The ConfigurationSetting to be set read only
     isRequired: true
     types:
     - <xref:azure.appconfiguration.ConfigurationSetting>
   - name: read_only
-    description: set the read only setting if true, else clear the read only setting
+    description: Set the read only setting if true, else clear the read only setting
     isRequired: true
     types:
     - <xref:bool>
