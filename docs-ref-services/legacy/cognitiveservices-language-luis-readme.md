@@ -1,23 +1,12 @@
-
+---
+title: 
+keywords: Azure, python, SDK, API, azure-cognitiveservices-language-luis, cognitiveservices
+ms.date: 08/15/2024
+ms.topic: reference
+ms.devlang: python
+ms.service: cognitiveservices
+---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure Cognitive Services LUIS Client Library.
-This package has been tested with Python 2.7, 3.5, 3.6, 3.7 and 3.8.
-For a more complete view of Azure libraries, see the [Github repo](https://github.com/Azure/azure-sdk-for-python/)
-
-
-# Usage
-
-For code examples, see [Cognitive Services LUIS](https://docs.microsoft.com/python/api/overview/azure/cognitive-services)
-on docs.microsoft.com.
-
-
-# Provide Feedback
-
-If you encounter any bugs or have suggestions, please file an issue in the
-[Issues](https://github.com/Azure/azure-sdk-for-python/issues)
-section of the project.
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-cognitiveservices-language-luis%2FREADME.png)
+This package is no longer being maintained. Use the [azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations/) package instead.
 
