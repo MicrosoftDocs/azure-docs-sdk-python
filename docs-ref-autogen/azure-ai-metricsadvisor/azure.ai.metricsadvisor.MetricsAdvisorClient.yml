@@ -7,8 +7,8 @@ inheritances:
 - builtins.object
 summary: Represents an client that calls restful API of Azure Metrics Advisor service.
 constructor:
-  syntax: 'MetricsAdvisorClient(endpoint: str, credential: MetricsAdvisorKeyCredential,
-    **kwargs: Any)'
+  syntax: 'MetricsAdvisorClient(endpoint: str, credential: MetricsAdvisorKeyCredential
+    | TokenCredential, **kwargs: Any)'
   parameters:
   - name: endpoint
     description: 'Supported Cognitive Services endpoints (protocol and hostname,
@@ -43,13 +43,17 @@ methods:
     - <xref:azure.ai.metricsadvisor.models.ChangePointFeedback>
     - <xref:azure.ai.metricsadvisor.models.CommentFeedback>
     - <xref:azure.ai.metricsadvisor.models.PeriodFeedback>
+  return:
+    description: None
+    types:
+    - <xref:None>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "Add new feedback.<!--[!code-python[Main](les\\sample_feedback.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.1\\\
     \\samples\\\\sample_feedback.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential,\
@@ -57,29 +61,30 @@ methods:
     \ ChangePointFeedback, CommentFeedback, PeriodFeedback\n\n   service_endpoint\
     \ = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"\
     METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\"\
-    )\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\")\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
+    )\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\")\n   client = MetricsAdvisorClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
     \ api_key))\n\n   anomaly_feedback = AnomalyFeedback(metric_id=metric_id,\n  \
-    \                                    dimension_key={\"Dim1\": \"Common Lime\"\
-    },\n                                      start_time=datetime.datetime(2020, 8,\
-    \ 5),\n                                      end_time=datetime.datetime(2020,\
+    \                                    dimension_key={\"category\": \"Shoes Handbags\
+    \ & Sunglasses\"},\n                                      start_time=datetime.datetime(2021,\
+    \ 8, 5),\n                                      end_time=datetime.datetime(2021,\
     \ 8, 7),\n                                      value=\"NotAnomaly\")\n   client.add_feedback(anomaly_feedback)\n\
     \n   change_point_feedback = ChangePointFeedback(metric_id=metric_id,\n      \
-    \                                         dimension_key={\"Dim1\": \"Common Lime\"\
-    },\n                                               start_time=datetime.datetime(2020,\
-    \ 8, 5),\n                                               end_time=datetime.datetime(2020,\
+    \                                         dimension_key={\"category\": \"Shoes\
+    \ Handbags & Sunglasses\"},\n                                               start_time=datetime.datetime(2021,\
+    \ 8, 5),\n                                               end_time=datetime.datetime(2021,\
     \ 8, 7),\n                                               value=\"NotChangePoint\"\
     )\n   client.add_feedback(change_point_feedback)\n\n   comment_feedback = CommentFeedback(metric_id=metric_id,\n\
-    \                                      dimension_key={\"Dim1\": \"Common Lime\"\
-    },\n                                      start_time=datetime.datetime(2020, 8,\
-    \ 5),\n                                      end_time=datetime.datetime(2020,\
+    \                                      dimension_key={\"category\": \"Shoes Handbags\
+    \ & Sunglasses\"},\n                                      start_time=datetime.datetime(2021,\
+    \ 8, 5),\n                                      end_time=datetime.datetime(2021,\
     \ 8, 7),\n                                      value=\"comment\")\n   client.add_feedback(comment_feedback)\n\
     \n   period_feedback = PeriodFeedback(metric_id=metric_id,\n                 \
-    \                   dimension_key={\"Dim1\": \"Common Lime\"},\n             \
-    \                       start_time=datetime.datetime(2020, 8, 5),\n          \
-    \                          end_time=datetime.datetime(2020, 8, 7),\n         \
-    \                           period_type=\"AssignValue\",\n                   \
-    \                 value=2)\n   client.add_feedback(period_feedback)\n\n   ````\n"
+    \                   dimension_key={\"category\": \"Shoes Handbags & Sunglasses\"\
+    },\n                                    start_time=datetime.datetime(2021, 8,\
+    \ 5),\n                                    end_time=datetime.datetime(2021, 8,\
+    \ 7),\n                                    period_type=\"AssignValue\",\n    \
+    \                                value=2)\n   client.add_feedback(period_feedback)\n\
+    \n   ````\n"
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.close
   name: close
   summary: Close the <xref:azure.ai.metricsadvisor.MetricsAdvisorClient> session.
@@ -87,7 +92,8 @@ methods:
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.get_feedback
   name: get_feedback
   summary: Get a metric feedback by its id.
-  signature: 'get_feedback(feedback_id: str, **kwargs: Any) -> MetricFeedback | FeedbackUnion'
+  signature: 'get_feedback(feedback_id: str, **kwargs: Any) -> MetricFeedback | AnomalyFeedback
+    | ChangePointFeedback | CommentFeedback | PeriodFeedback'
   parameters:
   - name: feedback_id
     description: the id of the feedback.
@@ -109,7 +115,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_feedback.py\", \"xml:space\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_feedback.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
@@ -122,9 +128,8 @@ methods:
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_alerts
   name: list_alerts
   summary: Query alerts under anomaly alert configuration.
-  signature: 'list_alerts(alert_configuration_id: str, start_time: datetime.datetime,
-    end_time: datetime.datetime, time_mode: str | AlertQueryTimeMode, **kwargs: Any)
-    -> ItemPaged[AnomalyAlert]'
+  signature: 'list_alerts(alert_configuration_id: str, start_time: datetime, end_time:
+    datetime, time_mode: str | AlertQueryTimeMode, **kwargs: Any) -> ItemPaged[AnomalyAlert]'
   parameters:
   - name: alert_configuration_id
     description: anomaly alert configuration unique id.
@@ -132,15 +137,17 @@ methods:
     types:
     - <xref:str>
   - name: start_time
-    description: start time.
+    description: start time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
-    description: end time.
+    description: end time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: time_mode
     description: 'time mode. Possible values include: "AnomalyTime", "CreatedTime",
 
@@ -164,7 +171,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_alert_configuration.py\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_alert_configuration.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import datetime\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential,\
@@ -173,7 +180,7 @@ methods:
     \ = os.getenv(\"METRICS_ADVISOR_API_KEY\")\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
     \ api_key))\n\n   results = client.list_alerts(\n       alert_configuration_id=alert_config_id,\n\
-    \       start_time=datetime.datetime(2020, 1, 1),\n       end_time=datetime.datetime(2020,\
+    \       start_time=datetime.datetime(2021, 1, 1),\n       end_time=datetime.datetime(2021,\
     \ 9, 9),\n       time_mode=\"AnomalyTime\",\n   )\n\n   tolist = []\n   for result\
     \ in results:\n       tolist.append(result)\n       print(\"Alert id: {}\".format(result.id))\n\
     \       print(\"Create time: {}\".format(result.created_time))\n   return tolist\n\
@@ -181,7 +188,21 @@ methods:
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_anomalies
   name: list_anomalies
   summary: Query anomalies under a specific alert or detection configuration.
-  signature: list_anomalies(alert_configuration_id, alert_id, **kwargs)
+  signature: 'list_anomalies(*, alert_configuration_id: str, alert_id: str, **kwargs:
+    Any) -> ItemPaged[models.DataPointAnomaly]'
+  parameters:
+  - name: start_time
+    description: start time filter under chosen time mode.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
+  - name: end_time
+    description: end time filter under chosen time mode.
+    isRequired: true
+    types:
+    - <xref:str>
+    - <xref:datetime.datetime>
   keywordOnlyParameters:
   - name: alert_configuration_id
     description: anomaly alert configuration unique id.
@@ -195,14 +216,6 @@ methods:
     description: anomaly detection configuration unique id.
     types:
     - <xref:str>
-  - name: start_time
-    description: start time filter under chosen time mode.
-    types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
-  - name: end_time
-    description: end time filter under chosen time mode.
-    types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
   - name: skip
     types:
     - <xref:int>
@@ -219,8 +232,7 @@ methods:
   name: list_anomaly_dimension_values
   summary: Query dimension values of anomalies.
   signature: 'list_anomaly_dimension_values(detection_configuration_id: str, dimension_name:
-    str, start_time: str | datetime.datetime, end_time: str | datetime.datetime, **kwargs:
-    Any) -> ItemPaged[str]'
+    str, start_time: str | datetime, end_time: str | datetime, **kwargs: Any) -> ItemPaged[str]'
   parameters:
   - name: detection_configuration_id
     description: anomaly detection configuration unique id.
@@ -236,18 +248,20 @@ methods:
     description: start time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
     description: end time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   keywordOnlyParameters:
   - name: skip
     types:
     - <xref:int>
   - name: dimension_filter
-    description: filter specfic dimension name and values.
+    description: filter specific dimension name and values.
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
   return:
@@ -260,7 +274,7 @@ methods:
   - "Query dimension values.<!--[!code-python[Main](les\\sample_queries.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.1\\\
     \\samples\\\\sample_queries.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
@@ -268,7 +282,7 @@ methods:
     \ = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"\
     METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\"\
     )\n   detection_configuration_id = os.getenv(\"METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\"\
-    )\n   dimension_name = \"city\"\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
+    )\n   dimension_name = \"region\"\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
     \ api_key))\n\n   results = client.list_anomaly_dimension_values(\n       detection_configuration_id=detection_configuration_id,\n\
     \       dimension_name=dimension_name,\n       start_time=datetime.datetime(2020,\
@@ -278,7 +292,7 @@ methods:
   name: list_feedback
   summary: List feedback on the given metric.
   signature: 'list_feedback(metric_id: str, **kwargs: Any) -> ItemPaged[MetricFeedback
-    | FeedbackUnion]'
+    | AnomalyFeedback | ChangePointFeedback | CommentFeedback | PeriodFeedback]'
   parameters:
   - name: metric_id
     description: filter feedbacks by metric id
@@ -290,7 +304,7 @@ methods:
     types:
     - <xref:int>
   - name: dimension_key
-    description: filter specfic dimension name and values
+    description: filter specific dimension name and values
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: feedback_type
@@ -303,11 +317,13 @@ methods:
   - name: start_time
     description: start time filter under chosen time mode.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
     description: end time filter under chosen time mode.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: time_mode
     description: 'time mode to filter feedback. Possible values include: "MetricTimestamp",
 
@@ -328,7 +344,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_feedback.py\", \"xml:space\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_feedback.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
@@ -365,7 +381,7 @@ methods:
   - "Query incident root causes.<!--[!code-python[Main](les\\sample_incidents.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.1\\\
     \\samples\\\\sample_incidents.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential,\
@@ -382,7 +398,8 @@ methods:
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_incidents
   name: list_incidents
   summary: Query incidents under a specific alert or detection configuration.
-  signature: list_incidents(alert_configuration_id, alert_id, **kwargs)
+  signature: 'list_incidents(*, alert_configuration_id: str, alert_id: str, **kwargs:
+    Any) -> ItemPaged[models.AnomalyIncident]'
   keywordOnlyParameters:
   - name: alert_configuration_id
     description: anomaly alerting configuration unique id.
@@ -399,11 +416,13 @@ methods:
   - name: start_time
     description: start time filter under chosen time mode.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
     description: end time filter under chosen time mode.
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: skip
     types:
     - <xref:int>
@@ -451,15 +470,15 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   from azure.ai.metricsadvisor\
     \ import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\n   service_endpoint\
     \ = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key = os.getenv(\"\
     METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"METRICS_ADVISOR_API_KEY\"\
     )\n   metric_id = os.getenv(\"METRICS_ADVISOR_METRIC_ID\")\n   dimension_name\
-    \ = \"city\"\n\n   client = MetricsAdvisorClient(service_endpoint,\n         \
-    \                        MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
+    \ = \"region\"\n\n   client = MetricsAdvisorClient(service_endpoint,\n       \
+    \                          MetricsAdvisorKeyCredential(subscription_key, api_key))\n\
     \n   results = client.list_metric_dimension_values(\n       metric_id=metric_id,\n\
     \       dimension_name=dimension_name,\n   )\n   for result in results:\n    \
     \   print(str(result))\n\n\n   ````\n"
@@ -467,8 +486,8 @@ methods:
   name: list_metric_enriched_series_data
   summary: Query series enriched by anomaly detection.
   signature: 'list_metric_enriched_series_data(detection_configuration_id: str, series:
-    List[SeriesIdentity] | List[Dict[str, str]], start_time: str | datetime.datetime,
-    end_time: str | datetime.datetime, **kwargs: Any) -> ItemPaged[MetricEnrichedSeriesData]'
+    List[SeriesIdentity] | List[Dict[str, str]], start_time: str | datetime, end_time:
+    str | datetime, **kwargs: Any) -> ItemPaged[MetricEnrichedSeriesData]'
   parameters:
   - name: detection_configuration_id
     description: anomaly alerting configuration unique id.
@@ -485,12 +504,14 @@ methods:
     description: start time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
     description: end time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   return:
     description: Pageable of MetricEnrichedSeriesData
     types:
@@ -502,14 +523,14 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import datetime\n\
     \   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\
     \n   service_endpoint = os.getenv(\"METRICS_ADVISOR_ENDPOINT\")\n   subscription_key\
     \ = os.getenv(\"METRICS_ADVISOR_SUBSCRIPTION_KEY\")\n   api_key = os.getenv(\"\
     METRICS_ADVISOR_API_KEY\")\n   detection_configuration_id = os.getenv(\"METRICS_ADVISOR_DETECTION_CONFIGURATION_ID\"\
-    )\n   series_identity = {\"city\": \"Los Angeles\"}\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
+    )\n   series_identity = {\"region\": \"Los Angeles\"}\n\n   client = MetricsAdvisorClient(service_endpoint,\n\
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
     \ api_key))\n\n   results = client.list_metric_enriched_series_data(\n       detection_configuration_id=detection_configuration_id,\n\
     \       start_time=datetime.datetime(2020, 9, 1),\n       end_time=datetime.datetime(2020,\
@@ -518,8 +539,8 @@ methods:
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_metric_enrichment_status
   name: list_metric_enrichment_status
   summary: Query anomaly detection status.
-  signature: 'list_metric_enrichment_status(metric_id: str, start_time: str | datetime.datetime,
-    end_time: str | datetime.datetime, **kwargs: Any) -> ItemPaged[EnrichmentStatus]'
+  signature: 'list_metric_enrichment_status(metric_id: str, start_time: str | datetime,
+    end_time: str | datetime, **kwargs: Any) -> ItemPaged[EnrichmentStatus]'
   parameters:
   - name: metric_id
     description: filter feedbacks by metric id.
@@ -530,12 +551,14 @@ methods:
     description: start time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
     description: end time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   keywordOnlyParameters:
   - name: skip
     types:
@@ -551,7 +574,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import datetime\n\
     \   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\
@@ -568,8 +591,8 @@ methods:
   name: list_metric_series_data
   summary: Get time series data from metric.
   signature: 'list_metric_series_data(metric_id: str, series_keys: List[Dict[str,
-    str]], start_time: str | datetime.datetime, end_time: str | datetime.datetime,
-    **kwargs: Any) -> ItemPaged[MetricSeriesData]'
+    str]], start_time: str | datetime, end_time: str | datetime, **kwargs: Any) ->
+    ItemPaged[MetricSeriesData]'
   parameters:
   - name: metric_id
     description: metric unique id.
@@ -585,12 +608,14 @@ methods:
     description: start time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   - name: end_time
     description: end time filter under chosen time mode.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:datetime.datetime>]
+    - <xref:str>
+    - <xref:datetime.datetime>
   return:
     description: Time series data from metric.
     types:
@@ -601,7 +626,7 @@ methods:
   - "Query metrics series data.<!--[!code-python[Main](les\\sample_queries.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.0\\\
+    \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\7\\\\azure-ai-metricsadvisor-1.0.1\\\
     \\samples\\\\sample_queries.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import datetime\n   from azure.ai.metricsadvisor\
@@ -612,13 +637,13 @@ methods:
     \                                 MetricsAdvisorKeyCredential(subscription_key,\
     \ api_key))\n\n   results = client.list_metric_series_data(\n           metric_id=metric_id,\n\
     \           start_time=datetime.datetime(2020, 1, 1),\n           end_time=datetime.datetime(2020,\
-    \ 10, 21),\n           series_keys=[\n               {\"city\": \"Los Angeles\"\
+    \ 10, 21),\n           series_keys=[\n               {\"region\": \"Los Angeles\"\
     , \"category\": \"Homemade\"}\n           ]\n       )\n   for result in results:\n\
     \       print(str(result))\n\n\n   ````\n"
 - uid: azure.ai.metricsadvisor.MetricsAdvisorClient.list_metric_series_definitions
   name: list_metric_series_definitions
   summary: List series (dimension combinations) from metric.
-  signature: 'list_metric_series_definitions(metric_id: str, active_since: datetime.datetime,
+  signature: 'list_metric_series_definitions(metric_id: str, active_since: datetime,
     **kwargs: Any) -> ItemPaged[MetricSeriesDefinition]'
   parameters:
   - name: metric_id
@@ -639,7 +664,7 @@ methods:
     types:
     - <xref:int>
   - name: dimension_filter
-    description: filter specfic dimension name and values.
+    description: filter specific dimension name and values.
     types:
     - <xref:dict>[<xref:str>, <xref:list>[<xref:str>]]
   return:
@@ -653,7 +678,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    7\\\\azure-ai-metricsadvisor-1.0.0\\\\samples\\\\sample_queries.py\", \"xml:space\"\
+    7\\\\azure-ai-metricsadvisor-1.0.1\\\\samples\\\\sample_queries.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import datetime\n\
     \   from azure.ai.metricsadvisor import MetricsAdvisorKeyCredential, MetricsAdvisorClient\n\
