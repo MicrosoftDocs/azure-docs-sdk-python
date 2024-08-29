@@ -1,7 +1,7 @@
 ---
 title: Azure Edge Zones SDK for Python
 description: Reference for Azure Edge Zones SDK for Python
-ms.date: 08/28/2024
+ms.date: 08/29/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: edgezones
