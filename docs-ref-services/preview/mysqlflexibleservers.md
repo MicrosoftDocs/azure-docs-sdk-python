@@ -1,7 +1,7 @@
 ---
 title: Azure Mysqlflexibleservers SDK for Python
 description: Reference for Azure Mysqlflexibleservers SDK for Python
-ms.date: 09/10/2024
+ms.date: 09/11/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: mysqlflexibleservers
