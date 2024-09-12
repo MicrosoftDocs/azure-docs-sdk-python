@@ -1,12 +1,12 @@
 ---
 title: Azure App Configuration Python Provider client library for Python
 keywords: Azure, python, SDK, API, azure-appconfiguration-provider, appconfiguration
-ms.date: 12/19/2023
+ms.date: 09/12/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: appconfiguration
 ---
-# Azure App Configuration Python Provider client library for Python - version 1.1.0b3 
+# Azure App Configuration Python Provider client library for Python - version 2.0.0b1 
 
 
 Azure App Configuration is a managed service that helps developers centralize their application configurations simply and securely. This provider adds additional functionality above the azure-sdk-for-python.
@@ -51,7 +51,9 @@ Currently the Azure App Configuration Provider enables:
 
 * Connecting to an App Configuration Store using a connection string or Azure Active Directory.
 * Selecting multiple sets of configurations using `SettingSelector`.
+* Loading Feature Flags
 * Dynamic Refresh
+* Geo-Replication support
 * Trim prefixes off key names.
 * Resolving Key Vault References, requires AAD.
 * Secret Resolver, resolve Key Vault References locally without connecting to Key Vault.
@@ -61,8 +63,6 @@ Currently the Azure App Configuration Provider enables:
 
 List of features we are going to add to the Python Provider in the future.
 
-* Geo-Replication support
-* Feature Management
 * Configuration Placeholders
 
 ## Examples
@@ -175,6 +175,49 @@ def secret_resolver(uri):
 key_vault_options = AzureAppConfigurationKeyVaultOptions(
     secret_resolver=secret_resolver)
 config = load(endpoint=endpoint, credential=DefaultAzureCredential(), key_vault_options=key_vault_options)
+```
+
+## Geo Replication
+
+The Azure App Configuration Provider library will automatically discover the provided configuration store's replicas and use the replicas if any issue arises. From more information see [Geo-Replication](https://learn.microsoft.com/azure/azure-app-configuration/howto-geo-replication).
+
+Replica discovery is enabled by default. If you want to disable it, you can set `replica_discovery_enabled` to `False`.
+
+```python
+from azure.appconfiguration.provider import load
+from azure.identity import DefaultAzureCredential
+
+config = load(endpoint=endpoint, credential=DefaultAzureCredential(), replica_discovery_enabled=False)
+```
+
+## Loading Feature Flags
+
+Feature Flags can be loaded from config stores using the provider. Feature flags are loaded as a dictionary of key/value pairs stored in the provider under the `feature_management`, then `feature_flags`.
+
+```python
+config = load(endpoint=endpoint, credential=DefaultAzureCredential(), feature_flags_enabled=True)
+alpha = config["feature_management"]["feature_flags"]["Alpha"]
+print(alpha["enabled"])
+```
+
+By default all feature flags with no label are loaded when `feature_flags_enabled` is set to `True`. . If you want to load feature flags with a specific label you can use `SettingSelector` to filter the feature flags.
+
+```python
+from azure.appconfiguration.provider import load, SettingSelector
+
+config = load(endpoint=endpoint, credential=DefaultAzureCredential(), feature_flags_enabled=True, feature_flag_selectors=[SettingSelector(key_filter="*", label_filter="dev")])
+alpha = config["feature_management"]["feature_flags"]["Alpha"]
+print(alpha["enabled"])
+```
+
+To enable refresh for feature flags you need to enable refresh. This will allow the provider to refresh feature flags the same way it refreshes configurations. Unlike configurations, all loaded feature flags are monitored for changes and will cause a refresh. Refresh of configuration settings and feature flags are independent of each other. Both are trigged by the `refresh` method, but a feature flag changing will not cause a refresh of configurations and vice versa. Also, if refresh for configuration settings is not enabled, feature flags can still be enabled for refresh.
+
+```python
+config = load(endpoint=endpoint, credential=DefaultAzureCredential(), feature_flags_enabled=True, feature_flag_refresh_enabled=True)
+
+...
+
+config.refresh()
 ```
 
 ## Key concepts
