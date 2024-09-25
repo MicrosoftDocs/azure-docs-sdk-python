@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: standbypool
 ---
-# Azure Standby Pool SDK for Python - preview
-## Packages - preview
+# Azure Standby Pool SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](standby-pool-index.md)]
