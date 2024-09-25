@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-batch, batch
-ms.date: 03/18/2024
+ms.date: 09/25/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: batch
