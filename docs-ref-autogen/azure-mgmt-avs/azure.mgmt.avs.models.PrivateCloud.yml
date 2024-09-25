@@ -11,32 +11,33 @@ summary: 'A private cloud resource.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
-  syntax: 'PrivateCloud(*, sku: _models.Sku, location: str | None = None, tags: Dict[str,
-    str] | None = None, identity: _models.PrivateCloudIdentity | None = None, management_cluster:
+  syntax: 'PrivateCloud(*, location: str, sku: _models.Sku, tags: Dict[str, str] |
+    None = None, identity: _models.PrivateCloudIdentity | None = None, management_cluster:
     _models.ManagementCluster | None = None, internet: str | _models.InternetEnum
-    = ''Disabled'', identity_sources: List[_models.IdentitySource] | None = None,
-    availability: _models.AvailabilityProperties | None = None, encryption: _models.Encryption
-    | None = None, extended_network_blocks: List[str] | None = None, circuit: _models.Circuit
+    | None = None, identity_sources: List[_models.IdentitySource] | None = None, availability:
+    _models.AvailabilityProperties | None = None, encryption: _models.Encryption |
+    None = None, extended_network_blocks: List[str] | None = None, circuit: _models.Circuit
     | None = None, network_block: str | None = None, vcenter_password: str | None
     = None, nsxt_password: str | None = None, secondary_circuit: _models.Circuit |
-    None = None, **kwargs: Any)'
+    None = None, virtual_network_id: str | None = None, dns_zone_type: str | _models.DnsZoneType
+    | None = None, **kwargs: Any)'
   keywordOnlyParameters:
-  - name: location
-    description: Resource location.
-    types:
-    - <xref:str>
   - name: tags
     description: Resource tags.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: location
+    description: The geo-location where the resource lives. Required.
+    types:
+    - <xref:str>
   - name: sku
-    description: The private cloud SKU. Required.
+    description: The SKU (Stock Keeping Unit) assigned to this resource. Required.
     types:
     - <xref:azure.mgmt.avs.models.Sku>
   - name: identity
-    description: The identity of the private cloud, if configured.
+    description: The managed service identities assigned to this resource.
     types:
     - <xref:azure.mgmt.avs.models.PrivateCloudIdentity>
   - name: management_cluster
@@ -48,7 +49,6 @@ constructor:
       "Enabled"
 
       and "Disabled".'
-    defaultValue: Disabled
     types:
     - <xref:str>
     - <xref:azure.mgmt.avs.models.InternetEnum>
@@ -69,11 +69,14 @@ constructor:
   - name: extended_network_blocks
     description: 'Array of additional networks noncontiguous with networkBlock.
 
-      Networks must be unique and non-overlapping across VNet in your subscription,
-      on-premise, and
+      Networks must be
+
+      unique and non-overlapping across VNet in your subscription, on-premise, and
 
       this privateCloud networkBlock attribute. Make sure the CIDR format conforms
-      to (A.B.C.D/X).'
+      to
+
+      (A.B.C.D/X).'
     types:
     - <xref:list>[<xref:str>]
   - name: circuit
@@ -83,8 +86,9 @@ constructor:
   - name: network_block
     description: 'The block of addresses should be unique across VNet in your
 
-      subscription as well as on-premise. Make sure the CIDR format is conformed to
-      (A.B.C.D/X) where
+      subscription as
+
+      well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where
 
       A,B,C,D are between 0 and 255, and X is between 0 and 22.'
     types:
@@ -106,35 +110,58 @@ constructor:
   - name: secondary_circuit
     description: 'A secondary expressRoute circuit from a separate AZ. Only present
 
-      in a stretched private cloud.'
+      in a
+
+      stretched private cloud.'
     types:
     - <xref:azure.mgmt.avs.models.Circuit>
+  - name: virtual_network_id
+    description: Azure resource ID of the virtual network.
+    types:
+    - <xref:str>
+  - name: dns_zone_type
+    description: 'The type of DNS zone to use. Known values are: "Public" and "Private".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.avs.models.DnsZoneType>
 variables:
-- description: Resource ID.
+- description: 'Fully qualified resource ID for the resource. E.g.
+
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
-- description: Resource name.
+- description: The name of the resource.
   name: name
   types:
   - <xref:str>
-- description: Resource type.
+- description: 'The type of the resource. E.g. "Microsoft.Compute/virtualMachines"
+    or
+
+    "Microsoft.Storage/storageAccounts".'
   name: type
   types:
   - <xref:str>
-- description: Resource location.
-  name: location
+- description: 'Azure Resource Manager metadata containing createdBy and modifiedBy
+
+    information.'
+  name: system_data
   types:
-  - <xref:str>
+  - <xref:azure.mgmt.avs.models.SystemData>
 - description: Resource tags.
   name: tags
   types:
   - <xref:dict>[<xref:str>, <xref:str>]
-- description: The private cloud SKU. Required.
+- description: The geo-location where the resource lives. Required.
+  name: location
+  types:
+  - <xref:str>
+- description: The SKU (Stock Keeping Unit) assigned to this resource. Required.
   name: sku
   types:
   - <xref:azure.mgmt.avs.models.Sku>
-- description: The identity of the private cloud, if configured.
+- description: The managed service identities assigned to this resource.
   name: identity
   types:
   - <xref:azure.mgmt.avs.models.PrivateCloudIdentity>
@@ -166,17 +193,19 @@ variables:
   - <xref:azure.mgmt.avs.models.Encryption>
 - description: 'Array of additional networks noncontiguous with networkBlock.
 
-    Networks must be unique and non-overlapping across VNet in your subscription,
-    on-premise, and
+    Networks must be
+
+    unique and non-overlapping across VNet in your subscription, on-premise, and
 
     this privateCloud networkBlock attribute. Make sure the CIDR format conforms to
+
     (A.B.C.D/X).'
   name: extended_network_blocks
   types:
   - <xref:list>[<xref:str>]
 - description: 'The provisioning state. Known values are: "Succeeded", "Failed",
 
-    "Cancelled", "Pending", "Building", "Deleting", "Updating", and "Canceled".'
+    "Canceled", "Cancelled", "Pending", "Building", "Deleting", and "Updating".'
   name: provisioning_state
   types:
   - <xref:str>
@@ -191,10 +220,11 @@ variables:
   - <xref:azure.mgmt.avs.models.Endpoints>
 - description: 'The block of addresses should be unique across VNet in your subscription
 
-    as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where
-    A,B,C,D are
+    as
 
-    between 0 and 255, and X is between 0 and 22.'
+    well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where
+
+    A,B,C,D are between 0 and 255, and X is between 0 and 22.'
   name: network_block
   types:
   - <xref:str>
@@ -247,11 +277,19 @@ variables:
   - <xref:azure.mgmt.avs.models.Circuit>
 - description: 'Flag to indicate whether the private cloud has the quota for
 
-    provisioned NSX Public IP count raised from 64 to 1024. Known values are: "Enabled"
-    and
+    provisioned NSX
 
-    "Disabled".'
+    Public IP count raised from 64 to 1024. Known values are: "Enabled" and "Disabled".'
   name: nsx_public_ip_quota_raised
   types:
   - <xref:str>
   - <xref:azure.mgmt.avs.models.NsxPublicIpQuotaRaisedEnum>
+- description: Azure resource ID of the virtual network.
+  name: virtual_network_id
+  types:
+  - <xref:str>
+- description: 'The type of DNS zone to use. Known values are: "Public" and "Private".'
+  name: dns_zone_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.avs.models.DnsZoneType>
