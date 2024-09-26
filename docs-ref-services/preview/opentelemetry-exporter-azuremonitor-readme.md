@@ -5,7 +5,6 @@ ms.date: 01/14/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Microsoft Opentelemetry exporter for Azure Monitor
 

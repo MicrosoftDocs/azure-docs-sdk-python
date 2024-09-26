@@ -7,7 +7,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: trafficmanager
 manager: douge
-ms.technology: azure
 ---
 # Azure Traffic Manager libraries for python
 

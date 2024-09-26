@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ms.subservice: files
-ms.technology: azure
 ---
 # Azure Storage File Share client library for Python - version 12.3.0 
 

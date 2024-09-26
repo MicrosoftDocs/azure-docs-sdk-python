@@ -5,7 +5,6 @@ ms.date: 05/06/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: purview
-ms.technology: azure
 ---
 # Microsoft Azure Purview SDK for Python
 

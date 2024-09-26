@@ -5,7 +5,6 @@ ms.date: 10/26/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: kusto
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

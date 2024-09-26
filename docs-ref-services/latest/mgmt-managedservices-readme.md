@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: active-directory
 ms.subservice: msi
-ms.technology: azure
 ---
 ## Microsoft Azure SDK for Python
 

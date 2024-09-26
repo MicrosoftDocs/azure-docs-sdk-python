@@ -5,7 +5,6 @@ ms.date: 11/11/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: data-lake-storage-gen2
-ms.technology: azure
 ---
 # Azure DataLake service client library for Python - version 12.2.0 
 

@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: data-factory
 manager: angerobe
-ms.technology: azure
 ---
 # Azure Data Factory libraries for Python
 

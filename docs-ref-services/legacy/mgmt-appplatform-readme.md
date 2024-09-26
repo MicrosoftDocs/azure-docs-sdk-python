@@ -5,7 +5,6 @@ ms.date: 08/25/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

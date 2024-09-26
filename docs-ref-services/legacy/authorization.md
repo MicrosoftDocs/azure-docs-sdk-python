@@ -6,7 +6,6 @@ ms.date: 02/21/2018
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 manager: routlaw
 ---
 # Azure Authorization libraries for python

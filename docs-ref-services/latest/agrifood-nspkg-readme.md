@@ -5,7 +5,6 @@ ms.date: 05/10/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Microsoft Azure AgriFood SDK for Python
 

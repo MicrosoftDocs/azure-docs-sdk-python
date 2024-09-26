@@ -6,7 +6,6 @@ ms.date: 08/26/2019
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-data-lake-storage
-ms.technology: azure
 manager: pkasturi
 ---
 # azure-datalake-store

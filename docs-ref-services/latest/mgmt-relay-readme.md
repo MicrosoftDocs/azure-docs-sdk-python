@@ -5,7 +5,6 @@ ms.date: 09/06/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: service-bus-relay
-ms.technology: azure
 ---
 ## Microsoft Azure SDK for Python
 

@@ -6,7 +6,6 @@ ms.date: 02/21/2018
 ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
-ms.technology: azure
 manager: routlaw
 ---
 # Azure DevTest Labs libraries for python

@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-services
 ms.subservice: computer-vision
-ms.technology: azure
 ---
 # Azure Cognitive Services Computer Vision SDK for Python
 

@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: azure-stack
 ms.subservice: azure-stack-hci
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

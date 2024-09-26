@@ -5,7 +5,6 @@ ms.date: 11/11/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: event-hubs
-ms.technology: azure
 ---
 # Azure Schema Registry Avro Serializer client library for Python - version 1.0.0b4 
 

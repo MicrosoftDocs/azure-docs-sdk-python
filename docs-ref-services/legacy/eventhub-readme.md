@@ -5,7 +5,6 @@ ms.date: 09/08/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: event-hubs
-ms.technology: azure
 ---
 # Azure Event Hubs client library for Python - version 5.2.0 
 

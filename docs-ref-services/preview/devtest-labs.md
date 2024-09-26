@@ -5,7 +5,6 @@ ms.date: 09/25/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
-ms.technology: azure
 keywords: Azure, python, SDK, API, DevTest Labs
 manager: routlaw
 ---

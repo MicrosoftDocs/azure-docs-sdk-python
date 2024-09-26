@@ -5,7 +5,6 @@ ms.date: 11/11/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: iot-hub
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

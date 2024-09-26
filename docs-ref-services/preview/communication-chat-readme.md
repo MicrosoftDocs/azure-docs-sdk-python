@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: azure-communication-services
 ms.subservice: chat
-ms.technology: azure
 ---
 # Azure Communication Chat Package client library for Python - version 1.1.0b1 
 

@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: databox
 ms.subservice: edge
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

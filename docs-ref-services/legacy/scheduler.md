@@ -6,7 +6,6 @@ ms.date: 02/21/2018
 ms.topic: reference
 ms.devlang: python
 ms.service: scheduler
-ms.technology: azure
 manager: mbaldwin
 ---
 # Azure Scheduler libraries for python

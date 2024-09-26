@@ -5,7 +5,6 @@ ms.date: 09/08/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: cache
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

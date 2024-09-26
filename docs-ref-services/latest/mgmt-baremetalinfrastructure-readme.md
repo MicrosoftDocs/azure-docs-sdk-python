@@ -5,7 +5,6 @@ ms.date: 10/14/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: baremetal-infrastructure
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

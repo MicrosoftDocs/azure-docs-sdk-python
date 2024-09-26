@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: active-directory
 ms.subservice: identity-protection
-ms.technology: azure
 ---
 # Azure Identity client library for Python - version 1.5.0 
 

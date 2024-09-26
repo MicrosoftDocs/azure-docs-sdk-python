@@ -5,7 +5,6 @@ ms.date: 07/01/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Azure Core Tracing OpenCensus client library for Python - version 1.0.0b8 
 

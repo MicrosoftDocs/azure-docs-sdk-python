@@ -5,7 +5,6 @@ ms.date: 09/25/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
-ms.technology: azure
 keywords: Azure, Python, SDK, API, Storage
 manager: douge
 ---

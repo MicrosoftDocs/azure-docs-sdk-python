@@ -5,7 +5,6 @@ ms.date: 05/20/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: deployment-manager
-ms.technology: azure
 ---
 ## Microsoft Azure SDK for Python
 

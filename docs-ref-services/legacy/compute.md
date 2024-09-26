@@ -6,7 +6,6 @@ ms.date: 06/09/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: big-compute
-ms.technology: azure
 manager: douge
 ---
 # Azure virtual machine libraries

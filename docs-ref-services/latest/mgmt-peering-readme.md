@@ -5,7 +5,6 @@ ms.date: 04/25/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: peering-service
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

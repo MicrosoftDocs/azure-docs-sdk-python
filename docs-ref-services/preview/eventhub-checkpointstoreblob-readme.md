@@ -5,7 +5,6 @@ ms.date: 09/08/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: event-hubs
-ms.technology: azure
 ---
 # Azure EventHubs Checkpoint Store client library for Python - version 1.1.1 
  using Storage Blobs

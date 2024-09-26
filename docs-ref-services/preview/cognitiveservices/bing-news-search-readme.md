@@ -4,7 +4,6 @@ ms.date: 10/26/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: bing-search-services
-ms.technology: azure
 ---
 # Bing News Search
 

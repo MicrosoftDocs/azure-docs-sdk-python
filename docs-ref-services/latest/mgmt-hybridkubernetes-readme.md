@@ -5,7 +5,6 @@ ms.date: 10/20/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-kubernetes-service
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

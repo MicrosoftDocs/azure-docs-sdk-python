@@ -5,7 +5,6 @@ ms.date: 08/25/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: purview
-ms.technology: azure
 ---
 # Azure Purview Account client library for Python - version 1.0.0b1 
 

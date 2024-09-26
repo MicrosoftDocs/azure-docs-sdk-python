@@ -5,7 +5,6 @@ ms.date: 10/23/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: hdinsight
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

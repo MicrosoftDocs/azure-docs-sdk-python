@@ -5,7 +5,6 @@ ms.date: 12/14/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: service-fabric
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

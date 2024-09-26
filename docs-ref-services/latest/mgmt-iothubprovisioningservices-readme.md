@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: iot-hub
 ms.subservice: azure-iot-hub-device-provisioning-service
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

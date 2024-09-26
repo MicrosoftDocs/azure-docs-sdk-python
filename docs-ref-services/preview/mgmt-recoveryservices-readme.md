@@ -5,7 +5,6 @@ ms.date: 11/18/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: site-recovery
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
