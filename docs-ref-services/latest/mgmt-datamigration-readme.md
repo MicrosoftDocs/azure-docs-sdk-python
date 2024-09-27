@@ -5,7 +5,6 @@ ms.date: 08/26/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: dms
-ms.technology: azure
 ---
 # Microsoft Azure Data Migration SDK for Python
 

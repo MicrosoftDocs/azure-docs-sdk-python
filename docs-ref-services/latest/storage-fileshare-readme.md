@@ -6,7 +6,6 @@ ms.date: 03/12/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
-ms.technology: azure
 manager: twolley
 ---
 # Azure Files for Python Readme - Version 12.1.1

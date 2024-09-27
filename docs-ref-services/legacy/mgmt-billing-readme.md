@@ -5,7 +5,6 @@ ms.date: 10/20/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: cost-management-billing
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

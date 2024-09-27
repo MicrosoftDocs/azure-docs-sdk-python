@@ -6,7 +6,6 @@ ms.date: 07/19/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-monitor
-ms.technology: azure
 manager: douge
 ---
 # Azure Monitoring libraries for python

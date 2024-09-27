@@ -5,7 +5,6 @@ ms.date: 01/06/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: notification-hubs
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

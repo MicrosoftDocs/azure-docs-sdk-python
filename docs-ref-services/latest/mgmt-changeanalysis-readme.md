@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: azure-monitor
 ms.subservice: change-analysis
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

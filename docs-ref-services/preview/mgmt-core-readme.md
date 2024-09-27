@@ -5,7 +5,6 @@ ms.date: 06/05/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Azure Management Core Library
 

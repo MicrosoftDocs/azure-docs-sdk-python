@@ -6,7 +6,6 @@ ms.date: 06/12/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: app-service
-ms.technology: azure
 manager: douge
 ---
 # Azure Web Apps libraries for Python

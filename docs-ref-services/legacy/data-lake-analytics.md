@@ -6,7 +6,6 @@ ms.date: 08/04/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: data-lake-analytics
-ms.technology: azure
 manager: douge
 ---
 # Azure Data Lake Analytics libraries for python

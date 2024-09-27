@@ -5,7 +5,6 @@ ms.date: 10/05/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-communication-services
-ms.technology: azure
 ---
 # Microsoft Azure Communication SDK for Python
 

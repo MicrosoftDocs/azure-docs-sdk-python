@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: azure-resource-manager
 ms.subservice: management
-ms.technology: azure
 ---
 ## Microsoft Azure SDK for Python
 

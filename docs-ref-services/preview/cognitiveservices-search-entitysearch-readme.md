@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-services
 ms.subservice: bing-entity-search
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

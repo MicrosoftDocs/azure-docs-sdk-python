@@ -5,7 +5,6 @@ ms.date: 03/29/2023
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-communication-services
-ms.technology: azure
 ---
 # Azure Communication Phone Numbers Package client library for Python - version 1.1.0 
 

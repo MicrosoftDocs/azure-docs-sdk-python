@@ -5,7 +5,6 @@ ms.date: 05/13/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
-ms.technology: azure
 ---
 # Azure Data Tables client library for Python - version 12.0.0b7 
 

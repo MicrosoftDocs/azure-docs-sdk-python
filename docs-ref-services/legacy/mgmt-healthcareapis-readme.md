@@ -5,7 +5,6 @@ ms.date: 10/30/2020
 ms.topic: article
 ms.devlang: python
 ms.service: healthcare-apis
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

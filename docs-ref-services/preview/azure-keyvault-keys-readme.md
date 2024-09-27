@@ -5,7 +5,6 @@ ms.date: 10/05/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: key-vault
-ms.technology: azure
 ---
 # Azure Key Vault Keys client library for Python - version 4.5.0a20211005001 
 

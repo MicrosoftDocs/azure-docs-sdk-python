@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: sap-on-azure
 ms.subservice: sap-large-instances
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

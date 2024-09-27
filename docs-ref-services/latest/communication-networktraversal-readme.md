@@ -5,7 +5,6 @@ ms.date: 02/04/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-communication-services
-ms.technology: azure
 ---
 # Azure Communication Network Traversal Package client library for Python - version 1.0.0 
 

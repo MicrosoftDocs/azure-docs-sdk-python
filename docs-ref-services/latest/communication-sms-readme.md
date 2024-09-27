@@ -5,7 +5,6 @@ ms.date: 06/08/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-communication-services
-ms.technology: azure
 ---
 # Azure Communication SMS Package client library for Python - version 1.0.1 
 

@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: applied-ai-services
 ms.subservice: metrics-advisor
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

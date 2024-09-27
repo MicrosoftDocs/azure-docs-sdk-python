@@ -5,7 +5,6 @@ ms.date: 12/01/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-cdn
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

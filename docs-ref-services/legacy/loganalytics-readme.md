@@ -5,8 +5,6 @@ ms.date: 11/12/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: loganalytics
-ms.technology: azure
-ms.prod: azure
 ---
 ## Microsoft Azure SDK for Python
 

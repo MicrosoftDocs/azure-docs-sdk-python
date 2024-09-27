@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: partner-services
 ms.subservice: logzio
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

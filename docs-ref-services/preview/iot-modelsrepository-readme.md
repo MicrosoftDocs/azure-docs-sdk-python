@@ -5,7 +5,6 @@ ms.date: 03/31/2022
 ms.topic: reference
 ms.devlang: python
 ms.service: azure-python
-ms.technology: azure
 ---
 # Azure IoT Models Repository client library for Python - version 1.0.0a20220330001 
 

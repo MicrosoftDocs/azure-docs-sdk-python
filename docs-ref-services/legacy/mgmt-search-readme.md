@@ -5,7 +5,6 @@ ms.date: 09/30/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: search
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

@@ -5,7 +5,6 @@ ms.date: 04/12/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: data-share
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

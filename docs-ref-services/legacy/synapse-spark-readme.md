@@ -6,7 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
 ms.subservice: spark
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

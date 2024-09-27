@@ -5,7 +5,6 @@ ms.date: 10/22/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: digital-twins
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 

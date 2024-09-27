@@ -5,7 +5,6 @@ ms.date: 04/14/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
-ms.technology: azure
 ---
 # Microsoft Azure Synapse SDK for Python
 

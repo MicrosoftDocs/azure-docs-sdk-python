@@ -6,7 +6,6 @@ ms.date: 07/10/2017
 ms.topic: reference
 ms.devlang: python
 ms.service: virtual-network
-ms.technology: azure
 manager: douge
 ---
 # Azure Network libraries for python

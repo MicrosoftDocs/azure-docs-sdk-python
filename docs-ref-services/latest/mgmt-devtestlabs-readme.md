@@ -5,7 +5,6 @@ ms.date: 01/04/2021
 ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
-ms.technology: azure
 ---
 ## Microsoft Azure SDK for Python
 

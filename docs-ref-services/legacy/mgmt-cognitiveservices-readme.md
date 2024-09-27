@@ -5,7 +5,6 @@ ms.date: 10/13/2020
 ms.topic: reference
 ms.devlang: python
 ms.service: cognitive-services
-ms.technology: azure
 ---
 # Microsoft Azure SDK for Python
 
