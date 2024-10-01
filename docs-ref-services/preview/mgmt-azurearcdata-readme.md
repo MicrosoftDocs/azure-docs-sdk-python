@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azurearcdata, azurearcdata
-ms.date: 11/21/2022
+ms.date: 10/01/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: azurearcdata
