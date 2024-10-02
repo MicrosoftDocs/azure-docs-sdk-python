@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: azure-ai-face
 ---
-# Azure AI Face client library for Python - version 1.0.0a20241001001 
+# Azure AI Face client library for Python - version 1.0.0a20241002001 
 
 
 The Azure AI Face service provides AI algorithms that detect, recognize, and analyze human faces in images. It includes the following main features:
