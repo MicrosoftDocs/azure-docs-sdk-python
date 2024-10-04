@@ -57,7 +57,8 @@ methods:
     | None = None, enable_automatic_id_generation: bool = False, session_token: str
     | None = None, initial_headers: Dict[str, str] | None = None, etag: str | None
     = None, match_condition: MatchConditions | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, **kwargs: Any) -> Dict[str, Any]'
+    ''Low''] | None = None, no_response: bool | None = None, **kwargs: Any) -> Dict[str,
+    Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -120,8 +121,18 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip
+
+      sending response payloads. When not specified explicitly here, the default value
+      will be determined from
+
+      client-level options.'
+    types:
+    - <xref:bool>
   return:
-    description: A dict representing the new item.
+    description: A dict representing the new item. The dict will be empty if *no_response*
+      is specified.
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
@@ -445,8 +456,8 @@ methods:
     patch_operations: List[Dict[str, Any]], *, filter_predicate: str | None = None,
     pre_trigger_include: str | None = None, post_trigger_include: str | None = None,
     session_token: str | None = None, etag: str | None = None, match_condition: MatchConditions
-    | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any)
-    -> Dict[str, Any]'
+    | None = None, priority: Literal[''High'', ''Low''] | None = None, no_response:
+    bool | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
@@ -507,8 +518,20 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip
+
+      sending response payloads. When not specified explicitly here, the default value
+      will be determined from
+
+      client-level options.'
+    types:
+    - <xref:bool>
   return:
-    description: A dict representing the item after the patch operations went through.
+    description: 'A dict representing the item after the patch operation went through.
+      The dict will be empty if
+
+      *no_response* is specified.'
     types:
     - <xref:dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
@@ -671,7 +694,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\35\\\\azure-cosmos-4.5.2b5\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    \\35\\\\azure_cosmos-4.7.1a20241003003\\\\samples\\\\examples_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
     \ json\n\n           async for item in container.query_items(\n              \
@@ -681,7 +704,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\35\\\\azure-cosmos-4.5.2b5\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    \\35\\\\azure_cosmos-4.7.1a20241003003\\\\samples\\\\examples_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -694,11 +717,11 @@ methods:
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
   signature: 'query_items_change_feed(*, partition_key_range_id: str | None = None,
-    is_start_from_beginning: bool = False, continuation: str | None = None, max_item_count:
-    int | None = None, partition_key: str | int | float | bool | Sequence[str | int
-    | float | bool | None] | Type[NonePartitionKeyValue] | None = None, priority:
-    Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+    is_start_from_beginning: bool = False, start_time: datetime | None = None, continuation:
+    str | None = None, max_item_count: int | None = None, partition_key: str | int
+    | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue]
+    | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any)
+    -> AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: is_start_from_beginning
     description: 'Get whether change feed should start from
@@ -707,6 +730,14 @@ methods:
       (false).'
     types:
     - <xref:bool>
+  - name: start_time
+    description: 'Specifies a point of time to start change feed. Provided value will
+      be
+
+      converted to UTC. This value will be ignored if *is_start_from_beginning* is
+      set to true.'
+    types:
+    - <xref:datetime.datetime>
   - name: partition_key_range_id
     description: 'ChangeFeed requests can be executed against specific partition key
 
@@ -915,7 +946,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\35\\\\azure-cosmos-4.5.2b5\\\\samples\\\\examples_async.py\", \"xml:space\"\
+    \\35\\\\azure_cosmos-4.7.1a20241003003\\\\samples\\\\examples_async.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
@@ -931,8 +962,8 @@ methods:
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
     None, session_token: str | None = None, initial_headers: Dict[str, str] | None
     = None, etag: str | None = None, match_condition: MatchConditions | None = None,
-    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> Dict[str,
-    Any]'
+    priority: Literal[''High'', ''Low''] | None = None, no_response: bool | None =
+    None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -988,8 +1019,20 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip
+
+      sending response payloads. When not specified explicitly here, the default value
+      will be determined from
+
+      client-level options.'
+    types:
+    - <xref:bool>
   return:
-    description: A dict representing the item after replace went through.
+    description: 'A dict representing the item after replace went through. The dict
+      will be empty if *no_response*
+
+      is specified.'
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:
@@ -1038,7 +1081,7 @@ methods:
     | None = None, post_trigger_include: str | None = None, session_token: str | None
     = None, initial_headers: Dict[str, str] | None = None, etag: str | None = None,
     match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, **kwargs: Any) -> Dict[str, Any]'
+    | None = None, no_response: bool | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -1089,8 +1132,20 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip
+
+      sending response payloads. When not specified explicitly here, the default value
+      will be determined from
+
+      client-level options.'
+    types:
+    - <xref:bool>
   return:
-    description: A dict representing the upserted item.
+    description: 'A dict representing the item after the upsert operation went through.
+      The dict will be empty if
+
+      *no_response* is specified.'
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
   exceptions:

@@ -4,7 +4,7 @@ name: WebPubSubClient
 fullName: azure.messaging.webpubsubclient.WebPubSubClient
 module: azure.messaging.webpubsubclient
 inheritances:
-- builtins.object
+- azure.messaging.webpubsubclient._client.WebPubSubClientBase
 constructor:
   syntax: 'WebPubSubClient(credential: WebPubSubClientCredential | str, *, message_retry_backoff_factor:
     float = 0.8, message_retry_backoff_max: float = 120.0, message_retry_mode: RetryMode
@@ -31,7 +31,7 @@ constructor:
     description: Subprotocol type
     defaultValue: WebPubSubProtocolType.JSON_RELIABLE
     types:
-    - <xref:azure.messaging.webpubsubclient.WebPubSubProtocolType>
+    - <xref:azure.messaging.webpubsubclient.models.WebPubSubProtocolType>
   - name: reconnect_retry_total
     description: 'total number of retries to allow for reconnect. If 0, it means disable
 
@@ -62,10 +62,12 @@ constructor:
     types:
     - <xref:float>
   - name: reconnect_retry_mode
-    description: Fixed or exponential delay between attemps, default is exponential.
+    description: 'Fixed or exponential delay
+
+      between attemps, default is exponential.'
     defaultValue: RetryMode.Exponential
     types:
-    - <xref:RetryMode>
+    - <xref:azure.messaging.webpubsubclient.RetryMode>
   - name: message_retry_total
     description: total number of retries to allow for sending message. Default is
       3.
@@ -112,7 +114,7 @@ constructor:
     types:
     - <xref:float>
   - name: start_timeout
-    description: Time limit to wait for successful client start. The default value
+    description: Time limit to wait for successful client open. The default value
       is 30.0 seconds.
     defaultValue: '30.0'
     types:
@@ -125,6 +127,18 @@ constructor:
     types:
     - <xref:str>
 methods:
+- uid: azure.messaging.webpubsubclient.WebPubSubClient.close
+  name: close
+  summary: close the client
+  signature: close() -> None
+- uid: azure.messaging.webpubsubclient.WebPubSubClient.is_connected
+  name: is_connected
+  summary: check whether the client is still connected to server after open
+  signature: is_connected() -> bool
+  return:
+    description: True if the client is connected to server, otherwise False
+    types:
+    - <xref:bool>
 - uid: azure.messaging.webpubsubclient.WebPubSubClient.join_group
   name: join_group
   summary: Join the client to group.
@@ -154,34 +168,18 @@ methods:
   parameters:
   - name: group_name
     isRequired: true
-- uid: azure.messaging.webpubsubclient.WebPubSubClient.off
-  name: 'off'
-  signature: 'off(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>],
-    listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
-    None]) -> None'
-  parameters:
-  - name: event
-    isRequired: true
-  - name: listener
-    isRequired: true
-- uid: azure.messaging.webpubsubclient.WebPubSubClient.on
-  name: 'on'
-  signature: 'on(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>],
-    listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
-    None]) -> None'
-  parameters:
-  - name: event
-    isRequired: true
-  - name: listener
-    isRequired: true
+- uid: azure.messaging.webpubsubclient.WebPubSubClient.open
+  name: open
+  summary: open the client and connect to service
+  signature: open() -> None
 - uid: azure.messaging.webpubsubclient.WebPubSubClient.send_event
   name: send_event
   summary: 'Send custom event to server. For more info about event handler in web
     pubsub, please refer
 
     to [https://learn.microsoft.com/en-us/azure/azure-web-pubsub/howto-develop-eventhandler](https://learn.microsoft.com/en-us/azure/azure-web-pubsub/howto-develop-eventhandler)'
-  signature: 'send_event(event_name: str, content: Any, data_type: WebPubSubDataType
-    | str, **kwargs: Any) -> None'
+  signature: 'send_event(event_name: str, content: str, data_type: ~typing.Literal[<WebPubSubDataType.TEXT:
+    ''text''>], **kwargs: ~typing.Any) -> None'
   parameters:
   - name: event_name
     description: The event name. Required.
@@ -195,7 +193,8 @@ methods:
       pubsub. Required.'
     isRequired: true
     types:
-    - <xref:Any.>
+    - <xref:typing.Union>[<xref:str>, <xref:memoryview>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]<xref:./>
   - name: data_type
     description: The data type. Required.
     isRequired: true
@@ -215,22 +214,77 @@ methods:
     - <xref:bool>
 - uid: azure.messaging.webpubsubclient.WebPubSubClient.send_to_group
   name: send_to_group
-  summary: "Send message to group.\n:param group_name: The group name. Required.\n\
-    :type group_name: str.\n:param content: The data content. Required.\n:type content:\
-    \ Any.\n:param data_type: The data type. Required.\n:type data_type: Any.\n:keyword\
-    \ bool ack: If False, the message won't contains ackId and no AckMessage\n\n \
-    \  will be returned from the service. Default is True."
-  signature: 'send_to_group(group_name: str, content: Any, data_type: WebPubSubDataType
-    | str, **kwargs: Any) -> None'
+  summary: Send message to group.
+  signature: 'send_to_group(group_name: str, content: str, data_type: ~typing.Literal[<WebPubSubDataType.TEXT:
+    ''text''>], **kwargs: ~typing.Any) -> None'
   parameters:
   - name: group_name
+    description: The group name. Required.
     isRequired: true
+    types:
+    - <xref:str.>
   - name: content
+    description: The data content. Required.
     isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:str>, <xref:memoryview>, <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]<xref:./>
   - name: data_type
+    description: The data type. Required.
     isRequired: true
+    types:
+    - <xref:azure.messaging.webpubsubclient.models.WebPubSubDataType>
+    - <xref:str.>
   keywordOnlyParameters:
+  - name: ack_id
+    description: The optional ackId. If not specified, client will generate one.
+    types:
+    - <xref:int>
+  - name: ack
+    description: 'If False, the message won''t contains ackId and no AckMessage
+
+      will be returned from the service. Default is True.'
+    types:
+    - <xref:bool>
   - name: no_echo
     description: Whether the message needs to echo to sender. Default is False.
     types:
     - <xref:bool>
+- uid: azure.messaging.webpubsubclient.WebPubSubClient.subscribe
+  name: subscribe
+  summary: 'Add handler.
+
+    :param event: The event name. Required.
+
+    :type event: ~azure.messaging.webpubsubclient.models.CallbackType
+
+    :param listener: The handler
+
+    :type listener: callable.'
+  signature: 'subscribe(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>],
+    listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
+    None]) -> None'
+  parameters:
+  - name: event
+    isRequired: true
+  - name: listener
+    isRequired: true
+- uid: azure.messaging.webpubsubclient.WebPubSubClient.unsubscribe
+  name: unsubscribe
+  summary: 'Remove handler for rejoining group failed.
+
+    :param event: The event name. Required.
+
+    :type event: ~azure.messaging.webpubsubclient.models.CallbackType
+
+    :param listener: The handler
+
+    :type listener: callable.'
+  signature: 'unsubscribe(event: ~typing.Literal[<CallbackType.CONNECTED: ''connected''>],
+    listener: ~typing.Callable[[~azure.messaging.webpubsubclient.models._models.OnConnectedArgs],
+    None]) -> None'
+  parameters:
+  - name: event
+    isRequired: true
+  - name: listener
+    isRequired: true
