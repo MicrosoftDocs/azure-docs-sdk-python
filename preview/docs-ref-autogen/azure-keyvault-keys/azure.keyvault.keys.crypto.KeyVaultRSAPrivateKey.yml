@@ -8,23 +8,20 @@ inheritances:
 summary: 'An *RSAPrivateKey* implementation based on a key managed by Key Vault.
 
 
-  Only synchronous clients and operations are supported at this time.
+  This class should not be instantiated directly. Instead, use the
 
+  <xref:azure.keyvault.keys.crypto.CryptographyClient.create_rsa_private_key> method
+  to create a key based on the
 
-  Creates a *KeyVaultRSAPrivateKey* from a *CryptographyClient* and key.'
+  client''s key. Only synchronous clients and operations are supported at this time.'
 constructor:
-  syntax: 'KeyVaultRSAPrivateKey(client: CryptographyClient, key_material: JsonWebKey)'
+  syntax: 'KeyVaultRSAPrivateKey(client: CryptographyClient, key_material: JsonWebKey
+    | None)'
   parameters:
   - name: client
-    description: The client that will be used to communicate with Key Vault.
     isRequired: true
-    types:
-    - <xref:azure.keyvault.keys.crypto.CryptographyClient>
   - name: key_material
-    description: They Key Vault key's material, as a *JsonWebKey*.
     isRequired: true
-    types:
-    - <xref:azure.keyvault.keys.JsonWebKey>
 methods:
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPrivateKey.decrypt
   name: decrypt
@@ -87,6 +84,9 @@ methods:
     description: The serialized key.
     types:
     - <xref:bytes>
+  exceptions:
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPrivateKey.private_numbers
   name: private_numbers
   summary: Returns an *RSAPrivateNumbers* representing the key's private numbers.
@@ -95,6 +95,9 @@ methods:
     description: The private numbers of the key.
     types:
     - <xref:cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateNumbers>
+  exceptions:
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPrivateKey.public_key
   name: public_key
   summary: 'The *RSAPublicKey* associated with this private key, as a *KeyVaultRSAPublicKey*.
@@ -157,3 +160,6 @@ attributes:
     description: The key's size.
     types:
     - <xref:int>
+  exceptions:
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
