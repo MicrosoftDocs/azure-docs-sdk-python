@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-identity-broker, identity
-ms.date: 04/09/2024
+keywords: Azure, python, SDK, API, azure-identity-broker, entra-id
+ms.date: 10/08/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: identity
+ms.service: entra-id
 ---
 
 
@@ -50,7 +50,7 @@ ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}
 
 ### Authenticate with `InteractiveBrowserBrokerCredential`
 
-This example demonstrates using `InteractiveBrowserBrokerCredential` as a broker-enabled credential for authenticating with the `BlobServiceClient` from the [azure-storage-blob][azure_storage_blob] library. Here, the `win32gui` package is used to get the current window.
+This example demonstrates using `InteractiveBrowserBrokerCredential` as a broker-enabled credential for authenticating with the `BlobServiceClient` from the [azure-storage-blob][azure_storage_blob] library. Here, the `win32gui` module from the `pywin32` package is used to get the current window.
 
 ```python
 import win32gui
@@ -109,6 +109,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [entra_id]: https://learn.microsoft.com/entra/identity/
 [pip]: https://pypi.org/project/pip
 [ref_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity-broker/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.1.0/sdk/identity/azure-identity-broker
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.1.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.2.0/sdk/identity/azure-identity-broker
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.2.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
 
