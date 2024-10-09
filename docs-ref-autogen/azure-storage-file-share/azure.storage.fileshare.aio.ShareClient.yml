@@ -5,7 +5,7 @@ fullName: azure.storage.fileshare.aio.ShareClient
 module: azure.storage.fileshare.aio
 inheritances:
 - azure.storage.fileshare._shared.base_client_async.AsyncStorageAccountHostsMixin
-- azure.storage.fileshare._share_client.ShareClient
+- azure.storage.fileshare._shared.base_client.StorageAccountHostsMixin
 summary: 'A client to interact with a specific share, although that share may not
   yet exist.
 
@@ -73,10 +73,10 @@ constructor:
     - <xref:None>
   keywordOnlyParameters:
   - name: token_intent
-    description: "Required when using *TokenCredential* for authentication and ignored\
-      \ for other forms of authentication.\nSpecifies the intent for all requests\
-      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
-      \ - Specifies requests are intended for backup/admin type operations, meaning\
+    description: "Required when using *AsyncTokenCredential* for authentication and\
+      \ ignored for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *AsyncTokenCredential* authentication. Possible values are:\n\n\
+      backup - Specifies requests are intended for backup/admin type operations, meaning\
       \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
       \ User must also have required RBAC permission."
     types:
@@ -206,7 +206,7 @@ methods:
 
     creates a new permission at the share level and return its key.'
   signature: 'async create_permission_for_share(file_permission: str, **kwargs: Any)
-    -> str'
+    -> str | None'
   parameters:
   - name: file_permission
     description: File permission, a Portable SDDL
@@ -235,6 +235,7 @@ methods:
     description: A file permission key
     types:
     - <xref:str>
+    - <xref:None>
 - uid: azure.storage.fileshare.aio.ShareClient.create_share
   name: create_share
   summary: 'Creates a new Share under the account. If a share with the
@@ -295,13 +296,13 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
   examples:
   - "Creates a file share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create share with Access Tier set to Hot\n   await share.create_share(access_tier=ShareAccessTier(\"\
@@ -323,7 +324,7 @@ methods:
     is taken, with a DateTime value appended to indicate the time at which the
 
     snapshot was taken.'
-  signature: 'async create_snapshot(**kwargs: Any | None) -> Dict[str, Any]'
+  signature: 'async create_snapshot(**kwargs: Any) -> Dict[str, Any]'
   keywordOnlyParameters:
   - name: metadata
     description: Name-value pairs associated with the share as metadata.
@@ -350,7 +351,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await share.create_snapshot()\n\n   ````\n"
@@ -424,7 +425,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await share.delete_share(delete_snapshots=True)\n\n   ````\n"
@@ -433,7 +434,7 @@ methods:
   summary: Create ShareClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, share_name: str, snapshot: str
     | Dict[str, Any] | None = None, credential: str | Dict[str, str] | AzureNamedKeyCredential
-    | AzureSasCredential | TokenCredential | None = None, **kwargs: Any) -> Self'
+    | AzureSasCredential | AsyncTokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -462,8 +463,8 @@ methods:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -479,29 +480,29 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   return:
     description: A share client.
     types:
-    - <xref:azure.storage.fileshare.ShareClient>
+    - <xref:azure.storage.fileshare.aio.ShareClient>
   examples:
-  - "Gets the share client from connection string.<!--[!code-python[Main](les\\file_samples_share.py\
+  - "Gets the share client from connection string.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
-    \n   from azure.storage.fileshare import ShareClient\n   share = ShareClient.from_connection_string(self.connection_string,\
+    \n   from azure.storage.fileshare.aio import ShareClient\n   share = ShareClient.from_connection_string(self.connection_string,\
     \ \"sharesamples2\")\n\n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareClient.from_share_url
   name: from_share_url
   signature: 'from_share_url(share_url: str, snapshot: str | Dict[str, Any] | None
     = None, credential: str | Dict[str, str] | AzureNamedKeyCredential | AzureSasCredential
-    | TokenCredential | None = None, **kwargs: Any) -> Self'
+    | AsyncTokenCredential | None = None, **kwargs: Any) -> Self'
   parameters:
   - name: share_url
     description: The full URI to the share.
@@ -525,8 +526,8 @@ methods:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -542,14 +543,14 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
   return:
     description: A share client.
     types:
-    - <xref:azure.storage.fileshare.ShareClient>
+    - <xref:azure.storage.fileshare.aio.ShareClient>
 - uid: azure.storage.fileshare.aio.ShareClient.get_directory_client
   name: get_directory_client
   summary: 'Get a client to interact with the specified directory.
@@ -679,7 +680,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_hello_world_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_hello_world_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = await share.get_share_properties()\n\n   ````\n"
@@ -717,8 +718,8 @@ methods:
   name: list_directories_and_files
   summary: Lists the directories and files under the share.
   signature: 'list_directories_and_files(directory_name: str | None = None, name_starts_with:
-    str | None = None, marker: str | None = None, **kwargs: Any) -> Iterable[Dict[str,
-    str]]'
+    str | None = None, marker: str | None = None, **kwargs: Any) -> AsyncItemPaged[DirectoryProperties
+    | FileProperties]'
   parameters:
   - name: directory_name
     description: Name of a directory.
@@ -748,7 +749,7 @@ methods:
       , \"PermissionKey\".\n\n*New in version 12.6.0.* \n\nThis keyword argument was\
       \ introduced in API version '2020-10-02'."
     types:
-    - <xref:list>[<xref:str>]
+    - <xref:typing.List>[<xref:str>]
   - name: include_extended_info
     description: "If this is set to true, file id will be returned in listed results.\n\
       \n*New in version 12.6.0.* \n\nThis keyword argument was introduced in API version\
@@ -770,13 +771,14 @@ methods:
   return:
     description: An auto-paging iterable of dict-like DirectoryProperties and FileProperties
     types:
-    - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>,<xref:str>]]
+    - <xref:azure.core.paging.ItemPaged>[<xref:typing.Union>[<xref:azure.storage.fileshare.DirectoryProperties>,
+      <xref:azure.storage.fileshare.FileProperties>]]
   examples:
   - "List directories and files in the share.<!--[!code-python[Main](les\\file_samples_share_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create a directory in the share\n   dir_client = await share.create_directory(\"\
@@ -793,7 +795,7 @@ methods:
 
     indicate whether files in a share may be accessed publicly.'
   signature: 'async set_share_access_policy(signed_identifiers: Dict[str, AccessPolicy],
-    **kwargs: Any) -> Dict[str, str]'
+    **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: signed_identifiers
     description: 'A dictionary of access policies to associate with the share. The
@@ -824,7 +826,7 @@ methods:
   return:
     description: Share-updated property dict (Etag and last modified).
     types:
-    - <xref:dict>[<xref:str>, <xref:str>]
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.fileshare.aio.ShareClient.set_share_metadata
   name: set_share_metadata
   summary: 'Sets the metadata for the share.
@@ -835,7 +837,7 @@ methods:
     attached to the share. To remove all metadata from the share,
 
     call this operation with no metadata dict.'
-  signature: 'async set_share_metadata(metadata: Dict[str, Any], **kwargs: Any) ->
+  signature: 'async set_share_metadata(metadata: Dict[str, str], **kwargs: Any) ->
     Dict[str, Any]'
   parameters:
   - name: metadata
@@ -869,7 +871,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   data = {'category': 'test'}\n   await share.set_share_metadata(metadata=data)\n\
@@ -941,7 +943,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Set the tier for the first share to Hot\n   await share1.set_share_properties(access_tier=\"\
@@ -989,7 +991,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    231\\\\azure_storage_file_share-12.18.0\\\\samples\\\\file_samples_share_async.py\"\
+    250\\\\azure_storage_file_share-12.19.0\\\\samples\\\\file_samples_share_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Set the quota for the share to 1GB\n   await share.set_share_quota(quota=1)\n\
