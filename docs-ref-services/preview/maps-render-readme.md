@@ -1,18 +1,18 @@
 ---
 title: Azure Maps Render Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-render, maps
-ms.date: 08/12/2024
+ms.date: 10/10/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Render Package client library for Python - version 2.0.0b1 
+# Azure Maps Render Package client library for Python - version 2.0.0a20241010001 
 
 
 This package contains a Python SDK for Azure Maps Services for Render.
 Read more about Azure Maps Services [here](/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b1/sdk/maps/azure-maps-render) | [API reference documentation](/rest/api/maps/render) | [Product documentation](/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render) | [API reference documentation](/rest/api/maps/render) | [Product documentation](/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -102,7 +102,7 @@ Once you initialized a `MapsRenderClient` class, you can explore the methods on 
 ### Async Clients
 
 This library includes a complete async API supported on Python 3.8+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-render_2.0.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
 objects are async context managers and define async `close` methods.
@@ -209,7 +209,7 @@ result = maps_render_client.get_copyright_for_world()
 
 ### General
 
-Maps Render clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-render_2.0.0b1/sdk/core/azure-core/README.md).
+Maps Render clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -243,7 +243,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Render samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b1/sdk/maps/azure-maps-render/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b1/sdk/maps/azure-maps-render/samples/async_samples)).
+Get started with our [Maps Render samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render/samples/async_samples)).
 
 Several Azure Maps Render Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Render
 
@@ -253,19 +253,19 @@ set AZURE_SUBSCRIPTION_KEY="<RealSubscriptionKey>"
 pip install azure-maps-render --pre
 
 python samples/sample_authentication.py
-python sample/sample_get_copyright_caption.py
-python sample/sample_get_copyright_for_tile.py
-python sample/sample_get_copyright_for_world.py
-python sample/sample_get_copyright_from_bounding_box.py
-python sample/sample_get_map_attribution.py
-python sample/sample_get_map_static_image.py
-python sample/sample_get_map_tile.py
-python sample/sample_get_map_tileset.py
+python samples/sample_get_copyright_caption.py
+python samples/sample_get_copyright_for_tile.py
+python samples/sample_get_copyright_for_world.py
+python samples/sample_get_copyright_from_bounding_box.py
+python samples/sample_get_map_attribution.py
+python samples/sample_get_map_static_image.py
+python samples/sample_get_map_tile.py
+python samples/sample_get_map_tileset.py
 ```
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b1/sdk/maps/azure-maps-render/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render/samples/README.md)
 
 ### Additional documentation
 
@@ -281,11 +281,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-render_2.0.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
 [azure_cli]: /cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: /powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
 [maps_authentication_aad]: /azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
