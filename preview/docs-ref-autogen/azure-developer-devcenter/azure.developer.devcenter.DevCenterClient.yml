@@ -15,7 +15,7 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: Credential used to authenticate requests to the service. Required.
     isRequired: true
     types:
     - <xref:azure.core.credentials.TokenCredential>
@@ -37,11 +37,10 @@ methods:
   name: begin_create_dev_box
   summary: Creates or replaces a Dev Box.
   signature: 'begin_create_dev_box(project_name: str, user_id: str, dev_box_name:
-    str, body: MutableMapping[str, Any] | IO, **kwargs: Any) -> LROPoller[MutableMapping[str,
-    Any]]'
+    str, body: DevBox | MutableMapping[str, Any] | IO[bytes], **kwargs: Any) -> LROPoller[DevBox]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: The DevCenter Project upon which to execute the operation. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -59,44 +58,25 @@ methods:
     types:
     - <xref:str>
   - name: body
-    description: Represents a environment. Is either a JSON type or a IO type. Required.
+    description: 'Represents the body request of a Dev Box creation. Dev Box Pool
+      name is required.
+
+      Optionally set the owner of the Dev Box as local administrator. Is one of the
+      following types:
+
+      DevBox, JSON, IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.developer.devcenter.models.DevBox>
     - <xref:JSON>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns DevBox. The DevBox is compatible
+      with
+
+      MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.DevBox>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -119,56 +99,24 @@ methods:
     : \"str\"  # Optional. The target of the error.\n       },\n       \"hardwareProfile\"\
     : {\n           \"memoryGB\": 0,  # Optional. The amount of memory available for\
     \ the\n             Dev Box.\n           \"skuName\": \"str\",  # Optional. The\
-    \ name of the SKU.\n           \"vCPUs\": 0  # Optional. The number of vCPUs available\
-    \ for the Dev\n             Box.\n       },\n       \"hibernateSupport\": \"str\"\
-    ,  # Optional. Indicates whether hibernate is\n         enabled/disabled or unknown.\
-    \ Known values are: \"Enabled\", \"Disabled\", and\n         \"OsUnsupported\"\
-    .\n       \"imageReference\": {\n           \"name\": \"str\",  # Optional. The\
-    \ name of the image used.\n           \"operatingSystem\": \"str\",  # Optional.\
-    \ The operating system of the\n             image.\n           \"osBuildNumber\"\
-    : \"str\",  # Optional. The operating system build\n             number of the\
-    \ image.\n           \"publishedDate\": \"2020-02-20 00:00:00\",  # Optional.\
-    \ The datetime\n             that the backing image version was published.\n \
-    \          \"version\": \"str\"  # Optional. The version of the image.\n     \
-    \  },\n       \"localAdministrator\": \"str\",  # Optional. Indicates whether\
-    \ the owner of the\n         Dev Box is a local administrator. Known values are:\
-    \ \"Enabled\" and \"Disabled\".\n       \"location\": \"str\",  # Optional. Azure\
-    \ region where this Dev Box is located.\n         This will be the same region\
-    \ as the Virtual Network it is attached to.\n       \"osType\": \"str\",  # Optional.\
-    \ The operating system type of this Dev Box.\n         \"Windows\"\n       \"\
-    powerState\": \"str\",  # Optional. The current power state of the Dev Box.\n\
-    \         Known values are: \"Unknown\", \"Running\", \"Deallocated\", \"PoweredOff\"\
-    , and\n         \"Hibernated\".\n       \"projectName\": \"str\",  # Optional.\
-    \ Name of the project this Dev Box belongs\n         to.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The current provisioning state of\n         the Dev Box.\n\
-    \       \"storageProfile\": {\n           \"osDisk\": {\n               \"diskSizeGB\"\
-    : 0  # Optional. The size of the OS Disk in\n                 gigabytes.\n   \
-    \        }\n       },\n       \"uniqueId\": \"str\",  # Optional. A unique identifier\
-    \ for the Dev Box. This is\n         a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the user this Dev\
-    \ Box is\n         assigned to.\n   }\n\n   # response body for status code(s):\
-    \ 200, 201\n   response == {\n       \"name\": \"str\",  # Display name for the\
-    \ Dev Box. Required.\n       \"poolName\": \"str\",  # The name of the Dev Box\
-    \ pool this machine belongs to.\n         Required.\n       \"actionState\": \"\
-    str\",  # Optional. The current action state of the Dev Box.\n         This is\
-    \ state is based on previous action performed by user.\n       \"createdTime\"\
-    : \"2020-02-20 00:00:00\",  # Optional. Creation time of this Dev\n         Box.\n\
-    \       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
-    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
-    ,  # A human-readable representation of the error.\n             Required.\n \
-    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
-    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
-    \ of\n                 error codes.\n               \"innererror\": ...\n    \
-    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
-    \       },\n       \"hardwareProfile\": {\n           \"memoryGB\": 0,  # Optional.\
-    \ The amount of memory available for the\n             Dev Box.\n           \"\
-    skuName\": \"str\",  # Optional. The name of the SKU.\n           \"vCPUs\": 0\
-    \  # Optional. The number of vCPUs available for the Dev\n             Box.\n\
-    \       },\n       \"hibernateSupport\": \"str\",  # Optional. Indicates whether\
-    \ hibernate is\n         enabled/disabled or unknown. Known values are: \"Enabled\"\
-    , \"Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n\
-    \           \"name\": \"str\",  # Optional. The name of the image used.\n    \
-    \       \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
+    \ name of the SKU. Known values are:\n             \"general_i_8c32gb256ssd_v2\"\
+    , \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
+    \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
+    \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
+    \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
+    Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n \
+    \          \"name\": \"str\",  # Optional. The name of the image used.\n     \
+    \      \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
     \             image.\n           \"osBuildNumber\": \"str\",  # Optional. The\
     \ operating system build\n             number of the image.\n           \"publishedDate\"\
     : \"2020-02-20 00:00:00\",  # Optional. The datetime\n             that the backing\
@@ -184,10 +132,71 @@ methods:
     , \"PoweredOff\", and\n         \"Hibernated\".\n       \"projectName\": \"str\"\
     ,  # Optional. Name of the project this Dev Box belongs\n         to.\n      \
     \ \"provisioningState\": \"str\",  # Optional. The current provisioning state\
-    \ of\n         the Dev Box.\n       \"storageProfile\": {\n           \"osDisk\"\
-    : {\n               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n\
-    \                 gigabytes.\n           }\n       },\n       \"uniqueId\": \"\
-    str\",  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
+    \ of\n         the Dev Box. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    , \"Creating\",\n         \"Deleting\", \"Updating\", \"Starting\", \"Stopping\"\
+    , \"Provisioning\",\n         \"ProvisionedWithWarning\", \"InGracePeriod\", and\
+    \ \"NotProvisioned\".\n       \"storageProfile\": {\n           \"osDisk\": {\n\
+    \               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n  \
+    \               gigabytes.\n           }\n       },\n       \"uniqueId\": \"str\"\
+    ,  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
+    \ string (e.g. 00000000-0000-0000-0000-000000000000).\n       \"user\": \"str\"\
+    \  # Optional. The AAD object id of the user this Dev Box is\n         assigned\
+    \ to.\n   }\n\n   # response body for status code(s): 200, 201\n   response ==\
+    \ {\n       \"name\": \"str\",  # Display name for the Dev Box. Required.\n  \
+    \     \"poolName\": \"str\",  # The name of the Dev Box pool this machine belongs\
+    \ to.\n         Required.\n       \"actionState\": \"str\",  # Optional. The current\
+    \ action state of the Dev Box.\n         This is state is based on previous action\
+    \ performed by user.\n       \"createdTime\": \"2020-02-20 00:00:00\",  # Optional.\
+    \ Creation time of this Dev\n         Box.\n       \"error\": {\n           \"\
+    code\": \"str\",  # One of a server-defined set of error codes.\n            \
+    \ Required.\n           \"message\": \"str\",  # A human-readable representation\
+    \ of the error.\n             Required.\n           \"details\": [\n         \
+    \      ...\n           ],\n           \"innererror\": {\n               \"code\"\
+    : \"str\",  # Optional. One of a server-defined set of\n                 error\
+    \ codes.\n               \"innererror\": ...\n           },\n           \"target\"\
+    : \"str\"  # Optional. The target of the error.\n       },\n       \"hardwareProfile\"\
+    : {\n           \"memoryGB\": 0,  # Optional. The amount of memory available for\
+    \ the\n             Dev Box.\n           \"skuName\": \"str\",  # Optional. The\
+    \ name of the SKU. Known values are:\n             \"general_i_8c32gb256ssd_v2\"\
+    , \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
+    \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
+    \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
+    \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
+    Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n \
+    \          \"name\": \"str\",  # Optional. The name of the image used.\n     \
+    \      \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
+    \             image.\n           \"osBuildNumber\": \"str\",  # Optional. The\
+    \ operating system build\n             number of the image.\n           \"publishedDate\"\
+    : \"2020-02-20 00:00:00\",  # Optional. The datetime\n             that the backing\
+    \ image version was published.\n           \"version\": \"str\"  # Optional. The\
+    \ version of the image.\n       },\n       \"localAdministrator\": \"str\",  #\
+    \ Optional. Indicates whether the owner of the\n         Dev Box is a local administrator.\
+    \ Known values are: \"Enabled\" and \"Disabled\".\n       \"location\": \"str\"\
+    ,  # Optional. Azure region where this Dev Box is located.\n         This will\
+    \ be the same region as the Virtual Network it is attached to.\n       \"osType\"\
+    : \"str\",  # Optional. The operating system type of this Dev Box.\n         \"\
+    Windows\"\n       \"powerState\": \"str\",  # Optional. The current power state\
+    \ of the Dev Box.\n         Known values are: \"Unknown\", \"Running\", \"Deallocated\"\
+    , \"PoweredOff\", and\n         \"Hibernated\".\n       \"projectName\": \"str\"\
+    ,  # Optional. Name of the project this Dev Box belongs\n         to.\n      \
+    \ \"provisioningState\": \"str\",  # Optional. The current provisioning state\
+    \ of\n         the Dev Box. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    , \"Creating\",\n         \"Deleting\", \"Updating\", \"Starting\", \"Stopping\"\
+    , \"Provisioning\",\n         \"ProvisionedWithWarning\", \"InGracePeriod\", and\
+    \ \"NotProvisioned\".\n       \"storageProfile\": {\n           \"osDisk\": {\n\
+    \               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n  \
+    \               gigabytes.\n           }\n       },\n       \"uniqueId\": \"str\"\
+    ,  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
     \ string (e.g. 00000000-0000-0000-0000-000000000000).\n       \"user\": \"str\"\
     \  # Optional. The AAD object id of the user this Dev Box is\n         assigned\
     \ to.\n   }\n   ````\n"
@@ -195,8 +204,8 @@ methods:
   name: begin_create_or_update_environment
   summary: Creates or updates an environment.
   signature: 'begin_create_or_update_environment(project_name: str, user_id: str,
-    environment_name: str, body: MutableMapping[str, Any] | IO, **kwargs: Any) ->
-    LROPoller[MutableMapping[str, Any]]'
+    environment_name: str, body: Environment | MutableMapping[str, Any] | IO[bytes],
+    **kwargs: Any) -> LROPoller[Environment]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -217,44 +226,22 @@ methods:
     types:
     - <xref:str>
   - name: body
-    description: Represents an environment. Is either a JSON type or a IO type. Required.
+    description: 'Represents an environment. Is one of the following types: Environment,
+      JSON,
+
+      IO[bytes] Required.'
     isRequired: true
     types:
+    - <xref:azure.developer.devcenter.models.Environment>
     - <xref:JSON>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
+    - <xref:typing.IO>[<xref:bytes>]
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns Environment. The Environment
+      is compatible with
+
+      MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.Environment>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -265,42 +252,49 @@ methods:
     \ = {\n       \"catalogName\": \"str\",  # Name of the catalog. Required.\n  \
     \     \"environmentDefinitionName\": \"str\",  # Name of the environment definition.\n\
     \         Required.\n       \"environmentType\": \"str\",  # Environment type.\
-    \ Required.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
-    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
-    ,  # A human-readable representation of the error.\n             Required.\n \
-    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
+    \ Required.\n       \"name\": \"str\",  # Environment name. Required.\n      \
+    \ \"error\": {\n           \"code\": \"str\",  # One of a server-defined set of\
+    \ error codes.\n             Required.\n           \"message\": \"str\",  # A\
+    \ human-readable representation of the error.\n             Required.\n      \
+    \     \"details\": [\n               ...\n           ],\n           \"innererror\"\
     : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
     \ of\n                 error codes.\n               \"innererror\": ...\n    \
     \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
-    \       },\n       \"name\": \"str\",  # Optional. Environment name.\n       \"\
-    parameters\": {},  # Optional. Parameters object for the environment.\n      \
-    \ \"provisioningState\": \"str\",  # Optional. The provisioning state of the\n\
-    \         environment.\n       \"resourceGroupId\": \"str\",  # Optional. The\
-    \ identifier of the resource group\n         containing the environment's resources.\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the owner of this\n\
-    \         Environment.\n   }\n\n   # response body for status code(s): 201\n \
-    \  response == {\n       \"catalogName\": \"str\",  # Name of the catalog. Required.\n\
-    \       \"environmentDefinitionName\": \"str\",  # Name of the environment definition.\n\
-    \         Required.\n       \"environmentType\": \"str\",  # Environment type.\
-    \ Required.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
-    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
-    ,  # A human-readable representation of the error.\n             Required.\n \
-    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
-    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
-    \ of\n                 error codes.\n               \"innererror\": ...\n    \
-    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
-    \       },\n       \"name\": \"str\",  # Optional. Environment name.\n       \"\
-    parameters\": {},  # Optional. Parameters object for the environment.\n      \
-    \ \"provisioningState\": \"str\",  # Optional. The provisioning state of the\n\
-    \         environment.\n       \"resourceGroupId\": \"str\",  # Optional. The\
-    \ identifier of the resource group\n         containing the environment's resources.\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the owner of this\n\
-    \         Environment.\n   }\n   ````\n"
+    \       },\n       \"parameters\": {\n           \"str\": {}  # Optional. Parameters\
+    \ object for the environment.\n       },\n       \"provisioningState\": \"str\"\
+    ,  # Optional. The provisioning state of the\n         environment. Known values\
+    \ are: \"Succeeded\", \"Failed\", \"Canceled\", \"Creating\",\n         \"Accepted\"\
+    , \"Deleting\", \"Updating\", \"Preparing\", \"Running\", \"Syncing\",\n     \
+    \    \"MovingResources\", \"TransientFailure\", and \"StorageProvisioningFailed\"\
+    .\n       \"resourceGroupId\": \"str\",  # Optional. The identifier of the resource\
+    \ group\n         containing the environment's resources.\n       \"user\": \"\
+    str\"  # Optional. The AAD object id of the owner of this\n         Environment.\n\
+    \   }\n\n   # response body for status code(s): 201\n   response == {\n      \
+    \ \"catalogName\": \"str\",  # Name of the catalog. Required.\n       \"environmentDefinitionName\"\
+    : \"str\",  # Name of the environment definition.\n         Required.\n      \
+    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"name\"\
+    : \"str\",  # Environment name. Required.\n       \"error\": {\n           \"\
+    code\": \"str\",  # One of a server-defined set of error codes.\n            \
+    \ Required.\n           \"message\": \"str\",  # A human-readable representation\
+    \ of the error.\n             Required.\n           \"details\": [\n         \
+    \      ...\n           ],\n           \"innererror\": {\n               \"code\"\
+    : \"str\",  # Optional. One of a server-defined set of\n                 error\
+    \ codes.\n               \"innererror\": ...\n           },\n           \"target\"\
+    : \"str\"  # Optional. The target of the error.\n       },\n       \"parameters\"\
+    : {\n           \"str\": {}  # Optional. Parameters object for the environment.\n\
+    \       },\n       \"provisioningState\": \"str\",  # Optional. The provisioning\
+    \ state of the\n         environment. Known values are: \"Succeeded\", \"Failed\"\
+    , \"Canceled\", \"Creating\",\n         \"Accepted\", \"Deleting\", \"Updating\"\
+    , \"Preparing\", \"Running\", \"Syncing\",\n         \"MovingResources\", \"TransientFailure\"\
+    , and \"StorageProvisioningFailed\".\n       \"resourceGroupId\": \"str\",  #\
+    \ Optional. The identifier of the resource group\n         containing the environment's\
+    \ resources.\n       \"user\": \"str\"  # Optional. The AAD object id of the owner\
+    \ of this\n         Environment.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.begin_delete_dev_box
   name: begin_delete_dev_box
   summary: Deletes a Dev Box.
   signature: 'begin_delete_dev_box(project_name: str, user_id: str, dev_box_name:
-    str, **kwargs: Any) -> LROPoller[MutableMapping[str, Any]]'
+    str, **kwargs: Any) -> LROPoller[OperationDetails]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -320,56 +314,43 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns OperationDetails. The OperationDetails
+      is
+
+      compatible with MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.OperationDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 202\n   response == {\n       \"status\"\
-    : \"str\",  # Provisioning state of the resource. Required. Known\n         values\
-    \ are: \"Running\", \"Completed\", \"Canceled\", and \"Failed\".\n       \"endTime\"\
-    : \"2020-02-20 00:00:00\",  # Optional. The end time of the operation.\n     \
-    \  \"error\": {\n           \"code\": \"str\",  # Optional. The error code.\n\
-    \           \"message\": \"str\"  # Optional. The error message.\n       },\n\
-    \       \"id\": \"str\",  # Optional. Fully qualified ID for the operation status.\n\
-    \       \"name\": \"str\",  # Optional. The operation id name.\n       \"percentComplete\"\
-    : 0.0,  # Optional. Percent of the operation that is\n         complete.\n   \
-    \    \"properties\": {},  # Optional. Custom operation properties, populated only\n\
-    \         for a successful operation.\n       \"resourceId\": \"str\",  # Optional.\
-    \ The id of the resource.\n       \"startTime\": \"2020-02-20 00:00:00\"  # Optional.\
-    \ The start time of the\n         operation.\n   }\n   ````\n"
+    \   # response body for status code(s): 202\n   response == {\n       \"id\":\
+    \ \"str\",  # Fully qualified ID for the operation status. Required.\n       \"\
+    name\": \"str\",  # The operation id name. Required.\n       \"status\": \"str\"\
+    ,  # Provisioning state of the resource. Required. Known\n         values are:\
+    \ \"NotStarted\", \"Running\", \"Succeeded\", \"Failed\", and \"Canceled\".\n\
+    \       \"endTime\": \"2020-02-20 00:00:00\",  # Optional. The end time of the\
+    \ operation.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
+    ,  # A human-readable representation of the error.\n             Required.\n \
+    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
+    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
+    \ of\n                 error codes.\n               \"innererror\": ...\n    \
+    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
+    \       },\n       \"percentComplete\": 0.0,  # Optional. Percent of the operation\
+    \ that is\n         complete.\n       \"properties\": {},  # Optional. Custom\
+    \ operation properties, populated only\n         for a successful operation.\n\
+    \       \"resourceId\": \"str\",  # Optional. The id of the resource.\n      \
+    \ \"startTime\": \"2020-02-20 00:00:00\"  # Optional. The start time of the\n\
+    \         operation.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.begin_delete_environment
   name: begin_delete_environment
   summary: Deletes an environment and all its associated resources.
   signature: 'begin_delete_environment(project_name: str, user_id: str, environment_name:
-    str, **kwargs: Any) -> LROPoller[MutableMapping[str, Any]]'
+    str, **kwargs: Any) -> LROPoller[OperationDetails]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -389,59 +370,46 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns OperationDetails. The OperationDetails
+      is
+
+      compatible with MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.OperationDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 202\n   response == {\n       \"status\"\
-    : \"str\",  # Provisioning state of the resource. Required. Known\n         values\
-    \ are: \"Running\", \"Completed\", \"Canceled\", and \"Failed\".\n       \"endTime\"\
-    : \"2020-02-20 00:00:00\",  # Optional. The end time of the operation.\n     \
-    \  \"error\": {\n           \"code\": \"str\",  # Optional. The error code.\n\
-    \           \"message\": \"str\"  # Optional. The error message.\n       },\n\
-    \       \"id\": \"str\",  # Optional. Fully qualified ID for the operation status.\n\
-    \       \"name\": \"str\",  # Optional. The operation id name.\n       \"percentComplete\"\
-    : 0.0,  # Optional. Percent of the operation that is\n         complete.\n   \
-    \    \"properties\": {},  # Optional. Custom operation properties, populated only\n\
-    \         for a successful operation.\n       \"resourceId\": \"str\",  # Optional.\
-    \ The id of the resource.\n       \"startTime\": \"2020-02-20 00:00:00\"  # Optional.\
-    \ The start time of the\n         operation.\n   }\n   ````\n"
+    \   # response body for status code(s): 202\n   response == {\n       \"id\":\
+    \ \"str\",  # Fully qualified ID for the operation status. Required.\n       \"\
+    name\": \"str\",  # The operation id name. Required.\n       \"status\": \"str\"\
+    ,  # Provisioning state of the resource. Required. Known\n         values are:\
+    \ \"NotStarted\", \"Running\", \"Succeeded\", \"Failed\", and \"Canceled\".\n\
+    \       \"endTime\": \"2020-02-20 00:00:00\",  # Optional. The end time of the\
+    \ operation.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
+    ,  # A human-readable representation of the error.\n             Required.\n \
+    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
+    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
+    \ of\n                 error codes.\n               \"innererror\": ...\n    \
+    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
+    \       },\n       \"percentComplete\": 0.0,  # Optional. Percent of the operation\
+    \ that is\n         complete.\n       \"properties\": {},  # Optional. Custom\
+    \ operation properties, populated only\n         for a successful operation.\n\
+    \       \"resourceId\": \"str\",  # Optional. The id of the resource.\n      \
+    \ \"startTime\": \"2020-02-20 00:00:00\"  # Optional. The start time of the\n\
+    \         operation.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.begin_restart_dev_box
   name: begin_restart_dev_box
   summary: Restarts a Dev Box.
   signature: 'begin_restart_dev_box(project_name: str, user_id: str, dev_box_name:
-    str, **kwargs: Any) -> LROPoller[MutableMapping[str, Any]]'
+    str, **kwargs: Any) -> LROPoller[OperationDetails]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -454,63 +422,50 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns OperationDetails. The OperationDetails
+      is
+
+      compatible with MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.OperationDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 202\n   response == {\n       \"status\"\
-    : \"str\",  # Provisioning state of the resource. Required. Known\n         values\
-    \ are: \"Running\", \"Completed\", \"Canceled\", and \"Failed\".\n       \"endTime\"\
-    : \"2020-02-20 00:00:00\",  # Optional. The end time of the operation.\n     \
-    \  \"error\": {\n           \"code\": \"str\",  # Optional. The error code.\n\
-    \           \"message\": \"str\"  # Optional. The error message.\n       },\n\
-    \       \"id\": \"str\",  # Optional. Fully qualified ID for the operation status.\n\
-    \       \"name\": \"str\",  # Optional. The operation id name.\n       \"percentComplete\"\
-    : 0.0,  # Optional. Percent of the operation that is\n         complete.\n   \
-    \    \"properties\": {},  # Optional. Custom operation properties, populated only\n\
-    \         for a successful operation.\n       \"resourceId\": \"str\",  # Optional.\
-    \ The id of the resource.\n       \"startTime\": \"2020-02-20 00:00:00\"  # Optional.\
-    \ The start time of the\n         operation.\n   }\n   ````\n"
+    \   # response body for status code(s): 202\n   response == {\n       \"id\":\
+    \ \"str\",  # Fully qualified ID for the operation status. Required.\n       \"\
+    name\": \"str\",  # The operation id name. Required.\n       \"status\": \"str\"\
+    ,  # Provisioning state of the resource. Required. Known\n         values are:\
+    \ \"NotStarted\", \"Running\", \"Succeeded\", \"Failed\", and \"Canceled\".\n\
+    \       \"endTime\": \"2020-02-20 00:00:00\",  # Optional. The end time of the\
+    \ operation.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
+    ,  # A human-readable representation of the error.\n             Required.\n \
+    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
+    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
+    \ of\n                 error codes.\n               \"innererror\": ...\n    \
+    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
+    \       },\n       \"percentComplete\": 0.0,  # Optional. Percent of the operation\
+    \ that is\n         complete.\n       \"properties\": {},  # Optional. Custom\
+    \ operation properties, populated only\n         for a successful operation.\n\
+    \       \"resourceId\": \"str\",  # Optional. The id of the resource.\n      \
+    \ \"startTime\": \"2020-02-20 00:00:00\"  # Optional. The start time of the\n\
+    \         operation.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.begin_start_dev_box
   name: begin_start_dev_box
   summary: Starts a Dev Box.
   signature: 'begin_start_dev_box(project_name: str, user_id: str, dev_box_name: str,
-    **kwargs: Any) -> LROPoller[MutableMapping[str, Any]]'
+    **kwargs: Any) -> LROPoller[OperationDetails]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -523,64 +478,50 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns OperationDetails. The OperationDetails
+      is
+
+      compatible with MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.OperationDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 202\n   response == {\n       \"status\"\
-    : \"str\",  # Provisioning state of the resource. Required. Known\n         values\
-    \ are: \"Running\", \"Completed\", \"Canceled\", and \"Failed\".\n       \"endTime\"\
-    : \"2020-02-20 00:00:00\",  # Optional. The end time of the operation.\n     \
-    \  \"error\": {\n           \"code\": \"str\",  # Optional. The error code.\n\
-    \           \"message\": \"str\"  # Optional. The error message.\n       },\n\
-    \       \"id\": \"str\",  # Optional. Fully qualified ID for the operation status.\n\
-    \       \"name\": \"str\",  # Optional. The operation id name.\n       \"percentComplete\"\
-    : 0.0,  # Optional. Percent of the operation that is\n         complete.\n   \
-    \    \"properties\": {},  # Optional. Custom operation properties, populated only\n\
-    \         for a successful operation.\n       \"resourceId\": \"str\",  # Optional.\
-    \ The id of the resource.\n       \"startTime\": \"2020-02-20 00:00:00\"  # Optional.\
-    \ The start time of the\n         operation.\n   }\n   ````\n"
+    \   # response body for status code(s): 202\n   response == {\n       \"id\":\
+    \ \"str\",  # Fully qualified ID for the operation status. Required.\n       \"\
+    name\": \"str\",  # The operation id name. Required.\n       \"status\": \"str\"\
+    ,  # Provisioning state of the resource. Required. Known\n         values are:\
+    \ \"NotStarted\", \"Running\", \"Succeeded\", \"Failed\", and \"Canceled\".\n\
+    \       \"endTime\": \"2020-02-20 00:00:00\",  # Optional. The end time of the\
+    \ operation.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
+    ,  # A human-readable representation of the error.\n             Required.\n \
+    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
+    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
+    \ of\n                 error codes.\n               \"innererror\": ...\n    \
+    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
+    \       },\n       \"percentComplete\": 0.0,  # Optional. Percent of the operation\
+    \ that is\n         complete.\n       \"properties\": {},  # Optional. Custom\
+    \ operation properties, populated only\n         for a successful operation.\n\
+    \       \"resourceId\": \"str\",  # Optional. The id of the resource.\n      \
+    \ \"startTime\": \"2020-02-20 00:00:00\"  # Optional. The start time of the\n\
+    \         operation.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.begin_stop_dev_box
   name: begin_stop_dev_box
   summary: Stops a Dev Box.
   signature: 'begin_stop_dev_box(project_name: str, user_id: str, dev_box_name: str,
-    *, hibernate: bool | None = None, **kwargs: Any) -> LROPoller[MutableMapping[str,
-    Any]]'
+    *, hibernate: bool | None = None, **kwargs: Any) -> LROPoller[OperationDetails]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -593,7 +534,7 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -602,50 +543,38 @@ methods:
     description: Optional parameter to hibernate the dev box. Default value is None.
     types:
     - <xref:bool>
-  - name: continuation_token
-    description: A continuation token to restart a poller from a saved state.
-    types:
-    - <xref:str>
-  - name: polling
-    description: 'By default, your polling method will be LROBasePolling. Pass in
-      False for
-
-      this operation to not poll, or pass in your own initialized polling object for
-      a personal
-
-      polling strategy.'
-    types:
-    - <xref:bool>
-    - <xref:azure.core.polling.PollingMethod>
-  - name: polling_interval
-    description: 'Default waiting time between two polls for LRO operations if no
-
-      Retry-After header is present.'
-    types:
-    - <xref:int>
   return:
-    description: An instance of LROPoller that returns JSON object
+    description: 'An instance of LROPoller that returns OperationDetails. The OperationDetails
+      is
+
+      compatible with MutableMapping'
     types:
-    - <xref:azure.core.polling.LROPoller>[<xref:JSON>]
+    - <xref:azure.core.polling.LROPoller>[<xref:azure.developer.devcenter.models.OperationDetails>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
   - "<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
     : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
-    \   # response body for status code(s): 202\n   response == {\n       \"status\"\
-    : \"str\",  # Provisioning state of the resource. Required. Known\n         values\
-    \ are: \"Running\", \"Completed\", \"Canceled\", and \"Failed\".\n       \"endTime\"\
-    : \"2020-02-20 00:00:00\",  # Optional. The end time of the operation.\n     \
-    \  \"error\": {\n           \"code\": \"str\",  # Optional. The error code.\n\
-    \           \"message\": \"str\"  # Optional. The error message.\n       },\n\
-    \       \"id\": \"str\",  # Optional. Fully qualified ID for the operation status.\n\
-    \       \"name\": \"str\",  # Optional. The operation id name.\n       \"percentComplete\"\
-    : 0.0,  # Optional. Percent of the operation that is\n         complete.\n   \
-    \    \"properties\": {},  # Optional. Custom operation properties, populated only\n\
-    \         for a successful operation.\n       \"resourceId\": \"str\",  # Optional.\
-    \ The id of the resource.\n       \"startTime\": \"2020-02-20 00:00:00\"  # Optional.\
-    \ The start time of the\n         operation.\n   }\n   ````\n"
+    \   # response body for status code(s): 202\n   response == {\n       \"id\":\
+    \ \"str\",  # Fully qualified ID for the operation status. Required.\n       \"\
+    name\": \"str\",  # The operation id name. Required.\n       \"status\": \"str\"\
+    ,  # Provisioning state of the resource. Required. Known\n         values are:\
+    \ \"NotStarted\", \"Running\", \"Succeeded\", \"Failed\", and \"Canceled\".\n\
+    \       \"endTime\": \"2020-02-20 00:00:00\",  # Optional. The end time of the\
+    \ operation.\n       \"error\": {\n           \"code\": \"str\",  # One of a server-defined\
+    \ set of error codes.\n             Required.\n           \"message\": \"str\"\
+    ,  # A human-readable representation of the error.\n             Required.\n \
+    \          \"details\": [\n               ...\n           ],\n           \"innererror\"\
+    : {\n               \"code\": \"str\",  # Optional. One of a server-defined set\
+    \ of\n                 error codes.\n               \"innererror\": ...\n    \
+    \       },\n           \"target\": \"str\"  # Optional. The target of the error.\n\
+    \       },\n       \"percentComplete\": 0.0,  # Optional. Percent of the operation\
+    \ that is\n         complete.\n       \"properties\": {},  # Optional. Custom\
+    \ operation properties, populated only\n         for a successful operation.\n\
+    \       \"resourceId\": \"str\",  # Optional. The id of the resource.\n      \
+    \ \"startTime\": \"2020-02-20 00:00:00\"  # Optional. The start time of the\n\
+    \         operation.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.close
   name: close
   signature: close() -> None
@@ -653,11 +582,10 @@ methods:
   name: delay_all_dev_box_actions
   summary: Delays all actions.
   signature: 'delay_all_dev_box_actions(project_name: str, user_id: str, dev_box_name:
-    str, *, delay_until: datetime, **kwargs: Any) -> Iterable[MutableMapping[str,
-    Any]]'
+    str, *, delay_until: datetime, **kwargs: Any) -> Iterable[DevBoxActionDelayResult]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -670,7 +598,7 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -680,9 +608,9 @@ methods:
     types:
     - <xref:datetime.datetime>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of DevBoxActionDelayResult
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.DevBoxActionDelayResult>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -712,11 +640,10 @@ methods:
   name: delay_dev_box_action
   summary: Delays the occurrence of an action.
   signature: 'delay_dev_box_action(project_name: str, user_id: str, dev_box_name:
-    str, action_name: str, *, delay_until: datetime, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+    str, action_name: str, *, delay_until: datetime, **kwargs: Any) -> DevBoxAction'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -729,12 +656,12 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: action_name
-    description: The name of an action that will take place on a Dev Box. Required.
+    description: The name of the action. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -743,17 +670,10 @@ methods:
     description: The time to delay the Dev Box action or actions until. Required.
     types:
     - <xref:datetime.datetime>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: DevBoxAction. The DevBoxAction is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.DevBoxAction>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -772,30 +692,22 @@ methods:
   name: get_catalog
   summary: Gets the specified catalog within the project.
   signature: 'get_catalog(project_name: str, catalog_name: str, **kwargs: Any) ->
-    MutableMapping[str, Any]'
+    Catalog'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: catalog_name
-    description: The name of the catalog. Required.
+    description: Name of the catalog. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: Catalog. The Catalog is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.Catalog>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -808,10 +720,10 @@ methods:
   name: get_dev_box
   summary: Gets a Dev Box.
   signature: 'get_dev_box(project_name: str, user_id: str, dev_box_name: str, **kwargs:
-    Any) -> MutableMapping[str, Any]'
+    Any) -> DevBox'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -824,22 +736,14 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: DevBox. The DevBox is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.DevBox>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -862,42 +766,57 @@ methods:
     \  # Optional. The target of the error.\n       },\n       \"hardwareProfile\"\
     : {\n           \"memoryGB\": 0,  # Optional. The amount of memory available for\
     \ the\n             Dev Box.\n           \"skuName\": \"str\",  # Optional. The\
-    \ name of the SKU.\n           \"vCPUs\": 0  # Optional. The number of vCPUs available\
-    \ for the Dev\n             Box.\n       },\n       \"hibernateSupport\": \"str\"\
-    ,  # Optional. Indicates whether hibernate is\n         enabled/disabled or unknown.\
-    \ Known values are: \"Enabled\", \"Disabled\", and\n         \"OsUnsupported\"\
-    .\n       \"imageReference\": {\n           \"name\": \"str\",  # Optional. The\
-    \ name of the image used.\n           \"operatingSystem\": \"str\",  # Optional.\
-    \ The operating system of the\n             image.\n           \"osBuildNumber\"\
-    : \"str\",  # Optional. The operating system build\n             number of the\
-    \ image.\n           \"publishedDate\": \"2020-02-20 00:00:00\",  # Optional.\
-    \ The datetime\n             that the backing image version was published.\n \
-    \          \"version\": \"str\"  # Optional. The version of the image.\n     \
-    \  },\n       \"localAdministrator\": \"str\",  # Optional. Indicates whether\
-    \ the owner of the\n         Dev Box is a local administrator. Known values are:\
-    \ \"Enabled\" and \"Disabled\".\n       \"location\": \"str\",  # Optional. Azure\
-    \ region where this Dev Box is located.\n         This will be the same region\
-    \ as the Virtual Network it is attached to.\n       \"osType\": \"str\",  # Optional.\
-    \ The operating system type of this Dev Box.\n         \"Windows\"\n       \"\
-    powerState\": \"str\",  # Optional. The current power state of the Dev Box.\n\
-    \         Known values are: \"Unknown\", \"Running\", \"Deallocated\", \"PoweredOff\"\
-    , and\n         \"Hibernated\".\n       \"projectName\": \"str\",  # Optional.\
-    \ Name of the project this Dev Box belongs\n         to.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The current provisioning state of\n         the Dev Box.\n\
-    \       \"storageProfile\": {\n           \"osDisk\": {\n               \"diskSizeGB\"\
-    : 0  # Optional. The size of the OS Disk in\n                 gigabytes.\n   \
-    \        }\n       },\n       \"uniqueId\": \"str\",  # Optional. A unique identifier\
-    \ for the Dev Box. This is\n         a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the user this Dev\
-    \ Box is\n         assigned to.\n   }\n   ````\n"
+    \ name of the SKU. Known values are:\n             \"general_i_8c32gb256ssd_v2\"\
+    , \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
+    \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
+    \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
+    \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
+    Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n \
+    \          \"name\": \"str\",  # Optional. The name of the image used.\n     \
+    \      \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
+    \             image.\n           \"osBuildNumber\": \"str\",  # Optional. The\
+    \ operating system build\n             number of the image.\n           \"publishedDate\"\
+    : \"2020-02-20 00:00:00\",  # Optional. The datetime\n             that the backing\
+    \ image version was published.\n           \"version\": \"str\"  # Optional. The\
+    \ version of the image.\n       },\n       \"localAdministrator\": \"str\",  #\
+    \ Optional. Indicates whether the owner of the\n         Dev Box is a local administrator.\
+    \ Known values are: \"Enabled\" and \"Disabled\".\n       \"location\": \"str\"\
+    ,  # Optional. Azure region where this Dev Box is located.\n         This will\
+    \ be the same region as the Virtual Network it is attached to.\n       \"osType\"\
+    : \"str\",  # Optional. The operating system type of this Dev Box.\n         \"\
+    Windows\"\n       \"powerState\": \"str\",  # Optional. The current power state\
+    \ of the Dev Box.\n         Known values are: \"Unknown\", \"Running\", \"Deallocated\"\
+    , \"PoweredOff\", and\n         \"Hibernated\".\n       \"projectName\": \"str\"\
+    ,  # Optional. Name of the project this Dev Box belongs\n         to.\n      \
+    \ \"provisioningState\": \"str\",  # Optional. The current provisioning state\
+    \ of\n         the Dev Box. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    , \"Creating\",\n         \"Deleting\", \"Updating\", \"Starting\", \"Stopping\"\
+    , \"Provisioning\",\n         \"ProvisionedWithWarning\", \"InGracePeriod\", and\
+    \ \"NotProvisioned\".\n       \"storageProfile\": {\n           \"osDisk\": {\n\
+    \               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n  \
+    \               gigabytes.\n           }\n       },\n       \"uniqueId\": \"str\"\
+    ,  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
+    \ string (e.g. 00000000-0000-0000-0000-000000000000).\n       \"user\": \"str\"\
+    \  # Optional. The AAD object id of the user this Dev Box is\n         assigned\
+    \ to.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.get_dev_box_action
   name: get_dev_box_action
   summary: Gets an action.
   signature: 'get_dev_box_action(project_name: str, user_id: str, dev_box_name: str,
-    action_name: str, **kwargs: Any) -> MutableMapping[str, Any]'
+    action_name: str, **kwargs: Any) -> DevBoxAction'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -910,27 +829,19 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: action_name
-    description: The name of an action that will take place on a Dev Box. Required.
+    description: The name of the action. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: DevBoxAction. The DevBoxAction is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.DevBoxAction>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -949,10 +860,10 @@ methods:
   name: get_environment
   summary: Gets an environment.
   signature: 'get_environment(project_name: str, user_id: str, environment_name: str,
-    **kwargs: Any) -> MutableMapping[str, Any]'
+    **kwargs: Any) -> Environment'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -965,22 +876,14 @@ methods:
     types:
     - <xref:str>
   - name: environment_name
-    description: The name of the environment. Required.
+    description: Environment name. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: Environment. The Environment is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.Environment>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -990,54 +893,50 @@ methods:
     \   # response body for status code(s): 200\n   response == {\n       \"catalogName\"\
     : \"str\",  # Name of the catalog. Required.\n       \"environmentDefinitionName\"\
     : \"str\",  # Name of the environment definition.\n         Required.\n      \
-    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"error\"\
-    : {\n           \"code\": \"str\",  # One of a server-defined set of error codes.\n\
-    \             Required.\n           \"message\": \"str\",  # A human-readable\
-    \ representation of the error.\n             Required.\n           \"details\"\
-    : [\n               ...\n           ],\n           \"innererror\": {\n       \
-    \        \"code\": \"str\",  # Optional. One of a server-defined set of\n    \
-    \             error codes.\n               \"innererror\": ...\n           },\n\
-    \           \"target\": \"str\"  # Optional. The target of the error.\n      \
-    \ },\n       \"name\": \"str\",  # Optional. Environment name.\n       \"parameters\"\
-    : {},  # Optional. Parameters object for the environment.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The provisioning state of the\n         environment.\n\
-    \       \"resourceGroupId\": \"str\",  # Optional. The identifier of the resource\
-    \ group\n         containing the environment's resources.\n       \"user\": \"\
-    str\"  # Optional. The AAD object id of the owner of this\n         Environment.\n\
-    \   }\n   ````\n"
+    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"name\"\
+    : \"str\",  # Environment name. Required.\n       \"error\": {\n           \"\
+    code\": \"str\",  # One of a server-defined set of error codes.\n            \
+    \ Required.\n           \"message\": \"str\",  # A human-readable representation\
+    \ of the error.\n             Required.\n           \"details\": [\n         \
+    \      ...\n           ],\n           \"innererror\": {\n               \"code\"\
+    : \"str\",  # Optional. One of a server-defined set of\n                 error\
+    \ codes.\n               \"innererror\": ...\n           },\n           \"target\"\
+    : \"str\"  # Optional. The target of the error.\n       },\n       \"parameters\"\
+    : {\n           \"str\": {}  # Optional. Parameters object for the environment.\n\
+    \       },\n       \"provisioningState\": \"str\",  # Optional. The provisioning\
+    \ state of the\n         environment. Known values are: \"Succeeded\", \"Failed\"\
+    , \"Canceled\", \"Creating\",\n         \"Accepted\", \"Deleting\", \"Updating\"\
+    , \"Preparing\", \"Running\", \"Syncing\",\n         \"MovingResources\", \"TransientFailure\"\
+    , and \"StorageProvisioningFailed\".\n       \"resourceGroupId\": \"str\",  #\
+    \ Optional. The identifier of the resource group\n         containing the environment's\
+    \ resources.\n       \"user\": \"str\"  # Optional. The AAD object id of the owner\
+    \ of this\n         Environment.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.get_environment_definition
   name: get_environment_definition
   summary: Get an environment definition from a catalog.
   signature: 'get_environment_definition(project_name: str, catalog_name: str, definition_name:
-    str, **kwargs: Any) -> MutableMapping[str, Any]'
+    str, **kwargs: Any) -> EnvironmentDefinition'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: catalog_name
-    description: The name of the catalog. Required.
+    description: Name of the catalog. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: definition_name
-    description: The name of the environment definition. Required.
+    description: Name of the environment definition. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: EnvironmentDefinition. The EnvironmentDefinition is compatible with
+      MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.EnvironmentDefinition>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1069,31 +968,22 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.get_pool
   name: get_pool
   summary: Gets a pool.
-  signature: 'get_pool(project_name: str, pool_name: str, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+  signature: 'get_pool(project_name: str, pool_name: str, **kwargs: Any) -> Pool'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: pool_name
-    description: The name of a pool of Dev Boxes. Required.
+    description: Pool name. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: Pool. The Pool is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.Pool>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1108,7 +998,18 @@ methods:
     \ located.\n         Required.\n       \"name\": \"str\",  # Pool name. Required.\n\
     \       \"hardwareProfile\": {\n           \"memoryGB\": 0,  # Optional. The amount\
     \ of memory available for the\n             Dev Box.\n           \"skuName\":\
-    \ \"str\",  # Optional. The name of the SKU.\n           \"vCPUs\": 0  # Optional.\
+    \ \"str\",  # Optional. The name of the SKU. Known values are:\n             \"\
+    general_i_8c32gb256ssd_v2\", \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
     \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
     \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
     \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
@@ -1135,26 +1036,17 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.get_project
   name: get_project
   summary: Gets a project.
-  signature: 'get_project(project_name: str, **kwargs: Any) -> MutableMapping[str,
-    Any]'
+  signature: 'get_project(project_name: str, **kwargs: Any) -> Project'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: Project. The Project is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.Project>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1170,7 +1062,7 @@ methods:
   name: get_remote_connection
   summary: Gets RDP Connection info.
   signature: 'get_remote_connection(project_name: str, user_id: str, dev_box_name:
-    str, **kwargs: Any) -> MutableMapping[str, Any]'
+    str, **kwargs: Any) -> RemoteConnection'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -1190,18 +1082,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: RemoteConnection. The RemoteConnection is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.RemoteConnection>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1216,35 +1100,27 @@ methods:
   name: get_schedule
   summary: Gets a schedule.
   signature: 'get_schedule(project_name: str, pool_name: str, schedule_name: str,
-    **kwargs: Any) -> MutableMapping[str, Any]'
+    **kwargs: Any) -> Schedule'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: pool_name
-    description: The name of a pool of Dev Boxes. Required.
+    description: Pool name. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: schedule_name
-    description: The name of a schedule. Required.
+    description: Display name for the Schedule. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
-    description: JSON object
+    description: Schedule. The Schedule is compatible with MutableMapping
     types:
-    - <xref:JSON>
+    - <xref:azure.developer.devcenter.models.Schedule>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1262,25 +1138,11 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.list_all_dev_boxes
   name: list_all_dev_boxes
   summary: Lists Dev Boxes that the caller has access to in the DevCenter.
-  signature: 'list_all_dev_boxes(*, filter: str | None = None, top: int | None = None,
-    **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
-  keywordOnlyParameters:
-  - name: filter
-    description: An OData filter clause to apply to the operation. Default value is
-      None.
-    types:
-    - <xref:str>
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
+  signature: 'list_all_dev_boxes(**kwargs: Any) -> Iterable[DevBox]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of DevBox
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.DevBox>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1303,39 +1165,53 @@ methods:
     \  # Optional. The target of the error.\n       },\n       \"hardwareProfile\"\
     : {\n           \"memoryGB\": 0,  # Optional. The amount of memory available for\
     \ the\n             Dev Box.\n           \"skuName\": \"str\",  # Optional. The\
-    \ name of the SKU.\n           \"vCPUs\": 0  # Optional. The number of vCPUs available\
-    \ for the Dev\n             Box.\n       },\n       \"hibernateSupport\": \"str\"\
-    ,  # Optional. Indicates whether hibernate is\n         enabled/disabled or unknown.\
-    \ Known values are: \"Enabled\", \"Disabled\", and\n         \"OsUnsupported\"\
-    .\n       \"imageReference\": {\n           \"name\": \"str\",  # Optional. The\
-    \ name of the image used.\n           \"operatingSystem\": \"str\",  # Optional.\
-    \ The operating system of the\n             image.\n           \"osBuildNumber\"\
-    : \"str\",  # Optional. The operating system build\n             number of the\
-    \ image.\n           \"publishedDate\": \"2020-02-20 00:00:00\",  # Optional.\
-    \ The datetime\n             that the backing image version was published.\n \
-    \          \"version\": \"str\"  # Optional. The version of the image.\n     \
-    \  },\n       \"localAdministrator\": \"str\",  # Optional. Indicates whether\
-    \ the owner of the\n         Dev Box is a local administrator. Known values are:\
-    \ \"Enabled\" and \"Disabled\".\n       \"location\": \"str\",  # Optional. Azure\
-    \ region where this Dev Box is located.\n         This will be the same region\
-    \ as the Virtual Network it is attached to.\n       \"osType\": \"str\",  # Optional.\
-    \ The operating system type of this Dev Box.\n         \"Windows\"\n       \"\
-    powerState\": \"str\",  # Optional. The current power state of the Dev Box.\n\
-    \         Known values are: \"Unknown\", \"Running\", \"Deallocated\", \"PoweredOff\"\
-    , and\n         \"Hibernated\".\n       \"projectName\": \"str\",  # Optional.\
-    \ Name of the project this Dev Box belongs\n         to.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The current provisioning state of\n         the Dev Box.\n\
-    \       \"storageProfile\": {\n           \"osDisk\": {\n               \"diskSizeGB\"\
-    : 0  # Optional. The size of the OS Disk in\n                 gigabytes.\n   \
-    \        }\n       },\n       \"uniqueId\": \"str\",  # Optional. A unique identifier\
-    \ for the Dev Box. This is\n         a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the user this Dev\
-    \ Box is\n         assigned to.\n   }\n   ````\n"
+    \ name of the SKU. Known values are:\n             \"general_i_8c32gb256ssd_v2\"\
+    , \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
+    \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
+    \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
+    \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
+    Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n \
+    \          \"name\": \"str\",  # Optional. The name of the image used.\n     \
+    \      \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
+    \             image.\n           \"osBuildNumber\": \"str\",  # Optional. The\
+    \ operating system build\n             number of the image.\n           \"publishedDate\"\
+    : \"2020-02-20 00:00:00\",  # Optional. The datetime\n             that the backing\
+    \ image version was published.\n           \"version\": \"str\"  # Optional. The\
+    \ version of the image.\n       },\n       \"localAdministrator\": \"str\",  #\
+    \ Optional. Indicates whether the owner of the\n         Dev Box is a local administrator.\
+    \ Known values are: \"Enabled\" and \"Disabled\".\n       \"location\": \"str\"\
+    ,  # Optional. Azure region where this Dev Box is located.\n         This will\
+    \ be the same region as the Virtual Network it is attached to.\n       \"osType\"\
+    : \"str\",  # Optional. The operating system type of this Dev Box.\n         \"\
+    Windows\"\n       \"powerState\": \"str\",  # Optional. The current power state\
+    \ of the Dev Box.\n         Known values are: \"Unknown\", \"Running\", \"Deallocated\"\
+    , \"PoweredOff\", and\n         \"Hibernated\".\n       \"projectName\": \"str\"\
+    ,  # Optional. Name of the project this Dev Box belongs\n         to.\n      \
+    \ \"provisioningState\": \"str\",  # Optional. The current provisioning state\
+    \ of\n         the Dev Box. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    , \"Creating\",\n         \"Deleting\", \"Updating\", \"Starting\", \"Stopping\"\
+    , \"Provisioning\",\n         \"ProvisionedWithWarning\", \"InGracePeriod\", and\
+    \ \"NotProvisioned\".\n       \"storageProfile\": {\n           \"osDisk\": {\n\
+    \               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n  \
+    \               gigabytes.\n           }\n       },\n       \"uniqueId\": \"str\"\
+    ,  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
+    \ string (e.g. 00000000-0000-0000-0000-000000000000).\n       \"user\": \"str\"\
+    \  # Optional. The AAD object id of the user this Dev Box is\n         assigned\
+    \ to.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.list_all_dev_boxes_by_user
   name: list_all_dev_boxes_by_user
   summary: Lists Dev Boxes in the Dev Center for a particular user.
-  signature: 'list_all_dev_boxes_by_user(user_id: str, *, filter: str | None = None,
-    top: int | None = None, **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_all_dev_boxes_by_user(user_id: str, **kwargs: Any) -> Iterable[DevBox]'
   parameters:
   - name: user_id
     description: 'The AAD object id of the user. If value is ''me'', the identity
@@ -1345,23 +1221,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: filter
-    description: An OData filter clause to apply to the operation. Default value is
-      None.
-    types:
-    - <xref:str>
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of DevBox
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.DevBox>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1384,57 +1247,63 @@ methods:
     \  # Optional. The target of the error.\n       },\n       \"hardwareProfile\"\
     : {\n           \"memoryGB\": 0,  # Optional. The amount of memory available for\
     \ the\n             Dev Box.\n           \"skuName\": \"str\",  # Optional. The\
-    \ name of the SKU.\n           \"vCPUs\": 0  # Optional. The number of vCPUs available\
-    \ for the Dev\n             Box.\n       },\n       \"hibernateSupport\": \"str\"\
-    ,  # Optional. Indicates whether hibernate is\n         enabled/disabled or unknown.\
-    \ Known values are: \"Enabled\", \"Disabled\", and\n         \"OsUnsupported\"\
-    .\n       \"imageReference\": {\n           \"name\": \"str\",  # Optional. The\
-    \ name of the image used.\n           \"operatingSystem\": \"str\",  # Optional.\
-    \ The operating system of the\n             image.\n           \"osBuildNumber\"\
-    : \"str\",  # Optional. The operating system build\n             number of the\
-    \ image.\n           \"publishedDate\": \"2020-02-20 00:00:00\",  # Optional.\
-    \ The datetime\n             that the backing image version was published.\n \
-    \          \"version\": \"str\"  # Optional. The version of the image.\n     \
-    \  },\n       \"localAdministrator\": \"str\",  # Optional. Indicates whether\
-    \ the owner of the\n         Dev Box is a local administrator. Known values are:\
-    \ \"Enabled\" and \"Disabled\".\n       \"location\": \"str\",  # Optional. Azure\
-    \ region where this Dev Box is located.\n         This will be the same region\
-    \ as the Virtual Network it is attached to.\n       \"osType\": \"str\",  # Optional.\
-    \ The operating system type of this Dev Box.\n         \"Windows\"\n       \"\
-    powerState\": \"str\",  # Optional. The current power state of the Dev Box.\n\
-    \         Known values are: \"Unknown\", \"Running\", \"Deallocated\", \"PoweredOff\"\
-    , and\n         \"Hibernated\".\n       \"projectName\": \"str\",  # Optional.\
-    \ Name of the project this Dev Box belongs\n         to.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The current provisioning state of\n         the Dev Box.\n\
-    \       \"storageProfile\": {\n           \"osDisk\": {\n               \"diskSizeGB\"\
-    : 0  # Optional. The size of the OS Disk in\n                 gigabytes.\n   \
-    \        }\n       },\n       \"uniqueId\": \"str\",  # Optional. A unique identifier\
-    \ for the Dev Box. This is\n         a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the user this Dev\
-    \ Box is\n         assigned to.\n   }\n   ````\n"
+    \ name of the SKU. Known values are:\n             \"general_i_8c32gb256ssd_v2\"\
+    , \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
+    \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
+    \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
+    \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
+    Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n \
+    \          \"name\": \"str\",  # Optional. The name of the image used.\n     \
+    \      \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
+    \             image.\n           \"osBuildNumber\": \"str\",  # Optional. The\
+    \ operating system build\n             number of the image.\n           \"publishedDate\"\
+    : \"2020-02-20 00:00:00\",  # Optional. The datetime\n             that the backing\
+    \ image version was published.\n           \"version\": \"str\"  # Optional. The\
+    \ version of the image.\n       },\n       \"localAdministrator\": \"str\",  #\
+    \ Optional. Indicates whether the owner of the\n         Dev Box is a local administrator.\
+    \ Known values are: \"Enabled\" and \"Disabled\".\n       \"location\": \"str\"\
+    ,  # Optional. Azure region where this Dev Box is located.\n         This will\
+    \ be the same region as the Virtual Network it is attached to.\n       \"osType\"\
+    : \"str\",  # Optional. The operating system type of this Dev Box.\n         \"\
+    Windows\"\n       \"powerState\": \"str\",  # Optional. The current power state\
+    \ of the Dev Box.\n         Known values are: \"Unknown\", \"Running\", \"Deallocated\"\
+    , \"PoweredOff\", and\n         \"Hibernated\".\n       \"projectName\": \"str\"\
+    ,  # Optional. Name of the project this Dev Box belongs\n         to.\n      \
+    \ \"provisioningState\": \"str\",  # Optional. The current provisioning state\
+    \ of\n         the Dev Box. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    , \"Creating\",\n         \"Deleting\", \"Updating\", \"Starting\", \"Stopping\"\
+    , \"Provisioning\",\n         \"ProvisionedWithWarning\", \"InGracePeriod\", and\
+    \ \"NotProvisioned\".\n       \"storageProfile\": {\n           \"osDisk\": {\n\
+    \               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n  \
+    \               gigabytes.\n           }\n       },\n       \"uniqueId\": \"str\"\
+    ,  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
+    \ string (e.g. 00000000-0000-0000-0000-000000000000).\n       \"user\": \"str\"\
+    \  # Optional. The AAD object id of the user this Dev Box is\n         assigned\
+    \ to.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.list_all_environments
   name: list_all_environments
   summary: Lists the environments for a project.
-  signature: 'list_all_environments(project_name: str, *, top: int | None = None,
-    **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_all_environments(project_name: str, **kwargs: Any) -> Iterable[Environment]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Environment
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.Environment>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1444,44 +1313,38 @@ methods:
     \   # response body for status code(s): 200\n   response == {\n       \"catalogName\"\
     : \"str\",  # Name of the catalog. Required.\n       \"environmentDefinitionName\"\
     : \"str\",  # Name of the environment definition.\n         Required.\n      \
-    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"error\"\
-    : {\n           \"code\": \"str\",  # One of a server-defined set of error codes.\n\
-    \             Required.\n           \"message\": \"str\",  # A human-readable\
-    \ representation of the error.\n             Required.\n           \"details\"\
-    : [\n               ...\n           ],\n           \"innererror\": {\n       \
-    \        \"code\": \"str\",  # Optional. One of a server-defined set of\n    \
-    \             error codes.\n               \"innererror\": ...\n           },\n\
-    \           \"target\": \"str\"  # Optional. The target of the error.\n      \
-    \ },\n       \"name\": \"str\",  # Optional. Environment name.\n       \"parameters\"\
-    : {},  # Optional. Parameters object for the environment.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The provisioning state of the\n         environment.\n\
-    \       \"resourceGroupId\": \"str\",  # Optional. The identifier of the resource\
-    \ group\n         containing the environment's resources.\n       \"user\": \"\
-    str\"  # Optional. The AAD object id of the owner of this\n         Environment.\n\
-    \   }\n   ````\n"
+    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"name\"\
+    : \"str\",  # Environment name. Required.\n       \"error\": {\n           \"\
+    code\": \"str\",  # One of a server-defined set of error codes.\n            \
+    \ Required.\n           \"message\": \"str\",  # A human-readable representation\
+    \ of the error.\n             Required.\n           \"details\": [\n         \
+    \      ...\n           ],\n           \"innererror\": {\n               \"code\"\
+    : \"str\",  # Optional. One of a server-defined set of\n                 error\
+    \ codes.\n               \"innererror\": ...\n           },\n           \"target\"\
+    : \"str\"  # Optional. The target of the error.\n       },\n       \"parameters\"\
+    : {\n           \"str\": {}  # Optional. Parameters object for the environment.\n\
+    \       },\n       \"provisioningState\": \"str\",  # Optional. The provisioning\
+    \ state of the\n         environment. Known values are: \"Succeeded\", \"Failed\"\
+    , \"Canceled\", \"Creating\",\n         \"Accepted\", \"Deleting\", \"Updating\"\
+    , \"Preparing\", \"Running\", \"Syncing\",\n         \"MovingResources\", \"TransientFailure\"\
+    , and \"StorageProvisioningFailed\".\n       \"resourceGroupId\": \"str\",  #\
+    \ Optional. The identifier of the resource group\n         containing the environment's\
+    \ resources.\n       \"user\": \"str\"  # Optional. The AAD object id of the owner\
+    \ of this\n         Environment.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.list_catalogs
   name: list_catalogs
   summary: Lists all of the catalogs available for a project.
-  signature: 'list_catalogs(project_name: str, *, top: int | None = None, **kwargs:
-    Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_catalogs(project_name: str, **kwargs: Any) -> Iterable[Catalog]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Catalog
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.Catalog>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1494,10 +1357,10 @@ methods:
   name: list_dev_box_actions
   summary: Lists actions on a Dev Box.
   signature: 'list_dev_box_actions(project_name: str, user_id: str, dev_box_name:
-    str, **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+    str, **kwargs: Any) -> Iterable[DevBoxAction]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -1510,14 +1373,14 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of DevBoxAction
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.DevBoxAction>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1535,9 +1398,7 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.list_dev_boxes
   name: list_dev_boxes
   summary: Lists Dev Boxes in the project for a particular user.
-  signature: 'list_dev_boxes(project_name: str, user_id: str, *, filter: str | None
-    = None, top: int | None = None, **kwargs: Any) -> Iterable[MutableMapping[str,
-    Any]]'
+  signature: 'list_dev_boxes(project_name: str, user_id: str, **kwargs: Any) -> Iterable[DevBox]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -1552,23 +1413,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: filter
-    description: An OData filter clause to apply to the operation. Default value is
-      None.
-    types:
-    - <xref:str>
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of DevBox
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.DevBox>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1591,57 +1439,63 @@ methods:
     \  # Optional. The target of the error.\n       },\n       \"hardwareProfile\"\
     : {\n           \"memoryGB\": 0,  # Optional. The amount of memory available for\
     \ the\n             Dev Box.\n           \"skuName\": \"str\",  # Optional. The\
-    \ name of the SKU.\n           \"vCPUs\": 0  # Optional. The number of vCPUs available\
-    \ for the Dev\n             Box.\n       },\n       \"hibernateSupport\": \"str\"\
-    ,  # Optional. Indicates whether hibernate is\n         enabled/disabled or unknown.\
-    \ Known values are: \"Enabled\", \"Disabled\", and\n         \"OsUnsupported\"\
-    .\n       \"imageReference\": {\n           \"name\": \"str\",  # Optional. The\
-    \ name of the image used.\n           \"operatingSystem\": \"str\",  # Optional.\
-    \ The operating system of the\n             image.\n           \"osBuildNumber\"\
-    : \"str\",  # Optional. The operating system build\n             number of the\
-    \ image.\n           \"publishedDate\": \"2020-02-20 00:00:00\",  # Optional.\
-    \ The datetime\n             that the backing image version was published.\n \
-    \          \"version\": \"str\"  # Optional. The version of the image.\n     \
-    \  },\n       \"localAdministrator\": \"str\",  # Optional. Indicates whether\
-    \ the owner of the\n         Dev Box is a local administrator. Known values are:\
-    \ \"Enabled\" and \"Disabled\".\n       \"location\": \"str\",  # Optional. Azure\
-    \ region where this Dev Box is located.\n         This will be the same region\
-    \ as the Virtual Network it is attached to.\n       \"osType\": \"str\",  # Optional.\
-    \ The operating system type of this Dev Box.\n         \"Windows\"\n       \"\
-    powerState\": \"str\",  # Optional. The current power state of the Dev Box.\n\
-    \         Known values are: \"Unknown\", \"Running\", \"Deallocated\", \"PoweredOff\"\
-    , and\n         \"Hibernated\".\n       \"projectName\": \"str\",  # Optional.\
-    \ Name of the project this Dev Box belongs\n         to.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The current provisioning state of\n         the Dev Box.\n\
-    \       \"storageProfile\": {\n           \"osDisk\": {\n               \"diskSizeGB\"\
-    : 0  # Optional. The size of the OS Disk in\n                 gigabytes.\n   \
-    \        }\n       },\n       \"uniqueId\": \"str\",  # Optional. A unique identifier\
-    \ for the Dev Box. This is\n         a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).\n\
-    \       \"user\": \"str\"  # Optional. The AAD object id of the user this Dev\
-    \ Box is\n         assigned to.\n   }\n   ````\n"
+    \ name of the SKU. Known values are:\n             \"general_i_8c32gb256ssd_v2\"\
+    , \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
+    \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
+    \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
+    \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
+    Disabled\", and\n         \"OsUnsupported\".\n       \"imageReference\": {\n \
+    \          \"name\": \"str\",  # Optional. The name of the image used.\n     \
+    \      \"operatingSystem\": \"str\",  # Optional. The operating system of the\n\
+    \             image.\n           \"osBuildNumber\": \"str\",  # Optional. The\
+    \ operating system build\n             number of the image.\n           \"publishedDate\"\
+    : \"2020-02-20 00:00:00\",  # Optional. The datetime\n             that the backing\
+    \ image version was published.\n           \"version\": \"str\"  # Optional. The\
+    \ version of the image.\n       },\n       \"localAdministrator\": \"str\",  #\
+    \ Optional. Indicates whether the owner of the\n         Dev Box is a local administrator.\
+    \ Known values are: \"Enabled\" and \"Disabled\".\n       \"location\": \"str\"\
+    ,  # Optional. Azure region where this Dev Box is located.\n         This will\
+    \ be the same region as the Virtual Network it is attached to.\n       \"osType\"\
+    : \"str\",  # Optional. The operating system type of this Dev Box.\n         \"\
+    Windows\"\n       \"powerState\": \"str\",  # Optional. The current power state\
+    \ of the Dev Box.\n         Known values are: \"Unknown\", \"Running\", \"Deallocated\"\
+    , \"PoweredOff\", and\n         \"Hibernated\".\n       \"projectName\": \"str\"\
+    ,  # Optional. Name of the project this Dev Box belongs\n         to.\n      \
+    \ \"provisioningState\": \"str\",  # Optional. The current provisioning state\
+    \ of\n         the Dev Box. Known values are: \"Succeeded\", \"Failed\", \"Canceled\"\
+    , \"Creating\",\n         \"Deleting\", \"Updating\", \"Starting\", \"Stopping\"\
+    , \"Provisioning\",\n         \"ProvisionedWithWarning\", \"InGracePeriod\", and\
+    \ \"NotProvisioned\".\n       \"storageProfile\": {\n           \"osDisk\": {\n\
+    \               \"diskSizeGB\": 0  # Optional. The size of the OS Disk in\n  \
+    \               gigabytes.\n           }\n       },\n       \"uniqueId\": \"str\"\
+    ,  # Optional. A unique identifier for the Dev Box. This is\n         a GUID-formatted\
+    \ string (e.g. 00000000-0000-0000-0000-000000000000).\n       \"user\": \"str\"\
+    \  # Optional. The AAD object id of the user this Dev Box is\n         assigned\
+    \ to.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.list_environment_definitions
   name: list_environment_definitions
   summary: Lists all environment definitions available for a project.
-  signature: 'list_environment_definitions(project_name: str, *, top: int | None =
-    None, **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_environment_definitions(project_name: str, **kwargs: Any) -> Iterable[EnvironmentDefinition]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of EnvironmentDefinition
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.EnvironmentDefinition>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1674,8 +1528,7 @@ methods:
   name: list_environment_definitions_by_catalog
   summary: Lists all environment definitions available within a catalog.
   signature: 'list_environment_definitions_by_catalog(project_name: str, catalog_name:
-    str, *, top: int | None = None, **kwargs: Any) -> Iterable[MutableMapping[str,
-    Any]]'
+    str, **kwargs: Any) -> Iterable[EnvironmentDefinition]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -1687,18 +1540,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of EnvironmentDefinition
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.EnvironmentDefinition>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1730,26 +1575,17 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.list_environment_types
   name: list_environment_types
   summary: Lists all environment types configured for a project.
-  signature: 'list_environment_types(project_name: str, *, top: int | None = None,
-    **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_environment_types(project_name: str, **kwargs: Any) -> Iterable[EnvironmentType]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of EnvironmentType
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.EnvironmentType>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1766,8 +1602,8 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.list_environments
   name: list_environments
   summary: Lists the environments for a project and user.
-  signature: 'list_environments(project_name: str, user_id: str, *, top: int | None
-    = None, **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_environments(project_name: str, user_id: str, **kwargs: Any) ->
+    Iterable[Environment]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -1782,18 +1618,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Environment
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.Environment>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1803,49 +1631,38 @@ methods:
     \   # response body for status code(s): 200\n   response == {\n       \"catalogName\"\
     : \"str\",  # Name of the catalog. Required.\n       \"environmentDefinitionName\"\
     : \"str\",  # Name of the environment definition.\n         Required.\n      \
-    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"error\"\
-    : {\n           \"code\": \"str\",  # One of a server-defined set of error codes.\n\
-    \             Required.\n           \"message\": \"str\",  # A human-readable\
-    \ representation of the error.\n             Required.\n           \"details\"\
-    : [\n               ...\n           ],\n           \"innererror\": {\n       \
-    \        \"code\": \"str\",  # Optional. One of a server-defined set of\n    \
-    \             error codes.\n               \"innererror\": ...\n           },\n\
-    \           \"target\": \"str\"  # Optional. The target of the error.\n      \
-    \ },\n       \"name\": \"str\",  # Optional. Environment name.\n       \"parameters\"\
-    : {},  # Optional. Parameters object for the environment.\n       \"provisioningState\"\
-    : \"str\",  # Optional. The provisioning state of the\n         environment.\n\
-    \       \"resourceGroupId\": \"str\",  # Optional. The identifier of the resource\
-    \ group\n         containing the environment's resources.\n       \"user\": \"\
-    str\"  # Optional. The AAD object id of the owner of this\n         Environment.\n\
-    \   }\n   ````\n"
+    \ \"environmentType\": \"str\",  # Environment type. Required.\n       \"name\"\
+    : \"str\",  # Environment name. Required.\n       \"error\": {\n           \"\
+    code\": \"str\",  # One of a server-defined set of error codes.\n            \
+    \ Required.\n           \"message\": \"str\",  # A human-readable representation\
+    \ of the error.\n             Required.\n           \"details\": [\n         \
+    \      ...\n           ],\n           \"innererror\": {\n               \"code\"\
+    : \"str\",  # Optional. One of a server-defined set of\n                 error\
+    \ codes.\n               \"innererror\": ...\n           },\n           \"target\"\
+    : \"str\"  # Optional. The target of the error.\n       },\n       \"parameters\"\
+    : {\n           \"str\": {}  # Optional. Parameters object for the environment.\n\
+    \       },\n       \"provisioningState\": \"str\",  # Optional. The provisioning\
+    \ state of the\n         environment. Known values are: \"Succeeded\", \"Failed\"\
+    , \"Canceled\", \"Creating\",\n         \"Accepted\", \"Deleting\", \"Updating\"\
+    , \"Preparing\", \"Running\", \"Syncing\",\n         \"MovingResources\", \"TransientFailure\"\
+    , and \"StorageProvisioningFailed\".\n       \"resourceGroupId\": \"str\",  #\
+    \ Optional. The identifier of the resource group\n         containing the environment's\
+    \ resources.\n       \"user\": \"str\"  # Optional. The AAD object id of the owner\
+    \ of this\n         Environment.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.list_pools
   name: list_pools
   summary: Lists available pools.
-  signature: 'list_pools(project_name: str, *, filter: str | None = None, top: int
-    | None = None, **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
+  signature: 'list_pools(project_name: str, **kwargs: Any) -> Iterable[Pool]'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: filter
-    description: An OData filter clause to apply to the operation. Default value is
-      None.
-    types:
-    - <xref:str>
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Pool
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.Pool>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1860,7 +1677,18 @@ methods:
     \ located.\n         Required.\n       \"name\": \"str\",  # Pool name. Required.\n\
     \       \"hardwareProfile\": {\n           \"memoryGB\": 0,  # Optional. The amount\
     \ of memory available for the\n             Dev Box.\n           \"skuName\":\
-    \ \"str\",  # Optional. The name of the SKU.\n           \"vCPUs\": 0  # Optional.\
+    \ \"str\",  # Optional. The name of the SKU. Known values are:\n             \"\
+    general_i_8c32gb256ssd_v2\", \"general_i_8c32gb512ssd_v2\",\n             \"general_i_8c32gb1024ssd_v2\"\
+    , \"general_i_8c32gb2048ssd_v2\",\n             \"general_i_16c64gb256ssd_v2\"\
+    , \"general_i_16c64gb512ssd_v2\",\n             \"general_i_16c64gb1024ssd_v2\"\
+    , \"general_i_16c64gb2048ssd_v2\",\n             \"general_i_32c128gb512ssd_v2\"\
+    , \"general_i_32c128gb1024ssd_v2\",\n             \"general_i_32c128gb2048ssd_v2\"\
+    , \"general_a_8c32gb256ssd_v2\",\n             \"general_a_8c32gb512ssd_v2\",\
+    \ \"general_a_8c32gb1024ssd_v2\",\n             \"general_a_8c32gb2048ssd_v2\"\
+    , \"general_a_16c64gb256ssd_v2\",\n             \"general_a_16c64gb512ssd_v2\"\
+    , \"general_a_16c64gb1024ssd_v2\",\n             \"general_a_16c64gb2048ssd_v2\"\
+    , \"general_a_32c128gb512ssd_v2\",\n             \"general_a_32c128gb1024ssd_v2\"\
+    , and \"general_a_32c128gb2048ssd_v2\".\n           \"vCPUs\": 0  # Optional.\
     \ The number of vCPUs available for the Dev\n             Box.\n       },\n  \
     \     \"hibernateSupport\": \"str\",  # Optional. Indicates whether hibernate\
     \ is\n         enabled/disabled or unknown. Known values are: \"Enabled\", \"\
@@ -1887,25 +1715,11 @@ methods:
 - uid: azure.developer.devcenter.DevCenterClient.list_projects
   name: list_projects
   summary: Lists all projects.
-  signature: 'list_projects(*, filter: str | None = None, top: int | None = None,
-    **kwargs: Any) -> Iterable[MutableMapping[str, Any]]'
-  keywordOnlyParameters:
-  - name: filter
-    description: An OData filter clause to apply to the operation. Default value is
-      None.
-    types:
-    - <xref:str>
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
+  signature: 'list_projects(**kwargs: Any) -> Iterable[Project]'
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Project
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.Project>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -1919,10 +1733,9 @@ methods:
     \ a single user can create across all pools in the project.\n   }\n   ````\n"
 - uid: azure.developer.devcenter.DevCenterClient.list_schedules
   name: list_schedules
-  summary: Lists available schedules for a pool.
-  signature: 'list_schedules(project_name: str, pool_name: str, *, filter: str | None
-    = None, top: int | None = None, **kwargs: Any) -> Iterable[MutableMapping[str,
-    Any]]'
+  summary: Lists all schedules within a pool that are configured by your project administrator.
+  signature: 'list_schedules(project_name: str, pool_name: str, **kwargs: Any) ->
+    Iterable[Schedule]'
   parameters:
   - name: project_name
     description: The DevCenter Project upon which to execute operations. Required.
@@ -1934,23 +1747,10 @@ methods:
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: filter
-    description: An OData filter clause to apply to the operation. Default value is
-      None.
-    types:
-    - <xref:str>
-  - name: top
-    description: 'The maximum number of resources to return from the operation. Example:
-      ''top=10''.
-
-      Default value is None.'
-    types:
-    - <xref:int>
   return:
-    description: An iterator like instance of JSON object
+    description: An iterator like instance of Schedule
     types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:JSON>]
+    - <xref:azure.core.paging.ItemPaged>[<xref:azure.developer.devcenter.models.Schedule>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
   examples:
@@ -2012,7 +1812,7 @@ methods:
     action_name: str, **kwargs: Any) -> None'
   parameters:
   - name: project_name
-    description: The DevCenter Project upon which to execute operations. Required.
+    description: Name of the project. Required.
     isRequired: true
     types:
     - <xref:str>
@@ -2025,23 +1825,15 @@ methods:
     types:
     - <xref:str>
   - name: dev_box_name
-    description: The name of a Dev Box. Required.
+    description: Display name for the Dev Box. Required.
     isRequired: true
     types:
     - <xref:str>
   - name: action_name
-    description: The name of an action that will take place on a Dev Box. Required.
+    description: The name of the action. Required.
     isRequired: true
     types:
     - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
   return:
     description: None
     types:
