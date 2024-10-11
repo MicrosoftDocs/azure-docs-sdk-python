@@ -5,7 +5,7 @@ fullName: azure.storage.fileshare.aio.ShareServiceClient
 module: azure.storage.fileshare.aio
 inheritances:
 - azure.storage.fileshare._shared.base_client_async.AsyncStorageAccountHostsMixin
-- azure.storage.fileshare._share_service_client.ShareServiceClient
+- azure.storage.fileshare._shared.base_client.StorageAccountHostsMixin
 summary: 'A client to interact with the File Share Service at the account level.
 
 
@@ -39,8 +39,8 @@ constructor:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -62,10 +62,10 @@ constructor:
     - <xref:None>
   keywordOnlyParameters:
   - name: token_intent
-    description: "Required when using *TokenCredential* for authentication and ignored\
-      \ for other forms of authentication.\nSpecifies the intent for all requests\
-      \ when using *TokenCredential* authentication. Possible values are:\n\nbackup\
-      \ - Specifies requests are intended for backup/admin type operations, meaning\
+    description: "Required when using *AsyncTokenCredential* for authentication and\
+      \ ignored for other forms of authentication.\nSpecifies the intent for all requests\
+      \ when using *AsyncTokenCredential* authentication. Possible values are:\n\n\
+      backup - Specifies requests are intended for backup/admin type operations, meaning\
       \ that all file/directory\n   ACLs are bypassed and full permissions are granted.\
       \ User must also have required RBAC permission."
     types:
@@ -102,7 +102,7 @@ examples:
   file_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"\
   classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"\
   C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\
+  \\py2docfx\\\\dist_temp\\\\225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\
   \\file_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"force\"\
   : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
   linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare.aio import\
@@ -122,7 +122,7 @@ methods:
     with the same name already exists, the operation fails. Returns a client with
 
     which to interact with the newly created share.'
-  signature: 'async create_share(share_name: str, **kwargs) -> ShareClient'
+  signature: 'async create_share(share_name: str, **kwargs: Any) -> ShareClient'
   parameters:
   - name: share_name
     description: The name of the share to create.
@@ -135,7 +135,7 @@ methods:
 
       share as metadata. Example:{''Category'':''test''}'
     types:
-    - <xref:typing.Optional>[<xref:dict>[<xref:str>, <xref:str>]]
+    - <xref:dict>[<xref:str>, <xref:str>]
   - name: quota
     description: Quota in bytes.
     types:
@@ -152,6 +152,14 @@ methods:
       see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
     types:
     - <xref:int>
+  - name: provisioned_iops
+    description: The provisioned IOPS of the share, stored on the share object.
+    types:
+    - <xref:int>
+  - name: provisioned_bandwidth_mibps
+    description: The provisioned throughput of the share, stored on the share object.
+    types:
+    - <xref:int>
   return:
     description: A ShareClient for the newly created Share.
     types:
@@ -161,7 +169,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\\file_samples_service_async.py\"\
+    225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await file_service.create_share(share_name=\"fileshare1\")\n\n   ````\n"
@@ -171,7 +179,7 @@ methods:
 
     later deleted during garbage collection.'
   signature: 'async delete_share(share_name: ShareProperties | str, delete_snapshots:
-    bool | None = False, **kwargs) -> None'
+    bool | None = False, **kwargs: Any) -> None'
   parameters:
   - name: share_name
     description: 'The share to delete. This can either be the name of the share,
@@ -207,7 +215,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\\file_samples_service_async.py\"\
+    225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   await file_service.delete_share(share_name=\"fileshare1\")\n\n   ````\n"
@@ -215,8 +223,8 @@ methods:
   name: from_connection_string
   summary: Create ShareServiceClient from a Connection String.
   signature: 'from_connection_string(conn_str: str, credential: str | Dict[str, str]
-    | AzureNamedKeyCredential | AzureSasCredential | TokenCredential | None = None,
-    **kwargs: Any) -> Self'
+    | AzureNamedKeyCredential | AzureSasCredential | AsyncTokenCredential | None =
+    None, **kwargs: Any) -> Self'
   parameters:
   - name: conn_str
     description: A connection string to an Azure Storage account.
@@ -231,8 +239,8 @@ methods:
 
       an instance of a AzureSasCredential or AzureNamedKeyCredential from azure.core.credentials,
 
-      an account shared access key, or an instance of a TokenCredentials class from
-      azure.identity.
+      an account shared access key, or an instance of a AsyncTokenCredentials class
+      from azure.identity.
 
       If the resource URI already contains a SAS token, this will be ignored in favor
       of an explicit credential
@@ -248,7 +256,7 @@ methods:
     types:
     - <xref:azure.core.credentials.AzureNamedKeyCredential>
     - <xref:azure.core.credentials.AzureSasCredential>
-    - <xref:azure.core.credentials.TokenCredential>
+    - <xref:azure.core.credentials_async.AsyncTokenCredential>
     - <xref:str>
     - <xref:dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -258,14 +266,14 @@ methods:
     - <xref:azure.storage.fileshare.ShareServiceClient>
   examples:
   - "Create the share service client with connection string.<!--[!code-python[Main](les\\\
-    file_samples_authentication.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-    : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
-    hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\
-    \\file_samples_authentication.py\", \"xml:space\": \"preserve\", \"force\": false,\
-    \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n   from azure.storage.fileshare import ShareServiceClient\n\
-    \   share_service_client = ShareServiceClient.from_connection_string(self.connection_string)\n\
+    file_samples_authentication_async.py )]-->\n\n<!-- literal_block {\"ids\": [],\
+    \ \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
+    : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\
+    \\py2docfx\\\\dist_temp\\\\225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\
+    \\file_samples_authentication_async.py\", \"xml:space\": \"preserve\", \"force\"\
+    : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+    linenos\": false} -->\n\n````python\n\n   from azure.storage.fileshare.aio import\
+    \ ShareServiceClient\n   file_service = ShareServiceClient.from_connection_string(self.connection_string)\n\
     \n   ````\n"
 - uid: azure.storage.fileshare.aio.ShareServiceClient.get_service_properties
   name: get_service_properties
@@ -297,7 +305,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\\file_samples_service_async.py\"\
+    225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   properties = await file_service.get_service_properties()\n\n   ````\n"
@@ -306,8 +314,8 @@ methods:
   summary: 'Get a client to interact with the specified share.
 
     The share need not already exist.'
-  signature: 'get_share_client(share: ShareProperties | str, snapshot: Dict[str, Any]
-    | str | None = None) -> ShareClient'
+  signature: 'get_share_client(share: ShareProperties | str, snapshot: str | Dict[str,
+    Any] | None = None) -> ShareClient'
   parameters:
   - name: share
     description: 'The share. This can either be the name of the share,
@@ -334,7 +342,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\\file_samples_service_async.py\"\
+    225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   from azure.storage.fileshare.aio import ShareServiceClient\n   file_service\
@@ -350,7 +358,7 @@ methods:
 
     the service and stop when all shares have been returned.'
   signature: 'list_shares(name_starts_with: str | None = None, include_metadata: bool
-    | None = False, include_snapshots: bool | None = False, **kwargs: Any) -> AsyncItemPaged'
+    | None = False, include_snapshots: bool | None = False, **kwargs: Any) -> AsyncItemPaged[ShareProperties]'
   parameters:
   - name: name_starts_with
     description: 'Filters the results to return only shares whose names
@@ -397,7 +405,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\\file_samples_service_async.py\"\
+    225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # List the shares in the file service\n   my_shares = []\n   async for s\
@@ -412,7 +420,7 @@ methods:
     existing settings on the service for that functionality are preserved.'
   signature: 'async set_service_properties(hour_metrics: Metrics | None = None, minute_metrics:
     Metrics | None = None, cors: List[CorsRule] | None = None, protocol: ShareProtocolSettings
-    | None = None, **kwargs) -> None'
+    | None = None, **kwargs: Any) -> None'
   parameters:
   - name: hour_metrics
     description: 'The hour metrics settings provide a summary of request
@@ -463,7 +471,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    225\\\\azure-storage-file-share-12.18.0b1\\\\samples\\\\file_samples_service_async.py\"\
+    225\\\\azure_storage_file_share-12.20.0b1\\\\samples\\\\file_samples_service_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # Create service properties\n   from azure.storage.fileshare import Metrics,\
