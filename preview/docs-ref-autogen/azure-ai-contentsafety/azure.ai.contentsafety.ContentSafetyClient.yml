@@ -5,10 +5,10 @@ fullName: azure.ai.contentsafety.ContentSafetyClient
 module: azure.ai.contentsafety
 inheritances:
 - azure.ai.contentsafety._operations._operations.ContentSafetyClientOperationsMixin
-summary: Analyze harmful content.
+summary: ContentSafetyClient.
 constructor:
-  syntax: 'ContentSafetyClient(endpoint: str, credential: AzureKeyCredential, **kwargs:
-    Any)'
+  syntax: 'ContentSafetyClient(endpoint: str, credential: AzureKeyCredential | TokenCredential,
+    **kwargs: Any)'
   parameters:
   - name: endpoint
     description: 'Supported Cognitive Services endpoints (protocol and hostname, for
@@ -19,85 +19,43 @@ constructor:
     types:
     - <xref:str>
   - name: credential
-    description: Credential needed for the client to connect to Azure. Required.
+    description: 'Credential needed for the client to connect to Azure. Is either
+      a
+
+      AzureKeyCredential type or a TokenCredential type. Required.'
     isRequired: true
     types:
     - <xref:azure.core.credentials.AzureKeyCredential>
+    - <xref:azure.core.credentials.TokenCredential>
   keywordOnlyParameters:
   - name: api_version
-    description: 'The API version to use for this operation. Default value is
+    description: 'The API version to use for this operation. Default value is "2023-10-01".
 
-      "2023-04-30-preview". Note that overriding this default value may result in
-      unsupported
-
-      behavior.'
+      Note that overriding this default value may result in unsupported behavior.'
     types:
     - <xref:str>
 methods:
-- uid: azure.ai.contentsafety.ContentSafetyClient.add_block_items
-  name: add_block_items
-  summary: 'Add BlockItems To Text Blocklist.
-
-
-    Add blockItems to a text blocklist. You can add at most 100 BlockItems in one
-    request.'
-  signature: 'add_block_items(blocklist_name: str, body: AddBlockItemsOptions | MutableMapping[str,
-    Any] | IO, **kwargs: Any) -> AddBlockItemsResult'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: body
-    description: 'Is one of the following types: AddBlockItemsOptions, JSON, IO Required.'
-    isRequired: true
-    types:
-    - <xref:azure.ai.contentsafety.models.AddBlockItemsOptions>
-    - <xref:JSON>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
-  return:
-    description: AddBlockItemsResult. The AddBlockItemsResult is compatible with MutableMapping
-    types:
-    - <xref:azure.ai.contentsafety.models.AddBlockItemsResult>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.contentsafety.ContentSafetyClient.analyze_image
   name: analyze_image
   summary: 'Analyze Image.
 
 
-    A sync API for harmful content analysis for image. Currently, we support four
-    categories: Hate,
+    A synchronous API for the analysis of potentially harmful image content. Currently,
+    it supports
 
-    SelfHarm, Sexual, Violence.'
-  signature: 'analyze_image(body: AnalyzeImageOptions | MutableMapping[str, Any] |
-    IO, **kwargs: Any) -> AnalyzeImageResult'
+    four categories: Hate, SelfHarm, Sexual, and Violence.'
+  signature: 'analyze_image(options: AnalyzeImageOptions | MutableMapping[str, Any]
+    | IO[bytes], **kwargs: Any) -> AnalyzeImageResult'
   parameters:
-  - name: body
-    description: 'The analysis request of the image. Is one of the following types:
+  - name: options
+    description: 'The image analysis request. Is one of the following types: AnalyzeImageOptions,
 
-      AnalyzeImageOptions, JSON, IO Required.'
+      JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.ai.contentsafety.models.AnalyzeImageOptions>
     - <xref:JSON>
-    - <xref:typing.IO>
+    - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: content_type
     description: 'Body parameter Content-Type. Known values are: application/json.
@@ -124,22 +82,22 @@ methods:
   summary: 'Analyze Text.
 
 
-    A sync API for harmful content analysis for text. Currently, we support four categories:
-    Hate,
+    A synchronous API for the analysis of potentially harmful text content. Currently,
+    it supports
 
-    SelfHarm, Sexual, Violence.'
-  signature: 'analyze_text(body: AnalyzeTextOptions | MutableMapping[str, Any] | IO,
-    **kwargs: Any) -> AnalyzeTextResult'
+    four categories: Hate, SelfHarm, Sexual, and Violence.'
+  signature: 'analyze_text(options: AnalyzeTextOptions | MutableMapping[str, Any]
+    | IO[bytes], **kwargs: Any) -> AnalyzeTextResult'
   parameters:
-  - name: body
-    description: 'The request of text analysis. Is one of the following types: AnalyzeTextOptions,
+  - name: options
+    description: 'The text analysis request. Is one of the following types: AnalyzeTextOptions,
 
-      JSON, IO Required.'
+      JSON, IO[bytes] Required.'
     isRequired: true
     types:
     - <xref:azure.ai.contentsafety.models.AnalyzeTextOptions>
     - <xref:JSON>
-    - <xref:typing.IO>
+    - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: content_type
     description: 'Body parameter Content-Type. Known values are: application/json.
@@ -164,221 +122,6 @@ methods:
 - uid: azure.ai.contentsafety.ContentSafetyClient.close
   name: close
   signature: close() -> None
-- uid: azure.ai.contentsafety.ContentSafetyClient.create_or_update_text_blocklist
-  name: create_or_update_text_blocklist
-  summary: 'Create Or Update Text Blocklist.
-
-
-    Updates a text blocklist, if blocklistName does not exist, create a new blocklist.'
-  signature: 'create_or_update_text_blocklist(blocklist_name: str, resource: TextBlocklist
-    | MutableMapping[str, Any] | IO, **kwargs: Any) -> TextBlocklist'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: resource
-    description: 'The resource instance. Is one of the following types: TextBlocklist,
-      JSON, IO
-
-      Required.'
-    isRequired: true
-    types:
-    - <xref:azure.ai.contentsafety.models.TextBlocklist>
-    - <xref:JSON>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: This request has a JSON Merge Patch body. Default value is None.
-    types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
-  return:
-    description: TextBlocklist. The TextBlocklist is compatible with MutableMapping
-    types:
-    - <xref:azure.ai.contentsafety.models.TextBlocklist>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.contentsafety.ContentSafetyClient.delete_text_blocklist
-  name: delete_text_blocklist
-  summary: 'Delete Text Blocklist By blocklistName.
-
-
-    Deletes a text blocklist.'
-  signature: 'delete_text_blocklist(blocklist_name: str, **kwargs: Any) -> None'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.contentsafety.ContentSafetyClient.get_text_blocklist
-  name: get_text_blocklist
-  summary: 'Get Text Blocklist By blocklistName.
-
-
-    Returns text blocklist details.'
-  signature: 'get_text_blocklist(blocklist_name: str, **kwargs: Any) -> TextBlocklist'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
-  return:
-    description: TextBlocklist. The TextBlocklist is compatible with MutableMapping
-    types:
-    - <xref:azure.ai.contentsafety.models.TextBlocklist>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.contentsafety.ContentSafetyClient.get_text_blocklist_item
-  name: get_text_blocklist_item
-  summary: 'Get BlockItem By blocklistName And blockItemId.
-
-
-    Get blockItem By blockItemId from a text blocklist.'
-  signature: 'get_text_blocklist_item(blocklist_name: str, block_item_id: str, **kwargs:
-    Any) -> TextBlockItem'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: block_item_id
-    description: Block Item Id. It will be uuid. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
-  return:
-    description: TextBlockItem. The TextBlockItem is compatible with MutableMapping
-    types:
-    - <xref:azure.ai.contentsafety.models.TextBlockItem>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.contentsafety.ContentSafetyClient.list_text_blocklist_items
-  name: list_text_blocklist_items
-  summary: 'Get All BlockItems By blocklistName.
-
-
-    Get all blockItems in a text blocklist.'
-  signature: 'list_text_blocklist_items(blocklist_name: str, *, top: int | None =
-    None, skip: int | None = None, **kwargs: Any) -> Iterable[TextBlockItem]'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: top
-    description: The number of result items to return. Default value is None.
-    types:
-    - <xref:int>
-  - name: skip
-    description: The number of result items to skip. Default value is None.
-    types:
-    - <xref:int>
-  return:
-    description: An iterator like instance of TextBlockItem
-    types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.contentsafety.models.TextBlockItem>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.contentsafety.ContentSafetyClient.list_text_blocklists
-  name: list_text_blocklists
-  summary: 'Get All Text Blocklists.
-
-
-    Get all text blocklists details.'
-  signature: 'list_text_blocklists(**kwargs: Any) -> Iterable[TextBlocklist]'
-  return:
-    description: An iterator like instance of TextBlocklist
-    types:
-    - <xref:azure.core.paging.ItemPaged>[<xref:azure.ai.contentsafety.models.TextBlocklist>]
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.contentsafety.ContentSafetyClient.remove_block_items
-  name: remove_block_items
-  summary: 'Remove BlockItems From Text Blocklist.
-
-
-    Remove blockItems from a text blocklist. You can remove at most 100 BlockItems
-    in one request.'
-  signature: 'remove_block_items(blocklist_name: str, body: RemoveBlockItemsOptions
-    | MutableMapping[str, Any] | IO, **kwargs: Any) -> None'
-  parameters:
-  - name: blocklist_name
-    description: Text blocklist name. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: body
-    description: 'Is one of the following types: RemoveBlockItemsOptions, JSON, IO
-      Required.'
-    isRequired: true
-    types:
-    - <xref:azure.ai.contentsafety.models.RemoveBlockItemsOptions>
-    - <xref:JSON>
-    - <xref:typing.IO>
-  keywordOnlyParameters:
-  - name: content_type
-    description: 'Body parameter Content-Type. Known values are: application/json.
-      Default
-
-      value is None.'
-    types:
-    - <xref:str>
-  - name: stream
-    description: 'Whether to stream the response of this operation. Defaults to False.
-      You
-
-      will have to context manage the returned stream.'
-    types:
-    - <xref:bool>
-  return:
-    description: None
-    types:
-    - <xref:None>
-  exceptions:
-  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.ai.contentsafety.ContentSafetyClient.send_request
   name: send_request
   summary: 'Runs the network request through the client''s chained policies.
@@ -401,7 +144,8 @@ methods:
 
 
     For more information on this code flow, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request)'
-  signature: 'send_request(request: HttpRequest, **kwargs: Any) -> HttpResponse'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
     description: The network request you want to make. Required.
