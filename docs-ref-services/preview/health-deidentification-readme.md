@@ -1,14 +1,14 @@
 ---
 title: Azure Health Deidentification client library for Python
 keywords: Azure, python, SDK, API, azure-health-deidentification, healthdataaiservices
-ms.date: 07/29/2024
+ms.date: 10/15/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: healthdataaiservices
 ---
 
 
-# Azure Health Deidentification client library for Python - version 1.0.0b1 
+# Azure Health Deidentification client library for Python - version 1.0.0a20241014001 
 
 Azure.Health.Deidentification is a managed service that enables users to tag, redact, or surrogate health data.
 
@@ -109,9 +109,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.0.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-health-deidentification_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 
