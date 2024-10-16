@@ -1,12 +1,12 @@
 ---
 title: Azure AI Evaluation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-evaluation, evaluation
-ms.date: 10/01/2024
+ms.date: 10/16/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: evaluation
 ---
-# Azure AI Evaluation client library for Python - version 1.0.0b3 
+# Azure AI Evaluation client library for Python - version 1.0.0b4 
 
 
 We are excited to introduce the public preview of the Azure AI Evaluation SDK. 
@@ -128,11 +128,6 @@ name: ApplicationPrompty
 description: Simulates an application
 model:
   api: chat
-  configuration:
-    type: azure_openai
-    azure_deployment: ${env:AZURE_DEPLOYMENT}
-    api_key: ${env:AZURE_OPENAI_API_KEY}
-    azure_endpoint: ${env:AZURE_OPENAI_ENDPOINT}
   parameters:
     temperature: 0.0
     top_p: 1.0
@@ -161,52 +156,55 @@ import asyncio
 from typing import Any, Dict, List, Optional
 from azure.ai.evaluation.simulator import Simulator
 from promptflow.client import load_flow
-from azure.identity import DefaultAzureCredential
 import os
+import wikipedia
 
-azure_ai_project = {
-    "subscription_id": os.environ.get("AZURE_SUBSCRIPTION_ID"),
-    "resource_group_name": os.environ.get("RESOURCE_GROUP"),
-    "project_name": os.environ.get("PROJECT_NAME")
+# Set up the model configuration without api_key, using DefaultAzureCredential
+model_config = {
+    "azure_endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT"),
+    "azure_deployment": os.environ.get("AZURE_DEPLOYMENT"),
+    # not providing key would make the SDK pick up `DefaultAzureCredential`
+    # use "api_key": "<your API key>"
 }
 
-import wikipedia
-wiki_search_term = "Leonardo da vinci"
+# Use Wikipedia to get some text for the simulation
+wiki_search_term = "Leonardo da Vinci"
 wiki_title = wikipedia.search(wiki_search_term)[0]
 wiki_page = wikipedia.page(wiki_title)
 text = wiki_page.summary[:1000]
 
-def method_to_invoke_application_prompty(query: str):
+def method_to_invoke_application_prompty(query: str, messages_list: List[Dict], context: Optional[Dict]):
     try:
         current_dir = os.path.dirname(__file__)
         prompty_path = os.path.join(current_dir, "application.prompty")
-        _flow = load_flow(source=prompty_path, model={
-            "configuration": azure_ai_project
-        })
+        _flow = load_flow(
+            source=prompty_path,
+            model=model_config,
+            credential=DefaultAzureCredential()
+        )
         response = _flow(
             query=query,
             context=context,
             conversation_history=messages_list
         )
         return response
-    except:
-        print("Something went wrong invoking the prompty")
+    except Exception as e:
+        print(f"Something went wrong invoking the prompty: {e}")
         return "something went wrong"
 
 async def callback(
-    messages: List[Dict],
+    messages: Dict[str, List[Dict]],
     stream: bool = False,
     session_state: Any = None,  # noqa: ANN401
     context: Optional[Dict[str, Any]] = None,
 ) -> dict:
     messages_list = messages["messages"]
-    # get last message
+    # Get the last message from the user
     latest_message = messages_list[-1]
     query = latest_message["content"]
-    context = None
-    # call your endpoint or ai application here
-    response = method_to_invoke_application_prompty(query)
-    # we are formatting the response to follow the openAI chat protocol format
+    # Call your endpoint or AI application here
+    response = method_to_invoke_application_prompty(query, messages_list, context)
+    # Format the response to follow the OpenAI chat protocol format
     formatted_response = {
         "content": response,
         "role": "assistant",
@@ -217,10 +215,8 @@ async def callback(
     messages["messages"].append(formatted_response)
     return {"messages": messages["messages"], "stream": stream, "session_state": session_state, "context": context}
 
-
-
 async def main():
-    simulator = Simulator(azure_ai_project=azure_ai_project, credential=DefaultAzureCredential())
+    simulator = Simulator(model_config=model_config)
     outputs = await simulator(
         target=callback,
         text=text,
@@ -231,17 +227,17 @@ async def main():
             f"I am a teacher and I want to teach my students about {wiki_search_term}"
         ],
     )
-    print(json.dumps(outputs))
+    print(json.dumps(outputs, indent=2))
 
 if __name__ == "__main__":
-    os.environ["AZURE_SUBSCRIPTION_ID"] = ""
-    os.environ["RESOURCE_GROUP"] = ""
-    os.environ["PROJECT_NAME"] = ""
-    os.environ["AZURE_OPENAI_API_KEY"] = ""
-    os.environ["AZURE_OPENAI_ENDPOINT"] = ""
-    os.environ["AZURE_DEPLOYMENT"] = ""
+    # Ensure that the following environment variables are set in your environment:
+    # AZURE_OPENAI_ENDPOINT and AZURE_DEPLOYMENT
+    # Example:
+    # os.environ["AZURE_OPENAI_ENDPOINT"] = "https://your-endpoint.openai.azure.com/"
+    # os.environ["AZURE_DEPLOYMENT"] = "your-deployment-name"
     asyncio.run(main())
     print("done!")
+
 ```
 
 #### Adversarial Simulator
@@ -380,18 +376,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b3/sdk/evaluation/azure-ai-evaluation
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b4/sdk/evaluation/azure-ai-evaluation
 [evaluation_pypi]: https://pypi.org/project/azure-ai-evaluation/
 [evaluation_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview
 [evaluation_samples]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b3/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b4/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b3/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b3/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b4/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b4/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
