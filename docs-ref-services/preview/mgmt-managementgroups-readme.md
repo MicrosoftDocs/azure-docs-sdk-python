@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-managementgroups, managementgroups
-ms.date: 11/02/2022
+ms.date: 10/17/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: managementgroups
