@@ -1,7 +1,7 @@
 ---
 title: Azure Entity Search SDK for Python
 description: Reference for Azure Entity Search SDK for Python
-ms.date: 10/17/2024
+ms.date: 10/18/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: entitysearch
