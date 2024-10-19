@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse, synapse
-ms.date: 03/31/2022
+ms.date: 10/19/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: synapse-analytics
+ms.service: synapse
 ---
 # Microsoft Azure Synapse SDK for Python
 
@@ -21,4 +21,3 @@ Here's a non-exhaustive list of common packages:
 * [azure-synapse-spark](https://pypi.org/project/azure-synapse-spark/)
 * [azure-synapse-managedprivateendpoints](https://pypi.org/project/azure-synapse-managedprivateendpoints/)
 * [azure-synapse-monitoring](https://pypi.org/project/azure-synapse-monitoring/)
-
