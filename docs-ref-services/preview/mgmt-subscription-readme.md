@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-subscription, subscription
-ms.date: 12/28/2022
+ms.date: 10/19/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: subscription
