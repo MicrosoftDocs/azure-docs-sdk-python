@@ -1,7 +1,7 @@
 ---
 title: Azure Standby Pool SDK for Python
 description: Reference for Azure Standby Pool SDK for Python
-ms.date: 10/18/2024
+ms.date: 10/21/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: standbypool
