@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-edgezones, edgezones
-ms.date: 07/08/2024
+ms.date: 10/21/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: edgezones
