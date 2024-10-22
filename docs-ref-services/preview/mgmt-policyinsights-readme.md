@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-policyinsights, policyinsights
-ms.date: 12/30/2022
+ms.date: 10/22/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: policyinsights
