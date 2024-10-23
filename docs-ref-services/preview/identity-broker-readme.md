@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-identity-broker, identity
-ms.date: 09/21/2024
+keywords: Azure, python, SDK, API, azure-identity-broker, entra-id
+ms.date: 10/23/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: identity
+ms.service: entra-id
 ---
 
 
@@ -109,6 +109,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [entra_id]: https://learn.microsoft.com/entra/identity/
 [pip]: https://pypi.org/project/pip
 [ref_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity-broker/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.2.0b1/sdk/identity/azure-identity-broker
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.2.0b1/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity-broker
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md
 
