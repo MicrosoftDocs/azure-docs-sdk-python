@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: computefleet
 ---
-# Azure Compute Fleet SDK for Python - preview
-## Packages - preview
+# Azure Compute Fleet SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](compute-fleet-index.md)]
