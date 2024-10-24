@@ -1,11 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-cognitiveservices-vision-contentmoderator, cognitiveservices
-ms.date: 03/31/2022
+ms.date: 10/24/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: cognitive-services
-ms.subservice: content-moderator
+ms.service: cognitiveservices
 ---
 # Microsoft Azure SDK for Python
 
@@ -19,7 +18,7 @@ For a more complete view of Azure libraries, see the [azure sdk python release](
 
 
 
-For code examples, see [Cognitive Services Content Moderator](https://docs.microsoft.com/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
+For code examples, see [Cognitive Services Content Moderator](/python/api/overview/azure/cognitive-services) on docs.microsoft.com.
 
 
 # Provide Feedback
