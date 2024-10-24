@@ -9,8 +9,8 @@ summary: "JsonSchemaEncoder provides the ability to encode and decode content ac
   \ to the given JSON schema.\n   It will check the registry for the pre-registered\
   \ schema and cache the schema locally."
 constructor:
-  syntax: 'JsonSchemaEncoder(*, client: SchemaRegistryClient, validate: JsonSchemaDraftIdentifier
-    | str | ''SchemaContentValidate'', group_name: str | None = None)'
+  syntax: 'JsonSchemaEncoder(*, client: azure.schemaregistry.aio.SchemaRegistryClient,
+    validate: str | ''SchemaContentValidate'', group_name: str | None = None)'
   keywordOnlyParameters:
   - name: client
     description: 'Required. The schema registry client which is used to retrieve schema
@@ -18,21 +18,26 @@ constructor:
 
       and retrieve schema from the service.'
     types:
-    - <xref:azure.schemaregistry.SchemaRegistryClient>
+    - <xref:azure.schemaregistry.aio.SchemaRegistryClient>
   - name: validate
     description: 'Required. Used for validation in encode and decode.
 
-      If a JsonSchemaDraftIdentifier value or equivalent string is provided, the corresponding
-      validator from
+      If a JSON Schema meta-schema *$schema* string is provided, for example
 
-      *jsonschema* will be used. In this case, *jsonschema* MUST be installed separately
-      or by installing the
+      *"https://json-schema.org/draft/2020-12/schema"*, the corresponding validator
+      from *jsonschema* will be used.
 
-      package with *jsonencoder* extras.
+      In this case, *jsonschema* must be installed with *jsonencoder* extras:
 
-      If callable is provided, passes the schema and content for validation.'
+      *pip install azure-schemaregistry[jsonencoder]*. For a list of supported *jsonschema*
+      validators,
+
+      please refer to the *jsonschema* documentation:
+
+      [https://python-jsonschema.readthedocs.io/en/stable/api/jsonschema/validators/index.html](https://python-jsonschema.readthedocs.io/en/stable/api/jsonschema/validators/index.html)
+
+      If a callable is provided, the schema and content will be passed in for validation.'
     types:
-    - <xref:azure.schemaregistry.encoder.jsonencoder.JsonSchemaDraftVersion>
     - <xref:str>
     - <xref:azure.schemaregistry.SchemaContentValidate>
   - name: group_name
@@ -51,8 +56,8 @@ methods:
 - uid: azure.schemaregistry.encoder.jsonencoder.aio.JsonSchemaEncoder.decode
   name: decode
   summary: Decode bytes content using schema ID in the content type field.
-  signature: 'async decode(message: ''MessageContent'' | MessageType, *, request_options:
-    Dict[str, Any] | None = None, **kwargs: Any) -> Dict[str, Any]'
+  signature: 'async decode(message: ''MessageContent'' | InboundMessageContent, *,
+    request_options: Dict[str, Any] | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: message
     description: 'The message object which holds the content to be decoded and content
@@ -61,7 +66,7 @@ methods:
       containing the schema ID.'
     isRequired: true
     types:
-    - <xref:azure.schemaregistry.MessageType>
+    - <xref:azure.schemaregistry.InboundMessageContent>
     - <xref:azure.schemaregistry.MessageContent>
   keywordOnlyParameters:
   - name: request_options
@@ -81,15 +86,15 @@ methods:
 - uid: azure.schemaregistry.encoder.jsonencoder.aio.JsonSchemaEncoder.encode
   name: encode
   summary: "Encodes content after validating against the provided pre-registered schema\
-    \ or the one corresponding to\n   the provided schema ID. If provided with a MessageType\
-    \ subtype, encoded content and content type will be\n   passed to create message\
+    \ or the one corresponding to\n   the provided schema ID. If provided with a OutboundMessageContent\
+    \ subtype, encoded content and content type\n   will be passed to create message\
     \ object. If not provided, the following dict will be returned:\n   {\"content\"\
     : JSON encoded value, \"content_type\": JSON mime type string + schema ID}.\n\n\
-    If *message_type* is set, then additional keyword arguments for building MessageType\
-    \ will be passed to the\n   MessageType.from_message_content() method."
-  signature: 'async encode(content: Mapping[str, Any], *, schema: str, schema_id:
-    None = None, message_type: Type[MessageType], request_options: Dict[str, Any]
-    | None = None, **kwargs: Any) -> MessageType'
+    If *message_type* is set, then additional keyword arguments for building OutboundMessageContent\
+    \ will be passed\n   to the OutboundMessageContent.from_message_content() method."
+  signature: 'async encode(content: Mapping[str, Any], *, schema: str, message_type:
+    Type[OutboundMessageContent], request_options: Dict[str, Any] | None = None, **kwargs:
+    Any) -> OutboundMessageContent'
   parameters:
   - name: content
     description: The content to be encoded.
@@ -116,15 +121,15 @@ methods:
     description: 'The message class to construct the message. Must be a subtype of
       the
 
-      azure.schemaregistry.encoder.MessageType protocol.'
+      azure.schemaregistry.encoder.OutboundMessageContent protocol.'
     types:
-    - <xref:type>[<xref:azure.schemaregistry.MessageType>]
+    - <xref:type>[<xref:azure.schemaregistry.OutboundMessageContent>]
     - <xref:None>
   - name: message_type
     description: 'The message class to construct the message. If passed, must be a
       subtype of the
 
-      azure.schemaregistry.MessageType protocol.'
+      azure.schemaregistry.OutboundMessageContent protocol.'
   - name: request_options
     description: The keyword arguments for http requests to be passed to the client.
     types:
@@ -136,7 +141,7 @@ methods:
 
       constructed message object.'
     types:
-    - <xref:azure.schemaregistry.MessageType>
+    - <xref:azure.schemaregistry.OutboundMessageContent>
     - <xref:azure.schemaregistry.MessageContent>
   exceptions:
   - type: azure.schemaregistry.encoder.InvalidContentError if there is an issue with
