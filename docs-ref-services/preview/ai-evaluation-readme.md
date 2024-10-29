@@ -1,12 +1,12 @@
 ---
 title: Azure AI Evaluation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-evaluation, evaluation
-ms.date: 10/16/2024
+ms.date: 10/29/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: evaluation
 ---
-# Azure AI Evaluation client library for Python - version 1.0.0b4 
+# Azure AI Evaluation client library for Python - version 1.0.0b5 
 
 
 We are excited to introduce the public preview of the Azure AI Evaluation SDK. 
@@ -71,9 +71,6 @@ if __name__ == "__main__":
     # Running Relevance Evaluator on single input row
     relevance_score = relevance_eval(
         response="The Alpine Explorer Tent is the most waterproof.",
-        context="From the our product list,"
-        " the alpine explorer tent is the most waterproof."
-        " The Adventure Dining Table has higher weight.",
         query="Which tent is the most waterproof?",
     )
 
@@ -148,6 +145,95 @@ Output with a string that continues the conversation, responding to the latest m
 {{ conversation_history }}
 
 ```
+
+Query Response generaing prompty for gpt-4o with `json_schema` support
+Use this file as an override.
+```yaml
+---
+name: TaskSimulatorQueryResponseGPT4o
+description: Gets queries and responses from a blob of text
+model:
+  api: chat
+  parameters:
+    temperature: 0.0
+    top_p: 1.0
+    presence_penalty: 0
+    frequency_penalty: 0
+    response_format:
+      type: json_schema
+      json_schema:
+        name: QRJsonSchema
+        schema: 
+          type: object
+          properties:
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  q:
+                    type: string
+                  r:
+                    type: string
+                required:
+                  - q
+                  - r
+
+inputs:
+  text:
+    type: string
+  num_queries:
+    type: integer
+
+
+---
+system:
+You're an AI that helps in preparing a Question/Answer quiz from Text for "Who wants to be a millionaire" tv show
+Both Questions and Answers MUST BE extracted from given Text
+Frame Question in a way so that Answer is RELEVANT SHORT BITE-SIZED info from Text
+RELEVANT info could be: NUMBER, DATE, STATISTIC, MONEY, NAME
+A sentence should contribute multiple QnAs if it has more info in it
+Answer must not be more than 5 words
+Answer must be picked from Text as is
+Question should be as descriptive as possible and must include as much context as possible from Text
+Output must always have the provided number of QnAs
+Output must be in JSON format.
+Output must have {{num_queries}} objects in the format specified below. Any other count is unacceptable.
+Text:
+<|text_start|>
+On January 24, 1984, former Apple CEO Steve Jobs introduced the first Macintosh. In late 2003, Apple had 2.06 percent of the desktop share in the United States.
+Some years later, research firms IDC and Gartner reported that Apple's market share in the U.S. had increased to about 6%.
+<|text_end|>
+Output with 5 QnAs:
+{
+    "qna": [{
+        "q": "When did the former Apple CEO Steve Jobs introduced the first Macintosh?",
+        "r": "January 24, 1984"
+    },
+    {
+        "q": "Who was the former Apple CEO that introduced the first Macintosh on January 24, 1984?",
+        "r": "Steve Jobs"
+    },
+    {
+        "q": "What percent of the desktop share did Apple have in the United States in late 2003?",
+        "r": "2.06 percent"
+    },
+    {
+        "q": "What were the research firms that reported on Apple's market share in the U.S.?",
+        "r": "IDC and Gartner"
+    },
+    {
+        "q": "What was the percentage increase of Apple's market share in the U.S., as reported by research firms IDC and Gartner?",
+        "r": "6%"
+    }]
+}
+Text:
+<|text_start|>
+{{ text }}
+<|text_end|>
+Output with {{ num_queries }} QnAs:
+```
+
 Application code:
 
 ```python
@@ -165,6 +251,7 @@ model_config = {
     "azure_deployment": os.environ.get("AZURE_DEPLOYMENT"),
     # not providing key would make the SDK pick up `DefaultAzureCredential`
     # use "api_key": "<your API key>"
+    "api_version": "2024-08-01-preview" # keep this for gpt-4o
 }
 
 # Use Wikipedia to get some text for the simulation
@@ -208,20 +295,21 @@ async def callback(
     formatted_response = {
         "content": response,
         "role": "assistant",
-        "context": {
-            "citations": None,
-        },
+        "context": "",
     }
     messages["messages"].append(formatted_response)
     return {"messages": messages["messages"], "stream": stream, "session_state": session_state, "context": context}
 
 async def main():
     simulator = Simulator(model_config=model_config)
+    current_dir = os.path.dirname(__file__)
+    query_response_override_for_latest_gpt_4o = os.path.join(current_dir, "TaskSimulatorQueryResponseGPT4o.prompty")
     outputs = await simulator(
         target=callback,
         text=text,
+        query_response_generating_prompty=query_response_override_for_latest_gpt_4o, # use this only with latest gpt-4o
         num_queries=2,
-        max_conversation_turns=4,
+        max_conversation_turns=1,
         user_persona=[
             f"I am a student and I want to learn more about {wiki_search_term}",
             f"I am a teacher and I want to teach my students about {wiki_search_term}"
@@ -243,7 +331,7 @@ if __name__ == "__main__":
 #### Adversarial Simulator
 
 ```python
-from from azure.ai.evaluation.simulator import AdversarialSimulator, AdversarialScenario
+from azure.ai.evaluation.simulator import AdversarialSimulator, AdversarialScenario
 from azure.identity import DefaultAzureCredential
 from typing import Any, Dict, List, Optional
 import asyncio
@@ -376,18 +464,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b4/sdk/evaluation/azure-ai-evaluation
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b5/sdk/evaluation/azure-ai-evaluation
 [evaluation_pypi]: https://pypi.org/project/azure-ai-evaluation/
 [evaluation_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview
 [evaluation_samples]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b4/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b5/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b4/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b4/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.0b5/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.0b5/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
