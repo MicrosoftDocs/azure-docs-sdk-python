@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-appconfiguration, appconfiguration
-ms.date: 10/21/2024
+ms.date: 10/30/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: appconfiguration
