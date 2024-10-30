@@ -1,7 +1,7 @@
 ---
 title: Azure Fabric SDK for Python
 description: Reference for Azure Fabric SDK for Python
-ms.date: 10/29/2024
+ms.date: 10/30/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: fabric
