@@ -1,6 +1,7 @@
 ---
 title: Azure Graph RBAC SDK for Python
 description: Reference for Azure Graph RBAC SDK for Python
+ms.date: 10/31/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: graphrbac
@@ -8,4 +9,3 @@ ms.service: graphrbac
 # Azure Graph RBAC SDK for Python - preview
 ## Packages - preview
 [!INCLUDE [packages](graph-rbac-index.md)]
-
