@@ -1,16 +1,14 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse, synapse
-ms.date: 03/31/2022
+ms.date: 11/01/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: synapse-analytics
+ms.service: synapse
 ---
-# Microsoft Azure Synapse SDK for Python
+# Microsoft Azure SDK for Python
 
-This package was the Microsoft Azure Synapse bundle.
-
-It is deprecated. Please install the service specific packages prefixed by azure-synapse needed for your application.
+This package has been officially deprecated and will no longer be maintained after 2020-04-13. This package will only receive security fixes until 2020-04-13. Please install the service specific packages prefixed by azure-synapse needed for your application.
 
 The complete list of available packages can be found at: https://aka.ms/azsdk/python/all
 
@@ -21,4 +19,3 @@ Here's a non-exhaustive list of common packages:
 * [azure-synapse-spark](https://pypi.org/project/azure-synapse-spark/)
 * [azure-synapse-managedprivateendpoints](https://pypi.org/project/azure-synapse-managedprivateendpoints/)
 * [azure-synapse-monitoring](https://pypi.org/project/azure-synapse-monitoring/)
-
