@@ -1,12 +1,12 @@
 ---
-title: Azure IoT Hub libraries for python
-description: Reference for Azure IoT Hub libraries for python
-keywords: Azure, python, SDK, API, IoT Hub
-ms.date: 07/10/2017
+title: Azure IoT SDK for Python
+description: Reference for Azure IoT SDK for Python
+ms.date: 11/05/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: iot-hub
+ms.service: iot
 manager: douge
+keywords: Azure, python, SDK, API, IoT Hub
 ---
 # Azure IoT Hub libraries for python
 
@@ -76,4 +76,3 @@ iothub = async_iot_hub.result() # Blocking wait for creation
 
 > [!div class="nextstepaction"]
 > [Explore the Management APIs](/python/api/overview/azure/mgmt-iothub-readme)
-
