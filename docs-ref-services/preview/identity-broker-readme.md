@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-identity-broker, identity
-ms.date: 09/21/2024
+keywords: Azure, python, SDK, API, azure-identity-broker, entra-id
+ms.date: 11/05/2024
 ms.topic: reference
 ms.devlang: python
-ms.service: identity
+ms.service: entra-id
 ---
 
 
@@ -12,7 +12,9 @@ ms.service: identity
 
 This package extends the [Azure Identity][azure_identity] library by providing supplemental credentials for authenticating via an authentication broker.
 
-An authentication broker is an application that runs on a user’s machine that manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows authentication broker, Web Account Manager (WAM), is supported.
+An authentication broker is an application that runs on a user’s machine that manages the authentication handshakes and token maintenance for connected accounts. Currently, only the following brokers are supported:
+- Web Account Manager (WAM) on Windows
+- Company Portal on macOS
 
 [Source code][source_code] | [Package (PyPI)][azure_identity_broker] | [API reference documentation][ref_docs] | [Microsoft Entra ID documentation][entra_id]
 
@@ -36,15 +38,16 @@ When authenticating interactively via `InteractiveBrowserBrokerCredential`, a pa
 
 ## Microsoft account (MSA) passthrough
 
-Microsoft accounts (MSA) are personal accounts created by users to access Microsoft services. MSA passthrough is a legacy configuration which enables users to get tokens to resources which normally don't accept MSA logins. This feature is only available to first-party applications. Users authenticating with an application that is configured to use MSA passthrough can set `enable_msa_passthrough` to `True` inside `InteractiveBrowserBrokerCredential` to allow these personal accounts to be listed by WAM.
+Microsoft accounts (MSA) are personal accounts created by users to access Microsoft services. MSA passthrough is a legacy configuration which enables users to get tokens to resources which normally don't accept MSA logins. This feature is only available to first-party applications. Users authenticating with an application that is configured to use MSA passthrough can set `enable_msa_passthrough` to `True` inside `InteractiveBrowserBrokerCredential` to allow these personal accounts to be listed by broker.
 
 ## Redirect URIs
 
-Microsoft Entra applications rely on redirect URIs to determine where to send the authentication response after a user has logged in. To enable brokered authentication through WAM, a redirect URI matching the following pattern should be registered to the application:
+Microsoft Entra applications rely on redirect URIs to determine where to send the authentication response after a user has logged in. To enable brokered authentication through broker, a redirect URI matching the following pattern should be registered to the application:
 
-```
-ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}
-```
+* ``ms-appx-web://Microsoft.AAD.BrokerPlugin/your_client_id``
+if your app is expected to run on Windows 10+
+* ``msauth.com.msauth.unsignedapp://auth``
+if your app is expected to run on Mac
 
 ## Examples
 
@@ -109,6 +112,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [entra_id]: https://learn.microsoft.com/entra/identity/
 [pip]: https://pypi.org/project/pip
 [ref_docs]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity-broker/latest/index.html
-[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.2.0b1/sdk/identity/azure-identity-broker
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.2.0b1/sdk/identity/azure-identity/TROUBLESHOOTING.md
+[source_code]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.3.0b1/sdk/identity/azure-identity-broker
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity-broker_1.3.0b1/sdk/identity/azure-identity/TROUBLESHOOTING.md
 
