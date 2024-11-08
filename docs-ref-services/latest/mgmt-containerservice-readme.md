@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-containerservice, containerservice
-ms.date: 10/11/2024
+ms.date: 11/08/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: containerservice
