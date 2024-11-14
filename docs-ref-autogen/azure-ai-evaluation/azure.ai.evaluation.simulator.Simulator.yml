@@ -1,0 +1,49 @@
+### YamlMime:PythonClass
+uid: azure.ai.evaluation.simulator.Simulator
+name: Simulator
+fullName: azure.ai.evaluation.simulator.Simulator
+module: azure.ai.evaluation.simulator
+inheritances:
+- builtins.object
+summary: '> [!NOTE]
+
+  > This is an experimental class, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+  for more information.
+
+  >
+
+
+  Simulator for generating synthetic conversations.'
+constructor:
+  syntax: 'Simulator(model_config: AzureOpenAIModelConfiguration | OpenAIModelConfiguration)'
+  parameters:
+  - name: model_config
+    description: A dictionary defining the configuration for the model. Acceptable
+      types are AzureOpenAIModelConfiguration and OpenAIModelConfiguration.
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:azure.ai.evaluation.AzureOpenAIModelConfiguration>,
+      <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
+examples:
+- "Run a Simulator for 2 queries and 4 conversation turns.<!--[!code-python[Main](les\\\
+  evaluation_samples_simulate.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\4\\\\azure_ai_evaluation-1.0.0\\\\samples\\\\evaluation_samples_simulate.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   import asyncio\n   from azure.ai.evaluation.simulator import Simulator\n\n \
+  \  model_config = {\n       \"azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"\
+  ),\n       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"),\n       \"azure_deployment\"\
+  : os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   async def callback(\n\
+  \       messages: List[Dict],\n       stream: bool = False,\n       session_state:\
+  \ Any = None,\n       context: Optional[Dict[str, Any]] = None,\n   ) -> dict:\n\
+  \       query = messages[\"messages\"][0][\"content\"]\n\n       formatted_response\
+  \ = {\"content\": query, \"role\": \"assistant\"}\n       messages[\"messages\"\
+  ].append(formatted_response)\n       return {\n           \"messages\": messages[\"\
+  messages\"],\n           \"stream\": stream,\n           \"session_state\": session_state,\n\
+  \           \"context\": context,\n       }\n\n   simulator = Simulator(model_config=model_config)\n\
+  \n   result = asyncio.run(\n       simulator(\n           target=callback,\n   \
+  \        max_conversation_turns=2,\n           text=\"some text\",\n           tasks=tasks,\n\
+  \           api_call_delay_sec=1,\n           num_queries=1,\n       )\n   )\n\n\
+  \   ````\n"

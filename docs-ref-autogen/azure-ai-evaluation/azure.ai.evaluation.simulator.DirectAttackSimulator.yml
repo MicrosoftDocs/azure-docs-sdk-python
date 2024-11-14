@@ -1,0 +1,65 @@
+### YamlMime:PythonClass
+uid: azure.ai.evaluation.simulator.DirectAttackSimulator
+name: DirectAttackSimulator
+fullName: azure.ai.evaluation.simulator.DirectAttackSimulator
+module: azure.ai.evaluation.simulator
+inheritances:
+- builtins.object
+summary: '> [!NOTE]
+
+  > This is an experimental class, and may change at any time. Please see [https://aka.ms/azuremlexperimental](https://aka.ms/azuremlexperimental)
+  for more information.
+
+  >
+
+
+  Initialize a UPIA (user prompt injected attack) jailbreak adversarial simulator
+  with a project scope.
+
+  This simulator converses with your AI system using prompts designed to interrupt
+  normal functionality.
+
+
+  Constructor.'
+constructor:
+  syntax: 'DirectAttackSimulator(*, azure_ai_project: AzureAIProject, credential:
+    TokenCredential)'
+  parameters:
+  - name: azure_ai_project
+    description: 'The scope of the Azure AI project. It contains subscription id,
+      resource group, and project
+
+      name.'
+    isRequired: true
+    types:
+    - <xref:azure.ai.evaluation.AzureAIProject>
+  - name: credential
+    description: The credential for connecting to Azure AI project.
+    isRequired: true
+    types:
+    - <xref:azure.core.credentials.TokenCredential>
+examples:
+- "Run the DirectAttackSimulator to produce 2 results with 3 conversation turns each\
+  \ (6 messages in each result).<!--[!code-python[Main](les\\evaluation_samples_simulate.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\4\\\\azure_ai_evaluation-1.0.0\\\
+  \\samples\\\\evaluation_samples_simulate.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   import os\n   import asyncio\n   from\
+  \ azure.ai.evaluation.simulator import AdversarialScenario, DirectAttackSimulator\n\
+  \   from azure.identity import DefaultAzureCredential\n\n   azure_ai_project = {\n\
+  \       \"subscription_id\": os.environ.get(\"AZURE_SUBSCRIPTION_ID\"),\n      \
+  \ \"resource_group_name\": os.environ.get(\"AZURE_RESOURCE_GROUP_NAME\"),\n    \
+  \   \"project_name\": os.environ.get(\"AZURE_PROJECT_NAME\"),\n   }\n\n   async\
+  \ def callback(\n       messages: List[Dict],\n       stream: bool = False,\n  \
+  \     session_state: Any = None,\n       context: Optional[Dict[str, Any]] = None,\n\
+  \   ) -> dict:\n       query = messages[\"messages\"][0][\"content\"]\n\n      \
+  \ formatted_response = {\"content\": query, \"role\": \"assistant\"}\n       messages[\"\
+  messages\"].append(formatted_response)\n       return {\n           \"messages\"\
+  : messages[\"messages\"],\n           \"stream\": stream,\n           \"session_state\"\
+  : session_state,\n           \"context\": context,\n       }\n\n   simulator = DirectAttackSimulator(azure_ai_project=azure_ai_project,\
+  \ credential=DefaultAzureCredential())\n\n   outputs = asyncio.run(\n       simulator(\n\
+  \           scenario=AdversarialScenario.ADVERSARIAL_REWRITE,\n           max_conversation_turns=3,\n\
+  \           max_simulation_results=2,\n           target=callback,\n       )\n \
+  \  )\n\n   ````\n"
