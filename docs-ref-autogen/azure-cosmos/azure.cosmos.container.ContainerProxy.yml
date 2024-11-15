@@ -57,8 +57,8 @@ methods:
     = None, indexing_directive: int | None = None, *, enable_automatic_id_generation:
     bool = False, session_token: str | None = None, initial_headers: Dict[str, str]
     | None = None, etag: str | None = None, match_condition: MatchConditions | None
-    = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) ->
-    Dict[str, Any]'
+    = None, priority: Literal[''High'', ''Low''] | None = None, no_response: bool
+    | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -123,10 +123,20 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
-  return:
-    description: A dict representing the new item.
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip sending
+
+      response payloads. When not specified explicitly here, the default value will
+      be determined from kwargs or
+
+      when also not specified there from client-level kwargs.'
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:bool>
+  return:
+    description: A CosmosDict representing the new item. The dict will be empty if
+      *no_response* is specified.
+    types:
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: Item with the given ID already exists.
@@ -154,8 +164,8 @@ methods:
     description: Partition key for the items to be deleted.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -207,8 +217,8 @@ methods:
     description: Partition key for the conflict to delete.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -245,8 +255,8 @@ methods:
     description: Specifies the partition key value for the item.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
     isRequired: true
@@ -309,7 +319,7 @@ methods:
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
     None, session_token: str | None = None, etag: str | None = None, match_condition:
     MatchConditions | None = None, priority: Literal[''High'', ''Low''] | None = None,
-    **kwargs: Any) -> List[Dict[str, Any]]'
+    **kwargs: Any) -> CosmosList'
   parameters:
   - name: batch_operations
     description: The batch of operations to be executed.
@@ -320,8 +330,8 @@ methods:
     description: The partition key value of the batch operations.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   keywordOnlyParameters:
   - name: pre_trigger_include
     description: trigger id to be used as pre operation trigger.
@@ -362,14 +372,44 @@ methods:
     types:
     - <xref:typing.Callable>
   return:
-    description: A list representing the item after the batch operations went through.
+    description: A CosmosList representing the items after the batch operations went
+      through.
     types:
-    - <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:azure.cosmos.CosmosList>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The batch failed to execute.
   - type: azure.cosmos.exceptions.CosmosBatchOperationError
     description: A transactional batch operation failed in the batch.
+- uid: azure.cosmos.container.ContainerProxy.feed_range_from_partition_key
+  name: feed_range_from_partition_key
+  summary: 'Gets the feed range for a given partition key.
+
+    :param partition_key: partition key to get feed range.
+
+    :type partition_key: PartitionKeyType
+
+    :returns: a feed range
+
+    :rtype: Dict[str, Any]
+
+
+    > [!WARNING]
+
+    > The structure of the dict representation of a feed range may vary, including
+    which keys
+
+    >
+
+    > are present. It therefore should only be treated as an opaque value.
+
+    >'
+  signature: 'feed_range_from_partition_key(partition_key: str | int | float | bool
+    | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue]) ->
+    Dict[str, Any]'
+  parameters:
+  - name: partition_key
+    isRequired: true
 - uid: azure.cosmos.container.ContainerProxy.get_conflict
   name: get_conflict
   summary: Get the conflict identified by *conflict*.
@@ -386,8 +426,8 @@ methods:
     description: Partition key for the conflict to retrieve.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -400,6 +440,45 @@ methods:
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given conflict couldn't be retrieved.
+- uid: azure.cosmos.container.ContainerProxy.get_latest_session_token
+  name: get_latest_session_token
+  summary: '**provisional** This method is still in preview and may be subject to
+    breaking changes.
+
+
+    Gets the the most up to date session token from the list of session token and
+    feed
+
+    range tuples for a specific target feed range. The feed range can be obtained
+    from a partition key
+
+    or by reading the container feed ranges. This should only be used if maintaining
+    own session token or else
+
+    the CosmosClient instance will keep track of session token. Session tokens and
+    feed ranges are
+
+    scoped to a container. Only input session tokens and feed ranges obtained from
+    the same container.
+
+    :param feed_ranges_to_session_tokens: List of feed range and session token tuples.
+
+    :type feed_ranges_to_session_tokens: List[Tuple[Dict[str, Any], str]]
+
+    :param target_feed_range: feed range to get most up to date session token.
+
+    :type target_feed_range: Dict[str, Any]
+
+    :returns: a session token
+
+    :rtype: str'
+  signature: 'get_latest_session_token(feed_ranges_to_session_tokens: List[Tuple[Dict[str,
+    Any], str]], target_feed_range: Dict[str, Any]) -> str'
+  parameters:
+  - name: feed_ranges_to_session_tokens
+    isRequired: true
+  - name: target_feed_range
+    isRequired: true
 - uid: azure.cosmos.container.ContainerProxy.get_throughput
   name: get_throughput
   summary: 'Get the ThroughputProperties object for this container.
@@ -421,6 +500,41 @@ methods:
     description: 'No throughput properties exists for the container or
 
       the throughput properties could not be retrieved.'
+- uid: azure.cosmos.container.ContainerProxy.is_feed_range_subset
+  name: is_feed_range_subset
+  summary: 'Checks if child feed range is a subset of parent feed range.
+
+    :param parent_feed_range: left feed range
+
+    :type parent_feed_range: Dict[str, Any]
+
+    :param child_feed_range: right feed range
+
+    :type child_feed_range: Dict[str, Any]
+
+    :returns: a boolean indicating if child feed range is a subset of parent feed
+    range
+
+    :rtype: bool
+
+
+    > [!WARNING]
+
+    > The structure of the dict representation of a feed range may vary, including
+    which keys
+
+    >
+
+    > are present. It therefore should only be treated as an opaque value.
+
+    >'
+  signature: 'is_feed_range_subset(parent_feed_range: Dict[str, Any], child_feed_range:
+    Dict[str, Any]) -> bool'
+  parameters:
+  - name: parent_feed_range
+    isRequired: true
+  - name: child_feed_range
+    isRequired: true
 - uid: azure.cosmos.container.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
@@ -451,8 +565,8 @@ methods:
     patch_operations: List[Dict[str, Any]], *, filter_predicate: str | None = None,
     pre_trigger_include: str | None = None, post_trigger_include: str | None = None,
     session_token: str | None = None, etag: str | None = None, match_condition: MatchConditions
-    | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any)
-    -> Dict[str, Any]'
+    | None = None, priority: Literal[''High'', ''Low''] | None = None, no_response:
+    bool | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
@@ -463,8 +577,8 @@ methods:
     description: The partition key of the object to patch.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   - name: patch_operations
     description: The list of patch operations to apply to the item.
     isRequired: true
@@ -513,10 +627,22 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
-  return:
-    description: A dict representing the item after the patch operations went through.
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip sending
+
+      response payloads. When not specified explicitly here, the default value will
+      be determined from kwargs or
+
+      when also not specified there from client-level kwargs.'
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:bool>
+  return:
+    description: 'A CosmosDict representing the item after the patch operations went
+      through. The dict will be empty
+
+      if *no_response* is specified.'
+    types:
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'The patch operations failed or the item with
@@ -556,8 +682,8 @@ methods:
     description: Specifies the partition key value for the item.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
     isRequired: true
@@ -612,8 +738,8 @@ methods:
     description: partition key at which the query request is targeted.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   - name: enable_cross_partition_query
     description: 'Allows sending of more than one request to
 
@@ -700,17 +826,17 @@ methods:
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\32\\\\azure-cosmos-4.7.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    \\33\\\\azure_cosmos-4.8.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   import json\n\n   for item in\
     \ container.query_items(\n       query='SELECT * FROM products p WHERE p.productModel\
-    \ <> \"DISCONTINUED\"',\n       enable_cross_partition_query=True,\n   ):\n  \
-    \     print(json.dumps(item, indent=True))\n\n   ````\n\nParameterized query to\
-    \ get all products that have been discontinued:<!--[!code-python[Main](les\\examples.py\
-    \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
-    dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
-    \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    32\\\\azure-cosmos-4.7.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    \ &lt;&gt; \"DISCONTINUED\"',\n       enable_cross_partition_query=True,\n   ):\n\
+    \       print(json.dumps(item, indent=True))\n\n   ````\n\nParameterized query\
+    \ to get all products that have been discontinued:<!--[!code-python[Main](les\\\
+    examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
+    : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+    \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+    \\33\\\\azure_cosmos-4.8.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   discontinued_items = container.query_items(\n\
     \       query='SELECT * FROM products p WHERE p.productModel = @model AND p.productName=\"\
@@ -721,60 +847,46 @@ methods:
   name: query_items_change_feed
   summary: Get a sorted list of items that were changed, in the order in which they
     were modified.
-  signature: 'query_items_change_feed(partition_key_range_id: str | None = None, is_start_from_beginning:
-    bool = False, continuation: str | None = None, max_item_count: int | None = None,
-    *, start_time: datetime | None = None, partition_key: str | int | float | bool
-    | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue] | None
-    = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) ->
-    ItemPaged[Dict[str, Any]]'
+  signature: 'query_items_change_feed(*, max_item_count: int | None = None, start_time:
+    datetime | Literal[''Now'', ''Beginning''] | None = None, partition_key: PartitionKeyType,
+    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
+    Any]]'
   parameters:
-  - name: partition_key_range_id
-    description: 'ChangeFeed requests can be executed against specific partition key
-      ranges.
-
-      This is used to process the change feed in parallel across multiple consumers.'
+  - name: args
+    description: args
     isRequired: true
+    types:
+    - <xref:typing.Any>
+  keywordOnlyParameters:
+  - name: continuation
+    description: The continuation token retrieved from previous response.
     types:
     - <xref:str>
-  - name: is_start_from_beginning
-    description: 'Get whether change feed should start from
-
-      beginning (true) or from current (false). By default, it''s start from current
-      (false).'
-    isRequired: true
+  - name: feed_range
+    description: The feed range that is used to define the scope.
     types:
-    - <xref:bool>
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+  - name: partition_key
+    description: 'The partition key that is used to define the scope
+
+      (logical partition or a subset of a container)'
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
-    isRequired: true
     types:
     - <xref:int>
-  - name: continuation
-    description: e_tag value to be used as continuation for reading change feed.
-    isRequired: true
-    types:
-    - <xref:str>
-  - name: max_item_count
-    description: Max number of items to be returned in the enumeration operation.
-    isRequired: true
-  keywordOnlyParameters:
   - name: start_time
-    description: 'Specifies a point of time to start change feed. Provided value will
-      be
+    description: 'The start time to start processing chang feed items.
 
-      converted to UTC. This value will be ignored if *is_start_from_beginning* is
-      set to true.'
-    types:
-    - <xref:datetime.datetime>
-  - name: partition_key
-    description: partition key at which ChangeFeed requests are targeted.
-    types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
-  - name: response_hook
-    description: A callable invoked with the response metadata.
-    types:
-    - <xref:typing.Callable>
+      Beginning: Processing the change feed items from the beginning of the change
+      feed.
+
+      Now: Processing change feed from the current time, so only events for all future
+      changes will be retrieved.
+
+      ~datetime.datetime: processing change feed from a point of time. Provided value
+      will be converted to UTC.
+
+      By default, it is start from current ("Now")'
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
 
@@ -785,10 +897,14 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: response_hook
+    description: A callable invoked with the response metadata.
+    types:
+    - <xref:typing.Callable>
   return:
     description: An Iterable of items (dicts).
     types:
-    - <xref:typing.Iterable>[<xref:dict>[<xref:str>, <xref:typing.Any>]]
+    - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.container.ContainerProxy.read
   name: read
   summary: Read the container properties.
@@ -894,6 +1010,33 @@ methods:
     description: An Iterable of items (dicts).
     types:
     - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
+- uid: azure.cosmos.container.ContainerProxy.read_feed_ranges
+  name: read_feed_ranges
+  summary: 'Obtains a list of feed ranges that can be used to parallelize feed operations.
+
+
+    > [!WARNING]
+
+    > The structure of the dict representation of a feed range may vary, including
+    which keys
+
+    >
+
+    > are present. It therefore should only be treated as an opaque value.
+
+    >'
+  signature: 'read_feed_ranges(*, force_refresh: bool = False, **kwargs: Any) -> Iterable[Dict[str,
+    Any]]'
+  keywordOnlyParameters:
+  - name: force_refresh
+    description: Flag to indicate whether obtain the list of feed ranges directly
+      from cache or refresh the cache.
+    types:
+    - <xref:bool>
+  return:
+    description: A list representing the feed ranges in base64 encoded string
+    types:
+    - <xref:typing.Iterable>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]
 - uid: azure.cosmos.container.ContainerProxy.read_item
   name: read_item
   summary: Get the item identified by *item*.
@@ -902,7 +1045,7 @@ methods:
     populate_query_metrics: bool | None = None, post_trigger_include: str | None =
     None, *, session_token: str | None = None, initial_headers: Dict[str, str] | None
     = None, max_integrated_cache_staleness_in_ms: int | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, **kwargs: Any) -> Dict[str, Any]'
+    ''Low''] | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
@@ -913,8 +1056,8 @@ methods:
     description: Partition key for the item to retrieve.
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.List>[<xref:typing.Union>[<xref:str>,
-      <xref:int>, <xref:float>, <xref:bool>]]]
+    - <xref:typing.Union>[<xref:str>, <xref:int>, <xref:float>, <xref:bool>, <xref:typing.Sequence>[<xref:typing.Union>[<xref:str>,
+      <xref:int>, <xref:float>, <xref:bool>, <xref:None>]]]
   - name: post_trigger_include
     description: trigger id to be used as post operation trigger.
     isRequired: true
@@ -953,9 +1096,9 @@ methods:
     types:
     - <xref:typing.Literal>["High", "Low"]
   return:
-    description: Dict representing the item to be retrieved.
+    description: A CosmosDict representing the item to be retrieved.
     types:
-    - <xref:dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given item couldn't be retrieved.
@@ -964,7 +1107,7 @@ methods:
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
-    \\32\\\\azure-cosmos-4.7.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
+    \\33\\\\azure_cosmos-4.8.0\\\\samples\\\\examples.py\", \"xml:space\": \"preserve\"\
     , \"force\": false, \"language\": \"python\", \"highlight_args\": {\"linenostart\"\
     : 1}, \"linenos\": false} -->\n\n````python\n\n   item = container.read_item(\"\
     item2\", partition_key=\"Widget\")\n   item[\"productModel\"] = \"DISCONTINUED\"\
@@ -999,8 +1142,8 @@ methods:
     bool | None = None, pre_trigger_include: str | None = None, post_trigger_include:
     str | None = None, *, session_token: str | None = None, initial_headers: Dict[str,
     str] | None = None, etag: str | None = None, match_condition: MatchConditions
-    | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any)
-    -> Dict[str, Any]'
+    | None = None, priority: Literal[''High'', ''Low''] | None = None, no_response:
+    bool | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -1057,10 +1200,22 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
-  return:
-    description: A dict representing the item after replace went through.
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip
+
+      sending response payloads. When not specified explicitly here, the default value
+      will be determined from
+
+      kwargs or when also not specified there from client-level kwargs.'
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:bool>
+  return:
+    description: 'A CosmosDict representing the item after replace went through. The
+      dict will be empty if *no_response*
+
+      is specified.'
+    types:
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: 'The replace operation failed or the item with
@@ -1106,8 +1261,8 @@ methods:
     = None, pre_trigger_include: str | None = None, post_trigger_include: str | None
     = None, *, session_token: str | None = None, initial_headers: Dict[str, str] |
     None = None, etag: str | None = None, match_condition: MatchConditions | None
-    = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) ->
-    Dict[str, Any]'
+    = None, priority: Literal[''High'', ''Low''] | None = None, no_response: bool
+    | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -1159,10 +1314,20 @@ methods:
       enabled at the account level.'
     types:
     - <xref:typing.Literal>["High", "Low"]
-  return:
-    description: A dict representing the upserted item.
+  - name: no_response
+    description: 'Indicates whether service should be instructed to skip sending
+
+      response payloads. When not specified explicitly here, the default value will
+      be determined from kwargs or
+
+      when also not specified there from client-level kwargs.'
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Any>]
+    - <xref:bool>
+  return:
+    description: A CosmosDict representing the upserted item. The dict will be empty
+      if *no_response* is specified.
+    types:
+    - <xref:azure.cosmos.CosmosDict>[<xref:str>, <xref:typing.Any>]
   exceptions:
   - type: azure.cosmos.exceptions.CosmosHttpResponseError
     description: The given item could not be upserted.
