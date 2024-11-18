@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-mysqlflexibleservers, mysqlflexibleservers
-ms.date: 09/26/2024
+ms.date: 11/18/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: mysqlflexibleservers
