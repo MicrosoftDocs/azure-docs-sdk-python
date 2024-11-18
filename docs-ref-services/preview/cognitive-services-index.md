@@ -7,6 +7,7 @@
 |[AI Generative](ai-generative-readme.md)|[azure-ai-generative](https://pypi.org/project/azure-ai-generative)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-generative)|
 |[AI Model Inference](ai-inference-readme.md)|[azure-ai-inference](https://pypi.org/project/azure-ai-inference)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-inference)|
 |Personalizer|[azure-ai-personalizer](https://pypi.org/project/azure-ai-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/personalizer/azure-ai-personalizer)|
+|[AI Projects](ai-projects-readme.md)|[azure-ai-projects](https://pypi.org/project/azure-ai-projects)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-projects)|
 |[AI Resources](ai-resources-readme.md)|[azure-ai-resources](https://pypi.org/project/azure-ai-resources)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-resources)|
 |[Document Translation](ai-translation-document-readme.md)|[azure-ai-translation-document](https://pypi.org/project/azure-ai-translation-document)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-document)|
 |[Text Translation](ai-translation-text-readme.md)|[azure-ai-translation-text](https://pypi.org/project/azure-ai-translation-text)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/translation/azure-ai-translation-text)|
