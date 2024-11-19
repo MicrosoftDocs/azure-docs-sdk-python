@@ -16,7 +16,8 @@ constructor:
   syntax: 'VectorizableTextQuery(*, text: str, k_nearest_neighbors: int | None = None,
     fields: str | None = None, exhaustive: bool | None = None, oversampling: float
     | None = None, weight: float | None = None, threshold: _models.VectorThreshold
-    | None = None, filter_override: str | None = None, **kwargs: Any)'
+    | None = None, filter_override: str | None = None, query_rewrites: str | _models.QueryRewritesType
+    | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: k_nearest_neighbors
     description: Number of nearest neighbors to return as top hits.
@@ -90,6 +91,13 @@ constructor:
     description: The text to be vectorized to perform a vector search query. Required.
     types:
     - <xref:str>
+  - name: query_rewrites
+    description: 'Can be configured to let a generative model rewrite the query before
+
+      sending it to be vectorized. Known values are: "none" and "generative".'
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.models.QueryRewritesType>
 variables:
 - description: 'The kind of vector query being performed. Required. Known values are:
     "vector",
@@ -172,6 +180,13 @@ variables:
   name: text
   types:
   - <xref:str>
+- description: 'Can be configured to let a generative model rewrite the query before
+
+    sending it to be vectorized. Known values are: "none" and "generative".'
+  name: query_rewrites
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.models.QueryRewritesType>
 methods:
 - uid: azure.search.documents.models.VectorizableTextQuery.as_dict
   name: as_dict
@@ -188,12 +203,15 @@ methods:
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
+  - name: keep_readonly
+    description: If you want to serialize the readonly attributes
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
-  - name: keep_readonly
-    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -215,6 +233,8 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
+    types:
+    - <xref:ModelType>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.search.documents.models.VectorizableTextQuery.enable_additional_properties_sending
@@ -238,15 +258,20 @@ methods:
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A key extractor function.
+    defaultValue: None
+    types:
+    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
-  - name: key_extractors
-    defaultValue: None
   return:
     description: An instance of this model
+    types:
+    - <xref:ModelType>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.search.documents.models.VectorizableTextQuery.is_xml_model

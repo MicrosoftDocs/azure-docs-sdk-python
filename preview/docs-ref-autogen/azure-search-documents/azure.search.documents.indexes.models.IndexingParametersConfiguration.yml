@@ -16,12 +16,14 @@ constructor:
     '''', fail_on_unsupported_content_type: bool = False, fail_on_unprocessable_document:
     bool = False, index_storage_metadata_only_for_oversized_documents: bool = False,
     delimited_text_headers: str | None = None, delimited_text_delimiter: str | None
-    = None, first_line_contains_headers: bool = True, document_root: str | None =
-    None, data_to_extract: str | _models.BlobIndexerDataToExtract = ''contentAndMetadata'',
-    image_action: str | _models.BlobIndexerImageAction = ''none'', allow_skillset_to_read_file_data:
+    = None, first_line_contains_headers: bool = True, markdown_parsing_submode: str
+    | _models.MarkdownParsingSubmode = ''oneToMany'', markdown_header_depth: str |
+    _models.MarkdownHeaderDepth = ''h6'', document_root: str | None = None, data_to_extract:
+    str | _models.BlobIndexerDataToExtract = ''contentAndMetadata'', image_action:
+    str | _models.BlobIndexerImageAction = ''none'', allow_skillset_to_read_file_data:
     bool = False, pdf_text_rotation_algorithm: str | _models.BlobIndexerPDFTextRotationAlgorithm
     = ''none'', execution_environment: str | _models.IndexerExecutionEnvironment =
-    ''standard'', query_timeout: str | None = ''00:05:00'', **kwargs: Any)'
+    ''standard'', query_timeout: str = ''00:05:00'', **kwargs: Any)'
   keywordOnlyParameters:
   - name: additional_properties
     description: 'Unmatched properties from the message are deserialized to this
@@ -33,8 +35,10 @@ constructor:
     description: 'Represents the parsing mode for indexing from an Azure blob data
       source.
 
-      Known values are: "default", "text", "delimitedText", "json", "jsonArray", and
-      "jsonLines".'
+      Known values are: "default", "text", "delimitedText", "json", "jsonArray", "jsonLines",
+      and
+
+      "markdown".'
     defaultValue: default
     types:
     - <xref:str>
@@ -103,6 +107,28 @@ constructor:
     defaultValue: 'True'
     types:
     - <xref:bool>
+  - name: markdown_parsing_submode
+    description: 'Specifies the submode that will determine whether a markdown
+
+      file will be parsed into exactly one search document or multiple search documents.
+      Default is
+
+      `oneToMany`. Known values are: "oneToMany" and "oneToOne".'
+    defaultValue: oneToMany
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.MarkdownParsingSubmode>
+  - name: markdown_header_depth
+    description: 'Specifies the max header depth that will be considered while
+
+      grouping markdown content. Default is `h6`. Known values are: "h1", "h2", "h3",
+      "h4", "h5",
+
+      and "h6".'
+    defaultValue: h6
+    types:
+    - <xref:str>
+    - <xref:azure.search.documents.indexes.models.MarkdownHeaderDepth>
   - name: document_root
     description: 'For JSON arrays, given a structured or semi-structured document,
       you
@@ -185,8 +211,10 @@ variables:
   - <xref:dict>[<xref:str>, <xref:any>]
 - description: 'Represents the parsing mode for indexing from an Azure blob data source.
 
-    Known values are: "default", "text", "delimitedText", "json", "jsonArray", and
-    "jsonLines".'
+    Known values are: "default", "text", "delimitedText", "json", "jsonArray", "jsonLines",
+    and
+
+    "markdown".'
   name: parsing_mode
   types:
   - <xref:str>
@@ -253,6 +281,26 @@ variables:
   name: first_line_contains_headers
   types:
   - <xref:bool>
+- description: 'Specifies the submode that will determine whether a markdown
+
+    file will be parsed into exactly one search document or multiple search documents.
+    Default is
+
+    `oneToMany`. Known values are: "oneToMany" and "oneToOne".'
+  name: markdown_parsing_submode
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.MarkdownParsingSubmode>
+- description: 'Specifies the max header depth that will be considered while
+
+    grouping markdown content. Default is `h6`. Known values are: "h1", "h2", "h3",
+    "h4", "h5",
+
+    and "h6".'
+  name: markdown_header_depth
+  types:
+  - <xref:str>
+  - <xref:azure.search.documents.indexes.models.MarkdownHeaderDepth>
 - description: 'For JSON arrays, given a structured or semi-structured document, you
     can
 
@@ -336,12 +384,15 @@ methods:
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
+  - name: keep_readonly
+    description: If you want to serialize the readonly attributes
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
-  - name: keep_readonly
-    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -363,6 +414,8 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
+    types:
+    - <xref:ModelType>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.search.documents.indexes.models.IndexingParametersConfiguration.enable_additional_properties_sending
@@ -386,15 +439,20 @@ methods:
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A key extractor function.
+    defaultValue: None
+    types:
+    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
-  - name: key_extractors
-    defaultValue: None
   return:
     description: An instance of this model
+    types:
+    - <xref:ModelType>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.search.documents.indexes.models.IndexingParametersConfiguration.is_xml_model

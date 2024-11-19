@@ -11,12 +11,13 @@ summary: 'Capacity pool resource.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'CapacityPool(*, location: str, size: int = 4398046511104, service_level:
     str | _models.ServiceLevel = ''Premium'', tags: Dict[str, str] | None = None,
-    qos_type: str | _models.QosType | None = None, cool_access: bool = False, encryption_type:
-    str | _models.EncryptionType = ''Single'', **kwargs: Any)'
+    custom_throughput_mibps: float | None = None, qos_type: str | _models.QosType
+    | None = None, cool_access: bool = False, encryption_type: str | _models.EncryptionType
+    = ''Single'', **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Resource tags.
@@ -30,18 +31,25 @@ constructor:
     description: 'Provisioned size of the pool (in bytes). Allowed values are in 1TiB
       chunks
 
-      (value must be multiply of 4398046511104).'
+      (value must be multiple of 1099511627776).'
     defaultValue: '4398046511104'
     types:
     - <xref:int>
   - name: service_level
     description: 'The service level of the file system. Known values are: "Standard",
 
-      "Premium", "Ultra", and "StandardZRS".'
+      "Premium", "Ultra", "StandardZRS", and "Flexible".'
     defaultValue: Premium
     types:
     - <xref:str>
     - <xref:azure.mgmt.netapp.models.ServiceLevel>
+  - name: custom_throughput_mibps
+    description: 'Maximum throughput in MiB/s that can be achieved by this pool
+
+      and this will be accepted as input only for manual qosType pool with Flexible
+      service level.'
+    types:
+    - <xref:float>
   - name: qos_type
     description: 'The qos type of the pool. Known values are: "Auto" and "Manual".'
     types:
@@ -66,7 +74,8 @@ constructor:
 variables:
 - description: 'Fully qualified resource ID for the resource. E.g.
 
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".'
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
@@ -106,13 +115,13 @@ variables:
 - description: 'Provisioned size of the pool (in bytes). Allowed values are in 1TiB
     chunks (value
 
-    must be multiply of 4398046511104).'
+    must be multiple of 1099511627776).'
   name: size
   types:
   - <xref:int>
 - description: 'The service level of the file system. Known values are: "Standard",
 
-    "Premium", "Ultra", and "StandardZRS".'
+    "Premium", "Ultra", "StandardZRS", and "Flexible".'
   name: service_level
   types:
   - <xref:str>
@@ -127,6 +136,13 @@ variables:
   - <xref:float>
 - description: Utilized throughput of pool in MiB/s.
   name: utilized_throughput_mibps
+  types:
+  - <xref:float>
+- description: 'Maximum throughput in MiB/s that can be achieved by this pool
+
+    and this will be accepted as input only for manual qosType pool with Flexible
+    service level.'
+  name: custom_throughput_mibps
   types:
   - <xref:float>
 - description: 'The qos type of the pool. Known values are: "Auto" and "Manual".'

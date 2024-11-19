@@ -11,7 +11,7 @@ summary: 'Volume resource.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'VolumeGroupVolumeProperties(*, creation_token: str, usage_threshold: int
     = 107374182400, subnet_id: str, name: str | None = None, tags: Dict[str, str]
@@ -20,6 +20,7 @@ constructor:
     protocol_types: List[str] | None = None, snapshot_id: str | None = None, delete_base_snapshot:
     bool | None = None, backup_id: str | None = None, network_features: str | _models.NetworkFeatures
     = ''Basic'', volume_type: str | None = None, data_protection: _models.VolumePropertiesDataProtection
+    | None = None, accept_grow_capacity_pool_for_short_term_clone_split: str | _models.AcceptGrowCapacityPoolForShortTermCloneSplit
     | None = None, is_restoring: bool | None = None, snapshot_directory_visible: bool
     = True, kerberos_enabled: bool = False, security_style: str | _models.SecurityStyle
     = ''unix'', smb_encryption: bool = False, smb_access_based_enumeration: str |
@@ -34,7 +35,8 @@ constructor:
     int = 0, capacity_pool_resource_id: str | None = None, proximity_placement_group:
     str | None = None, volume_spec_name: str | None = None, placement_rules: List[_models.PlacementKeyValuePairs]
     | None = None, enable_subvolumes: str | _models.EnableSubvolumes = ''Disabled'',
-    is_large_volume: bool = False, **kwargs: Any)'
+    is_large_volume: bool = False, language: str | _models.VolumeLanguage | None =
+    None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: name
     description: Resource name.
@@ -57,7 +59,7 @@ constructor:
   - name: service_level
     description: 'The service level of the file system. Known values are: "Standard",
 
-      "Premium", "Ultra", and "StandardZRS".'
+      "Premium", "Ultra", "StandardZRS", and "Flexible".'
     defaultValue: Premium
     types:
     - <xref:str>
@@ -66,10 +68,14 @@ constructor:
     description: 'Maximum storage quota allowed for a file system in bytes. This is
       a
 
-      soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB,
-      500Tib for
+      soft quota used for alerting only. For regular volumes, valid values are in
+      the range 50GiB to
 
-      LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes.'
+      100TiB. For large volumes, valid values are in the range 100TiB to 1PiB, and
+      on an exceptional
+
+      basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of
+      1 GiB.'
     defaultValue: '107374182400'
     types:
     - <xref:int>
@@ -82,7 +88,7 @@ constructor:
     types:
     - <xref:list>[<xref:str>]
   - name: snapshot_id
-    description: UUID v4 or resource identifier used to identify the Snapshot.
+    description: Resource identifier used to identify the Snapshot.
     types:
     - <xref:str>
   - name: delete_base_snapshot
@@ -93,7 +99,7 @@ constructor:
     types:
     - <xref:bool>
   - name: backup_id
-    description: UUID v4 or resource identifier used to identify the Backup.
+    description: Resource identifier used to identify the Backup.
     types:
     - <xref:str>
   - name: subnet_id
@@ -103,9 +109,12 @@ constructor:
     types:
     - <xref:str>
   - name: network_features
-    description: 'Network features available to the volume, or current state of
+    description: 'The original value of the network features type available to the
 
-      update. Known values are: "Basic", "Standard", "Basic_Standard", and "Standard_Basic".'
+      volume at the time it was created. Known values are: "Basic", "Standard", "Basic_Standard",
+      and
+
+      "Standard_Basic".'
     defaultValue: Basic
     types:
     - <xref:str>
@@ -124,6 +133,22 @@ constructor:
       the replication.'
     types:
     - <xref:azure.mgmt.netapp.models.VolumePropertiesDataProtection>
+  - name: accept_grow_capacity_pool_for_short_term_clone_split
+    description: 'While auto splitting the short
+
+      term clone volume, if the parent pool does not have enough space to accommodate
+      the volume
+
+      after split, it will be automatically resized, which will lead to increased
+      billing. To accept
+
+      capacity pool size auto grow and create a short term clone volume, set the property
+      as
+
+      accepted. Known values are: "Accepted" and "Declined".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit>
   - name: is_restoring
     description: Restoring.
     types:
@@ -251,7 +276,16 @@ constructor:
       group. 0755 - gives read/write/execute permissions to owner and read/execute
       to group and other
 
-      users.'
+      users.  Avoid passing null value for unixPermissions in volume update operation,
+      As per the
+
+      behavior, If Null value is passed then user-visible unixPermissions value will
+      became null, and
+
+      user will not be able to get unixPermissions value. On safer side, actual unixPermissions
+      value
+
+      on volume will remain as its last saved value only.'
     types:
     - <xref:str>
   - name: avs_data_store
@@ -310,6 +344,33 @@ constructor:
     description: Specifies whether volume is a Large Volume or Regular Volume.
     types:
     - <xref:bool>
+  - name: language
+    description: 'Language supported for volume. Known values are: "c.utf-8", "utf8mb4",
+      "ar",
+
+      "ar.utf-8", "hr", "hr.utf-8", "cs", "cs.utf-8", "da", "da.utf-8", "nl", "nl.utf-8",
+      "en",
+
+      "en.utf-8", "fi", "fi.utf-8", "fr", "fr.utf-8", "de", "de.utf-8", "he", "he.utf-8",
+      "hu",
+
+      "hu.utf-8", "it", "it.utf-8", "ja", "ja.utf-8", "ja-v1", "ja-v1.utf-8", "ja-jp.pck",
+
+      "ja-jp.pck.utf-8", "ja-jp.932", "ja-jp.932.utf-8", "ja-jp.pck-v2", "ja-jp.pck-v2.utf-8",
+      "ko",
+
+      "ko.utf-8", "no", "no.utf-8", "pl", "pl.utf-8", "pt", "pt.utf-8", "c", "ro",
+      "ro.utf-8", "ru",
+
+      "ru.utf-8", "zh", "zh.utf-8", "zh.gbk", "zh.gbk.utf-8", "zh-tw.big5", "zh-tw.big5.utf-8",
+
+      "zh-tw", "zh-tw.utf-8", "sk", "sk.utf-8", "sl", "sl.utf-8", "es", "es.utf-8",
+      "sv", "sv.utf-8",
+
+      "tr", "tr.utf-8", "en-us", and "en-us.utf-8".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.netapp.models.VolumeLanguage>
 variables:
 - description: Resource Id.
   name: id
@@ -343,7 +404,7 @@ variables:
   - <xref:str>
 - description: 'The service level of the file system. Known values are: "Standard",
 
-    "Premium", "Ultra", and "StandardZRS".'
+    "Premium", "Ultra", "StandardZRS", and "Flexible".'
   name: service_level
   types:
   - <xref:str>
@@ -351,10 +412,14 @@ variables:
 - description: 'Maximum storage quota allowed for a file system in bytes. This is
     a soft
 
-    quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB,
-    500Tib for
+    quota used for alerting only. For regular volumes, valid values are in the range
+    50GiB to
 
-    LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes.'
+    100TiB. For large volumes, valid values are in the range 100TiB to 1PiB, and on
+    an exceptional
+
+    basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1
+    GiB.'
   name: usage_threshold
   types:
   - <xref:int>
@@ -370,7 +435,7 @@ variables:
   name: provisioning_state
   types:
   - <xref:str>
-- description: UUID v4 or resource identifier used to identify the Snapshot.
+- description: Resource identifier used to identify the Snapshot.
   name: snapshot_id
   types:
   - <xref:str>
@@ -381,7 +446,7 @@ variables:
   name: delete_base_snapshot
   types:
   - <xref:bool>
-- description: UUID v4 or resource identifier used to identify the Backup.
+- description: Resource identifier used to identify the Backup.
   name: backup_id
   types:
   - <xref:str>
@@ -395,10 +460,22 @@ variables:
   name: subnet_id
   types:
   - <xref:str>
-- description: 'Network features available to the volume, or current state of update.
+- description: 'The original value of the network features type available to the volume
 
-    Known values are: "Basic", "Standard", "Basic_Standard", and "Standard_Basic".'
+    at the time it was created. Known values are: "Basic", "Standard", "Basic_Standard",
+    and
+
+    "Standard_Basic".'
   name: network_features
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.NetworkFeatures>
+- description: 'The effective value of the network features type available to
+
+    the volume, or current effective state of update. Known values are: "Basic", "Standard",
+
+    "Basic_Standard", and "Standard_Basic".'
+  name: effective_network_features
   types:
   - <xref:str>
   - <xref:azure.mgmt.netapp.models.NetworkFeatures>
@@ -433,6 +510,22 @@ variables:
   name: data_protection
   types:
   - <xref:azure.mgmt.netapp.models.VolumePropertiesDataProtection>
+- description: 'While auto splitting the short term
+
+    clone volume, if the parent pool does not have enough space to accommodate the
+    volume after
+
+    split, it will be automatically resized, which will lead to increased billing.
+    To accept
+
+    capacity pool size auto grow and create a short term clone volume, set the property
+    as
+
+    accepted. Known values are: "Accepted" and "Declined".'
+  name: accept_grow_capacity_pool_for_short_term_clone_split
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit>
 - description: Restoring.
   name: is_restoring
   types:
@@ -561,7 +654,16 @@ variables:
     group. 0755 - gives read/write/execute permissions to owner and read/execute to
     group and other
 
-    users.'
+    users.  Avoid passing null value for unixPermissions in volume update operation,
+    As per the
+
+    behavior, If Null value is passed then user-visible unixPermissions value will
+    became null, and
+
+    user will not be able to get unixPermissions value. On safer side, actual unixPermissions
+    value
+
+    on volume will remain as its last saved value only.'
   name: unix_permissions
   types:
   - <xref:str>
@@ -684,3 +786,30 @@ variables:
   name: inherited_size_in_bytes
   types:
   - <xref:int>
+- description: 'Language supported for volume. Known values are: "c.utf-8", "utf8mb4",
+    "ar",
+
+    "ar.utf-8", "hr", "hr.utf-8", "cs", "cs.utf-8", "da", "da.utf-8", "nl", "nl.utf-8",
+    "en",
+
+    "en.utf-8", "fi", "fi.utf-8", "fr", "fr.utf-8", "de", "de.utf-8", "he", "he.utf-8",
+    "hu",
+
+    "hu.utf-8", "it", "it.utf-8", "ja", "ja.utf-8", "ja-v1", "ja-v1.utf-8", "ja-jp.pck",
+
+    "ja-jp.pck.utf-8", "ja-jp.932", "ja-jp.932.utf-8", "ja-jp.pck-v2", "ja-jp.pck-v2.utf-8",
+    "ko",
+
+    "ko.utf-8", "no", "no.utf-8", "pl", "pl.utf-8", "pt", "pt.utf-8", "c", "ro", "ro.utf-8",
+    "ru",
+
+    "ru.utf-8", "zh", "zh.utf-8", "zh.gbk", "zh.gbk.utf-8", "zh-tw.big5", "zh-tw.big5.utf-8",
+
+    "zh-tw", "zh-tw.utf-8", "sk", "sk.utf-8", "sl", "sl.utf-8", "es", "es.utf-8",
+    "sv", "sv.utf-8",
+
+    "tr", "tr.utf-8", "en-us", and "en-us.utf-8".'
+  name: language
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.netapp.models.VolumeLanguage>
