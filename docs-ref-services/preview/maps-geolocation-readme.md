@@ -1,18 +1,18 @@
 ---
 title: Azure Maps Geolocation Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-geolocation, maps
-ms.date: 10/13/2022
+ms.date: 11/26/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Geolocation Package client library for Python - version 1.0.0b1 
+# Azure Maps Geolocation Package client library for Python - version 1.0.0b2 
 
 
 This package contains a Python SDK for Azure Maps Services for Geolocation.
 Read more about Azure Maps Services [here](/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b1/sdk/maps/azure-maps-geolocation) | [API reference documentation](/rest/api/maps/geolocation) | [Product documentation](/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b2/sdk/maps/azure-maps-geolocation) | [API reference documentation](/rest/api/maps/geolocation) | [Product documentation](/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -22,7 +22,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.7 or later is required to use this package.
+- Python 3.8 or later is required to use this package.
 - An [Azure subscription][azure_subscription] and an [Azure Maps account](/azure/azure-maps/how-to-manage-account-keys).
 - A deployed Maps Services resource. You can create the resource via [Azure Portal][azure_portal] or [Azure CLI][azure_cli].
 
@@ -101,8 +101,8 @@ Once you initialized a `MapsGeolocationClient` class, you can explore the method
 
 ### Async Clients
 
-This library includes a complete async API supported on Python 3.5+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-geolocation_1.0.0b1/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+This library includes a complete async API supported on Python 3.8+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-geolocation_1.0.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
 objects are async context managers and define async `close` methods.
@@ -134,7 +134,7 @@ if result_country_code in BLOCK_COUNTRY_LIST:
 
 ### General
 
-Maps Geolocation clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-geolocation_1.0.0b1/sdk/core/azure-core/README.md).
+Maps Geolocation clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-geolocation_1.0.0b2/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -168,7 +168,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Geolocation samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b1/sdk/maps/azure-maps-geolocation/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b1/sdk/maps/azure-maps-geolocation/samples/async_samples)).
+Get started with our [Maps Geolocation samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b2/sdk/maps/azure-maps-geolocation/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b2/sdk/maps/azure-maps-geolocation/samples/async_samples)).
 
 Several Azure Maps Geolocation Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Geolocation
 
@@ -183,7 +183,7 @@ python sample/sample_get_country_code.py
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b1/sdk/maps/azure-maps-geolocation/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b2/sdk/maps/azure-maps-geolocation/samples/README.md)
 
 ### Additional documentation
 
@@ -199,11 +199,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-geolocation_1.0.0b1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-geolocation_1.0.0b2/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
 [azure_cli]: /cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-geolocation_1.0.0b2/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: /powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
 [maps_authentication_aad]: /azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
