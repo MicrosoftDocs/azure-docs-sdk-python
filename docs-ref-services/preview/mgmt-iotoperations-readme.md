@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-iotoperations, iotoperations
-ms.date: 10/24/2024
+ms.date: 12/02/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: iotoperations
