@@ -14,7 +14,7 @@ summary: 'A client for the Azure Remote Rendering Service.
   lifetime of remote rendering sessions.'
 constructor:
   syntax: 'RemoteRenderingClient(endpoint: str, account_id: str, account_domain: str,
-    credential: TokenCredential | AccessToken, **kwargs: Any)'
+    credential: AzureKeyCredential | TokenCredential | AccessToken, **kwargs)'
   parameters:
   - name: endpoint
     description: 'The rendering service endpoint. This determines the region in which
@@ -46,26 +46,39 @@ constructor:
       from the Mixed Reality Secure Token Service (STS).'
     isRequired: true
     types:
-    - <xref:typing.Union>[<xref:TokenCredential>, <xref:AzureKeyCredential>, <xref:AccessToken>]
+    - <xref:typing.Union>[<xref:AzureKeyCredential>, <xref:TokenCredential>, <xref:AccessToken>]
   keywordOnlyParameters:
   - name: api_version
     description: 'The API version of the service to use for requests. It defaults
       to the latest service version.
 
       Setting to an older version may result in reduced feature compatibility.'
-    types:
-    - <xref:str>
-    - <xref:azure.mixedreality.remoterenderings.RemoteRenderingApiVersion>
+  - name: polling_interval
+    description: Seconds to wait between each check, whether the session is ready
+      yet.
+  - name: authentication_endpoint_url
+    description: 'Overwrite for the authentication endpoint. Usually using account_domain
+      for the authentication domain is enough.
+
+      If used, specify the whole authentication url including the schema.'
 methods:
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.begin_asset_conversion
   name: begin_asset_conversion
-  summary: "Start a new asset conversion with the given options.\n:param str conversion_id:\n\
-    \n   An ID uniquely identifying the conversion for the remote rendering account.\
-    \ The ID is case sensitive, can\n   contain any combination of alphanumeric characters\
-    \ including hyphens and underscores, and cannot contain\n   more than 256 characters."
+  summary: Start a new asset conversion with the given options.
   signature: 'begin_asset_conversion(conversion_id: str, input_settings: AssetConversionInputSettings,
-    output_settings: AssetConversionOutputSettings, **kwargs: Any) -> LROPoller[AssetConversion]'
+    output_settings: AssetConversionOutputSettings, **kwargs) -> LROPoller[AssetConversion]'
   parameters:
+  - name: conversion_id
+    description: 'An ID uniquely identifying the conversion for the remote rendering
+      account. The ID is case sensitive, can
+
+      contain any combination of alphanumeric characters including hyphens and underscores,
+      and cannot contain
+
+      more than 256 characters.'
+    isRequired: true
+    types:
+    - <xref:str>
   - name: input_settings
     description: 'Options for the
 
@@ -89,7 +102,7 @@ methods:
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.begin_rendering_session
   name: begin_rendering_session
   signature: 'begin_rendering_session(session_id: str, size: str | RenderingSessionSize,
-    lease_time_minutes: int, **kwargs: Any) -> LROPoller[RenderingSession]'
+    lease_time_minutes: int, **kwargs) -> LROPoller[RenderingSession]'
   parameters:
   - name: session_id
     description: 'An ID uniquely identifying the rendering session for the given account.
@@ -132,9 +145,14 @@ methods:
   signature: close() -> None
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.get_asset_conversion
   name: get_asset_conversion
-  summary: "Retrieve the state of a previously created conversion.\n:param str conversion_id:\n\
-    \n   The identifier of the conversion to retrieve."
-  signature: 'get_asset_conversion(conversion_id: str, **kwargs: Any) -> AssetConversion'
+  summary: Retrieve the state of a previously created conversion.
+  signature: 'get_asset_conversion(conversion_id: str, **kwargs) -> AssetConversion'
+  parameters:
+  - name: conversion_id
+    description: The identifier of the conversion to retrieve.
+    isRequired: true
+    types:
+    - <xref:str>
   return:
     description: Information about the ongoing conversion process.
     types:
@@ -143,12 +161,19 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.get_asset_conversion_poller
   name: get_asset_conversion_poller
-  summary: "Returns a poller for an existing conversion by conversion id or a continuation\
-    \ token retrieved from a previous\npoller.\n:keyword conversion_id: The conversion\
-    \ id of a previously created conversion.\n:paramtype conversion_id: str\n:keyword\
-    \ continuation_token:\n\n   A continuation token retrieved from a poller of a\
-    \ conversion."
-  signature: 'get_asset_conversion_poller(**kwargs: Any) -> LROPoller[AssetConversion]'
+  summary: 'Returns a poller for an existing conversion by conversion id or a continuation
+
+    token retrieved from a previous poller.'
+  signature: get_asset_conversion_poller(**kwargs) -> LROPoller[AssetConversion]
+  keywordOnlyParameters:
+  - name: conversion_id
+    description: The conversion_id of a previously created conversion.
+    types:
+    - <xref:str>
+  - name: continuation_token
+    description: A continuation token retrieved from a poller of a conversion.
+    types:
+    - <xref:str>
   return:
     description: A poller for the created asset conversion
     types:
@@ -157,47 +182,68 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.get_rendering_session
   name: get_rendering_session
-  summary: 'Returns the properties of a previously generated rendering session.
-
-    :param str session_id: The identifier of the rendering session.
-
-    :return: Properties of the rendering session
-
-    :rtype:  ~azure.mixedreality.remoterendering.models.RenderingSession
-
-    :raises ~azure.core.exceptions.HttpResponseError:'
-  signature: 'get_rendering_session(session_id: str, **kwargs: Any) -> RenderingSession'
+  summary: Returns the properties of a previously generated rendering session.
+  signature: 'get_rendering_session(session_id: str, **kwargs) -> RenderingSession'
+  parameters:
+  - name: session_id
+    description: The identifier of the rendering session.
+    isRequired: true
+    types:
+    - <xref:str>
+  return:
+    description: Properties of the rendering session
+    types:
+    - <xref:azure.mixedreality.remoterendering.RenderingSession>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.get_rendering_session_poller
   name: get_rendering_session_poller
-  summary: "Returns a poller for an existing rendering session by session id or a\
-    \ continuation token retrieved from a\nprevious poller.\n:keyword session_id:\
-    \ The conversion id of a previously created conversion.\n:paramtype session_id:\
-    \ str\n:keyword continuation_token:\n\n   A continuation token retrieved from\
-    \ a poller of a session."
-  signature: 'get_rendering_session_poller(**kwargs: Any) -> LROPoller[RenderingSession]'
+  summary: 'Returns a poller for an existing rendering session by session id or a
+    continuation token retrieved from a
+
+    previous poller.'
+  signature: get_rendering_session_poller(**kwargs) -> LROPoller[RenderingSession]
+  keywordOnlyParameters:
+  - name: session_id
+    description: The conversion id of a previously created conversion.
+    types:
+    - <xref:str>
+  - name: continuation_token
+    description: A continuation token retrieved from a poller of a session.
+    types:
+    - <xref:str>
+  return:
+    description: A session poller for the given session
+    types:
+    - <xref:LROPoller>[<xref:azure.mixedreality.remoterendering.RenderingSession>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.list_asset_conversions
   name: list_asset_conversions
-  summary: 'Gets conversions for the remote rendering account.
-
-    :rtype: ItemPaged[AssetConversion]
-
-    :raises ~azure.core.exceptions.HttpResponseError:'
+  summary: Returns list of conversions for the remote rendering account.
   signature: list_asset_conversions(**kwargs) -> ItemPaged[AssetConversion]
-- uid: azure.mixedreality.remoterendering.RemoteRenderingClient.list_rendering_sessions
-  name: list_rendering_sessions
-  summary: "List rendering sessions in the 'Ready' or 'Starting' state. Does not return\
-    \ stopped or failed rendering\n   sessions."
-  signature: list_rendering_sessions(**kwargs) -> ItemPaged[RenderingSession]
   return:
+    description: List of conversion for the remote rendering account.
     types:
-    - <xref:ItemPaged>[<xref:azure.mixedreality.remoterendering.RenderingSession>]
+    - <xref:ItemPaged>[<xref:azure.mixedreality.remoterendering.AssetConversion>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mixedreality.remoterendering.RemoteRenderingClient.list_rendering_sessions
+  name: list_rendering_sessions
+  summary: 'Returns list of rendering sessions in the ''Ready'' or ''Starting'' state.
+
+
+    Does not return stopped or failed rendering sessions.
+
+    :rtype: ItemPaged[RenderingSession]
+
+    :raises ~azure.core.exceptions.HttpResponseError:
+
+    :return: List of rendering sessions in the ''Ready'' or ''Starting'' state.'
+  signature: list_rendering_sessions(**kwargs) -> ItemPaged[RenderingSession]
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.stop_rendering_session
   name: stop_rendering_session
-  signature: 'stop_rendering_session(session_id: str, **kwargs: Any) -> None'
+  signature: 'stop_rendering_session(session_id: str, **kwargs) -> None'
   parameters:
   - name: session_id
     description: The identifier of the session to be stopped.
@@ -212,11 +258,22 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mixedreality.remoterendering.RemoteRenderingClient.update_rendering_session
   name: update_rendering_session
-  summary: "Updates an already existing rendering session.\n:param str session_id:\
-    \ The identifier of the session to be updated.\n:keyword lease_time_minutes: The\
-    \ new lease time of the rendering session. Has to be strictly larger than\n\n\
-    \   the previous lease time."
-  signature: 'update_rendering_session(session_id: str, **kwargs: Any) -> RenderingSession'
+  summary: Updates an already existing rendering session.
+  signature: 'update_rendering_session(session_id: str, **kwargs) -> RenderingSession'
+  parameters:
+  - name: session_id
+    description: The identifier of the session to be updated.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: lease_time_minutes
+    description: 'The new lease time of the rendering session. Has to be strictly
+      larger than
+
+      the previous lease time.'
+    types:
+    - <xref:int>
   return:
     description: The properties of the updated session
     types:
