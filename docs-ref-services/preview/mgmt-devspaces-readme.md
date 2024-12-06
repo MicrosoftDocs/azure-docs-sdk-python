@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-devspaces, aks
-ms.date: 08/22/2023
+ms.date: 12/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: aks
