@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-elastic, elastic
-ms.date: 10/24/2024
+ms.date: 12/06/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: elastic
