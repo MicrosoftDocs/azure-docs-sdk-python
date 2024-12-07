@@ -7,7 +7,8 @@ inheritances:
 - azure.keyvault.administration._internal.client_base.KeyVaultClientBase
 summary: Performs Key Vault backup and restore operations.
 constructor:
-  syntax: 'KeyVaultBackupClient(vault_url: str, credential: TokenCredential, **kwargs)'
+  syntax: 'KeyVaultBackupClient(vault_url: str, credential: TokenCredential, **kwargs:
+    Any)'
   parameters:
   - name: vault_url
     description: 'URL of the vault on which the client will operate. This is also
@@ -74,7 +75,7 @@ methods:
 
       token has to be specified.'
     types:
-    - <xref:typing.Literal>[True]
+    - <xref:bool>
   - name: continuation_token
     description: A continuation token to restart polling from a saved state.
     types:
@@ -91,13 +92,14 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    46\\\\azure-keyvault-administration-4.4.0b2\\\\tests\\\\test_examples_administration.py\"\
+    46\\\\azure_keyvault_administration-4.5.1a20241206001\\\\tests\\\\test_examples_administration.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # begin a vault backup\n   backup_poller = backup_client.begin_backup(container_uri,\
-    \ sas_token)\n\n   # check if the backup completed\n   done = backup_poller.done()\n\
-    \n   # block until the backup completes\n   # result() returns an object with\
-    \ a URL of the backup\n   backup_operation = backup_poller.result()\n\n   ````\n"
+    \ use_managed_identity=True)\n\n   # check if the backup completed\n   done =\
+    \ backup_poller.done()\n\n   # block until the backup completes\n   # result()\
+    \ returns an object with a URL of the backup\n   backup_operation = backup_poller.result()\n\
+    \n   ````\n"
 - uid: azure.keyvault.administration.KeyVaultBackupClient.begin_restore
   name: begin_restore
   summary: 'Restore a Key Vault backup.
@@ -107,7 +109,7 @@ methods:
     a value, a single key.'
   signature: 'begin_restore(folder_url: str, *, use_managed_identity: Literal[True],
     key_name: str | None = None, continuation_token: str | None = None, **kwargs:
-    Any) -> LROPoller'
+    Any) -> LROPoller[None]'
   parameters:
   - name: folder_url
     description: 'URL of the blob holding the backup. This would be the *folder_url*
@@ -137,7 +139,7 @@ methods:
 
       token has to be specified.'
     types:
-    - <xref:typing.Literal>[True]
+    - <xref:bool>
   - name: key_name
     description: Name of a single key in the backup. When set, only this key will
       be restored.
@@ -159,22 +161,22 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    46\\\\azure-keyvault-administration-4.4.0b2\\\\tests\\\\test_examples_administration.py\"\
+    46\\\\azure_keyvault_administration-4.5.1a20241206001\\\\tests\\\\test_examples_administration.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # begin a full vault restore\n   restore_poller = backup_client.begin_restore(folder_url,\
-    \ sas_token)\n\n   # check if the restore completed\n   done = restore_poller.done()\n\
-    \n   # wait for the restore to complete\n   restore_poller.wait()\n\n   ````\n\
-    \nRestore a single key<!--[!code-python[Main](s\\test_examples_administration.py\
+    \ use_managed_identity=True)\n\n   # check if the restore completed\n   done =\
+    \ restore_poller.done()\n\n   # wait for the restore to complete\n   restore_poller.wait()\n\
+    \n   ````\n\nRestore a single key<!--[!code-python[Main](s\\test_examples_administration.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.9\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    46\\\\azure-keyvault-administration-4.4.0b2\\\\tests\\\\test_examples_administration.py\"\
+    46\\\\azure_keyvault_administration-4.5.1a20241206001\\\\tests\\\\test_examples_administration.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # begin a restore of a single key from a backed up vault\n   restore_poller\
-    \ = backup_client.begin_restore(folder_url, sas_token, key_name=key_name)\n\n\
-    \   # check if the restore completed\n   done = restore_poller.done()\n\n   #\
+    \ = backup_client.begin_restore(folder_url, use_managed_identity=True, key_name=key_name)\n\
+    \n   # check if the restore completed\n   done = restore_poller.done()\n\n   #\
     \ wait for the restore to complete\n   restore_poller.wait()\n\n   ````\n"
 - uid: azure.keyvault.administration.KeyVaultBackupClient.close
   name: close
@@ -198,8 +200,8 @@ methods:
     information about how to send
 
     custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
-  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> HttpResponse'
+  signature: 'send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> HttpResponse'
   parameters:
   - name: request
     description: The network request you want to make.
