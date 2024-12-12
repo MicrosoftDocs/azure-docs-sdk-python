@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-recoveryservicesdatareplication, recoveryservicesdatareplication
-ms.date: 10/24/2023
+ms.date: 12/12/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: recoveryservicesdatareplication
