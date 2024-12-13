@@ -1,12 +1,12 @@
 ---
 title: Azure AI Evaluation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-evaluation, evaluation
-ms.date: 11/15/2024
+ms.date: 12/13/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: evaluation
 ---
-# Azure AI Evaluation client library for Python - version 1.0.1 
+# Azure AI Evaluation client library for Python - version 1.1.0 
 
 
 Use Azure AI Evaluation SDK to assess the performance of your generative AI applications. Generative AI application generations are quantitatively measured with mathematical based metrics, AI-assisted quality and safety metrics. Metrics are defined as `evaluators`. Built-in or custom evaluators can provide comprehensive insights into the application's capabilities and limitations.
@@ -315,18 +315,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.1/sdk/evaluation/azure-ai-evaluation
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.1.0/sdk/evaluation/azure-ai-evaluation
 [evaluation_pypi]: https://pypi.org/project/azure-ai-evaluation/
 [evaluation_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview
 [evaluation_samples]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.1/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.1.0/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.1/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.0.1/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.1.0/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.1.0/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
@@ -335,13 +335,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [evaluate_dataset]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk#evaluate-on-test-dataset-using-evaluate
 [evaluators]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview
 [evaluate_api]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview#azure-ai-evaluation-evaluate
-[evaluate_app]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/evaluate_app
-[evaluation_tsg]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.0.1/sdk/evaluation/azure-ai-evaluation/TROUBLESHOOTING.md
+[evaluate_app]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/Supported_Evaluation_Targets/Evaluate_App_Endpoint
+[evaluation_tsg]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.1.0/sdk/evaluation/azure-ai-evaluation/TROUBLESHOOTING.md
 [ai_studio]: https://learn.microsoft.com/azure/ai-studio/what-is-ai-studio
 [ai_project]: https://learn.microsoft.com/azure/ai-studio/how-to/create-projects?tabs=ai-studio
 [azure_openai]: https://learn.microsoft.com/azure/ai-services/openai/
-[evaluate_models]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/evaluate_endpoints
-[custom_evaluators]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/evaluate_custom
+[evaluate_models]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/Supported_Evaluation_Targets/Evaluate_Base_Model_Endpoint
+[custom_evaluators]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/Supported_Evaluation_Metrics/Custom_Evaluators
 [evaluate_samples]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate
 [evaluation_metrics]: https://learn.microsoft.com/azure/ai-studio/concepts/evaluation-metrics-built-in
 [performance_and_quality_evaluators]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk#performance-and-quality-evaluators
@@ -349,7 +349,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [composite_evaluators]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk#composite-evaluators
 [adversarial_simulation_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/simulator-interaction-data#generate-adversarial-simulations-for-safety-evaluation
 [adversarial_simulation_scenarios]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/simulator-interaction-data#supported-adversarial-simulation-scenarios
-[adversarial_simulation]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/simulate_adversarial
-[simulate_with_conversation_starter]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/simulate_conversation_starter
+[adversarial_simulation]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/Simulators/Simulate_Adversarial_Data
+[simulate_with_conversation_starter]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/Simulators/Simulate_Context-Relevant_Data/Simulate_From_Conversation_Starter
 [adversarial_jailbreak]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/simulator-interaction-data#simulating-jailbreak-attacks
-
