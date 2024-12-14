@@ -1,18 +1,18 @@
 ---
 title: Azure Storage Blob ChangeFeed client library for Python
 keywords: Azure, python, SDK, API, azure-storage-blob-changefeed, storage
-ms.date: 04/16/2024
+ms.date: 12/14/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: storage
 ---
-# Azure Storage Blob ChangeFeed client library for Python - version 12.0.0b5 
+# Azure Storage Blob ChangeFeed client library for Python - version 12.0.0a20241213001 
 
 
 This preview package for Python enables users to get blob change feed events. These events can be lazily generated, iterated by page, retrieved for a specific time interval, or iterated from a specific continuation token.
 
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b5/sdk/storage/azure-storage-blob-changefeed/azure/storage/blob/changefeed) | [Package (PyPi)](https://pypi.org/project/azure-storage-blob-changefeed/) | [API reference documentation](https://aka.ms/azsdk-python-storage-blob-changefeed-ref) | [Product documentation](/azure/storage/) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b5/sdk/storage/azure-storage-blob-changefeed/samples)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0a20241213001/sdk/storage/azure-storage-blob-changefeed/azure/storage/blob/changefeed) | [Package (PyPi)](https://pypi.org/project/azure-storage-blob-changefeed/) | [API reference documentation](https://aka.ms/azsdk-python-storage-blob-changefeed-ref) | [Product documentation](/azure/storage/) | [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0a20241213001/sdk/storage/azure-storage-blob-changefeed/samples)
 
 
 ## Getting started
@@ -58,7 +58,7 @@ Interaction with Blob ChangeFeed client starts with an instance of the ChangeFee
 To authenticate the client you have a few options:
 1. Use a SAS token string
 2. Use an account shared access key
-3. Use a token credential from [azure.identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b5/sdk/identity/azure-identity)
+3. Use a token credential from [azure.identity](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0a20241213001/sdk/identity/azure-identity)
 
 Alternatively, you can authenticate with a storage connection string using the `from_connection_string` method. See example: [Client creation with a connection string](#client-creation-with-a-connection-string).
 
@@ -76,7 +76,7 @@ service = ChangeFeedClient(account_url="https://<my-storage-account-name>.blob.c
 
 ## Key concepts
 
-#### Clients
+### Clients
 
 The Blob ChangeFeed SDK provides one client:
 * ChangeFeedClient: this client allows you to get change feed events by page, get all change feed events, get events in a time range, start listing events with a continuation token.
@@ -180,11 +180,11 @@ service_client = ChangeFeedClient.from_connection_string("your_connection_string
 
 ### More sample code
 
-Get started with our [Azure Blob ChangeFeed samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b5/sdk/storage/azure-storage-blob-changefeed/samples).
+Get started with our [Azure Blob ChangeFeed samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0a20241213001/sdk/storage/azure-storage-blob-changefeed/samples).
 
 Several Storage Blob ChangeFeed Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Blob ChangeFeed:
 
-* [change_feed_samples.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0b5/sdk/storage/azure-storage-blob-changefeed/samples/change_feed_samples.py) - Examples for authenticating and operating on the client:
+* [change_feed_samples.py](https://github.com/Azure/azure-sdk-for-python/tree/azure-storage-blob-changefeed_12.0.0a20241213001/sdk/storage/azure-storage-blob-changefeed/samples/change_feed_samples.py) - Examples for authenticating and operating on the client:
     * list events by page
     * list all events
     * list events in a time range
