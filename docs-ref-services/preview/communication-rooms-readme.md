@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Rooms client library for Python
 keywords: Azure, python, SDK, API, azure-communication-rooms, communication
-ms.date: 10/12/2023
+ms.date: 12/16/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Rooms client library for Python - version 1.1.0b1 
+# Azure Communication Rooms client library for Python - version 1.1.1a20241216001 
 
 This package contains a Python SDK for Azure Communication Services for Rooms.
 Read more about Azure Communication Services [here](/azure/communication-services/overview)
@@ -58,7 +58,7 @@ valid_from if they are missing. The default for`valid_from` is current date time
 
 ### Create a room
 To create a room, call the `create_room` function from `RoomsClient`. The `valid_from`, `valid_until`, and `participants` arguments are all optional.
-Starting in 1.1.0b1 release, ACS Rooms supports PSTN Dial-Out feature. To create room with PSTN Dial-Out property, call `create_room` function and set `pstn_dial_out_enabled` to either true or false. If `pstn_dial_out_enabled` is not provided, then the default value for `pstn_dial_out_enabled` is false.
+Starting in 1.1.0 release, ACS Rooms supports PSTN Dial-Out feature. To create room with PSTN Dial-Out property, call `create_room` function and set `pstn_dial_out_enabled` to either true or false. If `pstn_dial_out_enabled` is not provided, then the default value for `pstn_dial_out_enabled` is false.
 
 ```python
 from azure.core.exceptions import HttpResponseError
@@ -92,7 +92,7 @@ except HttpResponseError as ex:
 ```
 ### Update a room
 The `valid_from` and `valid_until` properties of a created room can be updated by calling the `update_room` function from `RoomsClient`.
-Starting in 1.1.0b1 release, ACS Rooms supports PSTN Dial-Out feature. To update a room with PSTN Dial-Out property, call `update_room` and set `pstn_dial_out_enabled` to either true or false. If `pstn_dial_out_enabled`  is not provided, then there is no changes to PstnDialOutEnabled property in the room.
+Starting in 1.1.0 release, ACS Rooms supports PSTN Dial-Out feature. To update a room with PSTN Dial-Out property, call `update_room` and set `pstn_dial_out_enabled` to either true or false. If `pstn_dial_out_enabled`  is not provided, then there is no changes to PstnDialOutEnabled property in the room.
 
 ```python
 try:
@@ -181,11 +181,11 @@ except HttpResponseError as ex:
 ```
 ## Troubleshooting
 
-Rooms operations will throw an exception if the request to the server fails. The Rooms client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-rooms_1.1.0b1/sdk/core/azure-core/README.md).
+Rooms operations will throw an exception if the request to the server fails. The Rooms client will raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-communication-rooms_1.1.1a20241216001/sdk/core/azure-core/README.md).
 
 ## Next steps
 ### More sample code
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.0b1/sdk/communication/azure-communication-rooms/samples) directory for detailed examples of how to use this library to create and manage rooms.
+Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.1a20241216001/sdk/communication/azure-communication-rooms/samples) directory for detailed examples of how to use this library to create and manage rooms.
 
 ## Provide Feedback
 
@@ -211,9 +211,9 @@ additional questions or comments.
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.0b1/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.1a20241216001/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.0b1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-communication-rooms_1.1.1a20241216001/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 
