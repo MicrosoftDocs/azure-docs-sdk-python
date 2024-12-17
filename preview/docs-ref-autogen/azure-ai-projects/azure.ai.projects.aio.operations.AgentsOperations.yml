@@ -129,15 +129,16 @@ methods:
 - uid: azure.ai.projects.aio.operations.AgentsOperations.create_and_process_run
   name: create_and_process_run
   summary: Creates a new run for an agent thread and processes the run.
-  signature: 'async create_and_process_run(thread_id: str, *, assistant_id: str, model:
-    str | None = None, instructions: str | None = None, additional_instructions: str
-    | None = None, additional_messages: List[ThreadMessageOptions] | None = None,
-    toolset: AsyncToolSet | None = None, temperature: float | None = None, top_p:
-    float | None = None, max_prompt_tokens: int | None = None, max_completion_tokens:
-    int | None = None, truncation_strategy: TruncationObject | None = None, tool_choice:
-    _types.AgentsApiToolChoiceOption | None = None, response_format: _types.AgentsApiResponseFormatOption
-    | None = None, metadata: Dict[str, str] | None = None, sleep_interval: int = 1,
-    **kwargs: Any) -> ThreadRun'
+  signature: 'async create_and_process_run(thread_id: str, *, assistant_id: str, include:
+    List[str | RunAdditionalFieldList] | None = None, model: str | None = None, instructions:
+    str | None = None, additional_instructions: str | None = None, additional_messages:
+    List[ThreadMessageOptions] | None = None, toolset: AsyncToolSet | None = None,
+    temperature: float | None = None, top_p: float | None = None, max_prompt_tokens:
+    int | None = None, max_completion_tokens: int | None = None, truncation_strategy:
+    TruncationObject | None = None, tool_choice: _types.AgentsApiToolChoiceOption
+    | None = None, response_format: _types.AgentsApiResponseFormatOption | None =
+    None, parallel_tool_calls: bool | None = None, metadata: Dict[str, str] | None
+    = None, sleep_interval: int = 1, **kwargs: Any) -> ThreadRun'
   parameters:
   - name: thread_id
     description: Required.
@@ -149,6 +150,18 @@ methods:
     description: The ID of the agent that should run the thread. Required.
     types:
     - <xref:str>
+  - name: include
+    description: 'A list of additional fields to include in the response.
+
+      Currently the only supported value is
+
+      `step_details.tool_calls[*].file_search.results[*].content` to fetch the file
+      search result
+
+      content. Default value is None.'
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.ai.projects.models.RunAdditionalFieldList>]
   - name: model
     description: 'The overridden model name that the agent should use to run the thread.
 
@@ -270,6 +283,12 @@ methods:
     - <xref:str>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormatMode>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormat>
+  - name: parallel_tool_calls
+    description: 'If `true` functions will run in parallel during tool use.
+
+      Default value is None.'
+    types:
+    - <xref:bool>
   - name: metadata
     description: 'A set of up to 16 key/value pairs that can be attached to an object,
       used
@@ -366,8 +385,9 @@ methods:
 - uid: azure.ai.projects.aio.operations.AgentsOperations.create_run
   name: create_run
   summary: Creates a new run for an agent thread.
-  signature: 'async create_run(thread_id: str, body: JSON, *, content_type: str =
-    ''application/json'', **kwargs: Any) -> _models.ThreadRun'
+  signature: 'async create_run(thread_id: str, body: JSON, *, include: List[str |
+    _models.RunAdditionalFieldList] | None = None, content_type: str = ''application/json'',
+    **kwargs: Any) -> _models.ThreadRun'
   parameters:
   - name: thread_id
     description: Required.
@@ -385,6 +405,18 @@ methods:
     description: The ID of the agent that should run the thread. Required.
     types:
     - <xref:str>
+  - name: include
+    description: 'A list of additional fields to include in the response.
+
+      Currently the only supported value is
+
+      `step_details.tool_calls[*].file_search.results[*].content` to fetch the file
+      search result
+
+      content. Default value is None.'
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.ai.projects.models.RunAdditionalFieldList>]
   - name: model
     description: 'The overridden model name that the agent should use to run the thread.
       Default
@@ -508,6 +540,12 @@ methods:
     - <xref:str>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormatMode>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormat>
+  - name: parallel_tool_calls
+    description: 'If `true` functions will run in parallel during tool use.
+
+      Default value is None.'
+    types:
+    - <xref:bool>
   - name: metadata
     description: 'A set of up to 16 key/value pairs that can be attached to an object,
       used
@@ -533,16 +571,17 @@ methods:
 
 
     Terminating when the Run enters a terminal state with a *data: [DONE]* message.'
-  signature: 'async create_stream(thread_id: str, *, assistant_id: str, content_type:
-    str = ''application/json'', model: str | None = None, instructions: str | None
-    = None, additional_instructions: str | None = None, additional_messages: List[_models.ThreadMessageOptions]
-    | None = None, tools: List[_models.ToolDefinition] | None = None, temperature:
-    float | None = None, top_p: float | None = None, max_prompt_tokens: int | None
-    = None, max_completion_tokens: int | None = None, truncation_strategy: _models.TruncationObject
+  signature: 'async create_stream(thread_id: str, *, assistant_id: str, include: List[str
+    | _models.RunAdditionalFieldList] | None = None, content_type: str = ''application/json'',
+    model: str | None = None, instructions: str | None = None, additional_instructions:
+    str | None = None, additional_messages: List[_models.ThreadMessageOptions] | None
+    = None, tools: List[_models.ToolDefinition] | None = None, temperature: float
+    | None = None, top_p: float | None = None, max_prompt_tokens: int | None = None,
+    max_completion_tokens: int | None = None, truncation_strategy: _models.TruncationObject
     | None = None, tool_choice: ''_types.AgentsApiToolChoiceOption'' | None = None,
-    response_format: ''_types.AgentsApiResponseFormatOption'' | None = None, metadata:
-    Dict[str, str] | None = None, event_handler: _models.AsyncAgentEventHandler |
-    None = None, **kwargs: Any) -> _models.AsyncAgentRunStream'
+    response_format: ''_types.AgentsApiResponseFormatOption'' | None = None, parallel_tool_calls:
+    bool | None = None, metadata: Dict[str, str] | None = None, event_handler: None
+    = None, **kwargs: Any) -> _models.AsyncAgentRunStream[_models.AsyncAgentEventHandler]'
   parameters:
   - name: thread_id
     description: Required.
@@ -556,6 +595,18 @@ methods:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
+  - name: include
+    description: 'A list of additional fields to include in the response.
+
+      Currently the only supported value is
+
+      `step_details.tool_calls[*].file_search.results[*].content` to fetch the file
+      search result
+
+      content. Default value is None.'
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.ai.projects.models.RunAdditionalFieldList>]
   - name: assistant_id
     description: The ID of the agent that should run the thread. Required.
     types:
@@ -683,6 +734,12 @@ methods:
     - <xref:str>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormatMode>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormat>
+  - name: parallel_tool_calls
+    description: 'If `true` functions will run in parallel during tool use.
+
+      Default value is None.'
+    types:
+    - <xref:bool>
   - name: metadata
     description: 'A set of up to 16 key/value pairs that can be attached to an object,
       used
@@ -779,8 +836,9 @@ methods:
     None, top_p: float | None = None, max_prompt_tokens: int | None = None, max_completion_tokens:
     int | None = None, truncation_strategy: ~azure.ai.projects.models._models.TruncationObject
     | None = None, tool_choice: _types.AgentsApiToolChoiceOption | None = None, response_format:
-    _types.AgentsApiResponseFormatOption | None = None, metadata: ~typing.Dict[str,
-    str] | None = None, **kwargs: ~typing.Any) -> ThreadRun'
+    _types.AgentsApiResponseFormatOption | None = None, parallel_tool_calls: bool
+    | None = None, metadata: ~typing.Dict[str, str] | None = None, **kwargs: ~typing.Any)
+    -> ThreadRun'
   parameters:
   - name: body
     description: Is either a JSON type or a IO[bytes] type. Required.
@@ -921,12 +979,19 @@ methods:
 
       following types: str, Union[str, "_models.AgentsApiResponseFormatMode"],
 
-      AgentsApiResponseFormat Default value is None.'
+      AgentsApiResponseFormat, ResponseFormatJsonSchemaType Default value is None.'
     types:
     - <xref:str>
     - <xref:str>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormatMode>
     - <xref:azure.ai.projects.models.AgentsApiResponseFormat>
+    - <xref:azure.ai.projects.models.ResponseFormatJsonSchemaType>
+  - name: parallel_tool_calls
+    description: 'If `true` functions will run in parallel during tool use.
+
+      Default value is None.'
+    types:
+    - <xref:bool>
   - name: metadata
     description: 'A set of up to 16 key/value pairs that can be attached to an object,
       used
@@ -1414,71 +1479,6 @@ methods:
     - <xref:azure.ai.projects.models.ThreadMessage>
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
-- uid: azure.ai.projects.aio.operations.AgentsOperations.get_messages
-  name: get_messages
-  summary: Parses the OpenAIPageableListOfThreadMessage response and returns a ThreadMessages
-    object.
-  signature: 'async get_messages(thread_id: str, *, run_id: str | None = None, limit:
-    int | None = None, order: str | ListSortOrder | None = None, after: str | None
-    = None, before: str | None = None, **kwargs: Any) -> ThreadMessages'
-  parameters:
-  - name: thread_id
-    description: Identifier of the thread. Required.
-    isRequired: true
-    types:
-    - <xref:str>
-  keywordOnlyParameters:
-  - name: run_id
-    description: Filter messages by the run ID that generated them. Default value
-      is None.
-    types:
-    - <xref:str>
-  - name: limit
-    description: 'A limit on the number of objects to be returned. Limit can range
-      between 1 and
-
-      100, and the default is 20. Default value is None.'
-    types:
-    - <xref:int>
-  - name: order
-    description: 'Sort order by the created_at timestamp of the objects. asc for ascending
-      order
-
-      and desc for descending order. Known values are: "asc" and "desc". Default value
-      is None.'
-    types:
-    - <xref:str>
-    - <xref:azure.ai.projects.models.ListSortOrder>
-  - name: after
-    description: 'A cursor for use in pagination. after is an object ID that defines
-      your place
-
-      in the list. For instance, if you make a list request and receive 100 objects,
-      ending with
-
-      obj_foo, your subsequent call can include after=obj_foo in order to fetch the
-      next page of the
-
-      list. Default value is None.'
-    types:
-    - <xref:str>
-  - name: before
-    description: 'A cursor for use in pagination. before is an object ID that defines
-      your place
-
-      in the list. For instance, if you make a list request and receive 100 objects,
-      ending with
-
-      obj_foo, your subsequent call can include before=obj_foo in order to fetch the
-      previous page of
-
-      the list. Default value is None.'
-    types:
-    - <xref:str>
-  return:
-    description: ThreadMessages. The ThreadMessages is compatible with MutableMapping
-    types:
-    - <xref:azure.ai.projects.models.ThreadMessages>
 - uid: azure.ai.projects.aio.operations.AgentsOperations.get_run
   name: get_run
   summary: Gets an existing run from an existing thread.
@@ -1503,8 +1503,8 @@ methods:
 - uid: azure.ai.projects.aio.operations.AgentsOperations.get_run_step
   name: get_run_step
   summary: Gets a single run step from a thread run.
-  signature: 'async get_run_step(thread_id: str, run_id: str, step_id: str, **kwargs:
-    Any) -> RunStep'
+  signature: 'async get_run_step(thread_id: str, run_id: str, step_id: str, *, include:
+    List[str | RunAdditionalFieldList] | None = None, **kwargs: Any) -> RunStep'
   parameters:
   - name: thread_id
     description: Identifier of the thread. Required.
@@ -1521,6 +1521,19 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  keywordOnlyParameters:
+  - name: include
+    description: 'A list of additional fields to include in the response.
+
+      Currently the only supported value is
+
+      `step_details.tool_calls[*].file_search.results[*].content` to fetch the file
+      search result
+
+      content. Default value is None.'
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.ai.projects.models.RunAdditionalFieldList>]
   return:
     description: RunStep. The RunStep is compatible with MutableMapping
     types:
@@ -1756,9 +1769,10 @@ methods:
 - uid: azure.ai.projects.aio.operations.AgentsOperations.list_run_steps
   name: list_run_steps
   summary: Gets a list of run steps from a thread run.
-  signature: 'async list_run_steps(thread_id: str, run_id: str, *, limit: int | None
-    = None, order: str | ListSortOrder | None = None, after: str | None = None, before:
-    str | None = None, **kwargs: Any) -> OpenAIPageableListOfRunStep'
+  signature: 'async list_run_steps(thread_id: str, run_id: str, *, include: List[str
+    | RunAdditionalFieldList] | None = None, limit: int | None = None, order: str
+    | ListSortOrder | None = None, after: str | None = None, before: str | None =
+    None, **kwargs: Any) -> OpenAIPageableListOfRunStep'
   parameters:
   - name: thread_id
     description: Identifier of the thread. Required.
@@ -1771,6 +1785,18 @@ methods:
     types:
     - <xref:str>
   keywordOnlyParameters:
+  - name: include
+    description: 'A list of additional fields to include in the response.
+
+      Currently the only supported value is
+
+      `step_details.tool_calls[*].file_search.results[*].content` to fetch the file
+      search result
+
+      content. Default value is None.'
+    types:
+    - <xref:list>[<xref:str>
+    - <xref:azure.ai.projects.models.RunAdditionalFieldList>]
   - name: limit
     description: 'A limit on the number of objects to be returned. Limit can range
       between 1 and
@@ -2226,7 +2252,8 @@ methods:
     ''submit_tool_outputs''.  terminating when the Run enters a terminal state with
     a `data: [DONE]` message.'
   signature: 'async submit_tool_outputs_to_stream(thread_id: str, run_id: str, body:
-    JSON, *, content_type: str = ''application/json'', **kwargs: Any) -> _models.AsyncAgentRunStream'
+    JSON | IO[bytes], *, event_handler: None = None, content_type: str = ''application/json'',
+    **kwargs: Any) -> _models.AsyncAgentRunStream[_models.AsyncAgentEventHandler]'
   parameters:
   - name: thread_id
     description: Required.
