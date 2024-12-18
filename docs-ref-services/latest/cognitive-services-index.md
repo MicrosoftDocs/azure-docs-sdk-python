@@ -1,6 +1,7 @@
 | Reference | Package | Source |
 |---|---|---|
 |[Content Safety](ai-contentsafety-readme.md)|[azure-ai-contentsafety](https://pypi.org/project/azure-ai-contentsafety)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentsafety/azure-ai-contentsafety)|
+|[Document Intelligence](ai-documentintelligence-readme.md)|[azure-ai-documentintelligence](https://pypi.org/project/azure-ai-documentintelligence)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/documentintelligence/azure-ai-documentintelligence)|
 |[AI Evaluation](ai-evaluation-readme.md)|[azure-ai-evaluation](https://pypi.org/project/azure-ai-evaluation)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/evaluation/azure-ai-evaluation)|
 |[Form Recognizer](ai-formrecognizer-readme.md)|[azure-ai-formrecognizer](https://pypi.org/project/azure-ai-formrecognizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/formrecognizer/azure-ai-formrecognizer)|
 |[Conversational Language Understanding](ai-language-conversations-readme.md)|[azure-ai-language-conversations](https://pypi.org/project/azure-ai-language-conversations)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cognitivelanguage/azure-ai-language-conversations)|
