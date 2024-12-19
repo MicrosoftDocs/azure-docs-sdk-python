@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: iotoperations
 ---
-# Azure Iotoperations SDK for Python - preview
-## Packages - preview
+# Azure Iotoperations SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](iotoperations-index.md)]
