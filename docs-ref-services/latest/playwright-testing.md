@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: playwrighttesting
 ---
-# Azure Playwright Testing SDK for Python - preview
-## Packages - preview
+# Azure Playwright Testing SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](playwright-testing-index.md)]
