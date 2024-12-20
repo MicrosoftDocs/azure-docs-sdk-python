@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-network, network
-ms.date: 11/01/2024
+ms.date: 12/20/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: network
