@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-informaticadatamanagement, informaticadatamanagement
-ms.date: 05/30/2024
+ms.date: 12/21/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: informaticadatamanagement
