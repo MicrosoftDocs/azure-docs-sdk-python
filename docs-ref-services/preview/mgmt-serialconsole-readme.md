@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-serialconsole, serialconsole
-ms.date: 11/02/2022
+ms.date: 12/25/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: serialconsole
