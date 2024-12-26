@@ -1,7 +1,7 @@
 ---
 title: Azure Oep SDK for Python
 description: Reference for Azure Oep SDK for Python
-ms.date: 12/25/2024
+ms.date: 12/26/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: oep
