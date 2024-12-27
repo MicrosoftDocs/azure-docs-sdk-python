@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-deviceregistry, deviceregistry
-ms.date: 12/23/2024
+ms.date: 12/27/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: deviceregistry
