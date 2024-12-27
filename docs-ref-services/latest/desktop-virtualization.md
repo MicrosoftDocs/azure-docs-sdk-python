@@ -1,7 +1,7 @@
 ---
 title: Azure Desktop Virtualization SDK for Python
 description: Reference for Azure Desktop Virtualization SDK for Python
-ms.date: 12/26/2024
+ms.date: 12/27/2024
 ms.topic: reference
 ms.devlang: python
 ms.service: desktopvirtualization
