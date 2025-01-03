@@ -1,12 +1,12 @@
 ---
 title: Azure Communication Call Automation client library for Python
 keywords: Azure, python, SDK, API, azure-communication-callautomation, communication
-ms.date: 11/25/2024
+ms.date: 01/03/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: communication
 ---
-# Azure Communication Call Automation client library for Python - version 1.4.0b1 
+# Azure Communication Call Automation client library for Python - version 1.4.0a20250103001 
 
 
 This package contains a Python SDK for Azure Communication Call Automation. Call Automation provides developers the ability to build server-based, intelligent call workflows, and call recording for voice and PSTN channels.
