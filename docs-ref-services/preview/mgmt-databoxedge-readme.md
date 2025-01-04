@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-databoxedge, databoxedge
-ms.date: 02/14/2023
+ms.date: 01/04/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: databoxedge
