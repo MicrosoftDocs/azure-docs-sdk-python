@@ -1,7 +1,7 @@
 ---
 title: Azure Media Services SDK for Python
 description: Reference for Azure Media Services SDK for Python
-ms.date: 01/07/2025
+ms.date: 01/08/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: mediaservices
