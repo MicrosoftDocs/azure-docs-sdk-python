@@ -1,0 +1,67 @@
+### YamlMime:PythonClass
+uid: azure.durable_functions.models.Task.CompoundTask
+name: CompoundTask
+fullName: azure.durable_functions.models.Task.CompoundTask
+module: azure.durable_functions.models.Task
+inheritances:
+- azure.durable_functions.models.Task.TaskBase
+summary: 'A Task of Tasks.
+
+
+  Contains shared logic that drives all of its sub-classes.
+
+  Should never be instantiated on its own.
+
+
+  Instantiate CompoundTask attributes.'
+constructor:
+  syntax: 'CompoundTask(tasks: List[TaskBase], compound_action_constructor=None)'
+  parameters:
+  - name: tasks
+    description: The children/sub-tasks of this Task
+    isRequired: true
+    types:
+    - <xref:List>[<xref:Task>]
+  - name: compound_action_constructor
+    description: 'Either None or, a WhenAllAction or WhenAnyAction constructor.
+
+      It is None when using the V1 replay protocol, where no Compound Action
+
+      objects size and compound actions are represented as arrays of actions.
+
+      It is not None when using the V2 replay protocol.'
+    defaultValue: None
+    types:
+    - <xref:Union>[<xref:WhenAllAction>, <xref:azure.durable_functions.models.Task.WhenAnyAction>,
+      <xref:None>]
+methods:
+- uid: azure.durable_functions.models.Task.CompoundTask.handle_completion
+  name: handle_completion
+  summary: Manage sub-task completion events.
+  signature: 'handle_completion(child: TaskBase)'
+  parameters:
+  - name: child
+    description: The sub-task that completed
+    isRequired: true
+    types:
+    - <xref:azure.durable_functions.models.Task.TaskBase>
+  exceptions:
+  - type: Exception
+    description: "When the calling sub-task was not registered\n    with this Task's\
+      \ pending sub-tasks."
+- uid: azure.durable_functions.models.Task.CompoundTask.try_set_value
+  name: try_set_value
+  summary: 'Transition a CompoundTask to a terminal state and set its value.
+
+
+    Should be implemented by sub-classes.'
+  signature: 'try_set_value(child: TaskBase)'
+  parameters:
+  - name: child
+    description: A sub-task that just completed
+    isRequired: true
+    types:
+    - <xref:azure.durable_functions.models.Task.TaskBase>
+  exceptions:
+  - type: NotImplementedError
+    description: This method needs to be implemented by each subclass.
