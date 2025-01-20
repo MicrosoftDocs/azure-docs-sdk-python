@@ -1,7 +1,7 @@
 ---
 title: Azure Playwright Testing SDK for Python
 description: Reference for Azure Playwright Testing SDK for Python
-ms.date: 01/17/2025
+ms.date: 01/20/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: playwrighttesting
