@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-compute, compute
-ms.date: 12/16/2024
+ms.date: 01/20/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: compute
