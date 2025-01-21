@@ -1,6 +1,7 @@
 ---
 title: Azure Machine Learning Python SDK v2
 keywords: Azure, python, SDK, API, azure-ai-ml, ml
+description: Learn about the Azure Machine Learning Python SDK v2 and how you can use it with your ML workflow.
 ms.date: 01/20/2025
 ms.topic: reference
 ms.devlang: python
