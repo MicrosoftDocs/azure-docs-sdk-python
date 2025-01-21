@@ -4,7 +4,7 @@ keywords: Azure, python, SDK, API, azure-ai-ml, ml
 ms.date: 01/20/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: ml
+ms.service: azure-machine-learning
 ---
 # Azure Machine Learning Python SDK v2 - version 1.24.0 
 
