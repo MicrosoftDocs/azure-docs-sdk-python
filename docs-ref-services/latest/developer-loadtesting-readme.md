@@ -1,12 +1,12 @@
 ---
 title: Azure Load Testing client library for Python
-keywords: Azure, python, SDK, API, azure-developer-loadtesting, azure-load-testing
-ms.date: 03/07/2023
+keywords: Azure, python, SDK, API, azure-developer-loadtesting, load-testing
+ms.date: 01/21/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-load-testing
+ms.service: load-testing
 ---
-# Azure Load Testing client library for Python - version 1.0.0 
+# Azure Load Testing client library for Python - version 1.0.1 
 
 Azure Load Testing provides client library in python to the user by which they can interact natively with Azure Load Testing service. Azure Load Testing is a fully managed load-testing service that enables you to generate high-scale load. The service simulates traffic for your applications, regardless of where they're hosted. Developers, testers, and quality assurance (QA) engineers can use it to optimize application performance, scalability, or capacity.
 
@@ -233,7 +233,7 @@ except HttpResponseError as e:
 
 ## Next steps
 
-More samples can be found [here](https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-loadtesting_1.0.0/sdk/loadtesting/azure-developer-loadtesting/samples).
+More samples can be found [here](https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-loadtesting_1.0.1/sdk/loadtesting/azure-developer-loadtesting/samples).
 
 ## Contributing
 
@@ -258,11 +258,10 @@ More about it is coming soon...
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [authenticate_with_token]: /azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-loadtesting_1.0.0/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-loadtesting_1.0.1/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-loadtesting_1.0.0/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-developer-loadtesting_1.0.1/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [api_reference_doc]: /rest/api/loadtesting/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
-
