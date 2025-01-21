@@ -5,8 +5,8 @@ ms.date: 01/21/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: scheduler
-manager: mbaldwin
 keywords: Azure, python, SDK, API, Scheduler
+manager: mbaldwin
 ---
 # Azure Scheduler libraries for python
 
