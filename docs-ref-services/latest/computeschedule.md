@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: computeschedule
 ---
-# Azure Computeschedule SDK for Python - preview
-## Packages - preview
+# Azure Computeschedule SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](computeschedule-index.md)]
