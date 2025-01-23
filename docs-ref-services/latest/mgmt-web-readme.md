@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-web, appservice
-ms.date: 08/20/2024
+ms.date: 01/23/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: appservice
