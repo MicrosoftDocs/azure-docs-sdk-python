@@ -1,7 +1,7 @@
 ---
 title: Azure Hybrid Compute SDK for Python
 description: Reference for Azure Hybrid Compute SDK for Python
-ms.date: 01/24/2025
+ms.date: 01/27/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridcompute
