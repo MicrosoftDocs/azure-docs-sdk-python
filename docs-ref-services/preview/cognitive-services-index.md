@@ -4,7 +4,6 @@
 |[Content Safety](ai-contentsafety-readme.md)|[azure-ai-contentsafety](https://pypi.org/project/azure-ai-contentsafety)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/contentsafety/azure-ai-contentsafety)|
 |[Document Intelligence](ai-documentintelligence-readme.md)|[azure-ai-documentintelligence](https://pypi.org/project/azure-ai-documentintelligence)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/documentintelligence/azure-ai-documentintelligence)|
 |[AI Evaluation](ai-evaluation-readme.md)|[azure-ai-evaluation](https://pypi.org/project/azure-ai-evaluation)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/evaluation/azure-ai-evaluation)|
-|[AI Generative](ai-generative-readme.md)|[azure-ai-generative](https://pypi.org/project/azure-ai-generative)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-generative)|
 |[AI Model Inference](ai-inference-readme.md)|[azure-ai-inference](https://pypi.org/project/azure-ai-inference)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-inference)|
 |Personalizer|[azure-ai-personalizer](https://pypi.org/project/azure-ai-personalizer)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/personalizer/azure-ai-personalizer)|
 |[AI Projects](ai-projects-readme.md)|[azure-ai-projects](https://pypi.org/project/azure-ai-projects)|[GitHub](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-projects)|
