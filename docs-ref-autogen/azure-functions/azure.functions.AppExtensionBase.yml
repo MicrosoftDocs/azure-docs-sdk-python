@@ -1,0 +1,141 @@
+### YamlMime:PythonClass
+uid: azure.functions.AppExtensionBase
+name: AppExtensionBase
+fullName: azure.functions.AppExtensionBase
+module: azure.functions
+inheritances:
+- builtins.object
+summary: 'An abstract class defines the global life-cycle hooks to be implemented
+
+  by customer''s extension, will be applied to all functions.
+
+
+  An AppExtension should be treated as a static class. Must not contain
+
+  __init__ method since it is not instantiable.
+
+
+  Please place your initialization code in init() classmethod, consider
+
+  accepting extension settings in configure() classmethod from customers.'
+constructor:
+  syntax: AppExtensionBase(*args, **kwargs)
+methods:
+- uid: azure.functions.AppExtensionBase.configure
+  name: configure
+  summary: 'This function is intended to be called by Azure Functions
+
+    customers. This is a contract between extension developers and
+
+    azure functions customers. If multiple .configure() are called,
+
+    the extension system cannot guarantee the calling order.'
+  signature: configure(*args, **kwargs)
+- uid: azure.functions.AppExtensionBase.init
+  name: init
+  summary: 'The function will be executed when the extension is loaded.
+
+    Happens when Azure Functions customers import the extension module.'
+  signature: init()
+- uid: azure.functions.AppExtensionBase.post_function_load_app_level
+  name: post_function_load_app_level
+  summary: 'This must be implemented as a @classmethod. It will be called right
+
+    after a customer''s function is loaded. In this stage, the customer''s
+
+    logger is not fully initialized from the Python worker. Please use
+
+    print() to emit a message if necessary.'
+  signature: 'post_function_load_app_level(function_name: str, function_directory:
+    str, *args, **kwargs) -> None'
+  parameters:
+  - name: function_name
+    description: The name of customer's function (e.g. HttpTrigger)
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: function_directory
+    description: 'The path to customer''s function directory
+
+      (e.g. /home/site/wwwroot/HttpTrigger)'
+    isRequired: true
+    types:
+    - <xref:str>
+- uid: azure.functions.AppExtensionBase.post_invocation_app_level
+  name: post_invocation_app_level
+  summary: 'This must be implemented as a @staticmethod. It will be called right
+
+    after a customer''s function is being executed.'
+  signature: 'post_invocation_app_level(logger: Logger, context: Context, func_args:
+    Dict[str, object] | None = None, func_ret: object | None = None, *args, **kwargs)
+    -> None'
+  parameters:
+  - name: logger
+    description: 'A logger provided by Python worker. Extension developer should
+
+      use this logger to emit telemetry to Azure Functions customers.'
+    isRequired: true
+    types:
+    - <xref:logging.Logger>
+  - name: context
+    description: 'This will include the function_name, function_directory and an
+
+      invocation_id of this specific invocation.'
+    isRequired: true
+    types:
+    - <xref:azure.functions.Context>
+  - name: func_args
+    description: 'Arguments that are passed into the Azure Functions. The name of
+
+      each parameter is defined in function.json. Extension developers
+
+      may also want to do isinstance() check if you want to apply
+
+      operations to specific trigger types or input binding types.'
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:object>]
+  - name: func_ret
+    description: 'Return value from Azure Functions. This is usually the value
+
+      defined in function.json $return section. Extension developers
+
+      may also want to do isinstance() check if you want to apply
+
+      operations to specific types or input binding types."'
+    defaultValue: None
+    types:
+    - <xref:typing.Optional>[<xref:object>]
+- uid: azure.functions.AppExtensionBase.pre_invocation_app_level
+  name: pre_invocation_app_level
+  summary: 'This must be implemented as a @staticmethod. It will be called right
+
+    before a customer''s function is being executed.'
+  signature: 'pre_invocation_app_level(logger: Logger, context: Context, func_args:
+    Dict[str, object] | None = None, *args, **kwargs) -> None'
+  parameters:
+  - name: logger
+    description: 'A logger provided by Python worker. Extension developer should
+
+      use this logger to emit telemetry to Azure Functions customers.'
+    isRequired: true
+    types:
+    - <xref:logging.Logger>
+  - name: context
+    description: 'This will include the function_name, function_directory and an
+
+      invocation_id of this specific invocation.'
+    isRequired: true
+    types:
+    - <xref:azure.functions.Context>
+  - name: func_args
+    description: 'Arguments that are passed into the Azure Functions. The name of
+
+      each parameter is defined in function.json. Extension developers
+
+      may also want to do isinstance() check if you want to apply
+
+      operations to specific trigger types or input binding types.'
+    defaultValue: None
+    types:
+    - <xref:typing.Dict>[<xref:str>, <xref:object>]

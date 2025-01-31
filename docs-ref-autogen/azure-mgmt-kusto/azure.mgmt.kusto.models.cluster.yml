@@ -11,7 +11,7 @@ summary: 'Class representing a Kusto cluster.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'Cluster(*, location: str, sku: _models.AzureSku, tags: Dict[str, str] |
     None = None, zones: List[str] | None = None, identity: _models.Identity | None
@@ -25,9 +25,9 @@ constructor:
     | None = None, engine_type: str | _models.EngineType = ''V3'', accepted_audiences:
     List[_models.AcceptedAudiences] | None = None, enable_auto_stop: bool = True,
     restrict_outbound_network_access: str | _models.ClusterNetworkAccessFlag = ''Disabled'',
-    allowed_fqdn_list: List[str] | None = None, public_ip_type: str | _models.PublicIPType
-    = ''IPv4'', virtual_cluster_graduation_properties: str | None = None, **kwargs:
-    Any)'
+    allowed_fqdn_list: List[str] | None = None, callout_policies: List[_models.CalloutPolicy]
+    | None = None, public_ip_type: str | _models.PublicIPType = ''IPv4'', virtual_cluster_graduation_properties:
+    str | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Resource tags.
@@ -142,6 +142,10 @@ constructor:
       Cluster.'
     types:
     - <xref:list>[<xref:str>]
+  - name: callout_policies
+    description: List of callout policies for egress from Cluster.
+    types:
+    - <xref:list>[<xref:azure.mgmt.kusto.models.CalloutPolicy>]
   - name: public_ip_type
     description: 'Indicates what public IP type to create - IPv4 (default), or DualStack
 
@@ -157,7 +161,8 @@ constructor:
 variables:
 - description: 'Fully qualified resource ID for the resource. Ex -
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.'
+    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
@@ -314,6 +319,10 @@ variables:
   name: allowed_fqdn_list
   types:
   - <xref:list>[<xref:str>]
+- description: List of callout policies for egress from Cluster.
+  name: callout_policies
+  types:
+  - <xref:list>[<xref:azure.mgmt.kusto.models.CalloutPolicy>]
 - description: 'Indicates what public IP type to create - IPv4 (default), or DualStack
 
     (both IPv4 and IPv6). Known values are: "IPv4" and "DualStack".'
@@ -335,3 +344,11 @@ variables:
   name: migration_cluster
   types:
   - <xref:azure.mgmt.kusto.models.MigrationClusterProperties>
+- description: 'Indicates whether the cluster is zonal or non-zonal. Known values
+    are:
+
+    "NonZonal", "ZonalInconsistency", and "Zonal".'
+  name: zone_status
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.kusto.models.ZoneStatus>
