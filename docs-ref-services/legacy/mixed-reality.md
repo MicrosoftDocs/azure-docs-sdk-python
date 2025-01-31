@@ -14,7 +14,7 @@ manager: dgriff
 
 Microsoft provides a series of Azure services to empower Mixed Reality devices and applications. Currently, such services are provided:
 
-* [Azure Remote Rendering (To be available soon...)](https://azure.microsoft.com/en-us/services/remote-rendering/)
+* [Azure Remote Rendering (To be available soon...)](https://azure.microsoft.com/services/remote-rendering/)
 
 ## Management library
 ```bash
