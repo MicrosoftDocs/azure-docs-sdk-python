@@ -1,12 +1,12 @@
 ---
 title: Azure AI Evaluation client library for Python
 keywords: Azure, python, SDK, API, azure-ai-evaluation, evaluation
-ms.date: 12/13/2024
+ms.date: 01/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: evaluation
 ---
-# Azure AI Evaluation client library for Python - version 1.1.0 
+# Azure AI Evaluation client library for Python - version 1.2.0 
 
 
 Use Azure AI Evaluation SDK to assess the performance of your generative AI applications. Generative AI application generations are quantitatively measured with mathematical based metrics, AI-assisted quality and safety metrics. Metrics are defined as `evaluators`. Built-in or custom evaluators can provide comprehensive insights into the application's capabilities and limitations.
@@ -31,7 +31,7 @@ Azure AI SDK provides following to evaluate Generative AI Applications:
 
 ### Prerequisites
 
-- Python 3.8 or later is required to use this package.
+- Python 3.9 or later is required to use this package.
 - [Optional] You must have [Azure AI Project][ai_project] or [Azure Open AI][azure_openai] to use AI-assisted evaluators
 
 ### Install the package
@@ -315,18 +315,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.1.0/sdk/evaluation/azure-ai-evaluation
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.2.0/sdk/evaluation/azure-ai-evaluation
 [evaluation_pypi]: https://pypi.org/project/azure-ai-evaluation/
 [evaluation_ref_docs]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview
 [evaluation_samples]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
 [python_logging]: https://docs.python.org/3/library/logging.html
 [sdk_logging_docs]: /azure/developer/python/azure-sdk-logging
-[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.1.0/sdk/core/azure-core/README.md
+[azure_core_readme]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.2.0/sdk/core/azure-core/README.md
 [pip_link]: https://pypi.org/project/pip/
 [azure_core_ref_docs]: https://aka.ms/azsdk-python-core-policies
-[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.1.0/sdk/core/azure-core/README.md
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.1.0/sdk/identity/azure-identity
+[azure_core]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.2.0/sdk/core/azure-core/README.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-evaluation_1.2.0/sdk/identity/azure-identity
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
@@ -336,7 +336,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [evaluators]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview
 [evaluate_api]: https://learn.microsoft.com/python/api/azure-ai-evaluation/azure.ai.evaluation?view=azure-python-preview#azure-ai-evaluation-evaluate
 [evaluate_app]: https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate/Supported_Evaluation_Targets/Evaluate_App_Endpoint
-[evaluation_tsg]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.1.0/sdk/evaluation/azure-ai-evaluation/TROUBLESHOOTING.md
+[evaluation_tsg]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-evaluation_1.2.0/sdk/evaluation/azure-ai-evaluation/TROUBLESHOOTING.md
 [ai_studio]: https://learn.microsoft.com/azure/ai-studio/what-is-ai-studio
 [ai_project]: https://learn.microsoft.com/azure/ai-studio/how-to/create-projects?tabs=ai-studio
 [azure_openai]: https://learn.microsoft.com/azure/ai-services/openai/
