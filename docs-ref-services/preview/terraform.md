@@ -1,7 +1,7 @@
 ---
 title: Azure Terraform SDK for Python
 description: Reference for Azure Terraform SDK for Python
-ms.date: 01/30/2025
+ms.date: 01/31/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: terraform

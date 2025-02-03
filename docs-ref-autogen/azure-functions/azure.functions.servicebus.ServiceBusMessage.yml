@@ -7,32 +7,49 @@ inheritances:
 - azure.functions._servicebus.ServiceBusMessage
 summary: An HTTP response object.
 constructor:
-  syntax: 'ServiceBusMessage(*, body: bytes, trigger_metadata: Mapping[str, Any] =
-    None, content_type: str | None = None, correlation_id: str | None = None, delivery_count:
-    int | None = 0, enqueued_time_utc: datetime | None = None, expiration_time: datetime
-    | None = None, expires_at_utc: datetime | None = None, label: str | None = None,
-    message_id: str, partition_key: str | None = None, reply_to: str | None = None,
-    reply_to_session_id: str | None = None, scheduled_enqueue_time: datetime | None
-    = None, session_id: str | None = None, time_to_live: timedelta | None = None,
-    to: str | None = None, user_properties: Dict[str, object])'
+  syntax: 'ServiceBusMessage(*, body: bytes, trigger_metadata: Mapping[str, Any] |
+    None = None, application_properties: Dict[str, Any], content_type: str | None
+    = None, correlation_id: str | None = None, dead_letter_error_description: str
+    | None = None, dead_letter_reason: str | None = None, dead_letter_source: str
+    | None = None, delivery_count: int | None = None, enqueued_sequence_number: int
+    | None = None, enqueued_time_utc: datetime | None = None, expires_at_utc: datetime
+    | None = None, label: str | None = None, locked_until: datetime | None = None,
+    lock_token: str | None = None, message_id: str, partition_key: str | None = None,
+    reply_to: str | None = None, reply_to_session_id: str | None = None, scheduled_enqueue_time_utc:
+    datetime | None = None, sequence_number: int | None = None, session_id: str |
+    None = None, state: int | None = None, subject: str | None = None, time_to_live:
+    timedelta | None = None, to: str | None = None, transaction_partition_key: str
+    | None = None, user_properties: Dict[str, object])'
   keywordOnlyParameters:
   - name: body
     isRequired: true
   - name: trigger_metadata
     isRequired: true
+  - name: application_properties
+    isRequired: true
   - name: content_type
     isRequired: true
   - name: correlation_id
     isRequired: true
+  - name: dead_letter_error_description
+    isRequired: true
+  - name: dead_letter_reason
+    isRequired: true
+  - name: dead_letter_source
+    isRequired: true
   - name: delivery_count
     isRequired: true
-  - name: enqueued_time_utc
+  - name: enqueued_sequence_number
     isRequired: true
-  - name: expiration_time
+  - name: enqueued_time_utc
     isRequired: true
   - name: expires_at_utc
     isRequired: true
   - name: label
+    isRequired: true
+  - name: locked_until
+    isRequired: true
+  - name: lock_token
     isRequired: true
   - name: message_id
     isRequired: true
@@ -42,13 +59,21 @@ constructor:
     isRequired: true
   - name: reply_to_session_id
     isRequired: true
-  - name: scheduled_enqueue_time
+  - name: scheduled_enqueue_time_utc
+    isRequired: true
+  - name: sequence_number
     isRequired: true
   - name: session_id
+    isRequired: true
+  - name: state
+    isRequired: true
+  - name: subject
     isRequired: true
   - name: time_to_live
     isRequired: true
   - name: to
+    isRequired: true
+  - name: transaction_partition_key
     isRequired: true
   - name: user_properties
     isRequired: true
@@ -57,30 +82,41 @@ methods:
   name: get_body
   signature: get_body() -> bytes
 attributes:
+- uid: azure.functions.servicebus.ServiceBusMessage.application_properties
+  name: application_properties
 - uid: azure.functions.servicebus.ServiceBusMessage.content_type
   name: content_type
 - uid: azure.functions.servicebus.ServiceBusMessage.correlation_id
   name: correlation_id
+- uid: azure.functions.servicebus.ServiceBusMessage.dead_letter_error_description
+  name: dead_letter_error_description
+- uid: azure.functions.servicebus.ServiceBusMessage.dead_letter_reason
+  name: dead_letter_reason
+- uid: azure.functions.servicebus.ServiceBusMessage.dead_letter_source
+  name: dead_letter_source
 - uid: azure.functions.servicebus.ServiceBusMessage.delivery_count
   name: delivery_count
+- uid: azure.functions.servicebus.ServiceBusMessage.enqueued_sequence_number
+  name: enqueued_sequence_number
 - uid: azure.functions.servicebus.ServiceBusMessage.enqueued_time_utc
   name: enqueued_time_utc
 - uid: azure.functions.servicebus.ServiceBusMessage.expiration_time
   name: expiration_time
+  summary: (Deprecated) Use expires_at_utc instead
 - uid: azure.functions.servicebus.ServiceBusMessage.expires_at_utc
   name: expires_at_utc
+- uid: azure.functions.servicebus.ServiceBusMessage.force_persistence
+  name: force_persistence
 - uid: azure.functions.servicebus.ServiceBusMessage.label
   name: label
+- uid: azure.functions.servicebus.ServiceBusMessage.lock_token
+  name: lock_token
+- uid: azure.functions.servicebus.ServiceBusMessage.locked_until
+  name: locked_until
 - uid: azure.functions.servicebus.ServiceBusMessage.message_id
   name: message_id
 - uid: azure.functions.servicebus.ServiceBusMessage.metadata
   name: metadata
-  summary: "Getting read-only trigger metadata in a Python dictionary.\n\nExposing\
-    \ the raw trigger_metadata to our customer. For cardinality=many\nscenarios, each\
-    \ event points to the common metadata of all the events.\n\nSo when using metadata\
-    \ field when cardinality=many, it only needs to\ntake one of the events to get\
-    \ all the data (e.g. events[0].metadata).\n\n# Returns:\n\ntyping.Mapping[str,\
-    \ object]\n   Return the Python dictionary of trigger metadata"
 - uid: azure.functions.servicebus.ServiceBusMessage.partition_key
   name: partition_key
 - uid: azure.functions.servicebus.ServiceBusMessage.reply_to
@@ -89,11 +125,22 @@ attributes:
   name: reply_to_session_id
 - uid: azure.functions.servicebus.ServiceBusMessage.scheduled_enqueue_time
   name: scheduled_enqueue_time
+  summary: (Deprecated) Use scheduled_enqueue_time_utc instead
+- uid: azure.functions.servicebus.ServiceBusMessage.scheduled_enqueue_time_utc
+  name: scheduled_enqueue_time_utc
+- uid: azure.functions.servicebus.ServiceBusMessage.sequence_number
+  name: sequence_number
 - uid: azure.functions.servicebus.ServiceBusMessage.session_id
   name: session_id
+- uid: azure.functions.servicebus.ServiceBusMessage.state
+  name: state
+- uid: azure.functions.servicebus.ServiceBusMessage.subject
+  name: subject
 - uid: azure.functions.servicebus.ServiceBusMessage.time_to_live
   name: time_to_live
 - uid: azure.functions.servicebus.ServiceBusMessage.to
   name: to
+- uid: azure.functions.servicebus.ServiceBusMessage.transaction_partition_key
+  name: transaction_partition_key
 - uid: azure.functions.servicebus.ServiceBusMessage.user_properties
   name: user_properties
