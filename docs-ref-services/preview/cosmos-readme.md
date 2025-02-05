@@ -1,12 +1,12 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, cosmos
-ms.date: 01/26/2025
+ms.date: 02/05/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
 ---
-# Azure Cosmos DB SQL API client library for Python - version 4.9.1b2 
+# Azure Cosmos DB SQL API client library for Python - version 4.9.1b3 
 
 
 ## _Disclaimer_
@@ -28,13 +28,13 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 | [Product documentation][cosmos_docs]
 | [Samples][cosmos_samples]
 
-> This SDK is used for the [SQL API](/azure/cosmos-db/sql-query-getting-started). For all other APIs, please check the [Azure Cosmos DB documentation](/azure/cosmos-db/introduction) to evaluate the best SDK for your project.
+> This SDK is used for the [SQL API](https://learn.microsoft.com/azure/cosmos-db/sql-query-getting-started). For all other APIs, please check the [Azure Cosmos DB documentation](https://learn.microsoft.com/azure/cosmos-db/introduction) to evaluate the best SDK for your project.
 
 ## Getting started
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -116,7 +116,7 @@ aad_credentials = DefaultAzureCredential()
 client = CosmosClient(url, aad_credentials)
 ```
 Always ensure that the managed identity you use for AAD authentication has `readMetadata` permissions. <br>
-More information on how to set up AAD authentication: [Set up RBAC for AAD authentication](/azure/cosmos-db/how-to-setup-rbac) <br>
+More information on how to set up AAD authentication: [Set up RBAC for AAD authentication](https://learn.microsoft.com/azure/cosmos-db/how-to-setup-rbac) <br>
 More information on allowed operations for AAD authenticated clients: [RBAC Permission Model](https://aka.ms/cosmos-native-rbac)
 
 ## Key concepts
@@ -180,7 +180,7 @@ Streamable queries like `SELECT * FROM WHERE` *do* support continuation tokens.
 
 ### Control Plane Limitations Workaround
 
-Typically, you can use [Azure Portal](https://portal.azure.com/), [Azure Cosmos DB Resource Provider REST API](/rest/api/cosmos-db-resource-provider), [Azure CLI](/cli/azure/azure-cli-reference-for-cosmos-db) or [PowerShell](/azure/cosmos-db/manage-with-powershell) for the control plane unsupported limitations.
+Typically, you can use [Azure Portal](https://portal.azure.com/), [Azure Cosmos DB Resource Provider REST API](https://learn.microsoft.com/rest/api/cosmos-db-resource-provider), [Azure CLI](https://learn.microsoft.com/cli/azure/azure-cli-reference-for-cosmos-db) or [PowerShell](https://learn.microsoft.com/azure/cosmos-db/manage-with-powershell) for the control plane unsupported limitations.
 
 ### Using The Async Client as a Workaround to Bulk
 While the SDK supports transactional batch, support for bulk requests is not yet implemented in the Python SDK. You can use the async client along with this [concurrency sample][cosmos_concurrency_sample] we have developed as a reference for a possible workaround. 
@@ -191,7 +191,7 @@ While the SDK supports transactional batch, support for bulk requests is not yet
 
 ## Boolean Data Type
 
-While the Python language [uses](https://docs.python.org/3/library/stdtypes.html?highlight=boolean#truth-value-testing) "True" and "False" for boolean types, Cosmos DB [accepts](/azure/cosmos-db/sql-query-is-bool) "true" and "false" only. In other words, the Python language uses Boolean values with the first uppercase letter and all other lowercase letters, while Cosmos DB and its SQL language use only lowercase letters for those same Boolean values. How to deal with this challenge?
+While the Python language [uses](https://docs.python.org/3/library/stdtypes.html?highlight=boolean#truth-value-testing) "True" and "False" for boolean types, Cosmos DB [accepts](https://learn.microsoft.com/azure/cosmos-db/sql-query-is-bool) "true" and "false" only. In other words, the Python language uses Boolean values with the first uppercase letter and all other lowercase letters, while Cosmos DB and its SQL language use only lowercase letters for those same Boolean values. How to deal with this challenge?
 
 * Your JSON documents created with Python must use "True" and "False", to pass the language validation. The SDK will convert it to "true" and "false" for you. Meaning that "true" and "false" is what will be stored in Cosmos DB.
 * If you retrieve those documents with the Cosmos DB Portal's Data Explorer, you will see "true" and "false".
@@ -199,9 +199,9 @@ While the Python language [uses](https://docs.python.org/3/library/stdtypes.html
 
 ## SQL Queries x FROM Clause Subitems
 
-This SDK uses the [query_items](/python/api/azure-cosmos/azure.cosmos.containerproxy?preserve-view=true&view=azure-python#query-items-query--parameters-none--partition-key-none--enable-cross-partition-query-none--max-item-count-none--enable-scan-in-query-none--populate-query-metrics-none----kwargs-) method to submit SQL queries to Azure Cosmos DB.
+This SDK uses the [query_items](https://learn.microsoft.com/python/api/azure-cosmos/azure.cosmos.containerproxy?preserve-view=true&view=azure-python#query-items-query--parameters-none--partition-key-none--enable-cross-partition-query-none--max-item-count-none--enable-scan-in-query-none--populate-query-metrics-none----kwargs-) method to submit SQL queries to Azure Cosmos DB.
 
-Cosmos DB SQL language allows you to [get subitems by using the FROM clause](/azure/cosmos-db/sql-query-from#get-subitems-by-using-the-from-clause), to reduce the source to a smaller subset. As an example, you can use `select * from Families.children` instead of `select * from Families`. But please note that:
+Cosmos DB SQL language allows you to [get subitems by using the FROM clause](https://learn.microsoft.com/azure/cosmos-db/sql-query-from#get-subitems-by-using-the-from-clause), to reduce the source to a smaller subset. As an example, you can use `select * from Families.children` instead of `select * from Families`. But please note that:
 
 * For SQL queries using the `query_items` method, this SDK demands that you specify the `partition_key` or use the `enable_cross_partition_query` flag.
 * If you are getting subitems and specifying the `partition_key`, please make sure that your partition key is included in the subitems, which is not true for most of the cases.
@@ -269,7 +269,7 @@ except exceptions.CosmosHttpResponseError:
 
 ### Create an analytical store enabled container
 
-This example creates a container with [Analytical Store](/azure/cosmos-db/analytical-store-introduction) enabled, for reporting, BI, AI, and Advanced Analytics with [Azure Synapse Link](/azure/cosmos-db/synapse-link).
+This example creates a container with [Analytical Store](https://learn.microsoft.com/azure/cosmos-db/analytical-store-introduction) enabled, for reporting, BI, AI, and Advanced Analytics with [Azure Synapse Link](https://learn.microsoft.com/azure/cosmos-db/synapse-link).
 
 The options for analytical_storage_ttl are:
 
@@ -991,35 +991,35 @@ to use this functionality are the following:
 pip install azure-core-tracing-opentelemetry
 pip install opentelemetry-sdk
 ```
-For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.9.1b2/sdk/core/azure-core-tracing-opentelemetry/README.md) 
+For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.9.1b3/sdk/core/azure-core-tracing-opentelemetry/README.md) 
 from Azure Core describing how to set it up. We have also added a [sample file][telemetry_sample] to show how it can
 be used with our SDK. This works the same way regardless of the Cosmos client you are using.
 
 ## Next steps
 
-For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos DB documentation][cosmos_docs] on docs.microsoft.com.
+For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos DB documentation][cosmos_docs] on learn.microsoft.com.
 
 <!-- LINKS -->
-[azure_cli]: /cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_sub]: https://azure.microsoft.com/free/
-[cloud_shell]: /azure/cloud-shell/overview
-[cosmos_account_create]: /azure/cosmos-db/how-to-manage-database-account
-[cosmos_account]: /azure/cosmos-db/account-overview
-[cosmos_container]: /azure/cosmos-db/databases-containers-items#azure-cosmos-containers
-[cosmos_database]: /azure/cosmos-db/databases-containers-items#azure-cosmos-databases
-[cosmos_docs]: /azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples
+[cloud_shell]: https://learn.microsoft.com/azure/cloud-shell/overview
+[cosmos_account_create]: https://learn.microsoft.com/azure/cosmos-db/how-to-manage-database-account
+[cosmos_account]: https://learn.microsoft.com/azure/cosmos-db/account-overview
+[cosmos_container]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-containers
+[cosmos_database]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-databases
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
-[cosmos_http_status_codes]: /rest/api/cosmos-db/http-status-codes-for-cosmosdb
-[cosmos_item]: /azure/cosmos-db/databases-containers-items#azure-cosmos-items
-[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
-[cosmos_request_units]: /azure/cosmos-db/request-units
-[cosmos_resources]: /azure/cosmos-db/databases-containers-items
-[cosmos_sql_queries]: /azure/cosmos-db/how-to-sql-query
-[cosmos_ttl]: /azure/cosmos-db/time-to-live
-[cosmos_integrated_cache]: /azure/cosmos-db/integrated-cache
-[cosmos_configure_integrated_cache]: /azure/cosmos-db/how-to-configure-integrated-cache
+[cosmos_http_status_codes]: https://learn.microsoft.com/rest/api/cosmos-db/http-status-codes-for-cosmosdb
+[cosmos_item]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-items
+[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
+[cosmos_request_units]: https://learn.microsoft.com/azure/cosmos-db/request-units
+[cosmos_resources]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items
+[cosmos_sql_queries]: https://learn.microsoft.com/azure/cosmos-db/how-to-sql-query
+[cosmos_ttl]: https://learn.microsoft.com/azure/cosmos-db/time-to-live
+[cosmos_integrated_cache]: https://learn.microsoft.com/azure/cosmos-db/integrated-cache
+[cosmos_configure_integrated_cache]: https://learn.microsoft.com/azure/cosmos-db/how-to-configure-integrated-cache
 [python]: https://www.python.org/downloads/
 [ref_container_delete_item]: https://aka.ms/azsdk-python-cosmos-ref-delete-item
 [ref_container_query_items]: https://aka.ms/azsdk-python-cosmos-ref-query-items
@@ -1030,19 +1030,19 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/document_management_async.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/document_management_async.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
-[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
-[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
+[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
+[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
 [cosmos_transactional_batch]: https://learn.microsoft.com/azure/cosmos-db/nosql/transactional-batch
-[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
-[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/index_management.py
-[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b2/sdk/cosmos/azure-cosmos/samples/index_management_async.py
+[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
+[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/index_management.py
+[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.9.1b3/sdk/cosmos/azure-cosmos/samples/index_management_async.py
 [RRF]: https://learn.microsoft.com/azure/search/hybrid-search-ranking
 [BM25]: https://learn.microsoft.com/azure/search/index-similarity-and-scoring
 [cosmos_fts]: https://aka.ms/cosmosfulltextsearch
