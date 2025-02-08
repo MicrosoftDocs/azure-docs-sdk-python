@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-devtestlabs, devtest-lab
-ms.date: 11/04/2024
+ms.date: 02/08/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: devtest-lab
