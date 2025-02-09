@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-datalake-store, datalake
-ms.date: 02/16/2023
+ms.date: 02/09/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: data-lake-store
+ms.service: datalake
 ---
 # Microsoft Azure SDK for Python
 
@@ -68,5 +68,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-datalake-store%2FREADME.png)
+
 
