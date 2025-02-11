@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-billingbenefits, billingbenefits
-ms.date: 12/16/2022
+ms.date: 02/11/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: billingbenefits
@@ -33,5 +33,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-billingbenefits%2FREADME.png)
+
 
