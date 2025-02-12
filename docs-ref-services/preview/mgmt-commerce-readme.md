@@ -1,10 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-commerce, commerce
-ms.date: 02/10/2023
+ms.date: 02/12/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: azure-python
+ms.service: commerce
 ---
 # Microsoft Azure SDK for Python
 
@@ -68,5 +68,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-commerce%2FREADME.png)
+
 
