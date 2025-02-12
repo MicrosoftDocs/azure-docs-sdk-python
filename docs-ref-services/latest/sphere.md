@@ -1,7 +1,7 @@
 ---
 title: Azure Sphere SDK for Python
 description: Reference for Azure Sphere SDK for Python
-ms.date: 02/11/2025
+ms.date: 02/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: sphere
