@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-costmanagement, costmanagement
-ms.date: 07/19/2023
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: costmanagement
@@ -65,5 +65,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-costmanagement%2FREADME.png)
+
 
