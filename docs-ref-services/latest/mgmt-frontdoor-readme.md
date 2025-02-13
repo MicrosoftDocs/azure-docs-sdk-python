@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-frontdoor, network
-ms.date: 04/15/2024
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: network
