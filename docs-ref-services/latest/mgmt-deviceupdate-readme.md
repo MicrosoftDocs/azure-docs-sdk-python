@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-deviceupdate, deviceupdate
-ms.date: 12/18/2023
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: deviceupdate
