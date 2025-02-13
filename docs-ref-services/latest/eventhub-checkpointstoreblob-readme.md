@@ -1,31 +1,40 @@
 ---
-title: Azure EventHubs Checkpoint Store client library for Python
-keywords: Azure, python, SDK, API, azure-eventhub-checkpointstoreblob, eventhubs
-ms.date: 04/07/2021
+title: Azure EventHubs Checkpoint Store using Storage Blobs client library for Python
+keywords: Azure, python, SDK, API, azure-eventhub-checkpointstoreblob, azure-event-hubs
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: event-hubs
+ms.service: azure-event-hubs
 ---
-# Azure EventHubs Checkpoint Store client library for Python - version 1.1.4 
- using Storage Blobs
+# Azure EventHubs Checkpoint Store using Storage Blobs client library for Python - version 1.2.0 
+
 
 Azure EventHubs Checkpoint Store is used for storing checkpoints while processing events from Azure Event Hubs.
 This Checkpoint Store package works as a plug-in package to `EventHubConsumerClient`. It uses Azure Storage Blob as the persistent store for maintaining checkpoints and partition ownership information.
 
-Please note that this is a sync library, for async version of the Azure EventHubs Checkpoint Store client library, please refer to [azure-eventhub-checkpointstoreblob-aio](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.1.4/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio).
+Please note that this is a sync library, for async version of the Azure EventHubs Checkpoint Store client library, please refer to [azure-eventhub-checkpointstoreblob-aio](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.2.0/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio).
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.1.4/sdk/eventhub/azure-eventhub-checkpointstoreblob/) | [Package (PyPi)](https://pypi.org/project/azure-eventhub-checkpointstoreblob) | [API reference documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-eventhub/latest/azure.eventhub.html#azure.eventhub.CheckpointStore) | [Azure Eventhubs documentation](https://docs.microsoft.com/azure/event-hubs/) | [Azure Storage documentation](https://docs.microsoft.com/azure/storage/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.2.0/sdk/eventhub/azure-eventhub-checkpointstoreblob/)
+| [Package (PyPi)](https://pypi.org/project/azure-eventhub-checkpointstoreblob)
+| [Package (Conda)](https://anaconda.org/microsoft/azure-eventhub/)
+| [API reference documentation](https://azuresdkdocs.z19.web.core.windows.net/python/azure-eventhub/latest/azure.eventhub.html#azure.eventhub.CheckpointStore)
+| [Azure Eventhubs documentation](https://learn.microsoft.com/azure/event-hubs/)
+| [Azure Storage documentation](https://learn.microsoft.com/azure/storage/)
+
+## _Disclaimer_
+
+_Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For more information and questions, please refer to https://github.com/Azure/azure-sdk-for-python/issues/20691_
 
 ## Getting started
 
 ### Prerequisites
 
-- Python2.7, Python 3.6 or later.
+- Python 3.8 or later.
 - **Microsoft Azure Subscription:**  To use Azure services, including Azure Event Hubs, you'll need a subscription. If you do not have an existing Azure account, you may sign up for a free trial or use your MSDN subscriber benefits when you [create an account](https://azure.microsoft.com/).
 
-- **Event Hubs namespace with an Event Hub:** To interact with Azure Event Hubs, you'll also need to have a namespace and Event Hub  available.  If you are not familiar with creating Azure resources, you may wish to follow the step-by-step guide for [creating an Event Hub using the Azure portal](https://docs.microsoft.com/azure/event-hubs/event-hubs-create).  There, you can also find detailed instructions for using the Azure CLI, Azure PowerShell, or Azure Resource Manager (ARM) templates to create an Event Hub.
+- **Event Hubs namespace with an Event Hub:** To interact with Azure Event Hubs, you'll also need to have a namespace and Event Hub  available.  If you are not familiar with creating Azure resources, you may wish to follow the step-by-step guide for [creating an Event Hub using the Azure portal](https://learn.microsoft.com/azure/event-hubs/event-hubs-create).  There, you can also find detailed instructions for using the Azure CLI, Azure PowerShell, or Azure Resource Manager (ARM) templates to create an Event Hub.
 
-- **Azure Storage Account:** You'll need to have an Azure Storage Account and create a Azure Blob Storage Block Container to store the checkpoint data with blobs. You may follow the guide [creating an Azure Block Blob Storage Account](https://docs.microsoft.com/azure/storage/blobs/storage-blob-create-account-block-blob).
+- **Azure Storage Account:** You'll need to have an Azure Storage Account and create a Azure Blob Storage Block Container to store the checkpoint data with blobs. You may follow the guide [creating an Azure Block Blob Storage Account](https://learn.microsoft.com/azure/storage/blobs/storage-blob-create-account-block-blob).
 
 ### Install the package
 
@@ -66,7 +75,7 @@ The easiest way to create a `EventHubConsumerClient` is to use a connection stri
 from azure.eventhub import EventHubConsumerClient
 eventhub_client = EventHubConsumerClient.from_connection_string("my_eventhub_namespace_connection_string", "my_consumer_group", eventhub_name="my_eventhub")
 ```
-For other ways of creating a `EventHubConsumerClient`, refer to [EventHubs library](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.1.4/sdk/eventhub/azure-eventhub) for more details.
+For other ways of creating a `EventHubConsumerClient`, refer to [EventHubs library](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.2.0/sdk/eventhub/azure-eventhub) for more details.
 
 ### Consume events using a `BlobCheckpointStore` to do checkpoint
 ```python
@@ -105,7 +114,7 @@ if __name__ == '__main__':
 ```
 
 #### Use `BlobCheckpointStore` with a different version of Azure Storage Service API
-Some environments have different versions of Azure Storage Service API. 
+Some environments have different versions of Azure Storage Service API.
 `BlobCheckpointStore` by default uses the Storage Service API version 2019-07-07. To use it against a different
 version, specify `api_version` when you create the `BlobCheckpointStore` object.
 
@@ -127,14 +136,14 @@ Enabling logging will be helpful to do trouble shooting.
 
 ### More sample code
 
-Get started with our [EventHubs Checkpoint Store samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.1.4/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples).
+Get started with our [EventHubs Checkpoint Store samples](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.2.0/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples).
 
-- [receive_events_using_checkpoint_store.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.1.4/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples/receive_events_using_checkpoint_store.py) - EventHubConsumerClient with blob checkpoint store example
-- [receive_events_using_checkpoint_store_storage_api_version.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.1.4/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples/receive_events_using_checkpoint_store_storage_api_version.py) - EventHubConsumerClient with blob checkpoint store and storage version example
+- [receive_events_using_checkpoint_store.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.2.0/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples/receive_events_using_checkpoint_store.py) - EventHubConsumerClient with blob checkpoint store example
+- [receive_events_using_checkpoint_store_storage_api_version.py](https://github.com/Azure/azure-sdk-for-python/blob/azure-eventhub-checkpointstoreblob_1.2.0/sdk/eventhub/azure-eventhub-checkpointstoreblob/samples/receive_events_using_checkpoint_store_storage_api_version.py) - EventHubConsumerClient with blob checkpoint store and storage version example
 
 ### Documentation
 
-Reference documentation is available [here](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-eventhub/latest/azure.eventhub.html#azure.eventhub.CheckpointStore).
+Reference documentation is available [here](https://azuresdkdocs.z19.web.core.windows.net/python/azure-eventhub/latest/azure.eventhub.html#azure.eventhub.CheckpointStore).
 
 ### Provide Feedback
 
@@ -149,5 +158,5 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/eventhub/azure-eventhub-checkpointstoreblob/README.png)
+
 
