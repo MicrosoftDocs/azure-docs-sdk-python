@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-chaos, chaos
-ms.date: 03/04/2024
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: chaos
