@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-hybridcontainerservice, hybridcontainerservice
-ms.date: 01/25/2024
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: hybridcontainerservice
