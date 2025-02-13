@@ -1,7 +1,7 @@
 ---
 title: Azure Load Testing client library for Python
 keywords: Azure, python, SDK, API, azure-developer-loadtesting, load-testing
-ms.date: 01/21/2025
+ms.date: 02/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: load-testing
