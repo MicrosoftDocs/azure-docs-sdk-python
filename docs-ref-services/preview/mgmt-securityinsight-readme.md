@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-securityinsight, securityinsight
-ms.date: 12/28/2022
+ms.date: 02/14/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: securityinsight
@@ -68,5 +68,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-securityinsight%2FREADME.png)
+
 
