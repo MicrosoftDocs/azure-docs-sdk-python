@@ -215,6 +215,8 @@ constructor:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
@@ -230,6 +232,14 @@ constructor:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -258,16 +268,16 @@ examples:
   async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
   : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
   : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\
-  \\py2docfx\\\\dist_temp\\\\37\\\\azure-eventhub-5.13.0b1\\\\samples\\\\async_samples\\\
+  \\py2docfx\\\\dist_temp\\\\37\\\\azure_eventhub-5.15.0b1\\\\samples\\\\async_samples\\\
   \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
   \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
   : false} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import EventHubProducerClient,\
-  \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ['EVENT_HUB_HOSTNAME']\n\
-  \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   shared_access_policy = os.environ['EVENT_HUB_SAS_POLICY']\n\
-  \   shared_access_key = os.environ['EVENT_HUB_SAS_KEY']\n\n   producer = EventHubProducerClient(fully_qualified_namespace=fully_qualified_namespace,\n\
-  \                                     eventhub_name=eventhub_name,\n           \
-  \                          credential=EventHubSharedKeyCredential(shared_access_policy,\
-  \ shared_access_key))\n\n   ````\n"
+  \ EventHubSharedKeyCredential\n\n   fully_qualified_namespace = os.environ[\"EVENT_HUB_HOSTNAME\"\
+  ]\n   eventhub_name = os.environ[\"EVENT_HUB_NAME\"]\n   shared_access_policy =\
+  \ os.environ[\"EVENT_HUB_SAS_POLICY\"]\n   shared_access_key = os.environ[\"EVENT_HUB_SAS_KEY\"\
+  ]\n\n   producer = EventHubProducerClient(\n       fully_qualified_namespace=fully_qualified_namespace,\n\
+  \       eventhub_name=eventhub_name,\n       credential=EventHubSharedKeyCredential(shared_access_policy,\
+  \ shared_access_key),\n   )\n\n   ````\n"
 methods:
 - uid: azure.eventhub.aio.EventHubProducerClient.close
   name: close
@@ -304,21 +314,23 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure-eventhub-5.13.0b1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    37\\\\azure_eventhub-5.15.0b1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import os\n   from azure.eventhub.aio import EventHubProducerClient\n   from\
-    \ azure.eventhub import EventData\n\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
-    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n\n   producer = EventHubProducerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
+    \ azure.eventhub import EventData\n   from azure.identity.aio import DefaultAzureCredential\n\
+    \n   fully_qualified_namespace = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name\
+    \ = os.environ[\"EVENT_HUB_NAME\"]\n\n   producer = EventHubProducerClient(\n\
+    \       fully_qualified_namespace=fully_qualified_namespace,\n       eventhub_name=eventhub_name,\
     \  # EventHub name should be specified if it doesn't show up in connection string.\n\
-    \   )\n   try:\n       event_data_batch = await producer.create_batch()\n    \
-    \   while True:\n           try:\n               event_data_batch.add(EventData('Message\
-    \ inside EventBatchData'))\n           except ValueError:\n               # The\
-    \ EventDataBatch object reaches its max_size.\n               # You can send the\
-    \ full EventDataBatch object and create a new one here.\n               break\n\
-    \       await producer.send_batch(event_data_batch)\n   finally:\n       # Close\
-    \ down the producer handler.\n       await producer.close()\n\n   ````\n"
+    \       credential=DefaultAzureCredential(),\n   )\n   try:\n       event_data_batch\
+    \ = await producer.create_batch()\n       while True:\n           try:\n     \
+    \          event_data_batch.add(EventData(\"Message inside EventBatchData\"))\n\
+    \           except ValueError:\n               # The EventDataBatch object reaches\
+    \ its max_size.\n               # You can send the full EventDataBatch object\
+    \ and create a new one here.\n               break\n       await producer.send_batch(event_data_batch)\n\
+    \   finally:\n       # Close down the producer handler.\n       await producer.close()\n\
+    \n   ````\n"
 - uid: azure.eventhub.aio.EventHubProducerClient.create_batch
   name: create_batch
   summary: 'Create an EventDataBatch object with the max size of all content being
@@ -344,13 +356,13 @@ methods:
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\37\\\\azure-eventhub-5.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\37\\\\azure_eventhub-5.15.0b1\\\\samples\\\\async_samples\\\
     \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
-    : false} -->\n\n````python\n\n       from azure.eventhub import EventData\n  \
-    \     event_data_batch = await producer.create_batch()\n       while True:\n \
-    \          try:\n               event_data_batch.add(EventData('Message inside\
-    \ EventBatchData'))\n           except ValueError:\n               # The EventDataBatch\
+    : false} -->\n\n````python\n\n       from azure.eventhub import EventData\n\n\
+    \       event_data_batch = await producer.create_batch()\n       while True:\n\
+    \           try:\n               event_data_batch.add(EventData(\"Message inside\
+    \ EventBatchData\"))\n           except ValueError:\n               # The EventDataBatch\
     \ object reaches its max_size.\n               # You can send the full EventDataBatch\
     \ object and create a new one here.\n               break\n\n   ````\n"
 - uid: azure.eventhub.aio.EventHubProducerClient.flush
@@ -388,8 +400,8 @@ methods:
     float | None = 0.8, retry_backoff_max: float | None = 120, retry_mode: Literal[''exponential'',
     ''fixed''] = ''exponential'', idle_timeout: float | None = None, transport_type:
     TransportType = TransportType.Amqp, custom_endpoint_address: str | None = None,
-    connection_verify: str | None = None, uamqp_transport: bool = False, **kwargs:
-    Any) -> EventHubProducerClient'
+    connection_verify: str | None = None, ssl_context: SSLContext | None = None, uamqp_transport:
+    bool = False, **kwargs: Any) -> EventHubProducerClient'
   parameters:
   - name: conn_str
     description: The connection string of an Event Hub.
@@ -577,6 +589,8 @@ methods:
 
       other paths needed for the host environment. Default is None.
 
+      Unless specified otherwise, default transport type is TransportType.AmqpOverWebsockets.
+
       The format would be like "sb://<custom_endpoint_hostname>:<custom_endpoint_port>".
 
       If port is not specified in the *custom_endpoint_address*, by default port 443
@@ -592,6 +606,14 @@ methods:
       Default is None in which case *certifi.where()* will be used.'
     types:
     - <xref:typing.Optional>[<xref:str>]
+  - name: ssl_context
+    description: 'The SSLContext object to use in the underlying Pure Python AMQP
+      transport. If specified,
+
+      connection_verify will be ignored.'
+    types:
+    - <xref:ssl.SSLContext>
+    - <xref:None>
   - name: uamqp_transport
     description: 'Whether to use the *uamqp* library as the underlying transport.
       The default value is
@@ -608,15 +630,16 @@ methods:
     async_samples\\sample_code_eventhub_async.py )]-->\n\n<!-- literal_block {\"ids\"\
     : [], \"classes\": [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\"\
     : \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\37\\\\azure-eventhub-5.13.0b1\\\\samples\\\\async_samples\\\
+    \\py2docfx\\\\dist_temp\\\\37\\\\azure_eventhub-5.15.0b1\\\\samples\\\\async_samples\\\
     \\sample_code_eventhub_async.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   import os\n   from azure.eventhub.aio import\
-    \ EventHubProducerClient\n   event_hub_connection_str = os.environ['EVENT_HUB_CONN_STR']\n\
-    \   eventhub_name = os.environ['EVENT_HUB_NAME']\n   producer = EventHubProducerClient.from_connection_string(\n\
-    \       conn_str=event_hub_connection_str,\n       eventhub_name=eventhub_name\
+    \ EventHubProducerClient\n   from azure.identity.aio import DefaultAzureCredential\n\
+    \n   fully_qualified_namespace = os.environ[\"EVENT_HUB_HOSTNAME\"]\n   eventhub_name\
+    \ = os.environ[\"EVENT_HUB_NAME\"]\n   producer = EventHubProducerClient(\n  \
+    \     fully_qualified_namespace=fully_qualified_namespace,\n       eventhub_name=eventhub_name,\
     \  # EventHub name should be specified if it doesn't show up in connection string.\n\
-    \   )\n\n   ````\n"
+    \       credential=DefaultAzureCredential(),\n   )\n\n   ````\n"
 - uid: azure.eventhub.aio.EventHubProducerClient.get_buffered_event_count
   name: get_buffered_event_count
   summary: "The number of events that are buffered and waiting to be published for\
@@ -789,15 +812,15 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    37\\\\azure-eventhub-5.13.0b1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
+    37\\\\azure_eventhub-5.15.0b1\\\\samples\\\\async_samples\\\\sample_code_eventhub_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n       async with producer:\n           event_data_batch = await producer.create_batch()\n\
-    \           while True:\n               try:\n                   event_data_batch.add(EventData('Message\
-    \ inside EventBatchData'))\n               except ValueError:\n              \
-    \     # The EventDataBatch object reaches its max_size.\n                   #\
-    \ You can send the full EventDataBatch object and create a new one here.\n   \
-    \                break\n           await producer.send_batch(event_data_batch)\n\
+    \           while True:\n               try:\n                   event_data_batch.add(EventData(\"\
+    Message inside EventBatchData\"))\n               except ValueError:\n       \
+    \            # The EventDataBatch object reaches its max_size.\n             \
+    \      # You can send the full EventDataBatch object and create a new one here.\n\
+    \                   break\n           await producer.send_batch(event_data_batch)\n\
     \n   ````\n"
 - uid: azure.eventhub.aio.EventHubProducerClient.send_event
   name: send_event
