@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-batch, batch
-ms.date: 09/19/2024
+ms.date: 02/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: batch
@@ -28,5 +28,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project.
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-batch%2FREADME.png)
+
 
