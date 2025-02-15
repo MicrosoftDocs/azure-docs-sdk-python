@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-healthbot, healthbot
-ms.date: 10/31/2022
+keywords: Azure, python, SDK, API, azure-mgmt-healthbot, azure-ai-health-bot
+ms.date: 02/15/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: healthbot
+ms.service: azure-ai-health-bot
 ---
 # Microsoft Azure SDK for Python
 
@@ -33,5 +33,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-healthbot%2FREADME.png)
+
 
