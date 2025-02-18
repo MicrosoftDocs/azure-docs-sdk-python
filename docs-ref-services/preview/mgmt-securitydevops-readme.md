@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-securitydevops, securitydevops
-ms.date: 12/30/2022
+ms.date: 02/18/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: securitydevops
@@ -68,5 +68,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-securitydevops%2FREADME.png)
+
 
