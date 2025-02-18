@@ -59,8 +59,12 @@ methods:
   name: create_agent
   summary: Creates a new agent with various configurations, delegating to the generated
     operations.
-  signature: 'async create_agent(body: JSON, *, content_type: str = ''application/json'',
-    **kwargs: Any) -> _models.Agent'
+  signature: 'async create_agent(*, model: str, content_type: str = ''application/json'',
+    name: str | None = None, description: str | None = None, instructions: str | None
+    = None, tools: List[_models.ToolDefinition] | None = None, tool_resources: _models.ToolResources
+    | None = None, temperature: float | None = None, top_p: float | None = None, response_format:
+    ''_types.AgentsApiResponseFormatOption'' | None = None, metadata: Dict[str, str]
+    | None = None, **kwargs: Any) -> _models.Agent'
   parameters:
   - name: body
     description: JSON or IO[bytes]. Required if *model* is not provided.
@@ -383,9 +387,17 @@ methods:
 - uid: azure.ai.projects.aio.operations.AgentsOperations.create_run
   name: create_run
   summary: Creates a new run for an agent thread.
-  signature: 'async create_run(thread_id: str, body: JSON, *, include: List[str |
-    _models.RunAdditionalFieldList] | None = None, content_type: str = ''application/json'',
-    **kwargs: Any) -> _models.ThreadRun'
+  signature: 'async create_run(thread_id: str, *, assistant_id: str, include: List[str
+    | _models.RunAdditionalFieldList] | None = None, content_type: str = ''application/json'',
+    model: str | None = None, instructions: str | None = None, additional_instructions:
+    str | None = None, additional_messages: List[_models.ThreadMessageOptions] | None
+    = None, tools: List[_models.ToolDefinition] | None = None, temperature: float
+    | None = None, top_p: float | None = None, max_prompt_tokens: int | None = None,
+    max_completion_tokens: int | None = None, truncation_strategy: _models.TruncationObject
+    | None = None, tool_choice: ''_types.AgentsApiToolChoiceOption'' | None = None,
+    response_format: ''_types.AgentsApiResponseFormatOption'' | None = None, parallel_tool_calls:
+    bool | None = None, metadata: Dict[str, str] | None = None, **kwargs: Any) ->
+    _models.ThreadRun'
   parameters:
   - name: thread_id
     description: Required.
@@ -1088,7 +1100,7 @@ methods:
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
   - name: content_type
-    description: 'Body Parameter content-type. Content type parameter for JSON body.
+    description: 'Body Parameter content-type. Content type parameter for binary body.
 
       Default value is "application/json".'
     types:
@@ -1150,8 +1162,8 @@ methods:
   summary: Create a vector store file by attaching a file to a vector store.
   signature: 'async create_vector_store_file(vector_store_id: str, body: ~collections.abc.MutableMapping[str,
     ~typing.Any] | ~typing.IO[bytes] = <object object>, *, file_id: str | None = None,
-    data_sources: ~typing.List[~azure.ai.projects.models._models.VectorStoreDataSource]
-    | None = None, chunking_strategy: ~azure.ai.projects.models._models.VectorStoreChunkingStrategyRequest
+    data_source: ~azure.ai.projects.models._models.VectorStoreDataSource | None =
+    None, chunking_strategy: ~azure.ai.projects.models._models.VectorStoreChunkingStrategyRequest
     | None = None, **kwargs: ~typing.Any) -> VectorStoreFile'
   parameters:
   - name: vector_store_id
@@ -1170,10 +1182,10 @@ methods:
     description: Identifier of the file. Default value is None.
     types:
     - <xref:str>
-  - name: data_sources
+  - name: data_source
     description: Azure asset ID. Default value is None.
     types:
-    - <xref:list>[<xref:azure.ai.projects.models.VectorStoreDataSource>]
+    - <xref:azure.ai.projects.models.VectorStoreDataSource>
   - name: chunking_strategy
     description: 'The chunking strategy used to chunk the file(s). If not set, will
 
@@ -1205,14 +1217,18 @@ methods:
     - <xref:JSON>
     - <xref:typing.IO>[<xref:bytes>]
   keywordOnlyParameters:
+  - name: content_type
+    description: Body Parameter content-type. Defaults to 'application/json'.
+    types:
+    - <xref:str>
   - name: file_id
     description: Identifier of the file. Default value is None.
     types:
     - <xref:str>
-  - name: data_sources
+  - name: data_source
     description: Azure asset ID. Default value is None.
     types:
-    - <xref:list>[<xref:azure.ai.projects.models.VectorStoreDataSource>]
+    - <xref:azure.ai.projects.models.VectorStoreDataSource>
   - name: chunking_strategy
     description: 'The chunking strategy used to chunk the file(s). If not set, will
 
@@ -1307,6 +1323,10 @@ methods:
       use the auto strategy. Default value is None.'
     types:
     - <xref:azure.ai.projects.models.VectorStoreChunkingStrategyRequest>
+  - name: content_type
+    description: Body parameter content-type. Defaults to "application/json".
+    types:
+    - <xref:str>
   - name: sleep_interval
     description: 'Time to wait before polling for the status of the vector store.
       Default value
@@ -2222,8 +2242,9 @@ methods:
     of
 
     ''submit_tool_outputs''.'
-  signature: 'async submit_tool_outputs_to_run(thread_id: str, run_id: str, body:
-    JSON, *, content_type: str = ''application/json'', **kwargs: Any) -> _models.ThreadRun'
+  signature: 'async submit_tool_outputs_to_run(thread_id: str, run_id: str, *, tool_outputs:
+    List[_models.ToolOutput], content_type: str = ''application/json'', **kwargs:
+    Any) -> _models.ThreadRun'
   parameters:
   - name: thread_id
     description: Required.
@@ -2296,8 +2317,12 @@ methods:
 - uid: azure.ai.projects.aio.operations.AgentsOperations.update_agent
   name: update_agent
   summary: Modifies an existing agent.
-  signature: 'async update_agent(assistant_id: str, body: JSON, *, content_type: str
-    = ''application/json'', **kwargs: Any) -> _models.Agent'
+  signature: 'async update_agent(assistant_id: str, *, content_type: str = ''application/json'',
+    model: str | None = None, name: str | None = None, description: str | None = None,
+    instructions: str | None = None, tools: List[_models.ToolDefinition] | None =
+    None, tool_resources: _models.ToolResources | None = None, temperature: float
+    | None = None, top_p: float | None = None, response_format: ''_types.AgentsApiResponseFormatOption''
+    | None = None, metadata: Dict[str, str] | None = None, **kwargs: Any) -> _models.Agent'
   parameters:
   - name: assistant_id
     description: The ID of the agent to modify. Required.
@@ -2560,7 +2585,8 @@ methods:
   name: upload_file
   summary: Uploads a file for use by other operations, delegating to the generated
     operations.
-  signature: 'async upload_file(body: JSON, **kwargs: Any) -> _models.OpenAIFile'
+  signature: 'async upload_file(*, file_path: str, purpose: str | _models.FilePurpose,
+    **kwargs: Any) -> _models.OpenAIFile'
   parameters:
   - name: body
     description: JSON. Required if *file* and *purpose* are not provided.
@@ -2601,7 +2627,7 @@ methods:
   name: upload_file_and_poll
   summary: Uploads a file for use by other operations, delegating to the generated
     operations.
-  signature: 'async upload_file_and_poll(*, body: JSON, sleep_interval: float = 1,
+  signature: 'async upload_file_and_poll(body: JSON, *, sleep_interval: float = 1,
     **kwargs: Any) -> _models.OpenAIFile'
   parameters:
   - name: body
