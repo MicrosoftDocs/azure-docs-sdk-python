@@ -1,7 +1,7 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-synapse-managedprivateendpoints, synapse
-ms.date: 03/31/2022
+keywords: Azure, python, SDK, API, azure-synapse-managedprivateendpoints, synapse-analytics
+ms.date: 02/18/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
@@ -18,7 +18,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 # Usage
 
-For code examples, see [Synapse Managed Private Endpoints](https://docs.microsoft.com/python/api/overview/azure/) on docs.microsoft.com.
+For code examples, see [Synapse Managed Private Endpoints](/python/api/overview/azure/) on docs.microsoft.com.
 
 # Provide Feedback
 
@@ -26,5 +26,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 [Issues](https://github.com/Azure/azure-sdk-for-python/issues)
 section of the project.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-synapse-managedprivateendpoints%2FREADME.png)
+
 
