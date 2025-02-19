@@ -1,11 +1,10 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-msi, resources
-ms.date: 02/16/2023
+ms.date: 02/19/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: active-directory
-ms.subservice: msi
+ms.service: resources
 ---
 # Microsoft Azure SDK for Python
 
@@ -69,5 +68,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-msi%2FREADME.png)
+
 
