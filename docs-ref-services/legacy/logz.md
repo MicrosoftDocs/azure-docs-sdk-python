@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: logz
 ---
-# Azure Logz SDK for Python - preview
-## Packages - preview
+# Azure Logz SDK for Python - legacy
+## Packages - legacy
 [!INCLUDE [packages](logz-index.md)]
