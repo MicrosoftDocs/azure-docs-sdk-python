@@ -4,24 +4,29 @@ name: QAEvaluator
 fullName: azure.ai.evaluation.QAEvaluator
 module: azure.ai.evaluation
 inheritances:
-- builtins.object
-summary: "Initialize a question-answer evaluator configured for a specific Azure OpenAI\
-  \ model.\n\n**Usage**\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
-  : [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\
-  \n````python\n\n   eval_fn = QAEvaluator(model_config)\n   result = qa_eval(\n \
-  \      query=\"Tokyo is the capital of which country?\",\n       response=\"Japan\"\
-  ,\n       context=\"Tokyo is the capital of Japan.\",\n       ground_truth=\"Japan\"\
-  \n   )\n   ````\n\n**Output format**\n\n<!-- literal_block {\"ids\": [], \"classes\"\
-  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"xml:space\": \"preserve\"\
-  , \"force\": false, \"language\": \"python\", \"highlight_args\": {}, \"linenos\"\
-  : false} -->\n\n````python\n\n   {\n       \"groundedness\": 3.5,\n       \"relevance\"\
-  : 4.0,\n       \"coherence\": 1.5,\n       \"fluency\": 4.0,\n       \"similarity\"\
-  : 3.0,\n       \"gpt_groundedness\": 3.5,\n       \"gpt_relevance\": 4.0,\n    \
-  \   \"gpt_coherence\": 1.5,\n       \"gpt_fluency\": 4.0,\n       \"gpt_similarity\"\
-  : 3.0,\n       \"f1_score\": 0.42\n   }\n   ````"
+- azure.ai.evaluation._evaluators._common._base_multi_eval.MultiEvaluatorBase
+summary: 'Initialize a question-answer evaluator configured for a specific Azure OpenAI
+  model.
+
+
+  > [!NOTE]
+
+  > To align with our support of a diverse set of models, keys without the gpt_ prefix
+  has been added.
+
+  >
+
+  > To maintain backwards compatibility, the old keys with the gpt_ prefix are still
+  be present in the output;
+
+  >
+
+  > however, it is recommended to use the new keys moving forward as the old keys
+  will be deprecated in the future.
+
+  >'
 constructor:
-  syntax: 'QAEvaluator(model_config, parallel: bool = True)'
+  syntax: QAEvaluator(model_config, **kwargs)
   parameters:
   - name: model_config
     description: Configuration for the Azure OpenAI model.
@@ -29,5 +34,28 @@ constructor:
     types:
     - <xref:typing.Union>[<xref:azure.ai.evaluation.AzureOpenAIModelConfiguration>,
       <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
-  - name: parallel
-    defaultValue: 'True'
+  - name: kwargs
+    description: Additional arguments to pass to the evaluator.
+    isRequired: true
+    types:
+    - <xref:typing.Any>
+examples:
+- "Initialize and call a QAEvaluator.<!--[!code-python[Main](les\\evaluation_samples_evaluate.py\
+  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
+  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
+  \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\6\\\\azure_ai_evaluation-1.3.0a20250218002\\\
+  \\samples\\\\evaluation_samples_evaluate.py\", \"xml:space\": \"preserve\", \"force\"\
+  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
+  linenos\": false} -->\n\n````python\n\n   import os\n   from azure.ai.evaluation\
+  \ import QAEvaluator\n\n   model_config = {\n       \"azure_endpoint\": os.environ.get(\"\
+  AZURE_OPENAI_ENDPOINT\"),\n       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"\
+  ),\n       \"azure_deployment\": os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n\
+  \   }\n\n   qa_eval = QAEvaluator(model_config=model_config)\n   qa_eval(query=\"\
+  This's the color?\", response=\"Black\", ground_truth=\"gray\", context=\"gray\"\
+  )\n\n   ````\n"
+attributes:
+- uid: azure.ai.evaluation.QAEvaluator.id
+  name: id
+  summary: Evaluator identifier, experimental and to be used only with evaluation
+    in cloud.
+  signature: id = 'qa'

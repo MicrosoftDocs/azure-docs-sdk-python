@@ -8,23 +8,20 @@ inheritances:
 summary: 'An *RSAPublicKey* implementation based on a key managed by Key Vault.
 
 
-  Only synchronous clients and operations are supported at this time.
+  This class should not be instantiated directly. Instead, use the
 
+  <xref:azure.keyvault.keys.crypto.CryptographyClient.create_rsa_public_key> method
+  to create a key based on the
 
-  Creates a *KeyVaultRSAPublicKey* from a *CryptographyClient* and key.'
+  client''s key. Only synchronous clients and operations are supported at this time.'
 constructor:
-  syntax: 'KeyVaultRSAPublicKey(client: CryptographyClient, key_material: JsonWebKey)'
+  syntax: 'KeyVaultRSAPublicKey(client: CryptographyClient, key_material: JsonWebKey
+    | None = None)'
   parameters:
   - name: client
-    description: The client that will be used to communicate with Key Vault.
     isRequired: true
-    types:
-    - <xref:azure.keyvault.keys.crypto.CryptographyClient>
   - name: key_material
-    description: They Key Vault key's material, as a *JsonWebKey*.
-    isRequired: true
-    types:
-    - <xref:azure.keyvault.keys.JsonWebKey>
+    defaultValue: None
 methods:
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.encrypt
   name: encrypt
@@ -79,6 +76,9 @@ methods:
     description: The serialized key.
     types:
     - <xref:bytes>
+  exceptions:
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.public_numbers
   name: public_numbers
   summary: Returns an *RSAPublicNumbers* representing the key's public numbers.
@@ -87,6 +87,9 @@ methods:
     description: The public numbers of the key.
     types:
     - <xref:RSAPublicNumbers>
+  exceptions:
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.recover_data_from_signature
   name: recover_data_from_signature
   summary: "Recovers the signed data from the signature. Only supported with *cryptography*\
@@ -101,10 +104,10 @@ methods:
     \ non-standard signatures, any data can be returned,\nincluding zero-length data.\n\
     \nNormally you should use the *verify()* function to validate the signature. But\
     \ for some non-standard signature\nformats you may need to explicitly recover\
-    \ and validate the signed data. The following are some examples:\n\n   * Some\
-    \ old Thawte and Verisign timestamp certificates without *DigestInfo*. \n\n  \
-    \ * Signed MD5/SHA1 hashes in TLS 1.1 or earlier ([RFC 4346](https://datatracker.ietf.org/doc/html/rfc4346.html),\
-    \ section 4.7). \n\n   * IKE version 1 signatures without *DigestInfo* ([RFC 2409](https://datatracker.ietf.org/doc/html/rfc2409.html),\
+    \ and validate the signed data. The following are some examples:\n\n* Some old\
+    \ Thawte and Verisign timestamp certificates without *DigestInfo*. \n\n* Signed\
+    \ MD5/SHA1 hashes in TLS 1.1 or earlier ([RFC 4346](https://datatracker.ietf.org/doc/html/rfc4346.html),\
+    \ section 4.7). \n\n* IKE version 1 signatures without *DigestInfo* ([RFC 2409](https://datatracker.ietf.org/doc/html/rfc2409.html),\
     \ section 5.1)."
   signature: 'recover_data_from_signature(signature: bytes, padding: AsymmetricPadding,
     algorithm: HashAlgorithm | None) -> bytes'
@@ -131,11 +134,16 @@ methods:
     types:
     - <xref:bytes>
   exceptions:
+  - type: NotImplementedError
+    description: if the local version of *cryptography* doesn't support this method.
   - type: cryptography.exceptions.InvalidSignature
     description: if the signature is invalid.
   - type: cryptography.exceptions.UnsupportedAlgorithm
-    description: if the signature data recovery is not supported with the provided
-      *padding* type.
+    description: 'if the signature data recovery is not supported with
+
+      the provided *padding* type.'
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
 - uid: azure.keyvault.keys.crypto.KeyVaultRSAPublicKey.verifier
   name: verifier
   summary: Not implemented. This method was deprecated in *cryptography* 2.0 and removed
@@ -193,3 +201,6 @@ attributes:
     description: The key's size.
     types:
     - <xref:int>
+  exceptions:
+  - type: ValueError
+    description: if the client is unable to obtain the key material from Key Vault.
