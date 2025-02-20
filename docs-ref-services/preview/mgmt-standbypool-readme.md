@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-standbypool, standbypool
-ms.date: 04/24/2024
+ms.date: 02/20/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: standbypool
