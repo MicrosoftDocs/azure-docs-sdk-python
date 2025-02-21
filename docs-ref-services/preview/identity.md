@@ -1,7 +1,7 @@
 ---
 title: Azure Identity SDK for Python
 description: Reference for Azure Identity SDK for Python
-ms.date: 02/20/2025
+ms.date: 02/21/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: entra-id
