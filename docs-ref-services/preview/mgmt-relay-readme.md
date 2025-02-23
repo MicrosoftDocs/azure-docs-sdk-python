@@ -1,10 +1,10 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-relay, relay
-ms.date: 11/09/2022
+keywords: Azure, python, SDK, API, azure-mgmt-relay, azure-relay
+ms.date: 02/23/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: relay
+ms.service: azure-relay
 ---
 # Microsoft Azure SDK for Python
 
@@ -33,5 +33,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-relay%2FREADME.png)
+
 
