@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-synapse-artifacts, synapse-analytics
-ms.date: 06/06/2024
+ms.date: 02/24/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: synapse-analytics
@@ -9,7 +9,7 @@ ms.service: synapse-analytics
 # Microsoft Azure SDK for Python
 
 This is the Microsoft Azure Synapse Artifacts Client Library.
-This package has been tested with Python 3.7+.
+This package has been tested with Python 3.8+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
 ## _Disclaimer_
@@ -20,7 +20,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 
 ### Prerequisites
 
-- Python 3.7+ is required to use this package.
+- Python 3.8+ is required to use this package.
 - [Azure subscription](https://azure.microsoft.com/free/)
 
 ### Install the package
@@ -66,5 +66,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-synapse-artifacts%2FREADME.png)
+
 
