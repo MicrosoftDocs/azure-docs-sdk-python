@@ -440,5 +440,5 @@ additional questions or comments.
 [certificates_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-certificates_4.2.1/sdk/keyvault/azure-keyvault-certificates/samples
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/key-vault-ovw-soft-delete
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-certificates%2FFREADME.png)
+
 

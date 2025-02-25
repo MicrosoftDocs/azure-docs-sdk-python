@@ -195,7 +195,7 @@ If you'd like to contribute to this library, please read the
 [contributing guide](https://github.com/Azure/azure-sdk-for-python/blob/azure-mixedreality-authentication_1.0.0b1/CONTRIBUTING.md) to learn more about how to
 build and test the code.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Ftemplate%2Fazure-template%2FREADME.png)
+
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/

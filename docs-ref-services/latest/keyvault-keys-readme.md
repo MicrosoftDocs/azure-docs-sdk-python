@@ -458,5 +458,5 @@ contact opencode@microsoft.com with any additional questions or comments.
 [send_request_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-keyvault-keys_4.10.0/sdk/keyvault/azure-keyvault-keys/samples/send_request.py
 [soft_delete]: /azure/key-vault/general/soft-delete-overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-keys%2FREADME.png)
+
 
