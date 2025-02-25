@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-devhub, devhub
-ms.date: 05/22/2023
+ms.date: 02/25/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: devhub
@@ -69,5 +69,5 @@ If you encounter any bugs or have suggestions, please file an issue in the
 section of the project. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fazure-mgmt-devhub%2FREADME.png)
+
 
