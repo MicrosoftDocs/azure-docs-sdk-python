@@ -11,8 +11,9 @@ summary: 'Linked service for PostgreSQLV2 data source.
   All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'PostgreSqlV2LinkedService(*, server: MutableMapping[str, Any], username:
-    MutableMapping[str, Any], database: MutableMapping[str, Any], ssl_mode: MutableMapping[str,
-    Any], additional_properties: Dict[str, MutableMapping[str, Any]] | None = None,
+    MutableMapping[str, Any], database: MutableMapping[str, Any], authentication_type:
+    MutableMapping[str, Any], ssl_mode: MutableMapping[str, Any], additional_properties:
+    Dict[str, MutableMapping[str, Any]] | None = None, version: str | None = None,
     connect_via: _models.IntegrationRuntimeReference | None = None, description: str
     | None = None, parameters: Dict[str, _models.ParameterSpecification] | None =
     None, annotations: List[MutableMapping[str, Any]] | None = None, port: MutableMapping[str,
@@ -33,6 +34,10 @@ constructor:
       collection.'
     types:
     - <xref:dict>[<xref:str>, <xref:JSON>]
+  - name: version
+    description: Version of the linked service.
+    types:
+    - <xref:str>
   - name: connect_via
     description: The integration runtime reference.
     types:
@@ -63,6 +68,10 @@ constructor:
     - <xref:JSON>
   - name: database
     description: 'Database name for connection. Type: string. Required.'
+    types:
+    - <xref:JSON>
+  - name: authentication_type
+    description: 'The authentication type to use. Type: string. Required.'
     types:
     - <xref:JSON>
   - name: ssl_mode
@@ -171,6 +180,10 @@ variables:
   name: type
   types:
   - <xref:str>
+- description: Version of the linked service.
+  name: version
+  types:
+  - <xref:str>
 - description: The integration runtime reference.
   name: connect_via
   types:
@@ -201,6 +214,10 @@ variables:
   - <xref:JSON>
 - description: 'Database name for connection. Type: string. Required.'
   name: database
+  types:
+  - <xref:JSON>
+- description: 'The authentication type to use. Type: string. Required.'
+  name: authentication_type
   types:
   - <xref:JSON>
 - description: 'SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer,
@@ -310,12 +327,15 @@ methods:
     ~typing.Dict[str, ~typing.Any], ~typing.Any], ~typing.Any] = <function attribute_transformer>,
     **kwargs: ~typing.Any) -> MutableMapping[str, Any]'
   parameters:
+  - name: keep_readonly
+    description: If you want to serialize the readonly attributes
+    defaultValue: 'True'
+    types:
+    - <xref:bool>
   - name: key_transformer
     description: A key transformer function.
     types:
     - <xref:function>
-  - name: keep_readonly
-    defaultValue: 'True'
   return:
     description: A dict JSON compatible object
     types:
@@ -323,7 +343,7 @@ methods:
 - uid: azure.synapse.artifacts.models.PostgreSqlV2LinkedService.deserialize
   name: deserialize
   summary: Parse a str using the RestAPI syntax and return a model.
-  signature: 'deserialize(data: Any, content_type: str | None = None) -> ModelType'
+  signature: 'deserialize(data: Any, content_type: str | None = None) -> Self'
   parameters:
   - name: data
     description: A str using RestAPI structure. JSON by default.
@@ -337,8 +357,11 @@ methods:
     - <xref:str>
   return:
     description: An instance of this model
+    types:
+    - <xref:typing.Self>
   exceptions:
-  - type: DeserializationError if something went wrong
+  - type: DeserializationError
+    description: if something went wrong
 - uid: azure.synapse.artifacts.models.PostgreSqlV2LinkedService.enable_additional_properties_sending
   name: enable_additional_properties_sending
   signature: enable_additional_properties_sending() -> None
@@ -353,22 +376,27 @@ methods:
 
     and last_rest_key_case_insensitive_extractor)'
   signature: 'from_dict(data: Any, key_extractors: Callable[[str, Dict[str, Any],
-    Any], Any] | None = None, content_type: str | None = None) -> ModelType'
+    Any], Any] | None = None, content_type: str | None = None) -> Self'
   parameters:
   - name: data
     description: A dict using RestAPI structure
     isRequired: true
     types:
     - <xref:dict>
+  - name: key_extractors
+    description: A key extractor function.
+    defaultValue: None
+    types:
+    - <xref:function>
   - name: content_type
     description: JSON by default, set application/xml if XML.
     defaultValue: None
     types:
     - <xref:str>
-  - name: key_extractors
-    defaultValue: None
   return:
     description: An instance of this model
+    types:
+    - <xref:typing.Self>
   exceptions:
   - type: DeserializationError if something went wrong
 - uid: azure.synapse.artifacts.models.PostgreSqlV2LinkedService.is_xml_model
