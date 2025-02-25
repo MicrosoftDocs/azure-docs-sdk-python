@@ -358,5 +358,5 @@ additional questions or comments.
 [userpass_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.UsernamePasswordCredential
 [vscode_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.VisualStudioCodeCredential
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)
+
 

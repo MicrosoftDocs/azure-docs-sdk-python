@@ -52,5 +52,5 @@ additional questions or comments.
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault%2FFREADME.png)
+
 

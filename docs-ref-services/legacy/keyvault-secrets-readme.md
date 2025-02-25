@@ -435,5 +435,5 @@ additional questions or comments.
 [secret_samples]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/keyvault/azure-keyvault-secrets/samples
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/key-vault-ovw-soft-delete
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-secrets%2FFREADME.png)
+
 
