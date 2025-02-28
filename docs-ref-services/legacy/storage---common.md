@@ -1,7 +1,7 @@
 ---
 title: Azure Storage - Common SDK for Python
 description: Reference for Azure Storage - Common SDK for Python
-ms.date: 02/27/2025
+ms.date: 02/28/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: storage-common
