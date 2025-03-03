@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-education, education
-ms.date: 12/12/2022
+ms.date: 03/03/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: education
