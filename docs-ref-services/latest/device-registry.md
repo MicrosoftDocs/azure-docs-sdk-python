@@ -6,6 +6,6 @@ ms.topic: reference
 ms.devlang: python
 ms.service: deviceregistry
 ---
-# Azure Device Registry SDK for Python - preview
-## Packages - preview
+# Azure Device Registry SDK for Python - latest
+## Packages - latest
 [!INCLUDE [packages](device-registry-index.md)]
