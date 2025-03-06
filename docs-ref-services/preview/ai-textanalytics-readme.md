@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: textanalytics
 ---
-# Azure Text Analytics client library for Python - version 5.3.1a20250305001 
+# Azure Text Analytics client library for Python - version 5.3.1a20250306002 
 
 
 The Azure Cognitive Service for Language is a cloud-based service that provides Natural Language Processing (NLP) features for understanding and analyzing text, and includes the following main features:
