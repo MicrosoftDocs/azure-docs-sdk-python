@@ -7,7 +7,7 @@ ms.devlang: python
 ms.service: contentsafety
 ---
 
-# Azure AI Content Safety client library for Python - version 1.0.0a20250305001 
+# Azure AI Content Safety client library for Python - version 1.0.0a20250306001 
 
 
 [Azure AI Content Safety][contentsafety_overview] detects harmful user-generated and AI-generated content in applications and services. Content Safety includes text and image APIs that allow you to detect material that is harmful:
