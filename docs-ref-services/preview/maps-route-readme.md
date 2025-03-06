@@ -1,18 +1,18 @@
 ---
 title: Azure Maps Route Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-route, maps
-ms.date: 12/12/2024
+ms.date: 03/06/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Route Package client library for Python - version 1.0.0b3 
+# Azure Maps Route Package client library for Python - version 1.0.0a20250306001 
 
 
 This package contains a Python SDK for Azure Maps Services for Route.
-Read more about Azure Maps Services [here](/azure/azure-maps/)
+Read more about Azure Maps Services [here](https://learn.microsoft.com/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route) | [API reference documentation](/rest/api/maps/route) | [Product documentation](/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route) | [API reference documentation](https://learn.microsoft.com/rest/api/maps/route) | [Product documentation](https://learn.microsoft.com/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -23,10 +23,10 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 ### Prerequisites
 
 - Python 3.8 or later is required to use this package.
-- An [Azure subscription][azure_subscription] and an [Azure Maps account](/azure/azure-maps/how-to-manage-account-keys).
+- An [Azure subscription][azure_subscription] and an [Azure Maps account](https://learn.microsoft.com/azure/azure-maps/how-to-manage-account-keys).
 - A deployed Maps Services resource. You can create the resource via [Azure Portal][azure_portal] or [Azure CLI][azure_cli].
 
-If you use Azure CLI, replace `<resource-group-name>` and `<account-name>` of your choice, and select a proper [pricing tier](/azure/azure-maps/choose-pricing-tier) based on your needs via the `<sku-name>` parameter. Please refer to [this page](/cli/azure/maps/account?view=azure-cli-latest#az_maps_account_create) for more details.
+If you use Azure CLI, replace `<resource-group-name>` and `<account-name>` of your choice, and select a proper [pricing tier](https://learn.microsoft.com/azure/azure-maps/choose-pricing-tier) based on your needs via the `<sku-name>` parameter. Please refer to [this page](https://learn.microsoft.com/cli/azure/maps/account?view=azure-cli-latest#az_maps_account_create) for more details.
 
 ```bash
 az maps account create --resource-group <resource-group-name> --account-name <account-name> --sku <sku-name>
@@ -84,7 +84,7 @@ from azure.mgmt.maps import AzureMapsManagementClient
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
     AZURE_CLIENT_SECRET. For more info about how to get the value, please see:
-    /azure/active-directory/develop/howto-create-service-principal-portal
+    https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 """
 
 
@@ -166,7 +166,7 @@ Once you initialized a `MapsRouteClient` class, you can explore the methods on t
 ### Async Clients
 
 This library includes a complete async API supported on Python 3.8+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
 objects are async context managers and define async `close` methods.
@@ -182,7 +182,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Request and Get Route Directions
 
-This service request returns a route between an origin and a destination, passing through waypoints if they are specified. The route will take into account factors such as current traffic and the typical road speeds on the requested day of the week and time of day. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples/sample_get_route_directions.py).
+This service request returns a route between an origin and a destination, passing through waypoints if they are specified. The route will take into account factors such as current traffic and the typical road speeds on the requested day of the week and time of day. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_directions.py).
 
 ```python
 from azure.maps.route import MapsRouteClient
@@ -192,7 +192,7 @@ route_directions_result = client.get_route_directions(route_points=[(47.60323, -
 
 ### Request and Get Route Range
 
-This service will calculate a set of locations that can be reached from the origin point by given coordinates and based on fuel, energy,  time or distance budget that is specified. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples/sample_get_route_range.py).
+This service will calculate a set of locations that can be reached from the origin point by given coordinates and based on fuel, energy,  time or distance budget that is specified. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_range.py).
 
 ```python
 from azure.maps.route import MapsRouteClient
@@ -202,7 +202,7 @@ route_range_result = client.get_route_range(coordinates=(47.60323, -122.33028), 
 
 ### Get Route Matrix
 
-If the Matrix Route request was accepted successfully, the Location header in the response contains the URL to download the results of the request. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples/sample_get_route_matrix.py).
+If the Matrix Route request was accepted successfully, the Location header in the response contains the URL to download the results of the request. Refer the sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_matrix.py).
 
 Retrieves the result of a previous route matrix request.
 The method returns a poller for retrieving the result.
@@ -216,7 +216,7 @@ route_matrix_result = client.begin_get_route_matrix_result(matrix_id="11111111-2
 ### Get Route Directions Batch
 
 Retrieves the result of a previous route direction batch request.
-The method returns a poller for retrieving the result. Refer sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples/sample_get_route_directions_batch_sync.py).
+The method returns a poller for retrieving the result. Refer sample code [here](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/maps/azure-maps-route/samples/sample_get_route_directions_batch_sync.py).
 
 ```python
 from azure.maps.route import MapsRouteClient
@@ -228,7 +228,7 @@ route_directions_batch_poller_result = client.begin_get_route_directions_batch_r
 
 ### General
 
-Maps Route clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/core/azure-core/README.md).
+Maps Route clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -262,7 +262,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Route samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples/async_samples)).
+Get started with our [Maps Route samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route/samples/async_samples)).
 
 Several Azure Maps Route Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Route
 
@@ -283,11 +283,11 @@ python samples/async_samples/sample_get_route_directions_async.py
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b3/sdk/maps/azure-maps-route/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-route/samples/README.md)
 
 ### Additional documentation
 
-For more extensive documentation on Azure Maps Route, see the [Azure Maps Route documentation](/rest/api/maps/route) on docs.microsoft.com.
+For more extensive documentation on Azure Maps Route, see the [Azure Maps Route documentation](https://learn.microsoft.com/rest/api/maps/route) on learn.microsoft.com.
 
 ## Contributing
 
@@ -299,14 +299,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-route_1.0.0b3/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
-[azure_cli]: /cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-route_1.0.0b3/sdk/identity/azure-identity#defaultazurecredential
-[register_microsoft_entra_id_app]: /powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
-[maps_authentication_microsoft_entra_id]: /azure/azure-maps/how-to-manage-authentication
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
+[register_microsoft_entra_id_app]: https://learn.microsoft.com/powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
+[maps_authentication_microsoft_entra_id]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
-[manage_microsoft_entra_id_auth_page]: /azure/azure-maps/how-to-manage-authentication
-[how_to_manage_authentication]: /azure/azure-maps/how-to-manage-authentication#view-authentication-details
+[manage_microsoft_entra_id_auth_page]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication
+[how_to_manage_authentication]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication#view-authentication-details
 
