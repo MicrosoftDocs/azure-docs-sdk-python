@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: agrifood
 ---
-# Azure FarmBeats client library for Python - version 1.0.0a20250305001 
+# Azure FarmBeats client library for Python - version 1.0.0a20250306001 
 
 FarmBeats is a B2B PaaS offering from Microsoft that makes it easy for AgriFood companies to build intelligent digital agriculture solutions on Azure. FarmBeats allows users to acquire, aggregate, and process agricultural data from various sources (farm equipment, weather, satellite) without the need to invest in deep data engineering resources.  Customers can build SaaS solutions on top of FarmBeats and leverage first class support for model building to generate insights at scale.
 
