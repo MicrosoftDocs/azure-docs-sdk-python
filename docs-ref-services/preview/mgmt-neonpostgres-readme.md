@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-neonpostgres, neonpostgres
-ms.date: 12/03/2024
+ms.date: 03/07/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: neonpostgres
