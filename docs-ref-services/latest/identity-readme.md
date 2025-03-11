@@ -1,17 +1,17 @@
 ---
 title: Azure Identity client library for Python
 keywords: Azure, python, SDK, API, azure-identity, entra-id
-ms.date: 02/12/2025
+ms.date: 03/11/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: entra-id
 ---
-# Azure Identity client library for Python - version 1.20.0 
+# Azure Identity client library for Python - version 1.21.0 
 
 
 The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/entra/fundamentals/new-name)) token authentication support across the Azure SDK. It provides a set of [`TokenCredential`][token_cred_ref]/[`SupportsTokenInfo`][supports_token_info_ref] implementations, which can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/identity/azure-identity)
+[Source code](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.21.0/sdk/identity/azure-identity)
 | [Package (PyPI)](https://pypi.org/project/azure-identity/)
 | [Package (Conda)](https://anaconda.org/microsoft/azure-identity/)
 | [API reference documentation][ref_docs]
@@ -171,7 +171,7 @@ client = SecretClient("https://my-vault.vault.azure.net", default_credential)
 
 ### Examples
 
-These examples demonstrate authenticating `SecretClient` from the [`azure-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.20.0/sdk/keyvault/azure-keyvault-secrets) library with `ManagedIdentityCredential`.
+These examples demonstrate authenticating `SecretClient` from the [`azure-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.21.0/sdk/keyvault/azure-keyvault-secrets) library with `ManagedIdentityCredential`.
 
 
 #### Authenticate with a user-assigned managed identity
@@ -278,7 +278,6 @@ Not all credentials require this configuration. Credentials that authenticate th
 |[`DeviceCodeCredential`][device_code_cred_ref]| Interactively authenticates a user on devices with limited UI. | [Device code authentication](https://learn.microsoft.com/entra/identity-platform/v2-oauth2-device-code)|
 |[`InteractiveBrowserCredential`][interactive_cred_ref]| Interactively authenticates a user with the default system browser. | [OAuth2 authentication code](https://learn.microsoft.com/entra/identity-platform/v2-oauth2-auth-code-flow)| `InteractiveBrowserCredential` doesn't support GitHub Codespaces. As a workaround, use [`DeviceCodeCredential`][device_code_cred_ref].
 |[`OnBehalfOfCredential`][obo_cred_ref]| Propagates the delegated user identity and permissions through the request chain. | [On-behalf-of authentication](https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow)|
-|[`UsernamePasswordCredential`][userpass_cred_ref]| Authenticates a user with a username and password (doesn't support multifactor authentication). | [Username + password authentication](https://learn.microsoft.com/entra/identity-platform/v2-oauth-ropc)|
 
 ### Authenticate via development tools
 
@@ -312,14 +311,6 @@ variables:
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file, if any|
 |`AZURE_CLIENT_SEND_CERTIFICATE_CHAIN`|If `True`, the credential sends the public certificate chain in the x5c header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication. Defaults to False. There's a [known limitation](https://github.com/Azure/azure-sdk-for-python/issues/13349) that async SNI authentication isn't supported.|
 
-### Username and password
-
-|Variable name|Value
-|-|-
-|`AZURE_CLIENT_ID`|ID of a Microsoft Entra application
-|`AZURE_USERNAME`|a username (usually an email address)
-|`AZURE_PASSWORD`|that user's password
-
 Configuration is attempted in the preceding order. For example, if values for a client secret and certificate are both present, the client secret is used.
 
 ## Continuous Access Evaluation
@@ -329,11 +320,12 @@ As of version 1.14.0, accessing resources protected by [Continuous Access Evalua
 ## Token caching
 
 Token caching is a feature provided by the Azure Identity library that allows apps to:
+
 - Cache tokens in memory (default) or on disk (opt-in).
 - Improve resilience and performance.
 - Reduce the number of requests made to Microsoft Entra ID to obtain access tokens.
 
-The Azure Identity library offers both in-memory and persistent disk caching. For more information, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/identity/azure-identity/TOKEN_CACHING.md).
+The Azure Identity library offers both in-memory and persistent disk caching. For more information, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.21.0/sdk/identity/azure-identity/TOKEN_CACHING.md).
 
 ## Brokered authentication
 
@@ -393,12 +385,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azd_cli_cred_ref]: https://aka.ms/azsdk/python/identity/azuredeveloperclicredential
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_developer_cli]:https://aka.ms/azure-dev
-[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
+[azure_core_transport_doc]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.21.0/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport
 [azure_identity_broker]: https://pypi.org/project/azure-identity-broker
-[azure_identity_broker_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.20.0/sdk/identity/azure-identity-broker
-[azure_eventhub]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/eventhub/azure-eventhub
-[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/keyvault/azure-keyvault-secrets
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/storage/azure-storage-blob
+[azure_identity_broker_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-identity_1.21.0/sdk/identity/azure-identity-broker
+[azure_keyvault_secrets]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.21.0/sdk/keyvault/azure-keyvault-secrets
+[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.21.0/sdk/storage/azure-storage-blob
 [b2c]: https://learn.microsoft.com/azure/active-directory-b2c/overview
 [cae]: https://learn.microsoft.com/entra/identity/conditional-access/concept-continuous-access-evaluation
 [cert_cred_ref]: https://aka.ms/azsdk/python/identity/certificatecredential
@@ -419,10 +410,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [ref_docs_aio]: https://aka.ms/azsdk/python/identity/aio/docs
 [token_cred_ref]: https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.tokencredential?view=azure-python
 [supports_token_info_ref]: https://learn.microsoft.com/python/api/azure-core/azure.core.credentials.supportstokeninfo?view=azure-python
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.20.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
-[userpass_cred_ref]: https://aka.ms/azsdk/python/identity/usernamepasswordcredential
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-identity_1.21.0/sdk/identity/azure-identity/TROUBLESHOOTING.md
 [vscode_cred_ref]: https://aka.ms/azsdk/python/identity/vscodecredential
 [workload_id_cred_ref]: https://aka.ms/azsdk/python/identity/workloadidentitycredential
-
-
 
