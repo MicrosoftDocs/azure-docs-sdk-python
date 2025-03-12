@@ -207,7 +207,7 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    248\\\\azure_storage_file_share-12.20.1\\\\samples\\\\file_samples_client.py\"\
+    248\\\\azure_storage_file_share-12.21.0\\\\samples\\\\file_samples_client.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   source_file.create_file(1024)\n   lease = source_file.acquire_lease()\n \
@@ -333,8 +333,8 @@ methods:
 
     Note that it only initializes the file with no content.'
   signature: 'create_file(size: int, file_attributes: str | NTFSAttributes | None
-    = ''none'', file_creation_time: str | datetime | None = ''now'', file_last_write_time:
-    str | datetime | None = ''now'', file_permission: str | None = None, permission_key:
+    = None, file_creation_time: str | datetime | None = None, file_last_write_time:
+    str | datetime | None = None, file_permission: str | None = None, permission_key:
     str | None = None, **kwargs: Any) -> Dict[str, Any]'
   parameters:
   - name: size
@@ -357,6 +357,7 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:None>
   - name: file_creation_time
     description: 'Creation time for the file
 
@@ -365,6 +366,7 @@ methods:
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_last_write_time
     description: 'Last write time for the file
 
@@ -373,6 +375,7 @@ methods:
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -434,6 +437,18 @@ methods:
     types:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
     - <xref:str>
+  - name: owner
+    description: NFS only. The owner of the file.
+    types:
+    - <xref:str>
+  - name: group
+    description: NFS only. The owning group of the file.
+    types:
+    - <xref:str>
+  - name: file_mode
+    description: NFS only. The file mode of the file.
+    types:
+    - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -454,12 +469,54 @@ methods:
   - "Create a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.20.1\\\
+    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.21.0\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   # Create and allocate bytes for the\
     \ file (no content added yet)\n   my_allocated_file.create_file(size=100)\n\n\
     \   ````\n"
+- uid: azure.storage.fileshare.ShareFileClient.create_hardlink
+  name: create_hardlink
+  summary: NFS only. Creates a hard link to the file specified by path.
+  signature: 'create_hardlink(target: str, *, lease: ShareLeaseClient | str | None
+    = None, timeout: int | None = None, **kwargs: Any) -> Dict[str, Any]'
+  parameters:
+  - name: target
+    description: 'Specifies the path of the target file to which the link will be
+      created, up to 2 KiB in length.
+
+      It should be the full path of the target starting from the root. The target
+      file must be in the
+
+      same share and the same storage account.'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: lease
+    description: 'Required if the file has an active lease. Value can be a ShareLeaseClient
+      object
+
+      or the lease ID as a string.'
+    types:
+    - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: timeout
+    description: 'Sets the server-side timeout for the operation in seconds. For more
+      details see
+
+      [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations](https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations).
+
+      This value is not tracked or validated on the client. To configure client-side
+      network timesouts
+
+      see [here](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-file-share#other-client--per-operation-configuration).'
+    types:
+    - <xref:int>
+  return:
+    description: File-updated property dict (ETag and last modified).
+    types:
+    - <xref:dict>[<xref:str>, <xref:typing.Any>]
 - uid: azure.storage.fileshare.ShareFileClient.delete_file
   name: delete_file
   summary: 'Marks the specified file for deletion. The file is
@@ -497,7 +554,7 @@ methods:
   - "Delete a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.20.1\\\
+    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.21.0\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   my_file.delete_file()\n\n   ````\n"
@@ -597,7 +654,7 @@ methods:
   - "Download a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n\
     <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.20.1\\\
+    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.21.0\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   with open(DEST_FILE, \"wb\") as data:\n\
@@ -703,7 +760,7 @@ methods:
     file_samples_hello_world.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.20.1\\\\samples\\\
+    \\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.21.0\\\\samples\\\
     \\file_samples_hello_world.py\", \"xml:space\": \"preserve\", \"force\": false,\
     \ \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"linenos\"\
     : false} -->\n\n````python\n\n   from azure.storage.fileshare import ShareFileClient\n\
@@ -1167,9 +1224,9 @@ methods:
   name: set_http_headers
   summary: Sets HTTP headers on the file.
   signature: 'set_http_headers(content_settings: ContentSettings, file_attributes:
-    str | NTFSAttributes = ''preserve'', file_creation_time: str | datetime | None
-    = ''preserve'', file_last_write_time: str | datetime | None = ''preserve'', file_permission:
-    str | None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str,
+    str | NTFSAttributes | None = None, file_creation_time: str | datetime | None
+    = None, file_last_write_time: str | datetime | None = None, file_permission: str
+    | None = None, permission_key: str | None = None, **kwargs: Any) -> Dict[str,
     Any]'
   parameters:
   - name: content_settings
@@ -1190,6 +1247,7 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
+    - <xref:None>
   - name: file_creation_time
     description: 'Creation time for the file
 
@@ -1198,6 +1256,7 @@ methods:
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_last_write_time
     description: 'Last write time for the file
 
@@ -1206,6 +1265,7 @@ methods:
     types:
     - <xref:str>
     - <xref:datetime.datetime>
+    - <xref:None>
   - name: file_permission
     description: 'If specified the permission (security
 
@@ -1255,6 +1315,18 @@ methods:
       *New in version 12.1.0.*'
     types:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
+    - <xref:str>
+  - name: owner
+    description: NFS only. The owner of the file.
+    types:
+    - <xref:str>
+  - name: group
+    description: NFS only. The owning group of the file.
+    types:
+    - <xref:str>
+  - name: file_mode
+    description: NFS only. The file mode of the file.
+    types:
     - <xref:str>
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
@@ -1347,6 +1419,7 @@ methods:
 
       *New in version 12.1.0:* This parameter was introduced in API version ''2019-07-07''.'
     types:
+    - <xref:str>
     - <xref:azure.storage.fileshare.NTFSAttributes>
   - name: file_creation_time
     description: 'This value can be set to "source" to copy the creation time from
@@ -1424,6 +1497,45 @@ methods:
     types:
     - <xref:azure.storage.fileshare.ShareLeaseClient>
     - <xref:str>
+  - name: owner
+    description: NFS only. The owner of the file.
+    types:
+    - <xref:str>
+  - name: group
+    description: NFS only. The owning group of the file.
+    types:
+    - <xref:str>
+  - name: file_mode
+    description: NFS only. The file mode of the file.
+    types:
+    - <xref:str>
+  - name: file_mode_copy_mode
+    description: 'NFS only. Applicable only when the copy source is a File. Determines
+      the copy behavior
+
+      of the mode bits of the file. Possible values are:
+
+
+      source - The mode on the destination file is copied from the source file.
+
+      override - The mode on the destination file is determined via the file_mode
+      keyword.'
+    types:
+    - <xref:typing.Literal>['source', 'override']
+  - name: owner_copy_mode
+    description: 'NFS only. Applicable only when the copy source is a File. Determines
+      the copy behavior
+
+      of the owner and group of the file. Possible values are:
+
+
+      source - The owner and group on the destination file is copied from the source
+      file.
+
+      override - The owner and group on the destination file is determined via the
+      owner and group keywords.'
+    types:
+    - <xref:typing.Literal>['source', 'override']
   - name: timeout
     description: 'Sets the server-side timeout for the operation in seconds. For more
       details see
@@ -1444,7 +1556,7 @@ methods:
   - "Copy a file from a URL<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\
     \n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
     : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.20.1\\\
+    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.21.0\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   destination_file.start_copy_from_url(source_url=source_url)\n\
@@ -1453,8 +1565,8 @@ methods:
   name: upload_file
   summary: Uploads a new file.
   signature: 'upload_file(data: bytes | str | Iterable | IO, length: int | None =
-    None, file_attributes: str | NTFSAttributes = ''none'', file_creation_time: str
-    | datetime | None = ''now'', file_last_write_time: str | datetime | None = ''now'',
+    None, file_attributes: str | NTFSAttributes | None = None, file_creation_time:
+    str | datetime | None = None, file_last_write_time: str | datetime | None = None,
     file_permission: str | None = None, permission_key: str | None = None, **kwargs)
     -> Dict[str, Any]'
   parameters:
@@ -1612,7 +1724,7 @@ methods:
   - "Upload a file.<!--[!code-python[Main](les\\file_samples_client.py )]-->\n\n<!--\
     \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
     \ \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.20.1\\\
+    \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\248\\\\azure_storage_file_share-12.21.0\\\
     \\samples\\\\file_samples_client.py\", \"xml:space\": \"preserve\", \"force\"\
     : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
     linenos\": false} -->\n\n````python\n\n   with open(SOURCE_FILE, \"rb\") as source:\n\
