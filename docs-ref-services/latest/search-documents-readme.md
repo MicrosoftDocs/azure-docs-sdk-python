@@ -92,7 +92,8 @@ operations in client apps is essential to safeguarding the search assets on your
 service.  Always use a query key rather than an admin key for any query
 originating from a client app.
 
-*Note: The example Azure CLI snippet above retrieves an admin key so it's easier
+> [!WARNING]
+> The example Azure CLI snippet above retrieves an admin key so it's easier
 to get started exploring APIs, but it should be managed carefully.*
 
 #### Create a SearchClient
