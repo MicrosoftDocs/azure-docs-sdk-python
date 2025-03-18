@@ -1,7 +1,7 @@
 ---
 title: Azure Elastic SDK for Python
 description: Reference for Azure Elastic SDK for Python
-ms.date: 03/17/2025
+ms.date: 03/18/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: elastic
