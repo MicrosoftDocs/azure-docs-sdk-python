@@ -483,12 +483,14 @@ methods:
 
 
     If no ThroughputProperties already exist for the container, an exception is raised.'
-  signature: 'get_throughput(**kwargs: Any) -> ThroughputProperties'
+  signature: 'get_throughput(*, response_hook: Callable[[Mapping[str, Any], List[Dict[str,
+    Any]]], None] | None = None, **kwargs: Any) -> ThroughputProperties'
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:typing.List>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]], <xref:None>]
   return:
     description: Throughput for the container.
     types:
@@ -536,8 +538,9 @@ methods:
 - uid: azure.cosmos.container.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: 'list_conflicts(max_item_count: int | None = None, **kwargs: Any) ->
-    ItemPaged[Dict[str, Any]]'
+  signature: 'list_conflicts(max_item_count: int | None = None, *, response_hook:
+    Callable[[Mapping[str, Any], ItemPaged[Dict[str, Any]]], None] | None = None,
+    **kwargs: Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -548,7 +551,8 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]], <xref:None>]
   return:
     description: An Iterable of conflicts (dicts).
     types:
@@ -652,7 +656,8 @@ methods:
   signature: 'query_conflicts(query: str, parameters: List[Dict[str, object]] | None
     = None, enable_cross_partition_query: bool | None = None, partition_key: str |
     int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue]
-    | None = None, max_item_count: int | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
+    | None = None, max_item_count: int | None = None, *, response_hook: Callable[[Mapping[str,
+    Any], ItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: query
@@ -691,7 +696,8 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>
+    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]], <xref:None>]
   return:
     description: An Iterable of conflicts (dicts).
     types:
@@ -715,8 +721,9 @@ methods:
     | None = None, populate_query_metrics: bool | None = None, *, populate_index_metrics:
     bool | None = None, session_token: str | None = None, initial_headers: Dict[str,
     str] | None = None, max_integrated_cache_staleness_in_ms: int | None = None, priority:
-    Literal[''High'', ''Low''] | None = None, continuation_token_limit: int | None
-    = None, **kwargs: Any) -> ItemPaged[Dict[str, Any]]'
+    Literal[''High'', ''Low''] | None = None, response_hook: Callable[[Mapping[str,
+    Any], Dict[str, Any] | ItemPaged[Dict[str, Any]]], None] | None = None, continuation_token_limit:
+    int | None = None, **kwargs: Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -775,9 +782,15 @@ methods:
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: A callable invoked with the response metadata.
+    description: 'A callable invoked with the response metadata. Note that due to
+      the nature of combining
+
+      calls to build the results, this function may be called with a either single
+      dict or iterable of dicts'
     types:
-    - <xref:typing.Callable>
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:typing.Union>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>], <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]]], <xref:None>]
   - name: continuation_token_limit
     description: 'The size limit in kb of the response continuation token in the query
 
@@ -824,7 +837,7 @@ methods:
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b1\\\\samples\\\\examples.py\", \"xml:space\"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import json\n\
     \n   for queried_item in container.query_items(\n       query='SELECT * FROM products\
@@ -834,7 +847,7 @@ methods:
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b1\\\\samples\\\\examples.py\", \"xml:space\"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   discontinued_items\
     \ = container.query_items(\n       query='SELECT * FROM products p WHERE p.productModel\
@@ -848,7 +861,8 @@ methods:
   signature: 'query_items_change_feed(*, max_item_count: int | None = None, start_time:
     datetime | Literal[''Now'', ''Beginning''] | None = None, partition_key: PartitionKeyType,
     priority: Literal[''High'', ''Low''] | None = None, mode: Literal[''LatestVersion'',
-    ''AllVersionsAndDeletes''] | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
+    ''AllVersionsAndDeletes''] | None = None, response_hook: Callable[[Mapping[str,
+    Any], ItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
     Any]]'
   parameters:
   - name: args
@@ -917,7 +931,7 @@ methods:
     description: A callable invoked with the response metadata.
     types:
     - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
-      <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]], <xref:None>]
+      <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>]]], <xref:None>]
   return:
     description: An Iterable of items (dicts).
     types:
@@ -983,8 +997,9 @@ methods:
   signature: 'read_all_items(max_item_count: int | None = None, populate_query_metrics:
     bool | None = None, *, session_token: str | None = None, initial_headers: Dict[str,
     str] | None = None, max_integrated_cache_staleness_in_ms: int | None = None, priority:
-    Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> ItemPaged[Dict[str,
-    Any]]'
+    Literal[''High'', ''Low''] | None = None, response_hook: Callable[[Mapping[str,
+    Any], Dict[str, Any] | ItemPaged[Dict[str, Any]]], None] | None = None, **kwargs:
+    Any) -> ItemPaged[Dict[str, Any]]'
   parameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -1001,9 +1016,15 @@ methods:
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: A callable invoked with the response metadata.
+    description: 'A callable invoked with the response metadata. Note that due to
+      the nature of combining
+
+      calls to build the results, this function may be called with a either single
+      dict or iterable of dicts'
     types:
-    - <xref:typing.Callable>
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:typing.Union>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>], <xref:ItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]]],<xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -1124,7 +1145,7 @@ methods:
     examples.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\"\
     : [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b1\\\\samples\\\\examples.py\", \"xml:space\"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples.py\", \"xml:space\"\
     : \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   item = container.read_item(\"\
     item2\", partition_key=\"Widget\")\n   item[\"productModel\"] = \"DISCONTINUED\"\
@@ -1252,11 +1273,6 @@ methods:
     isRequired: true
     types:
     - <xref:typing.Union>[<xref:int>, <xref:azure.cosmos.ThroughputProperties>]
-  keywordOnlyParameters:
-  - name: response_hook
-    description: A callable invoked with the response metadata.
-    types:
-    - <xref:typing.Callable>
   return:
     description: ThroughputProperties for the container, updated with new throughput.
     types:

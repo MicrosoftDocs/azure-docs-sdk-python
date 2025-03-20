@@ -480,7 +480,8 @@ methods:
 
 
     If no ThroughputProperties already exists for the container, an exception is raised.'
-  signature: 'async get_throughput(**kwargs: Any) -> ThroughputProperties'
+  signature: 'async get_throughput(*, response_hook: Callable[[Mapping[str, Any],
+    List[Dict[str, Any]]], None] | None = None, **kwargs: Any) -> ThroughputProperties'
   keywordOnlyParameters:
   - name: response_hook
     description: A callable invoked with the response metadata.
@@ -534,8 +535,9 @@ methods:
 - uid: azure.cosmos.aio.ContainerProxy.list_conflicts
   name: list_conflicts
   summary: List all the conflicts in the container.
-  signature: 'list_conflicts(*, max_item_count: int | None = None, **kwargs: Any)
-    -> AsyncItemPaged[Dict[str, Any]]'
+  signature: 'list_conflicts(*, max_item_count: int | None = None, response_hook:
+    Callable[[Mapping[str, Any], AsyncItemPaged[Dict[str, Any]]], None] | None = None,
+    **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -649,7 +651,8 @@ methods:
   signature: 'query_conflicts(query: str, *, parameters: List[Dict[str, object]] |
     None = None, partition_key: str | int | float | bool | Sequence[str | int | float
     | bool | None] | Type[NonePartitionKeyValue] | None = None, max_item_count: int
-    | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+    | None = None, response_hook: Callable[[Mapping[str, Any], AsyncItemPaged[Dict[str,
+    Any]]], None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -702,7 +705,9 @@ methods:
     bool | None = None, populate_index_metrics: bool | None = None, session_token:
     str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
     int | None = None, priority: Literal[''High'', ''Low''] | None = None, continuation_token_limit:
-    int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+    int | None = None, response_hook: Callable[[Mapping[str, Any], Dict[str, Any]
+    | AsyncItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -758,10 +763,15 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: A callable invoked with the response metadata.
+    description: 'A callable invoked with the response metadata. Note that due to
+      the nature of combining
+
+      calls to build the results, this function may be called with a either single
+      dict or iterable of dicts'
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
-      <xref:typing.Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:typing.Union>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]]], <xref:None>]
   - name: continuation_token_limit
     description: 'The size limit in kb of the response continuation token in the query
 
@@ -798,7 +808,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b1\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
     \ json\n\n           async for queried_item in container.query_items(\n      \
@@ -808,7 +818,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b1\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -823,8 +833,9 @@ methods:
   signature: 'query_items_change_feed(*, max_item_count: int | None = None, start_time:
     datetime | Literal[''Now'', ''Beginning''] | None = None, partition_key: PartitionKeyType,
     priority: Literal[''High'', ''Low''] | None = None, mode: Literal[''LatestVersion'',
-    ''AllVersionsAndDeletes''] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+    ''AllVersionsAndDeletes''] | None = None, response_hook: Callable[[Mapping[str,
+    Any], AsyncItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) ->
+    AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: continuation
     description: The continuation token retrieved from previous response. It contains
@@ -946,9 +957,11 @@ methods:
   name: read_all_items
   summary: List all the items in the container.
   signature: 'read_all_items(*, max_item_count: int | None = None, session_token:
-    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs:
-    Any) -> AsyncItemPaged[Dict[str, Any]]'
+    str | None = None, initial_headers: Dict[str, str] | None = None, response_hook:
+    Callable[[Mapping[str, Any], Dict[str, Any] | AsyncItemPaged[Dict[str, Any]]],
+    None] | None = None, max_integrated_cache_staleness_in_ms: int | None = None,
+    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -963,10 +976,15 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: A callable invoked with the response metadata.
+    description: 'A callable invoked with the response metadata. Note that due to
+      the nature of combining
+
+      calls to build the results, this function may be called with a either single
+      dict or iterable of dicts'
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
-      <xref:typing.Any>]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
+      <xref:typing.Union>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]]]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -1087,7 +1105,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b1\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
