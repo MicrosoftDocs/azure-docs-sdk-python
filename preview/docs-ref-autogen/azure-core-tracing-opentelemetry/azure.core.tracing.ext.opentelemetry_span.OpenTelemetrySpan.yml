@@ -6,7 +6,7 @@ module: azure.core.tracing.ext.opentelemetry_span
 summary: OpenTelemetry plugin for Azure client libraries.
 constructor:
   syntax: 'OpenTelemetrySpan(span: Span | None = None, name: str | None = ''span'',
-    **kwargs: Any)'
+    *, kind: SpanKind | None = None, links: List[Link] | None = None, **kwargs: Any)'
   parameters:
   - name: span
     description: The OpenTelemetry span to wrap, or nothing to create a new one.
@@ -32,6 +32,10 @@ constructor:
       a new span.
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
+  - name: schema_version
+    description: The OpenTelemetry schema version to use for the span.
+    types:
+    - <xref:str>
 methods:
 - uid: azure.core.tracing.ext.opentelemetry_span.OpenTelemetrySpan.add_attribute
   name: add_attribute
@@ -51,7 +55,7 @@ methods:
 - uid: azure.core.tracing.ext.opentelemetry_span.OpenTelemetrySpan.change_context
   name: change_context
   summary: Change the context for the life of this context manager.
-  signature: 'change_context(span: Span) -> ContextManager[Span]'
+  signature: 'change_context(span: Span | OpenTelemetrySpan) -> ContextManager'
   parameters:
   - name: span
     description: The span to use as the current span
@@ -182,7 +186,8 @@ methods:
 - uid: azure.core.tracing.ext.opentelemetry_span.OpenTelemetrySpan.span
   name: span
   summary: Create a child span for the current span and return it.
-  signature: 'span(name: str = ''span'', **kwargs: Any) -> OpenTelemetrySpan'
+  signature: 'span(name: str = ''span'', *, kind: SpanKind | None = None, links: List[Link]
+    | None = None, **kwargs: Any) -> OpenTelemetrySpan'
   parameters:
   - name: name
     description: Name of the child span
@@ -207,12 +212,15 @@ methods:
   signature: start() -> None
 - uid: azure.core.tracing.ext.opentelemetry_span.OpenTelemetrySpan.to_header
   name: to_header
-  summary: 'Returns a dictionary with the header labels and values.
+  summary: 'Returns a dictionary with the context header labels and values.
 
-    :return: A key value pair dictionary
 
-    :rtype: dict[str, str]'
+    These are generally the W3C Trace Context headers (i.e. "traceparent" and "tracestate").'
   signature: to_header() -> Dict[str, str]
+  return:
+    description: A key value pair dictionary
+    types:
+    - <xref:dict>[<xref:str>, <xref:str>]
 - uid: azure.core.tracing.ext.opentelemetry_span.OpenTelemetrySpan.with_current_context
   name: with_current_context
   summary: Passes the current spans to the new context the function will be run in.

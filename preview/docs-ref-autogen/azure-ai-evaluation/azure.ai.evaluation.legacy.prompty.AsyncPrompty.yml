@@ -1,0 +1,103 @@
+### YamlMime:PythonClass
+uid: azure.ai.evaluation.legacy.prompty.AsyncPrompty
+name: AsyncPrompty
+fullName: azure.ai.evaluation.legacy.prompty.AsyncPrompty
+module: azure.ai.evaluation.legacy.prompty
+summary: "A prompty is a prompt with predefined metadata like inputs, and can be executed\
+  \ directly like a flow.\nA prompty is represented as a templated markdown file with\
+  \ a modified front matter.\nThe front matter is a yaml file that contains meta fields\
+  \ like model configuration, inputs, etc..\n\nPrompty example:\n.. code-block:\n\n\
+  <!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+  \ \"backrefs\": [], \"xml:space\": \"preserve\", \"language\": \"default\", \"force\"\
+  : false, \"linenos\": false} -->\n\n````default\n\n   ---\n   name: Hello Prompty\n\
+  \   description: A basic prompt\n   model:\n       api: chat\n       configuration:\n\
+  \         type: azure_openai\n         azure_deployment: gpt-35-turbo\n        \
+  \ api_key=\"${env:AZURE_OPENAI_API_KEY}\",\n         api_version=${env:AZURE_OPENAI_API_VERSION}\"\
+  ,\n         azure_endpoint=\"${env:AZURE_OPENAI_ENDPOINT}\",\n       parameters:\n\
+  \         max_tokens: 128\n         temperature: 0.2\n   inputs:\n     text:\n \
+  \      type: string\n   ---\n   system:\n   Write a simple {{text}} program that\
+  \ displays the greeting message.\n   ````\n\nPrompty as function example:\n\n<!--\
+  \ literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\": [],\
+  \ \"backrefs\": [], \"xml:space\": \"preserve\", \"force\": false, \"language\"\
+  : \"python\", \"highlight_args\": {}, \"linenos\": false} -->\n\n````python\n\n\
+  \   from azure.ai.evaluation.legacy.prompty import AsyncPrompty\n   prompty = Prompty(path=\"\
+  path/to/prompty.prompty\")\n   result = prompty(input_a=1, input_b=2)\n\n   # Override\
+  \ model config with dict\n   model_config = {\n       \"api\": \"chat\",\n     \
+  \  \"configuration\": {\n           \"type\": \"azure_openai\",\n           \"azure_deployment\"\
+  : \"gpt-35-turbo\",\n           \"api_key\": \"${env:AZURE_OPENAI_API_KEY}\",\n\
+  \           \"api_version\": \"${env:AZURE_OPENAI_API_VERSION}\",\n           \"\
+  azure_endpoint\": \"${env:AZURE_OPENAI_ENDPOINT}\",\n       },\n       \"parameters\"\
+  : {\n           \"max_token\": 512\n       }\n   }\n   prompty = Prompty.load(source=\"\
+  path/to/prompty.prompty\", model=model_config)\n   result = prompty(input_a=1, input_b=2)\n\
+  \n   # Override model config with configuration\n   from azure.ai.evaluation.legacy.prompty._connection\
+  \ import AzureOpenAIConnection\n   model_config = {\n       \"api\": \"chat\",\n\
+  \       \"configuration\": AzureOpenAIModelConfiguration(\n           azure_deployment=\"\
+  gpt-35-turbo\",\n           api_key=\"${env:AZURE_OPENAI_API_KEY}\",\n         \
+  \  api_version=\"${env:AZURE_OPENAI_API_VERSION}\",\n           azure_endpoint=\"\
+  ${env:AZURE_OPENAI_ENDPOINT}\",\n       ),\n       \"parameters\": {\n         \
+  \  \"max_token\": 512\n       }\n   }\n   prompty = Prompty(path=\"path/to/prompty.prompty\"\
+  , model=model_config)\n   result = prompty(input_a=1, input_b=2)\n\n   # Override\
+  \ model config with created connection\n   from azure.ai.evaluation.legacy.prompty._connection\
+  \ import AzureOpenAIConnection\n   model_config = {\n       \"api\": \"chat\",\n\
+  \       \"configuration\": AzureOpenAIModelConfiguration(\n           connection=\"\
+  azure_open_ai_connection\",\n           azure_deployment=\"gpt-35-turbo\",\n   \
+  \    ),\n       \"parameters\": {\n           \"max_token\": 512\n       }\n   }\n\
+  \   prompty = Prompty(path=\"path/to/prompty.prompty\", model=model_config)\n  \
+  \ result = prompty(input_a=1, input_b=2)\n   ````"
+constructor:
+  syntax: 'AsyncPrompty(path: str | PathLike, **kwargs: Any)'
+  parameters:
+  - name: path
+    isRequired: true
+methods:
+- uid: azure.ai.evaluation.legacy.prompty.AsyncPrompty.load
+  name: load
+  summary: Loads the prompty file.
+  signature: 'load(source: str | PathLike, **kwargs) -> AsyncPrompty'
+  parameters:
+  - name: source
+    description: 'The local prompty file. Must be a path to a local file.
+
+      An exception is raised if the file does not exist.'
+    isRequired: true
+    types:
+    - <xref:typing.Union>[<xref:PathLike>, <xref:str>]
+  return:
+    description: A Prompty object
+    types:
+    - <xref:Prompty>
+- uid: azure.ai.evaluation.legacy.prompty.AsyncPrompty.render
+  name: render
+  summary: Render the prompt content.
+  signature: 'render(**kwargs: Any) -> Sequence[Mapping[str, Any]]'
+  keywordOnlyParameters:
+  - name: kwargs
+    description: Additional keyword arguments passed to the parent class.
+    types:
+    - <xref:typing.Any>
+  return:
+    description: Prompt content
+    types:
+    - <xref:typing.Sequence>[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]]
+attributes:
+- uid: azure.ai.evaluation.legacy.prompty.AsyncPrompty.description
+  name: description
+  summary: Description of the prompty.
+  return:
+    description: The description of the prompty.
+    types:
+    - <xref:str>
+- uid: azure.ai.evaluation.legacy.prompty.AsyncPrompty.name
+  name: name
+  summary: Name of the prompty.
+  return:
+    description: The name of the prompty.
+    types:
+    - <xref:str>
+- uid: azure.ai.evaluation.legacy.prompty.AsyncPrompty.path
+  name: path
+  summary: Path of the prompty file.
+  return:
+    description: The path of the prompty file.
+    types:
+    - <xref:Path>
