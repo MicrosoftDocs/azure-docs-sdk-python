@@ -6,7 +6,7 @@ module: azure.keyvault.administration.aio
 summary: Performs Key Vault backup and restore operations.
 constructor:
   syntax: 'KeyVaultBackupClient(vault_url: str, credential: AsyncTokenCredential,
-    **kwargs)'
+    **kwargs: Any)'
   parameters:
   - name: vault_url
     description: 'URL of the vault on which the client will operate. This is also
@@ -46,7 +46,7 @@ methods:
   name: begin_backup
   summary: Begin a full backup of the Key Vault.
   signature: 'async begin_backup(blob_storage_url: str, *, use_managed_identity: Literal[True],
-    continuation_token: str | None = None, **kwargs) -> AsyncLROPoller[KeyVaultBackupResult]'
+    continuation_token: str | None = None, **kwargs: Any) -> AsyncLROPoller[KeyVaultBackupResult]'
   parameters:
   - name: blob_storage_url
     description: 'URL of the blob storage container in which the backup will be stored,
@@ -73,7 +73,7 @@ methods:
 
       token has to be specified.'
     types:
-    - <xref:typing.Literal>[True]
+    - <xref:bool>
   - name: continuation_token
     description: A continuation token to restart polling from a saved state.
     types:
@@ -87,14 +87,132 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    49\\\\azure-keyvault-administration-4.4.0b2\\\\tests\\\\test_examples_administration_async.py\"\
+    49\\\\azure_keyvault_administration-4.6.0b1\\\\tests\\\\test_examples_administration_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # begin a vault backup\n   backup_poller = await backup_client.begin_backup(container_uri,\
-    \ sas_token)\n\n   # check if the backup completed\n   done = backup_poller.done()\n\
-    \n   # yield until the backup completes\n   # result() returns an object with\
-    \ a URL of the backup\n   backup_operation = await backup_poller.result()\n\n\
-    \   ````\n"
+    \ use_managed_identity=True)\n\n   # check if the backup completed\n   done =\
+    \ backup_poller.done()\n\n   # yield until the backup completes\n   # result()\
+    \ returns an object with a URL of the backup\n   backup_operation = await backup_poller.result()\n\
+    \n   ````\n"
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.begin_pre_backup
+  name: begin_pre_backup
+  summary: 'Initiates a pre-backup check of whether a full Key Vault backup can be
+    performed.
+
+
+    A <xref:azure.keyvault.administration.aio.KeyVaultBackupOperation> instance will
+    be returned by the poller''s *result()* method. If the
+
+    pre-backup check is successful, the object will have a string *folder_url* attribute,
+    pointing to the blob
+
+    storage container where the backup will be stored. If the check fails, the object
+    will have a string *error*
+
+    attribute.'
+  signature: 'async begin_pre_backup(blob_storage_url: str, *, use_managed_identity:
+    Literal[True], continuation_token: str | None = None, **kwargs: Any) -> AsyncLROPoller[KeyVaultBackupOperation]'
+  parameters:
+  - name: blob_storage_url
+    description: 'URL of the blob storage container in which the backup will be stored,
+      for example
+
+      [https:/](https:/)/<account>.blob.core.windows.net/backup.'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: sas_token
+    description: 'Optional Shared Access Signature (SAS) token to authorize access
+      to the blob. Required
+
+      unless *use_managed_identity* is set to True.'
+    types:
+    - <xref:str>
+  - name: use_managed_identity
+    description: 'Indicates which authentication method should be used. If set to
+      True, Managed HSM
+
+      will use the configured user-assigned managed identity to authenticate with
+      Azure Storage. Otherwise, a SAS
+
+      token has to be specified.'
+    types:
+    - <xref:bool>
+  - name: continuation_token
+    description: A continuation token to restart polling from a saved state.
+    types:
+    - <xref:str>
+  return:
+    description: 'An AsyncLROPoller. Call *result()* on this object to wait for the
+      operation to complete and get a
+
+      <xref:azure.keyvault.administration.aio.KeyVaultBackupOperation>. If the pre-backup
+      check is successful, the object will have a string
+
+      *folder_url* attribute, pointing to the blob storage container where the backup
+      will be stored. If the check
+
+      fails, the object will have a string *error* attribute.'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.keyvault.administration.KeyVaultBackupOperation>]
+- uid: azure.keyvault.administration.aio.KeyVaultBackupClient.begin_pre_restore
+  name: begin_pre_restore
+  summary: 'Initiates a pre-restore check of whether a full Key Vault restore can
+    be performed.
+
+
+    A <xref:azure.keyvault.administration.aio.KeyVaultRestoreOperation> instance will
+    be returned by the poller''s *result()* method. If the
+
+    pre-restore check fails, the object will have a string *error* attribute.'
+  signature: 'async begin_pre_restore(folder_url: str, *, use_managed_identity: Literal[True],
+    continuation_token: str | None = None, **kwargs: Any) -> AsyncLROPoller[KeyVaultRestoreOperation]'
+  parameters:
+  - name: folder_url
+    description: 'URL of the blob holding the backup. This would be the *folder_url*
+      of a
+
+      <xref:azure.keyvault.administration.aio.KeyVaultBackupResult> returned by <xref:azure.keyvault.administration.aio.KeyVaultBackupClient.begin_backup>,
+      for example
+
+      [https:/](https:/)/<account>.blob.core.windows.net/backup/mhsm-account-2020090117323313'
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: sas_token
+    description: 'Optional Shared Access Signature (SAS) token to authorize access
+      to the blob. Required
+
+      unless *use_managed_identity* is set to True.'
+    types:
+    - <xref:str>
+  - name: use_managed_identity
+    description: 'Indicates which authentication method should be used. If set to
+      True, Managed HSM
+
+      will use the configured user-assigned managed identity to authenticate with
+      Azure Storage. Otherwise, a SAS
+
+      token has to be specified.'
+    types:
+    - <xref:bool>
+  - name: continuation_token
+    description: A continuation token to restart polling from a saved state.
+    types:
+    - <xref:str>
+  return:
+    description: 'An AsyncLROPoller. Call *result()* on this object to wait for the
+      operation to complete and get a
+
+      <xref:azure.keyvault.administration.aio.KeyVaultRestoreOperation>. If the pre-restore
+      check fails, the object will have a string *error*
+
+      attribute.'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.keyvault.administration.KeyVaultRestoreOperation>]
 - uid: azure.keyvault.administration.aio.KeyVaultBackupClient.begin_restore
   name: begin_restore
   summary: 'Restore a Key Vault backup.
@@ -104,7 +222,7 @@ methods:
     a value, a single key.'
   signature: 'async begin_restore(folder_url: str, *, use_managed_identity: Literal[True],
     key_name: str | None = None, continuation_token: str | None = None, **kwargs:
-    Any) -> AsyncLROPoller'
+    Any) -> AsyncLROPoller[None]'
   parameters:
   - name: folder_url
     description: 'URL for the blob storage resource, including the path to the blob
@@ -137,7 +255,7 @@ methods:
 
       token has to be specified.'
     types:
-    - <xref:typing.Literal>[True]
+    - <xref:bool>
   - name: key_name
     description: Name of a single key in the backup. When set, only this key will
       be restored.
@@ -159,21 +277,21 @@ methods:
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    49\\\\azure-keyvault-administration-4.4.0b2\\\\tests\\\\test_examples_administration_async.py\"\
+    49\\\\azure_keyvault_administration-4.6.0b1\\\\tests\\\\test_examples_administration_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # begin a full vault restore\n   restore_poller = await backup_client.begin_restore(folder_url,\
-    \ sas_token)\n\n   # check if the restore completed\n   done = restore_poller.done()\n\
-    \n   # wait for the restore to complete\n   await restore_poller.wait()\n\n  \
-    \ ````\n\nRestore a single key<!--[!code-python[Main](s\\test_examples_administration_async.py\
+    \ use_managed_identity=True)\n\n   # check if the restore completed\n   done =\
+    \ restore_poller.done()\n\n   # wait for the restore to complete\n   await restore_poller.wait()\n\
+    \n   ````\n\nRestore a single key<!--[!code-python[Main](s\\test_examples_administration_async.py\
     \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"\
     dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\
     \\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\\
-    49\\\\azure-keyvault-administration-4.4.0b2\\\\tests\\\\test_examples_administration_async.py\"\
+    49\\\\azure_keyvault_administration-4.6.0b1\\\\tests\\\\test_examples_administration_async.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   # begin a restore of a single key from a backed up vault\n   restore_poller\
-    \ = await backup_client.begin_restore(folder_url, sas_token, key_name=key_name)\n\
+    \ = await backup_client.begin_restore(folder_url, use_managed_identity=True, key_name=key_name)\n\
     \n   # check if the restore completed\n   done = restore_poller.done()\n\n   #\
     \ wait for the restore to complete\n   await restore_poller.wait()\n\n   ````\n"
 - uid: azure.keyvault.administration.aio.KeyVaultBackupClient.close
@@ -198,8 +316,8 @@ methods:
     information about how to send
 
     custom requests with this method, see [https://aka.ms/azsdk/dpcodegen/python/send_request](https://aka.ms/azsdk/dpcodegen/python/send_request).'
-  signature: 'async send_request(request: HttpRequest, *, stream: bool = False, **kwargs)
-    -> Awaitable[AsyncHttpResponse]'
+  signature: 'async send_request(request: HttpRequest, *, stream: bool = False, **kwargs:
+    Any) -> Awaitable[AsyncHttpResponse]'
   parameters:
   - name: request
     description: The network request you want to make.
