@@ -1,6 +1,6 @@
 ---
 title: 
-keywords: Azure, python, SDK, API, azure-mgmt-iothubprovisioningservices, iothub
+keywords: Azure, python, SDK, API, azure-mgmt-iothub, iothub
 ms.date: 03/26/2025
 ms.topic: reference
 ms.devlang: python
@@ -8,7 +8,7 @@ ms.service: iothub
 ---
 # Microsoft Azure SDK for Python
 
-This is the Microsoft Azure IoT Hub Provisioning Services Client Library.
+This is the Microsoft Azure IoT Hub Management Client Library.
 This package has been tested with Python 3.7+.
 For a more complete view of Azure libraries, see the [azure sdk python release](https://aka.ms/azsdk/python/all).
 
@@ -26,7 +26,7 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 ### Install the package
 
 ```bash
-pip install azure-mgmt-iothubprovisioningservices
+pip install azure-mgmt-iothub
 pip install azure-identity
 ```
 
@@ -44,17 +44,17 @@ With above configuration, client can be authenticated by following code:
 
 ```python
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.iothubprovisioningservices import IotDpsClient
+from azure.mgmt.iothub import IotHubClient
 import os
 
 sub_id = os.getenv("AZURE_SUBSCRIPTION_ID")
-client = IotDpsClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
+client = IotHubClient(credential=DefaultAzureCredential(), subscription_id=sub_id)
 ```
 
 ## Examples
 
 Code samples for this package can be found at:
-- [Search IoT Hub Provisioning Services](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
+- [Search IoT Hub Management](/samples/browse/?languages=python&term=Getting%20started%20-%20Managing&terms=Getting%20started%20-%20Managing) on docs.microsoft.com
 - [Azure Python Mgmt SDK Samples Repo](https://aka.ms/azsdk/python/mgmt/samples)
 
 
