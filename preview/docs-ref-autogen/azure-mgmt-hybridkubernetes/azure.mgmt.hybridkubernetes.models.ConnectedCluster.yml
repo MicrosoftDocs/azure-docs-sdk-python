@@ -9,12 +9,19 @@ summary: 'Represents a connected cluster.
   Variables are only populated by the server, and will be ignored when sending a request.
 
 
-  All required parameters must be populated in order to send to Azure.'
+  All required parameters must be populated in order to send to server.'
 constructor:
   syntax: 'ConnectedCluster(*, location: str, identity: _models.ConnectedClusterIdentity,
-    agent_public_key_certificate: str, tags: Dict[str, str] | None = None, provisioning_state:
-    str | _models.ProvisioningState | None = None, distribution: str | None = None,
-    infrastructure: str | None = None, **kwargs)'
+    agent_public_key_certificate: str, tags: Dict[str, str] | None = None, kind: str
+    | _models.ConnectedClusterKind | None = None, provisioning_state: str | _models.ProvisioningState
+    | None = None, distribution: str | None = None, distribution_version: str | None
+    = None, infrastructure: str | None = None, private_link_state: str | _models.PrivateLinkState
+    = ''Disabled'', private_link_scope_resource_id: str | None = None, azure_hybrid_benefit:
+    str | _models.AzureHybridBenefit | None = None, aad_profile: _models.AadProfile
+    | None = None, arc_agent_profile: _models.ArcAgentProfile | None = None, security_profile:
+    _models.SecurityProfile | None = None, oidc_issuer_profile: _models.OidcIssuerProfile
+    | None = None, gateway: _models.Gateway | None = None, arc_agentry_configurations:
+    List[_models.ArcAgentryConfigurations] | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Resource tags.
@@ -28,6 +35,12 @@ constructor:
     description: The identity of the connected cluster. Required.
     types:
     - <xref:azure.mgmt.hybridkubernetes.models.ConnectedClusterIdentity>
+  - name: kind
+    description: 'The kind of connected cluster. Known values are: "ProvisionedCluster"
+      and "AWS".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.hybridkubernetes.models.ConnectedClusterKind>
   - name: agent_public_key_certificate
     description: 'Base64 encoded public certificate used by the agent to
 
@@ -46,6 +59,10 @@ constructor:
     description: The Kubernetes distribution running on this connected cluster.
     types:
     - <xref:str>
+  - name: distribution_version
+    description: The Kubernetes distribution version on this connected cluster.
+    types:
+    - <xref:str>
   - name: infrastructure
     description: 'The infrastructure on which the Kubernetes cluster represented by
       this
@@ -53,10 +70,59 @@ constructor:
       connected cluster is running on.'
     types:
     - <xref:str>
+  - name: private_link_state
+    description: 'Property which describes the state of private link on a connected
+
+      cluster resource. Known values are: "Enabled" and "Disabled".'
+    defaultValue: Disabled
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.hybridkubernetes.models.PrivateLinkState>
+  - name: private_link_scope_resource_id
+    description: 'This is populated only if privateLinkState is enabled.
+
+      The resource id of the private link scope this connected cluster is assigned
+      to, if any.'
+    types:
+    - <xref:str>
+  - name: azure_hybrid_benefit
+    description: 'Indicates whether Azure Hybrid Benefit is opted in. Known values
+
+      are: "True", "False", and "NotApplicable".'
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.hybridkubernetes.models.AzureHybridBenefit>
+  - name: aad_profile
+    description: AAD profile for the connected cluster.
+    types:
+    - <xref:azure.mgmt.hybridkubernetes.models.AadProfile>
+  - name: arc_agent_profile
+    description: Arc agentry configuration for the provisioned cluster.
+    types:
+    - <xref:azure.mgmt.hybridkubernetes.models.ArcAgentProfile>
+  - name: security_profile
+    description: Security profile for the connected cluster.
+    types:
+    - <xref:azure.mgmt.hybridkubernetes.models.SecurityProfile>
+  - name: oidc_issuer_profile
+    description: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+    types:
+    - <xref:azure.mgmt.hybridkubernetes.models.OidcIssuerProfile>
+  - name: gateway
+    description: Details of the gateway used by the Arc router for connectivity.
+    types:
+    - <xref:azure.mgmt.hybridkubernetes.models.Gateway>
+  - name: arc_agentry_configurations
+    description: 'Configuration settings for customizing the behavior of the
+
+      connected cluster.'
+    types:
+    - <xref:list>[<xref:azure.mgmt.hybridkubernetes.models.ArcAgentryConfigurations>]
 variables:
 - description: 'Fully qualified resource ID for the resource. Ex -
 
-    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.'
+    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.  #
+    pylint: disable=line-too-long'
   name: id
   types:
   - <xref:str>
@@ -83,6 +149,12 @@ variables:
   name: identity
   types:
   - <xref:azure.mgmt.hybridkubernetes.models.ConnectedClusterIdentity>
+- description: 'The kind of connected cluster. Known values are: "ProvisionedCluster"
+    and "AWS".'
+  name: kind
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.hybridkubernetes.models.ConnectedClusterKind>
 - description: Metadata pertaining to creation and last modification of the resource.
   name: system_data
   types:
@@ -121,6 +193,10 @@ variables:
   name: distribution
   types:
   - <xref:str>
+- description: The Kubernetes distribution version on this connected cluster.
+  name: distribution_version
+  types:
+  - <xref:str>
 - description: 'The infrastructure on which the Kubernetes cluster represented by
     this
 
@@ -146,8 +222,59 @@ variables:
   - <xref:datetime.datetime>
 - description: 'Represents the connectivity status of the connected cluster. Known
 
-    values are: "Connecting", "Connected", "Offline", and "Expired".'
+    values are: "Connecting", "Connected", "Offline", "Expired", and "AgentNotInstalled".'
   name: connectivity_status
   types:
   - <xref:str>
   - <xref:azure.mgmt.hybridkubernetes.models.ConnectivityStatus>
+- description: 'Property which describes the state of private link on a connected
+
+    cluster resource. Known values are: "Enabled" and "Disabled".'
+  name: private_link_state
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.hybridkubernetes.models.PrivateLinkState>
+- description: 'This is populated only if privateLinkState is enabled.
+
+    The resource id of the private link scope this connected cluster is assigned to,
+    if any.'
+  name: private_link_scope_resource_id
+  types:
+  - <xref:str>
+- description: 'Indicates whether Azure Hybrid Benefit is opted in. Known values
+
+    are: "True", "False", and "NotApplicable".'
+  name: azure_hybrid_benefit
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.hybridkubernetes.models.AzureHybridBenefit>
+- description: AAD profile for the connected cluster.
+  name: aad_profile
+  types:
+  - <xref:azure.mgmt.hybridkubernetes.models.AadProfile>
+- description: Arc agentry configuration for the provisioned cluster.
+  name: arc_agent_profile
+  types:
+  - <xref:azure.mgmt.hybridkubernetes.models.ArcAgentProfile>
+- description: Security profile for the connected cluster.
+  name: security_profile
+  types:
+  - <xref:azure.mgmt.hybridkubernetes.models.SecurityProfile>
+- description: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+  name: oidc_issuer_profile
+  types:
+  - <xref:azure.mgmt.hybridkubernetes.models.OidcIssuerProfile>
+- description: Details of the gateway used by the Arc router for connectivity.
+  name: gateway
+  types:
+  - <xref:azure.mgmt.hybridkubernetes.models.Gateway>
+- description: 'Configuration settings for customizing the behavior of the
+
+    connected cluster.'
+  name: arc_agentry_configurations
+  types:
+  - <xref:list>[<xref:azure.mgmt.hybridkubernetes.models.ArcAgentryConfigurations>]
+- description: More properties related to the Connected Cluster.
+  name: miscellaneous_properties
+  types:
+  - <xref:dict>[<xref:str>, <xref:str>]

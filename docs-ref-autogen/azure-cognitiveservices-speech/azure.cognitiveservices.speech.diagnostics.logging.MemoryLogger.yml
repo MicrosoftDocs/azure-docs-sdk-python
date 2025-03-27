@@ -1,0 +1,107 @@
+### YamlMime:PythonClass
+uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger
+name: MemoryLogger
+fullName: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger
+module: azure.cognitiveservices.speech.diagnostics.logging
+summary: 'A static class to control SDK logging into an in-memory buffer.
+
+  Turning on logging while running your Speech SDK scenario provides
+
+  detailed information from the SDK''s core native components. If you
+
+  report an issue to Microsoft, you may be asked to provide logs to help
+
+  Microsoft diagnose the issue. Your application should not take dependency
+
+  on particular log strings, as they may change from one SDK release to another
+
+  without notice.
+
+  MemoryLogger is designed for the case where you want to get access to logs
+
+  that were taken in the short duration before some unexpected event happens.
+
+  For example, if you are running a Speech Recognizer, you may want to dump the MemoryLogger
+
+  after getting an event indicating recognition was canceled due to some error.
+
+  The size of the memory buffer is fixed at 2MB and cannot be changed. This is
+
+  a "ring" buffer, that is, new log strings written replace the oldest ones
+
+  in the buffer. Added in version 1.43.0
+
+
+  Memory logging is a process wide construct. That means that if (for example)
+
+  you have multiple speech recognizer objects running in parallel, there will be one
+
+  memory buffer containing interleaved logs from all recognizers. You cannot get
+
+  separate logs for each recognizer.'
+constructor:
+  syntax: MemoryLogger()
+methods:
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.dump
+  name: dump
+  summary: 'Writes the content of the whole memory buffer to the specified file.
+
+    It does not block other SDK threads from continuing to log into the buffer.'
+  signature: 'static dump(file_path: str)'
+  parameters:
+  - name: file_path
+    description: Path to a log file on local disk.
+    isRequired: true
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.dump_to_list
+  name: dump_to_list
+  summary: 'Returns the content of the whole memory buffer as a list of strings.
+
+    For example, you can access it as a list by calling MemoryLogger.dump_to_list().
+
+    It does not block other SDK threads from continuing to log into the buffer.'
+  signature: static dump_to_list() -> list
+  return:
+    description: A list of strings of the contents of the memory buffer copied into
+      it.
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.dump_to_stream
+  name: dump_to_stream
+  summary: 'Writes the content of the whole memory buffer to an object that implements
+    io.IOBase.
+
+    For example, sys.stdout (for console output).
+
+    It does not block other SDK threads from continuing to log into the buffer.'
+  signature: 'static dump_to_stream(out_stream: IOBase)'
+  parameters:
+  - name: out_stream
+    description: IOBase object to write to.
+    isRequired: true
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.set_filters
+  name: set_filters
+  summary: 'Sets filters for memory logging.
+
+    Once filters are set, memory logger will only be updated with log strings
+
+    containing at least one of the strings specified by the filters. The match is
+    case sensitive.'
+  signature: 'static set_filters(filters: List[str] = [])'
+  parameters:
+  - name: filters
+    description: Filters to use, or an empty list to remove previously set filters.
+    defaultValue: '[]'
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.set_level
+  name: set_level
+  summary: Sets the level of the messages to be captured by the logger.
+  signature: 'static set_level(level: LogLevel = LogLevel.Info)'
+  parameters:
+  - name: level
+    description: Maximum level of detail to be captured by the logger.
+    defaultValue: LogLevel.Info
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.start
+  name: start
+  summary: Starts logging into the internal memory buffer.
+  signature: static start()
+- uid: azure.cognitiveservices.speech.diagnostics.logging.MemoryLogger.stop
+  name: stop
+  summary: Stops logging into the internal memory buffer.
+  signature: static stop()
