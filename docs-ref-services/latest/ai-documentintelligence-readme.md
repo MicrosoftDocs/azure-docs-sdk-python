@@ -1,12 +1,12 @@
 ---
 title: Azure AI Document Intelligence client library for Python
 keywords: Azure, python, SDK, API, azure-ai-documentintelligence, documentintelligence
-ms.date: 03/13/2025
+ms.date: 03/27/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: documentintelligence
 ---
-# Azure AI Document Intelligence client library for Python - version 1.0.1 
+# Azure AI Document Intelligence client library for Python - version 1.0.2 
 
 
 Azure AI Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine learning to analyze text and structured data from your documents. It includes the following main features:
@@ -1063,13 +1063,13 @@ additional questions or comments.
 <!-- LINKS -->
 
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/identity/azure-identity#defaultazurecredential
 [azure_sub]: https://azure.microsoft.com/free/
-[python-di-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/azure/ai/documentintelligence
+[python-di-src]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/azure/ai/documentintelligence
 [python-di-pypi]: https://pypi.org/project/azure-ai-documentintelligence/
 [python-di-product-docs]: https://learn.microsoft.com/azure/ai-services/document-intelligence/overview?view=doc-intel-4.0.0&viewFallbackFrom=form-recog-3.0.0
 [python-di-ref-docs]: https://aka.ms/azsdk/python/documentintelligence/docs
-[python-di-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples
+[python-di-samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples
 [python-di-available-regions]: https://aka.ms/azsdk/documentintelligence/available-regions
 [azure_portal]: https://ms.portal.azure.com/
 [regional_endpoints]: https://azure.microsoft.com/global-infrastructure/services/?products=form-recognizer
@@ -1090,16 +1090,16 @@ additional questions or comments.
 [register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [entra_auth_role]: https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/ai-machine-learning#cognitive-services-data-reader
 [custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/identity/azure-identity
 [sdk_logging_docs]: https://learn.microsoft.com/azure/developer/python/sdk/azure-sdk-logging
-[migration-guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/MIGRATION_GUIDE.md
-[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples
-[addon_barcodes_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_barcodes.py
-[addon_fonts_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_fonts.py
-[addon_formulas_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_formulas.py
-[addon_highres_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_highres.py
-[addon_languages_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_languages.py
-[query_fields_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.1/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_query_fields.py
+[migration-guide]: https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/MIGRATION_GUIDE.md
+[sample_readme]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples
+[addon_barcodes_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_barcodes.py
+[addon_fonts_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_fonts.py
+[addon_formulas_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_formulas.py
+[addon_highres_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_highres.py
+[addon_languages_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_languages.py
+[query_fields_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-documentintelligence_1.0.2/sdk/documentintelligence/azure-ai-documentintelligence/samples/sample_analyze_addon_query_fields.py
 [service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
 [service_prebuilt_document]: https://learn.microsoft.com/azure/ai-services/document-intelligence/concept-general-document#general-document-features
 
