@@ -53,8 +53,7 @@ methods:
   signature: 'async create_item(body: Dict[str, Any], *, pre_trigger_include: str
     | None = None, post_trigger_include: str | None = None, indexing_directive: int
     | None = None, enable_automatic_id_generation: bool = False, session_token: str
-    | None = None, initial_headers: Dict[str, str] | None = None, etag: str | None
-    = None, match_condition: MatchConditions | None = None, priority: Literal[''High'',
+    | None = None, initial_headers: Dict[str, str] | None = None, priority: Literal[''High'',
     ''Low''] | None = None, no_response: bool | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
@@ -91,22 +90,10 @@ methods:
     description: Initial headers to be sent as part of the request.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: etag
-    description: 'An ETag value, or the wildcard character (*). Used to check if the
-      resource
-
-      has changed, and act according to the condition specified by the *match_condition*
-      parameter.'
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: The match condition to use upon the etag.
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -152,8 +139,7 @@ methods:
   signature: 'async delete_all_items_by_partition_key(partition_key: str | int | float
     | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
-    None, session_token: str | None = None, etag: str | None = None, match_condition:
-    MatchConditions | None = None, **kwargs: Any) -> None'
+    None, session_token: str | None = None, **kwargs: Any) -> None'
   parameters:
   - name: partition_key
     description: Partition key for the items to be deleted.
@@ -174,18 +160,6 @@ methods:
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: etag
-    description: 'An ETag value, or the wildcard character (*). Used to check if the
-      resource
-
-      has changed, and act according to the condition specified by the *match_condition*
-      parameter.'
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: The match condition to use upon the etag.
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -294,7 +268,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:None>],
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:None>],
       <xref:None>]
   return:
     types:
@@ -311,9 +285,8 @@ methods:
     ...]] | Tuple[str, Tuple[Any, ...], Dict[str, Any]]], partition_key: str | int
     | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
-    None, session_token: str | None = None, etag: str | None = None, match_condition:
-    MatchConditions | None = None, priority: Literal[''High'', ''Low''] | None = None,
-    **kwargs: Any) -> CosmosList'
+    None, session_token: str | None = None, priority: Literal[''High'', ''Low''] |
+    None = None, **kwargs: Any) -> CosmosList'
   parameters:
   - name: batch_operations
     description: The batch of operations to be executed.
@@ -339,18 +312,6 @@ methods:
     description: Token for use with Session consistency.
     types:
     - <xref:str>
-  - name: etag
-    description: 'An ETag value, or the wildcard character (*). Used to check if the
-      resource
-
-      has changed, and act according to the condition specified by the *match_condition*
-      parameter.'
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: The match condition to use upon the etag.
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
 
@@ -613,7 +574,8 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
 
@@ -705,9 +667,8 @@ methods:
     bool | None = None, populate_index_metrics: bool | None = None, session_token:
     str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
     int | None = None, priority: Literal[''High'', ''Low''] | None = None, continuation_token_limit:
-    int | None = None, response_hook: Callable[[Mapping[str, Any], Dict[str, Any]
-    | AsyncItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+    int | None = None, response_hook: Callable[[Mapping[str, str], Dict[str, Any]],
+    None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -763,15 +724,10 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: 'A callable invoked with the response metadata. Note that due to
-      the nature of combining
-
-      calls to build the results, this function may be called with a either single
-      dict or iterable of dicts'
+    description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
-      <xref:typing.Union>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
-      <xref:typing.Any>]]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   - name: continuation_token_limit
     description: 'The size limit in kb of the response continuation token in the query
 
@@ -808,7 +764,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b3\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
     \ json\n\n           async for queried_item in container.query_items(\n      \
@@ -818,7 +774,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b3\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -834,8 +790,8 @@ methods:
     datetime | Literal[''Now'', ''Beginning''] | None = None, partition_key: PartitionKeyType,
     priority: Literal[''High'', ''Low''] | None = None, mode: Literal[''LatestVersion'',
     ''AllVersionsAndDeletes''] | None = None, response_hook: Callable[[Mapping[str,
-    Any], AsyncItemPaged[Dict[str, Any]]], None] | None = None, **kwargs: Any) ->
-    AsyncItemPaged[Dict[str, Any]]'
+    str], Dict[str, Any]], None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
   keywordOnlyParameters:
   - name: continuation
     description: The continuation token retrieved from previous response. It contains
@@ -896,8 +852,8 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
-      <xref:typing.Mapping>[<xref:str>, <xref:typing.Any>]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -906,9 +862,9 @@ methods:
   name: read
   summary: Read the container properties.
   signature: 'async read(*, populate_partition_key_range_statistics: bool | None =
-    None, populate_quota_info: bool | None = None, session_token: str | None = None,
-    priority: Literal[''High'', ''Low''] | None = None, initial_headers: Dict[str,
-    str] | None = None, **kwargs: Any) -> Dict[str, Any]'
+    None, populate_quota_info: bool | None = None, priority: Literal[''High'', ''Low'']
+    | None = None, initial_headers: Dict[str, str] | None = None, **kwargs: Any) ->
+    Dict[str, Any]'
   keywordOnlyParameters:
   - name: populate_partition_key_range_statistics
     description: 'Enable returning partition key
@@ -921,10 +877,6 @@ methods:
       headers.
     types:
     - <xref:bool>
-  - name: session_token
-    description: Token for use with Session consistency.
-    types:
-    - <xref:str>
   - name: initial_headers
     description: Initial headers to be sent as part of the request.
     types:
@@ -932,7 +884,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -957,11 +909,9 @@ methods:
   name: read_all_items
   summary: List all the items in the container.
   signature: 'read_all_items(*, max_item_count: int | None = None, session_token:
-    str | None = None, initial_headers: Dict[str, str] | None = None, response_hook:
-    Callable[[Mapping[str, Any], Dict[str, Any] | AsyncItemPaged[Dict[str, Any]]],
-    None] | None = None, max_integrated_cache_staleness_in_ms: int | None = None,
-    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
-    Any]]'
+    str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs:
+    Any) -> AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -976,15 +926,10 @@ methods:
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: response_hook
-    description: 'A callable invoked with the response metadata. Note that due to
-      the nature of combining
-
-      calls to build the results, this function may be called with a either single
-      dict or iterable of dicts'
+    description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:typing.Any>],
-      <xref:typing.Union>[<xref:typing.Dict>[<xref:str>, <xref:typing.Any>], <xref:AsyncItemPaged>[<xref:typing.Dict>[<xref:str>,
-      <xref:typing.Any>]]]], <xref:None>]
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+      <xref:typing.Any>]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
 
@@ -1072,7 +1017,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: max_integrated_cache_staleness_in_ms
     description: 'The max cache staleness for the integrated cache in
@@ -1105,7 +1050,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\36\\\\azure_cosmos-4.10.0b2\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\36\\\\azure_cosmos-4.10.0b3\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
@@ -1166,7 +1111,7 @@ methods:
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
@@ -1238,9 +1183,8 @@ methods:
     does not already exist, it is inserted.'
   signature: 'async upsert_item(body: Dict[str, Any], *, pre_trigger_include: str
     | None = None, post_trigger_include: str | None = None, session_token: str | None
-    = None, initial_headers: Dict[str, str] | None = None, etag: str | None = None,
-    match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, no_response: bool | None = None, **kwargs: Any) -> CosmosDict'
+    = None, initial_headers: Dict[str, str] | None = None, priority: Literal[''High'',
+    ''Low''] | None = None, no_response: bool | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -1264,22 +1208,10 @@ methods:
     description: Initial headers to be sent as part of the request.
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
-  - name: etag
-    description: 'An ETag value, or the wildcard character (*). Used to check if the
-      resource
-
-      has changed, and act according to the condition specified by the *match_condition*
-      parameter.'
-    types:
-    - <xref:str>
-  - name: match_condition
-    description: The match condition to use upon the etag.
-    types:
-    - <xref:azure.core.MatchConditions>
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
-    - <xref:typing.Callable>[[<xref:typing.Dict>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
+    - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:typing.Dict>[<xref:str>,
       <xref:typing.Any>]], <xref:None>]
   - name: priority
     description: 'Priority based execution allows users to set a priority for each
