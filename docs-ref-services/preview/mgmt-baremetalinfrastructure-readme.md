@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-baremetalinfrastructure, baremetalinfrastructure
-ms.date: 10/23/2023
+ms.date: 04/02/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: baremetalinfrastructure
