@@ -30,6 +30,7 @@ constructor:
   keywordOnlyParameters:
   - name: api_version
     description: Azure Communication Call Automation API version.
+    defaultValue: None
     types:
     - <xref:str>
 methods:
@@ -52,11 +53,13 @@ methods:
     description: 'Timeout to wait for the invited participant to pickup.
 
       The maximum value of this is 180 seconds.'
+    defaultValue: None
     types:
     - <xref:int>
     - <xref:None>
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -66,11 +69,13 @@ methods:
       that''s shown to the PSTN participant being invited.
 
       Required only when calling a PSTN callee.'
+    defaultValue: None
     types:
     - <xref:azure.communication.callautomation.PhoneNumberIdentifier>
     - <xref:None>
   - name: source_display_name
     description: Display name of the caller.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -82,16 +87,19 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
   - name: sip_headers
     description: Sip Headers for PSTN Call
+    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
   - name: voip_headers
     description: Voip Headers for Voip Call
+    defaultValue: None
     types:
     - <xref:typing.Dict>[<xref:str>, <xref:str>]
     - <xref:None>
@@ -115,6 +123,7 @@ methods:
   keywordOnlyParameters:
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_callback_url
@@ -125,6 +134,7 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -219,16 +229,17 @@ methods:
     isRequired: true
     types:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
   - name: play_source
     description: A PlaySource representing the source to play.
-    isRequired: true
+    defaultValue: None
     types:
     - <xref:azure.communication.callautomation.FileSource>
     - <xref:azure.communication.callautomation.TextSource>
     - <xref:azure.communication.callautomation.SsmlSource>
-  keywordOnlyParameters:
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -240,6 +251,39 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.communication.callautomation.CallConnectionClient.interrupt_audio_and_announce
+  name: interrupt_audio_and_announce
+  summary: Interrupt audio and announce to specific participant(s) in this call.
+  signature: 'interrupt_audio_and_announce(target_participant: CommunicationIdentifier,
+    play_sources: List[FileSource | TextSource | SsmlSource], *, operation_context:
+    str | None = None, **kwargs) -> None'
+  parameters:
+  - name: target_participant
+    description: The participant being added.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  - name: play_sources
+    description: A PlaySource representing the source to play.
+    isRequired: true
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.FileSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.TextSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.SsmlSource>]
+  keywordOnlyParameters:
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -276,6 +320,7 @@ methods:
       request to the
 
       response event.'
+    defaultValue: None
     types:
     - <xref:str>
   return:
@@ -286,10 +331,60 @@ methods:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.CallConnectionClient.play_media
   name: play_media
+  summary: Play media to specific participant(s) in this call.
   signature: 'play_media(play_source: ''FileSource'' | ''TextSource'' | ''SsmlSource''
     | List[''FileSource'' | ''TextSource'' | ''SsmlSource''], play_to: List[''CommunicationIdentifier''],
     *, loop: bool = False, operation_context: str | None = None, operation_callback_url:
-    str | None = None, **kwargs) -> None'
+    str | None = None, interrupt_hold_audio: bool = False, **kwargs) -> None'
+  parameters:
+  - name: play_source
+    description: A PlaySource representing the source to play.
+    isRequired: true
+    types:
+    - <xref:azure.communication.callautomation.FileSource>
+    - <xref:azure.communication.callautomation.TextSource>
+    - <xref:azure.communication.callautomation.SsmlSource>
+    - <xref:list>[<xref:azure.communication.callautomation.FileSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.TextSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.SsmlSource>]
+  - name: play_to
+    description: 'The targets to play media to. Default value is ''all'', to play
+      media
+
+      to all participants in the call.'
+    defaultValue: all
+    types:
+    - <xref:list>[<xref:azure.communication.callautomation.CommunicationIdentifier>]
+  keywordOnlyParameters:
+  - name: loop
+    description: Whether the media should be repeated until cancelled.
+    defaultValue: 'False'
+    types:
+    - <xref:bool>
+  - name: operation_context
+    description: Value that can be used to track this call and its associated events.
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
+  return:
+    description: None
+    types:
+    - <xref:None>
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
 - uid: azure.communication.callautomation.CallConnectionClient.play_media_to_all
   name: play_media_to_all
   summary: Play media to all participants in this call.
@@ -311,10 +406,12 @@ methods:
   keywordOnlyParameters:
   - name: loop
     description: Whether the media should be repeated until cancelled.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -326,6 +423,7 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -333,6 +431,7 @@ methods:
     description: 'If set play can barge into other existing
 
       queued-up/currently-processing requests.'
+    defaultValue: 'False'
     types:
     - <xref:bool>
   return:
@@ -355,6 +454,7 @@ methods:
   keywordOnlyParameters:
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_callback_url
@@ -365,6 +465,7 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -395,6 +496,7 @@ methods:
   keywordOnlyParameters:
   - name: operation_context
     description: The value to identify context of the operation.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_callback_url
@@ -405,6 +507,7 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -418,13 +521,32 @@ methods:
   name: start_continuous_dtmf_recognition
   summary: Start continuous Dtmf recognition by subscribing to tones.
   signature: 'start_continuous_dtmf_recognition(target_participant: CommunicationIdentifier,
-    *, operation_context: str | None = None, **kwargs) -> None'
+    *, operation_context: str | None = None, operation_callback_url: str | None =
+    None, **kwargs) -> None'
   parameters:
   - name: target_participant
     description: Target participant.
     isRequired: true
     types:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: The value to identify context of the operation.
+    defaultValue: None
+    types:
+    - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: None
     types:
@@ -445,12 +567,14 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
   - name: operation_context
     description: (Optional) Value that can be used to track this call and its associated
       events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -470,10 +594,9 @@ methods:
     | None = None, interrupt_call_media_operation: bool = False, operation_context:
     str | None = None, interrupt_prompt: bool = False, dtmf_inter_tone_timeout: int
     | None = None, dtmf_max_tones_to_collect: int | None = None, dtmf_stop_tones:
-    List[str | DtmfTone] | None = None, speech_language: str | None = None, choices:
-    List[RecognitionChoice] | None = None, end_silence_timeout: int | None = None,
-    speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
-    str | None = None, **kwargs) -> None'
+    List[str] | None = None, speech_language: str | None = None, choices: List[RecognitionChoice]
+    | None = None, end_silence_timeout: int | None = None, speech_recognition_model_endpoint_id:
+    str | None = None, operation_callback_url: str | None = None, **kwargs) -> None'
   parameters:
   - name: input_type
     description: Determines the type of the recognition.
@@ -489,63 +612,78 @@ methods:
   keywordOnlyParameters:
   - name: initial_silence_timeout
     description: Time to wait for first input after prompt in seconds (if any).
+    defaultValue: None
     types:
     - <xref:int>
   - name: play_prompt
     description: The source of the audio to be played for recognition.
+    defaultValue: None
     types:
     - <xref:azure.communication.callautomation.FileSource>
     - <xref:azure.communication.callautomation.TextSource>
     - <xref:azure.communication.callautomation.SsmlSource>
+    - <xref:list>[<xref:azure.communication.callautomation.FileSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.TextSource>]
+    - <xref:list>[<xref:azure.communication.callautomation.SsmlSource>]
   - name: interrupt_call_media_operation
     description: If set recognize can barge into other existing queued-up/currently-processing
       requests.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
   - name: interrupt_prompt
     description: Determines if we interrupt the prompt and start recognizing.
+    defaultValue: 'False'
     types:
     - <xref:bool>
   - name: dtmf_inter_tone_timeout
     description: 'Time to wait between DTMF inputs to stop recognizing. Will be ignored
 
       unless input_type is ''dtmf'' or ''speechOrDtmf''.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: dtmf_max_tones_to_collect
     description: 'Maximum number of DTMF tones to be collected. Will be ignored
 
       unless input_type is ''dtmf'' or ''speechOrDtmf''.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: dtmf_stop_tones
     description: 'List of tones that will stop recognizing. Will be ignored
 
       unless input_type is ''dtmf'' or ''speechOrDtmf''.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>
     - <xref:azure.communication.callautomation.DtmfTone>]
   - name: speech_language
     description: Speech language to be recognized, If not set default is en-US.
+    defaultValue: None
     types:
     - <xref:str>
   - name: choices
     description: Defines Ivr choices for recognize. Will be ignored unless input_type
       is 'choices'.
+    defaultValue: None
     types:
     - <xref:list>[<xref:azure.communication.callautomation.RecognitionChoice>]
   - name: end_silence_timeout
     description: 'The length of end silence when user stops speaking and cogservice
 
       send response. Will be ingored unless input_type is ''speech'' or ''speechOrDtmf''.'
+    defaultValue: None
     types:
     - <xref:int>
   - name: speech_recognition_model_endpoint_id
     description: Endpoint where the custom model was deployed.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_callback_url
@@ -556,6 +694,7 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -569,21 +708,36 @@ methods:
   name: start_transcription
   summary: Starts transcription in the call.
   signature: 'start_transcription(*, locale: str | None = None, operation_context:
-    str | None = None, speech_recognition_model_endpoint_id: str | None = None, **kwargs)
-    -> None'
+    str | None = None, speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
+    str | None = None, **kwargs) -> None'
   keywordOnlyParameters:
   - name: locale
     description: Defines Locale for the transcription e,g en-US.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_context
     description: The value to identify context of the operation.
+    defaultValue: None
     types:
     - <xref:str>
   - name: speech_recognition_model_endpoint_id
     description: Endpoint where the custom model was deployed.
+    defaultValue: None
     types:
     - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: None
     types:
@@ -605,6 +759,7 @@ methods:
   keywordOnlyParameters:
   - name: operation_context
     description: The value to identify context of the operation.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_callback_url
@@ -615,6 +770,7 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -638,12 +794,14 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
   - name: operation_context
     description: (Optional) Value that can be used to track this call and its associated
       events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -657,13 +815,26 @@ methods:
 - uid: azure.communication.callautomation.CallConnectionClient.stop_transcription
   name: stop_transcription
   summary: Stops transcription in the call.
-  signature: 'stop_transcription(*, operation_context: str | None = None, **kwargs)
-    -> None'
+  signature: 'stop_transcription(*, operation_context: str | None = None, operation_callback_url:
+    str | None = None, **kwargs) -> None'
   keywordOnlyParameters:
   - name: operation_context
     description: The value to identify context of the operation.
+    defaultValue: None
     types:
     - <xref:str>
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:None>
   return:
     description: None
     types:
@@ -687,6 +858,7 @@ methods:
   keywordOnlyParameters:
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
   - name: operation_callback_url
@@ -697,25 +869,34 @@ methods:
       This setup is per-action. If this is not set, the default callback URL set by
 
       CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
   - name: transferee
     description: Transferee is the participant who is transferred away.
+    defaultValue: None
     types:
     - <xref:azure.communication.callautomation.CommunicationIdentifier>
     - <xref:None>
   - name: sip_headers
     description: Custom context for PSTN
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: voip_headers
     description: Custom context for VOIP
+    defaultValue: None
     types:
-    - '<xref:dict>[<xref:str>, <xref:str>] <xref:ivar source_caller_id_number: The
-      source caller Id>, <xref:a phone number>, <xref:that''s will be used as the
-      transferor''s>(<xref:Contoso>) <xref:caller id when transfering a call a pstn
-      target.>'
+    - <xref:dict>[<xref:str>, <xref:str>]
+  - name: source_caller_id_number
+    description: 'The source caller Id, a phone number, that''s will be used as the
+
+      transferor''s(Contoso) caller id when transfering a call a pstn target.'
+    defaultValue: None
+    types:
+    - <xref:azure.communication.callautomation.PhoneNumberIdentifier>
+    - <xref:None>
   return:
     description: TransferCallResult
     types:
@@ -736,6 +917,7 @@ methods:
   keywordOnlyParameters:
   - name: operation_context
     description: Value that can be used to track this call and its associated events.
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:None>
@@ -748,21 +930,38 @@ methods:
 - uid: azure.communication.callautomation.CallConnectionClient.update_transcription
   name: update_transcription
   summary: API to change transcription language.
-  signature: 'update_transcription(*, locale: str, operation_context: str | None =
-    None, speech_recognition_model_endpoint_id: str | None = None, **kwargs) -> None'
-  keywordOnlyParameters:
+  signature: 'update_transcription(locale: str, *, operation_context: str | None =
+    None, speech_recognition_model_endpoint_id: str | None = None, operation_callback_url:
+    str | None = None, **kwargs) -> None'
+  parameters:
   - name: locale
     description: Defines new locale for transcription.
+    isRequired: true
+    types:
+    - <xref:str>
+  keywordOnlyParameters:
+  - name: operation_context
+    description: The value to identify context of the operation.
+    defaultValue: None
     types:
     - <xref:str>
   - name: speech_recognition_model_endpoint_id
     description: Endpoint where the custom model was deployed.
+    defaultValue: None
     types:
     - <xref:str>
-  - name: operation_context
-    description: The value to identify context of the operation.
+  - name: operation_callback_url
+    description: 'Set a callback URL that overrides the default callback URL set
+
+      by CreateCall/AnswerCall for this operation.
+
+      This setup is per-action. If this is not set, the default callback URL set by
+
+      CreateCall/AnswerCall will be used.'
+    defaultValue: None
     types:
     - <xref:str>
+    - <xref:None>
   return:
     description: None
     types:

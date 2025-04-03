@@ -46,7 +46,7 @@ summary: 'Evaluates retrieval score for a given query and context or a multi-tur
 
   >'
 constructor:
-  syntax: RetrievalEvaluator(model_config)
+  syntax: 'RetrievalEvaluator(model_config, *, threshold: float = 3)'
   parameters:
   - name: model_config
     description: Configuration for the Azure OpenAI model.
@@ -54,29 +54,37 @@ constructor:
     types:
     - <xref:typing.Union>[<xref:azure.ai.evaluation.AzureOpenAIModelConfiguration>,
       <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
+  - name: threshold
+    description: The threshold for the evaluation. Default is 3.
+    isRequired: true
+    types:
+    - <xref:float>
+  keywordOnlyParameters:
+  - name: threshold
+    defaultValue: '3'
 examples:
-- "Initialize and call a RetrievalEvaluator.<!--[!code-python[Main](les\\evaluation_samples_evaluate.py\
-  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\14\\\\azure_ai_evaluation-1.3.0\\\
-  \\samples\\\\evaluation_samples_evaluate.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   import os\n   from azure.ai.evaluation\
-  \ import RetrievalEvaluator\n\n   model_config = {\n       \"azure_endpoint\": os.environ.get(\"\
-  AZURE_OPENAI_ENDPOINT\"),\n       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"\
-  ),\n       \"azure_deployment\": os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n\
-  \   }\n\n   retrieval_eval = RetrievalEvaluator(model_config=model_config)\n   conversation\
-  \ = {\n       \"messages\": [\n           {\n               \"content\": \"What\
-  \ is the capital of France?`''\\\"</>{}{{]\",\n               \"role\": \"user\"\
-  ,\n               \"context\": \"Customer wants to know the capital of France\"\
-  ,\n           },\n           {\"content\": \"Paris\", \"role\": \"assistant\", \"\
-  context\": \"Paris is the capital of France\"},\n           {\n               \"\
-  content\": \"What is the capital of Hawaii?\",\n               \"role\": \"user\"\
-  ,\n               \"context\": \"Customer wants to know the capital of Hawaii\"\
-  ,\n           },\n           {\"content\": \"Honolulu\", \"role\": \"assistant\"\
-  , \"context\": \"Honolulu is the capital of Hawaii\"},\n       ],\n       \"context\"\
-  : \"Global context\",\n   }\n   retrieval_eval(conversation=conversation)\n\n  \
-  \ ````\n"
+- "Initialize with threshold and call a RetrievalEvaluator.<!--[!code-python[Main](les\\\
+  evaluation_samples_threshold.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\14\\\\azure_ai_evaluation-1.4.0\\\\samples\\\\evaluation_samples_threshold.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.ai.evaluation import RetrievalEvaluator\n\n   model_config = {\n\
+  \       \"azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"),\n       \"\
+  api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"),\n       \"azure_deployment\": os.environ.get(\"\
+  AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   retrieval_eval = RetrievalEvaluator(model_config=model_config,\
+  \ threshold=2)\n   conversation = {\n       \"messages\": [\n           {\n    \
+  \           \"content\": \"What is the capital of France?`''\\\"</>{}{{]\",\n  \
+  \             \"role\": \"user\",\n               \"context\": \"Customer wants\
+  \ to know the capital of France\",\n           },\n           {\"content\": \"Paris\"\
+  , \"role\": \"assistant\", \"context\": \"Paris is the capital of France\"},\n \
+  \          {\n               \"content\": \"What is the capital of Hawaii?\",\n\
+  \               \"role\": \"user\",\n               \"context\": \"Customer wants\
+  \ to know the capital of Hawaii\",\n           },\n           {\"content\": \"Honolulu\"\
+  , \"role\": \"assistant\", \"context\": \"Honolulu is the capital of Hawaii\"},\n\
+  \       ],\n       \"context\": \"Global context\",\n   }\n   retrieval_eval(conversation=conversation)\n\
+  \n   ````\n"
 attributes:
 - uid: azure.ai.evaluation.RetrievalEvaluator.id
   name: id
