@@ -24,7 +24,9 @@ summary: 'Initialize a question-answer evaluator configured for a specific Azure
 
   >'
 constructor:
-  syntax: QAEvaluator(model_config, **kwargs)
+  syntax: 'QAEvaluator(model_config, *, groundedness_threshold: int = 3, relevance_threshold:
+    int = 3, coherence_threshold: int = 3, fluency_threshold: int = 3, similarity_threshold:
+    int = 3, f1_score_threshold: float = 0.5, **kwargs)'
   parameters:
   - name: model_config
     description: Configuration for the Azure OpenAI model.
@@ -32,25 +34,70 @@ constructor:
     types:
     - <xref:typing.Union>[<xref:azure.ai.evaluation.AzureOpenAIModelConfiguration>,
       <xref:azure.ai.evaluation.OpenAIModelConfiguration>]
+  - name: groundedness_threshold
+    description: The threshold for groundedness evaluation. Default is 3.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: relevance_threshold
+    description: The threshold for relevance evaluation. Default is 3.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: coherence_threshold
+    description: The threshold for coherence evaluation. Default is 3.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: fluency_threshold
+    description: The threshold for fluency evaluation. Default is 3.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: similarity_threshold
+    description: The threshold for similarity evaluation. Default is 3.
+    isRequired: true
+    types:
+    - <xref:int>
+  - name: f1_score_threshold
+    description: The threshold for F1 score evaluation. Default is 0.5.
+    isRequired: true
+    types:
+    - <xref:float>
   - name: kwargs
     description: Additional arguments to pass to the evaluator.
     isRequired: true
     types:
     - <xref:typing.Any>
+  keywordOnlyParameters:
+  - name: groundedness_threshold
+    defaultValue: '3'
+  - name: relevance_threshold
+    defaultValue: '3'
+  - name: coherence_threshold
+    defaultValue: '3'
+  - name: fluency_threshold
+    defaultValue: '3'
+  - name: similarity_threshold
+    defaultValue: '3'
+  - name: f1_score_threshold
+    defaultValue: '0.5'
 examples:
-- "Initialize and call a QAEvaluator.<!--[!code-python[Main](les\\evaluation_samples_evaluate.py\
-  \ )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"names\": [], \"dupnames\"\
-  : [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\\windows\\\\Python\\\
-  \\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\\14\\\\azure_ai_evaluation-1.3.0\\\
-  \\samples\\\\evaluation_samples_evaluate.py\", \"xml:space\": \"preserve\", \"force\"\
-  : false, \"language\": \"python\", \"highlight_args\": {\"linenostart\": 1}, \"\
-  linenos\": false} -->\n\n````python\n\n   import os\n   from azure.ai.evaluation\
-  \ import QAEvaluator\n\n   model_config = {\n       \"azure_endpoint\": os.environ.get(\"\
-  AZURE_OPENAI_ENDPOINT\"),\n       \"api_key\": os.environ.get(\"AZURE_OPENAI_KEY\"\
-  ),\n       \"azure_deployment\": os.environ.get(\"AZURE_OPENAI_DEPLOYMENT\"),\n\
-  \   }\n\n   qa_eval = QAEvaluator(model_config=model_config)\n   qa_eval(query=\"\
-  This's the color?\", response=\"Black\", ground_truth=\"gray\", context=\"gray\"\
-  )\n\n   ````\n"
+- "Initialize with threshold and call a QAEvaluator.<!--[!code-python[Main](les\\\
+  evaluation_samples_threshold.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
+  : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
+  \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\dist_temp\\\
+  \\14\\\\azure_ai_evaluation-1.4.0\\\\samples\\\\evaluation_samples_threshold.py\"\
+  , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
+  : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n   import os\n\
+  \   from azure.ai.evaluation import QAEvaluator\n\n   model_config = {\n       \"\
+  azure_endpoint\": os.environ.get(\"AZURE_OPENAI_ENDPOINT\"),\n       \"api_key\"\
+  : os.environ.get(\"AZURE_OPENAI_KEY\"),\n       \"azure_deployment\": os.environ.get(\"\
+  AZURE_OPENAI_DEPLOYMENT\"),\n   }\n\n   qa_eval = QAEvaluator(\n       model_config=model_config,\
+  \ \n       groundedness_threshold=2,\n       relevance_threshold=2,\n       coherence_threshold=2,\n\
+  \       fluency_threshold=2,\n       similarity_threshold=2,\n       f1_score_threshold=0.5\n\
+  \   )\n   qa_eval(query=\"This's the color?\", response=\"Black\", ground_truth=\"\
+  gray\", context=\"gray\")\n\n   ````\n"
 attributes:
 - uid: azure.ai.evaluation.QAEvaluator.id
   name: id

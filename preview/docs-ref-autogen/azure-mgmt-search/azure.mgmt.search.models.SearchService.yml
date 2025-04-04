@@ -13,16 +13,18 @@ summary: 'Describes an Azure AI Search service and its current state.
 constructor:
   syntax: 'SearchService(*, location: str, tags: Dict[str, str] | None = None, sku:
     _models.Sku | None = None, identity: _models.Identity | None = None, replica_count:
-    int = 1, partition_count: int = 1, hosting_mode: str | _models.HostingMode = ''default'',
-    public_network_access: str | _models.PublicNetworkAccess = ''enabled'', network_rule_set:
-    _models.NetworkRuleSet | None = None, disabled_data_exfiltration_options: List[str
-    | _models.SearchDisabledDataExfiltrationOption] | None = None, encryption_with_cmk:
+    int = 1, partition_count: int = 1, endpoint: str | None = None, hosting_mode:
+    str | _models.HostingMode = ''default'', compute_type: str | _models.ComputeType
+    | None = None, public_network_access: str | _models.PublicNetworkAccess = ''enabled'',
+    network_rule_set: _models.NetworkRuleSet | None = None, disabled_data_exfiltration_options:
+    List[str | _models.SearchDisabledDataExfiltrationOption] | None = None, encryption_with_cmk:
     _models.EncryptionWithCmk | None = None, disable_local_auth: bool | None = None,
     auth_options: _models.DataPlaneAuthOptions | None = None, semantic_search: str
     | _models.SearchSemanticSearch | None = None, **kwargs: Any)'
   keywordOnlyParameters:
   - name: tags
     description: Resource tags.
+    defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
   - name: location
@@ -34,10 +36,12 @@ constructor:
       limits.
 
       This property is required when creating a new search service.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.Sku>
   - name: identity
     description: The identity of the resource.
+    defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.Identity>
   - name: replica_count
@@ -65,6 +69,11 @@ constructor:
     defaultValue: '1'
     types:
     - <xref:int>
+  - name: endpoint
+    description: The endpoint of the Azure AI Search service.
+    defaultValue: None
+    types:
+    - <xref:str>
   - name: hosting_mode
     description: 'Applicable only for the standard3 SKU. You can set this property
       to
@@ -83,6 +92,16 @@ constructor:
     types:
     - <xref:str>
     - <xref:azure.mgmt.search.models.HostingMode>
+  - name: compute_type
+    description: 'Configure this property to support the search service using either
+      the
+
+      default compute or Azure Confidential Compute. Known values are: "default" and
+      "confidential".'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.search.models.ComputeType>
   - name: public_network_access
     description: 'This value can be set to ''enabled'' to avoid breaking changes on
 
@@ -101,6 +120,7 @@ constructor:
     description: 'Network specific rules that determine how the Azure AI Search
 
       service may be reached.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.NetworkRuleSet>
   - name: disabled_data_exfiltration_options
@@ -113,6 +133,7 @@ constructor:
       for the
 
       future.'
+    defaultValue: None
     types:
     - <xref:list>[<xref:str>
     - <xref:azure.mgmt.search.models.SearchDisabledDataExfiltrationOption>]
@@ -120,6 +141,7 @@ constructor:
     description: 'Specifies any policy regarding encryption of resources (such as
 
       indexes) using customer manager keys within a search service.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.EncryptionWithCmk>
   - name: disable_local_auth
@@ -129,6 +151,7 @@ constructor:
       if
 
       ''dataPlaneAuthOptions'' are defined.'
+    defaultValue: None
     types:
     - <xref:bool>
   - name: auth_options
@@ -136,6 +159,7 @@ constructor:
 
       authenticates requests. This cannot be set if ''disableLocalAuth'' is set to
       true.'
+    defaultValue: None
     types:
     - <xref:azure.mgmt.search.models.DataPlaneAuthOptions>
   - name: semantic_search
@@ -145,6 +169,7 @@ constructor:
       Known
 
       values are: "disabled", "free", and "standard".'
+    defaultValue: None
     types:
     - <xref:str>
     - <xref:azure.mgmt.search.models.SearchSemanticSearch>
@@ -186,6 +211,12 @@ variables:
   name: identity
   types:
   - <xref:azure.mgmt.search.models.Identity>
+- description: 'Azure Resource Manager metadata of the search service containing createdBy
+
+    and modifiedBy information.'
+  name: system_data
+  types:
+  - <xref:azure.mgmt.search.models.SystemData>
 - description: 'The number of replicas in the search service. If specified, it must
     be a
 
@@ -205,6 +236,10 @@ variables:
   name: partition_count
   types:
   - <xref:int>
+- description: The endpoint of the Azure AI Search service.
+  name: endpoint
+  types:
+  - <xref:str>
 - description: 'Applicable only for the standard3 SKU. You can set this property to
     enable
 
@@ -222,6 +257,15 @@ variables:
   types:
   - <xref:str>
   - <xref:azure.mgmt.search.models.HostingMode>
+- description: 'Configure this property to support the search service using either
+    the
+
+    default compute or Azure Confidential Compute. Known values are: "default" and
+    "confidential".'
+  name: compute_type
+  types:
+  - <xref:str>
+  - <xref:azure.mgmt.search.models.ComputeType>
 - description: 'This value can be set to ''enabled'' to avoid breaking changes on
 
     existing customer resources and templates. If set to ''disabled'', traffic over
@@ -373,3 +417,13 @@ variables:
   name: e_tag
   types:
   - <xref:str>
+- description: Indicates whether or not the search service has an upgrade available.
+  name: upgrade_available
+  types:
+  - <xref:bool>
+- description: 'The date and time the search service was last upgraded. This field
+
+    will be null until the service gets upgraded for the first time.'
+  name: service_upgrade_date
+  types:
+  - <xref:datetime.datetime>
