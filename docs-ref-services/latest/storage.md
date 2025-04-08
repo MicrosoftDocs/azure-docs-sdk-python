@@ -4,7 +4,7 @@ description: Reference for Azure Storage SDK for Python
 ms.date: 04/07/2025
 ms.topic: reference
 ms.devlang: python
-ms.service: storage
+ms.service: azure-storage
 ---
 # Azure Storage client libraries for Python
 
@@ -62,7 +62,7 @@ Explore more [sample Python code](https://azure.microsoft.com/resources/samples/
 
 This section details known issues for the Azure Storage client libraries for Python.
 
-### InvalidHeaderValue error message when using beta version of SDK
+### InvalidHeaderValue error message when using beta or generally available version of SDK
 
 In rare scenarios, applications that have upgraded to the latest beta or generally available version of the SDK can receive an `InvalidHeaderValue` error message. This issue can occur when using any of the Storage libraries. The error message looks similar to the following sample:
 
