@@ -3,11 +3,7 @@ uid: azure.batch.models.BatchPool
 name: BatchPool
 fullName: azure.batch.models.BatchPool
 module: azure.batch.models
-summary: 'A Pool in the Azure Batch service.
-
-
-  Readonly variables are only populated by the server, and will be ignored when sending
-  a request.'
+summary: A Pool in the Azure Batch service.
 constructor:
   syntax: 'BatchPool(*args: Any, **kwargs: Any)'
 variables:
@@ -87,12 +83,16 @@ variables:
 - description: 'The size of virtual machines in the Pool. All virtual machines in
     a Pool are the
 
-    same size. For information about available sizes of virtual machines in Pools,
-    see Choose a VM
+    same size. For information about available VM sizes, see Sizes for Virtual Machines
+    in Azure
 
-    size for Compute Nodes in an Azure Batch Pool
+    ([https://learn.microsoft.com/azure/virtual-machines/sizes/overview](https://learn.microsoft.com/azure/virtual-machines/sizes/overview)).
+    Batch supports all
 
-    ([https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes](https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes)).'
+    Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
+    STANDARD_DS, and
+
+    STANDARD_DSV2 series).'
   name: vm_size
   types:
   - <xref:str>
@@ -210,6 +210,32 @@ variables:
   name: start_task
   types:
   - <xref:azure.batch.models.BatchStartTask>
+- description: 'For Windows Nodes, the Batch service installs the Certificates to
+
+    the specified Certificate store and location.
+
+    For Linux Compute Nodes, the Certificates are stored in a directory inside the
+    Task working
+
+    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
+    the Task to
+
+    query for this location.
+
+    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
+    in the user''s
+
+    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
+    that directory.
+
+    Warning: This property is deprecated and will be removed after February, 2024.
+    Please use the
+
+    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+    instead.'
+  name: certificate_references
+  types:
+  - <xref:list>[<xref:azure.batch.models.BatchCertificateReference>]
 - description: 'The list of Packages to be installed on each Compute Node
 
     in the Pool. Changes to Package references affect all new Nodes joining the Pool,
@@ -250,7 +276,7 @@ variables:
 - description: 'Utilization and resource usage statistics for the entire lifetime
     of the Pool.
 
-    This property is populated only if the CloudPool was retrieved with an expand
+    This property is populated only if the BatchPool was retrieved with an expand
     clause including
 
     the ''stats'' attribute; otherwise it is null. The statistics may not be immediately
@@ -276,8 +302,7 @@ variables:
 
     resource ids in the form:
 
-    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}''.  #
-    pylint: disable=line-too-long'
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}''.'
   name: identity
   types:
   - <xref:azure.batch.models.BatchPoolIdentity>
@@ -307,7 +332,7 @@ variables:
 methods:
 - uid: azure.batch.models.BatchPool.as_dict
   name: as_dict
-  summary: Return a dict that can be JSONify using json.dump.
+  summary: Return a dict that can be turned into json using json.dump.
   signature: 'as_dict(*, exclude_readonly: bool = False) -> Dict[str, Any]'
   keywordOnlyParameters:
   - name: exclude_readonly
@@ -321,12 +346,23 @@ methods:
     - <xref:dict>
 - uid: azure.batch.models.BatchPool.clear
   name: clear
+  summary: Remove all items from D.
   signature: clear() -> None
 - uid: azure.batch.models.BatchPool.copy
   name: copy
   signature: copy() -> Model
 - uid: azure.batch.models.BatchPool.get
   name: get
+  summary: 'Get the value for key if key is in the dictionary, else default.
+
+    :param str key: The key to look up.
+
+    :param any default: The value to return if key is not in the dictionary. Defaults
+    to None
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
   signature: 'get(key: str, default: Any = None) -> Any'
   parameters:
   - name: key
@@ -336,11 +372,30 @@ methods:
 - uid: azure.batch.models.BatchPool.items
   name: items
   signature: items() -> ItemsView[str, Any]
+  return:
+    description: set-like object providing a view on D's items
+    types:
+    - <xref:typing.ItemsView>
 - uid: azure.batch.models.BatchPool.keys
   name: keys
   signature: keys() -> KeysView[str]
+  return:
+    description: a set-like object providing a view on D's keys
+    types:
+    - <xref:typing.KeysView>
 - uid: azure.batch.models.BatchPool.pop
   name: pop
+  summary: 'Removes specified key and return the corresponding value.
+
+    :param str key: The key to pop.
+
+    :param any default: The value to return if key is not in the dictionary
+
+    :returns: The value corresponding to the key.
+
+    :rtype: any
+
+    :raises KeyError: If key is not found and default is not given.'
   signature: 'pop(key: str, default: ~typing.Any = <object object>) -> Any'
   parameters:
   - name: key
@@ -348,9 +403,25 @@ methods:
   - name: default
 - uid: azure.batch.models.BatchPool.popitem
   name: popitem
+  summary: 'Removes and returns some (key, value) pair
+
+    :returns: The (key, value) pair.
+
+    :rtype: tuple
+
+    :raises KeyError: if D is empty.'
   signature: popitem() -> Tuple[str, Any]
 - uid: azure.batch.models.BatchPool.setdefault
   name: setdefault
+  summary: 'Same as calling D.get(k, d), and setting D[k]=d if k not found
+
+    :param str key: The key to look up.
+
+    :param any default: The value to set if key is not in the dictionary
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
   signature: 'setdefault(key: str, default: ~typing.Any = <object object>) -> Any'
   parameters:
   - name: key
@@ -358,10 +429,17 @@ methods:
   - name: default
 - uid: azure.batch.models.BatchPool.update
   name: update
+  summary: 'Updates D from mapping/iterable E and F.
+
+    :param any args: Either a mapping object or an iterable of key-value pairs.'
   signature: 'update(*args: Any, **kwargs: Any) -> None'
 - uid: azure.batch.models.BatchPool.values
   name: values
   signature: values() -> ValuesView[Any]
+  return:
+    description: an object providing a view on D's values
+    types:
+    - <xref:typing.ValuesView>
 attributes:
 - uid: azure.batch.models.BatchPool.allocation_state
   name: allocation_state
@@ -409,6 +487,33 @@ attributes:
 
     only if the Pool automatically scales, i.e. enableAutoScale is true.'
   signature: 'auto_scale_run: _models.AutoScaleRun | None'
+- uid: azure.batch.models.BatchPool.certificate_references
+  name: certificate_references
+  summary: 'For Windows Nodes, the Batch service installs the Certificates to the
+    specified Certificate
+
+    store and location.
+
+    For Linux Compute Nodes, the Certificates are stored in a directory inside the
+    Task working
+
+    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
+    the Task to
+
+    query for this location.
+
+    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
+    in the user''s
+
+    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
+    that directory.
+
+    Warning: This property is deprecated and will be removed after February, 2024.
+    Please use the
+
+    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+    instead.'
+  signature: 'certificate_references: List[_models.BatchCertificateReference] | None'
 - uid: azure.batch.models.BatchPool.creation_time
   name: creation_time
   summary: The creation time of the Pool.
@@ -494,8 +599,7 @@ attributes:
     Batch pool. The user identity dictionary key references will be ARM resource ids
     in the form:
 
-    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}''.  #
-    pylint: disable=line-too-long'
+    ''/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}''.'
   signature: 'identity: _models.BatchPoolIdentity | None'
 - uid: azure.batch.models.BatchPool.last_modified
   name: last_modified
@@ -572,7 +676,7 @@ attributes:
   summary: 'Utilization and resource usage statistics for the entire lifetime of the
     Pool. This property is
 
-    populated only if the CloudPool was retrieved with an expand clause including
+    populated only if the BatchPool was retrieved with an expand clause including
     the ''stats''
 
     attribute; otherwise it is null. The statistics may not be immediately available.
@@ -637,10 +741,13 @@ attributes:
   summary: 'The size of virtual machines in the Pool. All virtual machines in a Pool
     are the same size. For
 
-    information about available sizes of virtual machines in Pools, see Choose a VM
-    size for
+    information about available VM sizes, see Sizes for Virtual Machines in Azure
 
-    Compute Nodes in an Azure Batch Pool
+    ([https://learn.microsoft.com/azure/virtual-machines/sizes/overview](https://learn.microsoft.com/azure/virtual-machines/sizes/overview)).
+    Batch supports all
 
-    ([https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes](https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes)).'
+    Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
+    STANDARD_DS, and
+
+    STANDARD_DSV2 series).'
   signature: 'vm_size: str | None'

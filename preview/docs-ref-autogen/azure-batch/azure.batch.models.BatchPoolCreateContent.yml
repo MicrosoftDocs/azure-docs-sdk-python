@@ -3,10 +3,7 @@ uid: azure.batch.models.BatchPoolCreateContent
 name: BatchPoolCreateContent
 fullName: azure.batch.models.BatchPoolCreateContent
 module: azure.batch.models
-summary: 'Parameters for creating an Azure Batch Pool.
-
-
-  All required parameters must be populated in order to send to server.'
+summary: Parameters for creating an Azure Batch Pool.
 constructor:
   syntax: 'BatchPoolCreateContent(*args: Any, **kwargs: Any)'
 variables:
@@ -39,20 +36,13 @@ variables:
     Machines Marketplace (pools created with virtualMachineConfiguration), see Sizes
     for Virtual
 
-    Machines (Linux)
+    Machines in Azure ([https://learn.microsoft.com/azure/virtual-machines/sizes/overview](https://learn.microsoft.com/azure/virtual-machines/sizes/overview)).
+    Batch supports all
 
-    ([https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/](https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/))
-    or Sizes for
+    Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
+    STANDARD_DS, and
 
-    Virtual Machines (Windows)
-
-    ([https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/](https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/)).
-    Batch
-
-    supports all Azure VM sizes except STANDARD_A0 and those with premium storage
-    (STANDARD_GS,
-
-    STANDARD_DS, and STANDARD_DSV2 series). Required.'
+    STANDARD_DSV2 series). Required.'
   name: vm_size
   types:
   - <xref:str>
@@ -140,7 +130,7 @@ variables:
 
     Compute Nodes in an Azure Batch Pool''
 
-    ([https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/](https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/)).'
+    ([https://learn.microsoft.com/azure/batch/batch-automatic-scaling](https://learn.microsoft.com/azure/batch/batch-automatic-scaling)).'
   name: auto_scale_formula
   types:
   - <xref:str>
@@ -182,13 +172,38 @@ variables:
   name: start_task
   types:
   - <xref:azure.batch.models.BatchStartTask>
+- description: 'For Windows Nodes, the Batch service installs the Certificates to
+
+    the specified Certificate store and location.
+
+    For Linux Compute Nodes, the Certificates are stored in a directory inside the
+    Task working
+
+    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
+    the Task to
+
+    query for this location.
+
+    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
+    in the user''s
+
+    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
+    that directory.
+
+    Warning: This property is deprecated and will be removed after February, 2024.
+    Please use the
+
+    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+    instead.'
+  name: certificate_references
+  types:
+  - <xref:list>[<xref:azure.batch.models.BatchCertificateReference>]
 - description: 'The list of Packages to be installed on each Compute Node
 
     in the Pool. When creating a pool, the package''s application ID must be fully
     qualified
 
-    (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).  #
-    pylint: disable=line-too-long
+    (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
 
     Changes to Package references affect all new Nodes joining the Pool, but do not
     affect Compute
@@ -256,7 +271,7 @@ variables:
 methods:
 - uid: azure.batch.models.BatchPoolCreateContent.as_dict
   name: as_dict
-  summary: Return a dict that can be JSONify using json.dump.
+  summary: Return a dict that can be turned into json using json.dump.
   signature: 'as_dict(*, exclude_readonly: bool = False) -> Dict[str, Any]'
   keywordOnlyParameters:
   - name: exclude_readonly
@@ -270,12 +285,23 @@ methods:
     - <xref:dict>
 - uid: azure.batch.models.BatchPoolCreateContent.clear
   name: clear
+  summary: Remove all items from D.
   signature: clear() -> None
 - uid: azure.batch.models.BatchPoolCreateContent.copy
   name: copy
   signature: copy() -> Model
 - uid: azure.batch.models.BatchPoolCreateContent.get
   name: get
+  summary: 'Get the value for key if key is in the dictionary, else default.
+
+    :param str key: The key to look up.
+
+    :param any default: The value to return if key is not in the dictionary. Defaults
+    to None
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
   signature: 'get(key: str, default: Any = None) -> Any'
   parameters:
   - name: key
@@ -285,11 +311,30 @@ methods:
 - uid: azure.batch.models.BatchPoolCreateContent.items
   name: items
   signature: items() -> ItemsView[str, Any]
+  return:
+    description: set-like object providing a view on D's items
+    types:
+    - <xref:typing.ItemsView>
 - uid: azure.batch.models.BatchPoolCreateContent.keys
   name: keys
   signature: keys() -> KeysView[str]
+  return:
+    description: a set-like object providing a view on D's keys
+    types:
+    - <xref:typing.KeysView>
 - uid: azure.batch.models.BatchPoolCreateContent.pop
   name: pop
+  summary: 'Removes specified key and return the corresponding value.
+
+    :param str key: The key to pop.
+
+    :param any default: The value to return if key is not in the dictionary
+
+    :returns: The value corresponding to the key.
+
+    :rtype: any
+
+    :raises KeyError: If key is not found and default is not given.'
   signature: 'pop(key: str, default: ~typing.Any = <object object>) -> Any'
   parameters:
   - name: key
@@ -297,9 +342,25 @@ methods:
   - name: default
 - uid: azure.batch.models.BatchPoolCreateContent.popitem
   name: popitem
+  summary: 'Removes and returns some (key, value) pair
+
+    :returns: The (key, value) pair.
+
+    :rtype: tuple
+
+    :raises KeyError: if D is empty.'
   signature: popitem() -> Tuple[str, Any]
 - uid: azure.batch.models.BatchPoolCreateContent.setdefault
   name: setdefault
+  summary: 'Same as calling D.get(k, d), and setting D[k]=d if k not found
+
+    :param str key: The key to look up.
+
+    :param any default: The value to set if key is not in the dictionary
+
+    :returns: D[k] if k in D, else d.
+
+    :rtype: any'
   signature: 'setdefault(key: str, default: ~typing.Any = <object object>) -> Any'
   parameters:
   - name: key
@@ -307,10 +368,17 @@ methods:
   - name: default
 - uid: azure.batch.models.BatchPoolCreateContent.update
   name: update
+  summary: 'Updates D from mapping/iterable E and F.
+
+    :param any args: Either a mapping object or an iterable of key-value pairs.'
   signature: 'update(*args: Any, **kwargs: Any) -> None'
 - uid: azure.batch.models.BatchPoolCreateContent.values
   name: values
   signature: values() -> ValuesView[Any]
+  return:
+    description: an object providing a view on D's values
+    types:
+    - <xref:typing.ValuesView>
 attributes:
 - uid: azure.batch.models.BatchPoolCreateContent.application_package_references
   name: application_package_references
@@ -319,8 +387,7 @@ attributes:
 
     the package''s application ID must be fully qualified
 
-    (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).  #
-    pylint: disable=line-too-long
+    (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
 
     Changes to Package references affect all new Nodes joining the Pool, but do not
     affect Compute
@@ -364,8 +431,35 @@ attributes:
     about specifying this formula, see ''Automatically scale Compute Nodes in an Azure
     Batch Pool''
 
-    ([https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/](https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/)).'
+    ([https://learn.microsoft.com/azure/batch/batch-automatic-scaling](https://learn.microsoft.com/azure/batch/batch-automatic-scaling)).'
   signature: 'auto_scale_formula: str | None'
+- uid: azure.batch.models.BatchPoolCreateContent.certificate_references
+  name: certificate_references
+  summary: 'For Windows Nodes, the Batch service installs the Certificates to the
+    specified Certificate
+
+    store and location.
+
+    For Linux Compute Nodes, the Certificates are stored in a directory inside the
+    Task working
+
+    directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to
+    the Task to
+
+    query for this location.
+
+    For Certificates with visibility of ''remoteUser'', a ''certs'' directory is created
+    in the user''s
+
+    home directory (e.g., /home/{user-name}/certs) and Certificates are placed in
+    that directory.
+
+    Warning: This property is deprecated and will be removed after February, 2024.
+    Please use the
+
+    [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+    instead.'
+  signature: 'certificate_references: List[_models.BatchCertificateReference] | None'
 - uid: azure.batch.models.BatchPoolCreateContent.display_name
   name: display_name
   summary: 'The display name for the Pool. The display name need not be unique and
@@ -532,18 +626,13 @@ attributes:
     information about available VM sizes for Pools using Images from the Virtual Machines
 
     Marketplace (pools created with virtualMachineConfiguration), see Sizes for Virtual
-    Machines
+    Machines in
 
-    (Linux) ([https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/](https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/))
-    or
+    Azure ([https://learn.microsoft.com/azure/virtual-machines/sizes/overview](https://learn.microsoft.com/azure/virtual-machines/sizes/overview)).
+    Batch supports all
 
-    Sizes for Virtual Machines (Windows)
+    Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
+    STANDARD_DS, and
 
-    ([https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/](https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/)).
-    Batch
-
-    supports all Azure VM sizes except STANDARD_A0 and those with premium storage
-    (STANDARD_GS,
-
-    STANDARD_DS, and STANDARD_DSV2 series). Required.'
+    STANDARD_DSV2 series). Required.'
   signature: 'vm_size: str'
