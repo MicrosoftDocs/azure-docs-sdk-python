@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-logic, logic
-ms.date: 11/04/2022
+ms.date: 04/09/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: logic
