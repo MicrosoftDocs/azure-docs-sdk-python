@@ -1,12 +1,12 @@
 ---
 title: Azure Monitor Opentelemetry Distro client library for Python
 keywords: Azure, python, SDK, API, azure-monitor-opentelemetry, monitor
-ms.date: 04/07/2025
+ms.date: 04/10/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: monitor
 ---
-# Azure Monitor Opentelemetry Distro client library for Python - version 1.6.6 
+# Azure Monitor Opentelemetry Distro client library for Python - version 1.6.7 
 
 
 The Azure Monitor Distro of [Opentelemetry Python][ot_sdk_python] is a "one-stop-shop" telemetry solution, requiring only one line of code to instrument your application. The distro captures telemetry via [OpenTelemetry instrumentations][azure_monitor_opentelemetry_exporters] and reports telemetry to Azure Monitor via the [Azure Monitor exporters][azure_monitor_opentelemetry_exporters].
@@ -189,7 +189,7 @@ v1.x
 
 ## Troubleshooting
 
-The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry_1.6.6/sdk/core/azure-core/README.md#azure-core-library-exceptions).
+The exporter raises exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-monitor-opentelemetry_1.6.7/sdk/core/azure-core/README.md#azure-core-library-exceptions).
 
 ## Next steps
 
@@ -216,10 +216,10 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 * [OpenTelemetry Python Official Docs][ot_python_docs]
 
 <!-- LINKS -->
-[azure_core_tracing_opentelemetry_plugin]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.6/sdk/core/azure-core-tracing-opentelemetry
-[azure_core_tracing_opentelemetry_plugin_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.6/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/azure_core.py
+[azure_core_tracing_opentelemetry_plugin]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.7/sdk/core/azure-core-tracing-opentelemetry
+[azure_core_tracing_opentelemetry_plugin_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.7/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/azure_core.py
 [azure_monitor_enable_docs]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=python
-[azure_monitor_opentelemetry_exporters]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.6/sdk/monitor/azure-monitor-opentelemetry-exporter#microsoft-opentelemetry-exporter-for-azure-monitor
+[azure_monitor_opentelemetry_exporters]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.7/sdk/monitor/azure-monitor-opentelemetry-exporter#microsoft-opentelemetry-exporter-for-azure-monitor
 [azure_portal]: https://portal.azure.com
 [azure_sub]: https://azure.microsoft.com/free/
 [application_insights_live_metrics]: https://learn.microsoft.com/azure/azure-monitor/app/live-stream
@@ -227,7 +227,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [application_insights_sampling]: https://learn.microsoft.com/azure/azure-monitor/app/sampling
 [connection_string_doc]: https://learn.microsoft.com/azure/azure-monitor/app/sdk-connection-string
 [distro_feature_request]: https://github.com/Azure/azure-sdk-for-python/issues/new
-[exporter_configuration_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.6/sdk/monitor/azure-monitor-opentelemetry-exporter#configuration
+[exporter_configuration_docs]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.7/sdk/monitor/azure-monitor-opentelemetry-exporter#configuration
 [ot_env_vars]: https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/
 [ot_instrumentations]: https://github.com/open-telemetry/opentelemetry-python-contrib/tree/main/instrumentation
 [ot_metric_reader]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#metricreader
@@ -268,6 +268,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [python_logger]: https://docs.python.org/3/library/logging.html#logger-objects
 [python_logging_formatter]: https://docs.python.org/3/library/logging.html#formatter-objects
 [python_logging_level]: https://docs.python.org/3/library/logging.html#levels
-[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.6/sdk/monitor/azure-monitor-opentelemetry/samples
-[samples_manual]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.6/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/manually_instrumented.py
+[samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.7/sdk/monitor/azure-monitor-opentelemetry/samples
+[samples_manual]: https://github.com/Azure/azure-sdk-for-python/tree/azure-monitor-opentelemetry_1.6.7/sdk/monitor/azure-monitor-opentelemetry/samples/tracing/manually_instrumented.py
 
