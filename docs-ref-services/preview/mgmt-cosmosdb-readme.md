@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-cosmosdb, cosmos
-ms.date: 12/23/2024
+ms.date: 04/12/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
