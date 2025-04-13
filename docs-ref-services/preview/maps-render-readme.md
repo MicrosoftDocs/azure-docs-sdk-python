@@ -1,18 +1,18 @@
 ---
 title: Azure Maps Render Package client library for Python
 keywords: Azure, python, SDK, API, azure-maps-render, maps
-ms.date: 12/12/2024
+ms.date: 04/13/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: maps
 ---
-# Azure Maps Render Package client library for Python - version 2.0.0b2 
+# Azure Maps Render Package client library for Python - version 2.0.0a20250413001 
 
 
 This package contains a Python SDK for Azure Maps Services for Render.
-Read more about Azure Maps Services [here](/azure/azure-maps/)
+Read more about Azure Maps Services [here](https://learn.microsoft.com/azure/azure-maps/)
 
-[Source code](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b2/sdk/maps/azure-maps-render) | [API reference documentation](/rest/api/maps/render) | [Product documentation](/azure/azure-maps/)
+[Source code](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render) | [API reference documentation](https://learn.microsoft.com/rest/api/maps/render) | [Product documentation](https://learn.microsoft.com/azure/azure-maps/)
 
 ## _Disclaimer_
 
@@ -23,10 +23,10 @@ _Azure SDK Python packages support for Python 2.7 has ended 01 January 2022. For
 ### Prerequisites
 
 - Python 3.8 or later is required to use this package.
-- An [Azure subscription][azure_subscription] and an [Azure Maps account](/azure/azure-maps/how-to-manage-account-keys).
+- An [Azure subscription][azure_subscription] and an [Azure Maps account](https://learn.microsoft.com/azure/azure-maps/how-to-manage-account-keys).
 - A deployed Maps Services resource. You can create the resource via [Azure Portal][azure_portal] or [Azure CLI][azure_cli].
 
-If you use Azure CLI, replace `<resource-group-name>` and `<account-name>` of your choice, and select a proper [pricing tier](/azure/azure-maps/choose-pricing-tier) based on your needs via the `<sku-name>` parameter. Please refer to [this page](/cli/azure/maps/account?view=azure-cli-latest#az_maps_account_create) for more details.
+If you use Azure CLI, replace `<resource-group-name>` and `<account-name>` of your choice, and select a proper [pricing tier](https://learn.microsoft.com/azure/azure-maps/choose-pricing-tier) based on your needs via the `<sku-name>` parameter. Please refer to [this page](https://learn.microsoft.com/cli/azure/maps/account?view=azure-cli-latest#az_maps_account_create) for more details.
 
 ```bash
 az maps account create --resource-group <resource-group-name> --account-name <account-name> --sku <sku-name>
@@ -84,7 +84,7 @@ from azure.mgmt.maps import AzureMapsManagementClient
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
     AZURE_CLIENT_SECRET. For more info about how to get the value, please see:
-    /azure/active-directory/develop/howto-create-service-principal-portal
+    https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 """
 
 
@@ -166,7 +166,7 @@ Once you initialized a `MapsRenderClient` class, you can explore the methods on 
 ### Async Clients
 
 This library includes a complete async API supported on Python 3.8+. To use it, you must first install an async transport, such as [aiohttp](https://pypi.org/project/aiohttp/).
-See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-render_2.0.0b2/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
+See [azure-core documentation](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md#transport) for more information.
 
 Async clients and credentials should be closed when they're no longer needed. These
 objects are async context managers and define async `close` methods.
@@ -273,7 +273,7 @@ result = maps_render_client.get_copyright_for_world()
 
 ### General
 
-Maps Render clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-render_2.0.0b2/sdk/core/azure-core/README.md).
+Maps Render clients raise exceptions defined in [Azure Core](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/README.md).
 
 This list can be used for reference to catch thrown exceptions. To get the specific error code of the exception, use the `error_code` attribute, i.e, `exception.error_code`.
 
@@ -307,7 +307,7 @@ Still running into issues? If you encounter any bugs or have suggestions, please
 
 ### More sample code
 
-Get started with our [Maps Render samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b2/sdk/maps/azure-maps-render/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b2/sdk/maps/azure-maps-render/samples/async_samples)).
+Get started with our [Maps Render samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render/samples) ([Async Version samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render/samples/async_samples)).
 
 Several Azure Maps Render Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Maps Render
 
@@ -329,11 +329,11 @@ python samples/sample_get_map_tileset.py
 
 > Notes: `--pre` flag can be optionally added, it is to include pre-release and development versions for `pip install`. By default, `pip` only finds stable versions.
 
-Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b2/sdk/maps/azure-maps-render/samples/README.md)
+Further detail please refer to [Samples Introduction](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/maps/azure-maps-render/samples/README.md)
 
 ### Additional documentation
 
-For more extensive documentation on Azure Maps Render, see the [Azure Maps Render documentation](/rest/api/maps/render) on docs.microsoft.com.
+For more extensive documentation on Azure Maps Render, see the [Azure Maps Render documentation](https://learn.microsoft.com/rest/api/maps/render) on learn.microsoft.com.
 
 ## Contributing
 
@@ -345,14 +345,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/azure-maps-render_2.0.0b2/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
-[azure_cli]: /cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure-key-credential]: https://aka.ms/azsdk/python/core/azurekeycredential
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-maps-render_2.0.0b2/sdk/identity/azure-identity#defaultazurecredential
-[register_microsoft_entra_id_app]: /powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
-[maps_authentication_microsoft_entra_id]: /azure/azure-maps/how-to-manage-authentication
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
+[register_microsoft_entra_id_app]: https://learn.microsoft.com/powershell/module/Az.Resources/New-AzADApplication?view=azps-8.0.0
+[maps_authentication_microsoft_entra_id]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication
 [create_new_application_registration]: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/applicationsListBlade/quickStartType/AspNetWebAppQuickstartPage/sourceType/docs
-[manage_microsoft_entra_id_auth_page]: /azure/azure-maps/how-to-manage-authentication
-[how_to_manage_authentication]: /azure/azure-maps/how-to-manage-authentication#view-authentication-details
+[manage_microsoft_entra_id_auth_page]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication
+[how_to_manage_authentication]: https://learn.microsoft.com/azure/azure-maps/how-to-manage-authentication#view-authentication-details
 
