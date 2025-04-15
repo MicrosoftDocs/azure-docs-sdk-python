@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-azurestack, azurestack
-ms.date: 11/21/2022
+ms.date: 04/15/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: azurestack
