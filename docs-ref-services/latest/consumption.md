@@ -1,7 +1,7 @@
 ---
 title: Azure Consumption SDK for Python
 description: Reference for Azure Consumption SDK for Python
-ms.date: 04/15/2025
+ms.date: 04/16/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: consumption
