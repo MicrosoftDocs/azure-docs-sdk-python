@@ -1,13 +1,13 @@
 ---
 title: Azure AI Projects client library for Python
 keywords: Azure, python, SDK, API, azure-ai-projects, ai
-ms.date: 03/28/2025
+ms.date: 04/16/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: ai
 ---
 <!-- PIPY LONG DESCRIPTION BEGIN -->
-# Azure AI Projects client library for Python - version 1.0.0b8 
+# Azure AI Projects client library for Python - version 1.0.0b9 
 
 
 Use the AI Projects client library (in preview) to:
@@ -61,6 +61,7 @@ To report an issue with the client library, or request additional features, plea
     - [Create message](#create-message) with:
       - [File search attachment](#create-message-with-file-search-attachment)
       - [Code interpreter attachment](#create-message-with-code-interpreter-attachment)
+      - [Create Message with Image Inputs](#create-message-with-image-inputs)
     - [Execute Run, Run_and_Process, or Stream](#create-run-run_and_process-or-stream)
     - [Retrieve message](#retrieve-message)
     - [Retrieve file](#retrieve-file)
@@ -289,6 +290,9 @@ toolset = ToolSet()
 toolset.add(functions)
 toolset.add(code_interpreter)
 
+# To enable tool calls executed automatically
+project_client.agents.enable_auto_function_calls(toolset=toolset)
+
 agent = project_client.agents.create_agent(
     model=os.environ["MODEL_DEPLOYMENT_NAME"],
     name="my-assistant",
@@ -299,7 +303,7 @@ agent = project_client.agents.create_agent(
 
 <!-- END SNIPPET -->
 
-Also notices that if you use asynchronous client, you use `AsyncToolSet` instead.  Additional information related to `AsyncFunctionTool` be discussed in the later sections.
+Also notice that if you use the asynchronous client, use `AsyncToolSet` instead. Additional information related to `AsyncFunctionTool` be discussed in the later sections.
 
 Here is an example to use `tools` and `tool_resources`:
 <!-- SNIPPET:sample_agents_vector_store_batch_file_search.create_agent_with_tools_and_tool_resources -->
@@ -472,11 +476,7 @@ print(conn_id)
 
 # Initialize agent AI search tool and add the search index connection id
 ai_search = AzureAISearchTool(
-    index_connection_id=conn_id,
-    index_name="sample_index",
-    query_type=AzureAISearchQueryType.SIMPLE,
-    top_k=3,
-    filter=""
+    index_connection_id=conn_id, index_name="sample_index", query_type=AzureAISearchQueryType.SIMPLE, top_k=3, filter=""
 )
 
 # Create agent with AI search tool and process assistant run
@@ -522,22 +522,18 @@ for message in messages.data:
 
 #### Create Agent with Function Call
 
-You can enhance your Agents by defining callback functions as function tools. These can be provided to `create_agent` via either the `toolset` parameter or the combination of `tools` and `tool_resources`. Here are the distinctions:
+You can enhance your Agents by defining callback functions as function tools. These can be provided to `create_agent` via either the `toolset` parameter or the combination of `tools` and `tool_resources`.
 
-- `toolset`: When using the `toolset` parameter, you provide not only the function definitions and descriptions but also their implementations. The SDK will execute these functions within `create_and_run_process` or `streaming` . These functions will be invoked based on their definitions.
-- `tools` and `tool_resources`: When using the `tools` and `tool_resources` parameters, only the function definitions and descriptions are provided to `create_agent`, without the implementations. The `Run` or `event handler of stream` will raise a `requires_action` status based on the function definitions. Your code must handle this status and call the appropriate functions.
+For more details about requirements and specification of functions, refer to [Function Tool Specifications](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/FunctionTool.md)
 
-For more details about calling functions by code, refer to [`sample_agents_stream_eventhandler_with_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples/agents/sample_agents_stream_eventhandler_with_functions.py) and [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples/agents/sample_agents_functions.py).
-
-For more details about requirements and specification of functions, refer to [Function Tool Specifications](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/FunctionTool.md)
-
-Here is an example to use [user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples/agents/user_functions.py) in `toolset`:
+Here is an example to use [user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples/agents/user_functions.py) in `toolset`:
 <!-- SNIPPET:sample_agents_stream_eventhandler_with_toolset.create_agent_with_function_tool -->
 
 ```python
 functions = FunctionTool(user_functions)
 toolset = ToolSet()
 toolset.add(functions)
+project_client.agents.enable_auto_function_calls(toolset=toolset)
 
 agent = project_client.agents.create_agent(
     model=os.environ["MODEL_DEPLOYMENT_NAME"],
@@ -549,7 +545,7 @@ agent = project_client.agents.create_agent(
 
 <!-- END SNIPPET -->
 
-For asynchronous functions, you must import `AIProjectClient` from `azure.ai.projects.aio` and use `AsyncFunctionTool`.   Here is an example using [asynchronous user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples/agents/async_samples/user_async_functions.py):
+For asynchronous functions, you must import `AIProjectClient` from `azure.ai.projects.aio` and use `AsyncFunctionTool`.   Here is an example using [asynchronous user functions](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples/agents/async_samples/user_async_functions.py):
 
 ```python
 from azure.ai.projects.aio import AIProjectClient
@@ -562,6 +558,7 @@ functions = AsyncFunctionTool(user_async_functions)
 
 toolset = AsyncToolSet()
 toolset.add(functions)
+project_client.agents.enable_auto_function_calls(toolset=toolset)
 
 agent = await project_client.agents.create_agent(
     model=os.environ["MODEL_DEPLOYMENT_NAME"],
@@ -572,6 +569,9 @@ agent = await project_client.agents.create_agent(
 ```
 
 <!-- END SNIPPET -->
+
+Notice that if `enable_auto_function_calls` is called, the SDK will invoke the functions automatically during `create_and_process_run` or streaming.  If you prefer to execute them manually, refer to [`sample_agents_stream_eventhandler_with_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples/agents/sample_agents_stream_eventhandler_with_functions.py) or 
+[`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples/agents/sample_agents_functions.py)
 
 #### Create Agent With Azure Function Call
 
@@ -619,7 +619,6 @@ agent = project_client.agents.create_agent(
 
 Currently, the Azure Function integration for the AI Agent has the following limitations:
 
-- Azure Functions integration is available **only for non-streaming scenarios**.
 - Supported trigger for Azure Function is currently limited to **Queue triggers** only.
   HTTP or other trigger types and streaming responses are not supported at this time.
 
@@ -802,10 +801,17 @@ auth = OpenApiAnonymousAuthDetails()
 
 # Initialize agent OpenApi tool using the read in OpenAPI spec
 openapi_tool = OpenApiTool(
-    name="get_weather", spec=openapi_weather, description="Retrieve weather information for a location", auth=auth
+    name="get_weather",
+    spec=openapi_weather,
+    description="Retrieve weather information for a location",
+    auth=auth,
+    default_parameters=["format"],
 )
 openapi_tool.add_definition(
-    name="get_countries", spec=openapi_countries, description="Retrieve a list of countries", auth=auth
+    name="get_countries",
+    spec=openapi_countries,
+    description="Retrieve a list of countries",
+    auth=auth,
 )
 
 # Create agent with OpenApi tool and process assistant run
@@ -894,6 +900,19 @@ thread = project_client.agents.create_thread(tool_resources=file_search.resource
 ```
 
 <!-- END SNIPPET -->
+
+#### List Threads
+
+To list all threads attached to a given agent, use the list_threads API:
+
+<!-- SNIPPET:sample_agents_basics.list_threads -->
+
+```python
+threads = project_client.agents.list_threads()
+```
+
+<!-- END SNIPPET -->
+
 #### Create Message
 
 To create a message for assistant to process, you pass `user` as `role` and a question as `content`:
@@ -975,11 +994,93 @@ message = project_client.agents.create_message(
 
 <!-- END SNIPPET -->
 
+#### Create Message with Image Inputs
+
+You can send messages to Azure agents with image inputs in following ways:
+
+- **Using an image stored as a uploaded file**
+- **Using a public image accessible via URL**
+- **Using a base64 encoded image string**
+
+The following examples demonstrate each method:
+
+##### Create message using uploaded image file
+
+```python
+# Upload the local image file
+image_file = project_client.agents.upload_file_and_poll(file_path="image_file.png", purpose="assistants")
+
+# Construct content using uploaded image
+file_param = MessageImageFileParam(file_id=image_file.id, detail="high")
+content_blocks = [
+    MessageInputTextBlock(text="Hello, what is in the image?"),
+    MessageInputImageFileBlock(image_file=file_param),
+]
+
+# Create the message
+message = project_client.agents.create_message(
+    thread_id=thread.id,
+    role="user",
+    content=content_blocks
+)
+```
+
+##### Create message with an image URL input
+
+```python
+# Specify the public image URL
+image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+
+# Create content directly referencing image URL
+url_param = MessageImageUrlParam(url=image_url, detail="high")
+content_blocks = [
+    MessageInputTextBlock(text="Hello, what is in the image?"),
+    MessageInputImageUrlBlock(image_url=url_param),
+]
+
+# Create the message
+message = project_client.agents.create_message(
+    thread_id=thread.id,
+    role="user",
+    content=content_blocks
+)
+```
+
+##### Create message with base64-encoded image input
+
+```python
+import base64
+
+def image_file_to_base64(path: str) -> str:
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
+
+# Convert your image file to base64 format
+image_base64 = image_file_to_base64("image_file.png")
+
+# Prepare the data URL
+img_data_url = f"data:image/png;base64,{image_base64}"
+
+# Use base64 encoded string as image URL parameter
+url_param = MessageImageUrlParam(url=img_data_url, detail="high")
+content_blocks = [
+    MessageInputTextBlock(text="Hello, what is in the image?"),
+    MessageInputImageUrlBlock(image_url=url_param),
+]
+
+# Create the message
+message = project_client.agents.create_message(
+    thread_id=thread.id,
+    role="user",
+    content=content_blocks
+)
+```
+
 #### Create Run, Run_and_Process, or Stream
 
 To process your message, you can use `create_run`, `create_and_process_run`, or `create_stream`.
 
-`create_run` requests the Agent to process the message without polling for the result. If you are using `function tools` regardless as `toolset` or not, your code is responsible for polling for the result and acknowledging the status of `Run`. When the status is `requires_action`, your code is responsible for calling the function tools. For a code sample, visit [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples/agents/sample_agents_functions.py).
+`create_run` requests the Agent to process the message without polling for the result. If you are using `function tools` regardless as `toolset` or not, your code is responsible for polling for the result and acknowledging the status of `Run`. When the status is `requires_action`, your code is responsible for calling the function tools. For a code sample, visit [`sample_agents_functions.py`](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples/agents/sample_agents_functions.py).
 
 Here is an example of `create_run` and poll until the run is completed:
 
@@ -997,7 +1098,7 @@ while run.status in ["queued", "in_progress", "requires_action"]:
 
 <!-- END SNIPPET -->
 
-To have the SDK poll on your behalf and call `function tools`, use the `create_and_process_run` method. Note that `function tools` will only be invoked if they are provided as `toolset` during the `create_agent` call.
+To have the SDK poll on your behalf and call `function tools`, use the `create_and_process_run` method.
 
 Here is an example:
 
@@ -1093,7 +1194,7 @@ with project_client.agents.create_stream(
 
 <!-- END SNIPPET -->
 
-As you can see, this SDK parses the events and produces various event types similar to OpenAI assistants. In your use case, you might not be interested in handling all these types and may decide to parse the events on your own. To achieve this, please refer to [override base event handler](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples/agents/sample_agents_stream_with_base_override_eventhandler.py).
+As you can see, this SDK parses the events and produces various event types similar to OpenAI assistants. In your use case, you might not be interested in handling all these types and may decide to parse the events on your own. To achieve this, please refer to [override base event handler](https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples/agents/sample_agents_stream_with_base_override_eventhandler.py).
 
 ```
 Note: Multiple streaming processes may be chained behind the scenes.
@@ -1465,7 +1566,7 @@ To report an issue with the client library, or request additional features, plea
 
 ## Next steps
 
-Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b8/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
+Have a look at the [Samples](https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b9/sdk/ai/azure-ai-projects/samples) folder, containing fully runnable Python code for synchronous and asynchronous clients.
 
 Explore the [AI Starter Template](https://aka.ms/azsdk/azure-ai-projects/python/ai-starter-template). This template creates an Azure AI Foundry hub, project and connected resources including Azure OpenAI Service, AI Search and more. It also deploys a simple chat application to Azure Container Apps.
 
@@ -1490,9 +1591,9 @@ additional questions or comments.
 [samples]: https://aka.ms/azsdk/azure-ai-projects/python/samples/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [entra_id]: https://learn.microsoft.com/azure/ai-services/authentication?tabs=powershell#authenticate-with-microsoft-entra-id
-[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b8/sdk/identity/azure-identity#credentials
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b9/sdk/identity/azure-identity#credentials
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
-[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b8/sdk/identity/azure-identity#defaultazurecredential
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/azure-ai-projects_1.0.0b9/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
 [azure_sub]: https://azure.microsoft.com/free/
 [evaluators]: https://learn.microsoft.com/azure/ai-studio/how-to/develop/evaluate-sdk
