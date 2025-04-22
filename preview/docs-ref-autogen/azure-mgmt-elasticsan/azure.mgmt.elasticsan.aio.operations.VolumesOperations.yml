@@ -58,8 +58,8 @@ methods:
   summary: Delete an Volume.
   signature: 'async begin_delete(resource_group_name: str, elastic_san_name: str,
     volume_group_name: str, volume_name: str, x_ms_delete_snapshots: str | XMsDeleteSnapshots
-    | None = None, x_ms_force_delete: str | XMsForceDelete | None = None, **kwargs:
-    Any) -> AsyncLROPoller[None]'
+    | None = None, x_ms_force_delete: str | XMsForceDelete | None = None, delete_type:
+    str | DeleteType | None = None, **kwargs: Any) -> AsyncLROPoller[None]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -105,11 +105,117 @@ methods:
     types:
     - <xref:str>
     - <xref:azure.mgmt.elasticsan.models.XMsForceDelete>
+  - name: delete_type
+    description: 'Optional. Specifies that the delete operation should be a permanent
+      delete
+
+      for the soft deleted volume. The value of deleteType can only be ''permanent''.
+      "permanent"
+
+      Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.elasticsan.models.DeleteType>
   return:
     description: An instance of AsyncLROPoller that returns either None or the result
       of cls(response)
     types:
     - <xref:azure.core.polling.AsyncLROPoller>[<xref:None>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.begin_pre_backup
+  name: begin_pre_backup
+  summary: Validate whether a disk snapshot backup can be taken for list of volumes.
+  signature: 'async begin_pre_backup(resource_group_name: str, elastic_san_name: str,
+    volume_group_name: str, parameters: _models.VolumeNameList, *, content_type: str
+    = ''application/json'', **kwargs: Any) -> AsyncLROPoller[_models.PreValidationResponse]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: elastic_san_name
+    description: The name of the ElasticSan. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: volume_group_name
+    description: The name of the VolumeGroup. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: 'Volume Name List (currently only one volume name in the list is
+      supported.
+
+      Server would return error if list is bigger). Is either a VolumeNameList type
+      or a IO[bytes]
+
+      type. Required.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.elasticsan.models.VolumeNameList>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of AsyncLROPoller that returns either PreValidationResponse
+      or the result
+
+      of cls(response)'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.elasticsan.models.PreValidationResponse>]
+  exceptions:
+  - type: azure.core.exceptions.HttpResponseError
+- uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.begin_pre_restore
+  name: begin_pre_restore
+  summary: Validate whether a list of backed up disk snapshots can be restored into
+    ElasticSan volumes.
+  signature: 'async begin_pre_restore(resource_group_name: str, elastic_san_name:
+    str, volume_group_name: str, parameters: _models.DiskSnapshotList, *, content_type:
+    str = ''application/json'', **kwargs: Any) -> AsyncLROPoller[_models.PreValidationResponse]'
+  parameters:
+  - name: resource_group_name
+    description: 'The name of the resource group. The name is case insensitive.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: elastic_san_name
+    description: The name of the ElasticSan. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: volume_group_name
+    description: The name of the VolumeGroup. Required.
+    isRequired: true
+    types:
+    - <xref:str>
+  - name: parameters
+    description: 'Disk Snapshot List (currently only one Disk Snapshot in the list
+      is
+
+      supported and that the Disk Snapshot must be in same azure region as the ElasticSan.
+      Server
+
+      would return error if list is bigger). Is either a DiskSnapshotList type or
+      a IO[bytes] type.
+
+      Required.'
+    isRequired: true
+    types:
+    - <xref:azure.mgmt.elasticsan.models.DiskSnapshotList>
+    - <xref:typing.IO>[<xref:bytes>]
+  return:
+    description: 'An instance of AsyncLROPoller that returns either PreValidationResponse
+      or the result
+
+      of cls(response)'
+    types:
+    - <xref:azure.core.polling.AsyncLROPoller>[<xref:azure.mgmt.elasticsan.models.PreValidationResponse>]
   exceptions:
   - type: azure.core.exceptions.HttpResponseError
 - uid: azure.mgmt.elasticsan.aio.operations.VolumesOperations.begin_update
@@ -195,7 +301,8 @@ methods:
   name: list_by_volume_group
   summary: List Volumes in a VolumeGroup.
   signature: 'list_by_volume_group(resource_group_name: str, elastic_san_name: str,
-    volume_group_name: str, **kwargs: Any) -> AsyncIterable[Volume]'
+    volume_group_name: str, x_ms_access_soft_deleted_resources: str | XMsAccessSoftDeletedResources
+    | None = None, **kwargs: Any) -> AsyncIterable[Volume]'
   parameters:
   - name: resource_group_name
     description: 'The name of the resource group. The name is case insensitive.
@@ -214,6 +321,17 @@ methods:
     isRequired: true
     types:
     - <xref:str>
+  - name: x_ms_access_soft_deleted_resources
+    description: 'Optional, returns only soft deleted volumes if set
+
+      to true. If set to false or if not specified, returns only active volumes. Known
+      values are:
+
+      "true" and "false". Default value is None.'
+    defaultValue: None
+    types:
+    - <xref:str>
+    - <xref:azure.mgmt.elasticsan.models.XMsAccessSoftDeletedResources>
   return:
     description: An iterator like instance of either Volume or the result of cls(response)
     types:
