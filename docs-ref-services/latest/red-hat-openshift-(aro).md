@@ -8,4 +8,4 @@ ms.service: redhatopenshift(aro)
 ---
 # Azure Red Hat OpenShift (ARO) SDK for Python - latest
 ## Packages - latest
-[!INCLUDE [packages](red-hat-openshift-(aro\)-index.md)]
+[!INCLUDE [packages](red-hat-openshift-(aro)-index.md)]
