@@ -1,7 +1,7 @@
 ---
 title: Azure Red Hat OpenShift (ARO) SDK for Python
 description: Reference for Azure Red Hat OpenShift (ARO) SDK for Python
-ms.date: 04/25/2025
+ms.date: 04/28/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: redhatopenshift(aro)
