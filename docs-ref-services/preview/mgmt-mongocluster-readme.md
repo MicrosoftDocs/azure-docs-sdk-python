@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-mongocluster, mongocluster
-ms.date: 09/24/2024
+ms.date: 04/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: mongocluster
