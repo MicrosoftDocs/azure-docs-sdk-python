@@ -1,12 +1,12 @@
 ---
 title: Azure Cosmos DB SQL API client library for Python
 keywords: Azure, python, SDK, API, azure-cosmos, cosmos
-ms.date: 04/01/2025
+ms.date: 04/30/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: cosmos
 ---
-# Azure Cosmos DB SQL API client library for Python - version 4.10.0b4 
+# Azure Cosmos DB SQL API client library for Python - version 4.11.0b1 
 
 
 ## _Disclaimer_
@@ -34,7 +34,7 @@ Use the Azure Cosmos DB SQL API SDK for Python to manage databases and the JSON 
 
 ### Important update on Python 2.x Support
 
-New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
+New releases of this SDK won't support Python 2.x starting January 1st, 2022. Please check the [CHANGELOG](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/CHANGELOG.md) for more information.
 
 ### Prerequisites
 
@@ -883,6 +883,20 @@ may have additional latencies associated with searching in the service.
 
 You can find our sync samples [here][cosmos_index_sample] and our async samples [here][cosmos_index_sample_async] as well for additional guidance.
 
+### Public Preview - Throughput Buckets
+When multiple workloads share the same Azure Cosmos DB container, resource contention can lead to throttling, increased latency, and potential business impact.
+To address this, Cosmos DB allows you to allocate throughput buckets, which help manage resource consumption for workloads sharing a Cosmos DB container by limiting the maximum throughput a bucket can consume.
+However, throughput isn't reserved for any bucket, it remains shared across all workloads.
+
+Up to five (5) throughput buckets can be configured per container, with an ID ranging from 1-5. Each bucket has a maximum throughput percentage, capping the fraction of the container’s total throughput that it can consume.
+Requests assigned to a bucket can consume throughput only up to this limit. If the bucket exceeds its configured limit, subsequent requests are throttled. 
+This ensures that no single workload consumes excessive throughput and impacts others.
+
+Throughput bucket configurations can be changed once every 10 minutes, otherwise the request is throttled with an HTTP 429 status code and substatus code 3213.
+Also, requests with an invalid bucket ID (less than 1 or greater than 5) results in an error, as only bucket IDs 1 to 5 are valid.
+
+See [here][cosmos_throughput_bucket_configuration] for instructions on configuring throughput buckets through the Azure portal.
+After throughput buckets have been configured, you can find our sync samples [here][cosmos_throughput_bucket_sample] and our async samples [here][cosmos_throughput_bucket_sample_async] as well for additional guidance.
 ## Troubleshooting
 
 ### General
@@ -959,53 +973,39 @@ However, if you desire to use the CosmosHttpLoggingPolicy to obtain additional i
 client = CosmosClient(URL, credential=KEY, enable_diagnostics_logging=True)
 database = client.create_database(DATABASE_NAME, logger=logger)
 ```
-**NOTICE: The Following is a Preview Feature that is subject to significant change.**
-To further customize what gets logged, you can use a  **PREVIEW** diagnostics handler to filter out the logs you don't want to see.
-There are several ways to use the diagnostics handler, those include the following:
-- Using the "CosmosDiagnosticsHandler" class, which has default behaviour that can be modified.
-    **NOTE: The diagnostics handler will only be used if the `enable_diagnostics_logging` argument is passed in at the client constructor.
-      The CosmosDiagnosticsHandler is also a special type of dictionary that is callable and that has preset keys. The values it expects are functions related to it's relevant diagnostic data. (e.g. ```diagnostics_handler["duration"]``` expects a function that takes in an int and returns a boolean as it relates to the duration of an operation to complete).**
-    ```python
-    from azure.cosmos import CosmosClient, CosmosDiagnosticsHandler
-    import logging
-    # Initialize the logger
-    logger = logging.getLogger('azure.cosmos')
-    logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler('diagnostics1.output')
-    logger.addHandler(file_handler)
-    diagnostics_handler = cosmos_diagnostics_handler.CosmosDiagnosticsHandler()
-    diagnostics_handler["duration"] = lambda x: x > 2000
-    client = CosmosClient(URL, credential=KEY,logger=logger, diagnostics_handler=diagnostics_handler, enable_diagnostics_logging=True)
-    
-    ```
-- Using a dictionary with the relevant functions to filter out the logs you don't want to see.
-    ```python
-    # Initialize the logger
-    logger = logging.getLogger('azure.cosmos')
-    logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler('diagnostics2.output')
-    logger.addHandler(file_handler)
-    diagnostics_handler = {
-        "duration": lambda x: x > 2000
-    }
-    client = CosmosClient(URL, credential=KEY,logger=logger, diagnostics_handler=diagnostics_handler, enable_diagnostics_logging=True)
-    ```
-- Using a function that will replace the should_log function in the CosmosHttpLoggingPolicy which expects certain paramameters and returns a boolean. **Note: the parameters of the custom should_log must match the parameters of the original should_log function as shown in the sample.**
-  ```python
-  # Custom should_log method
-  def should_log(self, **kwargs):
-      return kwargs.get('duration') and kwargs['duration'] > 2000
-  
-  # Initialize the logger
+**NOTICE: The Following is a Preview Feature.**
+To further customize what gets logged, you can use logger filters to filter out the logs you don't want to see. You are able to filter based on the following attributes in the log record of cosmos diagnostics logs:
+- `status_code`
+- `sub_status_code`
+- `duration`
+- `verb`
+- `database_name`
+- `collection_name`
+- `operation_type`
+- `url`
+- `resource_type`
+- `is_request`
+
+You can take a look at the samples [here][cosmos_diagnostics_filter_sample] or take a quick look at this snippet:
+- Using **filters** from the **logging** library, it is possible to filter the diagnostics logs. Several filterable attributes are made available to the log record of the diagnostics logs when using logging filters.
+```python
+  import logging
+  from azure.cosmos import CosmosClient
   logger = logging.getLogger('azure.cosmos')
   logger.setLevel(logging.INFO)
-  file_handler = logging.FileHandler('diagnostics3.output')
+  file_handler = logging.FileHandler('diagnostics.output')
   logger.addHandler(file_handler)
-  
-  # Initialize the Cosmos client with custom diagnostics handler
-  client = CosmosClient(endpoint, key,logger=logger, diagnostics_handler=should_log, enable_diagnostics_logging=True)
-    ```
-
+  # Create a filter to filter out logs
+  class CustomFilter(logging.Filter):
+    def filter(self, record):
+        ret = (hasattr(record, 'status_code') and record.status_code > 400
+           and not (record.status_code in [404, 409, 412] and getattr(record, 'sub_status_code', None) in [0, None])
+           and hasattr(record, 'duration') and record.duration > 1000)
+        return ret
+  # Add the filter to the logger
+  logger.addFilter(CustomFilter())
+  client = CosmosClient(endpoint, key,logger=logger, enable_diagnostics_logging=True)
+```
 ### Telemetry
 Azure Core provides the ability for our Python SDKs to use OpenTelemetry with them. The only packages that need to be installed
 to use this functionality are the following:
@@ -1013,7 +1013,7 @@ to use this functionality are the following:
 pip install azure-core-tracing-opentelemetry
 pip install opentelemetry-sdk
 ```
-For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.10.0b4/sdk/core/azure-core-tracing-opentelemetry/README.md) 
+For more information on this, we recommend taking a look at this [document](https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.11.0b1/sdk/core/azure-core-tracing-opentelemetry/README.md) 
 from Azure Core describing how to set it up. We have also added a [sample file][telemetry_sample] to show how it can
 be used with our SDK. This works the same way regardless of the Cosmos client you are using.
 
@@ -1031,11 +1031,11 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [cosmos_container]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-containers
 [cosmos_database]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-databases
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/
-[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples
+[cosmos_samples]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples
 [cosmos_pypi]: https://pypi.org/project/azure-cosmos/
 [cosmos_http_status_codes]: https://learn.microsoft.com/rest/api/cosmos-db/http-status-codes-for-cosmosdb
 [cosmos_item]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items#azure-cosmos-items
-[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
+[cosmos_models]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/azure/cosmos/_models.py
 [cosmos_request_units]: https://learn.microsoft.com/azure/cosmos-db/request-units
 [cosmos_resources]: https://learn.microsoft.com/azure/cosmos-db/databases-containers-items
 [cosmos_sql_queries]: https://learn.microsoft.com/azure/cosmos-db/how-to-sql-query
@@ -1052,23 +1052,27 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient]: https://aka.ms/azsdk-python-cosmos-ref-cosmos-client
 [ref_database]: https://aka.ms/azsdk-python-cosmos-ref-database
 [ref_httpfailure]: https://aka.ms/azsdk-python-cosmos-ref-http-failure
-[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/database_management.py
-[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/document_management.py
-[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/document_management_async.py
-[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/examples.py
-[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos
+[sample_database_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/database_management.py
+[sample_document_mgmt]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/document_management.py
+[sample_document_mgmt_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/document_management_async.py
+[sample_examples_misc]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/examples.py
+[source_code]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos
 [venv]: https://docs.python.org/3/library/venv.html
 [virtualenv]: https://virtualenv.pypa.io
-[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
-[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
+[telemetry_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/tracing_open_telemetry.py
+[timeouts_document]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/docs/TimeoutAndRetriesConfig.md
 [cosmos_transactional_batch]: https://learn.microsoft.com/azure/cosmos-db/nosql/transactional-batch
-[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
-[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/index_management.py
-[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.10.0b4/sdk/cosmos/azure-cosmos/samples/index_management_async.py
+[cosmos_concurrency_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/concurrency_sample.py
+[cosmos_index_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/index_management.py
+[cosmos_index_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/index_management_async.py
 [RRF]: https://learn.microsoft.com/azure/search/hybrid-search-ranking
 [BM25]: https://learn.microsoft.com/azure/search/index-similarity-and-scoring
 [cosmos_fts]: https://aka.ms/cosmosfulltextsearch
 [cosmos_index_policy_change]: https://learn.microsoft.com/azure/cosmos-db/index-policy#modifying-the-indexing-policy
+[cosmos_throughput_bucket_sample]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management.py
+[cosmos_throughput_bucket_sample_async]: https://github.com/Azure/azure-sdk-for-python/tree/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/throughput_bucket_management_async.py
+[cosmos_diagnostics_filter_sample]: https://github.com/Azure/azure-sdk-for-python/blob/azure-cosmos_4.11.0b1/sdk/cosmos/azure-cosmos/samples/diagnostics_filter_sample.py
+[cosmos_throughput_bucket_configuration]: https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets#configuring-throughput-buckets
 
 ## Contributing
 
