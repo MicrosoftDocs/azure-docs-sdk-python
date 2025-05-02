@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-automation, automation
-ms.date: 11/05/2024
+ms.date: 05/02/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: automation
