@@ -54,7 +54,8 @@ methods:
     | None = None, post_trigger_include: str | None = None, indexing_directive: int
     | None = None, enable_automatic_id_generation: bool = False, session_token: str
     | None = None, initial_headers: Dict[str, str] | None = None, priority: Literal[''High'',
-    ''Low''] | None = None, no_response: bool | None = None, **kwargs: Any) -> CosmosDict'
+    ''Low''] | None = None, no_response: bool | None = None, throughput_bucket: int
+    | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to create.
@@ -96,6 +97,17 @@ methods:
     defaultValue: None
     types:
     - <xref:dict>[<xref:str>, <xref:str>]
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -122,6 +134,11 @@ methods:
     defaultValue: None
     types:
     - <xref:bool>
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
   return:
     description: A CosmosDict representing the new item. The dict will be empty if
       *no_response* is specified.
@@ -147,7 +164,8 @@ methods:
   signature: 'async delete_all_items_by_partition_key(partition_key: str | int | float
     | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
-    None, session_token: str | None = None, **kwargs: Any) -> None'
+    None, session_token: str | None = None, throughput_bucket: int | None = None,
+    **kwargs: Any) -> None'
   parameters:
   - name: partition_key
     description: Partition key for the items to be deleted.
@@ -171,10 +189,26 @@ methods:
     defaultValue: None
     types:
     - <xref:str>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
     - <xref:typing.Callable>
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -224,7 +258,8 @@ methods:
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
     None, session_token: str | None = None, initial_headers: Dict[str, str] | None
     = None, etag: str | None = None, match_condition: MatchConditions | None = None,
-    priority: Literal[''High'', ''Low''] | None = None, **kwargs: Any) -> None'
+    priority: Literal[''High'', ''Low''] | None = None, throughput_bucket: int | None
+    = None, **kwargs: Any) -> None'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be deleted.
@@ -283,11 +318,27 @@ methods:
     defaultValue: None
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
     - <xref:typing.Callable>[[<xref:typing.Mapping>[<xref:str>, <xref:str>], <xref:None>],
       <xref:None>]
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
   return:
     types:
     - <xref:None>
@@ -304,7 +355,7 @@ methods:
     | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
     *, pre_trigger_include: str | None = None, post_trigger_include: str | None =
     None, session_token: str | None = None, priority: Literal[''High'', ''Low''] |
-    None = None, **kwargs: Any) -> CosmosList'
+    None = None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosList'
   parameters:
   - name: batch_operations
     description: The batch of operations to be executed.
@@ -344,10 +395,26 @@ methods:
     defaultValue: None
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
     - <xref:typing.Callable>
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
   return:
     description: A CosmosList representing the items after the batch operations went
       through.
@@ -549,7 +616,7 @@ methods:
     pre_trigger_include: str | None = None, post_trigger_include: str | None = None,
     session_token: str | None = None, etag: str | None = None, match_condition: MatchConditions
     | None = None, priority: Literal[''High'', ''Low''] | None = None, no_response:
-    bool | None = None, **kwargs: Any) -> CosmosDict'
+    bool | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be patched.
@@ -628,6 +695,22 @@ methods:
     defaultValue: None
     types:
     - <xref:bool>
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: 'A CosmosDict representing the item after the patch operations went
       through. The dict will be empty if
@@ -705,7 +788,8 @@ methods:
     str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
     int | None = None, priority: Literal[''High'', ''Low''] | None = None, continuation_token_limit:
     int | None = None, response_hook: Callable[[Mapping[str, str], Dict[str, Any]],
-    None] | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
+    None] | None = None, throughput_bucket: int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str,
+    Any]]'
   parameters:
   - name: query
     description: The Azure Cosmos DB SQL query to execute.
@@ -804,6 +888,22 @@ methods:
     defaultValue: None
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -813,7 +913,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\37\\\\azure_cosmos-4.10.0b4\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\37\\\\azure_cosmos-4.11.0b1\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           import\
     \ json\n\n           async for queried_item in container.query_items(\n      \
@@ -823,7 +923,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\37\\\\azure_cosmos-4.10.0b4\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\37\\\\azure_cosmos-4.11.0b1\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           discontinued_items\
     \ = container.query_items(\n               query='SELECT * FROM products p WHERE\
@@ -898,6 +998,17 @@ methods:
       or ''continuation'' token.'
     types:
     - <xref:typing.Literal>["LatestVersion", "AllVersionsAndDeletes"]
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   - name: response_hook
     description: A callable invoked with the response metadata.
     types:
@@ -963,8 +1074,8 @@ methods:
   summary: List all the items in the container.
   signature: 'read_all_items(*, max_item_count: int | None = None, session_token:
     str | None = None, initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs:
-    Any) -> AsyncItemPaged[Dict[str, Any]]'
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, throughput_bucket:
+    int | None = None, **kwargs: Any) -> AsyncItemPaged[Dict[str, Any]]'
   keywordOnlyParameters:
   - name: max_item_count
     description: Max number of items to be returned in the enumeration operation.
@@ -1007,6 +1118,22 @@ methods:
     defaultValue: None
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: An AsyncItemPaged of items (dicts).
     types:
@@ -1046,8 +1173,8 @@ methods:
     int | float | bool | Sequence[str | int | float | bool | None] | Type[NonePartitionKeyValue],
     *, post_trigger_include: str | None = None, session_token: str | None = None,
     initial_headers: Dict[str, str] | None = None, max_integrated_cache_staleness_in_ms:
-    int | None = None, priority: Literal[''High'', ''Low''] | None = None, **kwargs:
-    Any) -> CosmosDict'
+    int | None = None, priority: Literal[''High'', ''Low''] | None = None, throughput_bucket:
+    int | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to retrieve.
@@ -1102,6 +1229,22 @@ methods:
     defaultValue: None
     types:
     - <xref:typing.Literal>["High", "Low"]
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: A CosmosDict representing the retrieved item.
     types:
@@ -1114,7 +1257,7 @@ methods:
     examples_async.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\": [], \"\
     names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\hostedtoolcache\\\
     \\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\\py2docfx\\\\\
-    dist_temp\\\\37\\\\azure_cosmos-4.10.0b4\\\\samples\\\\examples_async.py\", \"\
+    dist_temp\\\\37\\\\azure_cosmos-4.11.0b1\\\\samples\\\\examples_async.py\", \"\
     xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"highlight_args\"\
     : {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\n           item\
     \ = await container.read_item(\"item2\", partition_key=\"Widget\")\n         \
@@ -1131,7 +1274,7 @@ methods:
     None, session_token: str | None = None, initial_headers: Dict[str, str] | None
     = None, etag: str | None = None, match_condition: MatchConditions | None = None,
     priority: Literal[''High'', ''Low''] | None = None, no_response: bool | None =
-    None, **kwargs: Any) -> CosmosDict'
+    None, throughput_bucket: int | None = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: item
     description: The ID (name) or dict representing item to be replaced.
@@ -1204,6 +1347,22 @@ methods:
     defaultValue: None
     types:
     - <xref:bool>
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: 'A CosmosDict representing the item after replace went through. The
       dict will be empty if *no_response*
@@ -1257,7 +1416,8 @@ methods:
     | None = None, post_trigger_include: str | None = None, session_token: str | None
     = None, initial_headers: Dict[str, str] | None = None, etag: str | None = None,
     match_condition: MatchConditions | None = None, priority: Literal[''High'', ''Low'']
-    | None = None, no_response: bool | None = None, **kwargs: Any) -> CosmosDict'
+    | None = None, no_response: bool | None = None, throughput_bucket: int | None
+    = None, **kwargs: Any) -> CosmosDict'
   parameters:
   - name: body
     description: A dict-like object representing the item to update or insert.
@@ -1325,6 +1485,22 @@ methods:
     defaultValue: None
     types:
     - <xref:bool>
+  - name: throughput_bucket
+    description: The desired throughput bucket for the client
+    defaultValue: None
+    types:
+    - <xref:int>
+  - name: excluded_locations
+    description: 'Excluded locations to be skipped from preferred locations. The locations
+
+      in this list are specified as the names of the azure Cosmos locations like,
+      ''West US'', ''East US'' and so on.
+
+      If all preferred locations were excluded, primary/hub location will be used.
+
+      This excluded_location will override existing excluded_locations in client level.'
+    types:
+    - <xref:list>[<xref:str>]
   return:
     description: 'A CosmosDict representing the upserted item. The dict will be empty
       if
