@@ -1,7 +1,7 @@
 ---
 title: Azure Network Analytics SDK for Python
 description: Reference for Azure Network Analytics SDK for Python
-ms.date: 05/02/2025
+ms.date: 05/05/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: networkanalytics
