@@ -1,7 +1,7 @@
 ---
 title: 
 keywords: Azure, python, SDK, API, azure-mgmt-sqlvirtualmachine, sql
-ms.date: 06/21/2023
+ms.date: 05/05/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: sql
