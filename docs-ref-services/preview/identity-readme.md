@@ -6,7 +6,7 @@ ms.topic: reference
 ms.devlang: python
 ms.service: entra-id
 ---
-# Azure Identity client library for Python - version 1.22.0a20250505002 
+# Azure Identity client library for Python - version 1.22.0a20250506001 
 
 
 The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/entra/fundamentals/new-name)) token authentication support across the Azure SDK. It provides a set of [`TokenCredential`][token_cred_ref]/[`SupportsTokenInfo`][supports_token_info_ref] implementations, which can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
