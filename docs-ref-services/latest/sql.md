@@ -1,7 +1,7 @@
 ---
 title: Azure SQL SDK for Python
 description: Reference for Azure SQL SDK for Python
-ms.date: 05/05/2025
+ms.date: 05/06/2025
 ms.topic: reference
 ms.devlang: python
 ms.service: sql
