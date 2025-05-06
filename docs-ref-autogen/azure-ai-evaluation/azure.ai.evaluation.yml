@@ -9,11 +9,11 @@ functions:
   summary: "Evaluates target or data with built-in or custom evaluators. If both target\
     \ and data are provided,\n   data will be run through target function and then\
     \ results will be evaluated."
-  signature: 'evaluate(*, data: str | PathLike, evaluators: Dict[str, Callable], evaluation_name:
-    str | None = None, target: Callable | None = None, evaluator_config: Dict[str,
-    EvaluatorConfig] | None = None, azure_ai_project: AzureAIProject | None = None,
-    output_path: str | PathLike | None = None, fail_on_evaluator_errors: bool = False,
-    **kwargs) -> EvaluationResult'
+  signature: 'evaluate(*, data: str | PathLike, evaluators: Dict[str, Callable | AzureOpenAIGrader],
+    evaluation_name: str | None = None, target: Callable | None = None, evaluator_config:
+    Dict[str, EvaluatorConfig] | None = None, azure_ai_project: str | AzureAIProject
+    | None = None, output_path: str | PathLike | None = None, fail_on_evaluator_errors:
+    bool = False, **kwargs) -> EvaluationResult'
   keywordOnlyParameters:
   - name: data
     description: 'Path to the data to be evaluated or passed to target if target is
@@ -27,9 +27,12 @@ functions:
     description: 'Evaluators to be used for evaluation. It should be a dictionary
       with key as alias for evaluator
 
-      and value as the evaluator function. Required.'
+      and value as the evaluator function. Also accepts AzureOpenAIGrader instances
+      as values, which are processed separately.
+
+      Required.'
     types:
-    - <xref:typing.Dict>[<xref:str>, <xref:typing.Callable>]
+    - <xref:typing.Dict>[<xref:str>, <xref:typing.Union>[<xref:typing.Callable>, <xref:azure.ai.evaluation.AzureOpenAIGrader>]]
   - name: evaluation_name
     description: Display name of the evaluation.
     defaultValue: None
@@ -89,7 +92,7 @@ functions:
     evaluation_samples_evaluate.py )]-->\n\n<!-- literal_block {\"ids\": [], \"classes\"\
     : [], \"names\": [], \"dupnames\": [], \"backrefs\": [], \"source\": \"C:\\\\\
     hostedtoolcache\\\\windows\\\\Python\\\\3.11.10\\\\x64\\\\Lib\\\\site-packages\\\
-    \\py2docfx\\\\dist_temp\\\\14\\\\azure_ai_evaluation-1.5.0\\\\samples\\\\evaluation_samples_evaluate.py\"\
+    \\py2docfx\\\\dist_temp\\\\14\\\\azure_ai_evaluation-1.6.0\\\\samples\\\\evaluation_samples_evaluate.py\"\
     , \"xml:space\": \"preserve\", \"force\": false, \"language\": \"python\", \"\
     highlight_args\": {\"linenostart\": 1}, \"linenos\": false} -->\n\n````python\n\
     \n   import os\n   from azure.ai.evaluation import evaluate, RelevanceEvaluator,\
@@ -110,7 +113,11 @@ functions:
     \      },\n       },\n   )\n\n\n   ````\n"
 classes:
 - azure.ai.evaluation.AzureAIProject
+- azure.ai.evaluation.AzureOpenAIGrader
+- azure.ai.evaluation.AzureOpenAILabelGrader
 - azure.ai.evaluation.AzureOpenAIModelConfiguration
+- azure.ai.evaluation.AzureOpenAIStringCheckGrader
+- azure.ai.evaluation.AzureOpenAITextSimilarityGrader
 - azure.ai.evaluation.BleuScoreEvaluator
 - azure.ai.evaluation.CodeVulnerabilityEvaluator
 - azure.ai.evaluation.CoherenceEvaluator
